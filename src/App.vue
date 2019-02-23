@@ -796,20 +796,22 @@
           tips: '使用 微信 或小程序 身份管家 扫码登录'
         };
 
+        let that = this;
+
         if (!this.isWxQRCodeGenerated) {
           validAuth.startWXAppScaning({
             mount: 'qrcode-node',
 
             onSuccess: function (res) {
-              this.$authing.pub('scanning', res);
+              that.$authing.pub('scanning', res);
             },
 
             onError: function (err) {
-              this.$authing.pub('scanningError', err);
+              that.$authing.pub('scanningError', err);
             },
 
             onIntervalStarting: function (interval) {
-              this.$authing.pub('scanningIntervalStarting', interval);
+              that.$authing.pub('scanningIntervalStarting', interval);
             },
 
             interval: scanOpts.interval,
