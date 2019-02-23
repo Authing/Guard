@@ -301,12 +301,14 @@
 
         isScanCodeEnable: false,
 
-        opts: $authing.opts,
+        opts: {},
 
         authingOnError: false,
 
         closeForm: false,
         removeDom: false,
+
+        $authing: null,
       };
     },
     mounted: function () {
@@ -324,7 +326,7 @@
         document.getElementById('_authing_login_form_content').classList.remove('hide');
         that.authingOnError = true;
         that.errMsg = 'Error: ' + err;
-        $authing.pub('authingUnload', err);
+        that.$authing.pub('authingUnload', err);
       }
 
       if (!auth) {
@@ -336,7 +338,7 @@
         document.getElementById('_authing_login_form_content').classList.remove('hide');
         window.validAuth = validAuth;
 
-        $authing.pub('authingLoad', validAuth);
+        that.$authing.pub('authingLoad', validAuth);
 
         if (localStorage.getItem('_authing_username')) {
           that.rememberMe = true;
@@ -350,7 +352,7 @@
           that.oAuthloading = true;
           validAuth.readOAuthList()
             .then(function (data) {
-              $authing.pub('oauthLoad', data);
+              that.$authing.pub('oauthLoad', data);
               that.oAuthloading = false;
 
               var OAuthList = data.filter(function (item) {
@@ -368,7 +370,7 @@
               }
             })
             .catch(function (err) {
-              $authing.pub('oauthUnload', err);
+              that.$authing.pub('oauthUnload', err);
               that.oAuthloading = true;
             });
         } else {
@@ -382,15 +384,19 @@
         }
       })
         .catch(function (err) {
-          document.getElementById('page-loading').remove();
+          let pageLoading = document.getElementById('page-loading');
+          pageLoading && document.getElementById('page-loading').remove();
           document.getElementById('_authing_login_form_content').classList.remove('hide');
           that.authingOnError = true;
           that.errMsg = '初始化出错，请检查 clientID 和 Secret 是否正确';
-          $authing.pub('authingUnload', err);
+          that.$authing.pub('authingUnload', err);
         });
     },
     created: function () {
       this.pageVisible.loginVisible = true;
+      this.$authing = this.$parent.$data.$authing;
+      this.opts = this.$authing.opts;
+
       document.onkeydown = (event) => {
         var e = event || window.event || arguments.callee.caller.arguments[0];
         if (e && e.keyCode === 27) {
@@ -401,7 +407,6 @@
     methods: {
       verifyCodeLoad: function () {
         this.verifyCodeLoading = false;
-        console.log('verifyCode loaded');
       },
       encryptMethod: function encryptMethod(str, key) {
         while (str.length > key.length) {
@@ -517,7 +522,7 @@
         this.pageVisible.forgetPasswordSendEmailVisible = true;
       },
       checkEmail: function checkEmail() {
-        if (!emailExp.test(this.signUpForm.email)) {
+        if (!this.$parent.emailExp.test(this.signUpForm.email)) {
           this.showGlobalErr('请输入正确格式的邮箱');
           this.addAnimation('sign-up-email');
           this.removeRedLine('sign-up-username');
@@ -531,24 +536,24 @@
         var that = this;
         that.setLoading();
 
-        if (!$authing.opts.hideUsername && !this.signUpForm.username) {
+        if (!this.$authing.opts.hideUsername && !this.signUpForm.username) {
           this.showGlobalErr('请输入用户名');
           this.addAnimation('sign-up-username');
           this.removeRedLine('sign-up-email');
           this.removeRedLine('sign-up-password');
           this.removeRedLine('sign-up-re-password');
           that.unLoading();
-          $authing.pub('registerError', '请输入用户名');
+          this.$authing.pub('registerError', '请输入用户名');
           return false;
         }
-        if (!emailExp.test(this.signUpForm.email)) {
+        if (!this.$parent.emailExp.test(this.signUpForm.email)) {
           this.showGlobalErr('请输入正确格式的邮箱');
           this.addAnimation('sign-up-email');
           this.removeRedLine('sign-up-username');
           this.removeRedLine('sign-up-password');
           this.removeRedLine('sign-up-re-password');
           that.unLoading();
-          $authing.pub('registerError', '请输入正确格式的邮箱');
+          this.$authing.pub('registerError', '请输入正确格式的邮箱');
           return false;
         }
         if (!this.signUpForm.password) {
@@ -558,7 +563,7 @@
           this.removeRedLine('sign-up-email');
           this.removeRedLine('sign-up-re-password');
           that.unLoading();
-          $authing.pub('registerError', '请输入密码');
+          this.$authing.pub('registerError', '请输入密码');
           return false;
         }
         if (this.signUpForm.password !== this.signUpForm.rePassword) {
@@ -568,7 +573,7 @@
           this.removeRedLine('sign-up-email');
           this.removeRedLine('sign-up-password');
           that.unLoading();
-          $authing.pub('registerError', '两次密码不一致');
+          this.$authing.pub('registerError', '两次密码不一致');
           return false;
         }
         validAuth.register({
@@ -592,12 +597,12 @@
             };
             that.rememberMe = false;
             that.showGlobalSuccess('注册成功');
-            $authing.pub('register', data);
+            that.$authing.pub('register', data);
           })
           .catch(function (err) {
             that.unLoading();
             that.showGlobalErr(err.message.message);
-            $authing.pub('registerError', err);
+            that.$authing.pub('registerError', err);
             if (err.message.code === 2026) {
               that.addAnimation('sign-up-email');
               that.emoveRedLine('sign-up-re-password');
@@ -614,13 +619,13 @@
           password: this.loginForm.password,
         };
 
-        if (!emailExp.test(this.loginForm.email)) {
+        if (!this.$parent.emailExp.test(this.loginForm.email)) {
           this.showGlobalErr('请输入正确格式的邮箱');
           this.addAnimation('login-username');
           this.removeRedLine('login-password');
           this.removeRedLine('verify-code');
           that.unLoading();
-          $authing.pub('loginError', '请输入正确格式的邮箱');
+          this.$authing.pub('loginError', '请输入正确格式的邮箱');
           return false;
         }
         if (!this.loginForm.password) {
@@ -629,7 +634,7 @@
           this.removeRedLine('verify-code');
           this.removeRedLine('login-username');
           that.unLoading();
-          $authing.pub('loginError', '请输入密码');
+          this.$authing.pub('loginError', '请输入密码');
           return false;
         }
         if (this.pageVisible.verifyCodeVisible) {
@@ -646,12 +651,12 @@
             }
 
             that.showGlobalSuccess('验证通过，欢迎你：' + data.username || data.email);
-            $authing.pub('login', data);
+            that.$authing.pub('login', data);
             that.unLoading();
           })
           .catch(function (err) {
             that.unLoading();
-            $authing.pub('loginError', err);
+            that.$authing.pub('loginError', err);
             that.showGlobalErr(err.message.message);
             // 验证码错误
             if (err.message.code === 2000 || err.message.code === 2001) {
@@ -672,9 +677,8 @@
             // 用户名不存在
             else if (err.message.code === 2004) {
               // 如果开启登录时创建不存在的用户功能
-              if ($authing.opts.forceLogin) {
+              if (this.$authing.opts.forceLogin) {
                 that.setLoading();
-                console.log('turn on forceLogin');
                 validAuth.register({
                   email: that.loginForm.email,
                   password: that.loginForm.password,
@@ -682,12 +686,12 @@
                   .then(function (data) {
                     that.unLoading();
                     that.showGlobalSuccess('验证通过，欢迎你：' + data.username || data.email);
-                    $authing.pub('login', data);
+                    this.$authing.pub('login', data);
                   })
                   .catch(function (err) {
                     that.unLoading();
                     that.showGlobalErr(err.message.message);
-                    $authing.pub('loginError', err);
+                    this.$authing.pub('loginError', err);
                   });
                 return false;
               } else {
@@ -708,25 +712,25 @@
       handleForgetPasswordSendEmail: function handleForgetPasswordSendEmail() {
         var that = this;
         that.setLoading();
-        if (!emailExp.test(this.forgetPasswordForm.email)) {
+        if (!this.$parent.emailExp.test(this.forgetPasswordForm.email)) {
           this.showGlobalErr('请输入正确格式的邮箱');
           this.addAnimation('forget-password-email');
           that.unLoading();
-          $authing.pub('emailSentError', '请输入正确格式的邮箱');
+          this.$authing.pub('emailSentError', '请输入正确格式的邮箱');
           return false;
         }
         validAuth.sendResetPasswordEmail({
           email: this.forgetPasswordForm.email
         })
           .then(function (data) {
-            $authing.pub('emailSent', data);
+            that.$authing.pub('emailSent', data);
             that.unLoading();
             that.showGlobalSuccess('验证码已发送至您的邮箱：' + that.forgetPasswordForm.email);
             that.pageVisible.forgetPasswordSendEmailVisible = false;
             that.pageVisible.forgetPasswordVerifyCodeVisible = true;
           })
           .catch(function (err) {
-            $authing.pub('emailSentError', err);
+            that.$authing.pub('emailSentError', err);
             that.unLoading();
             that.showGlobalErr(err.message);
           });
@@ -739,7 +743,7 @@
           this.addAnimation('forget-password-verify-code');
           
           that.showGlobalErr('请输入验证码');
-          $authing.pub('resetPasswordError', '请输入验证码');
+          this.$authing.pub('resetPasswordError', '请输入验证码');
           return false;
         }
         validAuth.verifyResetPasswordVerifyCode({
@@ -747,14 +751,14 @@
           verifyCode: that.forgetPasswordForm.verifyCode
         })
           .then(function (data) {
-            $authing.pub('resetPassword', data);
+            that.$authing.pub('resetPassword', data);
             that.unLoading();
             that.showGlobalSuccess(data.message);
             that.pageVisible.forgetPasswordVerifyCodeVisible = false;
             that.pageVisible.forgetPasswordNewPasswordVisible = true;
           })
           .catch(function (err) {
-            $authing.pub('resetPasswordError', err);
+            that.$authing.pub('resetPasswordError', err);
             that.unLoading();
             that.addAnimation('forget-password-verify-code');
             that.showGlobalErr(err.message.message);
@@ -769,13 +773,13 @@
           verifyCode: that.forgetPasswordForm.verifyCode
         })
           .then(function (data) {
-            $authing.pub('resetPassword', data);
+            that.$authing.pub('resetPassword', data);
             that.unLoading();
             that.showGlobalSuccess('修改密码成功');
             that.gotoLogin();
           })
           .catch(function (err) {
-            $authing.pub('resetPasswordError', err);
+            that.$authing.pub('resetPasswordError', err);
             that.unLoading();
             that.showGlobalErr(err.message.message);
           });
@@ -786,7 +790,7 @@
         }
         this.turnOnPage('wxQRCodeVisible');
 
-        var scanOpts = $authing.opts.qrcodeScanning || {
+        var scanOpts = this.$authing.opts.qrcodeScanning || {
           redirect: true,
           interval: 1500,
           tips: '使用 微信 或小程序 身份管家 扫码登录'
@@ -797,15 +801,15 @@
             mount: 'qrcode-node',
 
             onSuccess: function (res) {
-              $authing.pub('scanning', res);
+              this.$authing.pub('scanning', res);
             },
 
             onError: function (err) {
-              $authing.pub('scanningError', err);
+              this.$authing.pub('scanningError', err);
             },
 
             onIntervalStarting: function (interval) {
-              $authing.pub('scanningIntervalStarting', interval);
+              this.$authing.pub('scanningIntervalStarting', interval);
             },
 
             interval: scanOpts.interval,
@@ -823,7 +827,7 @@
         }
         var that = this;
         this.closeForm = true;
-        $authing.pub('formClosed');
+        this.$authing.pub('formClosed');
         setTimeout(function () {
           that.removeDom = true;
         }, 800);

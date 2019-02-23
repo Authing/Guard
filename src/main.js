@@ -106,9 +106,9 @@ var AuthingGuard = function (opts) {
   $authing.opts.placeholder = opts.placeholder;
   $authing.opts.host = opts.host;
 
-  window.$authing = $authing;
-  window.appMountId = appMountId;
-  window.emailExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/;
+  // window.$authing = $authing;
+  // window.appMountId = appMountId;
+  let emailExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/;
 
   var target = document.getElementById(appMountId) || document.getElementById(opts.mountId) || document.body;
   var newMount = document.createElement('div');
@@ -125,22 +125,30 @@ var AuthingGuard = function (opts) {
     el: '#_authing_login_form',
     render: h => h(App),
     data: {
-      isMountedInModal: isMountedInModal
+      isMountedInModal: isMountedInModal,
+      $authing: $authing,
+      emailExp: emailExp,
+      appMountId: appMountId,
     }
   });
 };
 
 AuthingGuard.prototype = {
   show: function (appMountId) {
-    console.log(this);
     var target = document.getElementById(appMountId) || document.getElementById(this.opts.mountId) || document.body;
     var newMount = document.createElement('div');
     newMount.setAttribute('id', '_authing_login_form');
+
     if(!(appMountId || this.opts.mountId)) {
       newMount.classList.add('authing-login-form-modal');
     }
+
     target.appendChild(newMount);
+
+    let emailExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/;
+
     var isMountedInModal = false;
+
     if (!appMountId) {
       isMountedInModal = true;
     }
@@ -150,7 +158,10 @@ AuthingGuard.prototype = {
       store,
       render: h => h(App),
       data: {
-        isMountedInModal: isMountedInModal
+        isMountedInModal,
+        $authing: this,
+        emailExp: emailExp,
+        appMountId: appMountId,
       }
     }).$mount('#_authing_login_form');
   },
