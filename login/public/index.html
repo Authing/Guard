@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Authing Login Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+  <p>Authing Login Form Example</p>
+  <div id="app"></div>
+  <script src="../dist/authing-login-form.js"></script>
+  <script>
+  var form = new AuthingForm({
+    clientId: '5b7f79f519915500015f18ac',
+    secret: '82f36cba243e13f81f06675193732af7',
+
+    mountId: 'app',
+
+    title: 'Authing',
+    logo: 'https://cdn.authing.cn/authing-logo.png',
+
+    forceLogin: false,
+
+    hideQRCode: false,
+    hideUP: false,
+    hideOAuth: false,
+
+    hideUsername: false,
+
+    // 输入框的placeholder
+    placeholder: {
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      verfiyCode: '',
+      newPassword: ''
+    },
+
+    qrcodeScanning: {
+      redirect: true, // 可选，是否执行跳转（在用户后台配置的URL），默认为true，相关用户信息回传至url上
+      onSuccess: function(res) {}, // 可选，登录成功后回调函数，redirect为true时不回调此函数
+      onError: function(error) {}, // 可选，登录失败后回调函数，一般为网络问题
+      onIntervalStarting: function(intervalNum) {}, // 可选，轮询时的回调函数，intervalNum 为 setInterval 返回的数值，可使用 clearInterval 停止轮询
+      interval: 1500, // 可选，每隔多少秒检查一次，默认1500
+      tips: '使用 微信 或小程序 身份管家 扫码登录', // 可选，提示信息，可写HTML
+    }
+  });
+
+  form.on('authingLoad', function(authing) {
+    console.log('on authing load', authing);
+  });
+
+  form.on('authingUnload', function(error) {
+    console.log('on authing load error', error);
+  });
+
+  form.on('oauthLoad', function(oauthList) {
+    console.log('on oauth load', oauthList);
+  });
+
+  form.on('oauthUnload', function(error) {
+    console.log('on oauth unload', error);
+  });
+
+  form.on('login', function(user) {
+    console.log('on login', user);
+  });
+
+  form.on('loginError', function(error) {
+    console.log('on login error', error);
+  });
+
+  form.on('register', function(user) {
+    console.log('on register', user);
+  });
+
+  form.on('registerError', function(error) {
+    console.log('on register error', error);
+  });
+
+  form.on('emailSent', function(data) {
+    console.log('on email sent', data);
+  });
+
+  form.on('emailSentError', function(error) {
+    console.log('on email sent error');
+  });
+
+  form.on('resetPassword', function(result) {
+    console.log('on reset password');
+  });
+
+  form.on('resetPasswordError', function(error) {
+    console.log('on reset password error', error);
+  });
+
+  form.on('scanning', function(data) {
+    console.log('on scanning success', data);
+  });
+
+  form.on('scanningError', function(error) {
+    console.log('on scanning error', error);
+  });
+
+  form.on('scanningIntervalStarting', function(interval) {
+    console.log('on scanning interval starting', interval);
+  });
+
+  </script>
+</body>
+
+</html>
