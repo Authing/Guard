@@ -2,23 +2,21 @@
 
 [Authing](https://authing.cn) 是一个企业级身份认证提供商，其集成了 OAuth、LDAP、OIDC 等多种身份认证和授权解决方案。
 
-SSO 套件是 Authing 提供的浏览器端单点登录解决方案，开发者可基于此框架在浏览器端实现单点登录的页面及逻辑。
-
-SSO 套件依托 Authing 的另一开源项目 [Login Form](https://github.com/authing/login-form) 作为 UI 展示层。
+SSO 套件是 Authing 提供的浏览器端单点登录解决方案，开发者可基于此框架在浏览器端实现单点登录的页面及逻辑，其依托 Authing 的另一开源项目 [Login Form](https://github.com/authing/login-form) 作为 UI 展示层。
 
 ## 安装
 
 ### 通过 CDN 安装
 
 ```html
-<!-- Latest patch release (recommended for production) -->
-<script src="https://cdn.auth0.com/js/lock/11.14.0/lock.min.js"></script>
+<!-- 施工中-->
+<script src="https://cdn.authing.cn/sdk/javascript/authing-sso.js"></script>
 ```
 
 ### 通过 NPM 安装
 
 ```shell
-$ npm install authing-sso
+$ npm install authing-sso --save
 ```
 
 接着你可以使用以下方式引入 `AuthingSSO`：
