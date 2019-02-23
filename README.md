@@ -27,6 +27,36 @@ import AuthingSSO from 'authing-sso';
 
 ## API
 
+### new AuthingSSO(clientID, domain, options)
+
+初始化一个新的 `AuthingSSO` 实例，需要传入你在 [Authing](https://authing.cn/dashboard) 对应应用中的 clientID 和域名信息。
+
+- **clientId {String}**: Authing 应用的 _clientId_；
+- **domain {String}**: Authing 中配置的 _域名_. 通常是 _sso.authing.cn/login?client_id=YOUR_CLIENT_ID_；
+- **options {Object}**: 允许你自定义 [Login Form](https://github.com/authing/login-form) 的行为。
+
+#### 示例
+
+```js
+var clientId = "YOUR_AUTHing_APP_CLIENTID";
+var domain = "sso.authing.cn/login?client_id=YOUR_CLIENT_ID_";
+var sso = new AuthingSSO(clientId, domain);
+
+sso.on("authenticated", function(authResult) {
+  sso.getUserInfo(authResult.accessToken, function(error, profile) {
+    if (error) {
+      // Handle error
+      return;
+    }
+
+    localStorage.setItem("accessToken", authResult.accessToken);
+    localStorage.setItem("profile", JSON.stringify(profile));
+
+    // Update DOM
+  });
+});
+```
+
 ## 浏览器兼容性
 
 兼容 Chrome、Safari、Firefox 和 Edge。
