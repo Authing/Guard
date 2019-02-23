@@ -4,6 +4,8 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import Authing from 'authing-js-sdk';
+import './styles/styles.css';
+import './styles/animations.css';
 
 Vue.config.productionTip = false;
 
@@ -97,8 +99,8 @@ var AuthingGuard = function (opts) {
   } else {
     opts.host = {
       users: 'https://users.authing.cn/graphql',
-      oauth: 'https://oauth.authing.cn/graphql'
-    }
+      oauth: 'https://oauth.authing.cn/graphql',
+    };
   }
 
   $authing.opts.placeholder = opts.placeholder;
@@ -135,7 +137,7 @@ AuthingGuard.prototype = {
     var newMount = document.createElement('div');
     newMount.setAttribute('id', '_authing_login_form');
     if(!(appMountId || this.opts.mountId)) {
-      newMount.classList.add('authing-login-form-modal')
+      newMount.classList.add('authing-login-form-modal');
     }
     target.appendChild(newMount);
     var isMountedInModal = false;
