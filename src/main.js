@@ -63,7 +63,7 @@ var AuthingGuard = function (opts) {
 
   $authing.opts.forceLogin = opts.forceLogin || false;
   $authing.opts.title = opts.title || 'Authing';
-  $authing.opts.logo = opts.logo || 'https://cdn.authing.cn/authing-logo.png';
+  $authing.opts.logo = opts.logo || 'https://usercontents.authing.cn/client/logo@2.png';
 
   $authing.opts.mountId = opts.mountId || null;
   // 初始化小程序扫码登录配置 
