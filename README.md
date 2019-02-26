@@ -4,6 +4,20 @@
 
 Guard 套件是 Authing 提供的浏览器端单点登录解决方案，开发者可基于此框架在浏览器端实现单点登录的页面及逻辑，其依托 Authing 的另一开源项目 [Login Form](https://github.com/authing/login-form) 作为 UI 展示层。
 
+Guard 提供的表单拥有以下基本功能：
+
+ - 邮箱／密码登录注册
+ - 忘记密码以及重置密码
+ - 记住账号功能（加密存储到浏览器本地）
+ - 第三方 OAuth 登录（需先在后台配置）
+ - 小程序扫码登录（需先在后台配置）
+ - 响应式特性
+ - SSO
+
+![login-form](https://cdn.authing.cn/sdk/guide/image/login-form.png)
+
+[点击体验](https://sample.authing.cn/#/) 或 [在 jsfiddle 上尝试](https://jsfiddle.net/yelexin/Lanvjpct)。
+
 ## 安装
 
 ### 通过 CDN 安装
