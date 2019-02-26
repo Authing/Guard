@@ -389,7 +389,7 @@
           pageLoading && document.getElementById('page-loading').remove();
           document.getElementById('_authing_login_form_content').classList.remove('hide');
           that.authingOnError = true;
-          that.errMsg = '初始化出错，请检查 clientID 和 Secret 是否正确';
+          that.errMsg = '初始化出错，请检查 clientID 是否正确';
           that.$authing.pub('authenticatedOnError', err);
         });
     },

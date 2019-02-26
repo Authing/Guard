@@ -17,7 +17,9 @@
   <script>
     const clientId = '5a9fa26cf8635a000185528c';
     const domain = "sso.authing.cn/login?client_id=YOUR_CLIENT_ID_";
-    const guard = new AuthingGuard(clientId, domain);
+    const guard = new AuthingGuard(clientId, domain, {
+      hideClose: true,
+    });
 
     guard.on('login', (userInfo) => {
       console.log('用户登录成功', userInfo);

@@ -87,7 +87,7 @@ guard.on('authenticated', (authing) => {
   // authing.logout
   // authing.checkLoginStaus
   // ...
-  // 更多 请参考 https://docs.authing.cn/#/user_service/user_service
+  // 更多请参考：https://docs.authing.cn/#/user_service/user_service
 });
 ```
 

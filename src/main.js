@@ -63,6 +63,7 @@ var AuthingGuard = function (clientId, domain, opts) {
   $authing.opts.clientId = clientId;
   $authing.opts.domain = domain;
 
+  $authing.opts.isSSO = opts.isSSO || false;
   $authing.opts.hideQRCode = opts.hideQRCode || false;
   $authing.opts.hideUP = opts.hideUP || false;
   $authing.opts.hideOAuth = opts.hideOAuth || false;
