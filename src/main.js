@@ -105,6 +105,8 @@ var AuthingGuard = function (opts) {
 
   $authing.opts.placeholder = opts.placeholder;
   $authing.opts.host = opts.host;
+  $authing.opts.timestamp = Math.round(new Date() / 1000);
+  $authing.opts.nonce = Math.ceil(Math.random() * Math.pow(10, 6));
 
   // window.$authing = $authing;
   // window.appMountId = appMountId;
