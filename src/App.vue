@@ -318,7 +318,8 @@
       try {
         auth = new Authing({
           clientId: that.opts.clientId,
-          secret: that.opts.secret,
+          timestamp: that.opts.timestamp,
+          nonce: that.opts.nonce,
           host: that.opts.host
         });
       } catch (err) {
