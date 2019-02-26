@@ -78,6 +78,8 @@ guard.on('loginError', (error) => {
 
 如果你想获取 authing 对象以调用[用户接口](https://docs.authing.cn/#/user_service/user_service)，请使用如下代码：
 
+`authenticated` 事件是 `Authing` 对象初始化后的回调事件。
+
 ``` javascript
 guard.on('authenticated', (authing) => {
   console.log('Authing 实例初始化成功', authing);
