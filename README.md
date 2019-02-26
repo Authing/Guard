@@ -42,35 +42,38 @@ var clientId = "YOUR_AUTHing_APP_CLIENTID";
 var domain = "sso.authing.cn/login?client_id=YOUR_CLIENT_ID_";
 var guard = new AuthingGuard(clientId, domain);
 
-guard.on("authenticated", function(authResult) {
-  guard.getUserInfo(authResult.accessToken, function(error, profile) {
-    if (error) {
-      // Handle error
-      return;
-    }
+guard.on('login', (userInfo) => {
+  console.log('用户登录成功', userInfo);
 
-    localStorage.setItem("accessToken", authResult.accessToken);
-    localStorage.setItem("profile", JSON.stringify(profile));
+  localStorage.setItem("accessToken", userInfo.token);
+  localStorage.setItem("userInfo", JSON.stringify(userInfo));
 
-    // Update DOM
-  });
+  // Update DOM
+
 });
+
+guard.on('loginError', (error) => {
+  // Handle error 
+  console.log('用户登录失败', error);
+})
 ```
 
-### getUserInfo(accessToken, callback)
+如果你想获取其他事件，请参考[这里](https://github.com/Authing/Guard#onevent-callback)。
 
-一旦用户登录，并且你已经获取 accessToken 后你就可以通过 `getUserInfo` 获取用户资料。
+### authing 对象
 
-- **accessToken {String}**: accessToken.
-- **callback {Function}**: 获取用户资料后会处罚此函数.
+如果你想获取 authing 对象以调用[用户接口](https://docs.authing.cn/#/user_service/user_service)，请使用如下代码：
 
-#### 示例
+``` javascript
+guard.on('authenticated', (authing) => {
+  console.log('Authing 实例初始化成功', authing);
 
-```js
-guard.getUserInfo(accessToken, function(error, profile) {
-  if (!error) {
-    alert("hello " + profile.username);
-  }
+  // authing.login
+  // authing.register
+  // authing.logout
+  // authing.checkLoginStaus
+  // ...
+  // 更多 请参考 https://docs.authing.cn/#/user_service/user_service
 });
 ```
 
@@ -107,8 +110,8 @@ Guard 会在以下生命周期中触发相应事件：
 
 事件名称          | 事件说明              | 事件参数 | 事件参数说明
 --------------- | -------------------- | --------| -------- 
-authingLoad     | Authing Client ID 和 Secret验证通过，加载完成   |      authing | authing 对象，可直接操作 ``login``,``register``等方法
-authingUnload     | Authing Client ID 和 Secret验证失败   |      ``error`` | 错误信息
+authenticated    | Authing Client ID 验证通过，加载完成   |      authing | authing 对象，可直接操作 ``login``,``register``等方法
+authenticatedOnError     | Authing Client ID 验证失败   |      ``error`` | 错误信息
 oauthLoad     | OAuth列表加载完成   |      oauthList | 完整的 OAuth 列表，若用户未在后台配置过则为空
 oauthUnload     | OAuth列表加载失败  |      ``error`` | 错误信息
 login     | 用户登录成功   |      user | 用户数据
@@ -123,25 +126,6 @@ scanning     | 扫码登录成功   |      user | 用户数据
 scanningError     | 扫码登录失败  |      ``error`` | 错误信息
 scanningIntervalStarting     | 开始监听扫码事件   |      interval | 用户可使用 ``clearInterval`` 停止监听
 formClosed     | Login Form 关闭事件   |      null | 用户按下 ESC 或点击右上方的关闭按钮后会触发此事件
-
-### checkSession(token, callback)
-
-- **token {String}**: 可将 token 字符串传入以检查此 token 是否可以使用，若不传入，则默认使用 Authing SDK 当前状态下维护的 token。
-
-#### 示例
-
-```js
-guard.checkSession(null, function (error, authResult) {
-  if (error || !authResult) {
-    guard.show();
-  } else {
-    // 用户已登录，我们可以用现成的 accessToken
-    guard.getUserInfo(authResult.accessToken, function (error, profile) {
-      console.log(error, profile);
-    });
-  }
-});
-```
 
 ### 自定义
 
@@ -166,7 +150,7 @@ Guard 提供的表单拥有以下基本功能：
 参数名称          | 是否必填              | 默认值   | 类型   |参数说明|回调参数
 --------------- | -------------------- | --------| --------|------------|------------
 **clientId**     |  **是**   |      无   | String   |Authing Client ID| -
-**secret**     |  **是**   |      无   | String   |Authing Client Secret| -
+**domain**     |  **是**   |      无   | String   | 回调链接 | -
 mountId   |  否   |无|String|指定 Authing form 将在何处显示，接受一个 html 元素 id，不含`#`号。不指定则默认全屏弹出 Modal 登录框|-
 title     |  否   |      Authing  | String   |**产品名称**| -
 logo     |  否   |     [Authing LOGO]  | String   |**产品logo**，默认为 Authing 的官方 Logo| -
@@ -190,12 +174,6 @@ hideClose|否|false|Boolean|**是否隐藏登录框右上角的关闭按钮**，
 **host**     |  否   |      {}  | Object   |**小程序扫码登录的配置项**| -
 **host**.user     |  否   |      [Authing 官方链接]  | String   |**GraphQL 链接**，默认 Authing 官方链接，此处用于私有部署 Authing 的用户使用| -
 **host**.oauth     |  否   |      [Authing 官方链接]  | String   |**GraphQL 链接**，默认 Authing 官方链接，此处用于私有部署 Authing 的用户使用| -
-
-#### 示例
-
-```js
-
-```
 
 ## 浏览器兼容性
 

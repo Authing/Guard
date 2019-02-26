@@ -9,7 +9,11 @@ import './styles/animations.css';
 
 Vue.config.productionTip = false;
 
-var AuthingGuard = function (opts) {
+var AuthingGuard = function (clientId, domain, opts) {
+
+  if (!clientId) {
+    throw "clientId is not provided";
+  }
 
   window.Authing = Authing;
 
@@ -30,9 +34,9 @@ var AuthingGuard = function (opts) {
 
     $authing = this;
 
-  $authing.eventsList = {
-    'authingload': [],
-    'authingunload': [],
+  $authing.eventsList = {    
+    'authenticated': [],
+    'authenticatedOnError': [],
 
     'oauthload': [],
     'oauthunload': [],
@@ -53,7 +57,11 @@ var AuthingGuard = function (opts) {
     'formclosed': [],
   };
 
+  opts = opts || {};
   $authing.opts = opts || {};
+
+  $authing.opts.clientId = clientId;
+  $authing.opts.domain = domain;
 
   $authing.opts.hideQRCode = opts.hideQRCode || false;
   $authing.opts.hideUP = opts.hideUP || false;

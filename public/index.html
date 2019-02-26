@@ -15,9 +15,23 @@
     <!-- built files will be auto injected -->
   </body>
   <script>
-    new AuthingGuard({
-      clientId: '5a9fa26cf8635a000185528c',
-      secret: '427e24d3b7e289ae9469ab6724dc7ff0',
+    const clientId = '5a9fa26cf8635a000185528c';
+    const domain = "sso.authing.cn/login?client_id=YOUR_CLIENT_ID_";
+    const guard = new AuthingGuard(clientId, domain);
+
+    guard.on('login', (userInfo) => {
+      console.log('用户登录成功', userInfo);
+
+      localStorage.setItem("accessToken", userInfo.token);
+      localStorage.setItem("userInfo", JSON.stringify(userInfo));
+
+      // Update DOM
+      
     });
-  </script>  
+
+    guard.on('loginError', (error) => {
+      // Handle error 
+      console.log('用户登录失败', error);
+    });
+  </script>
 </html>

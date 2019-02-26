@@ -339,7 +339,7 @@
         document.getElementById('_authing_login_form_content').classList.remove('hide');
         window.validAuth = validAuth;
 
-        that.$authing.pub('authingLoad', validAuth);
+        that.$authing.pub('authenticated', validAuth);
 
         if (localStorage.getItem('_authing_username')) {
           that.rememberMe = true;
@@ -390,7 +390,7 @@
           document.getElementById('_authing_login_form_content').classList.remove('hide');
           that.authingOnError = true;
           that.errMsg = '初始化出错，请检查 clientID 和 Secret 是否正确';
-          that.$authing.pub('authingUnload', err);
+          that.$authing.pub('authenticatedOnError', err);
         });
     },
     created: function () {
