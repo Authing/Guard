@@ -70,6 +70,7 @@ var AuthingGuard = function (clientId, domain, opts) {
   $authing.opts.hideUsername = opts.hideUsername || false;
   $authing.opts.hideClose = opts.hideClose || false;
 
+  $authing.opts.SSOHost = opts.SSOHost || 'https://sso.authing.cn';
   $authing.opts.forceLogin = opts.forceLogin || false;
   $authing.opts.title = opts.title || 'Authing';
   $authing.opts.logo = opts.logo || 'https://usercontents.authing.cn/client/logo@2.png';
@@ -142,6 +143,7 @@ var AuthingGuard = function (clientId, domain, opts) {
       $authing: $authing,
       emailExp: emailExp,
       appMountId: appMountId,
+      SSOHost: opts.SSOHost || 'https://sso.authing.cn',
     }
   });
 };
@@ -184,6 +186,7 @@ AuthingGuard.prototype = {
         $authing: this,
         emailExp: emailExp,
         appMountId: appMountId,
+        SSOHost: opts.SSOHost || 'https://sso.authing.cn',
       }
     }).$mount('#_authing_login_form');
   },
