@@ -134,6 +134,8 @@ var AuthingGuard = function (clientId, domain, opts) {
   }
   new Vue({
     el: '#_authing_login_form',
+    router,
+    store,
     render: h => h(App),
     data: {
       isMountedInModal: isMountedInModal,
@@ -145,6 +147,15 @@ var AuthingGuard = function (clientId, domain, opts) {
 };
 
 AuthingGuard.prototype = {
+  querySearch: function(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split('&');
+    for (var i=0; i < vars.length; i++) {
+      var pair = vars[i].split('=');
+      if (pair[0] == variable) { return pair[1]; }
+    }
+    return false;
+  },
   show: function (appMountId) {
     var target = document.getElementById(appMountId) || document.getElementById(this.opts.mountId) || document.body;
     var newMount = document.createElement('div');
@@ -196,7 +207,16 @@ AuthingGuard.prototype = {
         cb(params);
       }
     }
-  }
+  },
+
+  authorize: function() {
+    const state = this.querySearch('state') || '';
+    const appId = this.querySearch('app_id') || '';
+    const redirectURI = this.querySearch('redirect_uri') || '';
+    const responseType = this.querySearch('response_type') || '';
+    const scope = this.querySearch('scope') || '';
+    location.href = `/login/authorize/confirm?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
+  },
 };
 
 if(window) {

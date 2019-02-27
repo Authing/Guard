@@ -28,7 +28,8 @@
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
 
       // Update DOM
-      
+      // location.href = '/login/authorize?';
+      guard.authorize();
     });
 
     guard.on('loginError', (error) => {
