@@ -12,7 +12,7 @@
               <div class="display-t js-fullheight">
                 <div class="display-tc js-fullheight animate-box" data-animate-effect="fadeIn" style="text-align:center">
                   <img src="favicon.png" style="margin-bottom:11px" />
-                  <h1 id="desc">找不到此应用</h1>
+                  <h1>{{errorMessage}}</h1>
                   <h2>解决方案请参考开发文档：<a href="https://docs.authing.cn/" target="_blank">docs.authing.cn</a></h2>
                 </div>
               </div>
@@ -27,30 +27,21 @@
 
 <script>
 export default {
-  mounted () {
 
+  data() {
+    return {
+      errorMessage: '抱歉, 似乎出错了',
+    };
+  },
+
+  mounted () {
+    this.checkError();
   },
 
   methods: {
     checkError () {
-      var lack = querySearch('lack');
-      var desc = $('#desc');
-
-      var obj = {
-        app_id: function() {
-          desc.html('找不到此应用');
-        },
-
-        redirect_url: function() {
-          desc.html('请提供 redirect_url');
-        }
-      }
-
-      if (obj[lack]) {
-        obj[lack]();
-      } else {
-        desc.html('Sorry，似乎出错了');
-      }
+      const message = this.$route.query.message || '抱歉，似乎出错了';
+      this.errorMessage = message;
     }
   }
 }
