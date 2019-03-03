@@ -132,7 +132,7 @@
                   <img :src="verifyCodeUrl" id="verify-code-img" v-show="!verifyCodeLoading" @load="verifyCodeLoad">
 
                 </div>
-                <div class="row">
+                <div class="row backup">
 
                   <div class="_authing_form-group" style="margin-bottom:0px;">
                     <label class="_authing_label" for="login-remember" style="width:100%">

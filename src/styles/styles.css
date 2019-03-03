@@ -340,7 +340,15 @@
     border-radius: 5px 5px 0 0;
     overflow: hidden;
     box-sizing: border-box;
+    overflow: hidden;
+    width: 320px;
   }
+
+  .authorize ._authing_form-header {
+    height: 170px;
+    padding: 0;
+  }
+
 
   ._authing_form-header-bg {
     position: absolute;
@@ -352,6 +360,12 @@
     pointer-events: none;
     background: rgba(241, 241, 241, 0.8);
   }
+
+  .authorize ._authing_form-header-bg {
+    height: 170px;
+    background: #fff;
+  }
+
 
   ._authing_form-header-welcome {
     font-size: 18px;
@@ -548,6 +562,10 @@
     animation: rotate 1s linear infinite;
   }
 
+  ._authing_authorize_container {
+    min-height: 500px;
+  }
+
   ._authing_verify-code-loading-circle {
     margin-top: 15px;
     flex-shrink: 0;
@@ -569,6 +587,7 @@
   .authing-login-form-wrapper {
     width: 320px;
     margin: 0 auto;
+    /* overflow: hidden; */
   }
 
   ._authing_form-footer {
@@ -609,10 +628,177 @@
     cursor: pointer;
   }
 
+
   ._authing_form-footer .btn:hover, ._authing_form-footer .btn:focus, ._authing_form-footer .btn:active {
     background: #0184bf !important;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     outline: 0;
   }
+
+  .authorize .btn.btn-primary {
+    border-radius: 0px;
+  }
+
+  ._authing_form-footer .btn.btn-cancel {
+    width: 100%;
+    border-radius: 0px;
+    height: 60px;
+    font-size: 16px;
+    background: #f5f5f5;
+    box-shadow: none!important;
+    font-weight: 200;
+    color: #989898;
+    outline: 0;
+    cursor: pointer;
+  }
+
+  ._authing_form-footer .btn.btn-cancel:hover, ._authing_form-footer .btn.btn-cancel:focus, ._authing_form-footer .btn.btn-cancel:active {
+    background: #e6e6e6 !important;
+    outline: 0;
+  }
+
+  ._div_line {
+    width: calc(100% - 22px);
+    height: 1px;
+    margin: 12px 11px;
+    background: #e5e5e5;
+  }
+
+  ._div_authorize_block {
+    width: 100%;
+    height: calc(50% - 12px);
+    padding: 0 8px;
+    /* background: #f5f5f5; */
+  }
+
+  ._div_authorize_block2 {
+    width: 100%;
+    padding: 0 8px;
+    /* background: #f5f5f5; */
+  }
+
+  ._div_info_text url {
+    display: inline-block;
+    color: #0184bf;
+    font-weight: 100;
+    margin: 0 4px;
+  }
+
+  ._div_info_text {
+    border-left: 4px solid #0184bf;
+    font-size: 15px;
+    color: #515151;
+  }
+
+  ._div_info_text.green {
+    border-left: 4px solid #00897B;
+  }
+
+  ._div_info_text span {
+    margin-left: 8px;
+  }
+
+  ._authing_form_authorize_info {
+    width: 100%;
+    height: 220px;
+    padding: 0 22px;
+    margin-top: 22px;
+    background: #fff;
+    color: #969595;
+  }
+
+  ._authing_form_authorize_info2 {
+    width: 100%;
+    padding: 0 22px;
+    margin-top: 22px;
+    background: #fff;
+    color: #969595;
+  }
+
+  .wrong_bg {
+    /* background-color: #f17c6c !important; */
+    background: #00897B !important;
+    background-image: repeating-linear-gradient(30deg,hsla(0,0%,100%,.1), hsla(0,0%,100%,.1) 15px, transparent 0,transparent 30px) !important; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .wrong_bg > div {
+    z-index: 8;
+    color: #fff;
+    font-size: 20px;
+    margin-top: 16px;
+  }
+
+  ._authing_form_authorize_info  ul {
+    /* background: #fafafa; */
+    padding: 4px;
+    border-radius: 3px;
+    padding-inline-start: 0px;
+    padding-left: 16px;
+    margin-block-start: 8px;
+    margin-block-end: 0;
+  }
+
+  ._authing_form_authorize_info li {
+    text-decoration: none;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+  }
+
+  ._authing_logo_icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  ._authing_logo_text {
+    font-size: 18px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-family: 'Avenir',Helvetica,Arial,sans-serif;
+    letter-spacing: 2px;
+    font-weight: 100;
+    color: #fff;
+    margin: 0 4px;
+  }
+
+  ._authing_delta_bg {
+    position: absolute;
+    z-index: 1;
+    width: 0;
+    height: 0;
+    border-color: transparent #009fee;
+    border-width: 0 0 170px 580px;
+    border-style: solid;
+    left: 0px;
+  }
+
+  ._authing_logo_bar {
+    position: absolute;
+    margin: 11px;
+    z-index: 3;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  ._authing_delta_circle {
+    width: 96px;
+    height: 96px;
+    position: absolute;
+    z-index: 2;
+    border: 2px solid rgba(255, 255, 255, 0.842);;
+    border-radius: 50%;
+    left: 110px;
+    top: 72px;
+    box-shadow: .5px 0px 0px rgb(252, 252, 252);
+  }
+
 
   @media screen and (max-width: 480px) {
     ._authing_form-footer {
@@ -623,6 +809,7 @@
     ._authing_container {
       padding: 0px;
     }
+
 
     .authing-login-form-wrapper {
       width: 100%;
@@ -649,9 +836,17 @@
       /*min-height: calc(100vh - 178px);*/
     }
 
+
+
     ._authing_form-footer .btn {
       border-bottom-left-radius: 0px!important;
       border-bottom-right-radius: 0px!important;
+      box-shadow: none!important;
+    }
+
+    ._authing_form-footer2 .btn {
+      border-bottom-left-radius: 4px!important;
+      border-bottom-right-radius: 4px!important;
       box-shadow: none!important;
     }
 
@@ -679,6 +874,12 @@
     url('//at.alicdn.com/t/font_803924_073p7nal4zk.woff') format('woff'),
     url('//at.alicdn.com/t/font_803924_073p7nal4zk.ttf') format('truetype'),
     url('//at.alicdn.com/t/font_803924_073p7nal4zk.svg#iconfont') format('svg');
+  }
+
+  ._authing_form-footer2 {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
   }
 
   ._authing_iconfont {
@@ -720,6 +921,24 @@
   .row {
     display: flex;
     justify-content: space-between;
+  }
+
+  .row.backup {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  ._see_doctor {
+    padding: 0 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    font-size: 12px;
+    color: #9b9898;
+  }
+
+  ._see_doctor a {
+    color: #26A69A;
   }
 
   .authing-form-badge-bottom {

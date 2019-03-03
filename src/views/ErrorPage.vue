@@ -1,58 +1,89 @@
-<template>		
+<template>
   <div>
-    <div class="fh5co-loader"></div>
-    
-    <div id="page">
-
-      <header id="fh5co-header" class="fh5co-cover js-fullheight" role="banner">
-        <div class="overlay"></div>
-        <div class="container">
-          <div class="row">
-            <div class="col-md-8 col-md-offset-2 text-center" style="display:flex;justify-content: center;align-items: center;">
-              <div class="display-t js-fullheight">
-                <div class="display-tc js-fullheight animate-box" data-animate-effect="fadeIn" style="text-align:center">
-                  <img src="favicon.png" style="margin-bottom:11px" />
-                  <h1>{{errorMessage}}</h1>
-                  <h2>解决方案请参考开发文档：<a href="https://docs.authing.cn/" target="_blank">docs.authing.cn</a></h2>
-                </div>
+    <div class="authorize">
+      <div class="_authing_container" id="_authing_login_form_content">
+        <div class="authing-login-form-wrapper">
+          <div class="_authing_form-wrapper animated fast fadeInUp _authing_authorize_container">
+            <div class="_authing_form-header">
+              <!-- <div class="_authing_delta_bg"></div> -->
+              <div class="_authing_logo_bar">
+                <img class="_authing_logo_icon" src="../assets/wtf.png">
+                <div class="_authing_logo_text">Authing</div>
               </div>
+              <div class="_authing_form-header-bg wrong_bg">
+                <div>{{errorMessage}}</div>
+              </div>
+            </div>
+            <img v-show="false" alt="Vue logo" src="../assets/logo.png">
+            <div class="_authing_form_authorize_info">
+              <div class="_div_authorize_block2">
+                <div class="_div_info_text green">
+                  <span>{{errorMessage}}</span>
+                </div>
+                <ul>
+                  <li>错误提示1</li>
+                  <li>错误提示2</li>
+                </ul>
+              </div>
+
+              <div class="_div_line"/>
+              <div class="_see_doctor">
+                参见开发文档：<a href="https://docs.authing.cn/" target="_blank">docs.authing.cn</a>
+              </div>
+            </div>
+            <div class="_authing_form-footer _authing_form-footer2">
+              <button class="btn" @click="returnBack">返回</button>
             </div>
           </div>
         </div>
-      </header>
-
+      </div>
     </div>
   </div>
+  <!-- </div> -->
 </template>
 
 <script>
 export default {
-
   data() {
     return {
-      errorMessage: '抱歉, 似乎出错了',
+      errorMessage: "抱歉, 似乎出错了"
     };
   },
 
-  mounted () {
+  mounted() {
     this.checkError();
   },
 
   methods: {
-    checkError () {
-      const message = this.$route.query.message || '抱歉，似乎出错了';
+    checkError() {
+      const message = this.$route.query.message || "抱歉，似乎出错了";
       this.errorMessage = message;
+    },
+
+    returnBack() {
+      $route.back(-1);
+      this.returnOrNot()
+    },
+
+    returnOrNot() {
+      if(window.history.length <= 1) {
+        alert(1)
+      }
     }
   }
-}
+};
 </script>
 
 
 <style>
 @font-face {
-  font-family: 'icomoon';
+  font-family: "icomoon";
   src: url("./fonts/icomoon/icomoon.eot?srf3rx");
-  src: url("./fonts/icomoon/icomoon.eot?srf3rx#iefix") format("embedded-opentype"), url("./fonts/icomoon/icomoon.ttf?srf3rx") format("truetype"), url("./fonts/icomoon/icomoon.woff?srf3rx") format("woff"), url("./fonts/icomoon/icomoon.svg?srf3rx#icomoon") format("svg");
+  src: url("./fonts/icomoon/icomoon.eot?srf3rx#iefix")
+      format("embedded-opentype"),
+    url("./fonts/icomoon/icomoon.ttf?srf3rx") format("truetype"),
+    url("./fonts/icomoon/icomoon.woff?srf3rx") format("woff"),
+    url("./fonts/icomoon/icomoon.svg?srf3rx#icomoon") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -81,11 +112,11 @@ body {
   transition: 0.5s;
   display: flex;
   justify-content: center;
-  align-items: center;  
+  align-items: center;
 }
 
 a {
-  color: #DD356E;
+  color: #dd356e;
   -webkit-transition: 0.5s;
   -o-transition: 0.5s;
   transition: 0.5s;
@@ -93,8 +124,10 @@ a {
   outline: none;
   text-decoration: none;
 }
-a:hover, a:active, a:focus {
-  color: #DD356E;
+a:hover,
+a:active,
+a:focus {
+  color: #dd356e;
   outline: none;
   text-decoration: none;
 }
@@ -103,7 +136,13 @@ p {
   margin-bottom: 30px;
 }
 
-h1, h2, h3, h4, h5, h6, figure {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+figure {
   color: #000;
   font-family: "Inconsolata", Arial, sans-serif;
   font-weight: 400;
@@ -112,17 +151,17 @@ h1, h2, h3, h4, h5, h6, figure {
 
 ::-webkit-selection {
   color: #fff;
-  background: #DD356E;
+  background: #dd356e;
 }
 
 ::-moz-selection {
   color: #fff;
-  background: #DD356E;
+  background: #dd356e;
 }
 
 ::selection {
   color: #fff;
-  background: #DD356E;
+  background: #dd356e;
 }
 
 .fh5co-nav {
@@ -140,7 +179,7 @@ h1, h2, h3, h4, h5, h6, figure {
   font-family: "Inconsolata", Arial, sans-serif;
 }
 .fh5co-nav #fh5co-logo a span {
-  color: #DD356E;
+  color: #dd356e;
 }
 .fh5co-nav a {
   padding: 5px 10px;
@@ -169,7 +208,9 @@ h1, h2, h3, h4, h5, h6, figure {
   -o-transition: 0.5s;
   transition: 0.5s;
 }
-.fh5co-nav ul li a:hover, .fh5co-nav ul li a:focus, .fh5co-nav ul li a:active {
+.fh5co-nav ul li a:hover,
+.fh5co-nav ul li a:focus,
+.fh5co-nav ul li a:active {
   color: black;
 }
 .fh5co-nav ul li.has-dropdown {
@@ -229,7 +270,8 @@ h1, h2, h3, h4, h5, h6, figure {
 .fh5co-nav ul li.has-dropdown .dropdown li a:hover {
   color: #fff;
 }
-.fh5co-nav ul li.has-dropdown:hover a, .fh5co-nav ul li.has-dropdown:focus a {
+.fh5co-nav ul li.has-dropdown:hover a,
+.fh5co-nav ul li.has-dropdown:focus a {
   color: #000;
 }
 .fh5co-nav ul li.btn-cta a {
@@ -265,10 +307,10 @@ h1, h2, h3, h4, h5, h6, figure {
   bottom: 25px;
   left: 0;
   right: 0;
-  content: '';
+  content: "";
   width: 30px;
   height: 2px;
-  background: #DD356E;
+  background: #dd356e;
   margin: 0 auto;
 }
 
@@ -344,7 +386,8 @@ h1, h2, h3, h4, h5, h6, figure {
   display: table-cell !important;
   vertical-align: middle;
 }
-#fh5co-header .display-tc h1, #fh5co-header .display-tc h2,
+#fh5co-header .display-tc h1,
+#fh5co-header .display-tc h2,
 .fh5co-cover .display-tc h1,
 .fh5co-cover .display-tc h2 {
   margin: 0;
@@ -406,5 +449,4 @@ h1, h2, h3, h4, h5, h6, figure {
 }
 
 /*# sourceMappingURL=style.css.map */
-
 </style>

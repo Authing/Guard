@@ -1,11 +1,52 @@
 <template>
   <div class="authorize">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <div class="_authing_form-footer">
-      <button class="btn btn-primary" @click="redirectURL">确认授权</button>
-    </div>
-    <div class="_authing_form-footer" style="margin-top:11px">
-      <button class="btn btn-primary" @click="cancelAuthorize">取消</button>
+    <div class="_authing_container" id="_authing_login_form_content">
+      <div class="authing-login-form-wrapper">
+        <div class="_authing_form-wrapper animated fast fadeInUp _authing_authorize_container">
+          <div class="_authing_form-header">
+            <div class="_authing_delta_bg"></div>
+            <div class="_authing_logo_bar">
+              <img class="_authing_logo_icon" src="../assets/wtf.png">
+              <div class="_authing_logo_text">Authing</div>
+            </div>
+            <img
+              class="_authing_delta_circle"
+              src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1551630965363&di=c1f7c4ac42b2d24a4779f91778db123b&imgtype=0&src=http%3A%2F%2Fgss0.baidu.com%2F9fo3dSag_xI4khGko9WTAnF6hhy%2Fzhidao%2Fpic%2Fitem%2Fb3fb43166d224f4a12c9bac202f790529922d18b.jpg"
+            >
+
+            <!---->
+            <!---->
+            <div class="_authing_form-header-bg"></div>
+            <!-- <div class="_authing_form-header-welcome">
+              <img src="https://usercontents.authing.cn/client/logo@2.png" class="form-header-logo">
+              <div title="Authing" class="_authing_form-header-name">Authing</div>
+            </div>-->
+          </div>
+          <img v-show="false" alt="Vue logo" src="../assets/logo.png">
+          <div class="_authing_form_authorize_info">
+            <div class="_div_authorize_block">
+              <div class="_div_info_text">
+                <span>登录</span>
+                <url>weixin.qq.com</url>
+              </div>
+              <ul>
+                <li>获取您的基本信息（昵称、头像等）</li>
+                <li>获取您的邮箱</li>
+                <li>获取您的手机号</li>
+              </ul>
+            </div>
+
+            <div class="_div_line"/>
+          </div>
+
+          <div class="_authing_form-footer">
+            <button class="btn btn-primary" @click="redirectURL">授权登录</button>
+          </div>
+          <div class="_authing_form-footer" style="margin-top:11px">
+            <button class="btn btn-primary btn-cancel" @click="cancelAuthorize">取消</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -14,25 +55,24 @@
 // @ is an alias to /src
 
 export default {
-  name: 'authorize',
-  components: {
-  },
+  name: "authorize",
+  components: {},
 
   methods: {
     redirectURL() {
       // redirect to $HOST/authorize to get Authorization Code
-      const state = this.$route.query.state || '';
-      const appId = this.$route.query.app_id || '';
-      const redirectURI = this.$route.query.redirect_uri || '';
-      const responseType = this.$route.query.response_type || '';
-      const scope = this.$route.query.scope || '';
-      const host = this.$root.SSOHost || 'https://sso.authing.cn';
+      const state = this.$route.query.state || "";
+      const appId = this.$route.query.app_id || "";
+      const redirectURI = this.$route.query.redirect_uri || "";
+      const responseType = this.$route.query.response_type || "";
+      const scope = this.$route.query.scope || "";
+      const host = this.$root.SSOHost || "https://sso.authing.cn";
       location.href = `${host}/authorize?app_id=${appId}&state=${state}&response_type=${responseType}&redirect_uri=${redirectURI}&scope=${scope}`;
     },
 
     cancelAuthorize() {
-      // redirect to 
+      // redirect to
     }
   }
-}
+};
 </script>
