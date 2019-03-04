@@ -80,6 +80,7 @@ guard.on('loginError', (error) => {
 
 `authenticated` 事件是 `Authing` 对象初始化后的回调事件。
 
+
 ``` javascript
 guard.on('authenticated', (authing) => {
   console.log('Authing 实例初始化成功', authing);
