@@ -13,16 +13,25 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'login',
+      name: 'indexLogin',
       component: Login,
     },
+    {
+      path: '*',
+      redirect: '/',
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login,
+    },    
     {
       path: '/login/authorize/confirm',
       name: 'authorize',
       component: Authorize,
     },
     {
-      path: '/error',
+      path: '/login/error',
       name: 'error',
       component: ErrorPage,
     }

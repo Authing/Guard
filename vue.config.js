@@ -8,4 +8,5 @@ module.exports = {
   //   }
   // },
   lintOnSave: false,
+  publicPath: '/login'
 }
