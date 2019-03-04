@@ -209,7 +209,7 @@
             </div>
 
 
-            <div class="_authing_form-footer" v-show="!opts.hideUP" :class="{
+            <div class="_authing_form-footer login" v-show="!opts.hideUP" :class="{
               'no-height': pageVisible.wxQRCodeVisible
             }">
               <div class="authing-loading-circle" v-show="loading"></div>

@@ -651,6 +651,11 @@
     border-bottom-right-radius: 4px;
   }
 
+  ._authing_form-footer.login {
+    margin-bottom:0;
+    height:60px
+  }
+
   ._authing_form-footer .btn.btn-cancel {
     width: 100%;
     border-radius: 0px;
@@ -800,7 +805,7 @@
   ._authing_logo_bar {
     position: absolute;
     margin: 11px;
-    z-index: 3;
+    z-index: 0;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
