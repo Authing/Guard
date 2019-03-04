@@ -212,13 +212,21 @@ AuthingGuard.prototype = {
     }
   },
 
+  redirectURI: function() {
+
+  },
+
   authorize: function() {
     const state = this.querySearch('state') || '';
     const appId = this.querySearch('app_id') || '';
     const redirectURI = this.querySearch('redirect_uri') || '';
     const responseType = this.querySearch('response_type') || '';
     const scope = this.querySearch('scope') || '';
-    location.href = `/login/authorize/confirm?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
+    location.href = `/authorize/confirm?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
+  },
+
+  isAuthorized: function() {
+    return true;
   },
 };
 

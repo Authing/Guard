@@ -21,6 +21,20 @@
       hideClose: true,
     });
 
+    guard.on('authenticated', async (authing) => {
+      if (localStorage.getItem('_authing_token')) {
+        // 已登录，判断是否授权
+        const isAuthorized = await guard.isAuthorized();
+        if (isAuthorized) {
+          // 若已经授权过则跳转至 sso.authing.cn/authorize 页面
+          guard.redirectURI();
+        } else {
+          // 否则跳到授权页面 sso.authing.cn/authorize/confirm 页面
+          guard.authorize();
+        }
+      }
+    });
+
     guard.on('login', (userInfo) => {
       console.log('用户登录成功', userInfo);
 
