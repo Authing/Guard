@@ -17,6 +17,8 @@ var AuthingGuard = function (clientId, domain, opts) {
 
   window.Authing = Authing;
 
+  this.initLinks();
+
   var
 
     PLACEHOLDER_TEXT = {
@@ -149,6 +151,15 @@ var AuthingGuard = function (clientId, domain, opts) {
 };
 
 AuthingGuard.prototype = {
+  initLinks: function() {
+    const state = this.querySearch('state') || '';
+    const appId = this.querySearch('app_id') || '';
+    const redirectURI = this.querySearch('redirect_uri') || '';
+    const responseType = this.querySearch('response_type') || '';
+    const scope = this.querySearch('scope') || '';
+    this.userAuthorizeURL = `/authorize/confirm?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
+    this.sysAuthorizeURL = `/authorize?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
+  },
   querySearch: function(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split('&');
@@ -212,17 +223,12 @@ AuthingGuard.prototype = {
     }
   },
 
-  redirectURI: function() {
-
+  sysAuthorize: function() {
+    location.href = this.sysAuthorizeURL;
   },
 
-  authorize: function() {
-    const state = this.querySearch('state') || '';
-    const appId = this.querySearch('app_id') || '';
-    const redirectURI = this.querySearch('redirect_uri') || '';
-    const responseType = this.querySearch('response_type') || '';
-    const scope = this.querySearch('scope') || '';
-    location.href = `/authorize/confirm?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
+  userAuthorize: function() {
+    location.href = this.userAuthorizeURL;
   },
 
   isAuthorized: function() {
