@@ -4,7 +4,7 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import Authing from 'authing-js-sdk';
-import axios from 'axios';
+// import axios from 'axios';
 import './styles/styles.css';
 import './styles/animations.css';
 
@@ -229,9 +229,9 @@ AuthingGuard.prototype = {
   },
 
   async sysAuthorize () {
-    // location.href = this.sysAuthorizeURL;
-    axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('_authing_token')}`;
-    return axios.get(this.sysAuthorizeURL);
+    location.href = this.sysAuthorizeURL;
+    // axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('_authing_token')}`;
+    // return axios.get(this.sysAuthorizeURL);
   },
 
   userAuthorize: function() {
@@ -239,7 +239,7 @@ AuthingGuard.prototype = {
   },
 
   isAuthorized: function() {
-    return true;
+    return false;
   },
 };
 
