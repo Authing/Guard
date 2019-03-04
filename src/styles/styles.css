@@ -341,7 +341,7 @@
     overflow: hidden;
     box-sizing: border-box;
     overflow: hidden;
-    width: 320px;
+    /* width: 320px; */
   }
 
   .authorize ._authing_form-header {
