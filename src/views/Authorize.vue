@@ -42,10 +42,8 @@
             <div class="_div_line"/>
           </div>
 
-          <div class="_authing_form-footer">
+          <div class="_authing_form-footer two_buttons">
             <button class="btn btn-primary" @click="redirectURL">授权登录</button>
-          </div>
-          <div class="_authing_form-footer" style="margin-top:11px">
             <button class="btn btn-primary btn-cancel" @click="cancelAuthorize">取消</button>
           </div>
         </div>
