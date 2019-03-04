@@ -22,9 +22,10 @@
     });
 
     guard.on('authenticated', async (authing) => {
-      if (localStorage.getItem('_authing_token')) {
+      if (guard.isLogged()) {
         // 已登录，判断是否授权
         const isAuthorized = await guard.isAuthorized();
+        console.log(isAuthorized);
         if (isAuthorized) {
           // 若已经授权过则跳转至 sso.authing.cn/authorize 页面
           guard.sysAuthorize();

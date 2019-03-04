@@ -4,6 +4,7 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import Authing from 'authing-js-sdk';
+import axios from 'axios';
 import './styles/styles.css';
 import './styles/animations.css';
 
@@ -158,7 +159,7 @@ AuthingGuard.prototype = {
     const responseType = this.querySearch('response_type') || '';
     const scope = this.querySearch('scope') || '';
     this.userAuthorizeURL = `/authorize/confirm?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
-    this.sysAuthorizeURL = `/authorize?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
+    this.sysAuthorizeURL = `https://sso.authing.cn/authorize?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
   },
   querySearch: function(variable) {
     var query = window.location.search.substring(1);
@@ -223,8 +224,14 @@ AuthingGuard.prototype = {
     }
   },
 
-  sysAuthorize: function() {
-    location.href = this.sysAuthorizeURL;
+  isLogged() {
+    return localStorage.getItem('_authing_token');
+  },
+
+  async sysAuthorize () {
+    // location.href = this.sysAuthorizeURL;
+    axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('_authing_token')}`;
+    return axios.get(this.sysAuthorizeURL);
   },
 
   userAuthorize: function() {
