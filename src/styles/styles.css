@@ -667,7 +667,7 @@
 
   ._div_authorize_block {
     width: 100%;
-    height: calc(50% - 12px);
+    /* height: calc(50% - 12px); */
     padding: 0 8px;
     /* background: #f5f5f5; */
   }
@@ -678,7 +678,7 @@
     /* background: #f5f5f5; */
   }
 
-  ._div_info_text url {
+  ._div_info_text .url {
     display: inline-block;
     color: #0184bf;
     font-weight: 100;

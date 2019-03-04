@@ -27,12 +27,12 @@
             <div class="_div_authorize_block">
               <div class="_div_info_text">
                 <span>登录</span>
-                <url>weixin.qq.com</url>
+                <a class="url" href="http://weixin.qq.com">weixin.qq.com</a>
               </div>
               <ul>
-                <li>获取您的基本信息（昵称、头像等）</li>
-                <li>获取您的邮箱</li>
-                <li>获取您的手机号</li>
+                <li>获取你的基本信息（昵称、头像等）</li>
+                <li>获取你的邮箱</li>
+                <li>获取你的手机号</li>
               </ul>
             </div>
 
