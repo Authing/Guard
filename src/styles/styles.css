@@ -658,6 +658,16 @@
     outline: 0;
   }
 
+  ._authing_item_logo_bar {
+    width: 100%;
+    height: 170px;
+    z-index: 6;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   ._div_line {
     width: calc(100% - 22px);
     height: 1px;
@@ -790,13 +800,10 @@
   ._authing_delta_circle {
     width: 96px;
     height: 96px;
-    position: absolute;
-    z-index: 2;
     border: 2px solid rgba(255, 255, 255, 0.842);;
     border-radius: 50%;
-    left: 110px;
-    top: 72px;
     box-shadow: .5px 0px 0px rgb(252, 252, 252);
+    margin-top: 45px;
   }
 
 

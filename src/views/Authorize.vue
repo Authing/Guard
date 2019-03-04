@@ -9,10 +9,13 @@
               <img class="_authing_logo_icon" src="../assets/wtf.png">
               <div class="_authing_logo_text">Authing</div>
             </div>
-            <img
-              class="_authing_delta_circle"
-              src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1551630965363&di=c1f7c4ac42b2d24a4779f91778db123b&imgtype=0&src=http%3A%2F%2Fgss0.baidu.com%2F9fo3dSag_xI4khGko9WTAnF6hhy%2Fzhidao%2Fpic%2Fitem%2Fb3fb43166d224f4a12c9bac202f790529922d18b.jpg"
-            >
+            <div class="_authing_item_logo_bar">
+              <img
+                class="_authing_delta_circle"
+                :style="{marginTop: screenWidth >= 463 ? '60px' : ((580 - screenWidth + 15) * (170 / 580) + 170) / 4 + 'px'}"
+                src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1551630965363&di=c1f7c4ac42b2d24a4779f91778db123b&imgtype=0&src=http%3A%2F%2Fgss0.baidu.com%2F9fo3dSag_xI4khGko9WTAnF6hhy%2Fzhidao%2Fpic%2Fitem%2Fb3fb43166d224f4a12c9bac202f790529922d18b.jpg"
+              >
+            </div>
 
             <!---->
             <!---->
@@ -73,6 +76,23 @@ export default {
     cancelAuthorize() {
       // redirect to
     }
+  },
+
+  data() {
+    return {
+      screenWidth: document.body.scrollWidth
+    };
+  },
+
+  mounted() {
+    const that = this;
+    window.onresize = () => {
+      console.log(that.screenWidth);
+      return (() => {
+        window.screenWidth = document.body.scrollWidth;
+        that.screenWidth = window.screenWidth;
+      })();
+    };
   }
 };
 </script>
