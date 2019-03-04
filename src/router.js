@@ -26,12 +26,12 @@ export default new Router({
       component: Login,
     },    
     {
-      path: '/login/authorize/confirm',
+      path: '/authorize/confirm',
       name: 'authorize',
       component: Authorize,
     },
     {
-      path: '/login/error',
+      path: '/error',
       name: 'error',
       component: ErrorPage,
     }
