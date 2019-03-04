@@ -16,10 +16,10 @@ export default new Router({
       name: 'indexLogin',
       component: Login,
     },
-    {
-      path: '*',
-      redirect: '/',
-    },
+    // {
+    //   path: '*',
+    //   redirect: '/',
+    // },
     {
       path: '/login',
       name: 'login',
