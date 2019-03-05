@@ -30,7 +30,7 @@
                 参见开发文档：<a href="https://docs.authing.cn/#/oauthProvider/new" target="_blank">docs.authing.cn</a>
               </div>
             </div>
-            <div class="_authing_form-footer _authing_form-footer2">
+            <div class="_authing_form-footer _authing_form-footer2" v-if="false">
               <button class="btn" @click="returnBack">返回</button>
             </div>
           </div>
@@ -60,15 +60,8 @@ export default {
     },
 
     returnBack() {
-      $route.back(-1);
-      this.returnOrNot()
+      // $route.back(-1);
     },
-
-    returnOrNot() {
-      if(window.history.length <= 1) {
-        alert(1)
-      }
-    }
   }
 };
 </script>
