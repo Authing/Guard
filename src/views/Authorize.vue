@@ -56,7 +56,8 @@
 // @ is an alias to /src
 //const GraphQLClient = require("../../src/graphql.js");
 //var axios = require("axios");
-//import {GraphQLClient,axios} from "../../src/graphql.js";
+import GraphQLClient from "../../src/graphql";
+console.log(GraphQLClient);
 
 export default {
   name: "authorize",
@@ -64,30 +65,33 @@ export default {
 
   methods: {
     QueryAppInfoByAppID() {
-      // let query = `query {
-      //               QueryAppInfoByAppID (appId: "5c7253efe21948de32723725") {
-      //                   _id,
-      //                   name,
-      //                   image,
-      //                   redirectUris,
-      //                   clientId,
-      //                   description,
-      //               }
-      //             }`;
+      let query = `query {
+                    QueryAppInfoByAppID (appId: "5c7253efe21948de32723725") {
+                        _id,
+                        name,
+                        image,
+                        redirectUris,
+                        clientId,
+                        description,
+                    }
+                  }`;
       // axios.post("https://oauth.authing.cn/graphql", {query}).then(e=>{   //正常写法
       //   console.log(e)
       // });
 
-      /*
+      
         let a = new GraphQLClient({           //错误代码
-        baseUrl: 'https://oauth.authing.cn/graphql'
+        baseURL: 'https://oauth.authing.cn/graphql'
         });
-        a.request({query}).then(e=>{
+        console.log(a.request);
+        a.request({
+          query,
+        }).then(e => {
           console.log(e)
-        })
+        });
       
       
-      */
+    
 
     },
 
@@ -116,6 +120,7 @@ export default {
 
   mounted() {
     const that = this;
+    this.QueryAppInfoByAppID();
     window.onresize = () => {
       //console.log(that.screenWidth);
       return (() => {

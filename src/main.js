@@ -111,7 +111,7 @@ var AuthingGuard = function (clientId, domain, opts) {
     opts.host.oauth = opts.host.oauth || 'https://oauth.authing.cn/graphql';    
   } else {
     opts.host = {
-      users: 'https://users.authing.cn/graphql',
+      users: 'https://user.authing.cn/graphql',
       oauth: 'https://oauth.authing.cn/graphql',
     };
   }

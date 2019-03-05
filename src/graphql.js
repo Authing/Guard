@@ -28,4 +28,4 @@ class GraphQLClient {
 	}
 }
 
-export {GraphQLClient};
+export default GraphQLClient;
