@@ -99,7 +99,7 @@ export default {
       const responseType = this.$route.query.response_type || "";
       const scope = this.$route.query.scope || "";
       const host = this.$root.SSOHost || "https://sso.authing.cn";
-      location.href = `${host}/authorize?app_id=${appId}&state=${state}&response_type=${responseType}&redirect_uri=${redirectURI}&scope=${scope}`;
+      location.href = `${host}/authorize?app_id=${appId}&state=${state}&response_type=${responseType}&redirect_uri=${redirectURI}&scope=${scope}&authorzation_header=${localStorage.getItem('_authing_token')}`;
       //this.methods.QueryAppInfoByAppID();
     },
 
