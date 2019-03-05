@@ -11,24 +11,23 @@
                 <div class="_authing_logo_text">Authing</div>
               </div>
               <div class="_authing_form-header-bg wrong_bg">
-                <div>{{errorMessage}}</div>
+                <div>抱歉，似乎出错了</div>
               </div>
             </div>
             <img v-show="false" alt="Vue logo" src="../assets/logo.png">
             <div class="_authing_form_authorize_info">
               <div class="_div_authorize_block2">
                 <div class="_div_info_text green">
-                  <span>{{errorMessage}}</span>
+                  <span>错误信息</span>
                 </div>
                 <ul>
-                  <li>错误提示1</li>
-                  <li>错误提示2</li>
+                  <li>{{errorMessage}}</li>
                 </ul>
               </div>
 
               <div class="_div_line"/>
               <div class="_see_doctor">
-                参见开发文档：<a href="https://docs.authing.cn/" target="_blank">docs.authing.cn</a>
+                参见开发文档：<a href="https://docs.authing.cn/#/oauthProvider/new" target="_blank">docs.authing.cn</a>
               </div>
             </div>
             <div class="_authing_form-footer _authing_form-footer2">
