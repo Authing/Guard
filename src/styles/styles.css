@@ -811,6 +811,7 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+    z-index: 3;
   }
 
   ._authing_delta_circle {
@@ -820,6 +821,7 @@
     border-radius: 50%;
     box-shadow: .5px 0px 0px rgb(252, 252, 252);
     margin-top: 45px;
+    background: rgba(255, 255, 255, 0.815);
   }
 
 
