@@ -43,7 +43,7 @@
           </div>
 
           <div class="_authing_form-footer two_buttons">
-            <button class="btn btn-primary" @click="QueryAppInfoByAppID">授权登录</button>
+            <button class="btn btn-primary" @click="redirectURL">授权登录</button>
             <button class="btn btn-primary btn-cancel" @click="cancelAuthorize">取消</button>
           </div>
         </div>
