@@ -43,7 +43,7 @@
           </div>
 
           <div class="_authing_form-footer two_buttons">
-            <button class="btn btn-primary" @click="redirectURL">授权登录</button>
+            <button class="btn btn-primary" @click="QueryAppInfoByAppID">授权登录</button>
             <button class="btn btn-primary btn-cancel" @click="cancelAuthorize">取消</button>
           </div>
         </div>
@@ -54,12 +54,43 @@
 
 <script>
 // @ is an alias to /src
+//const GraphQLClient = require("../../src/graphql.js");
+//var axios = require("axios");
+//import {GraphQLClient,axios} from "../../src/graphql.js";
 
 export default {
   name: "authorize",
   components: {},
 
   methods: {
+    QueryAppInfoByAppID() {
+      // let query = `query {
+      //               QueryAppInfoByAppID (appId: "5c7253efe21948de32723725") {
+      //                   _id,
+      //                   name,
+      //                   image,
+      //                   redirectUris,
+      //                   clientId,
+      //                   description,
+      //               }
+      //             }`;
+      // axios.post("https://oauth.authing.cn/graphql", {query}).then(e=>{   //正常写法
+      //   console.log(e)
+      // });
+
+      /*
+        let a = new GraphQLClient({           //错误代码
+        baseUrl: 'https://oauth.authing.cn/graphql'
+        });
+        a.request({query}).then(e=>{
+          console.log(e)
+        })
+      
+      
+      */
+
+    },
+
     redirectURL() {
       // redirect to $HOST/authorize to get Authorization Code
       const state = this.$route.query.state || "";
@@ -69,6 +100,7 @@ export default {
       const scope = this.$route.query.scope || "";
       const host = this.$root.SSOHost || "https://sso.authing.cn";
       location.href = `${host}/authorize?app_id=${appId}&state=${state}&response_type=${responseType}&redirect_uri=${redirectURI}&scope=${scope}`;
+      //this.methods.QueryAppInfoByAppID();
     },
 
     cancelAuthorize() {
@@ -85,7 +117,7 @@ export default {
   mounted() {
     const that = this;
     window.onresize = () => {
-      console.log(that.screenWidth);
+      //console.log(that.screenWidth);
       return (() => {
         window.screenWidth = document.body.scrollWidth;
         that.screenWidth = window.screenWidth;

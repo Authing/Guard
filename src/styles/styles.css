@@ -507,6 +507,7 @@
     font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
+    z-index: 8;
   }
 
   .authing-global-message.authing-global-message-error {
