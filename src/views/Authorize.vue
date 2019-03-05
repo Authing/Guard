@@ -143,6 +143,7 @@ export default {
 
   mounted() {
     const that = this;
+    this.QueryAppInfoByAppID();
     window.onresize = () => {
       return (() => {
         window.screenWidth = document.body.scrollWidth;
