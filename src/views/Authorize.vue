@@ -97,7 +97,7 @@ export default {
       const appId = this.$route.query.app_id || "";
       const redirectURI = this.$route.query.redirect_uri || "";
       const responseType = this.$route.query.response_type || "";
-      const scope = this.$route.query.scope || "";
+      const scope = this.$route.query.scope || Math.ceil(Math.random() * Math.pow(10, 6));
       const host = this.$root.SSOHost || "https://sso.authing.cn";
       location.href = `${host}/authorize?app_id=${appId}&state=${state}&response_type=${responseType}&redirect_uri=${redirectURI}&scope=${scope}&authorization_header=${localStorage.getItem('_authing_token')}`;
       //this.methods.QueryAppInfoByAppID();
