@@ -235,10 +235,6 @@ AuthingGuard.prototype = {
   userAuthorize: function() {
     location.href = this.userAuthorizeURL;
   },
-
-  isAuthorized: function() {
-    return false;
-  },
 };
 
 if(window) {

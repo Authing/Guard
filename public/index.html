@@ -23,15 +23,8 @@
 
     guard.on('authenticated', async (authing) => {
       if (guard.isLogged()) {
-        // 已登录，判断是否授权
-        const isAuthorized = await guard.isAuthorized();
-        if (isAuthorized) {
-          // 若已经授权过则跳转至 sso.authing.cn/authorize 页面
-          guard.sysAuthorize();
-        } else {
-          // 否则跳到授权页面 sso.authing.cn/authorize/confirm 页面
-          guard.userAuthorize();
-        }
+        // 已登录，直接跳至授权页
+        guard.sysAuthorize();
       }
     });
 

@@ -66,7 +66,10 @@ export default {
     // call server for AppInfo
     queryAppInfoByAppID() {
       this.pageLoading = true;
-      const appId = this.$route.query.app_id || "5c7253efe21948de32723725";
+      const appId = this.$route.query.app_id;
+      if (!appId) {
+        location.href = '/login/error?message=请提供 app_id';
+      }
       let self = this;
       let query =
         `query {
@@ -117,7 +120,7 @@ export default {
       const host = this.$root.SSOHost || "https://sso.authing.cn";
       location.href = `${host}/authorize?app_id=${appId}&state=${state}&response_type=${responseType}&redirect_uri=${redirectURI}&scope=${scope}&authorization_header=${localStorage.getItem(
         "_authing_token"
-      )}`;
+      )}&confirm_authorize=1`;
     },
 
     cancelAuthorize() {
