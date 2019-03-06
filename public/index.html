@@ -15,16 +15,18 @@
     <!-- built files will be auto injected -->
   </body>
   <script>
-    const clientId = '5a9fa26cf8635a000185528c';
+    const appId = '5c7fe3e731b9b47e1578f01a';
     const domain = "sso.authing.cn/login?client_id=YOUR_CLIENT_ID_";
-    const guard = new AuthingGuard(clientId, domain, {
+    const guard = new AuthingGuard(appId, domain, {
       hideClose: true,
+      title: 'LearnSoLiD.Chat',
+      logo: 'https://usercontents.authing.cn/user-app-logo/FpJ_CjBPB8MgtJ6-6BNAYJWQkQUf',
     });
 
     guard.on('authenticated', async (authing) => {
       if (guard.isLogged()) {
         // 已登录，直接跳至授权页
-        guard.sysAuthorize();
+        // guard.sysAuthorize();
       }
     });
 

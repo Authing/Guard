@@ -242,6 +242,9 @@
   </div>
 </template>
 <script>
+
+  import GraphQLClient from "../graphql.js";
+
   export default {
     name: 'app',
     data() {
@@ -311,9 +314,37 @@
         $authing: null,
       };
     },
-    mounted: function () {
+    async mounted () {
       var that = this;
       var auth = null;
+
+      let query =
+        `query {
+                    QueryAppInfoByAppID (appId: "` + that.opts.appId + `") {   
+                        _id,
+                        clientId,
+                    }
+                  }`;
+
+      let GraphQLClient_getInfo = new GraphQLClient({ baseURL: "https://oauth.authing.cn/graphql" });
+      
+      try {
+        const oAuthAppInfo = await GraphQLClient_getInfo.request({ query });
+
+        if (!oAuthAppInfo.QueryAppInfoByAppID) {
+          that.authingOnError = true;
+          that.errMsg = 'Error: 找不到此应用';
+          that.$authing.pub('authingUnload', '找不到此应用');
+          throw that.errMsg;
+        }
+
+        that.opts.clientId = oAuthAppInfo.QueryAppInfoByAppID.clientId;
+
+      } catch(erro) {
+        that.authingOnError = true;
+        that.errMsg = 'Error: ' + erro;
+        that.$authing.pub('authingUnload', erro);
+      }
 
       try {
         auth = new Authing({

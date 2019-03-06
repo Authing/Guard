@@ -41,20 +41,20 @@ import AuthingGuard from 'authing-guard';
 
 ## API
 
-### new AuthingGuard(clientID, domain, options)
+### new AuthingGuard(appId, domain, options)
 
-初始化一个新的 `AuthingGuard` 实例，需要传入你在 [Authing](https://authing.cn/dashboard) 对应应用中的 clientID 和域名信息。
+初始化一个新的 `AuthingGuard` 实例，需要传入你在 [Authing](https://authing.cn/dashboard) 对应应用中的 appId 和域名信息。
 
-- **clientId {String}**: Authing 应用的 _clientId_；
+- **appId {String}**: Authing OAuth 应用的 _appId_；
 - **domain {String}**: Authing 中配置的 _域名_. 通常是 _sso.authing.cn/login?client_id=YOUR_CLIENT_ID_；
 - **options {Object}**: 允许你自定义表单的 UI，相关参数请参考 [自定义](https://github.com/Authing/Guard#自定义)
 
 #### 示例
 
 ```js
-var clientId = "YOUR_AUTHing_APP_CLIENTID";
-var domain = "sso.authing.cn/login?client_id=YOUR_CLIENT_ID_";
-var guard = new AuthingGuard(clientId, domain);
+var appId = "YOUR_AUTHING_OAuth_APPID";
+var domain = "sso.authing.cn/login?client_id=YOUR_APP_ID_";
+var guard = new AuthingGuard(appId, domain);
 
 guard.on('login', (userInfo) => {
   console.log('用户登录成功', userInfo);

@@ -10,11 +10,9 @@ import './styles/animations.css';
 
 Vue.config.productionTip = false;
 
-var AuthingGuard = function (clientId, domain, opts) {
+var AuthingGuard = function (appId, domain, opts) {
 
-  if (!clientId) {
-    throw "clientId is not provided";
-  }
+  let clientId = '';
 
   window.Authing = Authing;
 
@@ -62,6 +60,7 @@ var AuthingGuard = function (clientId, domain, opts) {
   $authing.opts = opts || {};
 
   $authing.opts.clientId = clientId;
+  $authing.opts.appId = appId;
   $authing.opts.domain = domain;
 
   $authing.opts.isSSO = opts.isSSO || false;
