@@ -158,8 +158,8 @@ AuthingGuard.prototype = {
     const redirectURI = this.querySearch('redirect_uri') || '';
     const responseType = this.querySearch('response_type') || '';
     const scope = this.querySearch('scope') || '';
-    this.userAuthorizeURL = `https://sso.authing.cn/login/authorize/confirm?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
-    this.sysAuthorizeURL = `https://sso.authing.cn/authorize?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
+    this.userAuthorizeURL = `${this.opts.SSOHost}/login/authorize/confirm?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
+    this.sysAuthorizeURL = `${this.opts.SSOHost}/authorize?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
   },
   querySearch: function(variable) {
     var query = window.location.search.substring(1);
@@ -230,8 +230,6 @@ AuthingGuard.prototype = {
 
   async sysAuthorize () {
     location.href = this.sysAuthorizeURL;
-    // axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('_authing_token')}`;
-    // return axios.get(this.sysAuthorizeURL);
   },
 
   userAuthorize: function() {
