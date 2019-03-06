@@ -18,8 +18,6 @@ var AuthingGuard = function (clientId, domain, opts) {
 
   window.Authing = Authing;
 
-  this.initLinks();
-
   var
 
     PLACEHOLDER_TEXT = {
@@ -77,6 +75,8 @@ var AuthingGuard = function (clientId, domain, opts) {
   $authing.opts.forceLogin = opts.forceLogin || false;
   $authing.opts.title = opts.title || 'Authing';
   $authing.opts.logo = opts.logo || 'https://usercontents.authing.cn/client/logo@2.png';
+
+  this.initLinks($authing.opts.SSOHost);
 
   $authing.opts.mountId = opts.mountId || null;
   // 初始化小程序扫码登录配置 
@@ -152,14 +152,14 @@ var AuthingGuard = function (clientId, domain, opts) {
 };
 
 AuthingGuard.prototype = {
-  initLinks: function() {
+  initLinks: function(ssoHost) {
     const state = this.querySearch('state') || '';
     const appId = this.querySearch('app_id') || '';
     const redirectURI = this.querySearch('redirect_uri') || '';
     const responseType = this.querySearch('response_type') || '';
     const scope = this.querySearch('scope') || '';
-    this.userAuthorizeURL = `${this.opts.SSOHost}/login/authorize/confirm?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
-    this.sysAuthorizeURL = `${this.opts.SSOHost}/authorize?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
+    this.userAuthorizeURL = `${ssoHost}/login/authorize/confirm?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
+    this.sysAuthorizeURL = `${ssoHost}/authorize?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
   },
   querySearch: function(variable) {
     var query = window.location.search.substring(1);
