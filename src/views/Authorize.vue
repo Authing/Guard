@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { GraphQLClient } from "../graphql.js";
+import GraphQLClient from "../graphql.js";
 
 export default {
   name: "authorize",
@@ -64,7 +64,7 @@ export default {
 
   methods: {
     // call server for AppInfo
-    QueryAppInfoByAppID() {
+    queryAppInfoByAppID() {
       this.pageLoading = true;
       const appId = this.$route.query.app_id || "5c7253efe21948de32723725";
       let self = this;
@@ -143,7 +143,7 @@ export default {
 
   mounted() {
     const that = this;
-    this.QueryAppInfoByAppID();
+    this.queryAppInfoByAppID();
     window.onresize = () => {
       return (() => {
         window.screenWidth = document.body.scrollWidth;
@@ -151,9 +151,5 @@ export default {
       })();
     };
   },
-
-  created() {
-    this.QueryAppInfoByAppID();
-  }
 };
 </script>
