@@ -27,7 +27,7 @@
 
     let appId = getQueryString('app_id');
 
-    if (location.pathname === '/' || location.pathname === '/login' || location.pathname === '/login/') {
+    if (['/', '/login', '/login/'].indexOf(location.pathname) > -1) {
       if (!appId) {
         location.href = '/login?app_id=5c7253efe21948de32723725';
       }
@@ -36,6 +36,7 @@
     const domain = "sso.authing.cn/login?app_id=YOUR_CLIENT_ID_";
     const guard = new AuthingGuard(appId, domain, {
       hideClose: true,
+      SSOHost: location.origin,
     });
 
     guard.on('authenticated', async (authing) => {
