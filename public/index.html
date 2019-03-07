@@ -27,7 +27,7 @@
 
     let appId = getQueryString('app_id');
 
-    if (location.pathname === '/' || location.pathname === '/login') {
+    if (location.pathname === '/' || location.pathname === '/login' || location.pathname === '/login/') {
       if (!appId) {
         location.href = '/login?app_id=5c7253efe21948de32723725';
       }
