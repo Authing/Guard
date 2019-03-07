@@ -15,30 +15,40 @@
     <!-- built files will be auto injected -->
   </body>
   <script>
-    const appId = '5c7fe3e731b9b47e1578f01a';
-    const domain = "sso.authing.cn/login?client_id=YOUR_CLIENT_ID_";
+    const getQueryString = function(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if ( r != null ){
+          return unescape(r[2]);
+        }else{
+          return null;
+        } 
+    };
+
+    let appId = getQueryString('app_id');
+
+    if (location.pathname === '/' || location.pathname === '/login') {
+      if (!appId) {
+        location.href = '/login?app_id=5c7253efe21948de32723725';
+      }
+    }
+
+    const domain = "sso.authing.cn/login?app_id=YOUR_CLIENT_ID_";
     const guard = new AuthingGuard(appId, domain, {
       hideClose: true,
-      title: 'LearnSoLiD.Chat',
-      logo: 'https://usercontents.authing.cn/user-app-logo/FpJ_CjBPB8MgtJ6-6BNAYJWQkQUf',
     });
 
     guard.on('authenticated', async (authing) => {
       if (guard.isLogged()) {
         // 已登录，直接跳至授权页
-        // guard.sysAuthorize();
+        guard.sysAuthorize();
       }
     });
 
     guard.on('login', (userInfo) => {
-      console.log('用户登录成功', userInfo);
-
       localStorage.setItem("accessToken", userInfo.token);
       localStorage.setItem("userInfo", JSON.stringify(userInfo));
-
-      // Update DOM
-      // location.href = '/login/authorize?';
-      guard.userAuthorize();
+      guard.sysAuthorize();
     });
 
     guard.on('loginError', (error) => {

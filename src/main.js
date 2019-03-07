@@ -4,7 +4,6 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import Authing from 'authing-js-sdk';
-// import axios from 'axios';
 import './styles/styles.css';
 import './styles/animations.css';
 
@@ -66,7 +65,7 @@ var AuthingGuard = function (appId, domain, opts) {
   $authing.opts.isSSO = opts.isSSO || false;
   $authing.opts.hideQRCode = opts.hideQRCode || false;
   $authing.opts.hideUP = opts.hideUP || false;
-  $authing.opts.hideOAuth = opts.hideOAuth || false;
+  $authing.opts.hideOAuth = opts.hideOAuth || true;
   $authing.opts.hideUsername = opts.hideUsername || false;
   $authing.opts.hideClose = opts.hideClose || false;
 
@@ -160,6 +159,7 @@ AuthingGuard.prototype = {
     this.userAuthorizeURL = `${ssoHost}/login/authorize/confirm?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
     this.sysAuthorizeURL = `${ssoHost}/authorize?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
   },
+
   querySearch: function(variable) {
     var query = window.location.search.substring(1);
     var vars = query.split('&');
@@ -169,6 +169,7 @@ AuthingGuard.prototype = {
     }
     return false;
   },
+
   show: function (appMountId) {
     var target = document.getElementById(appMountId) || document.getElementById(this.opts.mountId) || document.body;
     var newMount = document.createElement('div');

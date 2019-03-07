@@ -105,7 +105,7 @@
               <P class="_authing_form-tip" v-show="!oAuthloading && OAuthList.length > 0 && !opts.hideUP">或者</P>
             </div>
 
-            <div class="form-body" v-show="!oAuthloading" :class="{height100: pageVisible.wxQRCodeVisible}">
+            <div class="form-body" v-show="!oAuthloading" :class="{ height100: pageVisible.wxQRCodeVisible, marginTop11: OAuthList.length === 0 }">
               <form v-show="pageVisible.loginVisible && !opts.hideUP" action="#"
                     class="authing-form animate-box no-shadow">
 
@@ -320,13 +320,16 @@
 
       let query =
         `query {
-                    QueryAppInfoByAppID (appId: "` + that.opts.appId + `") {   
-                        _id,
-                        clientId,
-                    }
-                  }`;
+            QueryAppInfoByAppID (appId: "` + that.opts.appId + `") {   
+              _id,
+              clientId,
+              name,
+              image
+            }
+          }
+      `;
 
-      let GraphQLClient_getInfo = new GraphQLClient({ baseURL: "https://oauth.authing.cn/graphql" });
+      let GraphQLClient_getInfo = new GraphQLClient({ baseURL: that.opts.host.oauth });
       
       try {
         const oAuthAppInfo = await GraphQLClient_getInfo.request({ query });
@@ -338,6 +341,8 @@
           throw that.errMsg;
         }
 
+        that.opts.title = that.opts.title || oAuthAppInfo.QueryAppInfoByAppID.name;
+        that.opts.logo = that.opts.logo || oAuthAppInfo.QueryAppInfoByAppID.image;
         that.opts.clientId = oAuthAppInfo.QueryAppInfoByAppID.clientId;
 
       } catch(erro) {
@@ -351,7 +356,7 @@
           clientId: that.opts.clientId,
           timestamp: that.opts.timestamp,
           nonce: that.opts.nonce,
-          host: that.opts.host
+          host: that.opts.host,
         });
       } catch (err) {
         document.getElementById('page-loading').remove();

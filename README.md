@@ -9,10 +9,11 @@ Guard 提供的表单拥有以下基本功能：
  - 邮箱／密码登录注册
  - 忘记密码以及重置密码
  - 记住账号功能（加密存储到浏览器本地）
- - 第三方 OAuth 登录（需先在后台配置）
  - 小程序扫码登录（需先在后台配置）
  - 响应式特性
  - SSO
+
+Guard 不推荐使用「第三方登录」功能，若需要第三方登录，请使用 [Login Form](https://github.com/authing/login-form)
 
 ![login-form](https://cdn.authing.cn/sdk/guide/image/login-form.png)
 
