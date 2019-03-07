@@ -50,8 +50,6 @@
     });
 
     guard.on('login', (userInfo) => {
-      localStorage.setItem("accessToken", userInfo.token);
-      localStorage.setItem("userInfo", JSON.stringify(userInfo));
       guard.sysAuthorize();
     });
 

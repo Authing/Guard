@@ -381,6 +381,7 @@
           that.rememberMe = true;
           that.loginForm.email = localStorage.getItem('_authing_username');
         }
+
         if (localStorage.getItem('_authing_password')) {
           that.loginForm.password = that.decrypt(localStorage.getItem('_authing_password'), $authing.opts.clientId);
         }
@@ -648,6 +649,26 @@
             }
           });
       },
+      recordLoginInfo: function(userInfo) {
+        let appToken = localStorage.getItem('appToken');
+
+        if (appToken) {
+          try {
+            appToken = JSON.parse(appToken);
+          }catch(error) {
+            appToken = {};
+          }
+        }else {
+          appToken = {};
+        }
+      
+        appToken[appId] = {
+          accessToken: userInfo.token,
+          userInfo: userInfo,
+        };
+
+        localStorage.setItem('appToken', JSON.stringify(appToken));
+      },
       handleLogin: function handleLogin() {
         var that = this;
         that.setLoading();
@@ -689,6 +710,7 @@
 
             that.showGlobalSuccess('验证通过，欢迎你：' + data.username || data.email);
             that.$authing.pub('login', data);
+            that.recordLoginInfo(data);
             that.unLoading();
           })
           .catch(function (err) {
@@ -723,12 +745,13 @@
                   .then(function (data) {
                     that.unLoading();
                     that.showGlobalSuccess('验证通过，欢迎你：' + data.username || data.email);
-                    this.$authing.pub('login', data);
+                    that.$authing.pub('login', data);
+                    that.recordLoginInfo(data);
                   })
                   .catch(function (err) {
                     that.unLoading();
                     that.showGlobalErr(err.message.message);
-                    this.$authing.pub('loginError', err);
+                    that.$authing.pub('loginError', err);
                   });
                 return false;
               } else {

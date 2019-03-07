@@ -226,8 +226,20 @@ AuthingGuard.prototype = {
     }
   },
 
-  isLogged() {
-    return localStorage.getItem('_authing_token');
+  isLogged: function() {
+    let appToken = localStorage.getItem('appToken');
+
+    if (appToken) {
+      try {
+        appToken = JSON.parse(appToken);
+      }catch(error) {
+        appToken = {};
+      }
+    }else {
+      appToken = {};
+    }
+
+    return (appToken[this.opts.appId] && appToken[this.opts.appId].accessToken);
   },
 
   async sysAuthorize () {
