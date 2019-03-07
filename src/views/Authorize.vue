@@ -114,7 +114,7 @@ export default {
       const state = this.$route.query.state || "";
       const appId = this.$route.query.app_id || "";
       const redirectURI = this.$route.query.redirect_uri || "";
-      const responseType = this.$route.query.response_type || "";
+      const responseType = this.$route.query.response_type || "code";
       const scope =
         this.$route.query.scope || Math.ceil(Math.random() * Math.pow(10, 6));
       const host = this.$root.SSOHost;
