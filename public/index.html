@@ -32,7 +32,7 @@
         || location.pathname === '/login/'
     ) {
       if (!appId) {
-        location.href = '/login?app_id=5c7253efe21948de32723725';
+        location.href = location.pathname + 'error?message=请提供 app_id';
       }
     }
 
