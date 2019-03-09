@@ -152,7 +152,7 @@ var AuthingGuard = function (appId, domain, opts) {
 AuthingGuard.prototype = {
   initLinks: function(ssoHost) {
     const state = this.querySearch('state') || '';
-    const appId = this.querySearch('app_id') || '';
+    const appId = this.querySearch('app_id') || this.querySearch('client_id') || '';
     const redirectURI = this.querySearch('redirect_uri') || '';
     const responseType = this.querySearch('response_type') || 'code';
     const scope = this.querySearch('scope') || Math.ceil(Math.random() * Math.pow(10, 6));

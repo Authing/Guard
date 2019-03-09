@@ -66,9 +66,9 @@ export default {
     // call server for AppInfo
     queryAppInfoByAppID() {
       this.pageLoading = true;
-      const appId = this.$route.query.app_id;
+      const appId = this.$route.query.app_id || this.$route.query.client_id;
       if (!appId) {
-        location.href = '/login/error?message=请提供 app_id';
+        location.href = '/login/error?message=请提供 app_id 或 client_id';
       }
       let self = this;
       let query =
@@ -112,7 +112,7 @@ export default {
     redirectURL() {
       // redirect to $HOST/authorize to get Authorization Code
       const state = this.$route.query.state || "";
-      const appId = this.$route.query.app_id || "";
+      const appId = this.$route.query.app_id || this.$route.query.client_id || '';
       const redirectURI = this.$route.query.redirect_uri || "";
       const responseType = this.$route.query.response_type || "code";
       const scope =
