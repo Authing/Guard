@@ -63,6 +63,7 @@
     guard.on('loginError', (error) => {
       // Handle error 
       console.log('用户登录失败', error);
+      location.href = location.pathname + 'error?message=' + error.toString();
     });
   </script>
 </html>
