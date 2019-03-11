@@ -864,6 +864,7 @@
 
             onSuccess: function (res) {
               that.$authing.pub('scanning', res);
+              that.recordLoginInfo(res.data);
             },
 
             onError: function (err) {

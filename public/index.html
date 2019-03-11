@@ -40,6 +40,9 @@
     const guard = new AuthingGuard(appId, domain, {
       hideClose: true,
       SSOHost: location.origin,
+      qrcodeScanning: {
+        redirect: false,
+      }
     });
 
     guard.on('authenticated', async (authing) => {
@@ -50,6 +53,10 @@
     });
 
     guard.on('login', (userInfo) => {
+      guard.sysAuthorize();
+    });
+
+    guard.on('scanning', (userInfo) => {
       guard.sysAuthorize();
     });
 
