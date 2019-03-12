@@ -862,6 +862,7 @@
 
             onSuccess: function (res) {
               that.$authing.pub('scanning', res);
+              localStorage.setItem('_authing_token', res.data.token);
               that.recordLoginInfo(res.data);
             },
 
