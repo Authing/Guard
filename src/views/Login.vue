@@ -386,36 +386,34 @@
           that.loginForm.password = that.decrypt(localStorage.getItem('_authing_password'), $authing.opts.clientId);
         }
 
-        if (!that.opts.hideOAuth) {
-          that.oAuthloading = true;
-          validAuth.readOAuthList()
-            .then(function (data) {
-              that.$authing.pub('oauthLoad', data);
-              that.oAuthloading = false;
+        that.oAuthloading = true;
+        validAuth.readOAuthList()
+          .then(function (data) {
+            that.$authing.pub('oauthLoad', data);
+            that.oAuthloading = false;
 
-              var OAuthList = data.filter(function (item) {
-                if (item.alias === 'wxapp') {
-                  that.isScanCodeEnable = true;
-                }
-                return item.enabled === true && item.alias !== 'wxapp';
-              });
-
-              that.OAuthList = OAuthList;
-
-              if (OAuthList.length === 0 && that.opts.hideUP) {
-                that.opts.hideOAuth = true;
-                that.gotoWxQRCodeScanning();
+            var OAuthList = data.filter(function (item) {
+              if (item.alias === 'wxapp') {
+                that.isScanCodeEnable = true;
               }
-            })
-            .catch(function (err) {
-              that.$authing.pub('oauthUnload', err);
-              that.oAuthloading = true;
+              return item.enabled === true && item.alias !== 'wxapp';
             });
-        } else {
-          if (!that.opts.hideQRCode) {
-            that.isScanCodeEnable = true;
-          }
-        }
+
+            that.OAuthList = OAuthList;
+
+            if(!that.opts.hideOAuth) {
+              return;
+            }
+
+            if (OAuthList.length === 0 && that.opts.hideUP) {
+              that.opts.hideOAuth = true;
+              that.gotoWxQRCodeScanning();
+            }
+          })
+          .catch(function (err) {
+            that.$authing.pub('oauthUnload', err);
+            that.oAuthloading = true;
+          });
 
         if (that.opts.hideOAuth && that.opts.hideUP) {
           that.gotoWxQRCodeScanning();
