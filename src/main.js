@@ -243,6 +243,7 @@ AuthingGuard.prototype = {
   },
 
   async sysAuthorize () {
+    this.initLinks();
     location.href = this.sysAuthorizeURL;
   },
 
