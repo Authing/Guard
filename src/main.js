@@ -243,7 +243,7 @@ AuthingGuard.prototype = {
   },
 
   async sysAuthorize () {
-    this.initLinks($authing.opts.SSOHost);
+    this.initLinks(this.opts.SSOHost);
     location.href = this.sysAuthorizeURL;
   },
 
