@@ -197,6 +197,10 @@ AuthingGuard.prototype = {
             }else {
               if (this.querySearch('app_id') || this.querySearch('client_id')) {
                 // no nothing
+                const app_id = this.querySearch('app_id') || this.querySearch('client_id');
+                if(app_id != appInfo._id) {
+                  location.href = `${location.origin}/login?app_id=${appInfo._id}`;
+                }
               }else {
                 // redirect to uri with app_id
                 location.href = `${location.origin}/login?app_id=${appInfo._id}`;
