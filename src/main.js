@@ -12,8 +12,6 @@ Vue.config.productionTip = false;
 
 var AuthingGuard = function (appId, domain, opts) {
 
-  this.checkDomain();
-
   let clientId = '';
 
   window.Authing = Authing;
@@ -121,6 +119,8 @@ var AuthingGuard = function (appId, domain, opts) {
   $authing.opts.host = opts.host;
   $authing.opts.timestamp = Math.round(new Date() / 1000);
   $authing.opts.nonce = Math.ceil(Math.random() * Math.pow(10, 6));
+
+  this.checkDomain();
 
   // window.$authing = $authing;
   // window.appMountId = appMountId;
