@@ -84,7 +84,7 @@ export default {
                   }`;
 
       let GraphQLClient_getInfo = new GraphQLClient({
-        baseURL: "https://oauth.authing.cn/graphql"
+        baseURL: this.$root.$authing.host.oauth,
       });
       GraphQLClient_getInfo.request({ query })
         .then(e => {
@@ -145,12 +145,11 @@ export default {
   },
 
   mounted() {
-    const that = this;
-    this.queryAppInfoByAppID();
+    // this.queryAppInfoByAppID();
     window.onresize = () => {
       return (() => {
         window.screenWidth = document.body.scrollWidth;
-        that.screenWidth = window.screenWidth;
+        this.screenWidth = window.screenWidth;
       })();
     };
   },

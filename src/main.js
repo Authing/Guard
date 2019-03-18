@@ -147,7 +147,7 @@ var AuthingGuard = function (appId, domain, opts) {
       $authing: $authing,
       emailExp: emailExp,
       appMountId: appMountId,
-      SSOHost: opts.SSOHost || 'https://sso.authing.cn',
+      SSOHost: opts.SSOHost || location.origin,
     }
   });
 };
@@ -180,7 +180,7 @@ AuthingGuard.prototype = {
     if (secondLvlDomain.isSecond) {
       if (secondLvlDomain.domain !== 'sso') {
         const oAuthGql = new GraphQL({
-          baseURL: "https://oauth.authing.cn/graphql"
+          baseURL: this.opts.host.oauth,
         });
         const query =
           `query {
@@ -195,10 +195,9 @@ AuthingGuard.prototype = {
             if (!appInfo) {
               location.href = 'https://authing.cn';
             }else {
-              if (this.querySearch('app_id') || this.querySearch('client_id')) {
-                // no nothing
-                const app_id = this.querySearch('app_id') || this.querySearch('client_id');
-                if(app_id != appInfo._id) {
+              const app_id = this.querySearch('app_id') || this.querySearch('client_id');
+              if (app_id) {
+                if(app_id !== appInfo._id) {
                   location.href = `${location.origin}/login?app_id=${appInfo._id}`;
                 }
               }else {
