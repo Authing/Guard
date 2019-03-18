@@ -195,7 +195,12 @@ AuthingGuard.prototype = {
             if (!appInfo) {
               location.href = 'https://authing.cn';
             }else {
-              location.href = `${location.origin}/login?app_id=${appInfo._id}`;
+              if (this.querySearch('app_id') || this.querySearch('client_id')) {
+                // no nothing
+              }else {
+                // redirect to uri with app_id
+                location.href = `${location.origin}/login?app_id=${appInfo._id}`;
+              }
             }
           });
       }
