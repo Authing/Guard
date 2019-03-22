@@ -162,7 +162,7 @@ AuthingGuard.prototype = {
     this.userAuthorizeURL = `${ssoHost}/login/authorize/confirm?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
     this.sysAuthorizeURL = `${ssoHost}/authorize?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}&authorization_header=${localStorage.getItem(
       "_authing_token"
-    )}&confirm_authorize=1`;
+    )}`;
   },
 
   checkDomain: function() {
