@@ -25,14 +25,14 @@
               <div title="Authing" class="_authing_form-header-name">Authing</div>
             </div>-->
           </div>
-          <img v-show="false" alt="Vue logo" src="../assets/logo.png">
+          <img v-show="false" alt="Vue logo" :src="authInfo.images">
           <div class="_authing_form_authorize_info">
             <div class="_div_authorize_block">
               <div class="_div_info_text">
                 <span>登录</span>
                 <a
                   class="url"
-                  :href="!pageLoading || authInfo['redirectUris'].length > 0 ? authInfo['redirectUris'][0] : '#'"
+                  @click="() => { return false }"
                 >{{authInfo['name']}}</a>
               </div>
               <ul>
@@ -84,7 +84,7 @@ export default {
                   }`;
 
       let GraphQLClient_getInfo = new GraphQLClient({
-        baseURL: this.$root.$authing.host.oauth,
+        baseURL: this.$root.opts.host.oauth,
       });
       GraphQLClient_getInfo.request({ query })
         .then(e => {
@@ -145,7 +145,7 @@ export default {
   },
 
   mounted() {
-    // this.queryAppInfoByAppID();
+    this.queryAppInfoByAppID();
     window.onresize = () => {
       return (() => {
         window.screenWidth = document.body.scrollWidth;
