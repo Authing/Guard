@@ -57,6 +57,7 @@
 
 <script>
 import GraphQLClient from "../graphql.js";
+import axios from 'axios';
 
 export default {
   name: "authorize",
@@ -84,7 +85,7 @@ export default {
                   }`;
 
       let GraphQLClient_getInfo = new GraphQLClient({
-        baseURL: "https://oauth.authing.cn/graphql"
+        baseURL: this.$root.opts.host.oauth,
       });
       GraphQLClient_getInfo.request({ query })
         .then(e => {
@@ -125,7 +126,17 @@ export default {
 
     cancelAuthorize() {
       // redirect to
-    }
+    },
+
+    async queryOIDCInfo(uuid) {
+      const oauthLoginUrl = `${this.$root.opts.host.oauth.replace('/graphql', '')}/oauth/oidc/interaction/${uuid}/login`;
+      const result = await axios.get(oauthLoginUrl, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('_authing_token')}`,
+        }
+      });
+      console.log(result);
+    },
   },
 
   data() {
@@ -147,6 +158,11 @@ export default {
   mounted() {
     const that = this;
     this.queryAppInfoByAppID();
+    const authorizeType = this.$route.query.authorize_type;
+    const uuid = this.$route.query.uuid;
+    if (authorizeType === 'oidc' && uuid) {
+      this.queryOIDCInfo(uuid);
+    }
     window.onresize = () => {
       return (() => {
         window.screenWidth = document.body.scrollWidth;

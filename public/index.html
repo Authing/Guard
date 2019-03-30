@@ -18,14 +18,15 @@
     const getQueryString = function(name) {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
         var r = window.location.search.substr(1).match(reg);
-        if ( r != null ){
+        if (r !== null){
           return unescape(r[2]);
-        }else{
+        }else {
           return null;
         } 
     };
 
     let appId = getQueryString('app_id') || getQueryString('client_id');
+    let uuid = getQueryString('uuid') || null;
 
     if (location.pathname === '/' 
         || location.pathname === '/login' 
@@ -53,7 +54,11 @@
     });
 
     guard.on('login', (userInfo) => {
-      guard.sysAuthorize();
+      if (!uuid) {
+        guard.sysAuthorize();
+      } else {
+        guard.oidcLogin(uuid);
+      }
     });
 
     guard.on('scanning', (userInfo) => {

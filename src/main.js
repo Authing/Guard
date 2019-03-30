@@ -145,6 +145,7 @@ var AuthingGuard = function (appId, domain, opts) {
       emailExp: emailExp,
       appMountId: appMountId,
       SSOHost: opts.SSOHost || 'https://sso.authing.cn',
+      opts: $authing.opts,
     }
   });
 };
@@ -201,6 +202,7 @@ AuthingGuard.prototype = {
         emailExp: emailExp,
         appMountId: appMountId,
         SSOHost: opts.SSOHost || 'https://sso.authing.cn',
+        opts: this.opts,
       }
     }).$mount('#_authing_login_form');
   },
@@ -248,6 +250,14 @@ AuthingGuard.prototype = {
 
   userAuthorize: function() {
     location.href = this.userAuthorizeURL;
+  },
+
+  async oidcLogin(uuid) {
+    uuid = uuid || this.querySearch('uuid');
+    if (!uuid) {
+      location.href = location.pathname + 'error?message=缺少 OIDC 所必须的参数 uuid';
+    }
+    location.href = `${this.userAuthorizeURL}&authorize_type=oidc&uuid=${uuid}`;
   },
 };
 
