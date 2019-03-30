@@ -25,14 +25,14 @@
               <div title="Authing" class="_authing_form-header-name">Authing</div>
             </div>-->
           </div>
-          <img v-show="false" alt="Vue logo" src="../assets/logo.png">
+          <img v-show="false" alt="Vue logo" :src="authInfo.images">
           <div class="_authing_form_authorize_info">
             <div class="_div_authorize_block">
               <div class="_div_info_text">
                 <span>登录</span>
                 <a
                   class="url"
-                  :href="!pageLoading || authInfo['redirectUris'].length > 0 ? authInfo['redirectUris'][0] : '#'"
+                  @click="() => { return false }"
                 >{{authInfo['name']}}</a>
               </div>
               <ul>
@@ -156,7 +156,6 @@ export default {
   },
 
   mounted() {
-    const that = this;
     this.queryAppInfoByAppID();
     const authorizeType = this.$route.query.authorize_type;
     const uuid = this.$route.query.uuid;
@@ -166,7 +165,7 @@ export default {
     window.onresize = () => {
       return (() => {
         window.screenWidth = document.body.scrollWidth;
-        that.screenWidth = window.screenWidth;
+        this.screenWidth = window.screenWidth;
       })();
     };
   },

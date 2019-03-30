@@ -4,6 +4,7 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import Authing from 'authing-js-sdk';
+import GraphQL from './graphql';
 import './styles/styles.css';
 import './styles/animations.css';
 
@@ -109,7 +110,7 @@ var AuthingGuard = function (appId, domain, opts) {
     opts.host.oauth = opts.host.oauth || 'https://oauth.authing.cn/graphql';    
   } else {
     opts.host = {
-      users: 'https://user.authing.cn/graphql',
+      user: 'https://users.authing.cn/graphql',
       oauth: 'https://oauth.authing.cn/graphql',
     };
   }
@@ -118,6 +119,8 @@ var AuthingGuard = function (appId, domain, opts) {
   $authing.opts.host = opts.host;
   $authing.opts.timestamp = Math.round(new Date() / 1000);
   $authing.opts.nonce = Math.ceil(Math.random() * Math.pow(10, 6));
+
+  this.checkDomain();
 
   // window.$authing = $authing;
   // window.appMountId = appMountId;
@@ -144,8 +147,8 @@ var AuthingGuard = function (appId, domain, opts) {
       $authing: $authing,
       emailExp: emailExp,
       appMountId: appMountId,
-      SSOHost: opts.SSOHost || 'https://sso.authing.cn',
-      opts: $authing.opts,
+      SSOHost: opts.SSOHost || location.origin,
+      opts: opts,
     }
   });
 };
@@ -160,7 +163,52 @@ AuthingGuard.prototype = {
     this.userAuthorizeURL = `${ssoHost}/login/authorize/confirm?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
     this.sysAuthorizeURL = `${ssoHost}/authorize?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}&authorization_header=${localStorage.getItem(
       "_authing_token"
-    )}&confirm_authorize=1`;
+    )}`;
+  },
+
+  checkDomain: function() {
+    const getSecondLvlDomain = function() {
+      const host = location.host;
+      const hostSplit = host.split('.');
+      return {
+        isSecond: hostSplit.length === 3,
+        domain: hostSplit[0],
+      };
+    }
+  
+    const secondLvlDomain = getSecondLvlDomain();
+  
+    if (secondLvlDomain.isSecond) {
+      if (secondLvlDomain.domain !== 'sso') {
+        const oAuthGql = new GraphQL({
+          baseURL: this.opts.host.oauth,
+        });
+        const query =
+          `query {
+              QueryAppInfoByDomain (domain: "` + secondLvlDomain.domain + `") {   
+                _id,
+                name,
+              }
+            }`;
+        oAuthGql.request({ query })
+          .then(e => {
+            const appInfo = e.QueryAppInfoByDomain;
+            if (!appInfo) {
+              location.href = 'https://authing.cn';
+            }else {
+              const app_id = this.querySearch('app_id') || this.querySearch('client_id');
+              if (app_id) {
+                if(app_id !== appInfo._id) {
+                  location.href = `${location.origin}/login?app_id=${appInfo._id}`;
+                }
+              }else {
+                // redirect to uri with app_id
+                location.href = `${location.origin}/login?app_id=${appInfo._id}`;
+              }
+            }
+          });
+      }
+    }
   },
 
   querySearch: function(variable) {
@@ -245,6 +293,7 @@ AuthingGuard.prototype = {
   },
 
   async sysAuthorize () {
+    this.initLinks(this.opts.SSOHost);
     location.href = this.sysAuthorizeURL;
   },
 
