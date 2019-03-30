@@ -36,9 +36,12 @@
                 >{{authInfo['name']}}</a>
               </div>
               <ul>
-                <li>获取你的基本信息（昵称、头像等）</li>
-                <li>获取你的邮箱</li>
-                <li>获取你的手机号</li>
+                <template v-if="scopes.scopeMeanings.length > 0 && $route.query.authorize_type === 'oidc'">
+                  <li :key="scope" v-for="scope in scopes.scopeMeanings">获取你的{{scope}}</li>
+                </template>
+                <template v-if="scopes.scopeMeanings.length === 0 && $route.query.authorize_type === 'oidc'">
+                  <li>获取 scope 失败</li>
+                </template>
               </ul>
             </div>
 
@@ -119,9 +122,14 @@ export default {
       const scope =
         this.$route.query.scope || Math.ceil(Math.random() * Math.pow(10, 6));
       const host = this.$root.SSOHost;
-      location.href = `${host}/authorize?app_id=${appId}&state=${state}&response_type=${responseType}&redirect_uri=${redirectURI}&scope=${scope}&authorization_header=${localStorage.getItem(
-        "_authing_token"
-      )}&confirm_authorize=1`;
+
+      if (this.isOIDC) {
+        location.href = this.scope.redirectTo;
+      }else {
+        location.href = `${host}/authorize?app_id=${appId}&state=${state}&response_type=${responseType}&redirect_uri=${redirectURI}&scope=${scope}&authorization_header=${localStorage.getItem(
+          "_authing_token"
+        )}&confirm_authorize=1`;
+      }
     },
 
     cancelAuthorize() {
@@ -130,12 +138,23 @@ export default {
 
     async queryOIDCInfo(uuid) {
       const oauthLoginUrl = `${this.$root.opts.host.oauth.replace('/graphql', '')}/oauth/oidc/interaction/${uuid}/login`;
-      const result = await axios.get(oauthLoginUrl, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('_authing_token')}`,
-        }
-      });
-      console.log(result);
+      try {
+        const result = await axios.get(oauthLoginUrl, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('_authing_token')}`,
+          }
+        });
+        /*
+          {
+          scope: 'openid profile ....',
+          scopeMeanings: ['用户标识', '基础资料(包括 昵称，姓名，出生日期等)' ,'...']
+          redirectTo: 'http://localhost:5556/oauth/oidc/auth/ca763762-0b42-4f23-aaf9-f0e9909fa68a'
+          }
+        */
+        this.scopes = result.data;
+      }catch(err) {
+        // location.href = location.pathname + 'error?message=缺少 OIDC 所必须的参数 uuid';
+      }
     },
   },
 
@@ -151,7 +170,12 @@ export default {
         _id: "5c7253efe21948de32723725"
       },
       pageLoading: false,
-      pageError: false
+      pageError: false,
+
+      isOIDC: true,
+      scopes: {
+        scopeMeanings: []
+      },
     };
   },
 
@@ -160,6 +184,7 @@ export default {
     const authorizeType = this.$route.query.authorize_type;
     const uuid = this.$route.query.uuid;
     if (authorizeType === 'oidc' && uuid) {
+      this.isOIDC = true;
       this.queryOIDCInfo(uuid);
     }
     window.onresize = () => {
