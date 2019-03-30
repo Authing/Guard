@@ -180,12 +180,13 @@ export default {
   },
 
   mounted() {
-    this.queryAppInfoByAppID();
     const authorizeType = this.$route.query.authorize_type;
     const uuid = this.$route.query.uuid;
     if (authorizeType === 'oidc' && uuid) {
       this.isOIDC = true;
       this.queryOIDCInfo(uuid);
+    }else {
+      this.queryAppInfoByAppID();
     }
     window.onresize = () => {
       return (() => {
