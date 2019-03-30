@@ -172,7 +172,7 @@ export default {
       pageLoading: false,
       pageError: false,
 
-      isOIDC: true,
+      isOIDC: false,
       scopes: {
         scopeMeanings: []
       },
