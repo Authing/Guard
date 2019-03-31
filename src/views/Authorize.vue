@@ -37,10 +37,12 @@
               </div>
               <ul>
                 <template v-if="scopes.scopeMeanings.length > 0 && $route.query.authorize_type === 'oidc'">
+                  <div  class="permission-list">
                   <li :key="scope" v-for="scope in scopes.scopeMeanings">获取你的{{scope}}</li>
+                  </div>
                 </template>
                 <template v-if="scopes.scopeMeanings.length === 0 && $route.query.authorize_type === 'oidc'">
-                  <li>获取 scope 失败</li>
+                  <li>获取 scope 失败，会话可能过期，请重新登录</li>
                 </template>
               </ul>
             </div>
@@ -70,14 +72,21 @@ export default {
     // call server for AppInfo
     queryAppInfoByAppID() {
       this.pageLoading = true;
+      const uuid = this.$route.query.uuid;
       const appId = this.$route.query.app_id || this.$route.query.client_id;
       if (!appId) {
         location.href = '/login/error?message=请提供 app_id 或 client_id';
       }
+      let operationName;
+      if(uuid) {
+        operationName = 'QueryOIDCAppInfoByAppID';
+      } else {
+        operationName = 'QueryAppInfoByAppID';
+      }
       let self = this;
       let query =
         `query {
-                    QueryAppInfoByAppID (appId: "` + appId + `") {   
+                    ${operationName} (appId: "` + appId + `") {   
                         _id,
                         name,
                         image,
@@ -92,7 +101,7 @@ export default {
       });
       GraphQLClient_getInfo.request({ query })
         .then(e => {
-          self.authInfo = e.QueryAppInfoByAppID;
+          self.authInfo = uuid ? e.QueryOIDCAppInfoByAppID : e.QueryAppInfoByAppID;
 
           try {
             self.pageError = (
@@ -122,9 +131,9 @@ export default {
       const scope =
         this.$route.query.scope || Math.ceil(Math.random() * Math.pow(10, 6));
       const host = this.$root.SSOHost;
-
+      console.log(this.isOIDC)
       if (this.isOIDC) {
-        location.href = this.scope.redirectTo;
+        location.href = this.scopes.redirectTo;
       }else {
         location.href = `${host}/authorize?app_id=${appId}&state=${state}&response_type=${responseType}&redirect_uri=${redirectURI}&scope=${scope}&authorization_header=${localStorage.getItem(
           "_authing_token"
@@ -134,15 +143,19 @@ export default {
 
     cancelAuthorize() {
       // redirect to
+      localStorage.setItem('appToken', '')
+
+      window.history.back()
     },
 
     async queryOIDCInfo(uuid) {
       const oauthLoginUrl = `${this.$root.opts.host.oauth.replace('/graphql', '')}/oauth/oidc/interaction/${uuid}/login`;
       try {
-        const result = await axios.get(oauthLoginUrl, {
+        const result = await axios.post(oauthLoginUrl, null, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('_authing_token')}`,
-          }
+          },
+          withCredentials: true
         });
         /*
           {
@@ -182,6 +195,7 @@ export default {
   mounted() {
     const authorizeType = this.$route.query.authorize_type;
     const uuid = this.$route.query.uuid;
+    console.log(authorizeType, uuid)
     if (authorizeType === 'oidc' && uuid) {
       this.isOIDC = true;
       this.queryOIDCInfo(uuid);
@@ -197,3 +211,12 @@ export default {
   },
 };
 </script>
+
+<style>
+  .permission-list {
+    max-height: 170px;
+    overflow-y: scroll;
+    list-style-position: inside;
+    margin-left: -15px;
+  }
+</style>
