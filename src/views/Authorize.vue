@@ -149,7 +149,7 @@ export default {
     },
 
     async queryOIDCInfo(uuid) {
-      const oauthLoginUrl = `${this.$root.opts.host.oauth.replace('/graphql', '')}/oauth/oidc/interaction/${uuid}/login`;
+      const oauthLoginUrl = `${window.location.origin}/oauth/oidc/interaction/${uuid}/login`;
       try {
         const result = await axios.post(oauthLoginUrl, null, {
           headers: {
