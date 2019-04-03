@@ -157,7 +157,7 @@ AuthingGuard.prototype = {
   initLinks: function(ssoHost) {
     const state = this.querySearch('state') || '';
     const appId = this.querySearch('app_id') || this.querySearch('client_id') || '';
-    const redirectURI = this.querySearch('redirect_uri') || '';
+    const redirectURI = decodeURIComponent(this.querySearch('redirect_uri')) || '';
     const responseType = this.querySearch('response_type') || 'code';
     const scope = this.querySearch('scope') || Math.ceil(Math.random() * Math.pow(10, 6));
     this.userAuthorizeURL = `${ssoHost}/login/authorize/confirm?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
