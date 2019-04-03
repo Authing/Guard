@@ -180,7 +180,7 @@ AuthingGuard.prototype = {
   
     if (secondLvlDomain.isSecond) {
       if (secondLvlDomain.domain !== 'sso') {
-        if (location.pathname === '/login/error') {
+        if (location.pathname === '/login/error' && this.querySearch('code') !== 'id404') {
           return;
         }
         const oAuthGql = new GraphQL({

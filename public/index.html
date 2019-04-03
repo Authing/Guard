@@ -33,7 +33,7 @@
       || location.pathname === '/login/'
     ) {
       if (!appId) {
-        location.href = location.pathname + 'error?message=请提供 app_id 或 client_id';
+        location.href = location.pathname + 'error?message=请提供 app_id 或 client_id&code=id404';
       }
     }
 

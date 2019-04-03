@@ -72,7 +72,7 @@ export default {
       this.pageLoading = true;
       const appId = this.$route.query.app_id || this.$route.query.client_id;
       if (!appId) {
-        location.href = '/login/error?message=请提供 app_id 或 client_id';
+        location.href = '/login/error?message=请提供 app_id 或 client_id&code=id404';
       }
       let self = this;
       let query =
