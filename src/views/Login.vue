@@ -317,10 +317,17 @@
     async mounted () {
       var that = this;
       var auth = null;
+      const uuid = this.$route.query.uuid;
 
+      let operationName;
+      if(uuid) {
+        operationName = 'QueryOIDCAppInfoByAppID';
+      } else {
+        operationName = 'QueryAppInfoByAppID';
+      }
       let query =
         `query {
-            QueryAppInfoByAppID (appId: "` + that.opts.appId + `") {   
+            ${operationName} (appId: "` + that.opts.appId + `") {   
               _id,
               clientId,
               name,
@@ -334,16 +341,21 @@
       try {
         const oAuthAppInfo = await GraphQLClient_getInfo.request({ query });
 
-        if (!oAuthAppInfo.QueryAppInfoByAppID) {
+        if (!(oAuthAppInfo.QueryAppInfoByAppID || oAuthAppInfo.QueryOIDCAppInfoByAppID)) {
           that.authingOnError = true;
           that.errMsg = 'Error: 找不到此应用';
           that.$authing.pub('authingUnload', '找不到此应用');
           throw that.errMsg;
         }
-
-        that.opts.title = that.opts.title || oAuthAppInfo.QueryAppInfoByAppID.name;
-        that.opts.logo = that.opts.logo || oAuthAppInfo.QueryAppInfoByAppID.image;
-        that.opts.clientId = oAuthAppInfo.QueryAppInfoByAppID.clientId;
+        let info
+        if(uuid) {
+          info = oAuthAppInfo.QueryOIDCAppInfoByAppID
+        } else {
+          info = oAuthAppInfo.QueryAppInfoByAppID
+        }
+        that.opts.title = that.opts.title || info.name;
+        that.opts.logo = that.opts.logo || info.image;
+        that.opts.clientId = info.clientId;
 
       } catch(erro) {
         that.authingOnError = true;

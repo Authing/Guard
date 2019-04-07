@@ -186,16 +186,23 @@ AuthingGuard.prototype = {
         const oAuthGql = new GraphQL({
           baseURL: this.opts.host.oauth,
         });
+        let operationName;
+        let uuid = this.querySearch('uuid');
+        if(uuid) {
+          operationName = 'QueryOIDCAppInfoByDomain';
+        } else {
+          operationName = 'QueryAppInfoByDomain';
+        }
         const query =
           `query {
-              QueryAppInfoByDomain (domain: "` + secondLvlDomain.domain + `") {   
+              ${operationName} (domain: "` + secondLvlDomain.domain + `") {   
                 _id,
                 name,
               }
             }`;
         oAuthGql.request({ query })
           .then(e => {
-            const appInfo = e.QueryAppInfoByDomain;
+            const appInfo = uuid ? e.QueryOIDCAppInfoByDomain : e.QueryAppInfoByDomain;
             if (!appInfo) {
               location.href = 'https://authing.cn';
             }else {
