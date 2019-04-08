@@ -171,7 +171,7 @@ AuthingGuard.prototype = {
       const host = location.host;
       const hostSplit = host.split('.');
       return {
-        isSecond: hostSplit.length === 3,
+        isSecond: hostSplit.length >= 3,
         domain: hostSplit[0],
       };
     }
