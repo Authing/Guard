@@ -40,7 +40,7 @@
     const domain = "sso.authing.cn/login?app_id=YOUR_CLIENT_ID_";
     const guard = new AuthingGuard(appId, domain, {
       hideClose: true,
-      SSOHost: location.origin,
+      SSOHost: location.origin,// 如果在 localhost:8080 跑，会出问题。线上 nginx 配置过二级域名转发，所以没事
       qrcodeScanning: {
         redirect: false,
       },
