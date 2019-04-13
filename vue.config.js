@@ -8,5 +8,13 @@ module.exports = {
   //   }
   // },
   lintOnSave: false,
-  publicPath: '/login'
+  publicPath: '/login',
+  devServer: {
+    proxy: {
+      '^/authorize': {
+        target: 'http://localhost:5556/sso',
+        changeOrigin: true
+      }
+    }
+  }
 }
