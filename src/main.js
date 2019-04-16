@@ -230,7 +230,7 @@ AuthingGuard.prototype = {
                     if (!qInfo) {
                       location.href = 'https://authing.cn';
                     }else {
-                      const url = `https://${location.origin}/oauth/oidc/auth?client_id=${qInfo._id}&scope=openid profile&response_type=code`
+                      const url = `${location.origin}/oauth/oidc/auth?client_id=${qInfo._id}&scope=openid profile&response_type=code`
                       redirect(qInfo, url);
                     }
                   });
