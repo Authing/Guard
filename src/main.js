@@ -178,15 +178,15 @@ AuthingGuard.prototype = {
   
     const secondLvlDomain = getSecondLvlDomain();
 
-    const redirect = (appInfo) => {
+    const redirect = (appInfo, url) => {
       const app_id = this.querySearch('app_id') || this.querySearch('client_id');
       if (app_id) {
         if(app_id !== appInfo._id) {
-          location.href = `${location.origin}/login?app_id=${appInfo._id}`;
+          location.href = url || `${location.origin}/login?app_id=${appInfo._id}`;
         }
       }else {
         // redirect to uri with app_id
-        location.href = `${location.origin}/login?app_id=${appInfo._id}`;
+        location.href = url || `${location.origin}/login?app_id=${appInfo._id}`;
       }
     }
   
@@ -225,12 +225,13 @@ AuthingGuard.prototype = {
                       name,
                     }
                   }`;
-                  oAuthGql.request({ q }).then((e) => {
+                  oAuthGql.request({ query: q }).then((e) => {
                     const qInfo = e.QueryOIDCAppInfoByDomain;
                     if (!qInfo) {
                       location.href = 'https://authing.cn';
                     }else {
-                      redirect(qInfo);
+                      const url = `https://${location.origin}/oauth/oidc/auth?client_id=${qInfo._id}&scope=openid profile&response_type=code`
+                      redirect(qInfo, url);
                     }
                   });
               }
