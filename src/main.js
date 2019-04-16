@@ -177,6 +177,18 @@ AuthingGuard.prototype = {
     }
   
     const secondLvlDomain = getSecondLvlDomain();
+
+    const redirect = (appInfo) => {
+      const app_id = this.querySearch('app_id') || this.querySearch('client_id');
+      if (app_id) {
+        if(app_id !== appInfo._id) {
+          location.href = `${location.origin}/login?app_id=${appInfo._id}`;
+        }
+      }else {
+        // redirect to uri with app_id
+        location.href = `${location.origin}/login?app_id=${appInfo._id}`;
+      }
+    }
   
     if (secondLvlDomain.isSecond) {
       if (secondLvlDomain.domain !== 'sso') {
@@ -204,17 +216,26 @@ AuthingGuard.prototype = {
           .then(e => {
             const appInfo = uuid ? e.QueryOIDCAppInfoByDomain : e.QueryAppInfoByDomain;
             if (!appInfo) {
-              location.href = 'https://authing.cn';
-            }else {
-              const app_id = this.querySearch('app_id') || this.querySearch('client_id');
-              if (app_id) {
-                if(app_id !== appInfo._id) {
-                  location.href = `${location.origin}/login?app_id=${appInfo._id}`;
-                }
-              }else {
-                // redirect to uri with app_id
-                location.href = `${location.origin}/login?app_id=${appInfo._id}`;
+              if (operationName === 'QueryAppInfoByDomain') {
+                operationName = 'QueryOIDCAppInfoByDomain';
+                const q = 
+                  `query {
+                    ${operationName} (domain: "` + secondLvlDomain.domain + `") {   
+                      _id,
+                      name,
+                    }
+                  }`;
+                  oAuthGql.request({ q }).then((e) => {
+                    const qInfo = e.QueryOIDCAppInfoByDomain;
+                    if (!qInfo) {
+                      location.href = 'https://authing.cn';
+                    }else {
+                      redirect(qInfo);
+                    }
+                  });
               }
+            }else {
+              redirect(appInfo);
             }
           });
       }
