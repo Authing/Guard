@@ -317,7 +317,12 @@
     async mounted () {
       var that = this;
       var auth = null;
-      const uuid = this.$route.query.uuid;
+      const { uuid, code: errorCode } = this.$route.query;
+      
+      // token 错误或已经过期的情况
+      if (errorCode && Number(errorCode) === 2207) {
+        this.clearLocalStorage()
+      }
 
       let operationName;
       if(uuid) {
@@ -453,6 +458,12 @@
       };
     },
     methods: {
+      clearLocalStorage() {
+        localStorage.removeItem('appToken')
+        localStorage.removeItem('_authing_username')
+        localStorage.removeItem('_authing_password')
+        localStorage.removeItem('_authing_token')
+      },
       verifyCodeLoad: function () {
         this.verifyCodeLoading = false;
       },
