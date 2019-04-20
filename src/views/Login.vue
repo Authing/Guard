@@ -58,7 +58,7 @@
                   'width-55': !isScanCodeEnable || opts.hideUP || opts.forceLogin,
                   'width-100': (opts.hideUP && opts.hideOAuth),
                   'shadow-eee': (opts.hideUP && opts.hideOAuth),
-                }" v-show="isScanCodeEnable && !opts.hideQRCode">
+                }" v-show="isScanCodeEnable && !opts.hideQRCode && !clientInfo.registerDisabled">
                   <a class="_authing_a" href="javascript:void(0)" @click="gotoWxQRCodeScanning">扫码登录</a>
                 </li>
                 <li 
@@ -70,7 +70,7 @@
                 }">
                   <a class="_authing_a" href="javascript:void(0)" @click="gotoLogin">登录</a>
                 </li>
-                <li v-show="!opts.hideUP && !opts.forceLogin" v-bind:class="{
+                <li v-show="!opts.hideUP && !opts.forceLogin && !clientInfo.registerDisabled" v-bind:class="{
                   'authing-header-tabs-current': pageVisible.signUpVisible,
                   'width-55': !isScanCodeEnable || opts.hideQRCode
                 }">
@@ -250,6 +250,7 @@
     data() {
       return {
 
+        clientInfo: {},
         validAuth: null,
 
         errMsg: '',
@@ -317,7 +318,12 @@
     async mounted () {
       var that = this;
       var auth = null;
-      const uuid = this.$route.query.uuid;
+      const { uuid, code: errorCode } = this.$route.query;
+      
+      // token 错误或已经过期的情况
+      if (errorCode && Number(errorCode) === 2207) {
+        this.clearLocalStorage()
+      }
 
       let operationName;
       if(uuid) {
@@ -383,6 +389,7 @@
       }
 
       auth.then(function (validAuth) {
+        that.clientInfo = validAuth.clientInfo
         document.getElementById('page-loading').remove();
         document.getElementById('_authing_login_form_content').classList.remove('hide');
         window.validAuth = validAuth;
@@ -453,6 +460,12 @@
       };
     },
     methods: {
+      clearLocalStorage() {
+        localStorage.removeItem('appToken')
+        localStorage.removeItem('_authing_username')
+        localStorage.removeItem('_authing_password')
+        localStorage.removeItem('_authing_token')
+      },
       verifyCodeLoad: function () {
         this.verifyCodeLoading = false;
       },
