@@ -45,8 +45,8 @@
         redirect: false,
       },
       host: {
-        user: 'https://users.authing.cn/graphql',
-        oauth: 'https://oauth.authing.cn/graphql',
+        user: 'http://localhost:5555/graphql',
+        oauth: 'http://localhost:5556/graphql',
       }
     });
 
@@ -54,10 +54,10 @@
       if (guard.isLogged()) {
         // 已登录，直接跳至授权页
         if (!uuid) {
-        guard.sysAuthorize();
-      } else {
-        guard.oidcLogin(uuid);
-      }
+          guard.sysAuthorize();
+        } else {
+          guard.oidcLogin(uuid);
+        }
       }
     });
 
