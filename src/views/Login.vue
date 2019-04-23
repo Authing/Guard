@@ -114,7 +114,7 @@
                   <p>如果您没有帐号，我们会自动创建</p>
                 </div>
 
-                <div class="_authing_form-group" style="font-size: 13px;color:#777">
+                <div v-if="hasLDAP" class="_authing_form-group" style="font-size: 13px;color:#777">
                   <input type="radio" v-model="loginMethod" value="common" checked style="width: 12px;" /> 普通登录
                   <input type="radio" v-model="loginMethod" value="ldap" style="width: 12px;margin-left:11px" /> 使用 LDAP
                 </div>
@@ -319,6 +319,7 @@
         $authing: null,
 
         loginMethod: 'common',
+        hasLDAP: false,
       };
     },
     async mounted () {
@@ -376,6 +377,8 @@
         that.errMsg = 'Error: ' + erro;
         that.$authing.pub('authingUnload', erro);
       }
+
+      this.checkHasLDAP(that.opts.clientId);
 
       try {
         auth = new Authing({
@@ -468,6 +471,25 @@
       };
     },
     methods: {
+      async checkHasLDAP(clientId) {
+        let operationName = 'QueryClientHasLDAPConfigs';
+        let query =
+          `query {
+              ${operationName} (clientId: "` + clientId + `") {   
+                result,
+              }
+            }
+        `;
+
+        let GraphQLClient_getInfo = new GraphQLClient({ baseURL: this.opts.host.oauth });
+        
+        try {
+          const hasLDAP = await GraphQLClient_getInfo.request({ query });
+          this.hasLDAP = hasLDAP.QueryClientHasLDAPConfigs.result;
+        } catch(erro) {
+          console.log(erro);
+        }
+      },
       clearLocalStorage() {
         localStorage.removeItem('appToken')
         localStorage.removeItem('_authing_username')
