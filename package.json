@@ -7,7 +7,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "authing-js-sdk": "^1.17.0",
+    "authing-js-sdk": "^1.19.0",
     "axios": "^0.18.0",
     "vue": "^2.6.6",
     "vue-router": "^3.0.1",

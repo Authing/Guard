@@ -54,10 +54,10 @@
       if (guard.isLogged()) {
         // 已登录，直接跳至授权页
         if (!uuid) {
-        guard.sysAuthorize();
-      } else {
-        guard.oidcLogin(uuid);
-      }
+          guard.sysAuthorize();
+        } else {
+          guard.oidcLogin(uuid);
+        }
       }
     });
 
