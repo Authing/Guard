@@ -725,7 +725,7 @@
           .then(function (data) {
             if (that.rememberMe) {
               localStorage.setItem('_authing_username', that.loginForm.email);
-              localStorage.setItem('_authing_password', that.encrypt(that.loginForm.password, $authing.opts.clientId));
+              localStorage.setItem('_authing_password', that.encrypt(that.loginForm.password, that.$authing.opts.clientId));
             } else {
               localStorage.removeItem('_authing_username');
               localStorage.removeItem('_authing_password');
