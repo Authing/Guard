@@ -114,9 +114,13 @@
                   <p>如果您没有帐号，我们会自动创建</p>
                 </div>
 
+                <div v-if="hasLDAP" class="_authing_form-group" style="font-size: 13px;color:#777">
+                  <input type="radio" v-model="loginMethod" value="common" checked style="width: 12px;" /> 普通登录
+                  <input type="radio" v-model="loginMethod" value="ldap" style="width: 12px;margin-left:11px" /> 使用 LDAP
+                </div>
                 <div class="_authing_form-group">
                   <input type="text" class="_authing_input _authing_form-control" id="login-username" v-model="loginForm.email"
-                         :placeholder="opts.placeholder.email"
+                         :placeholder="loginMethod === 'common' ? opts.placeholder.email : '请输入 LDAP 的用户名'"
                          autocomplete="off" @keyup.enter="handleLogin">
                 </div>
                 <div class="_authing_form-group">
@@ -313,6 +317,9 @@
         removeDom: false,
 
         $authing: null,
+
+        loginMethod: 'common',
+        hasLDAP: false,
       };
     },
     async mounted () {
@@ -360,6 +367,8 @@
           info = oAuthAppInfo.QueryAppInfoByAppID
         }
         that.opts.title = that.opts.title || info.name;
+        window.title = `${that.opts.title} - Authing`;
+        document.title = `${that.opts.title} - Authing`;
         that.opts.logo = that.opts.logo || info.image;
         that.opts.clientId = info.clientId;
 
@@ -368,6 +377,8 @@
         that.errMsg = 'Error: ' + erro;
         that.$authing.pub('authingUnload', erro);
       }
+
+      this.checkHasLDAP(that.opts.clientId);
 
       try {
         auth = new Authing({
@@ -460,6 +471,25 @@
       };
     },
     methods: {
+      async checkHasLDAP(clientId) {
+        let operationName = 'QueryClientHasLDAPConfigs';
+        let query =
+          `query {
+              ${operationName} (clientId: "` + clientId + `") {   
+                result,
+              }
+            }
+        `;
+
+        let GraphQLClient_getInfo = new GraphQLClient({ baseURL: this.opts.host.oauth });
+        
+        try {
+          const hasLDAP = await GraphQLClient_getInfo.request({ query });
+          this.hasLDAP = hasLDAP.QueryClientHasLDAPConfigs.result;
+        } catch(erro) {
+          console.log(erro);
+        }
+      },
       clearLocalStorage() {
         localStorage.removeItem('appToken')
         localStorage.removeItem('_authing_username')
@@ -700,15 +730,18 @@
           password: this.loginForm.password,
         };
 
-        if (!this.$root.emailExp.test(this.loginForm.email)) {
-          this.showGlobalErr('请输入正确格式的邮箱');
-          this.addAnimation('login-username');
-          this.removeRedLine('login-password');
-          this.removeRedLine('verify-code');
-          that.unLoading();
-          this.$authing.pub('loginError', '请输入正确格式的邮箱');
-          return false;
+        if (this.loginMethod === 'common') {
+          if (!this.$root.emailExp.test(this.loginForm.email)) {
+            this.showGlobalErr('请输入正确格式的邮箱');
+            this.addAnimation('login-username');
+            this.removeRedLine('login-password');
+            this.removeRedLine('verify-code');
+            that.unLoading();
+            this.$authing.pub('loginError', '请输入正确格式的邮箱');
+            return false;
+          }
         }
+
         if (!this.loginForm.password) {
           this.showGlobalErr('请输入密码');
           this.addAnimation('login-password');
@@ -718,10 +751,95 @@
           this.$authing.pub('loginError', '请输入密码');
           return false;
         }
+
         if (this.pageVisible.verifyCodeVisible) {
           info.verifyCode = this.verifyCode;
         }
-        validAuth.login(info)
+
+        if (this.loginMethod === 'common') {
+          validAuth.login(info)
+            .then(function (data) {
+              if (that.rememberMe) {
+                localStorage.setItem('_authing_username', that.loginForm.email);
+                localStorage.setItem('_authing_password', that.encrypt(that.loginForm.password, $authing.opts.clientId));
+              } else {
+                localStorage.removeItem('_authing_username');
+                localStorage.removeItem('_authing_password');
+              }
+
+              that.showGlobalSuccess('验证通过，欢迎你：' + data.username || data.email);
+              that.$authing.pub('login', data);
+              that.recordLoginInfo(data);
+              that.unLoading();
+            })
+            .catch(function (err) {
+              that.unLoading();
+              that.$authing.pub('loginError', err);
+              that.showGlobalErr(err.message.message);
+              // 验证码错误
+              if (err.message.code === 2000 || err.message.code === 2001) {
+                that.addAnimation('verify-code');
+                that.removeRedLine('login-username');
+                that.removeRedLine('login-password');
+
+                that.verifyCodeLoading = true;
+                that.pageVisible.verifyCodeVisible = true;
+                that.verifyCodeUrl = err.message.data.url;
+              }
+              // 用户名错误
+              else if (err.message.code === 2003 || err.message.code === 2204 || err.message.code === 2208) {
+                that.addAnimation('login-username');
+                that.removeRedLine('login-password');
+                that.removeRedLine('verify-code');
+              }
+              // 用户名不存在
+              else if (err.message.code === 2004) {
+                // 如果开启登录时创建不存在的用户功能
+                if (this.$authing.opts.forceLogin) {
+                  that.setLoading();
+                  validAuth.register({
+                    email: that.loginForm.email,
+                    password: that.loginForm.password,
+                  })
+                    .then(function (data) {
+                      that.unLoading();
+                      that.showGlobalSuccess('验证通过，欢迎你：' + data.username || data.email);
+                      that.$authing.pub('login', data);
+                      that.recordLoginInfo(data);
+                    })
+                    .catch(function (err) {
+                      that.unLoading();
+                      that.showGlobalErr(err.message.message);
+                      that.$authing.pub('loginError', err);
+                    });
+                  return false;
+                } else {
+                  that.addAnimation('login-username');
+                  that.removeRedLine('login-password');
+                  that.removeRedLine('verify-code');
+                }
+              }
+              // 密码错误
+              else if (err.message.code === 2006 || err.message.code === 2016 || err.message.code === 2027) {
+                that.addAnimation('login-password');
+                that.removeRedLine('verify-code');
+                that.removeRedLine('login-username');
+              }
+            });
+        }
+
+        if (this.loginMethod === 'ldap') {
+          this.handleLDAPLogin();
+        }
+
+      },
+      handleLDAPLogin: function handleLDAPLogin () {
+        const that = this;
+        const ldapLoginInfo = {
+          username: that.loginForm.email,
+          password: that.loginForm.password
+        }
+        validAuth.loginByLDAP(ldapLoginInfo)
           .then(function (data) {
             if (that.rememberMe) {
               localStorage.setItem('_authing_username', that.loginForm.email);
@@ -740,56 +858,11 @@
             that.unLoading();
             that.$authing.pub('loginError', err);
             that.showGlobalErr(err.message.message);
-            // 验证码错误
-            if (err.message.code === 2000 || err.message.code === 2001) {
-              that.addAnimation('verify-code');
-              that.removeRedLine('login-username');
-              that.removeRedLine('login-password');
-
-              that.verifyCodeLoading = true;
-              that.pageVisible.verifyCodeVisible = true;
-              that.verifyCodeUrl = err.message.data.url;
-            }
-            // 用户名错误
-            else if (err.message.code === 2003 || err.message.code === 2204 || err.message.code === 2208) {
-              that.addAnimation('login-username');
-              that.removeRedLine('login-password');
-              that.removeRedLine('verify-code');
-            }
-            // 用户名不存在
-            else if (err.message.code === 2004) {
-              // 如果开启登录时创建不存在的用户功能
-              if (this.$authing.opts.forceLogin) {
-                that.setLoading();
-                validAuth.register({
-                  email: that.loginForm.email,
-                  password: that.loginForm.password,
-                })
-                  .then(function (data) {
-                    that.unLoading();
-                    that.showGlobalSuccess('验证通过，欢迎你：' + data.username || data.email);
-                    that.$authing.pub('login', data);
-                    that.recordLoginInfo(data);
-                  })
-                  .catch(function (err) {
-                    that.unLoading();
-                    that.showGlobalErr(err.message.message);
-                    that.$authing.pub('loginError', err);
-                  });
-                return false;
-              } else {
-                that.addAnimation('login-username');
-                that.removeRedLine('login-password');
-                that.removeRedLine('verify-code');
-              }
-            }
-            // 密码错误
-            else if (err.message.code === 2006 || err.message.code === 2016 || err.message.code === 2027) {
+            if (err.message.code === 2006 || err.message.code === 2016 || err.message.code === 2027) {
               that.addAnimation('login-password');
               that.removeRedLine('verify-code');
               that.removeRedLine('login-username');
             }
-
           });
       },
       handleForgetPasswordSendEmail: function handleForgetPasswordSendEmail() {
