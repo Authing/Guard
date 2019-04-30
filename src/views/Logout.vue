@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="authorize">
+      <iframe @load="logout" :src="sessionEndURL" name="oidc-session-end"></iframe>
       <div class="_authing_container" id="_authing_login_form_content">
         <div class="authing-login-form-wrapper">
           <div class="_authing_form-wrapper animated fast fadeInUp _authing_authorize_container" style="min-height: 0;">
@@ -26,12 +27,11 @@
 export default {
   data() {
     return {
-      logoutMsg: '退出中...',
-    };
-  },
+      logoutMsg: '加载中...',
 
-  mounted() {
-    this.logout();
+      sessionEndURL: `${location.origin}/oauth/oidc/session/end`,
+    //   sessionEndURL: `http://localhost:8080/logout.html`,
+    };
   },
 
   methods: {
@@ -56,7 +56,7 @@ export default {
         return appToken;
     },
 
-    logout() {
+    async logout() {
         const appId = this.$route.query.app_id || this.$route.query.client_id;
         const redirect_uri = this.$route.query.redirect_uri;
 
@@ -67,27 +67,38 @@ export default {
             location.href = '/login/error?message=请提供 redirect_uri &code=id404';
         }
 
-        if (!this.isLogged()) {
-            localStorage.setItem('_authing_token', null);
-            // 若未登录直接跳到用户设置好的 redirect_uri 中
-            location.href = redirect_uri;
-        }
+        this.logoutMsg = '退出中...';
 
-        // 若登录则读取 token 然后清空 localStorage
-        const appToken = this.getAppToken();
-        if (appToken[appId]) {
-            delete appToken[appId];
-            localStorage.setItem('appToken', JSON.stringify(appToken));
-            localStorage.setItem('_authing_token', null);
-            location.href = redirect_uri;
-        }else {
-            localStorage.setItem('_authing_token', null);
-            location.href = redirect_uri;
-        }
+        this.removeOIDCSession();
+
+        this.logoutMsg = '清除缓存中...';
+        setTimeout(() => {
+            if (!this.isLogged()) {
+                localStorage.setItem('_authing_token', null);
+                // 若未登录直接跳到用户设置好的 redirect_uri 中
+                location.href = redirect_uri;
+            }
+
+            this.logoutMsg = '退出成功'; 
+
+            // 若登录则读取 token 然后清空 localStorage
+            const appToken = this.getAppToken();
+            if (appToken[appId]) {
+                delete appToken[appId];
+                localStorage.setItem('appToken', JSON.stringify(appToken));
+                localStorage.setItem('_authing_token', null);
+                location.href = redirect_uri;
+            }else {
+                localStorage.setItem('_authing_token', null);
+                location.href = redirect_uri;
+            }
+        }, 2000);
     },
 
-    returnBack() {
-      // $route.back(-1);
+    removeOIDCSession() {
+        const sessionEndFrame = window.frames['oidc-session-end'].window;
+        const logoutBtn = sessionEndFrame.document.querySelector('button');
+        logoutBtn.click();
     },
   }
 };
