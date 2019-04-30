@@ -97,6 +97,8 @@ export default {
 
     removeOIDCSession() {
         const sessionEndFrame = window.frames['oidc-session-end'].window;
+        const action = sessionEndFrame.document.querySelector('#op-logoutForm').getAttribute('action');
+        sessionEndFrame.document.querySelector('#op-logoutForm').setAttribute('action', action.replace('http://', 'https://'))
         const logoutBtn = sessionEndFrame.document.querySelector('button');
         logoutBtn.click();
     },
