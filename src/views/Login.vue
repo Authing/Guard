@@ -66,7 +66,7 @@
                   v-bind:class="{
                   'authing-header-tabs-current': pageVisible.loginVisible,
                   'width-55': !isScanCodeEnable || opts.hideQRCode || opts.hideUP || opts.forceLogin,
-                  'width-100': (opts.hideUP && opts.hideQRCode) || (opts.hideQRCode && opts.forceLogin),
+                  'width-100': (opts.hideUP && opts.hideQRCode) || (opts.hideQRCode && opts.forceLogin) || clientInfo.registerDisabled,
                 }">
                   <a class="_authing_a" href="javascript:void(0)" @click="gotoLogin">登录</a>
                 </li>
