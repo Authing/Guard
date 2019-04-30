@@ -1058,6 +1058,7 @@
         validAuth.loginByPhoneCode(this.loginByPhoneCodeForm).then((userInfo) => {
           this.unLoading();
           this.showGlobalSuccess('验证通过，欢迎你：' + userInfo.username || userInfo.phone);
+          this.recordLoginInfo(data);
           this.$authing.pub('login', userInfo);
         }).catch((err) => {
           this.unLoading();
