@@ -92,7 +92,7 @@ export default {
                 localStorage.setItem('_authing_token', null);
                 location.href = redirect_uri;
             }
-        }, 2000);
+        }, 5000);
     },
 
     removeOIDCSession() {
