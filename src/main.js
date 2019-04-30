@@ -24,7 +24,9 @@ var AuthingGuard = function (appId, domain, opts) {
       'PASSWORD': '请输入密码',
       'CONFIRM_PASSWORD': '请确认密码',
       'VERIFY_CODE': '请输入验证码',
-      'NEW_PASSWORD': '请输入新密码'
+      'NEW_PASSWORD': '请输入新密码',
+      'PHONE': '请输入手机号',
+      'PHONE_CODE': '4 位验证码' 
     },
 
 
@@ -85,7 +87,6 @@ var AuthingGuard = function (appId, domain, opts) {
     opts.qrcodeScanning.tips = opts.qrcodeScanning.tips || null;
   }
 
-  // 初始化 placeholder
   if (opts.placeholder) {
     opts.placeholder.username = opts.placeholder.username || PLACEHOLDER_TEXT.USERNAME;
     opts.placeholder.email = opts.placeholder.email || PLACEHOLDER_TEXT.EMAIL;
@@ -93,6 +94,8 @@ var AuthingGuard = function (appId, domain, opts) {
     opts.placeholder.confirmPassword = opts.placeholder.confirmPassword || PLACEHOLDER_TEXT.USERNAME;
     opts.placeholder.verfiyCode = opts.placeholder.verfiyCode || PLACEHOLDER_TEXT.VERIFY_CODE;
     opts.placeholder.newPassword = opts.placeholder.newPassword || PLACEHOLDER_TEXT.NEW_PASSWORD;
+    opts.placeholder.phone = opts.placeholder.phone || PLACEHOLDER_TEXT.PHONE;
+    opts.placeholder.phoneCode = opts.placeholder.phoneCode || PLACEHOLDER_TEXT.PHONE_CODE;
   } else {
     opts.placeholder = {
       username: PLACEHOLDER_TEXT.USERNAME,
@@ -100,7 +103,9 @@ var AuthingGuard = function (appId, domain, opts) {
       password: PLACEHOLDER_TEXT.PASSWORD,
       confirmPassword: PLACEHOLDER_TEXT.CONFIRM_PASSWORD,
       verfiyCode: PLACEHOLDER_TEXT.VERIFY_CODE,
-      newPassword: PLACEHOLDER_TEXT.NEW_PASSWORD
+      newPassword: PLACEHOLDER_TEXT.NEW_PASSWORD,
+      phone: PLACEHOLDER_TEXT.PHONE,
+      phoneCode: PLACEHOLDER_TEXT.PHONE_CODE,
     };
   }
 
