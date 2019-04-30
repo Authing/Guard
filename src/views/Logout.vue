@@ -76,6 +76,7 @@ export default {
         const appToken = this.getAppToken();
         if (appToken[appId]) {
             delete appToken[appId];
+            localStorage.setItem('appToken', JSON.stringify(appToken)); 
             location.href = redirect_uri;
         }else {
             location.href = redirect_uri;
