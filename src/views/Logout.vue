@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="authorize">
-      <iframe @load="logout" :src="sessionEndURL" name="oidc-session-end"></iframe>
+      <iframe v-show="false" @load="logout" :src="sessionEndURL" name="oidc-session-end"></iframe>
       <div class="_authing_container" id="_authing_login_form_content">
         <div class="authing-login-form-wrapper">
           <div class="_authing_form-wrapper animated fast fadeInUp _authing_authorize_container" style="min-height: 0;">
