@@ -76,7 +76,8 @@ export default {
         const appToken = this.getAppToken();
         if (appToken[appId]) {
             delete appToken[appId];
-            localStorage.setItem('appToken', JSON.stringify(appToken)); 
+            localStorage.setItem('appToken', JSON.stringify(appToken));
+            localStorage.setItem('_authing_token', null);
             location.href = redirect_uri;
         }else {
             location.href = redirect_uri;
