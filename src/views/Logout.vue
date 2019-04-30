@@ -68,6 +68,7 @@ export default {
         }
 
         if (!this.isLogged()) {
+            localStorage.setItem('_authing_token', null);
             // 若未登录直接跳到用户设置好的 redirect_uri 中
             location.href = redirect_uri;
         }
@@ -80,6 +81,7 @@ export default {
             localStorage.setItem('_authing_token', null);
             location.href = redirect_uri;
         }else {
+            localStorage.setItem('_authing_token', null);
             location.href = redirect_uri;
         }
     },
