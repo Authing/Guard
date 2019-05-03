@@ -159,7 +159,9 @@ AuthingGuard.prototype = {
     const appId = this.querySearch('app_id') || this.querySearch('client_id') || '';
     const redirectURI = this.querySearch('redirect_uri') || '';
     const responseType = this.querySearch('response_type') || 'code';
+    const SAMLRequest = this.querySearch('SAMLRequest') || ''
     const scope = this.querySearch('scope') || Math.ceil(Math.random() * Math.pow(10, 6));
+    this.SAMLIdPURL = `${ssoHost}/login/authorize/confirm?app_id=${appId}&context=SAMLIdP&SAMLRequest=${SAMLRequest}`
     this.userAuthorizeURL = `${ssoHost}/login/authorize/confirm?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
     this.sysAuthorizeURL = `${ssoHost}/authorize?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}&authorization_header=${localStorage.getItem(
       "_authing_token"
@@ -187,10 +189,12 @@ AuthingGuard.prototype = {
           baseURL: this.opts.host.oauth,
         });
         let operationName;
-        let uuid = this.querySearch('uuid');
-        if(uuid) {
+        let context = this.querySearch('context')
+        if(context === 'OIDC') {
           operationName = 'QueryOIDCAppInfoByDomain';
-        } else {
+        } else if(context === 'SAMLIdP'){
+          operationName = 'QuerySAMLIdentityProviderInfoByDomain'
+        }else {
           operationName = 'QueryAppInfoByDomain';
         }
         const query =
@@ -202,7 +206,17 @@ AuthingGuard.prototype = {
             }`;
         oAuthGql.request({ query })
           .then(e => {
-            const appInfo = uuid ? e.QueryOIDCAppInfoByDomain : e.QueryAppInfoByDomain;
+            let appInfo
+            switch(context) {
+              case 'OIDC':
+                appInfo = e.QueryOIDCAppInfoByDomain
+                break
+              case 'SAMLIdP':
+                appInfo = e.QuerySAMLIdentityProviderInfoByDomain
+                break
+              default:
+                appInfo = e.QueryAppInfoByDomain
+            }
             if (!appInfo) {
               location.href = 'https://authing.cn';
             }else {
@@ -316,7 +330,14 @@ AuthingGuard.prototype = {
     if (!uuid) {
       location.href = location.pathname + 'error?message=缺少 OIDC 所必须的参数 uuid';
     }
-    location.href = `${this.userAuthorizeURL}&authorize_type=oidc&uuid=${uuid}`;
+    location.href = `${this.userAuthorizeURL}&context=OIDC&uuid=${uuid}`;
+  },
+  async SAMLIdPLogin(SAMLRequest) {
+    SAMLRequest = SAMLRequest || this.querySearch('SAMLRequest');
+    if (!SAMLRequest) {
+      location.href = location.pathname + 'error?message=缺少 SAML IdP 登录所必须的参数 SAMLRequest';
+    }
+    location.href = this.SAMLIdPURL;
   },
 };
 

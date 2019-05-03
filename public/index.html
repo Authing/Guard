@@ -27,6 +27,7 @@
 
     let appId = getQueryString('app_id') || getQueryString('client_id');
     let uuid = getQueryString('uuid') || null;
+    let context = getQueryString('context') || null
 
     if (location.pathname === '/' 
       || location.pathname === '/login' 
@@ -45,27 +46,35 @@
         redirect: false,
       },
       host: {
-        user: 'https://users.authing.cn/graphql',
-        oauth: 'https://oauth.authing.cn/graphql',
+        user: 'http://localhost:5555/graphql',
+        oauth: 'http://localhost:5556/graphql',
       }
     });
 
     guard.on('authenticated', async (authing) => {
       if (guard.isLogged()) {
         // 已登录，直接跳至授权页
-        if (!uuid) {
-        guard.sysAuthorize();
-      } else {
-        guard.oidcLogin(uuid);
-      }
+        if(context === 'SAMLIdP') {
+          // 如果外界在和 Authing SAML IdP 通信，而 IdP 需要认证用户
+          let SAMLRequest = getQueryString('SAMLRequest')
+          guard.SAMLIdPLogin(SAMLRequest)
+        } else if (context === 'OIDC') {
+          guard.oidcLogin(uuid);
+        } else {
+          guard.sysAuthorize();
+        }
       }
     });
 
     guard.on('login', (userInfo) => {
-      if (!uuid) {
-        guard.sysAuthorize();
-      } else {
+      if(context === 'SAMLIdP') {
+        // 如果外界在和 Authing SAML IdP 通信，而 IdP 需要认证用户
+        let SAMLRequest = getQueryString('SAMLRequest')
+        guard.SAMLIdPLogin(SAMLRequest)
+      } else if (context === 'OIDC') {
         guard.oidcLogin(uuid);
+      } else {
+        guard.sysAuthorize();
       }
     });
 

@@ -317,11 +317,13 @@
     async mounted () {
       var that = this;
       var auth = null;
-      const uuid = this.$route.query.uuid;
+      const context = this.$route.query.context
 
       let operationName;
-      if(uuid) {
+      if(context === 'OIDC') {
         operationName = 'QueryOIDCAppInfoByAppID';
+      } else if (context === 'SAMLIdP') {
+        operationName = 'QuerySAMLIdentityProviderInfoByAppID'
       } else {
         operationName = 'QueryAppInfoByAppID';
       }
@@ -341,15 +343,17 @@
       try {
         const oAuthAppInfo = await GraphQLClient_getInfo.request({ query });
 
-        if (!(oAuthAppInfo.QueryAppInfoByAppID || oAuthAppInfo.QueryOIDCAppInfoByAppID)) {
+        if (!(oAuthAppInfo.QueryAppInfoByAppID || oAuthAppInfo.QueryOIDCAppInfoByAppID || oAuthAppInfo.QuerySAMLIdentityProviderInfoByAppID)) {
           that.authingOnError = true;
           that.errMsg = 'Error: 找不到此应用';
           that.$authing.pub('authingUnload', '找不到此应用');
           throw that.errMsg;
         }
         let info
-        if(uuid) {
+        if(context === 'OIDC') {
           info = oAuthAppInfo.QueryOIDCAppInfoByAppID
+        } else if(context ==='SAMLIdP') {
+          info = oAuthAppInfo.QuerySAMLIdentityProviderInfoByAppID
         } else {
           info = oAuthAppInfo.QueryAppInfoByAppID
         }

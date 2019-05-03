@@ -36,13 +36,16 @@
                 >{{authInfo['name']}}</a>
               </div>
               <ul>
-                <template v-if="scopes.scopeMeanings.length > 0 && $route.query.authorize_type === 'oidc'">
+                <template v-if="scopes.scopeMeanings.length > 0 && $route.query.context === 'OIDC'">
                   <div  class="permission-list">
                   <li :key="scope" v-for="scope in scopes.scopeMeanings">获取你的{{scope}}</li>
                   </div>
                 </template>
-                <template v-if="scopes.scopeMeanings.length === 0 && $route.query.authorize_type === 'oidc'">
+                <template v-if="scopes.scopeMeanings.length === 0 && $route.query.context === 'OIDC'">
                   <li>获取 scope 失败，会话可能过期，请重新登录</li>
+                </template>
+                <template v-if="$route.query.context === 'SAMLIdP'">
+                  <li>获取你的基础信息</li>
                 </template>
               </ul>
             </div>
@@ -72,14 +75,16 @@ export default {
     // call server for AppInfo
     queryAppInfoByAppID() {
       this.pageLoading = true;
-      const uuid = this.$route.query.uuid;
       const appId = this.$route.query.app_id || this.$route.query.client_id;
+      const context = this.$route.query.context
       if (!appId) {
         location.href = '/login/error?message=请提供 app_id 或 client_id&code=id404';
       }
       let operationName;
-      if(uuid) {
+      if(context === 'OIDC') {
         operationName = 'QueryOIDCAppInfoByAppID';
+      } else if (context === 'SAMLIdP') {
+        operationName = 'QuerySAMLIdentityProviderInfoByAppID'
       } else {
         operationName = 'QueryAppInfoByAppID';
       }
@@ -101,8 +106,16 @@ export default {
       });
       GraphQLClient_getInfo.request({ query })
         .then(e => {
-          self.authInfo = uuid ? e.QueryOIDCAppInfoByAppID : e.QueryAppInfoByAppID;
-
+          switch(context) {
+            case 'OIDC':
+              self.authInfo = e.QueryOIDCAppInfoByAppID
+              break;
+            case 'SAMLIdP':
+              self.authInfo = e.QuerySAMLIdentityProviderInfoByAppID
+              break;
+            default:
+              self.authInfo = e.QueryAppInfoByAppID
+          }
           try {
             self.pageError = (
               "clientId"      in self.authInfo &&
@@ -131,9 +144,14 @@ export default {
       const scope =
         this.$route.query.scope || Math.ceil(Math.random() * Math.pow(10, 6));
       const host = this.$root.SSOHost;
+      const context = this.$route.query.context
+      const SAMLRequest = this.$route.query.SAMLRequest || ''
+
       console.log(this.isOIDC)
       if (this.isOIDC) {
         location.href = this.scopes.redirectTo;
+      } else if(context === 'SAMLIdP') {
+        location.href = `${host}/oauth/saml/idp/${appId}/SingleSignOnService?authorization_header=${localStorage.getItem('_authing_token')}&SAMLRequest=${SAMLRequest}`
       }else {
         location.href = `${host}/authorize?app_id=${appId}&state=${state}&response_type=${responseType}&redirect_uri=${redirectURI}&scope=${scope}&authorization_header=${localStorage.getItem(
           "_authing_token"
@@ -195,11 +213,14 @@ export default {
   mounted() {
     const authorizeType = this.$route.query.authorize_type;
     const uuid = this.$route.query.uuid;
+    const context = this.$route.query.context
     console.log(authorizeType, uuid)
     if (authorizeType === 'oidc' && uuid) {
       this.isOIDC = true;
       this.queryOIDCInfo(uuid);
-    }else {
+    } else if(context === 'SAMLIdP') {// eslint-disable-next-line no-empty
+      // @TODO querySAMLIdPInfo 查询 确权信息
+    } else {
       this.queryAppInfoByAppID();
     }
     window.onresize = () => {
