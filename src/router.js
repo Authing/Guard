@@ -4,6 +4,7 @@ import Router from 'vue-router';
 import Login from './views/Login.vue';
 import Authorize from './views/Authorize.vue';
 import ErrorPage from './views/ErrorPage.vue';
+import Logout from './views/Logout.vue'
 
 Vue.use(Router);
 
@@ -26,6 +27,11 @@ export default new Router({
       name: 'authorize',
       component: Authorize,
     },
+    {
+      path: '/profile/logout',
+      name: 'logout',
+      component: Logout,
+    },    
     {
       path: '/error',
       name: 'error',
