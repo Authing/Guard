@@ -81,26 +81,47 @@ export default {
         location.href = '/login/error?message=请提供 app_id 或 client_id&code=id404';
       }
       let operationName;
+      let query
       if(context === 'OIDC') {
         operationName = 'QueryOIDCAppInfoByAppID';
+        query = 
+        `query {
+          ${operationName} (appId: "` + appId + `") {   
+              _id,
+              name,
+              image,
+              redirect_uris,
+              clientId,
+              description,
+          }
+        }`;
       } else if (context === 'SAMLIdP') {
         operationName = 'QuerySAMLIdentityProviderInfoByAppID'
+        query = 
+        `query {
+          ${operationName} (appId: "` + appId + `") {   
+              _id,
+              name,
+              image,
+              clientId,
+              description,
+          }
+        }`;
       } else {
         operationName = 'QueryAppInfoByAppID';
+        query = 
+        `query {
+          ${operationName} (appId: "` + appId + `") {   
+              _id,
+              name,
+              image,
+              redirectUris,
+              clientId,
+              description,
+          }
+        }`;
       }
       let self = this;
-      let query =
-        `query {
-                    ${operationName} (appId: "` + appId + `") {   
-                        _id,
-                        name,
-                        image,
-                        redirectUris,
-                        clientId,
-                        description,
-                    }
-                  }`;
-
       let GraphQLClient_getInfo = new GraphQLClient({
         baseURL: this.$root.opts.host.oauth,
       });
@@ -216,6 +237,7 @@ export default {
         this.scopes = result.data;
       }catch(err) {
         // location.href = location.pathname + 'error?message=缺少 OIDC 所必须的参数 uuid';
+        console.log(err)
       }
     },
   },
@@ -242,11 +264,9 @@ export default {
   },
 
   mounted() {
-    const authorizeType = this.$route.query.authorize_type;
+    const context = this.$route.query.context;
     const uuid = this.$route.query.uuid;
-    const context = this.$route.query.context
-    console.log(authorizeType, uuid)
-    if (authorizeType === 'oidc' && uuid) {
+    if (context === 'OIDC' && uuid) {
       this.isOIDC = true;
       this.queryOIDCInfo(uuid);
     } else if(context === 'SAMLIdP') {// eslint-disable-next-line no-empty
