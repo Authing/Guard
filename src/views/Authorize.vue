@@ -145,13 +145,44 @@ export default {
         this.$route.query.scope || Math.ceil(Math.random() * Math.pow(10, 6));
       const host = this.$root.SSOHost;
       const context = this.$route.query.context
+      const bindings = this.$route.query.bindings
       const SAMLRequest = this.$route.query.SAMLRequest || ''
 
       console.log(this.isOIDC)
       if (this.isOIDC) {
         location.href = this.scopes.redirectTo;
       } else if(context === 'SAMLIdP') {
-        location.href = `${host}/oauth/saml/idp/${appId}/SingleSignOnService?authorization_header=${localStorage.getItem('_authing_token')}&SAMLRequest=${SAMLRequest}`
+        if(bindings === 'post') {
+          // 创建一个 form
+          var form1 = document.createElement("form");
+          form1.id = "saml-post";
+          form1.name = "saml-post";
+      
+          // 添加到 body 中
+          document.body.appendChild(form1);
+      
+          // 创建一个输入
+          var input = document.createElement("input");
+          // 设置相应参数
+          input.type = "text";
+          input.name = "SAMLRequest";
+          input.value = SAMLRequest;
+      
+          // 将该输入框插入到 form 中
+          form1.appendChild(input);
+      
+          // form 的提交方式
+          form1.method = "POST";
+          // form 提交路径
+          form1.action = `${host}/oauth/saml/idp/${appId}/SingleSignOnService?authorization_header=${localStorage.getItem('_authing_token')}`;
+      
+          // 对该 form 执行提交
+          form1.submit();
+          // 删除该 form
+          document.body.removeChild(form1);
+        } else {
+          location.href = `${host}/oauth/saml/idp/${appId}/SingleSignOnService?authorization_header=${localStorage.getItem('_authing_token')}&SAMLRequest=${SAMLRequest}`
+        }
       }else {
         location.href = `${host}/authorize?app_id=${appId}&state=${state}&response_type=${responseType}&redirect_uri=${redirectURI}&scope=${scope}&authorization_header=${localStorage.getItem(
           "_authing_token"

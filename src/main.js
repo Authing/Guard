@@ -160,8 +160,9 @@ AuthingGuard.prototype = {
     const redirectURI = this.querySearch('redirect_uri') || '';
     const responseType = this.querySearch('response_type') || 'code';
     const SAMLRequest = this.querySearch('SAMLRequest') || ''
+    const bindings = this.querySearch('bindings') || ''
     const scope = this.querySearch('scope') || Math.ceil(Math.random() * Math.pow(10, 6));
-    this.SAMLIdPURL = `${ssoHost}/login/authorize/confirm?app_id=${appId}&context=SAMLIdP&SAMLRequest=${SAMLRequest}`
+    this.SAMLIdPURL = `${ssoHost}/login/authorize/confirm?app_id=${appId}&context=SAMLIdP&bindings=${bindings}&SAMLRequest=${SAMLRequest}`
     this.userAuthorizeURL = `${ssoHost}/login/authorize/confirm?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}`;
     this.sysAuthorizeURL = `${ssoHost}/authorize?app_id=${appId}&state=${state}&redirect_uri=${redirectURI}&response_type=${responseType}&scope=${scope}&authorization_header=${localStorage.getItem(
       "_authing_token"
