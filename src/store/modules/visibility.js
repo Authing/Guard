@@ -4,8 +4,8 @@ const pageVisibilities = [
   "forgetPasswordVerifyCode",
   "forgetPasswordNewPassword",
   "wxQRCode",
-  "EmailLogin",
-  "SignUp",
+  "emailLogin",
+  "signUp",
   "loginByPhoneCode"
 ];
 const state = {
@@ -53,7 +53,8 @@ const getters = {
 };
 const actions = {
   changeVisibility({ commit }, { el, visibility }) {
-    console.log("改变元素可见性" + { el, visibility });
+    console.log("改变元素可见性");
+    console.log({ el, visibility })
     commit("setVisibility", { el, visibility });
   },
   removeGlobalMsg() {
@@ -61,6 +62,9 @@ const actions = {
   },
   gotoWxQRCodeScanning({ commit }) {
     commit("turnOnPage", { page: "wxQRCode" });
+  },
+  gotoSignUp({commit}) {
+    commit("turnOnPage", { page: "signUp" });
   },
   turnOnPage({ commit }, { page }) {
     commit("removeGlobalMsg");

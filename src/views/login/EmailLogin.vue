@@ -1,9 +1,12 @@
 <template>
   <div>
     <div class="form-body">
-      <OAuthList/>
+      <SocialButtonsList/>
 
-      <P class="_authing_form-tip" v-show="!oAuthloading && OAuthList.length > 0 && !opts.hideUP">或者</P>
+      <P
+        class="_authing_form-tip"
+        v-show="!socialButtonsListLoading && socialButtonsList.length > 0 && !opts.hideUP"
+      >或者</P>
 
       <form action="#" class="authing-form animate-box no-shadow">
         <div v-show="opts.forceLogin" class="authing_force_login_tips" style="text-align:center">
@@ -73,12 +76,15 @@
   </div>
 </template>
 <script>
-import OAuthList from './OAuthList'
+import SocialButtonsList from "./SocialButtonsList";
+import { mapGetters, mapActions } from "vuex";
 export default {
+  name: "EmailLogin",
   components: {
-    OAuthList
+    SocialButtonsList
   },
   created() {
+    this.$authing = this.$root.$data.$authing;
     this.opts = this.$root.$data.$authing.opts;
     console.log(this.opts);
   },
@@ -93,10 +99,17 @@ export default {
         email: "",
         password: ""
       }
-      
     };
   },
+  computed: {
+    ...mapGetters("loading", {
+      socialButtonsListLoading: "socialButtonsList"
+    }),
+    ...mapGetters("data", ["socialButtonsList"])
+  },
   methods: {
+    ...mapActions("loading", ["changeLoading"]),
+    ...mapActions("data", ["changeLoading", "showGlobalMessage"]),
     verifyCodeLoad: function() {
       this.verifyCodeLoading = false;
     },
@@ -104,9 +117,9 @@ export default {
       this.$router.push({ name: "forgetPassword" });
     },
     gotoUsingPhone() {},
-    handleLogin: function handleLogin() {
+    handleLogin() {
+      this.changeLoading({ el: "form", loading: true });
       var that = this;
-      that.setLoading();
       var info = {
         email: this.loginForm.email,
         password: this.loginForm.password
@@ -114,22 +127,28 @@ export default {
 
       if (this.loginMethod === "common") {
         if (!this.$root.emailExp.test(this.loginForm.email)) {
-          this.showGlobalErr("请输入正确格式的邮箱");
-          this.addAnimation("login-username");
-          this.removeRedLine("login-password");
-          this.removeRedLine("verify-code");
-          that.unLoading();
+          this.showGlobalMessage({
+            type: "error",
+            message: "请输入正确格式的邮箱"
+          });
+          // this.addAnimation("login-username");
+          // this.removeRedLine("login-password");
+          // this.removeRedLine("verify-code");
+          this.changeLoading({ el: "form", loading: false });
           this.$authing.pub("loginError", "请输入正确格式的邮箱");
           return false;
         }
       }
 
       if (!this.loginForm.password) {
-        this.showGlobalErr("请输入密码");
-        this.addAnimation("login-password");
-        this.removeRedLine("verify-code");
-        this.removeRedLine("login-username");
-        that.unLoading();
+        this.showGlobalMessage({
+            type: "error",
+            message: "请输入密码"
+          });
+        // this.addAnimation("login-password");
+        // this.removeRedLine("verify-code");
+        // this.removeRedLine("login-username");
+        this.changeLoading({ el: "form", loading: false });
         this.$authing.pub("loginError", "请输入密码");
         return false;
       }
@@ -233,7 +252,7 @@ export default {
       if (this.loginMethod === "ldap") {
         this.handleLDAPLogin();
       }
-    },
+    }
   }
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form v-show="pageVisible.signUpVisible" class="authing-form no-shadow">
+    <form class="authing-form no-shadow">
       <div v-show="!opts.hideUsername" class="_authing_form-group">
         <input
           type="text"
@@ -49,14 +49,13 @@
       </div>
     </form>
 
-    <button
-      v-show="pageVisible.signUpVisible && !loading"
-      @click="handleSignUp"
-      class="btn btn-primary"
-    >注册</button>
+    <div class="_authing_form-footer login" v-show="!opts.hideUP">
+      <button @click="handleSignUp" class="btn btn-primary">注册</button>
+    </div>
   </div>
 </template>
 <script>
+import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -68,23 +67,45 @@ export default {
       }
     };
   },
+  created() {
+    this.$authing = this.$root.$data.$authing;
+    this.opts = this.$authing.opts;
+  },
   methods: {
+    ...mapActions("data", ["changeLoading", "showGlobalMessage"]),
+    checkEmail: function checkEmail() {
+      if (!this.$root.emailExp.test(this.signUpForm.email)) {
+        // this.showGlobalErr("请输入正确格式的邮箱");
+        // this.addAnimation("sign-up-email");
+        // this.removeRedLine("sign-up-username");
+        // this.removeRedLine("sign-up-password");
+        // this.removeRedLine("sign-up-re-password");
+      } else {
+        // this.removeRedLine("sign-up-email");
+      }
+    },
     handleSignUp: function handleSignUp() {
       var that = this;
       that.setLoading();
 
-      if (!this.$authing.opts.hideUsername && !this.signUpForm.username) {
-        this.showGlobalErr("请输入用户名");
-        this.addAnimation("sign-up-username");
-        this.removeRedLine("sign-up-email");
-        this.removeRedLine("sign-up-password");
-        this.removeRedLine("sign-up-re-password");
+      if (!this.opts.hideUsername && !this.signUpForm.username) {
+        this.showGlobalMessage({
+          type: "error",
+          message: "请输入用户名"
+        });
+        // this.addAnimation("sign-up-username");
+        // this.removeRedLine("sign-up-email");
+        // this.removeRedLine("sign-up-password");
+        // this.removeRedLine("sign-up-re-password");
         that.unLoading();
         this.$authing.pub("registerError", "请输入用户名");
         return false;
       }
       if (!this.$root.emailExp.test(this.signUpForm.email)) {
-        this.showGlobalErr("请输入正确格式的邮箱");
+        this.showGlobalMessage({
+          type: "error",
+          message: "请输入正确格式的邮箱"
+        });
         this.addAnimation("sign-up-email");
         this.removeRedLine("sign-up-username");
         this.removeRedLine("sign-up-password");
@@ -94,7 +115,10 @@ export default {
         return false;
       }
       if (!this.signUpForm.password) {
-        this.showGlobalErr("请输入密码");
+        this.showGlobalMessage({
+          type: "error",
+          message: "请输入密码"
+        });
         this.addAnimation("sign-up-password");
         this.this.removeRedLine("sign-up-username");
         this.removeRedLine("sign-up-email");
@@ -104,7 +128,10 @@ export default {
         return false;
       }
       if (this.signUpForm.password !== this.signUpForm.rePassword) {
-        this.showGlobalErr("两次密码不一致");
+        this.showGlobalMessage({
+          type: "error",
+          message: "两次密码不一致"
+        });
         this.addAnimation("sign-up-re-password");
         this.removeRedLine("sign-up-username");
         this.removeRedLine("sign-up-email");
@@ -134,18 +161,24 @@ export default {
             rePassword: ""
           };
           that.rememberMe = false;
-          that.showGlobalSuccess("注册成功");
+          this.showGlobalMessage({
+            type: "success",
+            message: "注册成功"
+          });
           that.$authing.pub("register", data);
         })
         .catch(function(err) {
           that.unLoading();
-          that.showGlobalErr(err.message.message);
+          this.showGlobalMessage({
+            type: "error",
+            message: err.message.message
+          });
           that.$authing.pub("registerError", err);
           if (err.message.code === 2026) {
-            that.addAnimation("sign-up-email");
-            that.emoveRedLine("sign-up-re-password");
-            that.removeRedLine("sign-up-username");
-            that.removeRedLine("sign-up-password");
+            // that.addAnimation("sign-up-email");
+            // that.removeRedLine("sign-up-re-password");
+            // that.removeRedLine("sign-up-username");
+            // that.removeRedLine("sign-up-password");
           }
         });
     }

@@ -26,7 +26,7 @@
         <div
           class="_authing_form-wrapper"
           :class="{
-        'authing-loading-wrapper': loading || oAuthloading,
+        'authing-loading-wrapper': formLoading || socialButtonsListLoading,
         animated: true,
         fast: true,
         fadeInUp: !closeForm,
@@ -94,8 +94,8 @@
               >{{forgetPasswordVisible ? '重置密码' : opts.title}}</div>
             </div>
           </div>
-
-          <div
+          <GlobalMessage v-show="globalMessage" :message="globalMessage" :type="globalMessageType"/>
+          <!-- <div
             v-show="errVisible || authingOnError"
             class="authing-global-message authing-global-message-error"
           >
@@ -117,7 +117,7 @@
             <span class="animated fadeInUp">
               <span>{{warnMsg}}</span>
             </span>
-          </div>
+          </div>-->
 
           <div v-show="!authingOnError">
             <div class="authing-header-tabs-container">
@@ -155,9 +155,9 @@
               </ul>
             </div>
 
-            <router-view/>
-            <EmailLogin/>
-
+            <!-- <router-view/> -->
+            <EmailLogin v-if="emailLoginVisible"/>
+            <SignUp v-if="signUpVisible"/>
             <!-- <div
               class="_authing_form-footer login"
               v-show="!opts.hideUP"
@@ -184,11 +184,15 @@
 <script>
 import GraphQLClient from "../../graphql.js";
 import EmailLogin from "./EmailLogin";
+import SignUp from "./SignUp";
+import GlobalMessage from "../components/GlobalMessage";
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "app",
   components: {
-    EmailLogin
+    EmailLogin,
+    GlobalMessage,
+    SignUp
   },
   data() {
     return {
@@ -208,8 +212,6 @@ export default {
 
       OAuthList: [],
 
-      loading: false,
-      oAuthloading: false,
       verifyCodeLoading: true,
 
       isWxQRCodeGenerated: false,
@@ -402,6 +404,11 @@ export default {
     };
   },
   methods: {
+    ...mapActions("visibility", [
+      "gotoWxQRCodeScanning",
+      "removeGlobalMsg",
+      "gotoSignUp"
+    ]),
     async checkHasLDAP(clientId) {
       let operationName = "QueryClientHasLDAPConfigs";
       let query =
@@ -458,11 +465,6 @@ export default {
       this.pageStack.push(this.getPageState());
       this.turnOnPage("loginVisible");
     },
-    gotoSignUp: function gotoSignUp() {
-      // this.pageStack.push(this.getPageState());
-      // this.turnOnPage('signUpVisible');
-      this.$router.push({ name: "register" });
-    },
     gotoForgetPassword: function gotoForgetPassword() {
       this.pageStack.push(this.getPageState());
       this.turnOnPage("forgetPasswordVisible");
@@ -473,17 +475,6 @@ export default {
       this.pageStack.push(this.getPageState());
       this.turnOnPage("loginByPhoneCodeVisible");
       this.pageVisible.signUpVisible = false;
-    },
-    checkEmail: function checkEmail() {
-      if (!this.$root.emailExp.test(this.signUpForm.email)) {
-        this.showGlobalErr("请输入正确格式的邮箱");
-        this.addAnimation("sign-up-email");
-        this.removeRedLine("sign-up-username");
-        this.removeRedLine("sign-up-password");
-        this.removeRedLine("sign-up-re-password");
-      } else {
-        this.removeRedLine("sign-up-email");
-      }
     },
 
     recordLoginInfo: function(userInfo) {
@@ -519,14 +510,17 @@ export default {
     }
   },
   computed: {
-    
-    ...mapGetters({
-      emailLoginVisible: "visibility/emailLogin",
-      wxQRCodeVisible: "visibility/wxQRCode",
-      signUpVisible: "visibility/signUp",
-      forgetPasswordVisible: 'visibility/forgetPassword'
+    ...mapGetters("visibility", {
+      emailLoginVisible: "emailLogin",
+      wxQRCodeVisible: "wxQRCode",
+      signUpVisible: "signUp",
+      forgetPasswordVisible: "forgetPassword"
     }),
-    ...mapActions('visibility', ['gotoWxQRCodeScanning', 'removeGlobalMsg'])
+    ...mapGetters("data", ["globalMessage", "globalMessageType"]),
+    ...mapGetters("loading", {
+      socialButtonsListLoading: "socialButtonsList",
+      formLoading: "form"
+    })
   },
   watch: {
     rememberMe: function(newVal) {
