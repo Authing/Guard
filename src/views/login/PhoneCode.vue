@@ -3,7 +3,6 @@
     <div class="form-body">
       <form
         @submit.prevent="() => { return false; }"
-        v-show="pageVisible.loginByPhoneCodeVisible"
         class="authing-form no-shadow"
       >
         <div class="_authing_form-group">
@@ -58,6 +57,14 @@
 </template>
 <script>
 export default {
+  data() {
+    return {
+      loginByPhoneCodeForm: {
+        phone: "",
+        phoneCode: ""
+      }
+    };
+  },
   methods: {
     handleLoginByPhoneCode: function handleLoginByPhoneCode() {
       if (!/^1[34578]\d{9}$/.test(this.loginByPhoneCodeForm.phone)) {

@@ -218,15 +218,6 @@ export default {
       pageStack: [],
 
       OAuthList: [],
-
-
-      signUpForm: {
-        username: "",
-        password: "",
-        email: "",
-        rePassword: ""
-      },
-
       
       loading: false,
       oAuthloading: false,
