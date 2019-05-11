@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="_authing_form-group"
-    style="margin-top: -15px;"
-  >
+  <div class="_authing_form-group" style="margin-top: -15px;">
     <input
       type="text"
       class="_authing_input _authing_form-control"
@@ -13,6 +10,11 @@
 </template>
 <script>
 export default {
+  data() {
+    return {
+      email: ""
+    };
+  },
   methods: {
     handleForgetPasswordSendEmail: function handleForgetPasswordSendEmail() {
       var that = this;
@@ -42,7 +44,7 @@ export default {
           that.unLoading();
           that.showGlobalErr(err.message);
         });
-    },
+    }
   }
 };
 </script>

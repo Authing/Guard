@@ -215,24 +215,10 @@ export default {
 
       rememberMe: false,
 
-      pageVisible: {
-        wxQRCodeVisible: false,
-        forgetPasswordVisible: false,
-        loginVisible: false,
-        oauthVisible: false,
-        signUpVisible: false,
-        verifyCodeVisible: false,
-        forgetPasswordVerifyCodeVisible: false,
-        forgetPasswordNewPasswordVisible: false,
-        forgetPasswordSendEmailVisible: false,
-        loginByPhoneCodeVisible: false
-      },
-
       pageStack: [],
 
       OAuthList: [],
 
-      verifyCodeUrl: "",
 
       signUpForm: {
         username: "",
@@ -240,21 +226,8 @@ export default {
         email: "",
         rePassword: ""
       },
-      loginByPhoneCodeForm: {
-        phone: "",
-        phoneCode: ""
-      },
-      loginForm: {
-        email: "",
-        password: ""
-      },
-      verifyCode: "",
-      forgetPasswordForm: {
-        email: "",
-        verifyCode: "",
-        password: ""
-      },
 
+      
       loading: false,
       oAuthloading: false,
       verifyCodeLoading: true,
@@ -612,86 +585,7 @@ export default {
         this.removeRedLine("sign-up-email");
       }
     },
-    handleSignUp: function handleSignUp() {
-      var that = this;
-      that.setLoading();
-
-      if (!this.$authing.opts.hideUsername && !this.signUpForm.username) {
-        this.showGlobalErr("请输入用户名");
-        this.addAnimation("sign-up-username");
-        this.removeRedLine("sign-up-email");
-        this.removeRedLine("sign-up-password");
-        this.removeRedLine("sign-up-re-password");
-        that.unLoading();
-        this.$authing.pub("registerError", "请输入用户名");
-        return false;
-      }
-      if (!this.$root.emailExp.test(this.signUpForm.email)) {
-        this.showGlobalErr("请输入正确格式的邮箱");
-        this.addAnimation("sign-up-email");
-        this.removeRedLine("sign-up-username");
-        this.removeRedLine("sign-up-password");
-        this.removeRedLine("sign-up-re-password");
-        that.unLoading();
-        this.$authing.pub("registerError", "请输入正确格式的邮箱");
-        return false;
-      }
-      if (!this.signUpForm.password) {
-        this.showGlobalErr("请输入密码");
-        this.addAnimation("sign-up-password");
-        this.this.removeRedLine("sign-up-username");
-        this.removeRedLine("sign-up-email");
-        this.removeRedLine("sign-up-re-password");
-        that.unLoading();
-        this.$authing.pub("registerError", "请输入密码");
-        return false;
-      }
-      if (this.signUpForm.password !== this.signUpForm.rePassword) {
-        this.showGlobalErr("两次密码不一致");
-        this.addAnimation("sign-up-re-password");
-        this.removeRedLine("sign-up-username");
-        this.removeRedLine("sign-up-email");
-        this.removeRedLine("sign-up-password");
-        that.unLoading();
-        this.$authing.pub("registerError", "两次密码不一致");
-        return false;
-      }
-      validAuth
-        .register({
-          email: this.signUpForm.email,
-          username: this.signUpForm.username,
-          password: this.signUpForm.password
-        })
-        .then(function(data) {
-          that.unLoading();
-          that.errVisible = false;
-          that.gotoLogin();
-          that.loginForm = {
-            email: that.signUpForm.email,
-            password: that.signUpForm.password
-          };
-          that.signUpForm = {
-            username: "",
-            password: "",
-            email: "",
-            rePassword: ""
-          };
-          that.rememberMe = false;
-          that.showGlobalSuccess("注册成功");
-          that.$authing.pub("register", data);
-        })
-        .catch(function(err) {
-          that.unLoading();
-          that.showGlobalErr(err.message.message);
-          that.$authing.pub("registerError", err);
-          if (err.message.code === 2026) {
-            that.addAnimation("sign-up-email");
-            that.emoveRedLine("sign-up-re-password");
-            that.removeRedLine("sign-up-username");
-            that.removeRedLine("sign-up-password");
-          }
-        });
-    },
+    
     recordLoginInfo: function(userInfo) {
       let appToken = localStorage.getItem("appToken");
 

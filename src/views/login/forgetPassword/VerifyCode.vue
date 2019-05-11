@@ -13,6 +13,11 @@
 </template>
 <script>
 export default {
+  data() {
+    return {
+      verifyCode: ""
+    };
+  },
   methods: {
     handleSubmitForgetPasswordVerifyCode: function handleSubmitForgetPasswordVerifyCode() {
       var that = this;
