@@ -6,6 +6,7 @@ const state = {
   forgetPasswordVerifyCode: false,
   forgetPasswordNewPassword: false,
   
+  
 }
 const getters = {
   successMsg: state => state.successMsg,
