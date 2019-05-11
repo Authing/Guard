@@ -435,51 +435,6 @@ export default {
       this.verifyCodeLoading = false;
     },
     
-    removeAnimation: function removeAnimation(className) {
-      document.getElementById(className).classList.remove("animated");
-      document.getElementById(className).classList.remove("shake");
-    },
-
-    removeRedLine: function removeRedLine(className) {
-      document.getElementById(className).classList.remove("err-hint");
-    },
-
-    addRedLine: function addRedLine(className) {
-      document.getElementById(className).classList.add("err-hint");
-    },
-
-    addAnimation: function addAnimation(className) {
-      var that = this;
-      document.getElementById(className).classList.add("animated");
-      document.getElementById(className).classList.add("shake");
-      document.getElementById(className).classList.add("err-hint");
-      setTimeout(function() {
-        that.removeAnimation(className);
-      }, 500);
-    },
-    removeGlobalMsg: function removeGlobalMsg() {
-      this.warnVisible = false;
-      this.errVisible = false;
-      this.successVisible = false;
-    },
-    showGlobalSuccess: function showGlobalSuccess(msg) {
-      this.warnVisible = false;
-      this.errVisible = false;
-      this.successVisible = true;
-      this.successMsg = msg;
-    },
-    showGlobalErr: function showGlobalErr(msg) {
-      this.successVisible = false;
-      this.warnVisible = false;
-      this.errVisible = true;
-      this.errMsg = msg;
-    },
-    showGlobalWarn: function showGlobalWarn(msg) {
-      this.successVisible = false;
-      this.errVisible = false;
-      this.warnVisible = true;
-      this.warnMsg = msg;
-    },
     setLoading: function loading() {
       this.loading = true;
     },
