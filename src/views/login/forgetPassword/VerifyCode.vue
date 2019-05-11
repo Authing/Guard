@@ -1,14 +1,18 @@
 <template>
-  <div
-    class="_authing_form-group"
-    style="margin-top: -15px;"
-  >
-    <input
-      type="text"
-      class="_authing_input _authing_form-control"
-      id="forget-password-verify-code"
-      autocomplete="off"
-    >
+  <div>
+    <div class="_authing_form-group" style="margin-top: -15px;">
+      <input
+        type="text"
+        class="_authing_input _authing_form-control"
+        id="forget-password-verify-code"
+        autocomplete="off"
+      >
+    </div>
+    <button
+      v-show="pageVisible.forgetPasswordVerifyCodeVisible && !loading"
+      @click="handleSubmitForgetPasswordVerifyCode"
+      class="btn btn-primary"
+    >提交验证码</button>
   </div>
 </template>
 <script>
@@ -48,7 +52,7 @@ export default {
           that.addAnimation("forget-password-verify-code");
           that.showGlobalErr(err.message.message);
         });
-    },
+    }
   }
 };
 </script>

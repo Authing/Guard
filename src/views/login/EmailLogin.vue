@@ -1,8 +1,10 @@
 <template>
   <div>
-    <div
-      class="form-body"
-    >
+    <div class="form-body">
+      <OAuthList/>
+
+      <P class="_authing_form-tip" v-show="!oAuthloading && OAuthList.length > 0 && !opts.hideUP">或者</P>
+
       <form action="#" class="authing-form animate-box no-shadow">
         <div v-show="opts.forceLogin" class="authing_force_login_tips" style="text-align:center">
           <p>输入帐号密码登录</p>
@@ -65,19 +67,17 @@
         </div>
       </form>
     </div>
-    <div
-      class="_authing_form-footer login"
-      v-show="!opts.hideUP"
-    >
-      <button
-        @click="handleLogin"
-        class="btn btn-primary"
-      >登录</button>
+    <div class="_authing_form-footer login" v-show="!opts.hideUP">
+      <button @click="handleLogin" class="btn btn-primary">登录</button>
     </div>
   </div>
 </template>
 <script>
+import OAuthList from './OAuthList'
 export default {
+  components: {
+    OAuthList
+  },
   created() {
     this.opts = this.$root.$data.$authing.opts;
     console.log(this.opts);

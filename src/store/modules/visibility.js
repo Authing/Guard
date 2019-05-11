@@ -1,12 +1,14 @@
 const state = {
+  // 登录成功和错误提示
   successMsg: false,
   errorMsg: false,
 
+  // 重置密码
   forgetPasswordSendEmail: false,
   forgetPasswordVerifyCode: false,
   forgetPasswordNewPassword: false,
   
-  
+
 }
 const getters = {
   successMsg: state => state.successMsg,
@@ -18,7 +20,7 @@ const getters = {
 }
 const actions = {
   changeVisibility({commit}, {el, visibility}) {
-    console.log('改变元素可见性')
+    console.log('改变元素可见性' + {el, visibility} )
     commit('setVisibility', {el, visibility})
   }
 }

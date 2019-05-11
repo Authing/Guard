@@ -1,11 +1,18 @@
 <template>
-  <div class="_authing_form-group" style="margin-top: -15px;">
-    <input
-      type="password"
-      class="_authing_input _authing_form-control"
-      id="forget-password-new-password"
-      autocomplete="off"
-    >
+  <div>
+    <div class="_authing_form-group" style="margin-top: -15px;">
+      <input
+        type="password"
+        class="_authing_input _authing_form-control"
+        id="forget-password-new-password"
+        autocomplete="off"
+      >
+    </div>
+    <button
+      v-show="pageVisible.forgetPasswordNewPasswordVisible && !loading"
+      @click="handleSubmitForgetPasswordNewPassword"
+      class="btn btn-primary"
+    >提交新密码</button>
   </div>
 </template>
 <script>

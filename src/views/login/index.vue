@@ -156,6 +156,7 @@
             </div>
 
             <router-view/>
+            <EmailLogin/>
 
             <!-- <div
               class="_authing_form-footer login"
@@ -167,26 +168,10 @@
               <div class="authing-loading-circle" v-show="loading"></div>
               
               
-              <button
-                v-show="pageVisible.signUpVisible && !loading"
-                @click="handleSignUp"
-                class="btn btn-primary"
-              >注册</button>
-              <button
-                v-show="pageVisible.forgetPasswordSendEmailVisible && !loading"
-                @click="handleForgetPasswordSendEmail"
-                class="btn btn-primary"
-              >发送邮件</button>
-              <button
-                v-show="pageVisible.forgetPasswordVerifyCodeVisible && !loading"
-                @click="handleSubmitForgetPasswordVerifyCode"
-                class="btn btn-primary"
-              >提交验证码</button>
-              <button
-                v-show="pageVisible.forgetPasswordNewPasswordVisible && !loading"
-                @click="handleSubmitForgetPasswordNewPassword"
-                class="btn btn-primary"
-              >提交新密码</button>
+              
+             
+              
+              
             </div>-->
 
             <div class="_authing_form-footer-non-up" v-show="opts.hideUP"></div>
@@ -198,9 +183,12 @@
 </template>
 <script>
 import GraphQLClient from "../../graphql.js";
-
+import EmailLogin from './EmailLogin'
 export default {
   name: "app",
+  components: {
+    EmailLogin
+  },
   data() {
     return {
       clientInfo: {},

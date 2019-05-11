@@ -1,11 +1,18 @@
 <template>
-  <div class="_authing_form-group" style="margin-top: -15px;">
-    <input
-      type="text"
-      class="_authing_input _authing_form-control"
-      id="forget-password-email"
-      autocomplete="off"
-    >
+  <div>
+    <div class="_authing_form-group" style="margin-top: -15px;">
+      <input
+        type="text"
+        class="_authing_input _authing_form-control"
+        id="forget-password-email"
+        autocomplete="off"
+      >
+    </div>
+    <button
+      v-show="pageVisible.forgetPasswordSendEmailVisible && !loading"
+      @click="handleForgetPasswordSendEmail"
+      class="btn btn-primary"
+    >发送邮件</button>
   </div>
 </template>
 <script>
