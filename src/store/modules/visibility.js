@@ -19,9 +19,9 @@ const state = {
   // 小程序二维码登录页
   wxQRCode: false,
   // email 登录页
-  EmailLogin: false,
+  emailLogin: false,
   // 注册页
-  SignUp: false,
+  signUp: false,
   // 通过手机号登录页
   loginByPhoneCode: false,
   // -----------------------------
@@ -39,6 +39,14 @@ const getters = {
   globalError: state => state.globalError,
   globalWarn: state => state.globalWarn,
 
+  wxQRCode: state => state.wxQRCode,
+  emailLogin: state => state.emailLogin,
+  signUp: state => state.signUp,
+  loginByPhoneCode: state => state.loginByPhoneCode,
+  hasLDAP: state => state.hasLDAP,
+  loginVerifyCode: state => state.loginVerifyCode,
+
+  forgetPassword: state => state.forgetPassword,
   forgetPasswordSendEmail: state => state.forgetPasswordSendEmail,
   forgetPasswordVerifyCode: state => state.forgetPasswordVerifyCode,
   forgetPasswordNewPassword: state => state.forgetPasswordNewPassword
@@ -50,6 +58,13 @@ const actions = {
   },
   removeGlobalMsg() {
     commit("removeGlobalMsg");
+  },
+  gotoWxQRCodeScanning({ commit }) {
+    commit("turnOnPage", { page: "wxQRCode" });
+  },
+  turnOnPage({ commit }, { page }) {
+    commit("removeGlobalMsg");
+    commit("turnOnPage", { page });
   }
 };
 
@@ -79,12 +94,12 @@ const mutations = {
     state.globalError = false;
     state.globalSuccess = false;
   },
-  turnOnPage(state, { page }) { // page 是 pageVisibilities 中的一个字符串
-    this.removeGlobalMsg();
+  turnOnPage(state, { page }) {
+    // page 是 pageVisibilities 中的一个字符串
     pageVisibilities.map(item => {
       state[item] = false;
-    })
-    state[page] = true
+    });
+    state[page] = true;
   }
 };
 

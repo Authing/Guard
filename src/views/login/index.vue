@@ -91,7 +91,7 @@
               <div
                 class="_authing_form-header-name"
                 title="Authing"
-              >{{pageVisible.forgetPasswordVisible ? '重置密码' : opts.title}}</div>
+              >{{forgetPasswordVisible ? '重置密码' : opts.title}}</div>
             </div>
           </div>
 
@@ -124,7 +124,7 @@
               <ul class="authing-header-tabs">
                 <li
                   v-bind:class="{
-                  'authing-header-tabs-current': pageVisible.wxQRCodeVisible || (opts.hideUP && opts.hideOAuth),
+                  'authing-header-tabs-current': wxQRCodeVisible || (opts.hideUP && opts.hideOAuth),
                   'width-55': !isScanCodeEnable || opts.hideUP || opts.forceLogin,
                   'width-100': (opts.hideUP && opts.hideOAuth),
                   'shadow-eee': (opts.hideUP && opts.hideOAuth),
@@ -136,7 +136,7 @@
                 <li
                   v-show="!(opts.hideUP && opts.hideOAuth)"
                   v-bind:class="{
-                  'authing-header-tabs-current': pageVisible.loginVisible,
+                  'authing-header-tabs-current': emailLoginVisible,
                   'width-55': !isScanCodeEnable || opts.hideQRCode || opts.hideUP || opts.forceLogin,
                   'width-100': (opts.hideUP && opts.hideQRCode) || (opts.hideQRCode && opts.forceLogin) || clientInfo.registerDisabled,
                 }"
@@ -146,7 +146,7 @@
                 <li
                   v-show="!opts.hideUP && !opts.forceLogin && !clientInfo.registerDisabled"
                   v-bind:class="{
-                  'authing-header-tabs-current': pageVisible.signUpVisible,
+                  'authing-header-tabs-current': signUpVisible,
                   'width-55': !isScanCodeEnable || opts.hideQRCode
                 }"
                 >
@@ -183,7 +183,8 @@
 </template>
 <script>
 import GraphQLClient from "../../graphql.js";
-import EmailLogin from './EmailLogin'
+import EmailLogin from "./EmailLogin";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "app",
   components: {
@@ -206,7 +207,7 @@ export default {
       pageStack: [],
 
       OAuthList: [],
-      
+
       loading: false,
       oAuthloading: false,
       verifyCodeLoading: true,
@@ -390,7 +391,6 @@ export default {
       });
   },
   created: function() {
-    this.pageVisible.loginVisible = true;
     this.$authing = this.$root.$data.$authing;
     this.opts = this.$authing.opts;
 
@@ -434,7 +434,7 @@ export default {
     verifyCodeLoad: function() {
       this.verifyCodeLoading = false;
     },
-    
+
     setLoading: function loading() {
       this.loading = true;
     },
@@ -444,17 +444,7 @@ export default {
     getPageState: function getPageState() {
       return Object.assign({}, this.pageVisible);
     },
-    turnOnPage: function turnOnPage(visible) {
-      this.removeGlobalMsg();
-      var i;
-      for (i in this.pageVisible) {
-        if (i === visible) {
-          this.pageVisible[i] = true;
-        } else {
-          this.pageVisible[i] = false;
-        }
-      }
-    },
+
     handleGoBack: function handleGoBack() {
       var lastState = this.pageStack.pop();
       if (lastState) {
@@ -495,7 +485,7 @@ export default {
         this.removeRedLine("sign-up-email");
       }
     },
-    
+
     recordLoginInfo: function(userInfo) {
       let appToken = localStorage.getItem("appToken");
 
@@ -526,7 +516,17 @@ export default {
       setTimeout(function() {
         that.removeDom = true;
       }, 800);
-    },
+    }
+  },
+  computed: {
+    
+    ...mapGetters({
+      emailLoginVisible: "visibility/emailLogin",
+      wxQRCodeVisible: "visibility/wxQRCode",
+      signUpVisible: "visibility/signUp",
+      forgetPasswordVisible: 'visibility/forgetPassword'
+    }),
+    ...mapActions('visibility', ['gotoWxQRCodeScanning', 'removeGlobalMsg'])
   },
   watch: {
     rememberMe: function(newVal) {

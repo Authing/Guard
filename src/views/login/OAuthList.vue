@@ -7,11 +7,11 @@
       <div class="authing-loading-circle margin-top-11"></div>
     </div>
 
-    <SocialButton v-for="(item) in OAuthList" :key="item._id" class="_authing_form-group">
+    <SocialButton v-for="(item) in OAuthList" :key="item._id" class="_authing_form-group"/>
   </div>
 </template>
 <script>
-import SocialButton from '../componentsSocialButton'
+import SocialButton from '../components/SocialButton'
 export default {
   name: 'OAuthList',
   components: {

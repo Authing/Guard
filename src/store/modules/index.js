@@ -1,8 +1,8 @@
-import visiblity from './visiblity'
+import visibility from './visibility'
 import loading from './loading'
 import data from './data'
 export default {
-  visiblity,
+  visibility,
   loading,
   data
 }
