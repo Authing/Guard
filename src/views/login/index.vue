@@ -155,15 +155,9 @@
               </ul>
             </div>
 
-            <div
-              class="form-body"
-              v-show="!oAuthloading"
-              :class="{ height100: pageVisible.wxQRCodeVisible, marginTop11: OAuthList.length === 0 }"
-            >
-              <router-view/>
-            </div>
+            <router-view/>
 
-            <div
+            <!-- <div
               class="_authing_form-footer login"
               v-show="!opts.hideUP"
               :class="{
@@ -171,16 +165,8 @@
             }"
             >
               <div class="authing-loading-circle" v-show="loading"></div>
-              <button
-                v-show="pageVisible.loginVisible && !loading"
-                @click="handleLogin"
-                class="btn btn-primary"
-              >登录</button>
-              <button
-                v-show="pageVisible.loginByPhoneCodeVisible && !loading"
-                @click="handleLoginByPhoneCode"
-                class="btn btn-primary"
-              >登录</button>
+              
+              
               <button
                 v-show="pageVisible.signUpVisible && !loading"
                 @click="handleSignUp"
@@ -201,7 +187,7 @@
                 @click="handleSubmitForgetPasswordNewPassword"
                 class="btn btn-primary"
               >提交新密码</button>
-            </div>
+            </div>-->
 
             <div class="_authing_form-footer-non-up" v-show="opts.hideUP"></div>
           </div>
@@ -726,299 +712,6 @@ export default {
 
       localStorage.setItem("appToken", JSON.stringify(appToken));
     },
-    handleLogin: function handleLogin() {
-      var that = this;
-      that.setLoading();
-      var info = {
-        email: this.loginForm.email,
-        password: this.loginForm.password
-      };
-
-      if (this.loginMethod === "common") {
-        if (!this.$root.emailExp.test(this.loginForm.email)) {
-          this.showGlobalErr("请输入正确格式的邮箱");
-          this.addAnimation("login-username");
-          this.removeRedLine("login-password");
-          this.removeRedLine("verify-code");
-          that.unLoading();
-          this.$authing.pub("loginError", "请输入正确格式的邮箱");
-          return false;
-        }
-      }
-
-      if (!this.loginForm.password) {
-        this.showGlobalErr("请输入密码");
-        this.addAnimation("login-password");
-        this.removeRedLine("verify-code");
-        this.removeRedLine("login-username");
-        that.unLoading();
-        this.$authing.pub("loginError", "请输入密码");
-        return false;
-      }
-
-      if (this.pageVisible.verifyCodeVisible) {
-        info.verifyCode = this.verifyCode;
-      }
-
-      if (this.loginMethod === "common") {
-        validAuth
-          .login(info)
-          .then(function(data) {
-            if (that.rememberMe) {
-              localStorage.setItem("_authing_username", that.loginForm.email);
-              localStorage.setItem(
-                "_authing_password",
-                that.encrypt(
-                  that.loginForm.password,
-                  that.$authing.opts.clientId
-                )
-              );
-            } else {
-              localStorage.removeItem("_authing_username");
-              localStorage.removeItem("_authing_password");
-            }
-
-            that.showGlobalSuccess(
-              "验证通过，欢迎你：" + data.username || data.email
-            );
-            that.$authing.pub("login", data);
-            that.recordLoginInfo(data);
-            that.unLoading();
-          })
-          .catch(function(err) {
-            that.unLoading();
-            that.$authing.pub("loginError", err);
-            that.showGlobalErr(err.message.message);
-            // 验证码错误
-            if (err.message.code === 2000 || err.message.code === 2001) {
-              that.addAnimation("verify-code");
-              that.removeRedLine("login-username");
-              that.removeRedLine("login-password");
-
-              that.verifyCodeLoading = true;
-              that.pageVisible.verifyCodeVisible = true;
-              that.verifyCodeUrl = err.message.data.url;
-            }
-            // 用户名错误
-            else if (
-              err.message.code === 2003 ||
-              err.message.code === 2204 ||
-              err.message.code === 2208
-            ) {
-              that.addAnimation("login-username");
-              that.removeRedLine("login-password");
-              that.removeRedLine("verify-code");
-            }
-            // 用户名不存在
-            else if (err.message.code === 2004) {
-              // 如果开启登录时创建不存在的用户功能
-              if (this.$authing.opts.forceLogin) {
-                that.setLoading();
-                validAuth
-                  .register({
-                    email: that.loginForm.email,
-                    password: that.loginForm.password
-                  })
-                  .then(function(data) {
-                    that.unLoading();
-                    that.showGlobalSuccess(
-                      "验证通过，欢迎你：" + data.username || data.email
-                    );
-                    that.$authing.pub("login", data);
-                    that.recordLoginInfo(data);
-                  })
-                  .catch(function(err) {
-                    that.unLoading();
-                    that.showGlobalErr(err.message.message);
-                    that.$authing.pub("loginError", err);
-                  });
-                return false;
-              } else {
-                that.addAnimation("login-username");
-                that.removeRedLine("login-password");
-                that.removeRedLine("verify-code");
-              }
-            }
-            // 密码错误
-            else if (
-              err.message.code === 2006 ||
-              err.message.code === 2016 ||
-              err.message.code === 2027
-            ) {
-              that.addAnimation("login-password");
-              that.removeRedLine("verify-code");
-              that.removeRedLine("login-username");
-            }
-          });
-      }
-
-      if (this.loginMethod === "ldap") {
-        this.handleLDAPLogin();
-      }
-    },
-    handleLDAPLogin: function handleLDAPLogin() {
-      const that = this;
-      const ldapLoginInfo = {
-        username: that.loginForm.email,
-        password: that.loginForm.password
-      };
-      validAuth
-        .loginByLDAP(ldapLoginInfo)
-        .then(function(data) {
-          if (that.rememberMe) {
-            localStorage.setItem("_authing_username", that.loginForm.email);
-            localStorage.setItem(
-              "_authing_password",
-              that.encrypt(that.loginForm.password, that.$authing.opts.clientId)
-            );
-          } else {
-            localStorage.removeItem("_authing_username");
-            localStorage.removeItem("_authing_password");
-          }
-
-          that.showGlobalSuccess(
-            "验证通过，欢迎你：" + data.username || data.email
-          );
-          that.$authing.pub("login", data);
-          that.recordLoginInfo(data);
-          that.unLoading();
-        })
-        .catch(function(err) {
-          that.unLoading();
-          that.$authing.pub("loginError", err);
-          that.showGlobalErr(err.message.message);
-          if (
-            err.message.code === 2006 ||
-            err.message.code === 2016 ||
-            err.message.code === 2027
-          ) {
-            that.addAnimation("login-password");
-            that.removeRedLine("verify-code");
-            that.removeRedLine("login-username");
-          }
-        });
-    },
-    handleForgetPasswordSendEmail: function handleForgetPasswordSendEmail() {
-      var that = this;
-      that.setLoading();
-      if (!this.$root.emailExp.test(this.forgetPasswordForm.email)) {
-        this.showGlobalErr("请输入正确格式的邮箱");
-        this.addAnimation("forget-password-email");
-        that.unLoading();
-        this.$authing.pub("emailSentError", "请输入正确格式的邮箱");
-        return false;
-      }
-      validAuth
-        .sendResetPasswordEmail({
-          email: this.forgetPasswordForm.email
-        })
-        .then(function(data) {
-          that.$authing.pub("emailSent", data);
-          that.unLoading();
-          that.showGlobalSuccess(
-            "验证码已发送至您的邮箱：" + that.forgetPasswordForm.email
-          );
-          that.pageVisible.forgetPasswordSendEmailVisible = false;
-          that.pageVisible.forgetPasswordVerifyCodeVisible = true;
-        })
-        .catch(function(err) {
-          that.$authing.pub("emailSentError", err);
-          that.unLoading();
-          that.showGlobalErr(err.message);
-        });
-    },
-    handleSubmitForgetPasswordVerifyCode: function handleSubmitForgetPasswordVerifyCode() {
-      var that = this;
-      that.setLoading();
-      if (!this.forgetPasswordForm.verifyCode) {
-        that.unLoading();
-        this.addAnimation("forget-password-verify-code");
-
-        that.showGlobalErr("请输入验证码");
-        this.$authing.pub("resetPasswordError", "请输入验证码");
-        return false;
-      }
-      validAuth
-        .verifyResetPasswordVerifyCode({
-          email: that.forgetPasswordForm.email,
-          verifyCode: that.forgetPasswordForm.verifyCode
-        })
-        .then(function(data) {
-          that.$authing.pub("resetPassword", data);
-          that.unLoading();
-          that.showGlobalSuccess(data.message);
-          that.pageVisible.forgetPasswordVerifyCodeVisible = false;
-          that.pageVisible.forgetPasswordNewPasswordVisible = true;
-        })
-        .catch(function(err) {
-          that.$authing.pub("resetPasswordError", err);
-          that.unLoading();
-          that.addAnimation("forget-password-verify-code");
-          that.showGlobalErr(err.message.message);
-        });
-    },
-    handleSubmitForgetPasswordNewPassword: function handleSubmitForgetPasswordNewPassword() {
-      var that = this;
-      that.setLoading();
-      validAuth
-        .changePassword({
-          email: that.forgetPasswordForm.email,
-          password: that.forgetPasswordForm.password,
-          verifyCode: that.forgetPasswordForm.verifyCode
-        })
-        .then(function(data) {
-          that.$authing.pub("resetPassword", data);
-          that.unLoading();
-          that.showGlobalSuccess("修改密码成功");
-          that.gotoLogin();
-        })
-        .catch(function(err) {
-          that.$authing.pub("resetPasswordError", err);
-          that.unLoading();
-          that.showGlobalErr(err.message.message);
-        });
-    },
-    gotoWxQRCodeScanning: function gotoWxQRCodeScanning() {
-      if (!(this.opts.hideOAuth && this.opts.hideUP)) {
-        this.pageStack.push(this.getPageState());
-      }
-      this.turnOnPage("wxQRCodeVisible");
-
-      var scanOpts = this.$authing.opts.qrcodeScanning || {
-        redirect: true,
-        interval: 1500,
-        tips: "使用 微信 或小程序 身份管家 扫码登录"
-      };
-
-      let that = this;
-
-      if (!this.isWxQRCodeGenerated) {
-        validAuth.startWXAppScaning({
-          mount: "qrcode-node",
-
-          onSuccess: function(res) {
-            that.$authing.pub("scanning", res);
-            localStorage.setItem("_authing_token", res.data.token);
-            that.recordLoginInfo(res.data);
-          },
-
-          onError: function(err) {
-            that.$authing.pub("scanningError", err);
-          },
-
-          onIntervalStarting: function(interval) {
-            that.$authing.pub("scanningIntervalStarting", interval);
-          },
-
-          interval: scanOpts.interval,
-
-          redirect: scanOpts.redirect,
-
-          tips: scanOpts.tips
-        });
-        this.isWxQRCodeGenerated = true;
-      }
-    },
     handleClose: function handleClose() {
       if (this.opts.hideClose) {
         return false;
@@ -1030,60 +723,6 @@ export default {
         that.removeDom = true;
       }, 800);
     },
-    handleLoginByPhoneCode: function handleLoginByPhoneCode() {
-      if (!/^1[34578]\d{9}$/.test(this.loginByPhoneCodeForm.phone)) {
-        this.showGlobalErr("请填写正确的手机号");
-        this.addAnimation("login-phone");
-        this.$authing.pub("loginError", "请填写正确的手机号");
-        return;
-      }
-      if (!this.loginByPhoneCodeForm.phoneCode) {
-        this.showGlobalErr("请输入验证码");
-        this.addAnimation("login-phoneCode");
-        this.$authing.pub("loginError", "请输入验证码");
-        return;
-      }
-      if (this.loginByPhoneCodeForm.phoneCode.length !== 4) {
-        this.showGlobalErr("验证码为四位，请重新输入");
-        this.addAnimation("login-phoneCode");
-        this.$authing.pub("loginError", "验证码为四位，请重新输入");
-        return;
-      }
-      this.setLoading();
-      validAuth
-        .loginByPhoneCode(this.loginByPhoneCodeForm)
-        .then(userInfo => {
-          this.unLoading();
-          this.showGlobalSuccess(
-            "验证通过，欢迎你：" + userInfo.username || userInfo.phone
-          );
-          this.recordLoginInfo(userInfo);
-          this.$authing.pub("login", userInfo);
-        })
-        .catch(err => {
-          this.unLoading();
-          this.showGlobalErr(err.message.message);
-        });
-    },
-    handleSendingPhoneCode: function handleSendingPhoneCode() {
-      if (!/^1[34578]\d{9}$/.test(this.loginByPhoneCodeForm.phone)) {
-        this.showGlobalErr("请填写正确的手机号");
-        this.addAnimation("login-phone");
-        this.$authing.pub("loginError", "请填写正确的手机号");
-        return;
-      }
-      this.setLoading();
-      validAuth
-        .getVerificationCode(this.loginByPhoneCodeForm.phone)
-        .then(() => {
-          this.unLoading();
-          this.showGlobalSuccess("短信发送成功，请打开手机查看");
-        })
-        .catch(err => {
-          this.unLoading();
-          this.showGlobalErr(err.message);
-        });
-    }
   },
   watch: {
     rememberMe: function(newVal) {
