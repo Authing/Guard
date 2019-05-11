@@ -96,7 +96,6 @@ export default {
     return {
       verifyCode: "",
       verifyCodeUrl: "",
-      loginMethod: "common",
       loginForm: {
         email: "",
         password: ""
@@ -136,19 +135,17 @@ export default {
         password: this.loginForm.password
       };
 
-      if (this.loginMethod === "common") {
-        if (!this.$root.emailExp.test(this.loginForm.email)) {
-          this.showGlobalMessage({
-            type: "error",
-            message: "请输入正确格式的邮箱"
-          });
-          // this.addAnimation("login-username");
-          // this.removeRedLine("login-password");
-          // this.removeRedLine("verify-code");
-          this.changeLoading({ el: "form", loading: false });
-          this.$authing.pub("loginError", "请输入正确格式的邮箱");
-          return false;
-        }
+      if (!this.$root.emailExp.test(this.loginForm.email)) {
+        this.showGlobalMessage({
+          type: "error",
+          message: "请输入正确格式的邮箱"
+        });
+        // this.addAnimation("login-username");
+        // this.removeRedLine("login-password");
+        // this.removeRedLine("verify-code");
+        this.changeLoading({ el: "form", loading: false });
+        this.$authing.pub("loginError", "请输入正确格式的邮箱");
+        return false;
       }
 
       if (!this.loginForm.password) {
@@ -168,115 +165,108 @@ export default {
         info.verifyCode = this.verifyCode;
       }
 
-      if (this.loginMethod === "common") {
-        validAuth
-          .login(info)
-          .then(data => {
-            if (that.rememberMe) {
-              localStorage.setItem("_authing_username", that.loginForm.email);
-              localStorage.setItem(
-                "_authing_password",
-                that.encrypt(
-                  that.loginForm.password,
-                  that.$authing.opts.clientId
-                )
-              );
+      validAuth
+        .login(info)
+        .then(data => {
+          if (that.rememberMe) {
+            localStorage.setItem("_authing_username", that.loginForm.email);
+            localStorage.setItem(
+              "_authing_password",
+              that.encrypt(that.loginForm.password, that.$authing.opts.clientId)
+            );
+          } else {
+            localStorage.removeItem("_authing_username");
+            localStorage.removeItem("_authing_password");
+          }
+
+          that.showGlobalMessage({
+            type: "success",
+            message: "验证通过，欢迎你：" + data.username || data.email
+          });
+          that.$authing.pub("login", data);
+          that.recordLoginInfo(data);
+          that.changeLoading({ el: "form", loading: false });
+        })
+        .catch(err => {
+          that.changeLoading({ el: "form", loading: false });
+          that.$authing.pub("loginError", err);
+          that.showGlobalMessage({
+            type: "error",
+            message: err.message.message
+          });
+          // 验证码错误
+          if (err.message.code === 2000 || err.message.code === 2001) {
+            // that.addAnimation("verify-code");
+            // that.removeRedLine("login-username");
+            // that.removeRedLine("login-password");
+
+            that.changeLoading({ el: "loginVerifyCode", loading: true });
+            that.changeVisibility({
+              el: "loginVerifyCode",
+              visibility: true
+            });
+            that.verifyCodeUrl = err.message.data.url;
+          }
+          // 用户名错误
+          else if (
+            err.message.code === 2003 ||
+            err.message.code === 2204 ||
+            err.message.code === 2208
+          ) {
+            // that.addAnimation("login-username");
+            // that.removeRedLine("login-password");
+            // that.removeRedLine("verify-code");
+          }
+          // 用户名不存在
+          else if (err.message.code === 2004) {
+            // 如果开启登录时创建不存在的用户功能
+            if (this.$authing.opts.forceLogin) {
+              that.changeLoading({ el: "form", loading: true });
+              validAuth
+                .register({
+                  email: that.loginForm.email,
+                  password: that.loginForm.password
+                })
+                .then(function(data) {
+                  that.changeLoading({ el: "form", loading: false });
+                  that.showGlobalMessage({
+                    type: "success",
+                    message: "验证通过，欢迎你：" + data.username || data.email
+                  });
+                  that.$authing.pub("login", data);
+                  that.recordLoginInfo(data);
+                })
+                .catch(function(err) {
+                  that.changeLoading({ el: "form", loading: false });
+                  that.showGlobalMessage({
+                    type: "error",
+                    message: err.message.message
+                  });
+                  that.$authing.pub("loginError", err);
+                });
+              return false;
             } else {
-              localStorage.removeItem("_authing_username");
-              localStorage.removeItem("_authing_password");
-            }
-
-            that.showGlobalMessage({
-              type: "success",
-              message: "验证通过，欢迎你：" + data.username || data.email
-            });
-            that.$authing.pub("login", data);
-            that.recordLoginInfo(data);
-            that.changeLoading({ el: "form", loading: false });
-          })
-          .catch(err => {
-            that.changeLoading({ el: "form", loading: false });
-            that.$authing.pub("loginError", err);
-            that.showGlobalMessage({
-              type: "error",
-              message: err.message.message
-            });
-            // 验证码错误
-            if (err.message.code === 2000 || err.message.code === 2001) {
-              // that.addAnimation("verify-code");
-              // that.removeRedLine("login-username");
-              // that.removeRedLine("login-password");
-
-              that.changeLoading({ el: "loginVerifyCode", loading: true });
-              that.changeVisibility({
-                el: "loginVerifyCode",
-                visibility: true
-              });
-              that.verifyCodeUrl = err.message.data.url;
-            }
-            // 用户名错误
-            else if (
-              err.message.code === 2003 ||
-              err.message.code === 2204 ||
-              err.message.code === 2208
-            ) {
               // that.addAnimation("login-username");
               // that.removeRedLine("login-password");
               // that.removeRedLine("verify-code");
             }
-            // 用户名不存在
-            else if (err.message.code === 2004) {
-              // 如果开启登录时创建不存在的用户功能
-              if (this.$authing.opts.forceLogin) {
-                that.changeLoading({el: 'form', loading: true})
-                validAuth
-                  .register({
-                    email: that.loginForm.email,
-                    password: that.loginForm.password
-                  })
-                  .then(function(data) {
-                    that.changeLoading({ el: "form", loading: false });
-                    that.showGlobalMessage({
-                      type: "success",
-                      message:
-                        "验证通过，欢迎你：" + data.username || data.email
-                    });
-                    that.$authing.pub("login", data);
-                    that.recordLoginInfo(data);
-                  })
-                  .catch(function(err) {
-                    that.changeLoading({ el: "form", loading: false });
-                    that.showGlobalMessage({
-                      type: "error",
-                      message: err.message.message
-                    });
-                    that.$authing.pub("loginError", err);
-                  });
-                return false;
-              } else {
-                // that.addAnimation("login-username");
-                // that.removeRedLine("login-password");
-                // that.removeRedLine("verify-code");
-              }
-            }
-            // 密码错误
-            else if (
-              err.message.code === 2006 ||
-              err.message.code === 2016 ||
-              err.message.code === 2027
-            ) {
-              // that.addAnimation("login-password");
-              // that.removeRedLine("verify-code");
-              // that.removeRedLine("login-username");
-              that.verifyCodeUrl = err.message.data.url;
+          }
+          // 密码错误
+          else if (
+            err.message.code === 2006 ||
+            err.message.code === 2016 ||
+            err.message.code === 2027
+          ) {
+            // that.addAnimation("login-password");
+            // that.removeRedLine("verify-code");
+            // that.removeRedLine("login-username");
+            that.verifyCodeUrl = err.message.data.url;
+          }
+        });
 
-            }
-          });
-      }
-
-      if (this.loginMethod === "ldap") {
-        this.handleLDAPLogin();
-      }
+      // if (this.loginMethod === "ldap") {
+      //   this.handleLDAPLogin();
+      // }
     }
   }
 };
