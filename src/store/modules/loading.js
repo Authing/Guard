@@ -1,12 +1,12 @@
 const state = {
   // 登录成功和错误提示
-  verifyCode: false,
+  loginVerifyCode: false,
   socialButtonsList: false,
   form: false,
   button: false,
 }
 const getters = {
-  verifyCode: state => state.verifyCode,
+  loginVerifyCode: state => state.loginVerifyCode,
   socialButtonsList: state => state.socialButtonsList,
   form: state => state.form,
   button: state => state.button

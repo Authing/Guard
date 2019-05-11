@@ -19,7 +19,7 @@ const state = {
   // 小程序二维码登录页
   wxQRCode: false,
   // email 登录页
-  emailLogin: false,
+  emailLogin: true,
   // 注册页
   signUp: false,
   // 通过手机号登录页
@@ -32,7 +32,7 @@ const state = {
   // 登录成功和错误提示
   globalSuccess: false,
   globalError: false,
-  globalWarn: false
+  globalWarn: false,
 };
 const getters = {
   globalSuccess: state => state.globalSuccess,
@@ -65,6 +65,9 @@ const actions = {
   },
   gotoSignUp({commit}) {
     commit("turnOnPage", { page: "signUp" });
+  },
+  gotoLogin({commit}) {
+    commit("turnOnPage", { page: "emailLogin" });
   },
   turnOnPage({ commit }, { page }) {
     commit("removeGlobalMsg");

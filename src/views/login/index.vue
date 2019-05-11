@@ -407,7 +407,8 @@ export default {
     ...mapActions("visibility", [
       "gotoWxQRCodeScanning",
       "removeGlobalMsg",
-      "gotoSignUp"
+      "gotoSignUp",
+      "gotoLogin"
     ]),
     async checkHasLDAP(clientId) {
       let operationName = "QueryClientHasLDAPConfigs";
@@ -460,10 +461,6 @@ export default {
       if (this.loading) {
         this.unLoading();
       }
-    },
-    gotoLogin: function gotoLogin() {
-      this.pageStack.push(this.getPageState());
-      this.turnOnPage("loginVisible");
     },
     gotoForgetPassword: function gotoForgetPassword() {
       this.pageStack.push(this.getPageState());

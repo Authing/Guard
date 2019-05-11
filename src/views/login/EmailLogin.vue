@@ -35,7 +35,7 @@
             @keyup.enter="handleLogin"
           >
         </div>
-        <div v-show="verifyCodeVisible" class="form-group verify-code">
+        <div v-show="loginVerifyCodeVisible" class="form-group verify-code">
           <input
             type="text"
             class="_authing_input _authing_form-control"
@@ -46,12 +46,12 @@
             @keyup.enter="handleLogin"
           >
 
-          <div class="_authing_verify-code-loading-circle" v-show="verifyCodeLoading"></div>
+          <div class="_authing_verify-code-loading-circle" v-show="loginVerifyCodeLoading"></div>
           <img
             :src="verifyCodeUrl"
             id="verify-code-img"
-            v-show="!verifyCodeLoading"
-            @load="verifyCodeLoad"
+            v-show="!loginVerifyCodeLoading"
+            @load="handleLoginVerifyCodeLoaded"
           >
         </div>
         <div class="row backup">
@@ -88,10 +88,12 @@ export default {
     this.opts = this.$root.$data.$authing.opts;
     console.log(this.opts);
   },
+  mounted() {
+    this.loginForm.email = this.signUpEmail || "";
+    this.loginForm.password = this.signUpPassword || "";
+  },
   data() {
     return {
-      verifyCodeVisible: false,
-      verifyCodeLoading: false,
       verifyCode: "",
       verifyCodeUrl: "",
       loginMethod: "common",
@@ -103,18 +105,27 @@ export default {
   },
   computed: {
     ...mapGetters("loading", {
-      socialButtonsListLoading: "socialButtonsList"
+      socialButtonsListLoading: "socialButtonsList",
+      loginVerifyCodeLoading: "loginVerifyCode"
     }),
-    ...mapGetters("data", ["socialButtonsList"])
+    ...mapGetters("visibility", {
+      loginVerifyCodeVisible: "loginVerifyCode"
+    }),
+    ...mapGetters("data", [
+      "socialButtonsList",
+      "signUpEmail",
+      "signUpPassword"
+    ])
   },
   methods: {
     ...mapActions("loading", ["changeLoading"]),
-    ...mapActions("data", ["changeLoading", "showGlobalMessage"]),
-    verifyCodeLoad: function() {
-      this.verifyCodeLoading = false;
-    },
+    ...mapActions("visibility", ["changeVisibility"]),
+    ...mapActions("data", ["showGlobalMessage"]),
     gotoForgetPassword() {
       this.$router.push({ name: "forgetPassword" });
+    },
+    handleLoginVerifyCodeLoaded() {
+      this.changeLoading({ el: "loginVerifyCode", loading: false });
     },
     gotoUsingPhone() {},
     handleLogin() {
@@ -142,9 +153,9 @@ export default {
 
       if (!this.loginForm.password) {
         this.showGlobalMessage({
-            type: "error",
-            message: "请输入密码"
-          });
+          type: "error",
+          message: "请输入密码"
+        });
         // this.addAnimation("login-password");
         // this.removeRedLine("verify-code");
         // this.removeRedLine("login-username");
@@ -153,14 +164,14 @@ export default {
         return false;
       }
 
-      if (this.pageVisible.verifyCodeVisible) {
+      if (this.loginVerifyCodeVisible) {
         info.verifyCode = this.verifyCode;
       }
 
       if (this.loginMethod === "common") {
         validAuth
           .login(info)
-          .then(function(data) {
+          .then(data => {
             if (that.rememberMe) {
               localStorage.setItem("_authing_username", that.loginForm.email);
               localStorage.setItem(
@@ -175,25 +186,32 @@ export default {
               localStorage.removeItem("_authing_password");
             }
 
-            that.showGlobalSuccess(
-              "验证通过，欢迎你：" + data.username || data.email
-            );
+            that.showGlobalMessage({
+              type: "success",
+              message: "验证通过，欢迎你：" + data.username || data.email
+            });
             that.$authing.pub("login", data);
             that.recordLoginInfo(data);
-            that.unLoading();
+            that.changeLoading({ el: "form", loading: false });
           })
-          .catch(function(err) {
-            that.unLoading();
+          .catch(err => {
+            that.changeLoading({ el: "form", loading: false });
             that.$authing.pub("loginError", err);
-            that.showGlobalErr(err.message.message);
+            that.showGlobalMessage({
+              type: "error",
+              message: err.message.message
+            });
             // 验证码错误
             if (err.message.code === 2000 || err.message.code === 2001) {
-              that.addAnimation("verify-code");
-              that.removeRedLine("login-username");
-              that.removeRedLine("login-password");
+              // that.addAnimation("verify-code");
+              // that.removeRedLine("login-username");
+              // that.removeRedLine("login-password");
 
-              that.verifyCodeLoading = true;
-              that.pageVisible.verifyCodeVisible = true;
+              that.changeLoading({ el: "loginVerifyCode", loading: true });
+              that.changeVisibility({
+                el: "loginVerifyCode",
+                visibility: true
+              });
               that.verifyCodeUrl = err.message.data.url;
             }
             // 用户名错误
@@ -202,38 +220,43 @@ export default {
               err.message.code === 2204 ||
               err.message.code === 2208
             ) {
-              that.addAnimation("login-username");
-              that.removeRedLine("login-password");
-              that.removeRedLine("verify-code");
+              // that.addAnimation("login-username");
+              // that.removeRedLine("login-password");
+              // that.removeRedLine("verify-code");
             }
             // 用户名不存在
             else if (err.message.code === 2004) {
               // 如果开启登录时创建不存在的用户功能
               if (this.$authing.opts.forceLogin) {
-                that.setLoading();
+                that.changeLoading({el: 'form', loading: true})
                 validAuth
                   .register({
                     email: that.loginForm.email,
                     password: that.loginForm.password
                   })
                   .then(function(data) {
-                    that.unLoading();
-                    that.showGlobalSuccess(
-                      "验证通过，欢迎你：" + data.username || data.email
-                    );
+                    that.changeLoading({ el: "form", loading: false });
+                    that.showGlobalMessage({
+                      type: "success",
+                      message:
+                        "验证通过，欢迎你：" + data.username || data.email
+                    });
                     that.$authing.pub("login", data);
                     that.recordLoginInfo(data);
                   })
                   .catch(function(err) {
-                    that.unLoading();
-                    that.showGlobalErr(err.message.message);
+                    that.changeLoading({ el: "form", loading: false });
+                    that.showGlobalMessage({
+                      type: "error",
+                      message: err.message.message
+                    });
                     that.$authing.pub("loginError", err);
                   });
                 return false;
               } else {
-                that.addAnimation("login-username");
-                that.removeRedLine("login-password");
-                that.removeRedLine("verify-code");
+                // that.addAnimation("login-username");
+                // that.removeRedLine("login-password");
+                // that.removeRedLine("verify-code");
               }
             }
             // 密码错误
@@ -242,9 +265,11 @@ export default {
               err.message.code === 2016 ||
               err.message.code === 2027
             ) {
-              that.addAnimation("login-password");
-              that.removeRedLine("verify-code");
-              that.removeRedLine("login-username");
+              // that.addAnimation("login-password");
+              // that.removeRedLine("verify-code");
+              // that.removeRedLine("login-username");
+              that.verifyCodeUrl = err.message.data.url;
+
             }
           });
       }

@@ -55,7 +55,7 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -72,7 +72,9 @@ export default {
     this.opts = this.$authing.opts;
   },
   methods: {
-    ...mapActions("data", ["changeLoading", "showGlobalMessage"]),
+    ...mapActions("data", [ "showGlobalMessage", "saveSignUpInfo"]),
+    ...mapActions("visibility", ["gotoLogin", "changeVisibility"]),
+    ...mapActions("loading", ["changeLoading"]),
     checkEmail: function checkEmail() {
       if (!this.$root.emailExp.test(this.signUpForm.email)) {
         // this.showGlobalErr("请输入正确格式的邮箱");
@@ -84,9 +86,9 @@ export default {
         // this.removeRedLine("sign-up-email");
       }
     },
-    handleSignUp: function handleSignUp() {
+    handleSignUp() {
       var that = this;
-      that.setLoading();
+      this.changeLoading({ el: "form", loading: true });
 
       if (!this.opts.hideUsername && !this.signUpForm.username) {
         this.showGlobalMessage({
@@ -97,7 +99,7 @@ export default {
         // this.removeRedLine("sign-up-email");
         // this.removeRedLine("sign-up-password");
         // this.removeRedLine("sign-up-re-password");
-        that.unLoading();
+        this.changeLoading({ el: "form", loading: false });
         this.$authing.pub("registerError", "请输入用户名");
         return false;
       }
@@ -106,11 +108,11 @@ export default {
           type: "error",
           message: "请输入正确格式的邮箱"
         });
-        this.addAnimation("sign-up-email");
-        this.removeRedLine("sign-up-username");
-        this.removeRedLine("sign-up-password");
-        this.removeRedLine("sign-up-re-password");
-        that.unLoading();
+        // this.addAnimation("sign-up-email");
+        // this.removeRedLine("sign-up-username");
+        // this.removeRedLine("sign-up-password");
+        // this.removeRedLine("sign-up-re-password");
+        this.changeLoading({ el: "form", loading: false });
         this.$authing.pub("registerError", "请输入正确格式的邮箱");
         return false;
       }
@@ -119,11 +121,11 @@ export default {
           type: "error",
           message: "请输入密码"
         });
-        this.addAnimation("sign-up-password");
-        this.this.removeRedLine("sign-up-username");
-        this.removeRedLine("sign-up-email");
-        this.removeRedLine("sign-up-re-password");
-        that.unLoading();
+        // this.addAnimation("sign-up-password");
+        // this.this.removeRedLine("sign-up-username");
+        // this.removeRedLine("sign-up-email");
+        // this.removeRedLine("sign-up-re-password");
+        this.changeLoading({ el: "form", loading: false });
         this.$authing.pub("registerError", "请输入密码");
         return false;
       }
@@ -132,14 +134,15 @@ export default {
           type: "error",
           message: "两次密码不一致"
         });
-        this.addAnimation("sign-up-re-password");
-        this.removeRedLine("sign-up-username");
-        this.removeRedLine("sign-up-email");
-        this.removeRedLine("sign-up-password");
-        that.unLoading();
+        // this.addAnimation("sign-up-re-password");
+        // this.removeRedLine("sign-up-username");
+        // this.removeRedLine("sign-up-email");
+        // this.removeRedLine("sign-up-password");
+        this.changeLoading({ el: "form", loading: false });
         this.$authing.pub("registerError", "两次密码不一致");
         return false;
       }
+      let validAuth = window.validAuth
       validAuth
         .register({
           email: this.signUpForm.email,
@@ -147,29 +150,32 @@ export default {
           password: this.signUpForm.password
         })
         .then(function(data) {
-          that.unLoading();
-          that.errVisible = false;
+          that.changeLoading({ el: "form", loading: false });
           that.gotoLogin();
-          that.loginForm = {
-            email: that.signUpForm.email,
-            password: that.signUpForm.password
-          };
+          that.changeVisibility({el: 'loginVerifyCode', visibility: false})
+          // that.loginForm = {
+          //   email: that.signUpForm.email,
+          //   password: that.signUpForm.password
+          // };
+          that.saveSignUpInfo({email: that.signUpForm.email, password: that.signUpForm.password})
           that.signUpForm = {
             username: "",
             password: "",
             email: "",
             rePassword: ""
           };
-          that.rememberMe = false;
-          this.showGlobalMessage({
+          // that.rememberMe = false;
+          that.showGlobalMessage({
             type: "success",
             message: "注册成功"
           });
           that.$authing.pub("register", data);
         })
         .catch(function(err) {
-          that.unLoading();
-          this.showGlobalMessage({
+          console.log(err)
+          that.changeLoading({ el: "form", loading: false });
+          
+          that.showGlobalMessage({
             type: "error",
             message: err.message.message
           });
