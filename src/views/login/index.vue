@@ -160,6 +160,7 @@
             <SignUp v-if="signUpVisible"/>
             <QRCode v-if="wxQRCodeVisible"/>
             <ForgetPassword v-if="forgetPasswordVisible"/>
+            <PhoneCodeLogin v-if="phoneCodeLoginVisible"/>
             <!-- <div
               class="_authing_form-footer login"
               v-show="!opts.hideUP"
@@ -190,6 +191,7 @@ import QRCode from "./QRCode";
 import SignUp from "./SignUp";
 import GlobalMessage from "../components/GlobalMessage";
 import ForgetPassword from "./forgetPassword/index";
+import PhoneCodeLogin from "./PhoneCode";
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "app",
@@ -199,6 +201,7 @@ export default {
     QRCode,
     ForgetPassword,
     GlobalMessage,
+    PhoneCodeLogin
   },
   data() {
     return {
@@ -481,11 +484,7 @@ export default {
       this.forgetPasswordForm.email = this.loginForm.email;
       this.pageVisible.forgetPasswordSendEmailVisible = true;
     },
-    gotoUsingPhone: function gotoUsingPhone() {
-      this.pageStack.push(this.getPageState());
-      this.turnOnPage("loginByPhoneCodeVisible");
-      this.pageVisible.signUpVisible = false;
-    },
+
 
     recordLoginInfo: function(userInfo) {
       let appToken = localStorage.getItem("appToken");
@@ -525,6 +524,7 @@ export default {
       wxQRCodeVisible: "wxQRCode",
       signUpVisible: "signUp",
       forgetPasswordVisible: "forgetPassword",
+      phoneCodeLoginVisible: "phoneCodeLogin"
     }),
     ...mapGetters("data", ["globalMessage", "globalMessageType"]),
     ...mapGetters("loading", {
@@ -557,8 +557,8 @@ export default {
     position: relative;
   }
 
-  #login-phoneCode {
+  /* #login-phoneCode {
     margin-top: 55px;
-  }
+  } */
 }
 </style>

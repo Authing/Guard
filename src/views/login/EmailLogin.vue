@@ -117,12 +117,31 @@ export default {
   },
   methods: {
     ...mapActions("loading", ["changeLoading"]),
-    ...mapActions("visibility", ["changeVisibility", "gotoForgetPassword"]),
+    ...mapActions("visibility", ["changeVisibility", "gotoForgetPassword", "gotoUsingPhone"]),
     ...mapActions("data", ["showGlobalMessage"]),
     handleLoginVerifyCodeLoaded() {
       this.changeLoading({ el: "loginVerifyCode", loading: false });
     },
-    gotoUsingPhone() {},
+    recordLoginInfo(userInfo) {
+      let appToken = localStorage.getItem("appToken");
+
+      if (appToken) {
+        try {
+          appToken = JSON.parse(appToken);
+        } catch (error) {
+          appToken = {};
+        }
+      } else {
+        appToken = {};
+      }
+
+      appToken[appId] = {
+        accessToken: userInfo.token,
+        userInfo: userInfo
+      };
+
+      localStorage.setItem("appToken", JSON.stringify(appToken));
+    },
     handleLogin() {
       this.changeLoading({ el: "form", loading: true });
       var that = this;
@@ -179,9 +198,9 @@ export default {
             type: "success",
             message: "验证通过，欢迎你：" + data.username || data.email
           });
-          that.$authing.pub("login", data);
           that.recordLoginInfo(data);
           that.changeLoading({ el: "form", loading: false });
+          that.$authing.pub("login", data);
         })
         .catch(err => {
           that.changeLoading({ el: "form", loading: false });

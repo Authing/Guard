@@ -6,7 +6,7 @@ const pageVisibilities = [
   "wxQRCode",
   "emailLogin",
   "signUp",
-  "loginByPhoneCode"
+  "phoneCodeLogin"
 ];
 const state = {
   pageStack: [],
@@ -18,12 +18,13 @@ const state = {
   forgetPasswordNewPassword: false,
   // 小程序二维码登录页
   wxQRCode: false,
+  // 通过手机号登录页
+  phoneCodeLogin: false,
   // email 登录页
   emailLogin: true,
   // 注册页
   signUp: false,
-  // 通过手机号登录页
-  loginByPhoneCode: false,
+
   // -----------------------------
   // EmailLogin 页面中 LDAP 登录选项可见性
   hasLDAP: false,
@@ -41,8 +42,8 @@ const getters = {
 
   wxQRCode: state => state.wxQRCode,
   emailLogin: state => state.emailLogin,
+  phoneCodeLogin: state => state.phoneCodeLogin,
   signUp: state => state.signUp,
-  loginByPhoneCode: state => state.loginByPhoneCode,
   hasLDAP: state => state.hasLDAP,
   loginVerifyCode: state => state.loginVerifyCode,
 
@@ -71,6 +72,9 @@ const actions = {
   },
   gotoForgetPassword({commit}) {
     commit("turnOnPage", { page: "forgetPasswordSendEmail" });
+  },
+  gotoUsingPhone({commit}) {
+    commit("turnOnPage", { page: "phoneCodeLogin" });
   },
   gotoForgetPasswordVerifyCode({commit}) {
     commit("turnOnPage", { page: "forgetPasswordVerifyCode" });
