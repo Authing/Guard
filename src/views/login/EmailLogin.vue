@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="form-body">
-      <SocialButtonsList/>
+      <SocialButtonsList v-if="!socialButtonsListLoading && socialButtonsList.length > 0 && !opts.hideUP"/>
 
       <P
         class="_authing_form-tip"

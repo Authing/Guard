@@ -1,24 +1,39 @@
 <template>
-  <button class="_authing-logmod__alter">
+  <div class="_authing-logmod__alter">
     <div class="logmod__alter-container">
-      <a
-        :href="item.url"
-        :class="{'_authing_a': true, '_authing-connect': true, 'github': item.alias === 'github', 'wechat': item.alias === 'wechatpc'}"
-      >
-        <div class="_authing-connect__icon">
-          <i class="_authing_iconfont" v-if="item.alias === 'github'">&#xea0a;</i>
-          <i class="_authing_iconfont" v-if="item.alias === 'wechatpc'">&#xf262;</i>
+      <a :href="url" class="_authing_a _authing-connect" :style="buttonStyle">
+        <div class="_authing-connect__icon" :style="iconStyle">
+          <i class="_authing_iconfont">{{icon}}</i>
         </div>
         <div class="_authing-connect__context">
-          <span>{{item.description}}</span>
+          <span>{{name}}</span>
         </div>
       </a>
     </div>
-  </button>
+  </div>
 </template>
 <script>
 export default {
-  methods: {}
+  methods: {},
+  props: {
+    name: {
+      type: String,
+      default: "默认名称"
+    },
+    icon: {
+      type: String,
+      default: ""
+    },
+    buttonStyle: {
+      type: Object
+    },
+    iconStyle: {
+      type: Object
+    },
+    url: {
+      type: String
+    }
+  }
 };
 </script>
 <style scoped>

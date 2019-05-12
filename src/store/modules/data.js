@@ -1,15 +1,15 @@
 const state = {
   // 登录成功和错误提示信息
-  globalMessage: '',
-  globalMessageType: '',
+  globalMessage: "",
+  globalMessageType: "",
 
-  signUpEmail: '',
-  signUpPassword: '',
+  signUpEmail: "",
+  signUpPassword: "",
 
-  forgetPasswordEmail: '',
-  forgetPasswordVerifyCode: '',
-  socialButtonsList: [],
-}
+  forgetPasswordEmail: "",
+  forgetPasswordVerifyCode: "",
+  socialButtonsList: []
+};
 const getters = {
   globalMessage: state => state.globalMessage,
   globalMessageType: state => state.globalMessageType,
@@ -21,40 +21,44 @@ const getters = {
   // 重置密码时填的 email
   forgetPasswordEmail: state => state.forgetPasswordEmail,
   forgetPasswordVerifyCode: state => state.forgetPasswordVerifyCode
-}
+};
 const actions = {
-  showGlobalMessage({commit}, {type, message}) {
-    commit('setGlobalMessage', {type, message})
+  showGlobalMessage({ commit }, { type, message }) {
+    commit("setGlobalMessage", { type, message });
   },
-  saveSignUpInfo({commit}, {email, password}) {
-    commit('setSignUpInfo', {email, password})
+  saveSignUpInfo({ commit }, { email, password }) {
+    commit("setSignUpInfo", { email, password });
   },
-  saveForgetPasswordEmail({commit}, {email}) {
-    commit('setForgetPasswordEmail', {email})
-
+  saveForgetPasswordEmail({ commit }, { email }) {
+    commit("setForgetPasswordEmail", { email });
   },
-  saveForgetPasswordVerifyCode({commit}, {verifyCode}) {
-    commit('setForgetPasswordVerifyCode', {verifyCode})
-
+  saveForgetPasswordVerifyCode({ commit }, { verifyCode }) {
+    commit("setForgetPasswordVerifyCode", { verifyCode });
+  },
+  saveSocialButtonsList({ commit }, { socialButtonsList }) {
+    commit("setSocialButtonsList", { socialButtonsList });
   }
-}
+};
 
 const mutations = {
-  setGlobalMessage(state, {type, message}) {
-    state.globalMessage = message
-    state.globalMessageType = type
+  setGlobalMessage(state, { type, message }) {
+    state.globalMessage = message;
+    state.globalMessageType = type;
   },
-  setSignUpInfo(state, {email, password}) {
-    state.signUpEmail = email
-    state.signUpPassword = password
+  setSignUpInfo(state, { email, password }) {
+    state.signUpEmail = email;
+    state.signUpPassword = password;
   },
-  setForgetPasswordEmail(state, {email}) {
-    state.forgetPasswordEmail = email
+  setForgetPasswordEmail(state, { email }) {
+    state.forgetPasswordEmail = email;
   },
-  setForgetPasswordVerifyCode(state, {verifyCode}) {
-    state.forgetPasswordVerifyCode = verifyCode
+  setForgetPasswordVerifyCode(state, { verifyCode }) {
+    state.forgetPasswordVerifyCode = verifyCode;
   },
-}
+  setSocialButtonsList(state, { socialButtonsList }) {
+    state.socialButtonsList = [...socialButtonsList];
+  }
+};
 
 export default {
   namespaced: true,
@@ -62,4 +66,4 @@ export default {
   getters,
   actions,
   mutations
-}
+};

@@ -213,8 +213,6 @@ export default {
 
       pageStack: [],
 
-      OAuthList: [],
-
       verifyCodeLoading: true,
 
       isWxQRCodeGenerated: false,
@@ -350,34 +348,37 @@ export default {
           );
         }
 
-        that.oAuthloading = true;
+        that.changeLoading({ el: "socialButtonsList", loading: true });
+
         validAuth
           .readOAuthList()
-          .then(function(data) {
+          .then(data => {
             that.$authing.pub("oauthLoad", data);
-            that.oAuthloading = false;
-
-            var OAuthList = data.filter(function(item) {
+            that.changeLoading({ el: "socialButtonsList", loading: false });
+            console.log(data)
+            // 刨去 微信扫码登录 的方式
+            var socialButtonsList = data.filter(function(item) {
               if (item.alias === "wxapp") {
                 that.isScanCodeEnable = true;
               }
               return item.enabled === true && item.alias !== "wxapp";
             });
 
-            that.OAuthList = OAuthList;
+            that.saveSocialButtonsList({socialButtonsList})
 
             if (!that.opts.hideOAuth) {
               return;
             }
 
-            if (OAuthList.length === 0 && that.opts.hideUP) {
+            if (socialButtonsList.length === 0 && that.opts.hideUP) {
               that.opts.hideOAuth = true;
               that.gotoWxQRCodeScanning();
             }
           })
-          .catch(function(err) {
+          .catch(err => {
+            console.log(err)
             that.$authing.pub("oauthUnload", err);
-            that.oAuthloading = true;
+            that.changeLoading({ el: "form", loading: true });
           });
 
         if (that.opts.hideOAuth && that.opts.hideUP) {
@@ -412,6 +413,12 @@ export default {
       "removeGlobalMsg",
       "gotoSignUp",
       "gotoLogin"
+    ]),
+    ...mapActions("loading", [
+      "changeLoading",
+    ]),
+    ...mapActions("data", [
+      "saveSocialButtonsList",
     ]),
     async checkHasLDAP(clientId) {
       let operationName = "QueryClientHasLDAPConfigs";
