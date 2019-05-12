@@ -23,7 +23,7 @@
             autocomplete="off"
             @keyup.enter="handleLoginByPhoneCode"
           >
-          <div class="_authing_form-footer phone-code-wrapper" style="flex-basis: 30%;">
+          <div class="_authing_form-footer phone-code-wrapper" style="flex-basis: 50%;">
             <button
               @click="handleSendingPhoneCode"
               style="height: 40px;font-size: 12px;border-radius: 0px;"
@@ -166,9 +166,16 @@ export default {
       };
 
       localStorage.setItem("appToken", JSON.stringify(appToken));
-    },
+    }
   }
 };
 </script>
 <style scoped>
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
 </style>

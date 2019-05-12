@@ -544,13 +544,13 @@ export default {
 </script>
 
 <style>
-@media screen and (min-width: 480px) {
+/* @media screen and (min-width: 480px) {
   ._authing_form-footer.phone-code-wrapper {
     position: absolute;
     right: 22px;
     margin-top: 0px !important;
   }
-}
+} */
 
 @media screen and (max-width: 480px) {
   ._authing_form-footer.phone-code-wrapper {
