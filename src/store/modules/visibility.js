@@ -30,14 +30,14 @@ const state = {
   // 登录频繁时，要求用户输入验证码
   loginVerifyCode: false,
   // 登录成功和错误提示
-  globalSuccess: false,
-  globalError: false,
-  globalWarn: false,
+  // globalSuccess: false,
+  // globalError: false,
+  // globalWarn: false,
 };
 const getters = {
-  globalSuccess: state => state.globalSuccess,
-  globalError: state => state.globalError,
-  globalWarn: state => state.globalWarn,
+  // globalSuccess: state => state.globalSuccess,
+  // globalError: state => state.globalError,
+  // globalWarn: state => state.globalWarn,
 
   wxQRCode: state => state.wxQRCode,
   emailLogin: state => state.emailLogin,
@@ -46,7 +46,7 @@ const getters = {
   hasLDAP: state => state.hasLDAP,
   loginVerifyCode: state => state.loginVerifyCode,
 
-  forgetPassword: state => state.forgetPassword,
+  forgetPassword: state => state.forgetPasswordSendEmail || state.forgetPasswordVerifyCode || state.forgetPasswordNewPassword,
   forgetPasswordSendEmail: state => state.forgetPasswordSendEmail,
   forgetPasswordVerifyCode: state => state.forgetPasswordVerifyCode,
   forgetPasswordNewPassword: state => state.forgetPasswordNewPassword
@@ -69,8 +69,17 @@ const actions = {
   gotoLogin({commit}) {
     commit("turnOnPage", { page: "emailLogin" });
   },
+  gotoForgetPassword({commit}) {
+    commit("turnOnPage", { page: "forgetPasswordSendEmail" });
+  },
+  gotoForgetPasswordVerifyCode({commit}) {
+    commit("turnOnPage", { page: "forgetPasswordVerifyCode" });
+  },
+  gotoForgetPasswordNewPassword({commit}) {
+    commit("turnOnPage", { page: "forgetPasswordNewPassword" });
+  },
   turnOnPage({ commit }, { page }) {
-    commit("removeGlobalMsg");
+    // commit("removeGlobalMsg");
     commit("turnOnPage", { page });
   }
 };
@@ -81,26 +90,26 @@ const mutations = {
     state[el] = visibility;
   },
   // 移除所有登录成功和错误提示
-  removeGlobalMsg() {
-    state.globalWarn = false;
-    state.globalError = false;
-    state.globalSuccess = false;
-  },
-  showGlobalSuccess() {
-    state.globalWarn = false;
-    state.globalError = false;
-    state.globalSuccess = true;
-  },
-  showGlobalErr() {
-    state.globalWarn = false;
-    state.globalError = true;
-    state.globalSuccess = false;
-  },
-  showGlobalWarn() {
-    state.globalWarn = true;
-    state.globalError = false;
-    state.globalSuccess = false;
-  },
+  // removeGlobalMsg() {
+  //   state.globalWarn = false;
+  //   state.globalError = false;
+  //   state.globalSuccess = false;
+  // },
+  // showGlobalSuccess() {
+  //   state.globalWarn = false;
+  //   state.globalError = false;
+  //   state.globalSuccess = true;
+  // },
+  // showGlobalErr() {
+  //   state.globalWarn = false;
+  //   state.globalError = true;
+  //   state.globalSuccess = false;
+  // },
+  // showGlobalWarn() {
+  //   state.globalWarn = true;
+  //   state.globalError = false;
+  //   state.globalSuccess = false;
+  // },
   turnOnPage(state, { page }) {
     // page 是 pageVisibilities 中的一个字符串
     pageVisibilities.map(item => {

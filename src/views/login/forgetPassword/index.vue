@@ -1,9 +1,9 @@
 <template>
-  <form class="authing-form no-shadow">
+  <div>
     <NewPassword v-if="newPasswordVisible"/>
     <SendEmail v-if="sendEmailVisible"/>
     <VerifyCode v-if="verifyCodeVisible"/>
-  </form>
+  </div>
 </template>
 <script>
 import NewPassword from './NewPassword'

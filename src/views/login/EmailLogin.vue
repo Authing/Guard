@@ -118,11 +118,8 @@ export default {
   },
   methods: {
     ...mapActions("loading", ["changeLoading"]),
-    ...mapActions("visibility", ["changeVisibility"]),
+    ...mapActions("visibility", ["changeVisibility", "gotoForgetPassword"]),
     ...mapActions("data", ["showGlobalMessage"]),
-    gotoForgetPassword() {
-      this.$router.push({ name: "forgetPassword" });
-    },
     handleLoginVerifyCodeLoaded() {
       this.changeLoading({ el: "loginVerifyCode", loading: false });
     },

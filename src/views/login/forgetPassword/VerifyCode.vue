@@ -1,56 +1,79 @@
 <template>
   <div>
-    <div class="_authing_form-group" style="margin-top: -15px;">
-      <input
-        type="text"
-        class="_authing_input _authing_form-control"
-        id="forget-password-verify-code"
-        autocomplete="off"
-      >
+    <div class="form-body authing-form no-shadow">
+      <div class="_authing_form-group" style="margin-top: -15px;">
+        <input
+          type="text"
+          class="_authing_input _authing_form-control"
+          id="forget-password-verify-code"
+          autocomplete="off"
+          :placeholder="opts.placeholder.verfiyCode"
+          v-model="verifyCode"
+        >
+      </div>
     </div>
-    <button
-      v-show="pageVisible.forgetPasswordVerifyCodeVisible && !loading"
-      @click="handleSubmitForgetPasswordVerifyCode"
-      class="btn btn-primary"
-    >提交验证码</button>
+    <div class="_authing_form-footer login" v-show="!opts.hideUP">
+      <button @click="handleSubmitForgetPasswordVerifyCode" class="btn btn-primary">提交验证码</button>
+    </div>
   </div>
 </template>
 <script>
+import { mapGetters, mapActions } from "vuex";
 export default {
+  created() {
+    this.$authing = this.$root.$data.$authing;
+    this.opts = this.$root.$data.$authing.opts;
+    console.log(this.opts);
+  },
   data() {
     return {
       verifyCode: ""
     };
   },
+  computed: {
+    ...mapGetters("data", ["forgetPasswordEmail"])
+  },
   methods: {
+    ...mapActions("loading", ["changeLoading"]),
+    ...mapActions("visibility", ["gotoForgetPasswordNewPassword"]),
+    ...mapActions("data", ["showGlobalMessage", "saveForgetPasswordVerifyCode"]),
     handleSubmitForgetPasswordVerifyCode: function handleSubmitForgetPasswordVerifyCode() {
       var that = this;
-      that.setLoading();
-      if (!this.forgetPasswordForm.verifyCode) {
-        that.unLoading();
-        this.addAnimation("forget-password-verify-code");
-
-        that.showGlobalErr("请输入验证码");
+      this.changeLoading({ el: "form", loading: true });
+      if (!this.verifyCode) {
+        this.changeLoading({ el: "form", loading: false });
+        // this.addAnimation("forget-password-verify-code");
+        this.showGlobalMessage({
+          type: "error",
+          message: "请输入验证码"
+        });
         this.$authing.pub("resetPasswordError", "请输入验证码");
         return false;
       }
+      ``;
       validAuth
         .verifyResetPasswordVerifyCode({
-          email: that.forgetPasswordForm.email,
-          verifyCode: that.forgetPasswordForm.verifyCode
+          email: that.forgetPasswordEmail,
+          verifyCode: that.verifyCode
         })
-        .then(function(data) {
+        .then(data => {
           that.$authing.pub("resetPassword", data);
-          that.unLoading();
-          that.showGlobalSuccess(data.message);
-          that.pageVisible.forgetPasswordVerifyCodeVisible = false;
-          that.pageVisible.forgetPasswordNewPasswordVisible = true;
+          this.changeLoading({ el: "form", loading: false });
+          this.showGlobalMessage({
+            type: "success",
+            message: data.message
+          });
+          this.saveForgetPasswordVerifyCode({verifyCode: this.verifyCode})
+          this.gotoForgetPasswordNewPassword();
         })
-        .catch(function(err) {
+        .catch(err => {
           that.$authing.pub("resetPasswordError", err);
-          that.unLoading();
-          that.addAnimation("forget-password-verify-code");
-          that.showGlobalErr(err.message.message);
+          this.changeLoading({ el: "form", loading: false });
+          // that.addAnimation("forget-password-verify-code");
+          this.showGlobalMessage({
+            type: "error",
+            message: err.message.message
+          });
         });
     }
   }

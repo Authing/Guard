@@ -1,55 +1,78 @@
 <template>
   <div>
-    <div class="_authing_form-group" style="margin-top: -15px;">
-      <input
-        type="text"
-        class="_authing_input _authing_form-control"
-        id="forget-password-email"
-        autocomplete="off"
-      >
+    <div class="form-body authing-form no-shadow">
+      <div class="_authing_form-group" style="margin-top: -15px;">
+        <input
+          type="text"
+          class="_authing_input _authing_form-control"
+          id="forget-password-email"
+          :placeholder="opts.placeholder.email"
+          autocomplete="off"
+          v-model="email"
+          @keyup.enter="handleForgetPasswordSendEmail"
+        >
+      </div>
     </div>
-    <button
-      v-show="pageVisible.forgetPasswordSendEmailVisible && !loading"
-      @click="handleForgetPasswordSendEmail"
-      class="btn btn-primary"
-    >发送邮件</button>
+
+    <div class="_authing_form-footer login" v-show="!opts.hideUP">
+      <button @click="handleForgetPasswordSendEmail" class="btn btn-primary">发送邮件</button>
+    </div>
   </div>
 </template>
 <script>
+import { mapActions } from "vuex";
 export default {
+  created() {
+    this.$authing = this.$root.$data.$authing;
+    this.opts = this.$root.$data.$authing.opts;
+    console.log(this.opts);
+  },
   data() {
     return {
       email: ""
     };
   },
+  computed: {},
   methods: {
-    handleForgetPasswordSendEmail: function handleForgetPasswordSendEmail() {
+    ...mapActions("loading", ["changeLoading"]),
+    ...mapActions("visibility", ["gotoForgetPasswordVerifyCode"]),
+    ...mapActions("data", ["showGlobalMessage", "saveForgetPasswordEmail"]),
+
+    handleForgetPasswordSendEmail() {
       var that = this;
-      that.setLoading();
-      if (!this.$root.emailExp.test(this.forgetPasswordForm.email)) {
-        this.showGlobalErr("请输入正确格式的邮箱");
-        this.addAnimation("forget-password-email");
-        that.unLoading();
+      this.changeLoading({ el: "form", loading: true });
+
+      if (!this.$root.emailExp.test(this.email)) {
+        this.showGlobalMessage({
+          type: "error",
+          message: "请输入正确格式的邮箱"
+        });
+        // this.addAnimation("forget-password-email");
+        this.changeLoading({ el: "form", loading: false });
         this.$authing.pub("emailSentError", "请输入正确格式的邮箱");
         return false;
       }
       validAuth
         .sendResetPasswordEmail({
-          email: this.forgetPasswordForm.email
+          email: this.email
         })
-        .then(function(data) {
+        .then(data => {
           that.$authing.pub("emailSent", data);
-          that.unLoading();
-          that.showGlobalSuccess(
-            "验证码已发送至您的邮箱：" + that.forgetPasswordForm.email
-          );
-          that.pageVisible.forgetPasswordSendEmailVisible = false;
-          that.pageVisible.forgetPasswordVerifyCodeVisible = true;
+          this.changeLoading({ el: "form", loading: false });
+          this.showGlobalMessage({
+            type: "success",
+            message: "验证码已发送至您的邮箱：" + that.email
+          });
+          this.saveForgetPasswordEmail({email: this.email})
+          that.gotoForgetPasswordVerifyCode();
         })
-        .catch(function(err) {
+        .catch(err => {
           that.$authing.pub("emailSentError", err);
-          that.unLoading();
-          that.showGlobalErr(err.message);
+          that.changeLoading({ el: "form", loading: false });
+          this.showGlobalMessage({
+            type: "error",
+            message: err.message.message
+          });
         });
     }
   }

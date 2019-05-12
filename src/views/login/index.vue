@@ -158,6 +158,7 @@
             <!-- <router-view/> -->
             <EmailLogin v-if="emailLoginVisible"/>
             <SignUp v-if="signUpVisible"/>
+            <ForgetPassword v-if="forgetPasswordVisible"/>
             <!-- <div
               class="_authing_form-footer login"
               v-show="!opts.hideUP"
@@ -186,13 +187,15 @@ import GraphQLClient from "../../graphql.js";
 import EmailLogin from "./EmailLogin";
 import SignUp from "./SignUp";
 import GlobalMessage from "../components/GlobalMessage";
+import ForgetPassword from "./forgetPassword/index";
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "app",
   components: {
     EmailLogin,
     GlobalMessage,
-    SignUp
+    SignUp,
+    ForgetPassword
   },
   data() {
     return {
