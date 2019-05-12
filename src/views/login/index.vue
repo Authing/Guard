@@ -158,6 +158,7 @@
             <!-- <router-view/> -->
             <EmailLogin v-if="emailLoginVisible"/>
             <SignUp v-if="signUpVisible"/>
+            <QRCode v-if="wxQRCodeVisible"/>
             <ForgetPassword v-if="forgetPasswordVisible"/>
             <!-- <div
               class="_authing_form-footer login"
@@ -185,6 +186,7 @@
 <script>
 import GraphQLClient from "../../graphql.js";
 import EmailLogin from "./EmailLogin";
+import QRCode from "./QRCode";
 import SignUp from "./SignUp";
 import GlobalMessage from "../components/GlobalMessage";
 import ForgetPassword from "./forgetPassword/index";
@@ -193,9 +195,10 @@ export default {
   name: "app",
   components: {
     EmailLogin,
-    GlobalMessage,
     SignUp,
-    ForgetPassword
+    QRCode,
+    ForgetPassword,
+    GlobalMessage,
   },
   data() {
     return {
@@ -521,7 +524,7 @@ export default {
       emailLoginVisible: "emailLogin",
       wxQRCodeVisible: "wxQRCode",
       signUpVisible: "signUp",
-      forgetPasswordVisible: "forgetPassword"
+      forgetPasswordVisible: "forgetPassword",
     }),
     ...mapGetters("data", ["globalMessage", "globalMessageType"]),
     ...mapGetters("loading", {

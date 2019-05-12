@@ -1,9 +1,5 @@
 <template>
-  <form
-    v-show="pageVisible.wxQRCodeVisible && !opts.hideQRCode"
-    style="height:300px"
-    class="authing-form no-shadow"
-  >
+  <form class="authing-form no-shadow"><!--style="height:300px"-->
     <div class="_authing_form-group" style="margin-top: -15px;">
       <div id="qrcode-node"></div>
     </div>
@@ -11,48 +7,51 @@
 </template>
 <script>
 export default {
-  methods: {
-    gotoWxQRCodeScanning: function gotoWxQRCodeScanning() {
-      if (!(this.opts.hideOAuth && this.opts.hideUP)) {
-        this.pageStack.push(this.getPageState());
-      }
-      this.turnOnPage("wxQRCodeVisible");
+  name: 'QRCode',
+  data() {
+    return {
+      isWxQRCodeGenerated: false
+    }
+  },
+  created() {
+    this.$authing = this.$root.$data.$authing;
+    this.opts = this.$root.$data.$authing.opts;
+  },
+  mounted() {
+    var scanOpts = this.opts.qrcodeScanning || {
+      redirect: true,
+      interval: 1500,
+      tips: "使用 微信 或小程序 身份管家 扫码登录"
+    };
 
-      var scanOpts = this.$authing.opts.qrcodeScanning || {
-        redirect: true,
-        interval: 1500,
-        tips: "使用 微信 或小程序 身份管家 扫码登录"
-      };
+    let that = this;
+    let validAuth = window.validAuth
+    if (!this.isWxQRCodeGenerated) {
+      validAuth.startWXAppScaning({
+        mount: "qrcode-node",
 
-      let that = this;
+        onSuccess: function(res) {
+          that.$authing.pub("scanning", res);
+          localStorage.setItem("_authing_token", res.data.token);
+          that.recordLoginInfo(res.data);
+        },
 
-      if (!this.isWxQRCodeGenerated) {
-        validAuth.startWXAppScaning({
-          mount: "qrcode-node",
+        onError: function(err) {
+          that.$authing.pub("scanningError", err);
+        },
 
-          onSuccess: function(res) {
-            that.$authing.pub("scanning", res);
-            localStorage.setItem("_authing_token", res.data.token);
-            that.recordLoginInfo(res.data);
-          },
+        onIntervalStarting: function(interval) {
+          that.$authing.pub("scanningIntervalStarting", interval);
+        },
 
-          onError: function(err) {
-            that.$authing.pub("scanningError", err);
-          },
+        interval: scanOpts.interval,
 
-          onIntervalStarting: function(interval) {
-            that.$authing.pub("scanningIntervalStarting", interval);
-          },
+        redirect: scanOpts.redirect,
 
-          interval: scanOpts.interval,
-
-          redirect: scanOpts.redirect,
-
-          tips: scanOpts.tips
-        });
-        this.isWxQRCodeGenerated = true;
-      }
-    },
+        tips: scanOpts.tips
+      });
+      this.isWxQRCodeGenerated = true;
+    }
   }
 };
 </script>
