@@ -94,6 +94,13 @@ export default {
     this.loginForm.email = this.signUpEmail || "";
     this.loginForm.password = this.signUpPassword || "";
   },
+  watch: {
+    // 为了能够在注册后自动跳转到登录页面时自动填充用户名和密码
+    emailLoginVisible: function() {
+      this.loginForm.email = this.signUpEmail || "";
+      this.loginForm.password = this.signUpPassword || "";
+    }
+  },
   data() {
     return {
       verifyCode: "",
@@ -110,7 +117,8 @@ export default {
       loginVerifyCodeLoading: "loginVerifyCode"
     }),
     ...mapGetters("visibility", {
-      loginVerifyCodeVisible: "loginVerifyCode"
+      loginVerifyCodeVisible: "loginVerifyCode",
+      emailLoginVisible: "emailLogin"
     }),
     ...mapGetters("data", [
       "socialButtonsList",
