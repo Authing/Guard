@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="form-body">
-      <form @submit.prevent="() => { return false; }" class="authing-form no-shadow">
+      <form @submit.prevent="() => { return false; }" style="margin-bottom:16px" class="authing-form no-shadow">
         <div class="_authing_form-group">
           <input
             type="text"

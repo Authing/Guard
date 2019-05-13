@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form action="#" class="authing-form animate-box no-shadow">
+    <form style="margin-bottom:16px" class="authing-form animate-box no-shadow">
       <div v-show="opts.forceLogin" class="authing_force_login_tips" style="text-align:center">
         <p>输入帐号密码登录</p>
         <p>如果您没有帐号，我们会自动创建</p>
