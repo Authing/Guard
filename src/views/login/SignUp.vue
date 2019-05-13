@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin-top:-13px">
     <form class="authing-form no-shadow">
       <div v-show="!opts.hideUsername" class="_authing_form-group">
         <input
