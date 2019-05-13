@@ -94,31 +94,9 @@
               >{{forgetPasswordVisible ? '重置密码' : opts.title}}</div>
             </div>
           </div>
+          
           <GlobalMessage v-show="globalMessage" :message="globalMessage" :type="globalMessageType"/>
-          <!-- <div
-            v-show="errVisible || authingOnError"
-            class="authing-global-message authing-global-message-error"
-          >
-            <span class="animated fadeInUp">
-              <span>{{errMsg}}</span>
-            </span>
-          </div>
-
-          <div
-            v-show="successVisible"
-            class="authing-global-message authing-global-message-success"
-          >
-            <span class="animated fadeInUp">
-              <span>{{successMsg}}</span>
-            </span>
-          </div>
-
-          <div v-show="warnVisible" class="authing-global-message authing-global-message-info">
-            <span class="animated fadeInUp">
-              <span>{{warnMsg}}</span>
-            </span>
-          </div>-->
-
+          
           <div v-show="!authingOnError">
             <div class="authing-header-tabs-container">
               <ul class="authing-header-tabs">
