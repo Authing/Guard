@@ -1,5 +1,5 @@
 <template>
-  <form class="authing-form no-shadow"><!--style="height:300px"-->
+  <form class="authing-form no-shadow" style="min-height:300px">
     <div class="_authing_form-group" style="margin-top: -15px;">
       <div id="qrcode-node"></div>
     </div>
