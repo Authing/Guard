@@ -136,7 +136,7 @@
                 <li
                   v-show="!(opts.hideUP && opts.hideOAuth)"
                   v-bind:class="{
-                  'authing-header-tabs-current': emailLoginVisible,
+                  'authing-header-tabs-current': emailLoginVisible || LDAPLoginVisible,
                   'width-55': !isScanCodeEnable || opts.hideQRCode || opts.hideUP || opts.forceLogin,
                   'width-100': (opts.hideUP && opts.hideQRCode) || (opts.hideQRCode && opts.forceLogin) || clientInfo.registerDisabled,
                 }"
@@ -157,7 +157,7 @@
 
             <div
               v-if="hasLDAP && (emailLoginVisible || LDAPLoginVisible)"
-              style="font-size: 13px;color:#777;padding: 0 22px;"
+              style="font-size: 13px;color:#777;padding: 0 11px;"
             >
               <label>
                 <input
