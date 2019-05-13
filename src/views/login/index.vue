@@ -156,7 +156,7 @@
             </div>
 
             <!-- <router-view/> -->
-            <EmailLogin v-if="emailLoginVisible"/>
+            <EmailLogin v-show="emailLoginVisible"/>
             <SignUp v-if="signUpVisible"/>
             <QRCode v-if="wxQRCodeVisible"/>
             <ForgetPassword v-if="forgetPasswordVisible"/>

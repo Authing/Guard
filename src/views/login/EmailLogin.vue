@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="form-body">
-      <SocialButtonsList v-if="!socialButtonsListLoading && socialButtonsList.length > 0 && !opts.hideUP"/>
+      <SocialButtonsList
+        v-if="!socialButtonsListLoading && socialButtonsList.length > 0 && !opts.hideUP"
+      />
 
       <P
         class="_authing_form-tip"
@@ -117,7 +119,11 @@ export default {
   },
   methods: {
     ...mapActions("loading", ["changeLoading"]),
-    ...mapActions("visibility", ["changeVisibility", "gotoForgetPassword", "gotoUsingPhone"]),
+    ...mapActions("visibility", [
+      "changeVisibility",
+      "gotoForgetPassword",
+      "gotoUsingPhone"
+    ]),
     ...mapActions("data", ["showGlobalMessage"]),
     handleLoginVerifyCodeLoaded() {
       this.changeLoading({ el: "loginVerifyCode", loading: false });
@@ -275,7 +281,15 @@ export default {
             // that.addAnimation("login-password");
             // that.removeRedLine("verify-code");
             // that.removeRedLine("login-username");
-            that.verifyCodeUrl = err.message.data.url;
+            if (err.message.data.url) {
+              that.verifyCodeUrl = err.message.data.url;
+            } else {
+              that.verifyCodeUrl = ''
+              that.changeVisibility({
+                el: "loginVerifyCode",
+                visibility: false
+              });
+            }
           }
         });
 
