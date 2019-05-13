@@ -6,7 +6,8 @@ const pageVisibilities = [
   "wxQRCode",
   "emailLogin",
   "signUp",
-  "phoneCodeLogin"
+  "phoneCodeLogin",
+  "LDAPLogin"
 ];
 const state = {
   pageStack: [],
@@ -27,7 +28,7 @@ const state = {
 
   // -----------------------------
   // EmailLogin 页面中 LDAP 登录选项可见性
-  hasLDAP: false,
+  LDAPLogin: false,
   // 登录频繁时，要求用户输入验证码
   loginVerifyCode: false,
   // 登录成功和错误提示
@@ -44,7 +45,7 @@ const getters = {
   emailLogin: state => state.emailLogin,
   phoneCodeLogin: state => state.phoneCodeLogin,
   signUp: state => state.signUp,
-  hasLDAP: state => state.hasLDAP,
+  LDAPLogin: state => state.LDAPLogin,
   loginVerifyCode: state => state.loginVerifyCode,
 
   forgetPassword: state => state.forgetPasswordSendEmail || state.forgetPasswordVerifyCode || state.forgetPasswordNewPassword,
@@ -70,6 +71,9 @@ const actions = {
   gotoLogin({commit}) {
     commit("turnOnPage", { page: "emailLogin" });
   },
+  gotoLDAPLogin({commit}) {
+    commit("turnOnPage", { page: "LDAPLogin" });
+  },
   gotoForgetPassword({commit}) {
     commit("turnOnPage", { page: "forgetPasswordSendEmail" });
   },
@@ -84,6 +88,7 @@ const actions = {
   },
   turnOnPage({ commit }, { page }) {
     // commit("removeGlobalMsg");
+
     commit("turnOnPage", { page });
   }
 };
@@ -115,6 +120,7 @@ const mutations = {
   //   state.globalSuccess = false;
   // },
   turnOnPage(state, { page }) {
+    this.dispatch('data/showGlobalMessage', {type: '', message: ''})
     // page 是 pageVisibilities 中的一个字符串
     pageVisibilities.map(item => {
       state[item] = false;

@@ -155,8 +155,21 @@
               </ul>
             </div>
 
-            <!-- <router-view/> -->
+              <div v-if="hasLDAP && (emailLoginVisible || LDAPLoginVisible)" style="font-size: 13px;color:#777;padding: 0 22px;">
+                <label>
+                  <input type="radio" name="ldap" :checked="emailLoginVisible" style="width: 12px;" @click="gotoLogin"> 普通登录
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="ldap"
+                    @click="gotoLDAPLogin"
+                    style="width: 12px;margin-left:11px"
+                  > 使用 LDAP
+                </label>
+              </div>
             <EmailLogin v-show="emailLoginVisible"/>
+            <LDAPLogin v-show="LDAPLoginVisible"/>
             <SignUp v-if="signUpVisible"/>
             <QRCode v-if="wxQRCodeVisible"/>
             <ForgetPassword v-if="forgetPasswordVisible"/>
@@ -170,11 +183,6 @@
             >
               <div class="authing-loading-circle" v-show="loading"></div>
               
-              
-              
-             
-              
-              
             </div>-->
 
             <div class="_authing_form-footer-non-up" v-show="opts.hideUP"></div>
@@ -187,6 +195,7 @@
 <script>
 import GraphQLClient from "../../graphql.js";
 import EmailLogin from "./EmailLogin";
+import LDAPLogin from "./LDAPLogin";
 import QRCode from "./QRCode";
 import SignUp from "./SignUp";
 import GlobalMessage from "../components/GlobalMessage";
@@ -201,7 +210,8 @@ export default {
     QRCode,
     ForgetPassword,
     GlobalMessage,
-    PhoneCodeLogin
+    PhoneCodeLogin,
+    LDAPLogin
   },
   data() {
     return {
@@ -361,7 +371,7 @@ export default {
           .then(data => {
             that.$authing.pub("oauthLoad", data);
             that.changeLoading({ el: "socialButtonsList", loading: false });
-            console.log(data)
+            console.log(data);
             // 刨去 微信扫码登录 的方式
             var socialButtonsList = data.filter(function(item) {
               if (item.alias === "wxapp") {
@@ -370,7 +380,7 @@ export default {
               return item.enabled === true && item.alias !== "wxapp";
             });
 
-            that.saveSocialButtonsList({socialButtonsList})
+            that.saveSocialButtonsList({ socialButtonsList });
 
             if (!that.opts.hideOAuth) {
               return;
@@ -382,7 +392,7 @@ export default {
             }
           })
           .catch(err => {
-            console.log(err)
+            console.log(err);
             that.$authing.pub("oauthUnload", err);
             that.changeLoading({ el: "form", loading: true });
           });
@@ -418,14 +428,11 @@ export default {
       "gotoWxQRCodeScanning",
       "removeGlobalMsg",
       "gotoSignUp",
-      "gotoLogin"
+      "gotoLogin",
+      "gotoLDAPLogin"
     ]),
-    ...mapActions("loading", [
-      "changeLoading",
-    ]),
-    ...mapActions("data", [
-      "saveSocialButtonsList",
-    ]),
+    ...mapActions("loading", ["changeLoading"]),
+    ...mapActions("data", ["saveSocialButtonsList"]),
     async checkHasLDAP(clientId) {
       let operationName = "QueryClientHasLDAPConfigs";
       let query =
@@ -445,6 +452,7 @@ export default {
       try {
         const hasLDAP = await GraphQLClient_getInfo.request({ query });
         this.hasLDAP = hasLDAP.QueryClientHasLDAPConfigs.result;
+        this.changeVisibility;
       } catch (erro) {
         console.log(erro);
       }
@@ -485,7 +493,6 @@ export default {
       this.pageVisible.forgetPasswordSendEmailVisible = true;
     },
 
-
     recordLoginInfo: function(userInfo) {
       let appToken = localStorage.getItem("appToken");
 
@@ -524,7 +531,8 @@ export default {
       wxQRCodeVisible: "wxQRCode",
       signUpVisible: "signUp",
       forgetPasswordVisible: "forgetPassword",
-      phoneCodeLoginVisible: "phoneCodeLogin"
+      phoneCodeLoginVisible: "phoneCodeLogin",
+      LDAPLoginVisible: "LDAPLogin"
     }),
     ...mapGetters("data", ["globalMessage", "globalMessageType"]),
     ...mapGetters("loading", {
