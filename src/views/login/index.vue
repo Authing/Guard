@@ -135,7 +135,7 @@
 
             <div
               v-if="hasLDAP && (emailLoginVisible || LDAPLoginVisible)"
-              style="font-size: 13px;color:#777;padding: 0 11px;"
+              style="font-size: 13px;color:#777;padding: 0 22px;margin-top:11px;padding-top:6px"
             >
               <label>
                 <input
