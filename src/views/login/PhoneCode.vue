@@ -72,7 +72,7 @@ export default {
           type: "error",
           message: "请填写正确的手机号"
         });
-        this.addAnimation("login-phone");
+        // this.addAnimation("login-phone");
         this.$authing.pub("loginError", "请填写正确的手机号");
         return;
       }
