@@ -365,7 +365,6 @@ export default {
         }
 
         that.changeLoading({ el: "socialButtonsList", loading: true });
-
         validAuth
           .readOAuthList()
           .then(data => {
