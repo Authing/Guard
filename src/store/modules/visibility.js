@@ -30,7 +30,7 @@ const state = {
   // EmailLogin 页面中 LDAP 登录选项可见性
   LDAPLogin: false,
   // 登录频繁时，要求用户输入验证码
-  loginVerifyCode: false,
+  loginVerifyCode: false
   // 登录成功和错误提示
   // globalSuccess: false,
   // globalError: false,
@@ -40,6 +40,7 @@ const getters = {
   // globalSuccess: state => state.globalSuccess,
   // globalError: state => state.globalError,
   // globalWarn: state => state.globalWarn,
+  pageStack: state => state.pageStack,
 
   wxQRCode: state => state.wxQRCode,
   emailLogin: state => state.emailLogin,
@@ -48,7 +49,10 @@ const getters = {
   LDAPLogin: state => state.LDAPLogin,
   loginVerifyCode: state => state.loginVerifyCode,
 
-  forgetPassword: state => state.forgetPasswordSendEmail || state.forgetPasswordVerifyCode || state.forgetPasswordNewPassword,
+  forgetPassword: state =>
+    state.forgetPasswordSendEmail ||
+    state.forgetPasswordVerifyCode ||
+    state.forgetPasswordNewPassword,
   forgetPasswordSendEmail: state => state.forgetPasswordSendEmail,
   forgetPasswordVerifyCode: state => state.forgetPasswordVerifyCode,
   forgetPasswordNewPassword: state => state.forgetPasswordNewPassword
@@ -56,7 +60,7 @@ const getters = {
 const actions = {
   changeVisibility({ commit }, { el, visibility }) {
     console.log("改变元素可见性");
-    console.log({ el, visibility })
+    console.log({ el, visibility });
     commit("setVisibility", { el, visibility });
   },
   removeGlobalMsg() {
@@ -65,31 +69,34 @@ const actions = {
   gotoWxQRCodeScanning({ commit }) {
     commit("turnOnPage", { page: "wxQRCode" });
   },
-  gotoSignUp({commit}) {
+  gotoSignUp({ commit }) {
     commit("turnOnPage", { page: "signUp" });
   },
-  gotoLogin({commit}) {
+  gotoLogin({ commit }) {
     commit("turnOnPage", { page: "emailLogin" });
   },
-  gotoLDAPLogin({commit}) {
+  gotoLDAPLogin({ commit }) {
     commit("turnOnPage", { page: "LDAPLogin" });
   },
-  gotoForgetPassword({commit}) {
+  gotoForgetPassword({ commit }) {
     commit("turnOnPage", { page: "forgetPasswordSendEmail" });
   },
-  gotoUsingPhone({commit}) {
+  gotoUsingPhone({ commit }) {
     commit("turnOnPage", { page: "phoneCodeLogin" });
   },
-  gotoForgetPasswordVerifyCode({commit}) {
+  gotoForgetPasswordVerifyCode({ commit }) {
     commit("turnOnPage", { page: "forgetPasswordVerifyCode" });
   },
-  gotoForgetPasswordNewPassword({commit}) {
+  gotoForgetPasswordNewPassword({ commit }) {
     commit("turnOnPage", { page: "forgetPasswordNewPassword" });
   },
   turnOnPage({ commit }, { page }) {
     // commit("removeGlobalMsg");
 
     commit("turnOnPage", { page });
+  },
+  goBack({ commit }) {
+    commit("goBack");
   }
 };
 
@@ -120,12 +127,23 @@ const mutations = {
   //   state.globalSuccess = false;
   // },
   turnOnPage(state, { page }) {
-    this.dispatch('data/showGlobalMessage', {type: '', message: ''})
+    this.dispatch("data/showGlobalMessage", { type: "", message: "" });
     // page 是 pageVisibilities 中的一个字符串
+    state.pageStack.push(
+      pageVisibilities.reduce((acc, val) => {
+        return { ...acc, [val]: state[val] };
+      }, {})
+    );
     pageVisibilities.map(item => {
       state[item] = false;
     });
     state[page] = true;
+  },
+  goBack(state) {
+    let prev = state.pageStack.pop();
+    pageVisibilities.map(item => {
+      state[item] = prev[item];
+    });
   }
 };
 

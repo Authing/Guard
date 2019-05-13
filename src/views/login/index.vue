@@ -36,7 +36,7 @@
           <div class="_authing_form-header">
             <span
               v-if="pageStack.length > 0"
-              @click="handleGoBack"
+              @click="goBack"
               class="authing-lock-back-button"
             >
               <svg
@@ -155,19 +155,29 @@
               </ul>
             </div>
 
-              <div v-if="hasLDAP && (emailLoginVisible || LDAPLoginVisible)" style="font-size: 13px;color:#777;padding: 0 22px;">
-                <label>
-                  <input type="radio" name="ldap" :checked="emailLoginVisible" style="width: 12px;" @click="gotoLogin"> 普通登录
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    name="ldap"
-                    @click="gotoLDAPLogin"
-                    style="width: 12px;margin-left:11px"
-                  > 使用 LDAP
-                </label>
-              </div>
+            <div
+              v-if="hasLDAP && (emailLoginVisible || LDAPLoginVisible)"
+              style="font-size: 13px;color:#777;padding: 0 22px;"
+            >
+              <label>
+                <input
+                  type="radio"
+                  name="ldap"
+                  :checked="emailLoginVisible"
+                  style="width: 12px;"
+                  @click="gotoLogin"
+                > 普通登录
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="ldap"
+                  @click="gotoLDAPLogin"
+                  :checked="LDAPLoginVisible"
+                  style="width: 12px;margin-left:11px"
+                > 使用 LDAP
+              </label>
+            </div>
             <EmailLogin v-show="emailLoginVisible"/>
             <LDAPLogin v-show="LDAPLoginVisible"/>
             <SignUp v-if="signUpVisible"/>
@@ -226,8 +236,6 @@ export default {
       warnVisible: false,
 
       rememberMe: false,
-
-      pageStack: [],
 
       verifyCodeLoading: true,
 
@@ -370,7 +378,6 @@ export default {
           .then(data => {
             that.$authing.pub("oauthLoad", data);
             that.changeLoading({ el: "socialButtonsList", loading: false });
-            console.log(data);
             // 刨去 微信扫码登录 的方式
             var socialButtonsList = data.filter(function(item) {
               if (item.alias === "wxapp") {
@@ -428,7 +435,8 @@ export default {
       "removeGlobalMsg",
       "gotoSignUp",
       "gotoLogin",
-      "gotoLDAPLogin"
+      "gotoLDAPLogin",
+      "goBack"
     ]),
     ...mapActions("loading", ["changeLoading"]),
     ...mapActions("data", ["saveSocialButtonsList"]),
@@ -462,16 +470,7 @@ export default {
       localStorage.removeItem("_authing_password");
       localStorage.removeItem("_authing_token");
     },
-    verifyCodeLoad: function() {
-      this.verifyCodeLoading = false;
-    },
 
-    setLoading: function loading() {
-      this.loading = true;
-    },
-    unLoading: function unLoading() {
-      this.loading = false;
-    },
     getPageState: function getPageState() {
       return Object.assign({}, this.pageVisible);
     },
@@ -484,12 +483,6 @@ export default {
       if (this.loading) {
         this.unLoading();
       }
-    },
-    gotoForgetPassword: function gotoForgetPassword() {
-      this.pageStack.push(this.getPageState());
-      this.turnOnPage("forgetPasswordVisible");
-      this.forgetPasswordForm.email = this.loginForm.email;
-      this.pageVisible.forgetPasswordSendEmailVisible = true;
     },
 
     recordLoginInfo: function(userInfo) {
@@ -531,7 +524,8 @@ export default {
       signUpVisible: "signUp",
       forgetPasswordVisible: "forgetPassword",
       phoneCodeLoginVisible: "phoneCodeLogin",
-      LDAPLoginVisible: "LDAPLogin"
+      LDAPLoginVisible: "LDAPLogin",
+      pageStack: "pageStack"
     }),
     ...mapGetters("data", ["globalMessage", "globalMessageType"]),
     ...mapGetters("loading", {
