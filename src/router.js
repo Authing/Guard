@@ -1,10 +1,11 @@
 /* jshint esversion: 6 */
 import Vue from 'vue';
 import Router from 'vue-router';
-import Login from './views/Login.vue';
 import Authorize from './views/Authorize.vue';
 import ErrorPage from './views/ErrorPage.vue';
 import Logout from './views/Logout.vue'
+
+import Login from './views/login/index.vue';
 
 Vue.use(Router);
 
@@ -15,7 +16,7 @@ export default new Router({
     {
       path: '/',
       name: 'indexLogin',
-      component: Login,
+      redirect: '/login',
     },
     {
       path: '/login',
