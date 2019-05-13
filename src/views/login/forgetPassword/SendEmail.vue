@@ -36,7 +36,7 @@ export default {
   methods: {
     ...mapActions("loading", ["changeLoading"]),
     ...mapActions("visibility", ["gotoForgetPasswordVerifyCode"]),
-    ...mapActions("data", ["showGlobalMessage", "saveForgetPasswordEmail"]),
+    ...mapActions("data", ["showGlobalMessage", "saveForgetPasswordEmail", "addAnimation"]),
 
     handleForgetPasswordSendEmail() {
       var that = this;
@@ -47,7 +47,7 @@ export default {
           type: "error",
           message: "请输入正确格式的邮箱"
         });
-        // this.addAnimation("forget-password-email");
+        this.addAnimation("forget-password-email");
         this.changeLoading({ el: "form", loading: false });
         this.$authing.pub("emailSentError", "请输入正确格式的邮箱");
         return false;

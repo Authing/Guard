@@ -79,12 +79,12 @@
   </div>
 </template>
 <script>
-import SocialButtonsList from "./SocialButtonsList";
+// import SocialButtonsList from "./SocialButtonsList";
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "EmailLogin",
   components: {
-    SocialButtonsList
+    // SocialButtonsList,
   },
   created() {
     this.$authing = this.$root.$data.$authing;
@@ -125,7 +125,13 @@ export default {
       "gotoForgetPassword",
       "gotoUsingPhone"
     ]),
-    ...mapActions("data", ["showGlobalMessage"]),
+    ...mapActions("data", [
+      "showGlobalMessage",
+      'removeAnimation',
+      'removeRedLine',
+      'addRedLine',
+      'addAnimation',
+    ]),
     handleLoginVerifyCodeLoaded() {
       this.changeLoading({ el: "loginVerifyCode", loading: false });
     },
@@ -162,9 +168,9 @@ export default {
           type: "error",
           message: "请输入正确格式的邮箱"
         });
-        // this.addAnimation("login-username");
-        // this.removeRedLine("login-password");
-        // this.removeRedLine("verify-code");
+        this.addAnimation("login-username");
+        this.removeRedLine("login-password");
+        this.removeRedLine("verify-code");
         this.changeLoading({ el: "form", loading: false });
         this.$authing.pub("loginError", "请输入正确格式的邮箱");
         return false;
@@ -175,9 +181,9 @@ export default {
           type: "error",
           message: "请输入密码"
         });
-        // this.addAnimation("login-password");
-        // this.removeRedLine("verify-code");
-        // this.removeRedLine("login-username");
+        this.addAnimation("login-password");
+        this.removeRedLine("verify-code");
+        this.removeRedLine("login-username");
         this.changeLoading({ el: "form", loading: false });
         this.$authing.pub("loginError", "请输入密码");
         return false;
@@ -218,9 +224,9 @@ export default {
           });
           // 验证码错误
           if (err.message.code === 2000 || err.message.code === 2001) {
-            // that.addAnimation("verify-code");
-            // that.removeRedLine("login-username");
-            // that.removeRedLine("login-password");
+            that.addAnimation("verify-code");
+            that.removeRedLine("login-username");
+            that.removeRedLine("login-password");
 
             that.changeLoading({ el: "loginVerifyCode", loading: true });
             that.changeVisibility({
@@ -235,9 +241,9 @@ export default {
             err.message.code === 2204 ||
             err.message.code === 2208
           ) {
-            // that.addAnimation("login-username");
-            // that.removeRedLine("login-password");
-            // that.removeRedLine("verify-code");
+            that.addAnimation("login-username");
+            that.removeRedLine("login-password");
+            that.removeRedLine("verify-code");
           }
           // 用户名不存在
           else if (err.message.code === 2004) {
@@ -268,9 +274,9 @@ export default {
                 });
               return false;
             } else {
-              // that.addAnimation("login-username");
-              // that.removeRedLine("login-password");
-              // that.removeRedLine("verify-code");
+              that.addAnimation("login-username");
+              that.removeRedLine("login-password");
+              that.removeRedLine("verify-code");
             }
           }
           // 密码错误
@@ -279,9 +285,9 @@ export default {
             err.message.code === 2016 ||
             err.message.code === 2027
           ) {
-            // that.addAnimation("login-password");
-            // that.removeRedLine("verify-code");
-            // that.removeRedLine("login-username");
+            that.addAnimation("login-password");
+            that.removeRedLine("verify-code");
+            that.removeRedLine("login-username");
             if (err.message.data.url) {
               that.verifyCodeUrl = err.message.data.url;
             } else {

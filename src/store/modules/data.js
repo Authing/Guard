@@ -37,7 +37,25 @@ const actions = {
   },
   saveSocialButtonsList({ commit }, { socialButtonsList }) {
     commit("setSocialButtonsList", { socialButtonsList });
-  }
+  },
+  removeAnimation(_, className) {
+    document.getElementById(className).classList.remove('animated');
+    document.getElementById(className).classList.remove('shake');
+  },
+  removeRedLine(_, className) {
+    document.getElementById(className).classList.remove('err-hint');
+  },
+  addRedLine(_, className) {
+    document.getElementById(className).classList.add('err-hint');
+  },
+  addAnimation(_, className) {
+    document.getElementById(className).classList.add('animated');
+    document.getElementById(className).classList.add('shake');
+    document.getElementById(className).classList.add('err-hint');
+    setTimeout(function () {
+      actions.removeAnimation(_, className);
+    }, 500);
+  },  
 };
 
 const mutations = {
@@ -57,7 +75,7 @@ const mutations = {
   },
   setSocialButtonsList(state, { socialButtonsList }) {
     state.socialButtonsList = [...socialButtonsList];
-  }
+  },
 };
 
 export default {

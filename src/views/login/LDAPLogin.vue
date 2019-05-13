@@ -97,7 +97,13 @@ export default {
       "gotoUsingPhone"
     ]),
     ...mapActions("loading", ["changeLoading"]),
-    ...mapActions("data", ["showGlobalMessage"]),
+    ...mapActions("data", [
+      "showGlobalMessage",
+      'removeAnimation',
+      'removeRedLine',
+      'addRedLine',
+      'addAnimation',
+    ]),
     handleLoginVerifyCodeLoaded() {
       this.changeLoading({ el: "loginVerifyCode", loading: false });
     },
@@ -162,9 +168,9 @@ export default {
             err.message.code === 2016 ||
             err.message.code === 2027
           ) {
-            // that.addAnimation("login-password");
-            // that.removeRedLine("verify-code");
-            // that.removeRedLine("login-username");
+            that.addAnimation("login-password");
+            that.removeRedLine("verify-code");
+            that.removeRedLine("login-username");
           }
         });
     }

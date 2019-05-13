@@ -72,18 +72,28 @@ export default {
     this.opts = this.$authing.opts;
   },
   methods: {
-    ...mapActions("data", [ "showGlobalMessage", "saveSignUpInfo"]),
     ...mapActions("visibility", ["gotoLogin", "changeVisibility"]),
     ...mapActions("loading", ["changeLoading"]),
+    ...mapActions("data", [
+      "showGlobalMessage",
+      "saveSignUpInfo",
+      'removeAnimation',
+      'removeRedLine',
+      'addRedLine',
+      'addAnimation',
+    ]),    
     checkEmail: function checkEmail() {
       if (!this.$root.emailExp.test(this.signUpForm.email)) {
-        // this.showGlobalErr("请输入正确格式的邮箱");
-        // this.addAnimation("sign-up-email");
-        // this.removeRedLine("sign-up-username");
-        // this.removeRedLine("sign-up-password");
-        // this.removeRedLine("sign-up-re-password");
+        this.showGlobalMessage({
+          type: "error",
+          message: "请输入正确格式的邮箱"
+        });
+        this.addAnimation("sign-up-email");
+        this.removeRedLine("sign-up-username");
+        this.removeRedLine("sign-up-password");
+        this.removeRedLine("sign-up-re-password");
       } else {
-        // this.removeRedLine("sign-up-email");
+        this.removeRedLine("sign-up-email");
       }
     },
     handleSignUp() {
@@ -95,10 +105,10 @@ export default {
           type: "error",
           message: "请输入用户名"
         });
-        // this.addAnimation("sign-up-username");
-        // this.removeRedLine("sign-up-email");
-        // this.removeRedLine("sign-up-password");
-        // this.removeRedLine("sign-up-re-password");
+        this.addAnimation("sign-up-username");
+        this.removeRedLine("sign-up-email");
+        this.removeRedLine("sign-up-password");
+        this.removeRedLine("sign-up-re-password");
         this.changeLoading({ el: "form", loading: false });
         this.$authing.pub("registerError", "请输入用户名");
         return false;
@@ -108,10 +118,10 @@ export default {
           type: "error",
           message: "请输入正确格式的邮箱"
         });
-        // this.addAnimation("sign-up-email");
-        // this.removeRedLine("sign-up-username");
-        // this.removeRedLine("sign-up-password");
-        // this.removeRedLine("sign-up-re-password");
+        this.addAnimation("sign-up-email");
+        this.removeRedLine("sign-up-username");
+        this.removeRedLine("sign-up-password");
+        this.removeRedLine("sign-up-re-password");
         this.changeLoading({ el: "form", loading: false });
         this.$authing.pub("registerError", "请输入正确格式的邮箱");
         return false;
@@ -121,10 +131,10 @@ export default {
           type: "error",
           message: "请输入密码"
         });
-        // this.addAnimation("sign-up-password");
-        // this.this.removeRedLine("sign-up-username");
-        // this.removeRedLine("sign-up-email");
-        // this.removeRedLine("sign-up-re-password");
+        this.addAnimation("sign-up-password");
+        this.removeRedLine("sign-up-username");
+        this.removeRedLine("sign-up-email");
+        this.removeRedLine("sign-up-re-password");
         this.changeLoading({ el: "form", loading: false });
         this.$authing.pub("registerError", "请输入密码");
         return false;
@@ -134,10 +144,10 @@ export default {
           type: "error",
           message: "两次密码不一致"
         });
-        // this.addAnimation("sign-up-re-password");
-        // this.removeRedLine("sign-up-username");
-        // this.removeRedLine("sign-up-email");
-        // this.removeRedLine("sign-up-password");
+        this.addAnimation("sign-up-re-password");
+        this.removeRedLine("sign-up-username");
+        this.removeRedLine("sign-up-email");
+        this.removeRedLine("sign-up-password");
         this.changeLoading({ el: "form", loading: false });
         this.$authing.pub("registerError", "两次密码不一致");
         return false;
@@ -181,10 +191,10 @@ export default {
           });
           that.$authing.pub("registerError", err);
           if (err.message.code === 2026) {
-            // that.addAnimation("sign-up-email");
-            // that.removeRedLine("sign-up-re-password");
-            // that.removeRedLine("sign-up-username");
-            // that.removeRedLine("sign-up-password");
+            that.addAnimation("sign-up-email");
+            that.removeRedLine("sign-up-re-password");
+            that.removeRedLine("sign-up-username");
+            that.removeRedLine("sign-up-password");
           }
         });
     }

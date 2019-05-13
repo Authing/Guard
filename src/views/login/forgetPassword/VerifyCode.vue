@@ -36,13 +36,13 @@ export default {
   methods: {
     ...mapActions("loading", ["changeLoading"]),
     ...mapActions("visibility", ["gotoForgetPasswordNewPassword"]),
-    ...mapActions("data", ["showGlobalMessage", "saveForgetPasswordVerifyCode"]),
+    ...mapActions("data", ["showGlobalMessage", "saveForgetPasswordVerifyCode", "addAnimation"]),
     handleSubmitForgetPasswordVerifyCode: function handleSubmitForgetPasswordVerifyCode() {
       var that = this;
       this.changeLoading({ el: "form", loading: true });
       if (!this.verifyCode) {
         this.changeLoading({ el: "form", loading: false });
-        // this.addAnimation("forget-password-verify-code");
+        this.addAnimation("forget-password-verify-code");
         this.showGlobalMessage({
           type: "error",
           message: "请输入验证码"
@@ -69,7 +69,7 @@ export default {
         .catch(err => {
           that.$authing.pub("resetPasswordError", err);
           this.changeLoading({ el: "form", loading: false });
-          // that.addAnimation("forget-password-verify-code");
+          that.addAnimation("forget-password-verify-code");
           this.showGlobalMessage({
             type: "error",
             message: err.message.message

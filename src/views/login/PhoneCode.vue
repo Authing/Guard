@@ -64,7 +64,13 @@ export default {
       "gotoForgetPassword",
       "gotoLogin"
     ]),
-    ...mapActions("data", ["showGlobalMessage"]),
+    ...mapActions("data", [
+      "showGlobalMessage",
+      'removeAnimation',
+      'removeRedLine',
+      'addRedLine',
+      'addAnimation',
+    ]),
     ...mapActions("loading", ["changeLoading"]),
     handleLoginByPhoneCode() {
       if (!/^1[3-8]\d{9}$/.test(this.phone)) {
@@ -72,12 +78,12 @@ export default {
           type: "error",
           message: "请填写正确的手机号"
         });
-        // this.addAnimation("login-phone");
+        this.addAnimation("login-phone");
         this.$authing.pub("loginError", "请填写正确的手机号");
         return;
       }
       if (!this.phoneCode) {
-        // this.addAnimation("login-phoneCode");
+        this.addAnimation("login-phoneCode");
         this.showGlobalMessage({
           type: "error",
           message: "请输入验证码"
@@ -90,7 +96,7 @@ export default {
           type: "error",
           message: "验证码为四位，请重新输入"
         });
-        // this.addAnimation("login-phoneCode");
+        this.addAnimation("login-phoneCode");
         this.$authing.pub("loginError", "验证码为四位，请重新输入");
         return;
       }
@@ -122,7 +128,7 @@ export default {
           type: "error",
           message: "请填写正确的手机号"
         });
-        // this.addAnimation("login-phone");
+        this.addAnimation("login-phone");
         this.$authing.pub("loginError", "请填写正确的手机号");
         return;
       }
