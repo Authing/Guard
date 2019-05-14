@@ -4,12 +4,14 @@ const state = {
   socialButtonsList: false,
   form: false,
   button: false,
+  page: true,
 }
 const getters = {
   loginVerifyCode: state => state.loginVerifyCode,
   socialButtonsList: state => state.socialButtonsList,
   form: state => state.form,
-  button: state => state.button
+  button: state => state.button,
+  page: state => state.page,
 }
 const actions = {
   changeLoading({commit}, {el, loading}) {

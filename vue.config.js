@@ -8,7 +8,7 @@ module.exports = {
   //   }
   // },
   lintOnSave: false,
-  publicPath: '/login',
+  publicPath: '/',
   devServer: {
     proxy: {
       '^/authorize': {

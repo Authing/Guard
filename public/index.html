@@ -29,14 +29,14 @@
     let uuid = getQueryString('uuid') || null;
     let context = getQueryString('context') || null
 
-    if (location.pathname === '/' 
-      || location.pathname === '/login' 
-      || location.pathname === '/login/'
-    ) {
-      if (!appId) {
-        location.href = location.pathname + 'error?message=请提供 app_id 或 client_id&code=id404';
-      }
-    }
+    // if (location.pathname === '/' 
+    //   || location.pathname === '/login' 
+    //   || location.pathname === '/login/'
+    // ) {
+    //   if (!appId) {
+    //     location.href = location.pathname + 'error?message=请提供 app_id 或 client_id&code=id404';
+    //   }
+    // }
 
     const domain = "sso.authing.cn/login?app_id=YOUR_CLIENT_ID_";
     const guard = new AuthingGuard(appId, domain, {

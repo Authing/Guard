@@ -1,11 +1,11 @@
 <template>
   <div id="_authing_login_form" @keyup.esc="handleClose" v-if="!removeDom">
-    <div class="authing-loading-circle screen-center" id="page-loading"></div>
+    <div class="authing-loading-circle screen-center" v-if="pageLoading"></div>
     <div class="authing-cover-layer" v-if="$parent.isMountedInModal && !closeForm"></div>
     <div
-      class="_authing_container hide"
+      class="_authing_container"
       id="_authing_login_form_content"
-      :class="{'authing-login-form-modal': $parent.isMountedInModal}"
+      :class="{hide: pageLoading, 'authing-login-form-modal': $parent.isMountedInModal}"
     >
       <div
         v-if="!closeForm"
@@ -34,11 +34,7 @@
       }"
         >
           <div class="_authing_form-header">
-            <span
-              v-if="pageStack.length > 0"
-              @click="goBack"
-              class="authing-lock-back-button"
-            >
+            <span v-if="pageStack.length > 0" @click="goBack" class="authing-lock-back-button">
               <svg
                 focusable="false"
                 enable-background="new 0 0 24 24"
@@ -94,9 +90,9 @@
               >{{forgetPasswordVisible ? '重置密码' : opts.title}}</div>
             </div>
           </div>
-          
+
           <GlobalMessage v-show="globalMessage" :message="globalMessage" :type="globalMessageType"/>
-          
+
           <div v-show="!authingOnError">
             <div class="authing-header-tabs-container">
               <ul class="authing-header-tabs">
@@ -314,10 +310,8 @@ export default {
         host: that.opts.host
       });
     } catch (err) {
-      document.getElementById("page-loading").remove();
-      document
-        .getElementById("_authing_login_form_content")
-        .classList.remove("hide");
+      this.changeLoading({el: 'page', loading: false})
+
       that.authingOnError = true;
       that.errMsg = "Error: " + err;
       that.$authing.pub("authingUnload", err);
@@ -328,12 +322,13 @@ export default {
     }
 
     auth
-      .then(function(validAuth) {
+      .then(validAuth => {
         that.clientInfo = validAuth.clientInfo;
-        document.getElementById("page-loading").remove();
-        document
-          .getElementById("_authing_login_form_content")
-          .classList.remove("hide");
+        this.changeLoading({el: 'page', loading: false})
+
+        // document
+        //   .getElementById("_authing_login_form_content")
+        //   .classList.remove("hide");
         window.validAuth = validAuth;
 
         that.$authing.pub("authenticated", validAuth);
@@ -385,18 +380,22 @@ export default {
           that.gotoWxQRCodeScanning();
         }
       })
-      .catch(function(err) {
-        let pageLoading = document.getElementById("page-loading");
-        pageLoading && document.getElementById("page-loading").remove();
-        document
-          .getElementById("_authing_login_form_content")
-          .classList.remove("hide");
+      .catch(err => {
+        console.log(err)
+        this.changeLoading({el: 'page', loading: false})
+        this.$router.replace({name: "error", 
+          query: { message: "app_id 或 client_id 错误", code: "id404" }
+        });
         that.authingOnError = true;
-        that.errMsg = "初始化出错，请检查 clientID 是否正确";
         that.$authing.pub("authenticatedOnError", err);
       });
   },
-  created: function() {
+  created() {
+    if (!(this.$route.query.app_id || this.$route.query.app_id)) {
+      this.$router.replace({name: "error", 
+        query: { message: "请提供 app_id 或 client_id", code: "id404" }
+      });
+    }
     this.$authing = this.$root.$data.$authing;
     this.opts = this.$authing.opts;
 
@@ -508,7 +507,8 @@ export default {
     ...mapGetters("data", ["globalMessage", "globalMessageType"]),
     ...mapGetters("loading", {
       socialButtonsListLoading: "socialButtonsList",
-      formLoading: "form"
+      formLoading: "form",
+      pageLoading: "page"
     })
   },
   watch: {

@@ -168,6 +168,8 @@ export default {
       const context = this.$route.query.context
       const bindings = this.$route.query.bindings
       const SAMLRequest = this.$route.query.SAMLRequest || ''
+      const signature = this.$route.query.Signature || ''
+      const sigAlg = this.$route.query.SigAlg || ''
 
       console.log(this.isOIDC)
       if (this.isOIDC) {
@@ -202,7 +204,7 @@ export default {
           // 删除该 form
           document.body.removeChild(form1);
         } else {
-          location.href = `${host}/oauth/saml/idp/${appId}/SingleSignOnService?authorization_header=${localStorage.getItem('_authing_token')}&SAMLRequest=${SAMLRequest}`
+          location.href = `${host}/oauth/saml/idp/${appId}/SingleSignOnService?authorization_header=${localStorage.getItem('_authing_token')}&SAMLRequest=${SAMLRequest}&Signature=${signature}&SigAlg=${sigAlg}`
         }
       }else {
         location.href = `${host}/authorize?app_id=${appId}&state=${state}&response_type=${responseType}&redirect_uri=${redirectURI}&scope=${scope}&authorization_header=${localStorage.getItem(
