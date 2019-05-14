@@ -273,6 +273,8 @@ export default {
                     message: "验证通过，欢迎你：" + data.username || data.email
                   });
                   that.$authing.pub("login", data);
+                  // @TODO 进行协议后续流程
+                  that.handleProtocalProcess(data)
                   that.recordLoginInfo(data);
                 })
                 .catch(function(err) {

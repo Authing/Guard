@@ -15,19 +15,19 @@
     <!-- built files will be auto injected -->
   </body>
   <script>
-    const getQueryString = function(name) {
-      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-      var r = window.location.search.substr(1).match(reg);
-      if ( r != null ){
-        return unescape(r[2]);
-      }else{
-        return null;
-      }
-    };
+    // const getQueryString = function(name) {
+    //   var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    //   var r = window.location.search.substr(1).match(reg);
+    //   if ( r != null ){
+    //     return unescape(r[2]);
+    //   }else{
+    //     return null;
+    //   }
+    // };
 
-    let appId = getQueryString('app_id') || getQueryString('client_id');
-    let uuid = getQueryString('uuid') || null;
-    let context = getQueryString('context') || null
+    // let appId = getQueryString('app_id') || getQueryString('client_id');
+    // let uuid = getQueryString('uuid') || null;
+    // let context = getQueryString('context') || null
 
     // if (location.pathname === '/' 
     //   || location.pathname === '/login' 
@@ -37,7 +37,7 @@
     //     location.href = location.pathname + 'error?message=请提供 app_id 或 client_id&code=id404';
     //   }
     // }
-
+    let appId = 3
     const domain = "sso.authing.cn/login?app_id=YOUR_CLIENT_ID_";
     const guard = new AuthingGuard(appId, domain, {
       hideClose: true,
@@ -51,41 +51,41 @@
       }
     });
 
-    guard.on('authenticated', async (authing) => {
-      if (guard.isLogged()) {
-        // 已登录，直接跳至授权页
-        if(context === 'SAMLIdP') {
-          // 如果外界在和 Authing SAML IdP 通信，而 IdP 需要认证用户
-          let SAMLRequest = getQueryString('SAMLRequest')
-          guard.SAMLIdPLogin(SAMLRequest)
-        } else if (context === 'OIDC') {
-          guard.oidcLogin(uuid);
-        } else {
-          guard.sysAuthorize();
-        }
-      }
-    });
+    // guard.on('authenticated', async (authing) => {
+    //   if (guard.isLogged()) {
+    //     // 已登录，直接跳至授权页
+    //     if(context === 'SAMLIdP') {
+    //       // 如果外界在和 Authing SAML IdP 通信，而 IdP 需要认证用户
+    //       let SAMLRequest = getQueryString('SAMLRequest')
+    //       guard.SAMLIdPLogin(SAMLRequest)
+    //     } else if (context === 'OIDC') {
+    //       guard.oidcLogin(uuid);
+    //     } else {
+    //       guard.sysAuthorize();
+    //     }
+    //   }
+    // });
 
-    guard.on('login', (userInfo) => {
-      if(context === 'SAMLIdP') {
-        // 如果外界在和 Authing SAML IdP 通信，而 IdP 需要认证用户
-        let SAMLRequest = getQueryString('SAMLRequest')
-        guard.SAMLIdPLogin(SAMLRequest)
-      } else if (context === 'OIDC') {
-        guard.oidcLogin(uuid);
-      } else {
-        guard.sysAuthorize();
-      }
-    });
+    // guard.on('login', (userInfo) => {
+    //   if(context === 'SAMLIdP') {
+    //     // 如果外界在和 Authing SAML IdP 通信，而 IdP 需要认证用户
+    //     let SAMLRequest = getQueryString('SAMLRequest')
+    //     guard.SAMLIdPLogin(SAMLRequest)
+    //   } else if (context === 'OIDC') {
+    //     guard.oidcLogin(uuid);
+    //   } else {
+    //     guard.sysAuthorize();
+    //   }
+    // });
 
-    guard.on('scanning', (userInfo) => {
-      guard.sysAuthorize();
-    });
+    // guard.on('scanning', (userInfo) => {
+    //   guard.sysAuthorize();
+    // });
 
-    guard.on('loginError', (error) => {
-      // Handle error 
-      console.log('用户登录失败', error);
-      // location.href = location.pathname + 'error?message=' + error.toString();
-    });
+    // guard.on('loginError', (error) => {
+    //   // Handle error 
+    //   console.log('用户登录失败', error);
+    //   // location.href = location.pathname + 'error?message=' + error.toString();
+    // });
   </script>
 </html>

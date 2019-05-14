@@ -200,20 +200,10 @@ export default {
   data() {
     return {
       clientInfo: {},
-      validAuth: null,
-
-      errMsg: "",
-      successMsg: "",
-      warnMsg: "",
-      successVisible: false,
-      errVisible: false,
-      warnVisible: false,
 
       rememberMe: false,
 
       verifyCodeLoading: true,
-
-      isWxQRCodeGenerated: false,
 
       isScanCodeEnable: false,
 
@@ -226,7 +216,6 @@ export default {
 
       $authing: null,
 
-      loginMethod: "common",
       hasLDAP: false
     };
   },
@@ -234,7 +223,7 @@ export default {
     var that = this;
     var auth = null;
 
-    const { context, code: errorCode } = this.$route.query;
+    const { protocal, code: errorCode } = this.$route.query;
 
     // token 错误或已经过期的情况
     if (errorCode && Number(errorCode) === 2207) {
@@ -242,9 +231,9 @@ export default {
     }
 
     let operationName;
-    if (context === "OIDC") {
+    if (protocal === "oidc") {
       operationName = "QueryOIDCAppInfoByAppID";
-    } else if (context === "SAMLIdP") {
+    } else if (protocal === "saml") {
       operationName = "QuerySAMLIdentityProviderInfoByAppID";
     } else {
       operationName = "QueryAppInfoByAppID";
@@ -282,9 +271,9 @@ export default {
         throw that.errMsg;
       }
       let info;
-      if (context === "OIDC") {
+      if (protocal === "oidc") {
         info = oAuthAppInfo.QueryOIDCAppInfoByAppID;
-      } else if (context === "SAMLIdP") {
+      } else if (protocal === "saml") {
         info = oAuthAppInfo.QuerySAMLIdentityProviderInfoByAppID;
       } else {
         info = oAuthAppInfo.QueryAppInfoByAppID;
@@ -310,7 +299,7 @@ export default {
         host: that.opts.host
       });
     } catch (err) {
-      this.changeLoading({el: 'page', loading: false})
+      this.changeLoading({ el: "page", loading: false });
 
       that.authingOnError = true;
       that.errMsg = "Error: " + err;
@@ -324,7 +313,7 @@ export default {
     auth
       .then(validAuth => {
         that.clientInfo = validAuth.clientInfo;
-        this.changeLoading({el: 'page', loading: false})
+        this.changeLoading({ el: "page", loading: false });
 
         // document
         //   .getElementById("_authing_login_form_content")
@@ -381,9 +370,10 @@ export default {
         }
       })
       .catch(err => {
-        console.log(err)
-        this.changeLoading({el: 'page', loading: false})
-        this.$router.replace({name: "error", 
+        console.log(err);
+        this.changeLoading({ el: "page", loading: false });
+        this.$router.replace({
+          name: "error",
           query: { message: "app_id 或 client_id 错误", code: "id404" }
         });
         that.authingOnError = true;
@@ -391,11 +381,24 @@ export default {
       });
   },
   created() {
+    this.$authing = this.$root.$data.$authing;
+    this.opts = this.$root.$data.$authing.opts;
+    // 这里做场景判断，是哪种登录协议，从而执行不同后续逻辑
     if (!(this.$route.query.app_id || this.$route.query.app_id)) {
-      this.$router.replace({name: "error", 
+      this.$router.replace({
+        name: "error",
         query: { message: "请提供 app_id 或 client_id", code: "id404" }
       });
     }
+    console.log(this.$route)
+    this.saveProtocal({ protocal: this.$route.query.protocal });
+    if (!this.protocal) {
+      this.$router.replace({
+        name: "error",
+        query: { message: "缺少协议参数 protocal", code: "id400" }
+      });
+    }
+    this.queryAppInfo()
     this.$authing = this.$root.$data.$authing;
     this.opts = this.$authing.opts;
 
@@ -417,6 +420,47 @@ export default {
     ]),
     ...mapActions("loading", ["changeLoading"]),
     ...mapActions("data", ["saveSocialButtonsList"]),
+    ...mapActions("protocal", ["saveProtocal"]),
+    getSecondLvDomain(hostname) {
+      let exp = /(.*)\.authing\.cn/;
+      return exp.exec(hostname)[1];
+    },
+    async queryAppInfo(appId) {
+      let operationName;
+
+      switch (this.protocal) {
+        case "oidc":
+          operationName = "QueryOIDCAppInfoByDomain";
+          break;
+        case "oauth":
+          operationName = "QueryAppInfoByDomain";
+          break;
+        case "saml":
+          operationName = "QuerySAMLIdentityProviderInfoByDomain";
+          break;
+      }
+      let GraphQLClient_getAppInfo = new GraphQLClient({
+        baseURL: this.opts.host.oauth
+      });
+      let hostname = location.hostname;
+      console.log(hostname)
+      let domain = this.getSecondLvDomain(hostname);
+      // 优先通过二级域名查找此应用信息
+      if(domain) {
+        const query =
+          `query {
+            ${operationName} (domain: "` +
+          domain +
+          `") {   
+              _id,
+              name,
+            }
+          }`;
+        let appInfo = await GraphQLClient_getAppInfo.request({ query });
+        console.log(appInfo);
+      }
+
+    },
     async checkHasLDAP(clientId) {
       let operationName = "QueryClientHasLDAPConfigs";
       let query =
@@ -509,7 +553,8 @@ export default {
       socialButtonsListLoading: "socialButtonsList",
       formLoading: "form",
       pageLoading: "page"
-    })
+    }),
+    ...mapGetters("protocal", ["protocal"])
   },
   watch: {
     rememberMe: function(newVal) {
