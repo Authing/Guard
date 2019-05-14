@@ -83,11 +83,11 @@
             </span>
             <div class="_authing_form-header-bg"></div>
             <div class="_authing_form-header-welcome">
-              <img class="form-header-logo" :src="opts.logo">
+              <img class="form-header-logo" :src="appLogo">
               <div
                 class="_authing_form-header-name"
                 title="Authing"
-              >{{forgetPasswordVisible ? '重置密码' : opts.title}}</div>
+              >{{forgetPasswordVisible ? '重置密码' : appName}}</div>
             </div>
           </div>
 
@@ -199,6 +199,8 @@ export default {
   },
   data() {
     return {
+      appLogo: "",
+      appName: "",
       clientInfo: {},
 
       rememberMe: false,
@@ -223,82 +225,46 @@ export default {
     var that = this;
     var auth = null;
 
-    const { protocal, code: errorCode } = this.$route.query;
+    const { code: errorCode } = this.$route.query;
 
     // token 错误或已经过期的情况
     if (errorCode && Number(errorCode) === 2207) {
       this.clearLocalStorage();
     }
 
-    let operationName;
-    if (protocal === "oidc") {
-      operationName = "QueryOIDCAppInfoByAppID";
-    } else if (protocal === "saml") {
-      operationName = "QuerySAMLIdentityProviderInfoByAppID";
-    } else {
-      operationName = "QueryAppInfoByAppID";
-    }
-    let query =
-      `query {
-            ${operationName} (appId: "` +
-      that.opts.appId +
-      `") {   
-              _id,
-              clientId,
-              name,
-              image
-            }
-          }
-      `;
-
-    let GraphQLClient_getInfo = new GraphQLClient({
-      baseURL: that.opts.host.oauth
-    });
-
     try {
-      const oAuthAppInfo = await GraphQLClient_getInfo.request({ query });
-
-      if (
-        !(
-          oAuthAppInfo.QueryAppInfoByAppID ||
-          oAuthAppInfo.QueryOIDCAppInfoByAppID ||
-          oAuthAppInfo.QuerySAMLIdentityProviderInfoByAppID
-        )
-      ) {
-        that.authingOnError = true;
-        that.errMsg = "Error: 找不到此应用";
-        that.$authing.pub("authingUnload", "找不到此应用");
-        throw that.errMsg;
+      const appInfo = await this.queryAppInfo();
+      if (!appInfo) {
+        this.$router.replace({
+          name: "error",
+          query: { message: "应用不存在" }
+        });
+        return;
       }
-      let info;
-      if (protocal === "oidc") {
-        info = oAuthAppInfo.QueryOIDCAppInfoByAppID;
-      } else if (protocal === "saml") {
-        info = oAuthAppInfo.QuerySAMLIdentityProviderInfoByAppID;
-      } else {
-        info = oAuthAppInfo.QueryAppInfoByAppID;
-      }
-      that.opts.title = that.opts.title || info.name;
-      window.title = `${that.opts.title} - Authing`;
-      document.title = `${that.opts.title} - Authing`;
-      that.opts.logo = that.opts.logo || info.image;
-      that.opts.clientId = info.clientId;
+      this.appName = this.opts.title || appInfo.name;
+      window.title = `${this.appName} - Authing`;
+      document.title = `${this.appName} - Authing`;
+      this.appLogo = this.opts.logo || appInfo.image;
+      this.clientId = appInfo.clientId;
     } catch (erro) {
+      console.log(erro);
       that.authingOnError = true;
-      that.errMsg = "Error: " + erro;
       that.$authing.pub("authingUnload", erro);
+      this.$router.replace({ name: "error", query: { message: erro } });
+      return;
     }
 
     this.checkHasLDAP(that.opts.clientId);
 
     try {
       auth = new Authing({
-        clientId: that.opts.clientId,
+        clientId: that.clientId,
         timestamp: that.opts.timestamp,
         nonce: that.opts.nonce,
         host: that.opts.host
       });
     } catch (err) {
+      console.log(err);
       this.changeLoading({ el: "page", loading: false });
 
       that.authingOnError = true;
@@ -390,7 +356,6 @@ export default {
         query: { message: "请提供 app_id 或 client_id", code: "id404" }
       });
     }
-    console.log(this.$route)
     this.saveProtocal({ protocal: this.$route.query.protocal });
     if (!this.protocal) {
       this.$router.replace({
@@ -398,7 +363,6 @@ export default {
         query: { message: "缺少协议参数 protocal", code: "id400" }
       });
     }
-    this.queryAppInfo()
     this.$authing = this.$root.$data.$authing;
     this.opts = this.$authing.opts;
 
@@ -425,7 +389,7 @@ export default {
       let exp = /(.*)\.authing\.cn/;
       return exp.exec(hostname)[1];
     },
-    async queryAppInfo(appId) {
+    async queryAppInfo() {
       let operationName;
 
       switch (this.protocal) {
@@ -443,10 +407,11 @@ export default {
         baseURL: this.opts.host.oauth
       });
       let hostname = location.hostname;
-      console.log(hostname)
-      let domain = this.getSecondLvDomain(hostname);
+      console.log(hostname);
+      // let domain = this.getSecondLvDomain(hostname);
+      let domain = "asdf";
       // 优先通过二级域名查找此应用信息
-      if(domain) {
+      if (domain) {
         const query =
           `query {
             ${operationName} (domain: "` +
@@ -454,12 +419,21 @@ export default {
           `") {   
               _id,
               name,
+              image,
+              clientId
             }
           }`;
         let appInfo = await GraphQLClient_getAppInfo.request({ query });
         console.log(appInfo);
+        switch (this.protocal) {
+          case "oidc":
+            return appInfo["QueryOIDCAppInfoByDomain"];
+          case "oauth":
+            return appInfo["QueryAppInfoByDomain"];
+          case "saml":
+            return appInfo["QuerySAMLIdentityProviderInfoByDomain"];
+        }
       }
-
     },
     async checkHasLDAP(clientId) {
       let operationName = "QueryClientHasLDAPConfigs";
