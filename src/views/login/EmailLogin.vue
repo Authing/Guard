@@ -274,7 +274,7 @@ export default {
                   });
                   that.$authing.pub("login", data);
                   // @TODO 进行协议后续流程
-                  that.handleProtocalProcess(data)
+                  that.handleProtocolProcess(data)
                   that.recordLoginInfo(data);
                 })
                 .catch(function(err) {

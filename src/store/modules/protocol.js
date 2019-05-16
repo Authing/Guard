@@ -1,16 +1,16 @@
 const state = {
   // 登录成功和错误提示
-  protocal: ""
+  protocol: ""
 };
 const getters = {
-  protocal: state => state.protocal
+  protocol: state => state.protocol
 };
 const actions = {
-  saveProtocal({ commit }, { protocal }) {
-    commit("setProtocal", { protocal });
+  saveProtocol({ commit }, { protocol }) {
+    commit("setProtocol", { protocol });
   },
-  handleProtocalProcess({ state }, routes) {
-    switch (state.protocal) {
+  handleProtocolProcess({ state }, routes) {
+    switch (state.protocol) {
       case "oauth":
         this.handleOAuthProcess(routes);
         break;
@@ -31,15 +31,15 @@ const actions = {
         query: { message: "缺少 OIDC 所必须的参数 uuid" }
       });
     }
-    routes.push({ name: "authorize", query: { uuid, protocal: "oidc" } });
+    routes.push({ name: "authorize", query: { uuid, protocol: "oidc" } });
     // location.href = `${this.userAuthorizeURL}&context=OIDC&uuid=${uuid}`;
   },
   handleSAMLProcess(_, routes) {}
 };
 
 const mutations = {
-  setProtocal(state, { protocal }) {
-    state.protocal = protocal;
+  setProtocol(state, { protocol }) {
+    state.protocol = protocol;
   }
 };
 

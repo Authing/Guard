@@ -221,6 +221,33 @@ export default {
       hasLDAP: false
     };
   },
+  created() {
+    this.$authing = this.$root.$data.$authing;
+    this.opts = this.$root.$data.$authing.opts;
+    // 这里做场景判断，是哪种登录协议，从而执行不同后续逻辑
+    if (!(this.$route.query.app_id || this.$route.query.app_id)) {
+      this.$router.replace({
+        name: "error",
+        query: { message: "请提供 app_id 或 client_id", code: "id404" }
+      });
+    }
+    this.saveProtocol({ protocol: this.$route.query.protocol });
+    if (!this.protocol) {
+      this.$router.replace({
+        name: "error",
+        query: { message: "缺少协议参数 protocol", code: "id400" }
+      });
+    }
+    this.$authing = this.$root.$data.$authing;
+    this.opts = this.$authing.opts;
+
+    document.onkeydown = event => {
+      var e = event || window.event || arguments.callee.caller.arguments[0];
+      if (e && e.keyCode === 27) {
+        this.handleClose();
+      }
+    };
+  },
   async mounted() {
     var that = this;
     var auth = null;
@@ -346,33 +373,7 @@ export default {
         that.$authing.pub("authenticatedOnError", err);
       });
   },
-  created() {
-    this.$authing = this.$root.$data.$authing;
-    this.opts = this.$root.$data.$authing.opts;
-    // 这里做场景判断，是哪种登录协议，从而执行不同后续逻辑
-    if (!(this.$route.query.app_id || this.$route.query.app_id)) {
-      this.$router.replace({
-        name: "error",
-        query: { message: "请提供 app_id 或 client_id", code: "id404" }
-      });
-    }
-    this.saveProtocal({ protocal: this.$route.query.protocal });
-    if (!this.protocal) {
-      this.$router.replace({
-        name: "error",
-        query: { message: "缺少协议参数 protocal", code: "id400" }
-      });
-    }
-    this.$authing = this.$root.$data.$authing;
-    this.opts = this.$authing.opts;
 
-    document.onkeydown = event => {
-      var e = event || window.event || arguments.callee.caller.arguments[0];
-      if (e && e.keyCode === 27) {
-        this.handleClose();
-      }
-    };
-  },
   methods: {
     ...mapActions("visibility", [
       "gotoWxQRCodeScanning",
@@ -384,7 +385,7 @@ export default {
     ]),
     ...mapActions("loading", ["changeLoading"]),
     ...mapActions("data", ["saveSocialButtonsList"]),
-    ...mapActions("protocal", ["saveProtocal"]),
+    ...mapActions("protocol", ["saveProtocol"]),
     getSecondLvDomain(hostname) {
       let exp = /(.*)\.authing\.cn/;
       return exp.exec(hostname)[1];
@@ -392,7 +393,7 @@ export default {
     async queryAppInfo() {
       let operationName;
 
-      switch (this.protocal) {
+      switch (this.protocol) {
         case "oidc":
           operationName = "QueryOIDCAppInfoByDomain";
           break;
@@ -425,7 +426,7 @@ export default {
           }`;
         let appInfo = await GraphQLClient_getAppInfo.request({ query });
         console.log(appInfo);
-        switch (this.protocal) {
+        switch (this.protocol) {
           case "oidc":
             return appInfo["QueryOIDCAppInfoByDomain"];
           case "oauth":
@@ -528,7 +529,7 @@ export default {
       formLoading: "form",
       pageLoading: "page"
     }),
-    ...mapGetters("protocal", ["protocal"])
+    ...mapGetters("protocol", ["protocol"])
   },
   watch: {
     rememberMe: function(newVal) {
