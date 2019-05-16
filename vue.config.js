@@ -8,11 +8,11 @@ module.exports = {
   //   }
   // },
   lintOnSave: false,
-  publicPath: '/',
+  publicPath: '/login',
   devServer: {
     proxy: {
       '^/authorize': {
-        target: 'http://localhost:5556/sso',
+        target: 'https://sso.authing.cn/',
         changeOrigin: true
       }
     }

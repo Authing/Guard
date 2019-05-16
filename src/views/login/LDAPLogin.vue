@@ -99,17 +99,18 @@ export default {
     ...mapActions("loading", ["changeLoading"]),
     ...mapActions("data", [
       "showGlobalMessage",
-      'removeAnimation',
-      'removeRedLine',
-      'addRedLine',
-      'addAnimation',
+      "removeAnimation",
+      "removeRedLine",
+      "addRedLine",
+      "addAnimation"
     ]),
     handleLoginVerifyCodeLoaded() {
       this.changeLoading({ el: "loginVerifyCode", loading: false });
     },
     recordLoginInfo(userInfo) {
       let appToken = localStorage.getItem("appToken");
-
+      localStorage.setItem("_authing_userInfo", JSON.stringify(userInfo));
+      localStorage.setItem("_authing_clientId", this.$authing.opts.clientId);
       if (appToken) {
         try {
           appToken = JSON.parse(appToken);

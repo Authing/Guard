@@ -1,0 +1,814 @@
+<template>
+  <div class="profile-page">
+    <div class="profile-edit_box">
+      <div class="profile-top_bar">
+        <span class="authing-lock-back-button" @click="returnPage">
+          <!--  style="800200  border-color: #fd7951; background: #fd7951"  -->
+          <svg
+            focusable="false"
+            enable-background="new 0 0 24 24"
+            version="1.0"
+            viewBox="0 0 24 24"
+            xml:space="preserve"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <polyline
+              fill="none"
+              points="12.5,21 3.5,12 12.5,3 "
+              stroke="#000"
+              stroke-miterlimit="10"
+              stroke-width="2"
+            ></polyline>
+            <line
+              fill="none"
+              stroke="#000"
+              stroke-miterlimit="10"
+              stroke-width="2"
+              x1="22"
+              x2="3.5"
+              y1="12"
+              y2="12"
+            ></line>
+          </svg>
+        </span>
+
+        <span class="authing-lock-back-button" @click="quitLogin" style="left: 44px">
+          <!-- ;border-color: #fcce4f; background: #fcce4f -->
+          <svg
+            t="1557666285087"
+            class="icon"
+            viewBox="0 0 1024 1024"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            p-id="2035"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            width="10"
+            height="10"
+          >
+            <!-- <defs>
+              <style type="text/css"></style>
+            </defs>-->
+            <path
+              d="M71.30000001 531.9c1.4 1.8 3.1 3.4 4.79999999 4.9l179 178.9c12.5 12.5 32.90000001 12.5 45.4 0s12.5-32.90000001 0-45.4l-126-126L602.7 544.3l0.1 0c18.2 0 32.9-14.8 32.9-33s-14.7-33-32.9-33c-0.3-0.1-0.5 0-0.7 0l-427.8 0 126-126c12.3-12.3 12.3-32.4 0-44.7l-0.7-0.70000001c-12.3-12.3-32.4-12.3-44.7 1e-8l-181.99999999 182c-11.7 11.7-12.29999999 30.6-1.6 43z"
+              fill="#000"
+              p-id="2036"
+              data-spm-anchor-id="a313x.7781069.0.i1"
+              class="selected"
+            ></path>
+            <path
+              d="M461.70000001 225c18 0 32.7-14.7 32.7-32.7l0-63.8L894.8 128.5 894.8 895.3l-400.4 0 1e-8-63.1c0-18-14.7-32.7-32.7-32.7s-32.7 14.7-32.70000001 32.7L429 927.7c0 3.49999999 0.6 6.8 1.6 10 4.2 13.3 16.6 23 31.2 23L927.4 960.7c18 0 32.7-14.7 32.7-32.70000001l0-831.9c0-14.2-9.2-26.3-21.8-30.8-3.6-1.4-7.5-2.1-11.5-2.09999999l-463.2 0c-0.6 0-1.3-0.1-1.9-0.1-18 0-32.7 14.7-32.7 32.7l0 96.5c0 18 14.7 32.7 32.70000001 32.7z"
+              fill="#000"
+              p-id="2037"
+              data-spm-anchor-id="a313x.7781069.0.i0"
+              class="selected"
+            ></path>
+            <path
+              d="M767.2 511.3a33 32.9 90 1 0-65.8 0 33 32.9 90 1 0 65.8 0Z"
+              fill="#000000"
+              p-id="2038"
+              data-spm-anchor-id="a313x.7781069.0.i3"
+              class="selected"
+            ></path>
+          </svg>
+        </span>
+      </div>
+      <div
+        class="msgBar"
+        :style="(successShow ? 'height: 44px;' : 'height: 0px;') + 'background: ' + ((tipsType == 'warn' && '#ff3e00') || (tipsType == 'info' && '#00a1ea') || '#00a1ea')"
+      >{{showInfo}}</div>
+
+      <div class="profile-nav_bar">
+        <div
+          class="item"
+          style="cursor: pointer"
+          :class="nowPage == 1 ? 'unhover' : ''"
+          @click="pageChange(0)"
+        >基本资料</div>
+        <div
+          class="item"
+          style="cursor: pointer"
+          :class="nowPage == 0 ? 'unhover' : ''"
+          @click="pageChange(1)"
+        >详细资料</div>
+      </div>
+
+      <div class="profile-good_page" v-if="nowPage == 0">
+        <div class="profile-bar">
+          <div class="profile-left_bar">
+            <div class="authing-form">
+              <input
+                type="text"
+                class="_authing_input _authing_form-control"
+                id="profile-name"
+                :placeholder="opt.nickName"
+                v-model="profileForm.nickName"
+                autocomplete="off"
+                @keyup.enter="saveInfo"
+              >
+              <input
+                type="text"
+                class="_authing_input _authing_form-control"
+                id="profile-name"
+                :placeholder="opt.phoneNumber"
+                v-model="profileForm.phoneNumber"
+                autocomplete="off"
+                @keyup.enter="saveInfo"
+              >
+            </div>
+          </div>
+          <div class="profile-right_bar">
+            <div class="profile-avatar_box" @click="choosePhoto">
+              <img :src="profileForm.avatarUrl" class="avatar" style="cursor: pointer">
+              <span style="cursor: pointer">修改头像</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-big_bar">
+          <div class="authing-form" style="padding: 0 22px;">
+            <div class="profile-input_with_label">
+              <span>邮箱</span>
+              <input
+                type="text"
+                class="_authing_input _authing_form-control"
+                id="profile-name"
+                :placeholder="opt.eMail"
+                v-model="profileForm.eMail"
+                autocomplete="off"
+                @keyup.enter="saveInfo"
+              >
+            </div>
+
+            <div class="profile-input_with_label">
+              <span>公司名</span>
+              <input
+                type="text"
+                class="_authing_input _authing_form-control"
+                id="profile-name"
+                :placeholder="opt.companyName"
+                v-model="profileForm.companyName"
+                autocomplete="off"
+                @keyup.enter="saveInfo"
+              >
+            </div>
+
+            <div class="profile-input_with_label">
+              <span>旧密码</span>
+              <input
+                type="password"
+                class="_authing_input _authing_form-control"
+                id="profile-name"
+                :placeholder="opt.oldPassWord"
+                v-model="profileForm.oldPassWord"
+                autocomplete="off"
+                @keyup.enter="saveInfo"
+              >
+            </div>
+
+            <div class="profile-input_with_label">
+              <span>新密码</span>
+              <input
+                type="password"
+                class="_authing_input _authing_form-control"
+                id="profile-name"
+                :placeholder="opt.passWord"
+                v-model="profileForm.passWord"
+                autocomplete="off"
+                @keyup.enter="saveInfo"
+              >
+            </div>
+
+            <div class="profile-input_with_label">
+              <span>确认密码</span>
+              <input
+                type="password"
+                class="_authing_input _authing_form-control"
+                id="profile-name"
+                :placeholder="opt.passWord2"
+                v-model="profileForm.passWord2"
+                autocomplete="off"
+                @keyup.enter="saveInfo"
+              >
+            </div>
+          </div>
+        </div>
+        <div class="whitePage" v-if="loading"></div>
+      </div>
+
+      <div
+        class="profile-good_page"
+        :style="nowPage == 1 ? 'overflow: hidden' : ''"
+        v-if="nowPage == 1"
+      >
+        <div class="profile-user_info">
+          <span class="profile-label">用户名</span>
+          <span class="profile-label_info">{{userInfo.userName}}</span>
+        </div>
+        <div class="profile-user_info">
+          <span class="profile-label">上次登录时间</span>
+          <span class="profile-label_info">{{userInfo.lastLoginTime}}</span>
+        </div>
+        <div class="profile-user_info">
+          <span class="profile-label">上次登录地点</span>
+          <span class="profile-label_info">{{userInfo.lastLoginLocation}}</span>
+        </div>
+        <div class="profile-user_info">
+          <span class="profile-label">登录次数</span>
+          <span class="profile-label_info">{{userInfo.loginCount}}</span>
+        </div>
+        <div class="profile-user_info">
+          <span class="profile-label">注册时间</span>
+          <span class="profile-label_info">{{userInfo.registTime}}</span>
+        </div>
+        <div class="profile-user_info">
+          <span class="profile-label">注册方式</span>
+          <span class="profile-label_info">{{userInfo.registMethod}}</span>
+        </div>
+      </div>
+
+      <div
+        v-if="nowPage == 0"
+        :class="loading ? 'profile-buttons_bar_loading' : 'profile-buttons_bar'"
+        :style="loading ? '' : 'cursor: pointer'"
+        @click="saveInfo"
+      >
+        <span>{{loading ? '' : '保存'}}</span>
+        <div class="profile-loading-icon" v-if="loading"></div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      $authing: null,
+
+      loading: false,
+      nowPage: 0,
+      tipsType: "info",
+      successShow: false,
+      showInfo: "",
+      opt: {
+        nickName: "请输入昵称",
+        phoneNumber: "请输入手机号",
+        eMail: "请输入邮箱",
+        companyName: "请输入公司名称（选填）",
+        oldPassWord: "修改密码，请输入旧密码",
+        passWord: "请输入新密码",
+        passWord2: "请重复密码"
+      },
+
+      profileForm: {
+        nickName: "",
+        phoneNumber: "",
+        avatarUrl: "https://usercontents.authing.cn/client/logo@2.png",
+        eMail: "",
+        companyName: "",
+        oldPassWord: "",
+        passWord: "",
+        passWord2: ""
+      },
+
+      userInfo: {
+        userName: "",
+        registMethod: "",
+        registTime: "",
+        loginCount: "",
+        lastLoginLocation: "",
+        lastLoginTime: ""
+      },
+
+      userId: null
+    };
+  },
+  async mounted() {
+    const Authing = require("authing-js-sdk");
+    let client_id = localStorage.getItem("_authing_clientId") || false;
+    if (client_id) {
+      const auth = await new Authing({
+        clientId: client_id,
+        timestamp: Math.round(new Date() / 1000),
+        nonce: Math.ceil(Math.random() * Math.pow(10, 6))
+      });
+      this.$authing = auth;
+
+      //已经有资料缓存，可以开始读取
+      this.getStorageInfo();
+    } else {
+      this.showSuccessBar("登录身份已过期");
+      setTimeout(() => {
+        location.href = "/error?message=尚未登录&code=id520";
+      }, 1000);
+      this.loading = false;
+    }
+  },
+  methods: {
+    getStorageInfo() {
+      let that = this;
+
+      let userInfo = JSON.parse(localStorage.getItem("_authing_userInfo"));
+      if (userInfo) {
+        that.profileForm.eMail = userInfo.email;
+
+        that.profileForm.nickName = userInfo.username;
+        that.profileForm.phoneNumber = "";
+        that.profileForm.companyName = userInfo.company;
+        that.profileForm.avatarUrl = userInfo.photo;
+        that.userId = userInfo._id;
+
+        that.userInfo.userName = userInfo.username;
+        that.userInfo.registMethod = userInfo.registerMethod;
+        that.userInfo.registTime = userInfo.signedUp;
+        that.userInfo.lastLoginTime = userInfo.lastLogin;
+        that.userInfo.lastLoginLocation = userInfo.lastIP;
+        that.userInfo.loginCount = userInfo.loginsCount;
+      }
+    },
+
+    returnPage() {
+      this.$router.go(-1);
+    },
+
+    pageChange(now) {
+      this.nowPage = now;
+    },
+
+    quitLogin() {
+      this.$router.push("/profile/logout");
+    },
+
+    showSuccessBar(info) {
+      if (!this.successShow) {
+        this.tipsType = "info";
+        this.successShow = true;
+        this.showInfo = info;
+        setTimeout(() => {
+          this.showInfo = "";
+          this.successShow = false;
+        }, 1500);
+      }
+    },
+
+    showWarnBar(info) {
+      if (!this.successShow) {
+        this.tipsType = "warn";
+        this.successShow = true;
+        this.showInfo = info;
+        setTimeout(() => {
+          this.showInfo = "";
+          this.successShow = false;
+        }, 1500);
+      }
+    },
+
+    async saveInfo() {
+      if (this.profileForm.oldPassWord !== "") {
+        if (this.profileForm.passWord !== this.profileForm.passWord2) {
+          this.showWarnBar("两次密码输入不一致");
+        } else if (
+          this.profileForm.passWord == "" ||
+          this.profileForm.passWord2 == ""
+        ) {
+          this.showWarnBar("新密码不能为空");
+        } else {
+          this.loading = true;
+          await this.startSaveInfo();
+        }
+      } else if (
+        this.profileForm.oldPassWord == "" &&
+        (this.profileForm.passWord !== "" || this.profileForm.passWord2 !== "")
+      ) {
+        this.showWarnBar("请输入旧密码");
+      } else {
+        this.loading = true;
+        await this.startSaveInfo();
+      }
+    },
+
+    async startSaveInfo(options) {
+      let opt;
+      if (!options) {
+        opt = {
+          _id: this.userId,
+          email: this.profileForm.eMail,
+          username: this.profileForm.nickName,
+          company: this.profileForm.companyName,
+          phone: this.profileForm.phoneNumber
+        };
+        if (this.profileForm.passWord) {
+          opt.password = this.profileForm.passWord;
+          opt.oldPassword = this.profileForm.oldPassWord;
+        }
+      } else {
+        opt = options;
+        opt._id = this.userId;
+      }
+
+      this.$authing
+        .update(opt)
+        .then(e => {
+          console.log(e);
+          localStorage.setItem("_authing_userInfo", JSON.stringify(e));
+          setTimeout(() => {
+            this.getStorageInfo();
+            this.loading = false;
+            this.showSuccessBar("个人信息已成功更新");
+            this.profileForm.oldPassWord = "";
+            this.profileForm.passWord = "";
+            this.profileForm.passWord2 = "";
+          }, 200);
+        })
+        .catch(err => {
+          const { code, message } = err.message;
+          if (code == 2203) {
+            this.profileForm.oldPassWord = "";
+            this.profileForm.passWord = "";
+            this.profileForm.passWord2 = "";
+          }
+          this.showWarnBar(`${code}：${message}`);
+          this.loading = false;
+        });
+    },
+
+    async choosePhoto() {
+      this.$authing.selectAvatarFile(cb => {
+        this.startSaveInfo({
+          photo: cb
+        });
+      });
+    }
+  }
+};
+</script>
+<style>
+/* @import url("../styles/styles.css"); */
+* {
+  padding: 0;
+  margin: 0;
+  font-family: "Inconsolata", Arial, sans-serif;
+}
+
+.profile-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.profile-edit_box {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+@media screen and (min-width: 480px) {
+  .profile-edit_box {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    width: 360px;
+    height: 600px;
+    margin-top: 4em;
+
+    /* padding: 22px; */
+    -webkit-box-shadow: -4px 7px 46px 2px rgba(0, 0, 0, 0.1);
+    -o-box-shadow: -4px 7px 46px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: -4px 7px 46px 2px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    border-radius: 5px;
+  }
+}
+
+.profile-top_bar {
+  width: 100%;
+  height: 100px;
+  background: #f3f3f3;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.authing-form ._authing_form-control {
+  font-size: 16px;
+  font-weight: 300;
+  height: 50px;
+  padding-left: 0;
+  padding-right: 0;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  box-shadow: none;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -ms-border-radius: 0px;
+  border-radius: 0px;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.authing-form ._authing_form-control::-webkit-input-placeholder {
+  color: rgba(0, 0, 0, 0.3);
+  text-transform: uppercase;
+}
+
+.authing-form ._authing_form-control::-moz-placeholder {
+  color: rgba(0, 0, 0, 0.3);
+  text-transform: uppercase;
+}
+
+.authing-form ._authing_form-control:-ms-input-placeholder {
+  color: rgba(0, 0, 0, 0.3);
+  text-transform: uppercase;
+}
+
+.authing-form ._authing_form-control:-moz-placeholder {
+  color: rgba(0, 0, 0, 0.3);
+  text-transform: uppercase;
+}
+
+.authing-form ._authing_form-control:focus,
+.authing-form ._authing_form-control:active {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.authing-form {
+  -webkit-box-shadow: none !important;
+  -o-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.profile-left_bar {
+  width: calc(100% - 110px);
+}
+
+.profile-right_bar {
+  width: 110px;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.profile-right_bar img {
+  width: 90px;
+  height: 90px;
+  border-radius: 5px;
+  background: #f3f3f3;
+}
+
+.profile-right_bar .profile-avatar_box:hover {
+  -webkit-box-shadow: 0px 2px 8px #a6a6a6;
+  -o-box-shadow: 0px 2px 8px #a6a6a6;
+  box-shadow: 0px 2px 8px #a6a6a6;
+}
+
+.profile-bar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.profile-avatar_box {
+  width: 90px;
+  height: 90px;
+  transition: all 0.3s;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.profile-avatar_box span {
+  width: 90px;
+  height: 20px;
+  font-size: 11px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #7e7e7e;
+  background: #f3f3f380;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  position: absolute;
+  z-index: 2;
+}
+
+.profile-nav_bar {
+  width: 100%;
+  height: 44px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-nav_bar .item {
+  width: 50%;
+  height: 44px;
+  color: #5c666f;
+  border-bottom: 1px solid #5c666f;
+  font-size: 13px;
+  font-weight: 300;
+  letter-spacing: 0.7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Inconsolata", Arial, sans-serif;
+}
+
+.unhover {
+  border-bottom: 1px solid #dee0e2 !important;
+  color: rgba(92, 102, 111, 0.6) !important;
+}
+
+.profile-big_bar {
+  width: 100%;
+}
+
+.profile-input_with_label {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 11px;
+}
+
+.profile-input_with_label span {
+  width: 20%;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  color: #616161;
+  font-weight: 300 !important;
+  text-align: justify;
+}
+
+.profile-input_with_label input {
+  width: 80%;
+  height: 30px !important;
+  font-size: 13px !important;
+  padding: 6px 0 !important;
+}
+
+.profile-buttons_bar {
+  width: 100%;
+  height: 60px;
+  position: absolute;
+  z-index: 4;
+  bottom: 0;
+  left: 0;
+  background: #00a1ea;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: #fff;
+  letter-spacing: 0.7px;
+  font-weight: 300;
+}
+
+.profile-buttons_bar_loading {
+  width: 100%;
+  height: 60px;
+  position: absolute;
+  z-index: 4;
+  bottom: 0;
+  left: 0;
+  background: #fff;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: #fff;
+  letter-spacing: 0.7px;
+  font-weight: 300;
+}
+
+.profile-loading-icon {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.4) rgba(0, 0, 0, 0.4) rgba(0, 0, 0, 0.2)
+    rgba(0, 0, 0, 0.2);
+  opacity: 0.9;
+  border-radius: 20px;
+  -webkit-animation: rotate 1s linear infinite;
+  animation: rotate 1s linear infinite;
+}
+
+.profile-loading-icon2 {
+  width: 28px;
+  height: 28px;
+  background-color: #fff;
+
+  border-radius: 100%;
+  -webkit-animation: scaleout 1s infinite ease-in-out;
+  animation: scaleout 1s infinite ease-in-out;
+}
+
+@-webkit-keyframes scaleout {
+  0% {
+    -webkit-transform: scale(0);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes scaleout {
+  0% {
+    transform: scale(0);
+    -webkit-transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+    opacity: 0;
+  }
+}
+
+.profile-buttons_bar:hover {
+  background: #0184bf;
+}
+
+.profile-good_page {
+  width: 100%;
+  height: calc(100% - 145px - 60px);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  position: absolute;
+}
+
+.profile-good_page .whitePage {
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.6);
+  position: absolute;
+  z-index: 6;
+  left: 0;
+  top: 0;
+}
+
+.profile-good_page::-webkit-scrollbar {
+  display: none;
+}
+
+.profile-user_info {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 18px;
+  font-size: 13px;
+  color: #515151;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  border-bottom: 1px dashed #f3f3f3;
+}
+
+.profile-user_info .profile-label {
+  width: 30%;
+  color: gray;
+  font-weight: 300;
+}
+
+.profile-user_info .profile-label_info {
+  width: 70%;
+}
+
+.msgBar {
+  width: 100%;
+  height: 0px;
+  /* position: absolute;
+  left: 0; */
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  transition: all 0.2s;
+}
+</style>

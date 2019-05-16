@@ -1,11 +1,11 @@
 <template>
   <div id="_authing_login_form" @keyup.esc="handleClose" v-if="!removeDom">
-    <div class="authing-loading-circle screen-center" v-if="pageLoading"></div>
+    <div class="authing-loading-circle screen-center" id="page-loading"></div>
     <div class="authing-cover-layer" v-if="$parent.isMountedInModal && !closeForm"></div>
     <div
-      class="_authing_container"
+      class="_authing_container hide"
       id="_authing_login_form_content"
-      :class="{hide: pageLoading, 'authing-login-form-modal': $parent.isMountedInModal}"
+      :class="{'authing-login-form-modal': $parent.isMountedInModal}"
     >
       <div
         v-if="!closeForm"
@@ -34,7 +34,11 @@
       }"
         >
           <div class="_authing_form-header">
-            <span v-if="pageStack.length > 0" @click="goBack" class="authing-lock-back-button">
+            <span
+              v-if="pageStack.length > 0"
+              @click="goBack"
+              class="authing-lock-back-button"
+            >
               <svg
                 focusable="false"
                 enable-background="new 0 0 24 24"
@@ -83,15 +87,37 @@
             </span>
             <div class="_authing_form-header-bg"></div>
             <div class="_authing_form-header-welcome">
-              <img class="form-header-logo" :src="appLogo">
+              <img class="form-header-logo" :src="opts.logo">
               <div
                 class="_authing_form-header-name"
                 title="Authing"
-              >{{forgetPasswordVisible ? '重置密码' : appName}}</div>
+              >{{forgetPasswordVisible ? '重置密码' : opts.title}}</div>
             </div>
           </div>
-
           <GlobalMessage v-show="globalMessage" :message="globalMessage" :type="globalMessageType"/>
+          <!-- <div
+            v-show="errVisible || authingOnError"
+            class="authing-global-message authing-global-message-error"
+          >
+            <span class="animated fadeInUp">
+              <span>{{errMsg}}</span>
+            </span>
+          </div>
+
+          <div
+            v-show="successVisible"
+            class="authing-global-message authing-global-message-success"
+          >
+            <span class="animated fadeInUp">
+              <span>{{successMsg}}</span>
+            </span>
+          </div>
+
+          <div v-show="warnVisible" class="authing-global-message authing-global-message-info">
+            <span class="animated fadeInUp">
+              <span>{{warnMsg}}</span>
+            </span>
+          </div>-->
 
           <div v-show="!authingOnError">
             <div class="authing-header-tabs-container">
@@ -199,13 +225,21 @@ export default {
   },
   data() {
     return {
-      appLogo: "",
-      appName: "",
       clientInfo: {},
+      validAuth: null,
+
+      errMsg: "",
+      successMsg: "",
+      warnMsg: "",
+      successVisible: false,
+      errVisible: false,
+      warnVisible: false,
 
       rememberMe: false,
 
       verifyCodeLoading: true,
+
+      isWxQRCodeGenerated: false,
 
       isScanCodeEnable: false,
 
@@ -218,6 +252,7 @@ export default {
 
       $authing: null,
 
+      loginMethod: "common",
       hasLDAP: false
     };
   },
@@ -225,48 +260,86 @@ export default {
     var that = this;
     var auth = null;
 
-    const { code: errorCode } = this.$route.query;
+    const { context, code: errorCode } = this.$route.query;
 
     // token 错误或已经过期的情况
     if (errorCode && Number(errorCode) === 2207) {
       this.clearLocalStorage();
     }
 
+    let operationName;
+    if (context === "OIDC") {
+      operationName = "QueryOIDCAppInfoByAppID";
+    } else if (context === "SAMLIdP") {
+      operationName = "QuerySAMLIdentityProviderInfoByAppID";
+    } else {
+      operationName = "QueryAppInfoByAppID";
+    }
+    let query =
+      `query {
+            ${operationName} (appId: "` +
+      that.opts.appId +
+      `") {   
+              _id,
+              clientId,
+              name,
+              image
+            }
+          }
+      `;
+
+    let GraphQLClient_getInfo = new GraphQLClient({
+      baseURL: that.opts.host.oauth
+    });
+
     try {
-      const appInfo = await this.queryAppInfo();
-      if (!appInfo) {
-        this.$router.replace({
-          name: "error",
-          query: { message: "应用不存在" }
-        });
-        return;
+      const oAuthAppInfo = await GraphQLClient_getInfo.request({ query });
+
+      if (
+        !(
+          oAuthAppInfo.QueryAppInfoByAppID ||
+          oAuthAppInfo.QueryOIDCAppInfoByAppID ||
+          oAuthAppInfo.QuerySAMLIdentityProviderInfoByAppID
+        )
+      ) {
+        that.authingOnError = true;
+        that.errMsg = "Error: 找不到此应用";
+        that.$authing.pub("authingUnload", "找不到此应用");
+        throw that.errMsg;
       }
-      this.appName = this.opts.title || appInfo.name;
-      window.title = `${this.appName} - Authing`;
-      document.title = `${this.appName} - Authing`;
-      this.appLogo = this.opts.logo || appInfo.image;
-      this.clientId = appInfo.clientId;
+      let info;
+      if (context === "OIDC") {
+        info = oAuthAppInfo.QueryOIDCAppInfoByAppID;
+      } else if (context === "SAMLIdP") {
+        info = oAuthAppInfo.QuerySAMLIdentityProviderInfoByAppID;
+      } else {
+        info = oAuthAppInfo.QueryAppInfoByAppID;
+      }
+      that.opts.title = that.opts.title || info.name;
+      window.title = `${that.opts.title} - Authing`;
+      document.title = `${that.opts.title} - Authing`;
+      that.opts.logo = that.opts.logo || info.image;
+      that.opts.clientId = info.clientId;
     } catch (erro) {
-      console.log(erro);
       that.authingOnError = true;
+      that.errMsg = "Error: " + erro;
       that.$authing.pub("authingUnload", erro);
-      this.$router.replace({ name: "error", query: { message: erro } });
-      return;
     }
 
     this.checkHasLDAP(that.opts.clientId);
 
     try {
       auth = new Authing({
-        clientId: that.clientId,
+        clientId: that.opts.clientId,
         timestamp: that.opts.timestamp,
         nonce: that.opts.nonce,
         host: that.opts.host
       });
     } catch (err) {
-      console.log(err);
-      this.changeLoading({ el: "page", loading: false });
-
+      document.getElementById("page-loading").remove();
+      document
+        .getElementById("_authing_login_form_content")
+        .classList.remove("hide");
       that.authingOnError = true;
       that.errMsg = "Error: " + err;
       that.$authing.pub("authingUnload", err);
@@ -277,13 +350,12 @@ export default {
     }
 
     auth
-      .then(validAuth => {
+      .then(function(validAuth) {
         that.clientInfo = validAuth.clientInfo;
-        this.changeLoading({ el: "page", loading: false });
-
-        // document
-        //   .getElementById("_authing_login_form_content")
-        //   .classList.remove("hide");
+        document.getElementById("page-loading").remove();
+        document
+          .getElementById("_authing_login_form_content")
+          .classList.remove("hide");
         window.validAuth = validAuth;
 
         that.$authing.pub("authenticated", validAuth);
@@ -335,34 +407,18 @@ export default {
           that.gotoWxQRCodeScanning();
         }
       })
-      .catch(err => {
-        console.log(err);
-        this.changeLoading({ el: "page", loading: false });
-        this.$router.replace({
-          name: "error",
-          query: { message: "app_id 或 client_id 错误", code: "id404" }
-        });
+      .catch(function(err) {
+        let pageLoading = document.getElementById("page-loading");
+        pageLoading && document.getElementById("page-loading").remove();
+        document
+          .getElementById("_authing_login_form_content")
+          .classList.remove("hide");
         that.authingOnError = true;
+        that.errMsg = "初始化出错，请检查 clientID 是否正确";
         that.$authing.pub("authenticatedOnError", err);
       });
   },
-  created() {
-    this.$authing = this.$root.$data.$authing;
-    this.opts = this.$root.$data.$authing.opts;
-    // 这里做场景判断，是哪种登录协议，从而执行不同后续逻辑
-    if (!(this.$route.query.app_id || this.$route.query.app_id)) {
-      this.$router.replace({
-        name: "error",
-        query: { message: "请提供 app_id 或 client_id", code: "id404" }
-      });
-    }
-    this.saveProtocal({ protocal: this.$route.query.protocal });
-    if (!this.protocal) {
-      this.$router.replace({
-        name: "error",
-        query: { message: "缺少协议参数 protocal", code: "id400" }
-      });
-    }
+  created: function() {
     this.$authing = this.$root.$data.$authing;
     this.opts = this.$authing.opts;
 
@@ -384,57 +440,6 @@ export default {
     ]),
     ...mapActions("loading", ["changeLoading"]),
     ...mapActions("data", ["saveSocialButtonsList"]),
-    ...mapActions("protocal", ["saveProtocal"]),
-    getSecondLvDomain(hostname) {
-      let exp = /(.*)\.authing\.cn/;
-      return exp.exec(hostname)[1];
-    },
-    async queryAppInfo() {
-      let operationName;
-
-      switch (this.protocal) {
-        case "oidc":
-          operationName = "QueryOIDCAppInfoByDomain";
-          break;
-        case "oauth":
-          operationName = "QueryAppInfoByDomain";
-          break;
-        case "saml":
-          operationName = "QuerySAMLIdentityProviderInfoByDomain";
-          break;
-      }
-      let GraphQLClient_getAppInfo = new GraphQLClient({
-        baseURL: this.opts.host.oauth
-      });
-      let hostname = location.hostname;
-      console.log(hostname);
-      // let domain = this.getSecondLvDomain(hostname);
-      let domain = "asdf";
-      // 优先通过二级域名查找此应用信息
-      if (domain) {
-        const query =
-          `query {
-            ${operationName} (domain: "` +
-          domain +
-          `") {   
-              _id,
-              name,
-              image,
-              clientId
-            }
-          }`;
-        let appInfo = await GraphQLClient_getAppInfo.request({ query });
-        console.log(appInfo);
-        switch (this.protocal) {
-          case "oidc":
-            return appInfo["QueryOIDCAppInfoByDomain"];
-          case "oauth":
-            return appInfo["QueryAppInfoByDomain"];
-          case "saml":
-            return appInfo["QuerySAMLIdentityProviderInfoByDomain"];
-        }
-      }
-    },
     async checkHasLDAP(clientId) {
       let operationName = "QueryClientHasLDAPConfigs";
       let query =
@@ -525,10 +530,8 @@ export default {
     ...mapGetters("data", ["globalMessage", "globalMessageType"]),
     ...mapGetters("loading", {
       socialButtonsListLoading: "socialButtonsList",
-      formLoading: "form",
-      pageLoading: "page"
-    }),
-    ...mapGetters("protocal", ["protocal"])
+      formLoading: "form"
+    })
   },
   watch: {
     rememberMe: function(newVal) {
