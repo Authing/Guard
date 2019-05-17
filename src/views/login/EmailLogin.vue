@@ -143,6 +143,9 @@ export default {
       'addRedLine',
       'addAnimation',
     ]),
+    ...mapActions("protocol", [
+      "handleProtocolProcess",
+    ]),
     handleLoginVerifyCodeLoaded() {
       this.changeLoading({ el: "loginVerifyCode", loading: false });
     },
@@ -207,6 +210,7 @@ export default {
       validAuth
         .login(info)
         .then(data => {
+          /*
           if (that.rememberMe) {
             localStorage.setItem("_authing_username", that.loginForm.email);
             localStorage.setItem(
@@ -217,14 +221,15 @@ export default {
             localStorage.removeItem("_authing_username");
             localStorage.removeItem("_authing_password");
           }
-
+*/
           that.showGlobalMessage({
             type: "success",
             message: "验证通过，欢迎你：" + data.username || data.email
           });
           that.recordLoginInfo(data);
-          that.changeLoading({ el: "form", loading: false });
           that.$authing.pub("login", data);
+          this.handleProtocolProcess({route: this.$route, router: this.$router})
+          that.changeLoading({ el: "form", loading: false });
         })
         .catch(err => {
           that.changeLoading({ el: "form", loading: false });

@@ -315,6 +315,7 @@ export default {
 
         that.$authing.pub("authenticated", validAuth);
 
+        /*
         if (localStorage.getItem("_authing_username")) {
           that.rememberMe = true;
           that.loginForm.email = localStorage.getItem("_authing_username");
@@ -326,7 +327,7 @@ export default {
             $authing.opts.clientId
           );
         }
-
+        */
         that.changeLoading({ el: "socialButtonsList", loading: true });
         validAuth
           .readOAuthList()
@@ -490,7 +491,6 @@ export default {
       try {
         const hasLDAP = await GraphQLClient_getInfo.request({ query });
         this.hasLDAP = hasLDAP.QueryClientHasLDAPConfigs.result;
-        this.changeVisibility;
       } catch (erro) {
         console.log(erro);
       }
@@ -500,10 +500,6 @@ export default {
       localStorage.removeItem("_authing_username");
       localStorage.removeItem("_authing_password");
       localStorage.removeItem("_authing_token");
-    },
-
-    getPageState: function getPageState() {
-      return Object.assign({}, this.pageVisible);
     },
 
     handleGoBack: function handleGoBack() {

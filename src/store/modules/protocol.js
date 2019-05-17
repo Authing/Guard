@@ -9,32 +9,58 @@ const actions = {
   saveProtocol({ commit }, { protocol }) {
     commit("setProtocol", { protocol });
   },
-  handleProtocolProcess({ state }, routes) {
+  handleProtocolProcess({ state }, {route, router}) {
     switch (state.protocol) {
       case "oauth":
-        this.handleOAuthProcess(routes);
+        this.dispatch("protocol/handleOAuthProcess", {route, router});
         break;
       case "oidc":
-        this.handleOIDCProcess(routes);
+        this.dispatch("protocol/handleOIDCProcess", {route, router});
         break;
       case "saml":
-        this.handleSAMLProcess(routes);
+        this.dispatch("protocol/handleSAMLProcess", {route, router});
         break;
     }
   },
-  handleOAuthProcess(_, routes) {},
-  handleOIDCProcess(_, routes) {
-    let uuid = routes.query.uuid;
-    if (!uuid) {
-      routes.replace({
-        name: "error",
-        query: { message: "缺少 OIDC 所必须的参数 uuid" }
+  handleOAuthProcess(_, {route, router}) {
+    try {
+      let appId = route.query.app_id || route.query.client_id;
+      let redirectURI = route.query.redirect_uri;
+      let responseType = route.query.response_type;
+      let scope = route.query.scope;
+      let authorizationHeader = localStorage.getItem("_authing_token");
+      router.push({
+        name: "authorize",
+        query: {
+          protocol: "oauth",
+          app_id: appId,
+          redirect_uri: redirectURI,
+          response_type: responseType,
+          scope,
+          authorization_header: authorizationHeader
+        }
       });
+    } catch(err) {
+      console.log(err)
     }
-    routes.push({ name: "authorize", query: { uuid, protocol: "oidc" } });
+  },
+  handleOIDCProcess(_, {route, router}) {
+    try {
+      let uuid = route.query.uuid;
+      if (!uuid) {
+        route.replace({
+          name: "error",
+          query: { message: "缺少 OIDC 所必须的参数 uuid" }
+        });
+      }
+      router.push({ name: "authorize", query: { uuid, protocol: "oidc" } });
+    } catch (err) {
+      console.log(err)
+    }
+
     // location.href = `${this.userAuthorizeURL}&context=OIDC&uuid=${uuid}`;
   },
-  handleSAMLProcess(_, routes) {}
+  handleSAMLProcess(_, route) {}
 };
 
 const mutations = {
