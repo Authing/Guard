@@ -388,31 +388,34 @@ export default {
     ...mapActions("protocol", ["saveProtocol"]),
     getSecondLvDomain(hostname) {
       let exp = /(.*)\.authing\.cn/;
-      return exp.exec(hostname)[1];
+      let res = exp.exec(hostname)
+      if(res) return res[1];
+      return null
     },
     async queryAppInfo() {
+      let domain = this.getSecondLvDomain(hostname);
+      let appId = this.$route.query.app_id || this.$route.query.client_id;
       let operationName;
-
-      switch (this.protocol) {
-        case "oidc":
-          operationName = "QueryOIDCAppInfoByDomain";
-          break;
-        case "oauth":
-          operationName = "QueryAppInfoByDomain";
-          break;
-        case "saml":
-          operationName = "QuerySAMLIdentityProviderInfoByDomain";
-          break;
-      }
       let GraphQLClient_getAppInfo = new GraphQLClient({
         baseURL: this.opts.host.oauth
       });
       let hostname = location.hostname;
-      console.log(hostname);
-      // let domain = this.getSecondLvDomain(hostname);
-      let domain = "asdf";
+
+      // let domain = "asdf";
       // 优先通过二级域名查找此应用信息
-      if (domain) {
+      if (domain && domain !== 'sso') {
+        // 根据不同的 protocol 查找不同类型的 app
+        switch (this.protocol) {
+          case "oidc":
+            operationName = "QueryOIDCAppInfoByDomain";
+            break;
+          case "oauth":
+            operationName = "QueryAppInfoByDomain";
+            break;
+          case "saml":
+            operationName = "QuerySAMLIdentityProviderInfoByDomain";
+            break;
+        }
         const query =
           `query {
             ${operationName} (domain: "` +
@@ -426,6 +429,7 @@ export default {
           }`;
         let appInfo = await GraphQLClient_getAppInfo.request({ query });
         console.log(appInfo);
+        // 返回对应的 app 信息
         switch (this.protocol) {
           case "oidc":
             return appInfo["QueryOIDCAppInfoByDomain"];
@@ -433,6 +437,37 @@ export default {
             return appInfo["QueryAppInfoByDomain"];
           case "saml":
             return appInfo["QuerySAMLIdentityProviderInfoByDomain"];
+        }
+      } else if (appId) {
+        // 如果没有二级域名，就通过 appId 查找
+        switch (this.protocol) {
+          case "oidc":
+            operationName = "QueryOIDCAppInfoByAppID";
+            break;
+          case "oauth":
+            operationName = "QueryAppInfoByAppID";
+            break;
+          case "saml":
+            operationName = "QuerySAMLIdentityProviderInfoByAppID";
+            break;
+        }
+        const query = `query {
+          ${operationName} (appId: "${appId}") {
+            _id,
+            name,
+            image,
+            clientId
+          }
+        }`;
+        let appInfo = await GraphQLClient_getAppInfo.request({ query });
+        console.log(appInfo);
+        switch (this.protocol) {
+          case "oidc":
+            return appInfo["QueryOIDCAppInfoByAppID"];
+          case "oauth":
+            return appInfo["QueryAppInfoByAppID"];
+          case "saml":
+            return appInfo["QuerySAMLIdentityProviderInfoByAppID"];
         }
       }
     },
