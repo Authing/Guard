@@ -25,6 +25,26 @@ const getters = {
   forgetPasswordVerifyCode: state => state.forgetPasswordVerifyCode
 };
 const actions = {
+  recordLoginInfo(_, userInfo) {
+    let appToken = localStorage.getItem("appToken");
+
+    if (appToken) {
+      try {
+        appToken = JSON.parse(appToken);
+      } catch (error) {
+        appToken = {};
+      }
+    } else {
+      appToken = {};
+    }
+
+    appToken[appId] = {
+      accessToken: userInfo.token,
+      userInfo: userInfo
+    };
+
+    localStorage.setItem("appToken", JSON.stringify(appToken));
+  },
   showGlobalMessage({ commit }, { type, message }) {
     commit("setGlobalMessage", { type, message });
   },
@@ -40,27 +60,27 @@ const actions = {
   saveSocialButtonsList({ commit }, { socialButtonsList }) {
     commit("setSocialButtonsList", { socialButtonsList });
   },
-  saveAppInfo({commit}, {appInfo}) {
-    commit("setAppInfo", {appInfo})
+  saveAppInfo({ commit }, { appInfo }) {
+    commit("setAppInfo", { appInfo });
   },
   removeAnimation(_, className) {
-    document.getElementById(className).classList.remove('animated');
-    document.getElementById(className).classList.remove('shake');
+    document.getElementById(className).classList.remove("animated");
+    document.getElementById(className).classList.remove("shake");
   },
   removeRedLine(_, className) {
-    document.getElementById(className).classList.remove('err-hint');
+    document.getElementById(className).classList.remove("err-hint");
   },
   addRedLine(_, className) {
-    document.getElementById(className).classList.add('err-hint');
+    document.getElementById(className).classList.add("err-hint");
   },
   addAnimation(_, className) {
-    document.getElementById(className).classList.add('animated');
-    document.getElementById(className).classList.add('shake');
-    document.getElementById(className).classList.add('err-hint');
-    setTimeout(function () {
+    document.getElementById(className).classList.add("animated");
+    document.getElementById(className).classList.add("shake");
+    document.getElementById(className).classList.add("err-hint");
+    setTimeout(function() {
       actions.removeAnimation(_, className);
     }, 500);
-  },  
+  }
 };
 
 const mutations = {
@@ -82,8 +102,8 @@ const mutations = {
     state.socialButtonsList = [...socialButtonsList];
   },
   setAppInfo(state, { appInfo }) {
-    state.appInfo = {...appInfo};
-  },
+    state.appInfo = { ...appInfo };
+  }
 };
 
 export default {

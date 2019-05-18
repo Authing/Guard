@@ -11,16 +11,16 @@ const actions = {
   saveProtocol({ commit }, { protocol, params }) {
     commit("setProtocol", { protocol, params });
   },
-  handleProtocolProcess({ state }, { route, router }) {
+  handleProtocolProcess({ state }, { router }) {
     switch (state.protocol) {
       case "oauth":
-        this.dispatch("protocol/handleOAuthProcess", { route, router });
+        this.dispatch("protocol/handleOAuthProcess", { router });
         break;
       case "oidc":
-        this.dispatch("protocol/handleOIDCProcess", { route, router });
+        this.dispatch("protocol/handleOIDCProcess", { router });
         break;
       case "saml":
-        this.dispatch("protocol/handleSAMLProcess", { route, router });
+        this.dispatch("protocol/handleSAMLProcess", { router });
         break;
     }
   },

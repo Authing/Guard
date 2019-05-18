@@ -6,12 +6,17 @@
   </form>
 </template>
 <script>
+import { mapActions } from "vuex";
 export default {
-  name: 'QRCode',
+  name: "QRCode",
   data() {
     return {
       isWxQRCodeGenerated: false
-    }
+    };
+  },
+  methods: {
+    ...mapActions("data", ["recordLoginInfo"]),
+    ...mapActions("protocol", ["handleProtocolProcess"])
   },
   created() {
     this.$authing = this.$root.$data.$authing;
@@ -25,7 +30,7 @@ export default {
     };
 
     let that = this;
-    let validAuth = window.validAuth
+    let validAuth = window.validAuth;
     if (!this.isWxQRCodeGenerated) {
       validAuth.startWXAppScaning({
         mount: "qrcode-node",
@@ -34,6 +39,7 @@ export default {
           that.$authing.pub("scanning", res);
           localStorage.setItem("_authing_token", res.data.token);
           that.recordLoginInfo(res.data);
+          that.handleProtocolProcess({ router: this.$router });
         },
 
         onError: function(err) {

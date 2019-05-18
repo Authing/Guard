@@ -76,25 +76,12 @@ export default {
   },
   methods: {
     redirectURL() {
-      // redirect to $HOST/authorize to get Authorization Code
-      // const state = this.$route.query.state || "";
-      // const appId =
-      //   this.$route.query.app_id || this.$route.query.client_id || "";
-      // const redirectURI = this.$route.query.redirect_uri || "";
-      // const responseType = this.$route.query.response_type || "code";
-      // const scope =
-      //   this.$route.query.scope || Math.ceil(Math.random() * Math.pow(10, 6));
       const host = this.$root.SSOHost;
-      // const protocol = this.$route.query.protocol;
-      // const bindings = this.$route.query.bindings;
-      // const SAMLRequest = this.$route.query.SAMLRequest || "";
-      // const signature = this.$route.query.Signature || "";
-      // const sigAlg = this.$route.query.SigAlg || "";
-
+      // 根据不同的协议，确权后执行不同的后续流程
       if (this.protocol === "oidc") {
         location.href = this.scopes.redirectTo;
       } else if (this.protocol === "saml") {
-        if (bindings === "post") {
+        if (this.params.bindings === "post") {
           // 创建一个 form
           var form1 = document.createElement("form");
           form1.id = "saml-post";
@@ -108,7 +95,7 @@ export default {
           // 设置相应参数
           input.type = "text";
           input.name = "SAMLRequest";
-          input.value = SAMLRequest;
+          input.value = this.params.SAMLRequest;
 
           // 将该输入框插入到 form 中
           form1.appendChild(input);
@@ -116,7 +103,7 @@ export default {
           // form 的提交方式
           form1.method = "POST";
           // form 提交路径
-          form1.action = `${host}/oauth/saml/idp/${appId}/SingleSignOnService?authorization_header=${localStorage.getItem(
+          form1.action = `${host}/oauth/saml/idp/${this.params.app_id}/SingleSignOnService?authorization_header=${localStorage.getItem(
             "_authing_token"
           )}`;
 
@@ -134,6 +121,7 @@ export default {
           }&SigAlg=${this.params.sigAlg}`;
         }
       } else {
+        // oauth
         location.href = `${host}/authorize?app_id=${this.params.app_id}&state=${
           this.params.state
         }&response_type=${this.params.response_type}&redirect_uri=${
