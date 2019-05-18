@@ -226,7 +226,7 @@ export default {
     this.opts = this.$root.$data.$authing.opts;
     
     // 这里做场景判断，是哪种登录协议，从而执行不同后续逻辑
-    if (!(this.$route.query.app_id || this.$route.query.app_id)) {
+    if (!(this.$route.query.app_id || this.$route.query.client_id)) {
       this.$router.replace({
         name: "error",
         query: { message: "请提供 app_id 或 client_id", code: "id404" }

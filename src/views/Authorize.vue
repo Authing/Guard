@@ -74,7 +74,7 @@ export default {
   name: "authorize",
   components: {},
   computed: {
-    ...mapGetters("data", ["appInfo", 'isLogged']),
+    ...mapGetters("data", ["appInfo", "isLogged"]),
     ...mapGetters("protocol", ["protocol", "params"]),
     ...mapGetters("loading", {
       formLoading: "form"
@@ -83,13 +83,12 @@ export default {
   created() {
     this.$authing = this.$root.$data.$authing;
     this.opts = this.$root.$data.$authing.opts;
-    
   },
   mounted() {
     if (this.isLogged) {
       this.showPage = false;
       this.redirectURL();
-      return
+      return;
     }
     // 进入确权页面，查询所需权限列表
     if (this.protocol === "oidc") {
@@ -108,8 +107,10 @@ export default {
       const host = this.$root.SSOHost;
       // 根据不同的协议，确权后执行不同的后续流程
       if (this.protocol === "oidc") {
-        // 这两者是等价的 
-        location.href = this.scopes.redirectTo || `${host}/oauth/oidc/auth/${this.params.uuid}`;
+        // 这两者是等价的
+        location.href =
+          this.scopes.redirectTo ||
+          `${host}/oauth/oidc/auth/${this.params.uuid}`;
       } else if (this.protocol === "saml") {
         if (this.params.bindings === "post") {
           // 创建一个 form
