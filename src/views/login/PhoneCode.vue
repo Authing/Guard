@@ -70,6 +70,7 @@ export default {
       'removeRedLine',
       'addRedLine',
       'addAnimation',
+      'recordLoginInfo'
     ]),
     ...mapActions("loading", ["changeLoading"]),
     handleLoginByPhoneCode() {
@@ -153,26 +154,6 @@ export default {
           });
         });
     },
-    recordLoginInfo(userInfo) {
-      let appToken = localStorage.getItem("appToken");
-
-      if (appToken) {
-        try {
-          appToken = JSON.parse(appToken);
-        } catch (error) {
-          appToken = {};
-        }
-      } else {
-        appToken = {};
-      }
-
-      appToken[appId] = {
-        accessToken: userInfo.token,
-        userInfo: userInfo
-      };
-
-      localStorage.setItem("appToken", JSON.stringify(appToken));
-    }
   }
 };
 </script>

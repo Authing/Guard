@@ -103,29 +103,10 @@ export default {
       'removeRedLine',
       'addRedLine',
       'addAnimation',
+      'recordLoginInfo'
     ]),
     handleLoginVerifyCodeLoaded() {
       this.changeLoading({ el: "loginVerifyCode", loading: false });
-    },
-    recordLoginInfo(userInfo) {
-      let appToken = localStorage.getItem("appToken");
-
-      if (appToken) {
-        try {
-          appToken = JSON.parse(appToken);
-        } catch (error) {
-          appToken = {};
-        }
-      } else {
-        appToken = {};
-      }
-
-      appToken[appId] = {
-        accessToken: userInfo.token,
-        userInfo: userInfo
-      };
-
-      localStorage.setItem("appToken", JSON.stringify(appToken));
     },
     handleLDAPLogin() {
       const that = this;

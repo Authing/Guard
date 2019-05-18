@@ -145,31 +145,12 @@ export default {
       "removeAnimation",
       "removeRedLine",
       "addRedLine",
-      "addAnimation"
+      "addAnimation",
+      "recordLoginInfo"
     ]),
     ...mapActions("protocol", ["handleProtocolProcess"]),
     handleLoginVerifyCodeLoaded() {
       this.changeLoading({ el: "loginVerifyCode", loading: false });
-    },
-    recordLoginInfo(userInfo) {
-      let appToken = localStorage.getItem("appToken");
-
-      if (appToken) {
-        try {
-          appToken = JSON.parse(appToken);
-        } catch (error) {
-          appToken = {};
-        }
-      } else {
-        appToken = {};
-      }
-
-      appToken[appId] = {
-        accessToken: userInfo.token,
-        userInfo: userInfo
-      };
-
-      localStorage.setItem("appToken", JSON.stringify(appToken));
     },
     handleLogin() {
       this.changeLoading({ el: "form", loading: true });
@@ -234,6 +215,7 @@ export default {
           that.changeLoading({ el: "form", loading: false });
         })
         .catch(err => {
+          console.log(err)
           that.changeLoading({ el: "form", loading: false });
           that.$authing.pub("loginError", err);
           that.showGlobalMessage({

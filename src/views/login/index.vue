@@ -224,10 +224,7 @@ export default {
   created() {
     this.$authing = this.$root.$data.$authing;
     this.opts = this.$root.$data.$authing.opts;
-    // 判断是否已经登录过了
-    if (this.isLogged()) {
-      this.$router.push({ name: "authorize", query: { ...this.$route.query } });
-    }
+    
     // 这里做场景判断，是哪种登录协议，从而执行不同后续逻辑
     if (!(this.$route.query.app_id || this.$route.query.app_id)) {
       this.$router.replace({
@@ -259,9 +256,14 @@ export default {
     };
   },
   async mounted() {
+    // 判断是否已经登录过了，已经登录就直接跳转确权页面，不再发送后面那些 http 请求
+    if (this.isLogged()) {
+      this.$router.push({ name: "authorize", query: { ...this.$route.query } });
+      this.saveLoginStatus({isLogged: true})
+      return
+    }
     var that = this;
     var auth = null;
-
     const { code: errorCode } = this.$route.query;
 
     // token 错误或已经过期的情况
@@ -270,6 +272,7 @@ export default {
     }
 
     try {
+      // 获取应用的名称，图标等信息
       const appInfo = await this.queryAppInfo();
       if (!appInfo) {
         this.$router.replace({
@@ -396,7 +399,7 @@ export default {
       "goBack"
     ]),
     ...mapActions("loading", ["changeLoading"]),
-    ...mapActions("data", ["saveSocialButtonsList", "saveAppInfo"]),
+    ...mapActions("data", ["saveSocialButtonsList", "saveAppInfo", "saveLoginStatus"]),
     ...mapActions("protocol", ["saveProtocol"]),
     getSecondLvDomain(hostname) {
       let exp = /(.*)\.authing\.cn/;

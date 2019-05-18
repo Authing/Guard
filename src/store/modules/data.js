@@ -9,10 +9,14 @@ const state = {
   forgetPasswordEmail: "",
   forgetPasswordVerifyCode: "",
   socialButtonsList: [],
-  appInfo: {}
+  appInfo: {},
+  userInfo: {},
+  isLogged: false
 };
 const getters = {
   appInfo: state => state.appInfo,
+  userInfo: state => state.userInfo,
+  isLogged: state => state.isLogged,
   globalMessage: state => state.globalMessage,
   globalMessageType: state => state.globalMessageType,
   socialButtonsList: state => state.socialButtonsList,
@@ -25,7 +29,10 @@ const getters = {
   forgetPasswordVerifyCode: state => state.forgetPasswordVerifyCode
 };
 const actions = {
-  recordLoginInfo(_, userInfo) {
+  saveLoginStatus({commit}, {isLogged}) {
+    commit('setLoginStatus', {isLogged})
+  },
+  recordLoginInfo({commit}, userInfo) {
     let appToken = localStorage.getItem("appToken");
 
     if (appToken) {
@@ -44,6 +51,7 @@ const actions = {
     };
 
     localStorage.setItem("appToken", JSON.stringify(appToken));
+    commit("setLoginInfo", {userInfo})
   },
   showGlobalMessage({ commit }, { type, message }) {
     commit("setGlobalMessage", { type, message });
@@ -80,7 +88,7 @@ const actions = {
     setTimeout(function() {
       actions.removeAnimation(_, className);
     }, 500);
-  }
+  },
 };
 
 const mutations = {
@@ -103,6 +111,12 @@ const mutations = {
   },
   setAppInfo(state, { appInfo }) {
     state.appInfo = { ...appInfo };
+  },
+  setLoginInfo(state, { userInfo }) {
+    state.userInfo = { ...userInfo };
+  },
+  setLoginStatus(state, { isLogged }) {
+    state.isLogged = isLogged;
   }
 };
 
