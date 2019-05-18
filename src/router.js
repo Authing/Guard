@@ -24,7 +24,7 @@ export default new Router({
       component: Login,
     },    
     {
-      path: '/authorize/confirm',
+      path: '/login/authorize/confirm',
       name: 'authorize',
       component: Authorize,
     },

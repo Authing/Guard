@@ -39,11 +39,15 @@ export default {
           that.$authing.pub("scanning", res);
           localStorage.setItem("_authing_token", res.data.token);
           that.recordLoginInfo(res.data);
-          that.handleProtocolProcess({ router: this.$router });
+          that.handleProtocolProcess({ router: that.$router });
         },
 
         onError: function(err) {
           that.$authing.pub("scanningError", err);
+          this.$router.replace({
+            name: "error",
+            query: { message: "小程序扫码错误", code: "500" }
+          });
         },
 
         onIntervalStarting: function(interval) {

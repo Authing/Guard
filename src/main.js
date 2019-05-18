@@ -4,7 +4,6 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
 import Authing from "authing-js-sdk";
-import GraphQL from "./graphql";
 import "./styles/styles.css";
 import "./styles/animations.css";
 

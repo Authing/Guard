@@ -224,6 +224,10 @@ export default {
   created() {
     this.$authing = this.$root.$data.$authing;
     this.opts = this.$root.$data.$authing.opts;
+    // 判断是否已经登录过了
+    if (this.isLogged()) {
+      this.$router.push({ name: "authorize", query: { ...this.$route.query } });
+    }
     // 这里做场景判断，是哪种登录协议，从而执行不同后续逻辑
     if (!(this.$route.query.app_id || this.$route.query.app_id)) {
       this.$router.replace({
@@ -549,6 +553,21 @@ export default {
       setTimeout(function() {
         that.removeDom = true;
       }, 800);
+    },
+    isLogged() {
+      let appToken = localStorage.getItem("appToken");
+
+      if (appToken) {
+        try {
+          appToken = JSON.parse(appToken);
+        } catch (error) {
+          appToken = {};
+        }
+      } else {
+        appToken = {};
+      }
+
+      return appToken[this.opts.appId] && appToken[this.opts.appId].accessToken;
     }
   },
   computed: {

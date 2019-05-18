@@ -59,22 +59,19 @@ const actions = {
           name: "error",
           query: { message: "缺少 OIDC 所必须的参数 uuid" }
         });
+      } else {
+        router.push({
+          name: "authorize",
+          query: {
+            ...state.params
+          }
+        });
       }
-      //http://test009.authing.cn/oauth/oidc/auth?client_id=5cc5b8b062b262592129b607&redirect_uri=https://authing.cn&
-      //scope=openid%20profile%20offline_access%20phone%20email&response_type=code&state=jazzb&nonce=22121&prompt=consent
-      router.push({
-        name: "authorize",
-        query: {
-          ...state.params,
-        }
-      });
     } catch (err) {
       console.log(err);
     }
-
-    // location.href = `${this.userAuthorizeURL}&context=OIDC&uuid=${uuid}`;
   },
-  handleSAMLProcess(_, route) {}
+  handleSAMLProcess(_, { router }) {}
 };
 
 const mutations = {
