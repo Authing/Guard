@@ -33,7 +33,6 @@ export default {
     //   sessionEndURL: `http://localhost:8080/logout.html`,
     };
   },
-
   methods: {
     isLogged: function(appId) {
         const appToken = this.getAppToken();
@@ -97,8 +96,8 @@ export default {
 
     removeOIDCSession() {
         const sessionEndFrame = window.frames['oidc-session-end'].window;
-        const action = sessionEndFrame.document.getElementById('op.logoutForm').getAttribute('action');
-        sessionEndFrame.document.getElementById('op.logoutForm').setAttribute('action', action.replace('http://', 'https://'))
+        // const action = sessionEndFrame.document.getElementById('op.logoutForm').getAttribute('action');
+        // sessionEndFrame.document.getElementById('op.logoutForm').setAttribute('action', action.replace('http://', 'https://'))
         const logoutBtn = sessionEndFrame.document.querySelector('button');
         logoutBtn.click();
     },
