@@ -9,7 +9,7 @@
       <P
         class="_authing_form-tip"
         v-show="!socialButtonsListLoading && socialButtonsList.length > 0 && !opts.hideUP"
-      >或者</P> -->
+      >或者</P>-->
 
       <form style="margin-bottom:16px" class="authing-form animate-box no-shadow">
         <div v-show="opts.forceLogin" class="authing_force_login_tips" style="text-align:center">
@@ -96,9 +96,13 @@ export default {
   },
   watch: {
     // 为了能够在注册后自动跳转到登录页面时自动填充用户名和密码
-    
+
     emailLoginVisible: function(newVal) {
-      if(newVal === true && !this.loginForm.email && !this.loginForm.password) {
+      if (
+        newVal === true &&
+        !this.loginForm.email &&
+        !this.loginForm.password
+      ) {
         this.loginForm.email = this.signUpEmail || "";
         this.loginForm.password = this.signUpPassword || "";
       }
@@ -138,14 +142,12 @@ export default {
     ]),
     ...mapActions("data", [
       "showGlobalMessage",
-      'removeAnimation',
-      'removeRedLine',
-      'addRedLine',
-      'addAnimation',
+      "removeAnimation",
+      "removeRedLine",
+      "addRedLine",
+      "addAnimation"
     ]),
-    ...mapActions("protocol", [
-      "handleProtocolProcess",
-    ]),
+    ...mapActions("protocol", ["handleProtocolProcess"]),
     handleLoginVerifyCodeLoaded() {
       this.changeLoading({ el: "loginVerifyCode", loading: false });
     },
@@ -228,7 +230,7 @@ export default {
           });
           that.recordLoginInfo(data);
           that.$authing.pub("login", data);
-          this.handleProtocolProcess({route: this.$route, router: this.$router})
+          this.handleProtocolProcess({ router: this.$router });
           that.changeLoading({ el: "form", loading: false });
         })
         .catch(err => {
@@ -279,7 +281,7 @@ export default {
                   });
                   that.$authing.pub("login", data);
                   // @TODO 进行协议后续流程
-                  that.handleProtocolProcess(data)
+                  that.handleProtocolProcess(data);
                   that.recordLoginInfo(data);
                 })
                 .catch(function(err) {
@@ -309,7 +311,7 @@ export default {
             if (err.message.data.url) {
               that.verifyCodeUrl = err.message.data.url;
             } else {
-              that.verifyCodeUrl = ''
+              that.verifyCodeUrl = "";
               that.changeVisibility({
                 el: "loginVerifyCode",
                 visibility: false

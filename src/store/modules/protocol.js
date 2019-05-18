@@ -71,7 +71,18 @@ const actions = {
       console.log(err);
     }
   },
-  handleSAMLProcess(_, { router }) {}
+  handleSAMLProcess({ state }, { router }) {
+    try {
+      router.push({
+        name: "authorize",
+        query: {
+          ...state.params
+        }
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
 };
 
 const mutations = {
