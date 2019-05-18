@@ -231,7 +231,13 @@ export default {
         query: { message: "请提供 app_id 或 client_id", code: "id404" }
       });
     }
-    this.saveProtocol({ protocol: this.$route.query.protocol });
+    // 将协议的 query 参数存入 vuex
+    this.saveProtocol({
+      protocol: this.$route.query.protocol,
+      params: {
+        ...this.$route.query
+      }
+    });
     if (!this.protocol) {
       this.$router.replace({
         name: "error",
@@ -268,6 +274,7 @@ export default {
         });
         return;
       }
+      this.saveAppInfo({ appInfo });
       this.appName = this.opts.title || appInfo.name;
       window.title = `${this.appName} - Authing`;
       document.title = `${this.appName} - Authing`;
@@ -385,13 +392,13 @@ export default {
       "goBack"
     ]),
     ...mapActions("loading", ["changeLoading"]),
-    ...mapActions("data", ["saveSocialButtonsList"]),
+    ...mapActions("data", ["saveSocialButtonsList", "saveAppInfo"]),
     ...mapActions("protocol", ["saveProtocol"]),
     getSecondLvDomain(hostname) {
       let exp = /(.*)\.authing\.cn/;
-      let res = exp.exec(hostname)
-      if(res) return res[1];
-      return null
+      let res = exp.exec(hostname);
+      if (res) return res[1];
+      return null;
     },
     async queryAppInfo() {
       let domain = this.getSecondLvDomain(hostname);
@@ -404,7 +411,7 @@ export default {
 
       // let domain = "asdf";
       // 优先通过二级域名查找此应用信息
-      if (domain && domain !== 'sso') {
+      if (domain && domain !== "sso") {
         // 根据不同的 protocol 查找不同类型的 app
         switch (this.protocol) {
           case "oidc":

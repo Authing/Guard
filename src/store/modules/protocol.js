@@ -1,61 +1,75 @@
 const state = {
   // 登录成功和错误提示
-  protocol: ""
+  protocol: "",
+  params: {}
 };
 const getters = {
-  protocol: state => state.protocol
+  protocol: state => state.protocol,
+  params: state => state.params
 };
 const actions = {
-  saveProtocol({ commit }, { protocol }) {
-    commit("setProtocol", { protocol });
+  saveProtocol({ commit }, { protocol, params }) {
+    commit("setProtocol", { protocol, params });
   },
-  handleProtocolProcess({ state }, {route, router}) {
+  handleProtocolProcess({ state }, { route, router }) {
     switch (state.protocol) {
       case "oauth":
-        this.dispatch("protocol/handleOAuthProcess", {route, router});
+        this.dispatch("protocol/handleOAuthProcess", { route, router });
         break;
       case "oidc":
-        this.dispatch("protocol/handleOIDCProcess", {route, router});
+        this.dispatch("protocol/handleOIDCProcess", { route, router });
         break;
       case "saml":
-        this.dispatch("protocol/handleSAMLProcess", {route, router});
+        this.dispatch("protocol/handleSAMLProcess", { route, router });
         break;
     }
   },
-  handleOAuthProcess(_, {route, router}) {
+  handleOAuthProcess({ state }, { router }) {
     try {
-      let appId = route.query.app_id || route.query.client_id;
-      let redirectURI = route.query.redirect_uri;
-      let responseType = route.query.response_type;
-      let scope = route.query.scope;
+      // let appId = state.params.app_id || state.params.client_id;
+      // let redirectURI = state.params.redirect_uri;
+      // let responseType = state.params.response_type;
+      // let scope = state.params.scope;
       let authorizationHeader = localStorage.getItem("_authing_token");
       router.push({
         name: "authorize",
         query: {
-          protocol: "oauth",
-          app_id: appId,
-          redirect_uri: redirectURI,
-          response_type: responseType,
-          scope,
+          ...state.params,
           authorization_header: authorizationHeader
         }
       });
-    } catch(err) {
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
   },
-  handleOIDCProcess(_, {route, router}) {
+  handleOIDCProcess({ state }, { router }) {
     try {
-      let uuid = route.query.uuid;
+      // let appId = state.params.app_id || state.params.client_id;
+      // let redirectURI = state.params.redirect_uri;
+      // let responseType = state.params.response_type;
+      // let scope = state.params.scope;
+      // // let authorizationHeader = localStorage.getItem("_authing_token");
+      // let nonce = state.params.nonce;
+      // let prompt = state.params.prompt;
+      // let _state = state.params.state;
+
+      let uuid = state.params.uuid;
       if (!uuid) {
-        route.replace({
+        router.replace({
           name: "error",
           query: { message: "缺少 OIDC 所必须的参数 uuid" }
         });
       }
-      router.push({ name: "authorize", query: { uuid, protocol: "oidc" } });
+      //http://test009.authing.cn/oauth/oidc/auth?client_id=5cc5b8b062b262592129b607&redirect_uri=https://authing.cn&
+      //scope=openid%20profile%20offline_access%20phone%20email&response_type=code&state=jazzb&nonce=22121&prompt=consent
+      router.push({
+        name: "authorize",
+        query: {
+          ...state.params,
+        }
+      });
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
 
     // location.href = `${this.userAuthorizeURL}&context=OIDC&uuid=${uuid}`;
@@ -64,8 +78,9 @@ const actions = {
 };
 
 const mutations = {
-  setProtocol(state, { protocol }) {
+  setProtocol(state, { protocol, params }) {
     state.protocol = protocol;
+    state.params = { ...params };
   }
 };
 

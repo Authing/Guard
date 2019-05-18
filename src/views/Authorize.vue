@@ -13,7 +13,7 @@
               <img
                 class="_authing_delta_circle"
                 :style="{marginTop: screenWidth >= 463 ? '60px' : ((580 - screenWidth + 15) * (170 / 580) + 170) / 4 + 'px'}"
-                :src="!pageLoading ? authInfo['image'] : ''"
+                :src="!pageLoading ? appInfo['image'] : ''"
               >
             </div>
 
@@ -25,26 +25,26 @@
               <div title="Authing" class="_authing_form-header-name">Authing</div>
             </div>-->
           </div>
-          <img v-show="false" alt="Vue logo" :src="authInfo.images">
+          <img v-show="false" alt="Vue logo" :src="appInfo.images">
           <div class="_authing_form_authorize_info">
             <div class="_div_authorize_block">
               <div class="_div_info_text">
                 <span>登录</span>
-                <a
-                  class="url"
-                  @click="() => { return false }"
-                >{{authInfo['name']}}</a>
+                <a class="url" @click="() => { return false }">{{appInfo['name']}}</a>
               </div>
               <ul>
-                <template v-if="scopes.scopeMeanings.length > 0 && $route.query.context === 'OIDC'">
-                  <div  class="permission-list">
-                  <li :key="scope" v-for="scope in scopes.scopeMeanings">获取你的{{scope}}</li>
+                <template v-if="scopes.scopeMeanings.length > 0 && protocol === 'oidc'">
+                  <div class="permission-list">
+                    <li :key="scope" v-for="scope in scopes.scopeMeanings">获取你的{{scope}}</li>
                   </div>
                 </template>
-                <template v-if="scopes.scopeMeanings.length === 0 && $route.query.context === 'OIDC'">
+                <template v-if="scopes.scopeMeanings.length === 0 && protocol === 'oidc'">
                   <li>获取 scope 失败，会话可能过期，请重新登录</li>
                 </template>
-                <template v-if="$route.query.context === 'SAMLIdP'">
+                <template v-if="protocol === 'saml'">
+                  <li>获取你的基础信息</li>
+                </template>
+                <template v-if="protocol === 'oauth'">
                   <li>获取你的基础信息</li>
                 </template>
               </ul>
@@ -64,150 +64,83 @@
 </template>
 
 <script>
-import GraphQLClient from "../graphql.js";
-import axios from 'axios';
+import axios from "axios";
+import { mapGetters } from "vuex";
 
 export default {
   name: "authorize",
   components: {},
-
+  computed: {
+    ...mapGetters("data", ["appInfo"]),
+    ...mapGetters("protocol", ["protocol", "params"])
+  },
   methods: {
-    // call server for AppInfo
-    queryAppInfoByAppID() {
-      this.pageLoading = true;
-      const appId = this.$route.query.app_id || this.$route.query.client_id;
-      const context = this.$route.query.context
-      if (!appId) {
-        location.href = '/login/error?message=请提供 app_id 或 client_id&code=id404';
-      }
-      let operationName;
-      let query
-      if(context === 'OIDC') {
-        operationName = 'QueryOIDCAppInfoByAppID';
-        query = 
-        `query {
-          ${operationName} (appId: "` + appId + `") {   
-              _id,
-              name,
-              image,
-              redirect_uris,
-              clientId,
-              description,
-          }
-        }`;
-      } else if (context === 'SAMLIdP') {
-        operationName = 'QuerySAMLIdentityProviderInfoByAppID'
-        query = 
-        `query {
-          ${operationName} (appId: "` + appId + `") {   
-              _id,
-              name,
-              image,
-              clientId,
-              description,
-          }
-        }`;
-      } else {
-        operationName = 'QueryAppInfoByAppID';
-        query = 
-        `query {
-          ${operationName} (appId: "` + appId + `") {   
-              _id,
-              name,
-              image,
-              redirectUris,
-              clientId,
-              description,
-          }
-        }`;
-      }
-      let self = this;
-      let GraphQLClient_getInfo = new GraphQLClient({
-        baseURL: this.$root.opts.host.oauth,
-      });
-      GraphQLClient_getInfo.request({ query })
-        .then(e => {
-          switch(context) {
-            case 'OIDC':
-              self.authInfo = e.QueryOIDCAppInfoByAppID
-              break;
-            case 'SAMLIdP':
-              self.authInfo = e.QuerySAMLIdentityProviderInfoByAppID
-              break;
-            default:
-              self.authInfo = e.QueryAppInfoByAppID
-          }
-          try {
-            self.pageError = (
-              "clientId"      in self.authInfo &&
-              "description"   in self.authInfo &&
-              "image"         in self.authInfo &&
-              "name"          in self.authInfo &&
-              "redirectUris"  in self.authInfo
-            );
-          } catch {
-            self.pageError = true;
-          }
-
-          self.pageLoading = false;
-        })
-        .catch(() => {
-          self.pageError = true;
-        });
-    },
-
     redirectURL() {
       // redirect to $HOST/authorize to get Authorization Code
-      const state = this.$route.query.state || "";
-      const appId = this.$route.query.app_id || this.$route.query.client_id || '';
-      const redirectURI = this.$route.query.redirect_uri || "";
-      const responseType = this.$route.query.response_type || "code";
-      const scope =
-        this.$route.query.scope || Math.ceil(Math.random() * Math.pow(10, 6));
+      // const state = this.$route.query.state || "";
+      // const appId =
+      //   this.$route.query.app_id || this.$route.query.client_id || "";
+      // const redirectURI = this.$route.query.redirect_uri || "";
+      // const responseType = this.$route.query.response_type || "code";
+      // const scope =
+      //   this.$route.query.scope || Math.ceil(Math.random() * Math.pow(10, 6));
       const host = this.$root.SSOHost;
-      const context = this.$route.query.context
-      const bindings = this.$route.query.bindings
-      const SAMLRequest = this.$route.query.SAMLRequest || ''
-      const signature = this.$route.query.Signature || ''
-      const sigAlg = this.$route.query.SigAlg || ''
+      // const protocol = this.$route.query.protocol;
+      // const bindings = this.$route.query.bindings;
+      // const SAMLRequest = this.$route.query.SAMLRequest || "";
+      // const signature = this.$route.query.Signature || "";
+      // const sigAlg = this.$route.query.SigAlg || "";
 
-      console.log(this.isOIDC)
-      if (this.isOIDC) {
+      if (this.protocol === "oidc") {
         location.href = this.scopes.redirectTo;
-      } else if(context === 'SAMLIdP') {
-        if(bindings === 'post') {
+      } else if (this.protocol === "saml") {
+        if (bindings === "post") {
           // 创建一个 form
           var form1 = document.createElement("form");
           form1.id = "saml-post";
           form1.name = "saml-post";
-      
+
           // 添加到 body 中
           document.body.appendChild(form1);
-      
+
           // 创建一个输入
           var input = document.createElement("input");
           // 设置相应参数
           input.type = "text";
           input.name = "SAMLRequest";
           input.value = SAMLRequest;
-      
+
           // 将该输入框插入到 form 中
           form1.appendChild(input);
-      
+
           // form 的提交方式
           form1.method = "POST";
           // form 提交路径
-          form1.action = `${host}/oauth/saml/idp/${appId}/SingleSignOnService?authorization_header=${localStorage.getItem('_authing_token')}`;
-      
+          form1.action = `${host}/oauth/saml/idp/${appId}/SingleSignOnService?authorization_header=${localStorage.getItem(
+            "_authing_token"
+          )}`;
+
           // 对该 form 执行提交
           form1.submit();
           // 删除该 form
           document.body.removeChild(form1);
         } else {
-          location.href = `${host}/oauth/saml/idp/${appId}/SingleSignOnService?authorization_header=${localStorage.getItem('_authing_token')}&SAMLRequest=${SAMLRequest}&Signature=${signature}&SigAlg=${sigAlg}`
+          location.href = `${host}/oauth/saml/idp/${
+            this.params.app_id
+          }/SingleSignOnService?authorization_header=${localStorage.getItem(
+            "_authing_token"
+          )}&SAMLRequest=${this.params.SAMLRequest}&Signature=${
+            this.params.signature
+          }&SigAlg=${this.params.sigAlg}`;
         }
-      }else {
-        location.href = `${host}/authorize?app_id=${appId}&state=${state}&response_type=${responseType}&redirect_uri=${redirectURI}&scope=${scope}&authorization_header=${localStorage.getItem(
+      } else {
+        location.href = `${host}/authorize?app_id=${this.params.app_id}&state=${
+          this.params.state
+        }&response_type=${this.params.response_type}&redirect_uri=${
+          this.params.redirect_uri
+        }&scope=${
+          this.params.scope
+        }&authorization_header=${localStorage.getItem(
           "_authing_token"
         )}&confirm_authorize=1`;
       }
@@ -215,17 +148,19 @@ export default {
 
     cancelAuthorize() {
       // redirect to
-      localStorage.setItem('appToken', '')
+      localStorage.setItem("appToken", "");
 
-      window.history.back()
+      window.history.back();
     },
 
-    async queryOIDCInfo(uuid) {
-      const oauthLoginUrl = `${window.location.origin}/oauth/oidc/interaction/${uuid}/login`;
+    async queryOIDCScopes(uuid) {
+      const url = `${
+        window.location.origin
+      }/oauth/oidc/interaction/${uuid}/login`;
       try {
-        const result = await axios.post(oauthLoginUrl, null, {
+        const result = await axios.post(url, null, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('_authing_token')}`,
+            Authorization: `Bearer ${localStorage.getItem("_authing_token")}`
           },
           withCredentials: true
         });
@@ -237,44 +172,29 @@ export default {
           }
         */
         this.scopes = result.data;
-      }catch(err) {
+      } catch (err) {
         // location.href = location.pathname + 'error?message=缺少 OIDC 所必须的参数 uuid';
-        console.log(err)
+        console.log(err);
       }
-    },
+    }
   },
 
   data() {
     return {
       screenWidth: document.body.scrollWidth,
-      authInfo: {
-        clientId: "59f86b4832eb28071bdd9214",
-        description: null,
-        image: "https://usercontents.authing.cn/client/logo@2.png",
-        name: "Authing SSO",
-        redirectUris: ["https://authing.cn/oauth/direct"],
-        _id: "5c7253efe21948de32723725"
-      },
       pageLoading: false,
       pageError: false,
 
-      isOIDC: false,
       scopes: {
         scopeMeanings: []
-      },
+      }
     };
   },
 
   mounted() {
-    const context = this.$route.query.context;
-    const uuid = this.$route.query.uuid;
-    if (context === 'OIDC' && uuid) {
-      this.isOIDC = true;
-      this.queryOIDCInfo(uuid);
-    } else if(context === 'SAMLIdP') {// eslint-disable-next-line no-empty
-      // @TODO querySAMLIdPInfo 查询 确权信息
-    } else {
-      this.queryAppInfoByAppID();
+    // 进入确权页面，查询所需权限列表
+    if (this.protocol === "oidc") {
+      this.queryOIDCScopes(this.params.uuid);
     }
     window.onresize = () => {
       return (() => {
@@ -282,15 +202,15 @@ export default {
         this.screenWidth = window.screenWidth;
       })();
     };
-  },
+  }
 };
 </script>
 
 <style>
-  .permission-list {
-    max-height: 170px;
-    overflow-y: scroll;
-    list-style-position: inside;
-    margin-left: -15px;
-  }
+.permission-list {
+  max-height: 170px;
+  overflow-y: scroll;
+  list-style-position: inside;
+  margin-left: -15px;
+}
 </style>

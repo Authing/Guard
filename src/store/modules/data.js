@@ -8,9 +8,11 @@ const state = {
 
   forgetPasswordEmail: "",
   forgetPasswordVerifyCode: "",
-  socialButtonsList: []
+  socialButtonsList: [],
+  appInfo: {}
 };
 const getters = {
+  appInfo: state => state.appInfo,
   globalMessage: state => state.globalMessage,
   globalMessageType: state => state.globalMessageType,
   socialButtonsList: state => state.socialButtonsList,
@@ -37,6 +39,9 @@ const actions = {
   },
   saveSocialButtonsList({ commit }, { socialButtonsList }) {
     commit("setSocialButtonsList", { socialButtonsList });
+  },
+  saveAppInfo({commit}, {appInfo}) {
+    commit("setAppInfo", {appInfo})
   },
   removeAnimation(_, className) {
     document.getElementById(className).classList.remove('animated');
@@ -75,6 +80,9 @@ const mutations = {
   },
   setSocialButtonsList(state, { socialButtonsList }) {
     state.socialButtonsList = [...socialButtonsList];
+  },
+  setAppInfo(state, { appInfo }) {
+    state.appInfo = {...appInfo};
   },
 };
 
