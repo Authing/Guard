@@ -19,7 +19,7 @@
           id="sign-up-email"
           v-model="signUpForm.email"
           @blur="checkEmail"
-          :placeholder="opts.placeholder.email"
+          :placeholder="opts.placeholder.email.replace('或用户名', '')"
           autocomplete="off"
           @keyup.enter="handleSignUp"
         >

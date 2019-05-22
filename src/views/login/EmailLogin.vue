@@ -154,24 +154,33 @@ export default {
     },
     handleLogin() {
       this.changeLoading({ el: "form", loading: true });
-      var that = this;
-      var info = {
+      let that = this;
+      let info = {
         email: this.loginForm.email,
         password: this.loginForm.password
       };
 
       if (!this.$root.emailExp.test(this.loginForm.email)) {
-        this.showGlobalMessage({
-          type: "error",
-          message: "请输入正确格式的邮箱"
-        });
-        this.addAnimation("login-username");
-        this.removeRedLine("login-password");
-        this.removeRedLine("verify-code");
-        this.changeLoading({ el: "form", loading: false });
-        this.$authing.pub("login-error", "请输入正确格式的邮箱");
-        this.$authing.pub("authenticated-error", "请输入正确格式的邮箱");
-        return false;
+        // this.showGlobalMessage({
+        //   type: "error",
+        //   message: "请输入正确格式的邮箱"
+        // });
+        info = {
+          username: this.loginForm.email,
+          password: this.loginForm.password
+        }        
+        // this.addAnimation("login-username");
+        // this.removeRedLine("login-password");
+        // this.removeRedLine("verify-code");
+        // this.changeLoading({ el: "form", loading: false });
+        // this.$authing.pub("login-error", "请输入正确格式的邮箱");
+        // this.$authing.pub("authenticated-error", "请输入正确格式的邮箱");
+        // return false;
+      } else {
+        info = {
+          email: this.loginForm.email,
+          password: this.loginForm.password
+        }
       }
 
       if (!this.loginForm.password) {
