@@ -149,9 +149,9 @@ export default {
             this.params.app_id
           }/SingleSignOnService?authorization_header=${localStorage.getItem(
             "_authing_token"
-          )}&SAMLRequest=${this.params.SAMLRequest}&Signature=${
-            this.params.signature
-          }&SigAlg=${this.params.sigAlg}`;
+          )}&SAMLRequest=${encodeURIComponent(this.params.SAMLRequest)}&Signature=${
+            encodeURIComponent(this.params.Signature)
+          }&SigAlg=${encodeURIComponent(this.params.SigAlg)}`;
         }
       } else {
         // oauth
