@@ -295,7 +295,7 @@ export default {
       return;
     }
 
-    this.checkHasLDAP(that.opts.clientId);
+    this.checkHasLDAP(that.clientId);
 
     try {
       auth = new Authing({
