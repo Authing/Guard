@@ -43,7 +43,7 @@ export default {
         },
 
         onError: function(err) {
-          that.$authing.pub("scanningError", err);
+          that.$authing.pub("scanning-error", err);
           this.$router.replace({
             name: "error",
             query: { message: "小程序扫码错误", code: "500" }
@@ -51,7 +51,7 @@ export default {
         },
 
         onIntervalStarting: function(interval) {
-          that.$authing.pub("scanningIntervalStarting", interval);
+          that.$authing.pub("scanning-interval-starting", interval);
         },
 
         interval: scanOpts.interval,

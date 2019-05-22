@@ -47,7 +47,7 @@ export default {
           type: "error",
           message: "请输入验证码"
         });
-        this.$authing.pub("resetPasswordError", "请输入验证码");
+        this.$authing.pub("reset-password-error", "请输入验证码");
         return false;
       }
       ``;
@@ -57,7 +57,7 @@ export default {
           verifyCode: that.verifyCode
         })
         .then(data => {
-          that.$authing.pub("resetPassword", data);
+          that.$authing.pub("reset-password", data);
           this.changeLoading({ el: "form", loading: false });
           this.showGlobalMessage({
             type: "success",
@@ -67,7 +67,7 @@ export default {
           this.gotoForgetPasswordNewPassword();
         })
         .catch(err => {
-          that.$authing.pub("resetPasswordError", err);
+          that.$authing.pub("reset-password-error", err);
           this.changeLoading({ el: "form", loading: false });
           that.addAnimation("forget-password-verify-code");
           this.showGlobalMessage({

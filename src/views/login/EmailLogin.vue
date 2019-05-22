@@ -154,23 +154,33 @@ export default {
     },
     handleLogin() {
       this.changeLoading({ el: "form", loading: true });
-      var that = this;
-      var info = {
+      let that = this;
+      let info = {
         email: this.loginForm.email,
         password: this.loginForm.password
       };
 
       if (!this.$root.emailExp.test(this.loginForm.email)) {
-        this.showGlobalMessage({
-          type: "error",
-          message: "请输入正确格式的邮箱"
-        });
-        this.addAnimation("login-username");
-        this.removeRedLine("login-password");
-        this.removeRedLine("verify-code");
-        this.changeLoading({ el: "form", loading: false });
-        this.$authing.pub("loginError", "请输入正确格式的邮箱");
-        return false;
+        // this.showGlobalMessage({
+        //   type: "error",
+        //   message: "请输入正确格式的邮箱"
+        // });
+        info = {
+          username: this.loginForm.email,
+          password: this.loginForm.password
+        }        
+        // this.addAnimation("login-username");
+        // this.removeRedLine("login-password");
+        // this.removeRedLine("verify-code");
+        // this.changeLoading({ el: "form", loading: false });
+        // this.$authing.pub("login-error", "请输入正确格式的邮箱");
+        // this.$authing.pub("authenticated-error", "请输入正确格式的邮箱");
+        // return false;
+      } else {
+        info = {
+          email: this.loginForm.email,
+          password: this.loginForm.password
+        }
       }
 
       if (!this.loginForm.password) {
@@ -182,7 +192,8 @@ export default {
         this.removeRedLine("verify-code");
         this.removeRedLine("login-username");
         this.changeLoading({ el: "form", loading: false });
-        this.$authing.pub("loginError", "请输入密码");
+        this.$authing.pub("login-error", "请输入密码");
+        this.$authing.pub("authenticated-error", "请输入密码");
         return false;
       }
 
@@ -211,13 +222,15 @@ export default {
           });
           that.recordLoginInfo(data);
           that.$authing.pub("login", data);
+          that.$authing.pub("authenticated", data); 
           this.handleProtocolProcess({ router: this.$router });
           that.changeLoading({ el: "form", loading: false });
         })
         .catch(err => {
           console.log(err)
           that.changeLoading({ el: "form", loading: false });
-          that.$authing.pub("loginError", err);
+          that.$authing.pub("login-error", err);
+          that.$authing.pub("authenticated-error", err);
           that.showGlobalMessage({
             type: "error",
             message: err.message.message
@@ -262,6 +275,7 @@ export default {
                     message: "验证通过，欢迎你：" + data.username || data.email
                   });
                   that.$authing.pub("login", data);
+                  that.$authing.pub("authenticated", data);
                   // @TODO 进行协议后续流程
                   that.handleProtocolProcess(data);
                   that.recordLoginInfo(data);
@@ -272,7 +286,8 @@ export default {
                     type: "error",
                     message: err.message.message
                   });
-                  that.$authing.pub("loginError", err);
+                  that.$authing.pub("login-error", err);
+                  that.$authing.pub("authenticated-error", err);
                 });
               return false;
             } else {

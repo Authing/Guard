@@ -136,6 +136,7 @@ export default {
           that.recordLoginInfo(data);
           this.changeLoading({ el: "form", loading: false });
           that.$authing.pub("login", data);
+          that.$authing.pub("authenticated", data);
         })
         .catch(err => {
           this.changeLoading({ el: "form", loading: false });
@@ -143,7 +144,8 @@ export default {
             type: "error",
             message: err.message.message
           });
-          that.$authing.pub("loginError", err);
+          that.$authing.pub("login-error", err);
+          that.$authing.pub("authenticated-error", err);
           if (
             err.message.code === 2006 ||
             err.message.code === 2016 ||

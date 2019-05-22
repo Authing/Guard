@@ -16,7 +16,7 @@ var AuthingGuard = function(appId, domain, opts) {
 
   var PLACEHOLDER_TEXT = {
       USERNAME: "请输入用户名",
-      EMAIL: "请输入邮箱",
+      EMAIL: "请输入邮箱或用户名",
       PASSWORD: "请输入密码",
       CONFIRM_PASSWORD: "请确认密码",
       VERIFY_CODE: "请输入验证码",
@@ -30,26 +30,29 @@ var AuthingGuard = function(appId, domain, opts) {
     $authing = this;
 
   $authing.eventsList = {
-    authenticated: [],
-    authenticatedOnError: [],
+    'authing-load': [],
+    'authing-unload': [],
 
-    oauthload: [],
-    oauthunload: [],
+    authenticated: [],
+    'authenticated-error': [],
+
+    'oauth-load': [],
+    'oauth-unload': [],
 
     login: [],
-    loginerror: [],
+    'login-error': [],
     register: [],
-    registererror: [],
+    'register-error': [],
 
-    emailsent: [],
-    resetpassword: [],
-    resetpassworderror: [],
+    'email-sent': [],
+    'reset-password': [],
+    'reset-password-error': [],
 
-    scanning: [],
-    scanningerror: [],
-    scanningintervalstarting: [],
+    'scanning': [],
+    'scanning-error': [],
+    'scanning-interval-starting': [],
 
-    formclosed: []
+    'form-closed': []
   };
 
   opts = opts || {};

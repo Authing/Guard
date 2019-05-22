@@ -80,7 +80,8 @@ export default {
           message: "请填写正确的手机号"
         });
         this.addAnimation("login-phone");
-        this.$authing.pub("loginError", "请填写正确的手机号");
+        this.$authing.pub("login-error", "请填写正确的手机号");
+        this.$authing.pub("authenticated-error", "请填写正确的手机号");
         return;
       }
       if (!this.phoneCode) {
@@ -89,7 +90,8 @@ export default {
           type: "error",
           message: "请输入验证码"
         });
-        this.$authing.pub("loginError", "请输入验证码");
+        this.$authing.pub("login-error", "请输入验证码");
+        this.$authing.pub("authenticated-error", "请输入验证码");
         return;
       }
       if (this.phoneCode.length !== 4) {
@@ -98,7 +100,8 @@ export default {
           message: "验证码为四位，请重新输入"
         });
         this.addAnimation("login-phoneCode");
-        this.$authing.pub("loginError", "验证码为四位，请重新输入");
+        this.$authing.pub("login-error", "验证码为四位，请重新输入");
+        this.$authing.pub("authenticated-error", "验证码为四位，请重新输入");
         return;
       }
       this.changeLoading({ el: "form", loading: true });
@@ -114,6 +117,7 @@ export default {
           });
           this.recordLoginInfo(userInfo);
           this.$authing.pub("login", userInfo);
+          this.$authing.pub("authenticated", userInfo);
         })
         .catch(err => {
           this.changeLoading({ el: "form", loading: false });
@@ -130,7 +134,8 @@ export default {
           message: "请填写正确的手机号"
         });
         this.addAnimation("login-phone");
-        this.$authing.pub("loginError", "请填写正确的手机号");
+        this.$authing.pub("login-error", "请填写正确的手机号");
+        this.$authing.pub("authenticated-error", "请填写正确的手机号");
         return;
       }
       this.changeLoading({ el: "form", loading: true });

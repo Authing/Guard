@@ -47,7 +47,7 @@ export default {
           verifyCode: that.forgetPasswordVerifyCode
         })
         .then(data => {
-          that.$authing.pub("resetPassword", data);
+          that.$authing.pub("reset-password", data);
           this.changeLoading({ el: "form", loading: false });
           this.showGlobalMessage({
             type: "success",
@@ -58,7 +58,7 @@ export default {
           that.gotoLogin();
         })
         .catch(err => {
-          that.$authing.pub("resetPasswordError", err);
+          that.$authing.pub("reset-password-error", err);
           this.changeLoading({ el: "form", loading: false });
           this.showGlobalMessage({
             type: "error",
