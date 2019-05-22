@@ -16,7 +16,7 @@ var AuthingGuard = function(appId, domain, opts) {
 
   var PLACEHOLDER_TEXT = {
       USERNAME: "请输入用户名",
-      EMAIL: "请输入邮箱",
+      EMAIL: "请输入邮箱或用户名",
       PASSWORD: "请输入密码",
       CONFIRM_PASSWORD: "请确认密码",
       VERIFY_CODE: "请输入验证码",
