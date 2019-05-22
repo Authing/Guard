@@ -110,7 +110,7 @@ export default {
         this.removeRedLine("sign-up-password");
         this.removeRedLine("sign-up-re-password");
         this.changeLoading({ el: "form", loading: false });
-        this.$authing.pub("registerError", "请输入用户名");
+        this.$authing.pub("register-error", "请输入用户名");
         return false;
       }
       if (!this.$root.emailExp.test(this.signUpForm.email)) {
@@ -123,7 +123,7 @@ export default {
         this.removeRedLine("sign-up-password");
         this.removeRedLine("sign-up-re-password");
         this.changeLoading({ el: "form", loading: false });
-        this.$authing.pub("registerError", "请输入正确格式的邮箱");
+        this.$authing.pub("register-error", "请输入正确格式的邮箱");
         return false;
       }
       if (!this.signUpForm.password) {
@@ -136,7 +136,7 @@ export default {
         this.removeRedLine("sign-up-email");
         this.removeRedLine("sign-up-re-password");
         this.changeLoading({ el: "form", loading: false });
-        this.$authing.pub("registerError", "请输入密码");
+        this.$authing.pub("register-error", "请输入密码");
         return false;
       }
       if (this.signUpForm.password !== this.signUpForm.rePassword) {
@@ -149,7 +149,7 @@ export default {
         this.removeRedLine("sign-up-email");
         this.removeRedLine("sign-up-password");
         this.changeLoading({ el: "form", loading: false });
-        this.$authing.pub("registerError", "两次密码不一致");
+        this.$authing.pub("register-error", "两次密码不一致");
         return false;
       }
       let validAuth = window.validAuth
@@ -189,7 +189,7 @@ export default {
             type: "error",
             message: err.message.message
           });
-          that.$authing.pub("registerError", err);
+          that.$authing.pub("register-error", err);
           if (err.message.code === 2026) {
             that.addAnimation("sign-up-email");
             that.removeRedLine("sign-up-re-password");

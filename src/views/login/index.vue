@@ -290,7 +290,7 @@ export default {
     } catch (erro) {
       console.log(erro);
       that.authingOnError = true;
-      that.$authing.pub("authingUnload", erro);
+      that.$authing.pub("authing-unload", erro);
       this.$router.replace({ name: "error", query: { message: erro } });
       return;
     }
@@ -310,7 +310,7 @@ export default {
 
       that.authingOnError = true;
       that.errMsg = "Error: " + err;
-      that.$authing.pub("authingUnload", err);
+      that.$authing.pub("authing-unload", err);
     }
 
     if (!auth) {
@@ -327,7 +327,7 @@ export default {
         //   .classList.remove("hide");
         window.validAuth = validAuth;
 
-        that.$authing.pub("authenticated", validAuth);
+        that.$authing.pub("authing-load", validAuth);
 
         /*
         if (localStorage.getItem("_authing_username")) {
@@ -346,7 +346,7 @@ export default {
         validAuth
           .readOAuthList()
           .then(data => {
-            that.$authing.pub("oauthLoad", data);
+            that.$authing.pub("oauth-load", data);
             that.changeLoading({ el: "socialButtonsList", loading: false });
             // 刨去 微信扫码登录 的方式
             var socialButtonsList = data.filter(function(item) {
@@ -369,7 +369,7 @@ export default {
           })
           .catch(err => {
             console.log(err);
-            that.$authing.pub("oauthUnload", err);
+            that.$authing.pub("oauth-unload", err);
             that.changeLoading({ el: "form", loading: true });
           });
 
@@ -385,7 +385,7 @@ export default {
           query: { message: "app_id 或 client_id 错误", code: "id404" }
         });
         that.authingOnError = true;
-        that.$authing.pub("authenticatedOnError", err);
+        that.$authing.pub("authing-unload", err);
       });
   },
 
@@ -552,7 +552,7 @@ export default {
       }
       var that = this;
       this.closeForm = true;
-      this.$authing.pub("formClosed");
+      this.$authing.pub("form-closed");
       setTimeout(function() {
         that.removeDom = true;
       }, 800);

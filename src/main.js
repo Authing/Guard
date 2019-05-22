@@ -30,26 +30,29 @@ var AuthingGuard = function(appId, domain, opts) {
     $authing = this;
 
   $authing.eventsList = {
-    authenticated: [],
-    authenticatedOnError: [],
+    'authing-load': [],
+    'authing-unload': [],
 
-    oauthload: [],
-    oauthunload: [],
+    authenticated: [],
+    'authenticated-error': [],
+
+    'oauth-load': [],
+    'oauth-unload': [],
 
     login: [],
-    loginerror: [],
+    'login-error': [],
     register: [],
-    registererror: [],
+    'register-error': [],
 
-    emailsent: [],
-    resetpassword: [],
-    resetpassworderror: [],
+    'email-sent': [],
+    'reset-password': [],
+    'reset-password-error': [],
 
-    scanning: [],
-    scanningerror: [],
-    scanningintervalstarting: [],
+    'scanning': [],
+    'scanning-error': [],
+    'scanning-interval-starting': [],
 
-    formclosed: []
+    'form-closed': []
   };
 
   opts = opts || {};

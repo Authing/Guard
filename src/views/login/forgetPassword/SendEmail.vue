@@ -49,7 +49,7 @@ export default {
         });
         this.addAnimation("forget-password-email");
         this.changeLoading({ el: "form", loading: false });
-        this.$authing.pub("emailSentError", "请输入正确格式的邮箱");
+        this.$authing.pub("email-sent-error", "请输入正确格式的邮箱");
         return false;
       }
       validAuth
@@ -57,7 +57,7 @@ export default {
           email: this.email
         })
         .then(data => {
-          that.$authing.pub("emailSent", data);
+          that.$authing.pub("email-sent", data);
           this.changeLoading({ el: "form", loading: false });
           this.showGlobalMessage({
             type: "success",
@@ -67,7 +67,7 @@ export default {
           that.gotoForgetPasswordVerifyCode();
         })
         .catch(err => {
-          that.$authing.pub("emailSentError", err);
+          that.$authing.pub("email-sent-error", err);
           that.changeLoading({ el: "form", loading: false });
           this.showGlobalMessage({
             type: "error",
