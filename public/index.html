@@ -35,27 +35,11 @@
         redirect: false,
       },
       host: {
-        // user: 'http://localhost:5555/graphql', // http://localhost:5555/graphql
-        // oauth: 'http://localhost:5556/graphql',
-        user: 'https://users.authing.cn/graphql',
-        oauth: 'https://oauth.authing.cn/graphql'
+        user: 'http://localhost:5555/graphql',
+        oauth: 'http://localhost:5556/graphql',
+        // user: 'https://users.authing.cn/graphql',
+        // oauth: 'https://oauth.authing.cn/graphql'
       }
     });
-
-    // guard.on('authenticated', async (authing) => {
-    //   if (guard.isLogged()) {
-    //     // 已登录，直接跳至授权页
-    //     if(context === 'SAMLIdP') {
-    //       // 如果外界在和 Authing SAML IdP 通信，而 IdP 需要认证用户
-    //       let SAMLRequest = getQueryString('SAMLRequest')
-    //       guard.SAMLIdPLogin(SAMLRequest)
-    //     } else if (context === 'OIDC') {
-    //       guard.oidcLogin(uuid);
-    //     } else {
-    //       guard.sysAuthorize();
-    //     }
-    //   }
-    // });
-
   </script>
 </html>

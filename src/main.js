@@ -128,8 +128,6 @@ var AuthingGuard = function(appId, domain, opts) {
   $authing.opts.timestamp = Math.round(new Date() / 1000);
   $authing.opts.nonce = Math.ceil(Math.random() * Math.pow(10, 6));
 
-  // this.checkDomain();
-
   let emailExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/;
 
   var target =
