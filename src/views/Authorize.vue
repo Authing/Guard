@@ -135,7 +135,7 @@ export default {
           form1.method = "POST";
           // form 提交路径
           form1.action = `${host}/oauth/saml/idp/${
-            this.params.app_id
+            this.appInfo._id
           }/SingleSignOnService?authorization_header=${localStorage.getItem(
             "_authing_token"
           )}`;
@@ -146,7 +146,7 @@ export default {
           document.body.removeChild(form1);
         } else {
           location.href = `${host}/oauth/saml/idp/${
-            this.params.app_id
+            this.appInfo._id
           }/SingleSignOnService?authorization_header=${localStorage.getItem(
             "_authing_token"
           )}&SAMLRequest=${encodeURIComponent(this.params.SAMLRequest)}&Signature=${
@@ -155,12 +155,13 @@ export default {
         }
       } else {
         // oauth
-        location.href = `${host}/authorize?app_id=${this.params.app_id}&state=${
-          this.params.state
-        }&response_type=${this.params.response_type}&redirect_uri=${
-          this.params.redirect_uri
+        // 因为只输入域名不输入任何参数，默认是 oauth，所以给这些字段设置一些默认值
+        location.href = `${host}/authorize?app_id=${this.appInfo._id}&state=${
+          this.params.state || Math.random().toString().slice(2)
+        }&response_type=${this.params.response_type || 'code'}&redirect_uri=${
+          this.params.redirect_uri || ''
         }&scope=${
-          this.params.scope
+          this.params.scope || 'profile'
         }&authorization_header=${localStorage.getItem(
           "_authing_token"
         )}&confirm_authorize=1`;

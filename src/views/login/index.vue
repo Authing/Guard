@@ -224,29 +224,26 @@ export default {
   created() {
     this.$authing = this.$root.$data.$authing;
     this.opts = this.$root.$data.$authing.opts;
-    
-    // 这里做场景判断，是哪种登录协议，从而执行不同后续逻辑
-    if (!(this.$route.query.app_id || this.$route.query.client_id)) {
-      this.$router.replace({
-        name: "error",
-        query: { message: "请提供 app_id 或 client_id", code: "id404" }
-      });
-    }
+
     // 将协议的 query 参数存入 vuex
+    console.log("index this.$route.query");
+    console.log(this.$route.query);
     this.saveProtocol({
-      protocol: this.$route.query.protocol,
+      protocol: this.$route.query.protocol || "oauth",
       params: {
         ...this.$route.query
       }
     });
+
+    /* 先注释，没有 protocol 参数就默认为 oauth，上面已经处理
     if (!this.protocol) {
       this.$router.replace({
         name: "error",
         query: { message: "缺少协议参数 protocol", code: "id400" }
       });
+
     }
-    this.$authing = this.$root.$data.$authing;
-    this.opts = this.$authing.opts;
+    */
 
     document.onkeydown = event => {
       var e = event || window.event || arguments.callee.caller.arguments[0];
@@ -257,10 +254,10 @@ export default {
   },
   async mounted() {
     // 判断是否已经登录过了，已经登录就直接跳转确权页面，不再发送后面那些 http 请求
-    if (this.isLogged()) {
+    if (await this.isLogged()) {
       this.$router.push({ name: "authorize", query: { ...this.$route.query } });
-      this.saveLoginStatus({isLogged: true})
-      return
+      this.saveLoginStatus({ isLogged: true });
+      return;
     }
     var that = this;
     var auth = null;
@@ -272,21 +269,25 @@ export default {
     }
 
     try {
-      // 获取应用的名称，图标等信息
-      const appInfo = await this.queryAppInfo();
-      if (!appInfo) {
-        this.$router.replace({
-          name: "error",
-          query: { message: "应用不存在" }
-        });
-        return;
+      // 如果在判断是否已经 loggedIn 的时候没有查询过 appInfo，这里就查询
+      if (!this.appInfo) {
+        const appInfo = await this.queryAppInfo();
+        if (!appInfo) {
+          this.$router.replace({
+            name: "error",
+            query: { message: "应用不存在" }
+          });
+          return;
+        }
+        this.saveAppInfo({ appInfo });
       }
-      this.saveAppInfo({ appInfo });
-      this.appName = this.opts.title || appInfo.name;
+      // 获取应用的名称，图标等信息
+
+      this.appName = this.opts.title || this.appInfo.name;
       window.title = `${this.appName} - Authing`;
       document.title = `${this.appName} - Authing`;
-      this.appLogo = this.opts.logo || appInfo.image;
-      this.clientId = appInfo.clientId;
+      this.appLogo = this.opts.logo || this.appInfo.image;
+      this.clientId = this.appInfo.clientId;
     } catch (erro) {
       console.log(erro);
       that.authingOnError = true;
@@ -399,7 +400,11 @@ export default {
       "goBack"
     ]),
     ...mapActions("loading", ["changeLoading"]),
-    ...mapActions("data", ["saveSocialButtonsList", "saveAppInfo", "saveLoginStatus"]),
+    ...mapActions("data", [
+      "saveSocialButtonsList",
+      "saveAppInfo",
+      "saveLoginStatus"
+    ]),
     ...mapActions("protocol", ["saveProtocol"]),
     getSecondLvDomain(hostname) {
       let exp = /(.*)\.authing\.cn/;
@@ -407,20 +412,21 @@ export default {
       if (res) return res[1];
       return null;
     },
-    async queryAppInfo() {
+    async queryAppInfo(protocol) {
+      protocol = protocol || this.protocol;
+      let hostname = location.hostname;
       let domain = this.getSecondLvDomain(hostname);
       let appId = this.$route.query.app_id || this.$route.query.client_id;
       let operationName;
       let GraphQLClient_getAppInfo = new GraphQLClient({
         baseURL: this.opts.host.oauth
       });
-      let hostname = location.hostname;
 
       // let domain = "asdf";
       // 优先通过二级域名查找此应用信息
       if (domain && domain !== "sso") {
         // 根据不同的 protocol 查找不同类型的 app
-        switch (this.protocol) {
+        switch (protocol) {
           case "oidc":
             operationName = "QueryOIDCAppInfoByDomain";
             break;
@@ -443,9 +449,10 @@ export default {
             }
           }`;
         let appInfo = await GraphQLClient_getAppInfo.request({ query });
+        console.log("queryAppInfo");
         console.log(appInfo);
         // 返回对应的 app 信息
-        switch (this.protocol) {
+        switch (protocol) {
           case "oidc":
             return appInfo["QueryOIDCAppInfoByDomain"];
           case "oauth":
@@ -455,7 +462,7 @@ export default {
         }
       } else if (appId) {
         // 如果没有二级域名，就通过 appId 查找
-        switch (this.protocol) {
+        switch (protocol) {
           case "oidc":
             operationName = "QueryOIDCAppInfoByAppID";
             break;
@@ -476,7 +483,7 @@ export default {
         }`;
         let appInfo = await GraphQLClient_getAppInfo.request({ query });
         console.log(appInfo);
-        switch (this.protocol) {
+        switch (protocol) {
           case "oidc":
             return appInfo["QueryOIDCAppInfoByAppID"];
           case "oauth":
@@ -484,6 +491,11 @@ export default {
           case "saml":
             return appInfo["QuerySAMLIdentityProviderInfoByAppID"];
         }
+      } else {
+        this.$router.replace({
+          name: "error",
+          query: { message: "缺少 app_id 或 client_id", code: "id404" }
+        });
       }
     },
     async checkHasLDAP(clientId) {
@@ -525,27 +537,6 @@ export default {
         this.unLoading();
       }
     },
-
-    recordLoginInfo: function(userInfo) {
-      let appToken = localStorage.getItem("appToken");
-
-      if (appToken) {
-        try {
-          appToken = JSON.parse(appToken);
-        } catch (error) {
-          appToken = {};
-        }
-      } else {
-        appToken = {};
-      }
-
-      appToken[appId] = {
-        accessToken: userInfo.token,
-        userInfo: userInfo
-      };
-
-      localStorage.setItem("appToken", JSON.stringify(appToken));
-    },
     handleClose: function handleClose() {
       if (this.opts.hideClose) {
         return false;
@@ -557,7 +548,20 @@ export default {
         that.removeDom = true;
       }, 800);
     },
-    isLogged() {
+    async isLogged() {
+      // 如果用户没有提供 app_id 信息，比如直接输入网址什么参数也不填，此时就需要通过域名查询一下 app 信息，默认当做 oauth 应用
+      if (!(this.$route.app_id || this.$route.client_id || this.opts.appId)) {
+        const appInfo = await this.queryAppInfo("oauth");
+        if (!appInfo) {
+          this.$router.replace({
+            name: "error",
+            query: { message: "应用不存在" }
+          });
+          return;
+        }
+        this.saveAppInfo({ appInfo });
+        this.opts.appId = appInfo._id;
+      }
       let appToken = localStorage.getItem("appToken");
 
       if (appToken) {
@@ -583,7 +587,7 @@ export default {
       LDAPLoginVisible: "LDAPLogin",
       pageStack: "pageStack"
     }),
-    ...mapGetters("data", ["globalMessage", "globalMessageType"]),
+    ...mapGetters("data", ["globalMessage", "globalMessageType", "appInfo"]),
     ...mapGetters("loading", {
       socialButtonsListLoading: "socialButtonsList",
       formLoading: "form",

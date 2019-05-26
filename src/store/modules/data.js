@@ -32,9 +32,9 @@ const actions = {
   saveLoginStatus({commit}, {isLogged}) {
     commit('setLoginStatus', {isLogged})
   },
-  recordLoginInfo({commit}, userInfo) {
+  recordLoginInfo({state, commit}, userInfo) {
     let appToken = localStorage.getItem("appToken");
-
+    let appId = state.appInfo._id
     if (appToken) {
       try {
         appToken = JSON.parse(appToken);

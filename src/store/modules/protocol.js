@@ -1,7 +1,12 @@
 const state = {
   // 登录成功和错误提示
   protocol: "",
-  params: {}
+  params: {
+    response_type: 'code',
+    redirect_uri: '',
+    state: Math.random().toString().slice(2),
+    scope: ''
+  }
 };
 const getters = {
   protocol: state => state.protocol,
