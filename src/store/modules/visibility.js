@@ -127,6 +127,7 @@ const mutations = {
   //   state.globalSuccess = false;
   // },
   turnOnPage(state, { page }) {
+    // 切换页面时删除 GlobalMessage
     this.dispatch("data/showGlobalMessage", { type: "", message: "" });
     // page 是 pageVisibilities 中的一个字符串
     state.pageStack.push(

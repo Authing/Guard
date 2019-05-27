@@ -36,10 +36,31 @@ export default {
   methods: {
     ...mapActions("loading", ["changeLoading"]),
     ...mapActions("visibility", ["gotoLogin"]),
-    ...mapActions("data", ["showGlobalMessage", "saveSignUpInfo"]),
+    ...mapActions("data", ["showGlobalMessage", "saveSignUpInfo", "addAnimation"]),
     handleSubmitForgetPasswordNewPassword() {
       var that = this;
       this.changeLoading({ el: "form", loading: true });
+      // 密码非空检验
+      if (!this.password) {
+        this.showGlobalMessage({
+          type: "error",
+          message: "请输入密码"
+        });
+        this.addAnimation("forget-password-new-password");
+        this.changeLoading({ el: "form", loading: false });
+        this.$authing.pub("reset-password-error", "请输入密码");
+        return false;
+      }
+      if (this.password.length < 6) {
+        this.showGlobalMessage({
+          type: "error",
+          message: "密码长度不能小于 6 位"
+        });
+        this.addAnimation("forget-password-new-password");
+        this.changeLoading({ el: "form", loading: false });
+        this.$authing.pub("reset-password-error", "密码长度不能小于 6 位");
+        return false;
+      }
       validAuth
         .changePassword({
           email: that.forgetPasswordEmail,
