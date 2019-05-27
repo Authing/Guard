@@ -15,7 +15,7 @@ export default new Router({
   routes: [
     {
       path: "*",
-      redirect: "/error"
+      redirect: "/login/error"
     },    
     {
       path: '/',
@@ -38,7 +38,7 @@ export default new Router({
       component: Logout,
     },    
     {
-      path: '/error',
+      path: '/login/error',
       name: 'error',
       component: ErrorPage,
     }
