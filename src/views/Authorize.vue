@@ -85,7 +85,8 @@ export default {
     this.opts = this.$root.$data.$authing.opts;
   },
   mounted() {
-    if (this.isLogged) {
+    // 如果已经登录，准备直接跳转走
+    if (this.isLogged && !(this.protocol === 'oidc' && this.params.consent !== 'none')) {
       this.showPage = false;
       this.redirectURL();
       return;

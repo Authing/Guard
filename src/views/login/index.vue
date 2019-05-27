@@ -253,6 +253,17 @@ export default {
     };
   },
   async mounted() {
+    // 上来先查一下 appInfo
+    const appInfo = await this.queryAppInfo();
+    if (!appInfo) {
+      this.$router.replace({
+        name: "error",
+        query: { message: "应用不存在" }
+      });
+      return;
+    }
+    this.saveAppInfo({ appInfo });
+    this.opts.appId = appInfo._id;
     // 判断是否已经登录过了，已经登录就直接跳转确权页面，不再发送后面那些 http 请求
     if (await this.isLogged()) {
       this.$router.push({ name: "authorize", query: { ...this.$route.query } });
@@ -269,21 +280,7 @@ export default {
     }
 
     try {
-      // 如果在判断是否已经 loggedIn 的时候没有查询过 appInfo，这里就查询
-      if (!this.appInfo.clientId) {
-        console.log("loggedIn 没查过 appInfo");
-        const appInfo = await this.queryAppInfo();
-        if (!appInfo) {
-          this.$router.replace({
-            name: "error",
-            query: { message: "应用不存在" }
-          });
-          return;
-        }
-        this.saveAppInfo({ appInfo });
-      }
       // 获取应用的名称，图标等信息
-
       this.appName = this.opts.title || this.appInfo.name;
       window.title = `${this.appName} - Authing`;
       document.title = `${this.appName} - Authing`;
@@ -414,7 +411,7 @@ export default {
       return null;
     },
     async queryAppInfo(protocol) {
-      protocol = protocol || this.protocol;
+      protocol = protocol || this.protocol || 'oauth';
       let hostname = location.hostname;
       let domain = this.getSecondLvDomain(hostname);
       let appId = this.$route.query.app_id || this.$route.query.client_id;
@@ -550,36 +547,6 @@ export default {
       }, 800);
     },
     async isLogged() {
-      // 如果用户没有提供 app_id 信息，比如直接输入网址什么参数也不填，此时就需要通过域名查询一下 app 信息，默认当做 oauth 应用
-      if (
-        !(
-          this.$route.query.app_id ||
-          this.$route.query.client_id ||
-          this.opts.appId
-        )
-      ) {
-        console.log("isLogged() 用户没提供 appId，进行查询...");
-        const appInfo = await this.queryAppInfo("oauth");
-        if (!appInfo) {
-          this.$router.replace({
-            name: "error",
-            query: { message: "应用不存在" }
-          });
-          return;
-        }
-        this.saveAppInfo({ appInfo });
-        this.opts.appId = appInfo._id;
-      } else {
-        // 如果提供了，就把它存下来，后面 Authorize 页面要从 appInfo 中读 appId
-        this.saveAppInfo({
-          appInfo: {
-            _id:
-              this.$route.query.app_id ||
-              this.$route.query.client_id ||
-              this.opts.appId
-          }
-        });
-      }
       let appToken = localStorage.getItem("appToken");
 
       if (appToken) {
