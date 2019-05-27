@@ -44,10 +44,12 @@ export default {
 
         onError: function(err) {
           that.$authing.pub("scanning-error", err);
-          this.$router.replace({
-            name: "error",
+          /*
+          that.$router.replace({
+            name: "error",s
             query: { message: "小程序扫码错误", code: "500" }
           });
+          */
         },
 
         onIntervalStarting: function(interval) {
