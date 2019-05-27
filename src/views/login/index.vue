@@ -561,6 +561,13 @@ export default {
         }
         this.saveAppInfo({ appInfo });
         this.opts.appId = appInfo._id;
+      } else {
+        // 如果提供了，就把它存下来，后面 Authorize 页面要从 appInfo 中读 appId
+        this.saveAppInfo({
+          appInfo: {
+            _id: this.$route.app_id || this.$route.client_id || this.opts.appId
+          }
+        });
       }
       let appToken = localStorage.getItem("appToken");
 

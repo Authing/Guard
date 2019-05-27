@@ -156,7 +156,7 @@ export default {
       } else {
         // oauth
         // 因为只输入域名不输入任何参数，默认是 oauth，所以给这些字段设置一些默认值
-        location.href = `${host}/authorize?app_id=${this.appInfo._id}&state=${
+        location.href = `${host}/authorize?app_id=${this.appInfo._id || this.$route.query.app_id || this.$route.query.client_id}&state=${
           this.params.state || Math.random().toString().slice(2)
         }&response_type=${this.params.response_type || 'code'}&redirect_uri=${
           this.params.redirect_uri || ''
