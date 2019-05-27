@@ -637,7 +637,7 @@
 
 
   ._authing_form-footer .btn:hover, ._authing_form-footer .btn:focus, ._authing_form-footer .btn:active {
-    background: #0184bf !important;
+    background: #0184bf;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     outline: 0;
