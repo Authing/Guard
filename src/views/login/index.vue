@@ -270,7 +270,8 @@ export default {
 
     try {
       // 如果在判断是否已经 loggedIn 的时候没有查询过 appInfo，这里就查询
-      if (!this.appInfo) {
+      if (!this.appInfo.clientId) {
+        console.log("loggedIn 没查过 appInfo");
         const appInfo = await this.queryAppInfo();
         if (!appInfo) {
           this.$router.replace({
@@ -550,7 +551,14 @@ export default {
     },
     async isLogged() {
       // 如果用户没有提供 app_id 信息，比如直接输入网址什么参数也不填，此时就需要通过域名查询一下 app 信息，默认当做 oauth 应用
-      if (!(this.$route.app_id || this.$route.client_id || this.opts.appId)) {
+      if (
+        !(
+          this.$route.query.app_id ||
+          this.$route.query.client_id ||
+          this.opts.appId
+        )
+      ) {
+        console.log("isLogged() 用户没提供 appId，进行查询...");
         const appInfo = await this.queryAppInfo("oauth");
         if (!appInfo) {
           this.$router.replace({
@@ -565,7 +573,10 @@ export default {
         // 如果提供了，就把它存下来，后面 Authorize 页面要从 appInfo 中读 appId
         this.saveAppInfo({
           appInfo: {
-            _id: this.$route.app_id || this.$route.client_id || this.opts.appId
+            _id:
+              this.$route.query.app_id ||
+              this.$route.query.client_id ||
+              this.opts.appId
           }
         });
       }
