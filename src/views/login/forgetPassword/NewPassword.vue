@@ -75,7 +75,6 @@ export default {
             message: "修改密码成功"
           });
           that.saveSignUpInfo({email: that.forgetPasswordEmail, password: this.password})
-
           that.gotoLogin();
         })
         .catch(err => {
@@ -83,7 +82,7 @@ export default {
           this.changeLoading({ el: "form", loading: false });
           this.showGlobalMessage({
             type: "error",
-            message: err.message.message
+            message: err.message.message || err.message
           });
         });
     }

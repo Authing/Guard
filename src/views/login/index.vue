@@ -166,9 +166,9 @@
               'no-height': pageVisible.wxQRCodeVisible
             }"
             >
-              <div class="authing-loading-circle" v-show="loading"></div>
               
             </div>-->
+            <div class="authing-loading-circle" v-show="formLoading"></div>
 
             <div class="_authing_form-footer-non-up" v-show="opts.hideUP"></div>
           </div>
