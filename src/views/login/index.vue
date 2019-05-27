@@ -131,6 +131,7 @@
 
             <div
               v-if="hasLDAP && (emailLoginVisible || LDAPLoginVisible)"
+              class="ldap-radios"
               style="font-size: 13px;color:#777;padding: 0 11px;margin-top:11px;padding-top:6px"
             >
               <label>

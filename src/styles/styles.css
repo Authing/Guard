@@ -407,8 +407,8 @@
   }
 
   .authing-header-tabs-container {
-    margin: 0px 0px 20px;
-    height: 40px;
+    /* margin: 0px 0px 20px; */
+    /* height: 40px; */
   }
 
   .authing-header-tabs {
@@ -543,7 +543,7 @@
     pointer-events: none;
   }
 
-  .authing-loading-wrapper .form-body, .authing-loading-wrapper .authing-oauth-form, .authing-loading-wrapper .authing-header-tabs-container {
+  .authing-loading-wrapper .form-body, .authing-loading-wrapper .authing-oauth-form, .authing-loading-wrapper .authing-header-tabs-container, .authing-loading-wrapper .ldap-radios {
     opacity: 0.3;
     pointer-events: none;
   }
