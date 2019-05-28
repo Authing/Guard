@@ -72,6 +72,9 @@ export default {
       'addAnimation',
       'recordLoginInfo'
     ]),
+    ...mapActions("protocol", [
+      'handleProtocolProcess'
+    ]),
     ...mapActions("loading", ["changeLoading"]),
     handleLoginByPhoneCode() {
       if (!/^1[3-8]\d{9}$/.test(this.phone)) {
@@ -109,8 +112,6 @@ export default {
       validAuth
         .loginByPhoneCode({ phone: this.phone, phoneCode: this.phoneCode })
         .then(userInfo => {
-          this.changeLoading({ el: "form", loading: false });
-
           this.showGlobalMessage({
             type: "success",
             message: "验证通过，欢迎你：" + userInfo.username || userInfo.phone
@@ -118,6 +119,8 @@ export default {
           this.recordLoginInfo(userInfo);
           this.$authing.pub("login", userInfo);
           this.$authing.pub("authenticated", userInfo);
+          this.handleProtocolProcess({ router: this.$router });
+          this.changeLoading({ el: "form", loading: false });
         })
         .catch(err => {
           this.changeLoading({ el: "form", loading: false });
