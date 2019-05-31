@@ -21,7 +21,7 @@
                   <span>错误信息</span>
                 </div>
                 <ul>
-                  <li>{{errorMessage}}</li>
+                  <li v-for="item in errorMessage" :key="item">{{item}}</li>
                 </ul>
               </div>
 
@@ -45,7 +45,7 @@
 export default {
   data() {
     return {
-      errorMessage: "抱歉, 似乎出错了"
+      errorMessage: ["抱歉, 似乎出错了"]
     };
   },
 

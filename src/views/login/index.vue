@@ -259,9 +259,42 @@ export default {
     if (!appInfo) {
       this.$router.replace({
         name: "error",
-        query: { message: "应用不存在" }
+        query: {
+          message: [
+            "应用不存在",
+            "请确认传递了正确的 protocol query 参数，不传默认该地址为 OAuth 应用"
+          ]
+        }
       });
       return;
+    }
+    switch (this.protocol) {
+      case "oidc":
+        if (!this.params.uuid) {
+          this.$router.replace({
+            name: "error",
+            query: {
+              message: [
+                "缺少 OIDC 所必须的参数 uuid",
+                "OIDC 应用不能直接输入网址进行登录，需要带参数访问后端 URL，详情请看文档"
+              ]
+            }
+          });
+        }
+        return;
+      case "saml":
+        if (!this.params.SAMLRequest) {
+          this.$router.replace({
+            name: "error",
+            query: {
+              message: [
+                "缺少 SAML 所必须的参数 SAMLRequest",
+                "SAML 应用不能直接输入网址进行登录，需要带参数访问后端 URL，详情请看文档"
+              ]
+            }
+          });
+          return
+        }
     }
     this.saveAppInfo({ appInfo });
     this.opts.appId = appInfo._id;
@@ -412,7 +445,7 @@ export default {
       return null;
     },
     async queryAppInfo(protocol) {
-      protocol = protocol || this.protocol || 'oauth';
+      protocol = protocol || this.protocol || "oauth";
       let hostname = location.hostname;
       let domain = this.getSecondLvDomain(hostname);
       let appId = this.$route.query.app_id || this.$route.query.client_id;
@@ -491,9 +524,10 @@ export default {
             return appInfo["QuerySAMLIdentityProviderInfoByAppID"];
         }
       } else {
+        // 使用 sso.authing.cn 又没有提供 appId clientId 的情况
         this.$router.replace({
           name: "error",
-          query: { message: "缺少 app_id 或 client_id", code: "id404" }
+          query: { message: ["缺少 app_id 或 client_id"], code: "id404" }
         });
       }
     },
@@ -579,7 +613,7 @@ export default {
       formLoading: "form",
       pageLoading: "page"
     }),
-    ...mapGetters("protocol", ["protocol"])
+    ...mapGetters("protocol", ["protocol", "params"])
   },
   watch: {
     rememberMe: function(newVal) {
