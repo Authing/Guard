@@ -30,8 +30,8 @@
     const domain = "sso.authing.cn/login?app_id=YOUR_CLIENT_ID_";
     const guard = new AuthingGuard(appId, domain, {
       hideClose: true,
-      SSOHost: location.origin,// 开发模式下，会代理转发到 localhost:5556/authorize
-      // SSOHost: 'https://sso.authing.cn'
+      // SSOHost: location.origin,// 开发模式下，会代理转发到 localhost:5556/authorize
+      SSOHost: 'https://sso.authing.cn',
       qrcodeScanning: {
         redirect: false,
       },

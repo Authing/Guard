@@ -106,6 +106,7 @@ export default {
       'addAnimation',
       'recordLoginInfo'
     ]),
+    ...mapActions("protocol", ["handleProtocolProcess"]),
     handleLoginVerifyCodeLoaded() {
       this.changeLoading({ el: "loginVerifyCode", loading: false });
     },
@@ -135,9 +136,10 @@ export default {
             message: "验证通过，欢迎你：" + data.username || data.email
           });
           that.recordLoginInfo(data);
-          this.changeLoading({ el: "form", loading: false });
           that.$authing.pub("login", data);
           that.$authing.pub("authenticated", data);
+          this.handleProtocolProcess({ router: this.$router });
+          this.changeLoading({ el: "form", loading: false });
         })
         .catch(err => {
           this.changeLoading({ el: "form", loading: false });
