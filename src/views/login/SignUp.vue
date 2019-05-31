@@ -50,12 +50,12 @@
     </form>
 
     <div class="_authing_form-footer login" v-show="!opts.hideUP">
-      <button @click="handleSignUp" class="btn btn-primary">注册</button>
+      <button @click="handleSignUp" class="btn btn-primary"><span v-show="!formLoading">注册</span></button>
     </div>
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -70,6 +70,11 @@ export default {
   created() {
     this.$authing = this.$root.$data.$authing;
     this.opts = this.$authing.opts;
+  },
+  computed: {
+    ...mapGetters("loading", {
+      formLoading: "form"
+    })
   },
   methods: {
     ...mapActions("visibility", ["gotoLogin", "changeVisibility"]),

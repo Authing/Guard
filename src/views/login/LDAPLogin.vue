@@ -63,7 +63,7 @@
       </div>
     </form>
     <div class="_authing_form-footer login" v-show="!opts.hideUP">
-      <button @click="handleLDAPLogin" class="btn btn-primary">登录</button>
+      <button @click="handleLDAPLogin" class="btn btn-primary"><span v-show="!formLoading">登录</span></button>
     </div>
   </div>
 </template>
@@ -84,7 +84,8 @@ export default {
   },
   computed: {
     ...mapGetters("loading", {
-      loginVerifyCodeLoading: "loginVerifyCode"
+      loginVerifyCodeLoading: "loginVerifyCode",
+      formLoading: "form"
     }),
     ...mapGetters("visibility", {
       loginVerifyCodeVisible: "loginVerifyCode"

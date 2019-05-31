@@ -15,12 +15,12 @@
     </div>
 
     <div class="_authing_form-footer login" v-show="!opts.hideUP">
-      <button @click="handleForgetPasswordSendEmail" class="btn btn-primary">发送邮件</button>
+      <button @click="handleForgetPasswordSendEmail" class="btn btn-primary"><span v-show="!formLoading">发送邮件</span></button>
     </div>
   </div>
 </template>
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   created() {
     this.$authing = this.$root.$data.$authing;
@@ -32,7 +32,11 @@ export default {
       email: ""
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters("loading", {
+      formLoading: "form"
+    }),
+  },
   methods: {
     ...mapActions("loading", ["changeLoading"]),
     ...mapActions("visibility", ["gotoForgetPasswordVerifyCode"]),

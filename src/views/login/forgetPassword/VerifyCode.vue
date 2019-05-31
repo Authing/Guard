@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="_authing_form-footer login" v-show="!opts.hideUP">
-      <button @click="handleSubmitForgetPasswordVerifyCode" class="btn btn-primary">提交验证码</button>
+      <button @click="handleSubmitForgetPasswordVerifyCode" class="btn btn-primary"><span v-show="!formLoading">提交验证码</span></button>
     </div>
   </div>
 </template>
@@ -31,7 +31,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("data", ["forgetPasswordEmail"])
+    ...mapGetters("data", ["forgetPasswordEmail"]),
+    ...mapGetters("loading", {
+      formLoading: "form"
+    }),
   },
   methods: {
     ...mapActions("loading", ["changeLoading"]),
