@@ -55,7 +55,10 @@ export default {
 
   methods: {
     checkError() {
-      const message = this.$route.query.message || "抱歉，似乎出错了";
+      let message = this.$route.query.message || ["抱歉，似乎出错了"];
+      if(!Array.isArray(message)) {
+        message = [message]
+      }
       this.errorMessage = message;
     },
 

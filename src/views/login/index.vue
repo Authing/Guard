@@ -293,7 +293,7 @@ export default {
               ]
             }
           });
-          return
+          return;
         }
     }
     this.saveAppInfo({ appInfo });
@@ -468,6 +468,18 @@ export default {
           case "saml":
             operationName = "QuerySAMLIdentityProviderInfoByDomain";
             break;
+          default:
+            this.$router.replace({
+              name: "error",
+              query: {
+                message: [
+                  "protocol query参数错误",
+                  "protocol 可选值为 oauth，oidc，saml"
+                ],
+                code: "id404"
+              }
+            });
+            return;
         }
         const query =
           `query {
@@ -480,32 +492,55 @@ export default {
               clientId
             }
           }`;
-        let appInfo = await GraphQLClient_getAppInfo.request({ query });
-        console.log("queryAppInfo");
-        console.log(appInfo);
-        // 返回对应的 app 信息
-        switch (protocol) {
-          case "oidc":
-            return appInfo["QueryOIDCAppInfoByDomain"];
-          case "oauth":
-            return appInfo["QueryAppInfoByDomain"];
-          case "saml":
-            return appInfo["QuerySAMLIdentityProviderInfoByDomain"];
+        try {
+          let appInfo = await GraphQLClient_getAppInfo.request({ query });
+          console.log("queryAppInfo");
+          console.log(appInfo);
+          // 返回对应的 app 信息
+          switch (protocol) {
+            case "oidc":
+              return appInfo["QueryOIDCAppInfoByDomain"];
+            case "oauth":
+              return appInfo["QueryAppInfoByDomain"];
+            case "saml":
+              return appInfo["QuerySAMLIdentityProviderInfoByDomain"];
+          }
+        } catch (err) {
+          this.$router.replace({
+            name: "error",
+            query: {
+              message: [err.message.message || err.message],
+              code: "id404"
+            }
+          });
         }
       } else if (appId) {
         // 如果没有二级域名，就通过 appId 查找
-        switch (protocol) {
-          case "oidc":
-            operationName = "QueryOIDCAppInfoByAppID";
-            break;
-          case "oauth":
-            operationName = "QueryAppInfoByAppID";
-            break;
-          case "saml":
-            operationName = "QuerySAMLIdentityProviderInfoByAppID";
-            break;
-        }
-        const query = `query {
+        try {
+          switch (protocol) {
+            case "oidc":
+              operationName = "QueryOIDCAppInfoByAppID";
+              break;
+            case "oauth":
+              operationName = "QueryAppInfoByAppID";
+              break;
+            case "saml":
+              operationName = "QuerySAMLIdentityProviderInfoByAppID";
+              break;
+            default:
+              this.$router.replace({
+                name: "error",
+                query: {
+                  message: [
+                    "protocol query参数错误",
+                    "protocol 可选值为 oauth，oidc，saml"
+                  ],
+                  code: "id404"
+                }
+              });
+              return;
+          }
+          const query = `query {
           ${operationName} (appId: "${appId}") {
             _id,
             name,
@@ -513,15 +548,24 @@ export default {
             clientId
           }
         }`;
-        let appInfo = await GraphQLClient_getAppInfo.request({ query });
-        console.log(appInfo);
-        switch (protocol) {
-          case "oidc":
-            return appInfo["QueryOIDCAppInfoByAppID"];
-          case "oauth":
-            return appInfo["QueryAppInfoByAppID"];
-          case "saml":
-            return appInfo["QuerySAMLIdentityProviderInfoByAppID"];
+          let appInfo = await GraphQLClient_getAppInfo.request({ query });
+          console.log(appInfo);
+          switch (protocol) {
+            case "oidc":
+              return appInfo["QueryOIDCAppInfoByAppID"];
+            case "oauth":
+              return appInfo["QueryAppInfoByAppID"];
+            case "saml":
+              return appInfo["QuerySAMLIdentityProviderInfoByAppID"];
+          }
+        } catch (err) {
+          this.$router.replace({
+            name: "error",
+            query: {
+              message: [err.message.message || err.message],
+              code: "id404"
+            }
+          });
         }
       } else {
         // 使用 sso.authing.cn 又没有提供 appId clientId 的情况
