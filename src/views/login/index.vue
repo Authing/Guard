@@ -280,8 +280,9 @@ export default {
               ]
             }
           });
+          return;
         }
-        return;
+        break;
       case "saml":
         if (!this.params.SAMLRequest) {
           this.$router.replace({
@@ -296,10 +297,11 @@ export default {
           return;
         }
     }
+
     this.saveAppInfo({ appInfo });
     this.opts.appId = appInfo._id;
     // 判断是否已经登录过了，已经登录就直接跳转确权页面，不再发送后面那些 http 请求
-    if (await this.isLogged()) {
+    if (this.isLogged()) {
       this.$router.push({ name: "authorize", query: { ...this.$route.query } });
       this.saveLoginStatus({ isLogged: true });
       return;
@@ -345,7 +347,6 @@ export default {
       that.errMsg = "Error: " + err;
       that.$authing.pub("authing-unload", err);
     }
-
     if (!auth) {
       return;
     }
@@ -403,7 +404,7 @@ export default {
           .catch(err => {
             console.log(err);
             that.$authing.pub("oauth-unload", err);
-            that.changeLoading({ el: "form", loading: true });
+            that.changeLoading({ el: "form", loading: false });
           });
 
         if (that.opts.hideOAuth && that.opts.hideUP) {
@@ -506,6 +507,7 @@ export default {
               return appInfo["QuerySAMLIdentityProviderInfoByDomain"];
           }
         } catch (err) {
+          console.log(err);
           this.$router.replace({
             name: "error",
             query: {
@@ -625,7 +627,7 @@ export default {
         that.removeDom = true;
       }, 800);
     },
-    async isLogged() {
+    isLogged() {
       let appToken = localStorage.getItem("appToken");
 
       if (appToken) {

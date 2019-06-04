@@ -2,14 +2,14 @@
   <div>
     <div class="form-body">
       <!-- 暂时隐藏 社会化登录 按钮们 -->
-      <!-- <SocialButtonsList
+      <SocialButtonsList
         v-if="!socialButtonsListLoading && socialButtonsList.length > 0 && !opts.hideUP"
       />
 
       <P
         class="_authing_form-tip"
         v-show="!socialButtonsListLoading && socialButtonsList.length > 0 && !opts.hideUP"
-      >或者</P>-->
+      >或者</P>
 
       <form style="margin-bottom:16px" class="authing-form animate-box no-shadow">
         <div v-show="opts.forceLogin" class="authing_force_login_tips" style="text-align:center">
@@ -79,12 +79,12 @@
   </div>
 </template>
 <script>
-// import SocialButtonsList from "./SocialButtonsList";
+import SocialButtonsList from "./SocialButtonsList";
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "EmailLogin",
   components: {
-    // SocialButtonsList,
+    SocialButtonsList,
   },
   created() {
     this.$authing = this.$root.$data.$authing;
