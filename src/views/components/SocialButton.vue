@@ -55,10 +55,9 @@ export default {
     receiveMessage(event) {
       try {
         let data = event.data;
-        console.log("message data");
-        console.log(data);
-        this.recordLoginInfo(data);
-        localStorage.setItem("_authing_token", data.token);
+        let userInfo = data.data
+        this.recordLoginInfo(userInfo);
+        localStorage.setItem("_authing_token", userInfo.token);
         this.handleProtocolProcess({ router: this.$router });
         this.changeLoading({ el: "form", loading: false });
       } catch (e) {

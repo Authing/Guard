@@ -15,8 +15,8 @@ const getters = {
 }
 const actions = {
   changeLoading({commit}, {el, loading}) {
-    console.log('改变元素 loading 状态')
-    console.log({el, loading})
+    // console.log('改变元素 loading 状态')
+    // console.log({el, loading})
     commit('setLoading', {el, loading})
   }
 }
