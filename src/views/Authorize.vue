@@ -172,7 +172,8 @@ export default {
     cancelAuthorize() {
       // redirect to
       localStorage.setItem("appToken", "");
-
+      localStorage.setItem("_authing_token", "");
+      
       window.history.back();
     },
 

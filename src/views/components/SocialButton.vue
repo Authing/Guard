@@ -21,32 +21,50 @@
 import { mapActions } from "vuex";
 
 export default {
+  mounted() {
+    window.addEventListener("message", this.receiveMessage, false);
+  },
   methods: {
     ...mapActions("protocol", ["handleProtocolProcess"]),
     ...mapActions("data", ["recordLoginInfo", "showGlobalMessage"]),
+    ...mapActions("loading", ["changeLoading"]),
     handleClick() {
       let leftVal = (screen.width - 500) / 2;
       let topVal = (screen.height - 700) / 2;
       let that = this;
-      window.open(
+      that.changeLoading({ el: "form", loading: true });
+      let popup = window.open(
         this.url,
         "_blank",
         `width=500,height=700,left=${leftVal},top=${topVal}`
       );
-      window.addEventListener("message", receiveMessage, false);
-      function receiveMessage(event) {
-        try {
-          
-          let data = event.data;
-          console.log("message data");
-          console.log(data);
-          that.recordLoginInfo(data)
-          localStorage.setItem('_authing_token', data.token)
-          that.handleProtocolProcess({ router: that.$router });
-        } catch (e) {
-          console.log(e)
-          that.showGlobalMessage({type: 'error', message: e.message})
+      let timer = setInterval(function() {
+        // 每秒检查登录窗口是否已经关闭
+        if (popup.closed) {
+          clearInterval(timer);
+          that.changeLoading({ el: "form", loading: false });
+          if (!localStorage.getItem("_authing_token")) {
+            that.showGlobalMessage({
+              type: "error",
+              message: "未在第三方完成登录"
+            });
+          }
         }
+      }, 1000);
+    },
+    receiveMessage(event) {
+      try {
+        let data = event.data;
+        console.log("message data");
+        console.log(data);
+        this.recordLoginInfo(data);
+        localStorage.setItem("_authing_token", data.token);
+        this.handleProtocolProcess({ router: this.$router });
+        this.changeLoading({ el: "form", loading: false });
+      } catch (e) {
+        console.log(e);
+        this.changeLoading({ el: "form", loading: false });
+        this.showGlobalMessage({ type: "error", message: e.message });
       }
     }
   },
