@@ -15,20 +15,16 @@ export default new Router({
   routes: [
     {
       path: "*",
-      redirect: "/login/error"
+      redirect: "/error"
     },    
     {
       path: '/',
+      alias: '/login',
       name: 'indexLogin',
-      redirect: '/login',
+      component: Login,
     },
     {
-      path: '/login',
-      name: 'login',
-      component: Login,
-    },    
-    {
-      path: '/login/authorize/confirm',
+      path: '/authorize/confirm',
       name: 'authorize',
       component: Authorize,
     },
@@ -38,7 +34,7 @@ export default new Router({
       component: Logout,
     },    
     {
-      path: '/login/error',
+      path: '/error',
       name: 'error',
       component: ErrorPage,
     }

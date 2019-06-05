@@ -519,6 +519,10 @@
     background: #7ed321;
   }
 
+  .authing-global-message.authing-global-message-warn {
+    background: #FFCC33;
+  }
+
   .authing-global-message.authing-global-message-info {
     background: #44c7f4;
   }

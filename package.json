@@ -4,7 +4,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy": "cd ./dist && tar zcvf dist.tar.gz * && scp dist.tar.gz authing-o:/mnt/authing && echo 'dist 包已拷贝到 authing-o:/mnt/authing'"
   },
   "dependencies": {
     "authing-js-sdk": "2.1.1",
