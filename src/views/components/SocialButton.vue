@@ -38,6 +38,7 @@ export default {
         "_blank",
         `width=500,height=700,left=${leftVal},top=${topVal}`
       );
+      this.showGlobalMessage({type: 'warn', message: '正在进行社会化登录'})
       let timer = setInterval(function() {
         // 每秒检查登录窗口是否已经关闭
         if (popup.closed) {
@@ -46,7 +47,7 @@ export default {
           if (!localStorage.getItem("_authing_token")) {
             that.showGlobalMessage({
               type: "error",
-              message: "未在第三方完成登录"
+              message: "取消社会化登录"
             });
           }
         }
@@ -55,6 +56,11 @@ export default {
     receiveMessage(event) {
       try {
         let data = event.data;
+        let code = data.code;
+        let message = data.message;
+        if(code !== 200) {
+          throw Error(message)
+        }
         let userInfo = data.data
         this.recordLoginInfo(userInfo);
         localStorage.setItem("_authing_token", userInfo.token);
