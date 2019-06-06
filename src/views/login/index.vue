@@ -98,17 +98,17 @@
               <ul class="authing-header-tabs">
                 <li
                   v-bind:class="{
-                  'authing-header-tabs-current': wxQRCodeVisible || (opts.hideUP && opts.hideOAuth),
+                  'authing-header-tabs-current': wxQRCodeVisible || (opts.hideUP && opts.hideSocial),
                   'width-55': !isScanCodeEnable || opts.hideUP || opts.forceLogin,
-                  'width-100': (opts.hideUP && opts.hideOAuth),
-                  'shadow-eee': (opts.hideUP && opts.hideOAuth),
+                  'width-100': (opts.hideUP && opts.hideSocial),
+                  'shadow-eee': (opts.hideUP && opts.hideSocial),
                 }"
                   v-show="isScanCodeEnable && !opts.hideQRCode && !clientInfo.registerDisabled"
                 >
                   <a class="_authing_a" href="javascript:void(0)" @click="gotoWxQRCodeScanning">扫码登录</a>
                 </li>
                 <li
-                  v-show="!(opts.hideUP && opts.hideOAuth)"
+                  v-show="!(opts.hideUP && opts.hideSocial)"
                   v-bind:class="{
                   'authing-header-tabs-current': emailLoginVisible || LDAPLoginVisible,
                   'width-55': !isScanCodeEnable || opts.hideQRCode || opts.hideUP || opts.forceLogin,
@@ -225,7 +225,6 @@ export default {
   created() {
     this.$authing = this.$root.$data.$authing;
     this.opts = this.$root.$data.$authing.opts;
-
     // 将协议的 query 参数存入 vuex
     this.saveProtocol({
       protocol: this.$route.query.protocol || "oauth",
@@ -390,12 +389,12 @@ export default {
 
             that.saveSocialButtonsList({ socialButtonsList });
 
-            if (!that.opts.hideOAuth) {
+            if (!that.opts.hideSocial) {
               return;
             }
 
             if (socialButtonsList.length === 0 && that.opts.hideUP) {
-              that.opts.hideOAuth = true;
+              that.opts.hideSocial = true;
               that.gotoWxQRCodeScanning();
             }
           })
@@ -405,7 +404,7 @@ export default {
             that.changeLoading({ el: "form", loading: false });
           });
 
-        if (that.opts.hideOAuth && that.opts.hideUP) {
+        if (that.opts.hideSocial && that.opts.hideUP) {
           that.gotoWxQRCodeScanning();
         }
       })
