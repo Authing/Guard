@@ -82,7 +82,7 @@ var AuthingGuard = function(appId, domain, opts) {
     opts.qrcodeScanning.interval = opts.qrcodeScanning.interval || 1500;
     opts.qrcodeScanning.tips = opts.qrcodeScanning.tips || null;
   }
-
+  // 初始化 placeholder 配置
   if (opts.placeholder) {
     opts.placeholder.username =
       opts.placeholder.username || PLACEHOLDER_TEXT.USERNAME;
@@ -90,7 +90,7 @@ var AuthingGuard = function(appId, domain, opts) {
     opts.placeholder.password =
       opts.placeholder.password || PLACEHOLDER_TEXT.PASSWORD;
     opts.placeholder.confirmPassword =
-      opts.placeholder.confirmPassword || PLACEHOLDER_TEXT.USERNAME;
+      opts.placeholder.confirmPassword || PLACEHOLDER_TEXT.CONFIRM_PASSWORDs;
     opts.placeholder.verfiyCode =
       opts.placeholder.verfiyCode || PLACEHOLDER_TEXT.VERIFY_CODE;
     opts.placeholder.newPassword =
