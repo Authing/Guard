@@ -42,7 +42,7 @@
           :class="{'err-hint': signUpForm.password!==signUpForm.rePassword}"
           id="sign-up-re-password"
           v-model="signUpForm.rePassword"
-          :placeholder="opts.placeholder.password"
+          :placeholder="opts.placeholder.confirmPassword"
           autocomplete="off"
           @keyup.enter="handleSignUp"
         >
