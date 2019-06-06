@@ -59,8 +59,8 @@ const getters = {
 };
 const actions = {
   changeVisibility({ commit }, { el, visibility }) {
-    console.log("改变元素可见性");
-    console.log({ el, visibility });
+    // console.log("改变元素可见性");
+    // console.log({ el, visibility });
     commit("setVisibility", { el, visibility });
   },
   removeGlobalMsg() {

@@ -23,7 +23,6 @@ export default {
   created() {
     this.$authing = this.$root.$data.$authing;
     this.opts = this.$root.$data.$authing.opts;
-    console.log(this.opts);
   },
   data() {
     return {

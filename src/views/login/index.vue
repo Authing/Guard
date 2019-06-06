@@ -227,8 +227,6 @@ export default {
     this.opts = this.$root.$data.$authing.opts;
 
     // 将协议的 query 参数存入 vuex
-    console.log("index this.$route.query");
-    console.log(this.$route.query);
     this.saveProtocol({
       protocol: this.$route.query.protocol || "oauth",
       params: {
@@ -495,8 +493,8 @@ export default {
           }`;
         try {
           let appInfo = await GraphQLClient_getAppInfo.request({ query });
-          console.log("queryAppInfo");
-          console.log(appInfo);
+          // console.log("queryAppInfo");
+          // console.log(appInfo);
           // 返回对应的 app 信息
           switch (protocol) {
             case "oidc":
@@ -551,7 +549,6 @@ export default {
           }
         }`;
           let appInfo = await GraphQLClient_getAppInfo.request({ query });
-          console.log(appInfo);
           switch (protocol) {
             case "oidc":
               return appInfo["QueryOIDCAppInfoByAppID"];
