@@ -60,6 +60,7 @@ var AuthingGuard = function(appId, domain, opts) {
   $authing.opts.clientId = clientId;
   $authing.opts.appId = appId;
   $authing.opts.domain = domain;
+  $authing.opts.protocol = opts.protocol || 'oauth'
 
   $authing.opts.hideQRCode = opts.hideQRCode || false;
   $authing.opts.hideUP = opts.hideUP || false;

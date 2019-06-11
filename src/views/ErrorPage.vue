@@ -27,7 +27,7 @@
 
               <div class="_div_line"/>
               <div class="_see_doctor">
-                参见开发文档：<a href="https://docs.authing.cn/#/oauthProvider/new" target="_blank">docs.authing.cn</a>
+                参见开发文档：<a :href="doc" target="_blank">docs.authing.cn</a>
               </div>
             </div>
             <div class="_authing_form-footer _authing_form-footer2" v-if="false">
@@ -45,7 +45,8 @@
 export default {
   data() {
     return {
-      errorMessage: ["抱歉, 似乎出错了"]
+      errorMessage: ["抱歉, 似乎出错了"],
+      doc: "https://docs.authing.cn"
     };
   },
 
@@ -60,6 +61,7 @@ export default {
         message = [message]
       }
       this.errorMessage = message;
+      this.doc = this.$route.query.doc || "https://docs.authing.cn"
     },
 
     returnBack() {

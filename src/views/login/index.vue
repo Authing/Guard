@@ -227,7 +227,7 @@ export default {
     this.opts = this.$root.$data.$authing.opts;
     // 将协议的 query 参数存入 vuex
     this.saveProtocol({
-      protocol: this.$route.query.protocol || "oauth",
+      protocol: this.opts.protocol || this.$route.query.protocol || "oauth", // 其实前面 opts.protocol 默认就是 oauth
       params: {
         ...this.$route.query
       }
@@ -259,7 +259,8 @@ export default {
         query: {
           message: [
             "应用不存在",
-            "请确认传递了正确的 protocol query 参数，不传默认该地址为 OAuth 应用"
+            "请确认传递了正确的 protocol query 参数，不传默认该地址为 OAuth 应用",
+            "protocol 参数可选值为 oauth、oidc、saml"
           ]
         }
       });
@@ -274,7 +275,8 @@ export default {
               message: [
                 "缺少 OIDC 所必须的参数 uuid",
                 "OIDC 应用不能直接输入网址进行登录，需要带参数访问后端 URL，详情请看文档"
-              ]
+              ],
+              doc: "https://docs.authing.cn/authing/advanced/oidc/oidc-authorization#shi-yong-shou-quan-ma-mo-shi-authorization-code-flow"
             }
           });
           return;
@@ -288,7 +290,8 @@ export default {
               message: [
                 "缺少 SAML 所必须的参数 SAMLRequest",
                 "SAML 应用不能直接输入网址进行登录，需要带参数访问后端 URL，详情请看文档"
-              ]
+              ],
+              doc: "https://docs.authing.cn/authing/advanced/use-saml/configure-authing-as-sp-and-idp#kai-shi-shi-yong"
             }
           });
           return;
@@ -445,8 +448,8 @@ export default {
     async queryAppInfo(protocol) {
       protocol = protocol || this.protocol || "oauth";
       let hostname = location.hostname;
-      let domain = this.getSecondLvDomain(hostname);
-      let appId = this.$route.query.app_id || this.$route.query.client_id;
+      let domain = this.opts.domain || this.getSecondLvDomain(hostname);
+      let appId = this.opts.appId || this.$route.query.app_id || this.$route.query.client_id;
       let operationName;
       let GraphQLClient_getAppInfo = new GraphQLClient({
         baseURL: this.opts.host.oauth
