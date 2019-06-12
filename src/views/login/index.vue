@@ -448,7 +448,7 @@ export default {
     async queryAppInfo(protocol) {
       protocol = protocol || this.protocol || "oauth";
       let hostname = location.hostname;
-      let domain = this.opts.domain || this.getSecondLvDomain(hostname);
+      let domain = this.getSecondLvDomain(this.opts.domain) || this.getSecondLvDomain(hostname);
       let appId = this.opts.appId || this.$route.query.app_id || this.$route.query.client_id;
       let operationName;
       let GraphQLClient_getAppInfo = new GraphQLClient({
