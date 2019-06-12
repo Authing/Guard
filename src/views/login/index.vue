@@ -227,7 +227,7 @@ export default {
     this.opts = this.$root.$data.$authing.opts;
     // 将协议的 query 参数存入 vuex
     this.saveProtocol({
-      protocol: this.opts.protocol || this.$route.query.protocol || "oauth", // 其实前面 opts.protocol 默认就是 oauth
+      protocol: this.opts.protocol || this.$route.query.protocol || "oauth",
       params: {
         ...this.$route.query
       }
