@@ -30,16 +30,16 @@
     // const domain = "sso.authing.cn/login?app_id=YOUR_CLIENT_ID_";
     const guard = new AuthingGuard(appId, undefined, {
       hideClose: true,
-      // SSOHost: location.origin,// 开发模式下，会代理转发到 localhost:5556/authorize
-      SSOHost: 'https://sso.authing.cn',
+      SSOHost: location.origin,// 开发模式下，会代理转发到 localhost:5556/authorize
+      // SSOHost: 'https://sso.authing.cn',
       qrcodeScanning: {
         redirect: false,
       },
       host: {
-        user: 'http://localhost:5555/graphql',
-        oauth: 'http://localhost:5556/graphql',
-        // user: 'https://users.authing.cn/graphql',
-        // oauth: 'https://oauth.authing.cn/graphql'
+        // user: 'http://localhost:5555/graphql',
+        // oauth: 'http://localhost:5556/graphql',
+        user: 'https://users.authing.cn/graphql',
+        oauth: 'https://oauth.authing.cn/graphql'
       }
     });
   </script>
