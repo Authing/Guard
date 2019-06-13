@@ -227,7 +227,7 @@ export default {
     this.opts = this.$root.$data.$authing.opts;
     // 将协议的 query 参数存入 vuex
     this.saveProtocol({
-      protocol: this.opts.protocol || this.$route.query.protocol || "oauth",
+      protocol: this.opts.protocol || this.$route.query.protocol,
       params: {
         ...this.$route.query
       }
@@ -269,16 +269,25 @@ export default {
     switch (this.protocol) {
       case "oidc":
         if (!this.params.uuid) {
-          this.$router.replace({
-            name: "error",
-            query: {
-              message: [
-                "缺少 OIDC 所必须的参数 uuid",
-                "OIDC 应用不能直接输入网址进行登录，需要带参数访问后端 URL，详情请看文档"
-              ],
-              doc: "https://docs.authing.cn/authing/advanced/oidc/oidc-authorization#shi-yong-shou-quan-ma-mo-shi-authorization-code-flow"
-            }
-          });
+          // this.$router.replace({
+          //   name: "error",
+          //   query: {
+          //     message: [
+          //       "缺少 OIDC 所必须的参数 uuid",
+          //       "OIDC 应用不能直接输入网址进行登录，需要带参数访问后端 URL，详情请看文档"
+          //     ],
+          //     doc: "https://docs.authing.cn/authing/advanced/oidc/oidc-authorization#shi-yong-shou-quan-ma-mo-shi-authorization-code-flow"
+          //   }
+          // });
+          location.href = `https://${
+            appInfo.domain
+          }.authing.cn/oauth/oidc/auth?client_id=${
+            appInfo.client_id
+          }&redirect_uri=${
+            appInfo.redirect_uris[0]
+          }&scope=openid profile&response_type=code&state=${Math.random()
+            .toString(26)
+            .slice(2)}`;
           return;
         }
         break;
@@ -291,7 +300,8 @@ export default {
                 "缺少 SAML 所必须的参数 SAMLRequest",
                 "SAML 应用不能直接输入网址进行登录，需要带参数访问后端 URL，详情请看文档"
               ],
-              doc: "https://docs.authing.cn/authing/advanced/use-saml/configure-authing-as-sp-and-idp#kai-shi-shi-yong"
+              doc:
+                "https://docs.authing.cn/authing/advanced/use-saml/configure-authing-as-sp-and-idp#kai-shi-shi-yong"
             }
           });
           return;
@@ -446,18 +456,78 @@ export default {
       return null;
     },
     async queryAppInfo(protocol) {
-      protocol = protocol || this.protocol || "oauth";
+      protocol = protocol || this.protocol;
       let hostname = location.hostname;
-      let domain = this.getSecondLvDomain(this.opts.domain) || this.getSecondLvDomain(hostname);
-      let appId = this.opts.appId || this.$route.query.app_id || this.$route.query.client_id;
+      let domain =
+        this.getSecondLvDomain(this.opts.domain) ||
+        this.getSecondLvDomain(hostname);
+      let appId =
+        this.opts.appId ||
+        this.$route.query.app_id ||
+        this.$route.query.client_id;
       let operationName;
       let GraphQLClient_getAppInfo = new GraphQLClient({
         baseURL: this.opts.host.oauth
       });
 
-      // let domain = "asdf";
       // 优先通过二级域名查找此应用信息
       if (domain && domain !== "sso") {
+        // 如果没有提供 protocol 参数，就挨个查一遍吧
+        if (!protocol) {
+          let queries = [
+            `query {
+          QueryAppInfoByDomain(domain: "${domain}") {
+              _id,
+              name,
+              image,
+              clientId
+          }
+        }`,
+            `query {
+          QueryOIDCAppInfoByDomain(domain: "${domain}") {
+              _id,
+              name,
+              image,
+              client_id,
+              redirect_uris,
+              domain
+          }
+        }`,
+            `query {
+          QuerySAMLIdentityProviderInfoByDomain(domain: "${domain}") {
+              _id,
+              name,
+              image,
+              clientId
+          }
+        }`
+          ];
+          let appInfos = await Promise.all(
+            queries.map(q => GraphQLClient_getAppInfo.request({ query: q }))
+          );
+          let [
+            { QueryAppInfoByDomain },
+            { QueryOIDCAppInfoByDomain },
+            { QuerySAMLIdentityProviderInfoByDomain },
+          ] = appInfos;
+          this.saveProtocol({
+            protocol: QuerySAMLIdentityProviderInfoByDomain
+              ? "saml"
+              : QueryOIDCAppInfoByDomain
+              ? "oidc"
+              : QueryAppInfoByDomain
+              ? "oauth"
+              : "",
+            params: {
+              ...this.$route.query
+            }
+          });
+          return (
+            QuerySAMLIdentityProviderInfoByDomain ||
+            QueryOIDCAppInfoByDomain ||
+            QueryAppInfoByDomain
+          );
+        }
         // 根据不同的 protocol 查找不同类型的 app
         switch (protocol) {
           case "oidc":

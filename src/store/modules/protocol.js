@@ -62,7 +62,7 @@ const actions = {
       if (!uuid) {
         router.replace({
           name: "error",
-          query: { message: ["缺少 OIDC 所必须的参数 uuid", "OIDC 应用不能直接输入网址进行登录，需要带参数访问后端 URL，详情请看文档"] }
+          query: { message: ["缺少 OIDC 所必须的参数 uuid"] }
         });
       } else {
         router.push({
