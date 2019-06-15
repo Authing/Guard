@@ -36,7 +36,7 @@ export default {
         mount: "qrcode-node",
 
         onSuccess: function(res) {
-          that.$authing.pub("scanning", res);
+          that.$authing.pub("scanned-success", res);
           localStorage.setItem("_authing_token", res.data.token);
           that.recordLoginInfo(res.data);
           that.handleProtocolProcess({ router: that.$router });

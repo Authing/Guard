@@ -15,32 +15,48 @@
     <!-- built files will be auto injected -->
   </body>
   <script>
-    const getQueryString = function(name) {
-      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-      var r = window.location.search.substr(1).match(reg);
-      if ( r != null ){
-        return unescape(r[2]);
-      }else{
-        return null;
-      }
-    };
-
-    let appId = getQueryString('app_id') || getQueryString('client_id');
- 
-    // const domain = "sso.authing.cn/login?app_id=YOUR_CLIENT_ID_";
-    const guard = new AuthingGuard(appId, undefined, {
+    /* 测试 LoginForm */
+    let clientId = '5cbd6716aaaa70cb9a58d86f'
+    const guard = new AuthingGuard(clientId, undefined, {
       hideClose: true,
-      SSOHost: location.origin,// 开发模式下，会代理转发到 localhost:5556/authorize
-      // SSOHost: 'https://sso.authing.cn',
+      isSSO: false,
       qrcodeScanning: {
         redirect: false,
       },
       host: {
-        // user: 'http://localhost:5555/graphql',
-        // oauth: 'http://localhost:5556/graphql',
-        user: 'https://users.authing.cn/graphql',
-        oauth: 'https://oauth.authing.cn/graphql'
+        user: 'http://localhost:5555/graphql',
+        oauth: 'http://localhost:5556/graphql',
+        // user: 'https://users.authing.cn/graphql',
+        // oauth: 'https://oauth.authing.cn/graphql'
       }
+    });
+
+    /* 测试 SSO */
+    // const getQueryString = function(name) {
+    //   var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    //   var r = window.location.search.substr(1).match(reg);
+    //   if ( r != null ){
+    //     return unescape(r[2]);
+    //   }else{
+    //     return null;
+    //   }
+    // };
+
+    // let appId = getQueryString('app_id') || getQueryString('client_id');
+    // const guard = new AuthingGuard(appId, undefined, {
+    //   hideClose: true,
+    //   isSSO: false,
+    //   SSOHost: location.origin,// 开发模式下，会代理转发到 localhost:5556/authorize
+    //   // SSOHost: 'https://sso.authing.cn',
+    //   qrcodeScanning: {
+    //     redirect: false,
+    //   },
+    //   host: {
+    //     user: 'http://localhost:5555/graphql',
+    //     oauth: 'http://localhost:5556/graphql',
+    //     // user: 'https://users.authing.cn/graphql',
+    //     // oauth: 'https://oauth.authing.cn/graphql'
+    //   }
     });
   </script>
 </html>

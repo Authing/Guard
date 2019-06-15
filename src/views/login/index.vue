@@ -230,7 +230,8 @@ export default {
       protocol: this.opts.protocol || this.$route.query.protocol,
       params: {
         ...this.$route.query
-      }
+      },
+      isSSO: this.opts.isSSO
     });
 
     /* 先注释，没有 protocol 参数就默认为 oauth，上面已经处理
@@ -390,7 +391,7 @@ export default {
         validAuth
           .readOAuthList()
           .then(data => {
-            that.$authing.pub("oauth-load", data);
+            that.$authing.pub("social-load", data);
             that.changeLoading({ el: "socialButtonsList", loading: false });
             // 刨去 微信扫码登录 的方式
             var socialButtonsList = data.filter(function(item) {
@@ -413,7 +414,7 @@ export default {
           })
           .catch(err => {
             console.log(err);
-            that.$authing.pub("oauth-unload", err);
+            that.$authing.pub("social-unload", err);
             that.changeLoading({ el: "form", loading: false });
           });
 
@@ -508,7 +509,7 @@ export default {
           let [
             { QueryAppInfoByDomain },
             { QueryOIDCAppInfoByDomain },
-            { QuerySAMLIdentityProviderInfoByDomain },
+            { QuerySAMLIdentityProviderInfoByDomain }
           ] = appInfos;
           this.saveProtocol({
             protocol: QuerySAMLIdentityProviderInfoByDomain
@@ -552,11 +553,8 @@ export default {
             });
             return;
         }
-        const query =
-          `query {
-            ${operationName} (domain: "` +
-          domain +
-          `") {   
+        const query = `query {
+            ${operationName} (domain: "${domain}") {   
               _id,
               name,
               image,

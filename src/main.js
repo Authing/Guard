@@ -35,8 +35,8 @@ var AuthingGuard = function(appId, domain, opts) {
     authenticated: [],
     'authenticated-error': [],
 
-    'oauth-load': [],
-    'oauth-unload': [],
+    'social-load': [],
+    'social-unload': [],
 
     login: [],
     'login-error': [],
@@ -68,6 +68,7 @@ var AuthingGuard = function(appId, domain, opts) {
   $authing.opts.hideUsername = opts.hideUsername || false;
   $authing.opts.hideClose = opts.hideClose || false;
 
+  $authing.opts.isSSO = opts.isSSO || false;
   $authing.opts.SSOHost = opts.SSOHost || "https://sso.authing.cn";
   $authing.opts.forceLogin = opts.forceLogin || false;
   $authing.opts.title = opts.title || null;

@@ -6,7 +6,8 @@ const state = {
     redirect_uri: '',
     state: Math.random().toString().slice(2),
     scope: ''
-  }
+  },
+  isSSO: true,
 };
 const getters = {
   protocol: state => state.protocol,
@@ -17,17 +18,22 @@ const actions = {
     commit("setProtocol", { protocol, params });
   },
   handleProtocolProcess({ state }, { router }) {
-    switch (state.protocol) {
-      case "oauth":
-        this.dispatch("protocol/handleOAuthProcess", { router });
-        break;
-      case "oidc":
-        this.dispatch("protocol/handleOIDCProcess", { router });
-        break;
-      case "saml":
-        this.dispatch("protocol/handleSAMLProcess", { router });
-        break;
+    if(state.isSSO) {
+      switch (state.protocol) {
+        case "oauth":
+          this.dispatch("protocol/handleOAuthProcess", { router });
+          break;
+        case "oidc":
+          this.dispatch("protocol/handleOIDCProcess", { router });
+          break;
+        case "saml":
+          this.dispatch("protocol/handleSAMLProcess", { router });
+          break;
+      }
+    } else {
+      return
     }
+
   },
   handleOAuthProcess({ state }, { router }) {
     try {
