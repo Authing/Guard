@@ -544,7 +544,7 @@ export default {
               name: "error",
               query: {
                 message: [
-                  "protocol query参数错误",
+                  "protocol query 参数错误",
                   "protocol 可选值为 oauth，oidc，saml"
                 ],
                 code: "id404"
@@ -604,7 +604,7 @@ export default {
                 name: "error",
                 query: {
                   message: [
-                    "protocol query参数错误",
+                    "protocol query 参数错误",
                     "protocol 可选值为 oauth，oidc，saml"
                   ],
                   code: "id404"
