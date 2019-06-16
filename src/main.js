@@ -23,8 +23,6 @@ var AuthingGuard = function(appId, domain, opts) {
       PHONE: "请输入手机号",
       PHONE_CODE: "4 位验证码"
     },
-    appMountId = "_authing_login_form",
-    // appMountId = 'app',
 
     $authing = this;
 
@@ -131,17 +129,16 @@ var AuthingGuard = function(appId, domain, opts) {
   let emailExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/;
 
   var target =
-    document.getElementById(appMountId) ||
     document.getElementById(opts.mountId) ||
     document.body;
   var newMount = document.createElement("div");
   newMount.setAttribute("id", "_authing_login_form");
-  if (!(appMountId || opts.mountId)) {
+  if (!opts.mountId) {
     newMount.classList.add("authing-login-form-modal");
   }
   target.appendChild(newMount);
   var isMountedInModal = false;
-  if (!appMountId) {
+  if (!opts.mountId) {
     isMountedInModal = true;
   }
   new Vue({
@@ -153,7 +150,7 @@ var AuthingGuard = function(appId, domain, opts) {
       isMountedInModal: isMountedInModal,
       $authing: $authing,
       emailExp: emailExp,
-      appMountId: appMountId,
+      appMountId: opts.mountId,
       SSOHost: opts.SSOHost || location.origin,
       opts: opts
     }
@@ -191,7 +188,7 @@ AuthingGuard.prototype = {
         isMountedInModal,
         $authing: this,
         emailExp: emailExp,
-        appMountId: appMountId,
+        appMountId: appMountId || this.opts.mountId,
         SSOHost: opts.SSOHost || "https://sso.authing.cn",
         opts: this.opts
       }
