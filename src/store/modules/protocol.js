@@ -7,15 +7,15 @@ const state = {
     state: Math.random().toString().slice(2),
     scope: ''
   },
-  isSSO: true,
+  isSSO: false,
 };
 const getters = {
   protocol: state => state.protocol,
   params: state => state.params
 };
 const actions = {
-  saveProtocol({ commit }, { protocol, params }) {
-    commit("setProtocol", { protocol, params });
+  saveProtocol({ commit }, { protocol, params, isSSO }) {
+    commit("setProtocol", { protocol, params, isSSO });
   },
   handleProtocolProcess({ state }, { router }) {
     if(state.isSSO) {
