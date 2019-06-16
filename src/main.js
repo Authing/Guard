@@ -9,7 +9,7 @@ import "./styles/animations.css";
 
 Vue.config.productionTip = false;
 var AuthingGuard = function(appId, domain, opts) {
-  let clientId = "";
+  let clientId = appId || "";
 
   window.Authing = Authing;
 

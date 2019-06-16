@@ -30,7 +30,12 @@
         // oauth: 'https://oauth.authing.cn/graphql'
       }
     });
-
+    guard.on('authenticated', data => {
+      console.log(data)
+    })
+    guard.on('register', data => {
+      console.log(data)
+    })
     /* 测试 SSO */
     // const getQueryString = function(name) {
     //   var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -57,6 +62,6 @@
     //     // user: 'https://users.authing.cn/graphql',
     //     // oauth: 'https://oauth.authing.cn/graphql'
     //   }
-    });
+    // });
   </script>
 </html>

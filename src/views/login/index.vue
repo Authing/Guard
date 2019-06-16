@@ -252,100 +252,105 @@ export default {
     };
   },
   async mounted() {
-    // 上来先查一下 appInfo
-    const appInfo = await this.queryAppInfo();
-    if (!appInfo) {
-      this.$router.replace({
-        name: "error",
-        query: {
-          message: [
-            "应用不存在",
-            "请确认传递了正确的 protocol query 参数，不传默认该地址为 OAuth 应用",
-            "protocol 参数可选值为 oauth、oidc、saml"
-          ]
-        }
-      });
-      return;
-    }
-    switch (this.protocol) {
-      case "oidc":
-        if (!this.params.uuid) {
-          // this.$router.replace({
-          //   name: "error",
-          //   query: {
-          //     message: [
-          //       "缺少 OIDC 所必须的参数 uuid",
-          //       "OIDC 应用不能直接输入网址进行登录，需要带参数访问后端 URL，详情请看文档"
-          //     ],
-          //     doc: "https://docs.authing.cn/authing/advanced/oidc/oidc-authorization#shi-yong-shou-quan-ma-mo-shi-authorization-code-flow"
-          //   }
-          // });
-          location.href = `https://${
-            appInfo.domain
-          }.authing.cn/oauth/oidc/auth?client_id=${
-            appInfo.client_id
-          }&redirect_uri=${
-            appInfo.redirect_uris[0]
-          }&scope=openid profile&response_type=code&state=${Math.random()
-            .toString(26)
-            .slice(2)}`;
-          return;
-        }
-        break;
-      case "saml":
-        if (!this.params.SAMLRequest) {
-          this.$router.replace({
-            name: "error",
-            query: {
-              message: [
-                "缺少 SAML 所必须的参数 SAMLRequest",
-                "SAML 应用不能直接输入网址进行登录，需要带参数访问后端 URL，详情请看文档"
-              ],
-              doc:
-                "https://docs.authing.cn/authing/advanced/use-saml/configure-authing-as-sp-and-idp#kai-shi-shi-yong"
-            }
-          });
-          return;
-        }
-    }
+    if (this.opts.isSSO) {
+      // 上来先查一下 appInfo
+      const appInfo = await this.queryAppInfo();
+      if (!appInfo) {
+        this.$router.replace({
+          name: "error",
+          query: {
+            message: [
+              "应用不存在",
+              "请确认传递了正确的 protocol query 参数，不传默认该地址为 OAuth 应用",
+              "protocol 参数可选值为 oauth、oidc、saml"
+            ]
+          }
+        });
+        return;
+      }
+      switch (this.protocol) {
+        case "oidc":
+          if (!this.params.uuid) {
+            // this.$router.replace({
+            //   name: "error",
+            //   query: {
+            //     message: [
+            //       "缺少 OIDC 所必须的参数 uuid",
+            //       "OIDC 应用不能直接输入网址进行登录，需要带参数访问后端 URL，详情请看文档"
+            //     ],
+            //     doc: "https://docs.authing.cn/authing/advanced/oidc/oidc-authorization#shi-yong-shou-quan-ma-mo-shi-authorization-code-flow"
+            //   }
+            // });
+            location.href = `https://${
+              appInfo.domain
+            }.authing.cn/oauth/oidc/auth?client_id=${
+              appInfo.client_id
+            }&redirect_uri=${
+              appInfo.redirect_uris[0]
+            }&scope=openid profile&response_type=code&state=${Math.random()
+              .toString(26)
+              .slice(2)}`;
+            return;
+          }
+          break;
+        case "saml":
+          if (!this.params.SAMLRequest) {
+            this.$router.replace({
+              name: "error",
+              query: {
+                message: [
+                  "缺少 SAML 所必须的参数 SAMLRequest",
+                  "SAML 应用不能直接输入网址进行登录，需要带参数访问后端 URL，详情请看文档"
+                ],
+                doc:
+                  "https://docs.authing.cn/authing/advanced/use-saml/configure-authing-as-sp-and-idp#kai-shi-shi-yong"
+              }
+            });
+            return;
+          }
+      }
 
-    this.saveAppInfo({ appInfo });
-    this.opts.appId = appInfo._id;
-    // 判断是否已经登录过了，已经登录就直接跳转确权页面，不再发送后面那些 http 请求
-    if (this.isLogged()) {
-      this.$router.push({ name: "authorize", query: { ...this.$route.query } });
-      this.saveLoginStatus({ isLogged: true });
-      return;
+      this.saveAppInfo({ appInfo });
+      this.opts.appId = appInfo._id;
+      // 判断是否已经登录过了，已经登录就直接跳转确权页面，不再发送后面那些 http 请求
+      if (this.isLogged()) {
+        this.$router.push({
+          name: "authorize",
+          query: { ...this.$route.query }
+        });
+        this.saveLoginStatus({ isLogged: true });
+        return;
+      }
+
+      const { code: errorCode } = this.$route.query;
+
+      // token 错误或已经过期的情况
+      if (errorCode && Number(errorCode) === 2207) {
+        this.clearLocalStorage();
+      }
+
+      try {
+        // 获取应用的名称，图标等信息
+        this.appName = this.opts.title || this.appInfo.name;
+        window.title = `${this.appName} - Authing`;
+        document.title = `${this.appName} - Authing`;
+        this.appLogo = this.opts.logo || this.appInfo.image;
+        this.clientId = this.appInfo.clientId;
+      } catch (erro) {
+        console.log(erro);
+        that.authingOnError = true;
+        that.$authing.pub("authing-unload", erro);
+        this.$router.replace({ name: "error", query: { message: erro } });
+        return;
+      }
     }
     var that = this;
     var auth = null;
-    const { code: errorCode } = this.$route.query;
-
-    // token 错误或已经过期的情况
-    if (errorCode && Number(errorCode) === 2207) {
-      this.clearLocalStorage();
-    }
-
-    try {
-      // 获取应用的名称，图标等信息
-      this.appName = this.opts.title || this.appInfo.name;
-      window.title = `${this.appName} - Authing`;
-      document.title = `${this.appName} - Authing`;
-      this.appLogo = this.opts.logo || this.appInfo.image;
-      this.clientId = this.appInfo.clientId;
-    } catch (erro) {
-      console.log(erro);
-      that.authingOnError = true;
-      that.$authing.pub("authing-unload", erro);
-      this.$router.replace({ name: "error", query: { message: erro } });
-      return;
-    }
-
     this.checkHasLDAP(that.clientId);
 
     try {
       auth = new Authing({
-        clientId: that.clientId,
+        clientId: that.clientId || that.opts.clientId,
         timestamp: that.opts.timestamp,
         nonce: that.opts.nonce,
         host: that.opts.host
