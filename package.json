@@ -1,10 +1,16 @@
 {
-  "name": "authing-guard",
-  "version": "0.1.1",
+  "name": "@authing/authing-guard",
+  "version": "0.1.2",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Authing/Guard.git"
+  },
+  "main": "dist/Guard.umd.min.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "build-pack": " vue-cli-service build --target lib --name Guard ./src/main.js",
     "deploy": "cd ./dist && tar zcvf dist.tar.gz * && scp dist.tar.gz authing-o:/mnt/authing && echo 'dist 包已拷贝到 authing-o:/mnt/authing'"
   },
   "dependencies": {
@@ -36,5 +42,19 @@
       "vue-cli-service lint",
       "git add"
     ]
-  }
+  },
+  "description": "[Authing](https://authing.cn) 是一个企业级身份认证提供商，其集成了 OAuth、LDAP、OIDC 等多种身份认证和授权解决方案。",
+  "bugs": {
+    "url": "https://github.com/Authing/Guard/issues"
+  },
+  "homepage": "https://github.com/Authing/Guard#readme",
+  "keywords": [
+    "Authing",
+    "Guard",
+    "AaaS",
+    "IDaaS",
+    "Identity"
+  ],
+  "author": "Authing",
+  "license": "MIT"
 }
