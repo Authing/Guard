@@ -213,33 +213,6 @@ AuthingGuard.prototype = {
       }
     }
   }
-
-  // isLogged: function() {
-  //   let appToken = localStorage.getItem("appToken");
-
-  //   if (appToken) {
-  //     try {
-  //       appToken = JSON.parse(appToken);
-  //     } catch (error) {
-  //       appToken = {};
-  //     }
-  //   } else {
-  //     appToken = {};
-  //   }
-
-  //   return appToken[this.opts.appId] && appToken[this.opts.appId].accessToken;
-  // },
-
-  // async SAMLIdPLogin(SAMLRequest) {
-  //   SAMLRequest = SAMLRequest || this.querySearch("SAMLRequest");
-  //   if (!SAMLRequest) {
-  //     location.href =
-  //       location.pathname +
-  //       "error?message=缺少 SAML IdP 登录所必须的参数 SAMLRequest";
-  //   }
-  //   console.log("samlidplogin");
-  //   location.href = this.SAMLIdPURL;
-  // }
 };
 
 export default AuthingGuard;

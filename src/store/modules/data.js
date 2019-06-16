@@ -29,29 +29,29 @@ const getters = {
   forgetPasswordVerifyCode: state => state.forgetPasswordVerifyCode
 };
 const actions = {
-  saveLoginStatus({commit}, {isLogged}) {
-    commit('setLoginStatus', {isLogged})
+  saveLoginStatus({ commit }, { isLogged }) {
+    commit("setLoginStatus", { isLogged });
   },
-  recordLoginInfo({state, commit}, userInfo) {
-    let appToken = localStorage.getItem("appToken");
-    let appId = state.appInfo._id
-    if (appToken) {
-      try {
-        appToken = JSON.parse(appToken);
-      } catch (error) {
+  recordLoginInfo({ state, commit, rootState }, userInfo) {
+    if (rootState.protocol.isSSO) {
+      let appToken = localStorage.getItem("appToken");
+      let appId = state.appInfo._id;
+      if (appToken) {
+        try {
+          appToken = JSON.parse(appToken);
+        } catch (error) {
+          appToken = {};
+        }
+      } else {
         appToken = {};
       }
-    } else {
-      appToken = {};
+      appToken[appId] = {
+        accessToken: userInfo.token,
+        userInfo: userInfo
+      };
+      localStorage.setItem("appToken", JSON.stringify(appToken));
     }
-
-    appToken[appId] = {
-      accessToken: userInfo.token,
-      userInfo: userInfo
-    };
-
-    localStorage.setItem("appToken", JSON.stringify(appToken));
-    commit("setLoginInfo", {userInfo})
+    commit("setLoginInfo", { userInfo });
   },
   showGlobalMessage({ commit }, { type, message }) {
     commit("setGlobalMessage", { type, message });
@@ -88,7 +88,7 @@ const actions = {
     setTimeout(function() {
       actions.removeAnimation(_, className);
     }, 500);
-  },
+  }
 };
 
 const mutations = {
