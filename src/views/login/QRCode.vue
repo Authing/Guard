@@ -43,7 +43,7 @@ export default {
         },
 
         onError: function(err) {
-          that.$authing.pub("scanning-error", err);
+          that.$authing.pub("scanned-error", err);
           /*
           that.$router.replace({
             name: "error",s
