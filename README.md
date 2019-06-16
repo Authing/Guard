@@ -235,7 +235,7 @@ hideClose|否|false|Boolean|**是否隐藏登录框右上角的关闭按钮**，
 SSOHost | 否 | https://sso.authing.cn | SSO 类应用的通讯地址，默认 Authing 官方链接，此处用于私有部署 Authing 的用户使用 | -
 isSSO | 否 | false | Boolean | 用于标识当前是否为 SSO 模式，如果只是想简单生成登录表单，使用默认 false 即可 | -
 nonce | 否 | [Random] | Number | 随机数，用于防范网络攻击 | -
-timpstamp | 否 | Number | 初始化时的时间戳，用于防范网络攻击 | -
+timpstamp | 否 | 当前时间戳 | Number | 初始化时的时间戳，用于防范网络攻击 | -
 
 ## 浏览器兼容性
 
