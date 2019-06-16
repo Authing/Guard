@@ -8,7 +8,13 @@ module.exports = {
   //   }
   // },
   lintOnSave: false,
-  publicPath: '/login',
+  configureWebpack: {
+    output: {
+      libraryExport: 'default'
+    }
+  },
+  css: { extract: false },
+  publicPath: '/',
   devServer: {
     proxy: {
       '^/authorize': {
