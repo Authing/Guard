@@ -328,21 +328,20 @@ export default {
       if (errorCode && Number(errorCode) === 2207) {
         this.clearLocalStorage();
       }
-
-      try {
-        // 获取应用的名称，图标等信息
-        this.appName = this.opts.title || this.appInfo.name;
-        window.title = `${this.appName} - Authing`;
-        document.title = `${this.appName} - Authing`;
-        this.appLogo = this.opts.logo || this.appInfo.image;
-        this.clientId = this.appInfo.clientId;
-      } catch (erro) {
-        console.log(erro);
-        that.authingOnError = true;
-        that.$authing.pub("authing-unload", erro);
-        this.$router.replace({ name: "error", query: { message: erro } });
-        return;
-      }
+    }
+    try {
+      // 获取应用的名称，图标等信息
+      this.appName = this.opts.title || this.appInfo.name;
+      window.title = `${this.appName} - Authing`;
+      document.title = `${this.appName} - Authing`;
+      this.appLogo = this.opts.logo || this.appInfo.image;
+      this.clientId = this.appInfo.clientId;
+    } catch (erro) {
+      console.log(erro);
+      that.authingOnError = true;
+      that.$authing.pub("authing-unload", erro);
+      this.$router.replace({ name: "error", query: { message: erro } });
+      return;
     }
     var that = this;
     var auth = null;
