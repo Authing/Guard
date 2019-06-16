@@ -23,33 +23,32 @@ var AuthingGuard = function(appId, domain, opts) {
       PHONE: "请输入手机号",
       PHONE_CODE: "4 位验证码"
     },
-
     $authing = this;
 
   $authing.eventsList = {
-    'authing-load': [],
-    'authing-unload': [],
+    "authing-load": [],
+    "authing-unload": [],
 
     authenticated: [],
-    'authenticated-error': [],
+    "authenticated-error": [],
 
-    'social-load': [],
-    'social-unload': [],
+    "social-load": [],
+    "social-unload": [],
 
     login: [],
-    'login-error': [],
+    "login-error": [],
     register: [],
-    'register-error': [],
+    "register-error": [],
 
-    'email-sent': [],
-    'reset-password': [],
-    'reset-password-error': [],
+    "email-sent": [],
+    "reset-password": [],
+    "reset-password-error": [],
 
-    'scanning': [],
-    'scanning-error': [],
-    'scanning-interval-starting': [],
+    scanning: [],
+    "scanning-error": [],
+    "scanning-interval-starting": [],
 
-    'form-closed': []
+    "form-closed": []
   };
 
   opts = opts || {};
@@ -58,7 +57,7 @@ var AuthingGuard = function(appId, domain, opts) {
   $authing.opts.clientId = clientId;
   $authing.opts.appId = appId;
   $authing.opts.domain = domain;
-  $authing.opts.protocol = opts.protocol
+  $authing.opts.protocol = opts.protocol;
 
   $authing.opts.hideQRCode = opts.hideQRCode || false;
   $authing.opts.hideUP = opts.hideUP || false;
@@ -128,9 +127,7 @@ var AuthingGuard = function(appId, domain, opts) {
 
   let emailExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/;
 
-  var target =
-    document.getElementById(opts.mountId) ||
-    document.body;
+  var target = document.getElementById(opts.mountId) || document.body;
   var newMount = document.createElement("div");
   newMount.setAttribute("id", "_authing_login_form");
   if (!opts.mountId) {
@@ -142,7 +139,7 @@ var AuthingGuard = function(appId, domain, opts) {
     isMountedInModal = true;
   }
   new Vue({
-    el: "#_authing_login_form",
+    el: `#${opts.mountId}` || "#_authing_login_form",
     router,
     store,
     render: h => h(App),
@@ -181,6 +178,7 @@ AuthingGuard.prototype = {
     }
 
     new Vue({
+      el: `#${appMountId}` || `#${this.opts.mountId}` || "#_authing_login_form",
       router,
       store,
       render: h => h(App),
@@ -192,7 +190,7 @@ AuthingGuard.prototype = {
         SSOHost: opts.SSOHost || "https://sso.authing.cn",
         opts: this.opts
       }
-    }).$mount("#_authing_login_form");
+    });
   },
 
   hide: function() {
@@ -214,7 +212,7 @@ AuthingGuard.prototype = {
         cb(params);
       }
     }
-  },
+  }
 
   // isLogged: function() {
   //   let appToken = localStorage.getItem("appToken");
@@ -243,9 +241,5 @@ AuthingGuard.prototype = {
   //   location.href = this.SAMLIdPURL;
   // }
 };
-
-if (window) {
-  window.AuthingGuard = AuthingGuard;
-}
 
 export default AuthingGuard;
