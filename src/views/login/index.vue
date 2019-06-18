@@ -481,31 +481,31 @@ export default {
         if (!protocol) {
           let queries = [
             `query {
-          QueryAppInfoByDomain(domain: "${domain}") {
-              _id,
-              name,
-              image,
-              clientId
-          }
-        }`,
+  QueryAppInfoByDomain(domain: "${domain}") {
+    _id,
+    name,
+    image,
+    clientId
+  }
+}`,
             `query {
-          QueryOIDCAppInfoByDomain(domain: "${domain}") {
-              _id,
-              name,
-              image,
-              client_id,
-              redirect_uris,
-              domain
-          }
-        }`,
+  QueryOIDCAppInfoByDomain(domain: "${domain}") {
+    _id,
+    name,
+    image,
+    client_id,
+    redirect_uris,
+    domain
+  }
+}`,
             `query {
-          QuerySAMLIdentityProviderInfoByDomain(domain: "${domain}") {
-              _id,
-              name,
-              image,
-              clientId
-          }
-        }`
+  QuerySAMLIdentityProviderInfoByDomain(domain: "${domain}") {
+    _id,
+    name,
+    image,
+    clientId
+  }
+}`
           ];
           let appInfos = await Promise.all(
             queries.map(q => GraphQLClient_getAppInfo.request({ query: q }))
@@ -592,6 +592,64 @@ export default {
       } else if (appId) {
         // 如果没有二级域名，就通过 appId 查找
         try {
+          // 如果没有提供 protocol 参数，就挨个查一遍吧
+          if (!protocol) {
+            let queries = [
+              `query {
+  QueryAppInfoByID(appId: "${appId}") {
+    _id,
+    name,
+    image,
+    clientId
+  }
+}`,
+              `query {
+  QueryOIDCAppInfoByID(appId: "${appId}") {
+    _id,
+    name,
+    image,
+    client_id,
+    redirect_uris,
+    domain
+  }
+}`,
+              `query {
+  QuerySAMLIdentityProviderInfoByID(appId: "${appId}") {
+    _id,
+    name,
+    image,
+    clientId
+  }
+}`
+            ];
+            let appInfos = await Promise.all(
+              queries.map(q => GraphQLClient_getAppInfo.request({ query: q }))
+            );
+            let [
+              { QueryAppInfoByID },
+              { QueryOIDCAppInfoByID },
+              { QuerySAMLIdentityProviderInfoByID }
+            ] = appInfos;
+            this.saveProtocol({
+              protocol: QuerySAMLIdentityProviderInfoByID
+                ? "saml"
+                : QueryOIDCAppInfoByID
+                ? "oidc"
+                : QueryAppInfoByID
+                ? "oauth"
+                : "",
+              params: {
+                ...this.$route.query
+              },
+              isSSO: this.opts.isSSO
+            });
+            return (
+              QuerySAMLIdentityProviderInfoByAppID ||
+              QueryOIDCAppInfoByAppID ||
+              QueryAppInfoByAppID
+            );
+          }
+
           switch (protocol) {
             case "oidc":
               operationName = "QueryOIDCAppInfoByAppID";
