@@ -2,12 +2,14 @@ const state = {
   // 登录成功和错误提示
   protocol: "",
   params: {
-    response_type: 'code',
-    redirect_uri: '',
-    state: Math.random().toString().slice(2),
-    scope: ''
+    response_type: "code",
+    redirect_uri: "",
+    state: Math.random()
+      .toString()
+      .slice(2),
+    scope: ""
   },
-  isSSO: false,
+  isSSO: false
 };
 const getters = {
   protocol: state => state.protocol,
@@ -18,7 +20,7 @@ const actions = {
     commit("setProtocol", { protocol, params, isSSO });
   },
   handleProtocolProcess({ state }, { router }) {
-    if(state.isSSO) {
+    if (state.isSSO) {
       switch (state.protocol) {
         case "oauth":
           this.dispatch("protocol/handleOAuthProcess", { router });
@@ -31,9 +33,8 @@ const actions = {
           break;
       }
     } else {
-      return
+      return;
     }
-
   },
   handleOAuthProcess({ state }, { router }) {
     try {
@@ -97,9 +98,10 @@ const actions = {
 };
 
 const mutations = {
-  setProtocol(state, { protocol, params }) {
+  setProtocol(state, { protocol, params, isSSO }) {
     state.protocol = protocol;
     state.params = { ...params };
+    state.isSSO = isSSO;
   }
 };
 

@@ -525,7 +525,8 @@ export default {
               : "",
             params: {
               ...this.$route.query
-            }
+            },
+            isSSO: this.opts.isSSO
           });
           return (
             QuerySAMLIdentityProviderInfoByDomain ||

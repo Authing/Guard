@@ -139,7 +139,7 @@ var AuthingGuard = function(appId, domain, opts) {
     isMountedInModal = true;
   }
   new Vue({
-    el: `#${opts.mountId}` || "#_authing_login_form",
+    el: "#_authing_login_form",
     router,
     store,
     render: h => h(App),
@@ -178,7 +178,7 @@ AuthingGuard.prototype = {
     }
 
     new Vue({
-      el: `#${appMountId}` || `#${this.opts.mountId}` || "#_authing_login_form",
+      el: "#_authing_login_form",
       router,
       store,
       render: h => h(App),
