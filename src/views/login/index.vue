@@ -596,7 +596,7 @@ export default {
           if (!protocol) {
             let queries = [
               `query {
-  QueryAppInfoByID(appId: "${appId}") {
+  queryAppInfoByAppID(appId: "${appId}") {
     _id,
     name,
     image,
@@ -626,7 +626,7 @@ export default {
               queries.map(q => GraphQLClient_getAppInfo.request({ query: q }))
             );
             let [
-              { QueryAppInfoByID },
+              { queryAppInfoByAppID },
               { QueryOIDCAppInfoByID },
               { QuerySAMLIdentityProviderInfoByID }
             ] = appInfos;
@@ -635,7 +635,7 @@ export default {
                 ? "saml"
                 : QueryOIDCAppInfoByID
                 ? "oidc"
-                : QueryAppInfoByID
+                : queryAppInfoByAppID
                 ? "oauth"
                 : "",
               params: {
