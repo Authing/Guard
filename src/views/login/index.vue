@@ -187,6 +187,7 @@ import GlobalMessage from "../components/GlobalMessage";
 import ForgetPassword from "./forgetPassword/index";
 import PhoneCodeLogin from "./PhoneCode";
 import { mapGetters, mapActions } from "vuex";
+import jwt from "jsonwebtoken";
 export default {
   name: "app",
   components: {
@@ -704,8 +705,16 @@ export default {
       if (appToken) {
         try {
           appToken = JSON.parse(appToken);
+          let decoded = jwt.decode(appToken);
+          let expired = parseInt(Date.now() / 1000) > decoded.exp;
+          if (expired) {
+            delete appToken[this.opts.appId];
+            localStorage.removeItem("_authing_token");
+            localStorage.setItem("appToken", appToken);
+          }
         } catch (error) {
           appToken = {};
+          localStorage.removeItem("appToken");
         }
       } else {
         appToken = {};
