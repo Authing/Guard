@@ -604,7 +604,7 @@ export default {
   }
 }`,
               `query {
-  QueryOIDCAppInfoByID(appId: "${appId}") {
+  QueryOIDCAppInfoByAppID(appId: "${appId}") {
     _id,
     name,
     image,
@@ -614,7 +614,7 @@ export default {
   }
 }`,
               `query {
-  QuerySAMLIdentityProviderInfoByID(appId: "${appId}") {
+  QuerySAMLIdentityProviderInfoByAppID(appId: "${appId}") {
     _id,
     name,
     image,
@@ -627,13 +627,13 @@ export default {
             );
             let [
               { queryAppInfoByAppID },
-              { QueryOIDCAppInfoByID },
-              { QuerySAMLIdentityProviderInfoByID }
+              { QueryOIDCAppInfoByAppID },
+              { QuerySAMLIdentityProviderInfoByAppID }
             ] = appInfos;
             this.saveProtocol({
-              protocol: QuerySAMLIdentityProviderInfoByID
+              protocol: QuerySAMLIdentityProviderInfoByAppID
                 ? "saml"
-                : QueryOIDCAppInfoByID
+                : QueryOIDCAppInfoByAppID
                 ? "oidc"
                 : queryAppInfoByAppID
                 ? "oauth"
