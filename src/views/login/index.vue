@@ -766,6 +766,7 @@ export default {
           let accessToken = appToken[this.opts.appId].accessToken;
           let payload = accessToken.split(".")[1];
           let decoded = window.atob(payload);
+          decoded = JSON.parse(decoded)
           let expired = parseInt(Date.now() / 1000) > decoded.exp;
           if (expired) {
             delete appToken[this.opts.appId];
