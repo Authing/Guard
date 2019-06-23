@@ -282,7 +282,7 @@ export default {
             //   }
             // });
             // 把 ssoHost 域名第一部分替换成 oidc 应用的 domain 再作为地址
-            let ssoHostArr = this.opts.ssoHost.split(".");
+            let ssoHostArr = this.opts.SSOHost.split(".");
             ssoHostArr.shift();
             ssoHostArr.unshift(appInfo.domain);
             let ssoHost = ssoHostArr.join(".");
