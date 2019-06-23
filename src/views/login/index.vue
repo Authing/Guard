@@ -290,6 +290,7 @@ export default {
             }
             ssoHostArr.unshift(appInfo.domain);
             let ssoHost = ssoHostArr.join(".");
+            // 这么写是为了动态生成这个链接，否则私有部署会出问题
             location.href = `${isHttps ? 'https://' : 'http://'}${ssoHost}/oauth/oidc/auth?client_id=${
               appInfo.client_id
             }&redirect_uri=${
