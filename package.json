@@ -1,6 +1,6 @@
 {
   "name": "@authing/authing-guard",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Authing/Guard.git"
@@ -10,9 +10,9 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "build-pack": "VERSION=`node -e '(function() { console.log(require(\"./package.json\").version) })()'` && vue-cli-service build --target lib --name Guard.$VERSION ./src/main.js",
-    "dist": "VERSION=`node -e '(function() { console.log(require(\"./package.json\").version) })()'` && rm -rf ../guard-html/* && ejs-cli -b ./public -f index.html -O \"{\\\"version\\\": \\\"$VERSION\\\"}\" > ../guard-html/index.html && cp ./dist/Guard.$VERSION.umd.min.js ./dist/Guard.$VERSION.umd.min.js.map ../guard-html && cd ../guard-html && git add . && git commit -m 'Update' && git push -f origin master",
-    "dist-no-git": "VERSION=`node -e '(function() { console.log(require(\"./package.json\").version) })()'` && rm -rf ../guard-html/* && ejs-cli -b ./public -f index.html -O \"{\\\"version\\\": \\\"$VERSION\\\"}\" > ../guard-html/index.html && cp ./dist/Guard.$VERSION.umd.min.js ./dist/Guard.$VERSION.umd.min.js.map ../guard-html"
+    "build-pack": "vue-cli-service build --target lib --name Guard ./src/main.js",
+    "dist": "VERSION=`node -e '(function() { console.log(require(\"./package.json\").version) })()'` && rm -rf ../guard-html/* && ejs-cli -b ./public -f index.html -O \"{\\\"version\\\": \\\"$VERSION\\\"}\" > ../guard-html/index.html && cp ./dist/Guard.umd.min.js ../guard-html/Guard.$VERSION.umd.min.js && cp ./dist/Guard.umd.min.js.map ../guard-html/Guard.$VERSION.umd.min.js.map && cd ../guard-html && git add . && git commit -m 'Update' && git push -f origin master",
+    "dist-no-git": "VERSION=`node -e '(function() { console.log(require(\"./package.json\").version) })()'` && rm -rf ../guard-html/* && ejs-cli -b ./public -f index.html -O \"{\\\"version\\\": \\\"$VERSION\\\"}\" > ../guard-html/index.html && cp ./dist/Guard.umd.min.js ../guard-html/Guard.$VERSION.umd.min.js && cp ./dist/Guard.umd.min.js.map ../guard-html/Guard.$VERSION.umd.min.js.map"
   },
   "dependencies": {
     "authing-js-sdk": "2.1.1",

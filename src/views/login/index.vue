@@ -455,6 +455,7 @@ export default {
     ]),
     ...mapActions("protocol", ["saveProtocol"]),
     getSecondLvDomain(hostname) {
+      if(!hostname) return null
       let hostnameSplit = hostname.split('.');
       // 只有域名部分由三部分以上组成才算拥有二级域名
       if(hostnameSplit.length >=3) {
