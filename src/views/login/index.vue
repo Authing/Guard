@@ -455,9 +455,11 @@ export default {
     ]),
     ...mapActions("protocol", ["saveProtocol"]),
     getSecondLvDomain(hostname) {
-      let exp = /(.*)\.authing\.cn/;
-      let res = exp.exec(hostname);
-      if (res) return res[1];
+      let hostnameSplit = hostname.split('.');
+      // 只有域名部分由三部分以上组成才算拥有二级域名
+      if(hostnameSplit.length >=3) {
+        return hostnameSplit[0]
+      }
       return null;
     },
     async queryAppInfo(protocol) {
