@@ -281,9 +281,12 @@ export default {
             //     doc: "https://docs.authing.cn/authing/advanced/oidc/oidc-authorization#shi-yong-shou-quan-ma-mo-shi-authorization-code-flow"
             //   }
             // });
-            location.href = `https://${
-              appInfo.domain
-            }.authing.cn/oauth/oidc/auth?client_id=${
+            // 把 ssoHost 域名第一部分替换成 oidc 应用的 domain 再作为地址
+            let ssoHostArr = this.opts.ssoHost.split(".");
+            ssoHostArr.shift();
+            ssoHostArr.unshift(appInfo.domain);
+            let ssoHost = ssoHostArr.join(".");
+            location.href = `https://${ssoHost}/oauth/oidc/auth?client_id=${
               appInfo.client_id
             }&redirect_uri=${
               appInfo.redirect_uris[0]
@@ -455,11 +458,11 @@ export default {
     ]),
     ...mapActions("protocol", ["saveProtocol"]),
     getSecondLvDomain(hostname) {
-      if(!hostname) return null
-      let hostnameSplit = hostname.split('.');
+      if (!hostname) return null;
+      let hostnameSplit = hostname.split(".");
       // 只有域名部分由三部分以上组成才算拥有二级域名
-      if(hostnameSplit.length >=3) {
-        return hostnameSplit[0]
+      if (hostnameSplit.length >= 3) {
+        return hostnameSplit[0];
       }
       return null;
     },
@@ -769,7 +772,7 @@ export default {
           let accessToken = appToken[this.opts.appId].accessToken;
           let payload = accessToken.split(".")[1];
           let decoded = window.atob(payload);
-          decoded = JSON.parse(decoded)
+          decoded = JSON.parse(decoded);
           let expired = parseInt(Date.now() / 1000) > decoded.exp;
           if (expired) {
             delete appToken[this.opts.appId];
