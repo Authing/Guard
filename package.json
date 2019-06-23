@@ -10,7 +10,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "build-pack": " vue-cli-service build --target lib --name Guard ./src/main.js",
+    "build-pack": " vue-cli-service build --target lib --name Guard.`node -e '(function() { console.log(require(\"./package.json\").version) })()'` ./src/main.js",
     "deploy": "cd ./dist && tar zcvf dist.tar.gz * && scp dist.tar.gz authing-o:/mnt/authing && echo 'dist 包已拷贝到 authing-o:/mnt/authing'",
     "dist": "cp ./dist/Guard.umd.min.js ./dist/Guard.umd.min.js.map ./public/index.html ../guard-html && cd ../guard-html && git add . && git commit -m 'Update' && git push -f origin master"  
   },
