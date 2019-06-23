@@ -283,10 +283,14 @@ export default {
             // });
             // 把 ssoHost 域名第一部分替换成 oidc 应用的 domain 再作为地址
             let ssoHostArr = this.opts.SSOHost.split(".");
-            ssoHostArr.shift();
+            let head = ssoHostArr.shift();
+            let isHttps = false
+            if(~head.indexOf('https')) {
+              isHttps = true
+            }
             ssoHostArr.unshift(appInfo.domain);
             let ssoHost = ssoHostArr.join(".");
-            location.href = `https://${ssoHost}/oauth/oidc/auth?client_id=${
+            location.href = `${isHttps ? 'https://' : 'http://'}${ssoHost}/oauth/oidc/auth?client_id=${
               appInfo.client_id
             }&redirect_uri=${
               appInfo.redirect_uris[0]
