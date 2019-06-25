@@ -1,11 +1,11 @@
 {
   "name": "@authing/guard",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Authing/Guard.git"
   },
-  "main": "dist/Guard.0.1.5.umd.min.js",
+  "main": "dist/Guard.umd.min.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
