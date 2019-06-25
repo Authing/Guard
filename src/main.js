@@ -44,7 +44,7 @@ var AuthingGuard = function(appId, domain, opts) {
     "reset-password": [],
     "reset-password-error": [],
 
-    scanning: [],
+    "scanned-success": [],
     "scanned-error": [],
     "scanning-interval-starting": [],
 
