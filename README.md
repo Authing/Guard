@@ -123,7 +123,7 @@ guard.on('authenticated-error', (error) => {
 
 ### authing 对象
 
-如果你想获取 authing 对象以调用[用户接口](https://docs.authing.cn/#/user_service/user_service)，请使用如下代码：
+如果你想获取 authing 对象以调用[用户管理接口](https://docs.authing.cn/authing/sdk/authing-sdk-for-web)，请使用如下代码：
 
 `authenticated` 事件是 `Authing` 对象初始化后的回调事件。
 
@@ -144,7 +144,7 @@ guard.on('authing-load', (authing) => {
 
 显示登录表单，同时允许覆盖初始化时的配置。
 
-- **mountId {String}**: 指定 Guard 将在何处显示，接受一个 html 元素 id，不含#号。不指定则默认全屏弹出 Modal 登录框。
+- **mountId {String}**: 指定 Guard 将在何处显示，接受一个 html 元素 id，不含 # 号，不指定则直接生成在网页中间。
 
 #### 示例
 
@@ -152,7 +152,7 @@ guard.on('authing-load', (authing) => {
 // 没有 mountId，会全屏挂载
 guard.show();
 
-// 将会挂载在 mountId 上
+// 将会挂载在 id 为 mountId 的标签上
 guard.show('mountId');
 
 ```
