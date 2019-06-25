@@ -25,19 +25,19 @@ Guard 提供的表单拥有以下基本功能：
 ### 通过 CDN 安装
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@authing/authing-guard/dist/Guard.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@authing/guard/dist/Guard.umd.min.js"></script>
 ```
 
 ### 通过 NPM 安装
 
 ```shell
-$ npm install @authing/authing-guard --save
+$ npm install @authing/guard --save
 ```
 
 接着你可以使用以下方式引入 `Guard`：
 
 ```javascript
-import Guard from '@authing/authing-guard';
+import Guard from '@authing/guard';
 ```
 
 ## 快速生成登录表单 UI
@@ -53,7 +53,7 @@ App.vue
 </template>
 
 <script>
-  import Guard from "@authing/authing-guard";
+  import Guard from "@authing/guard";
   export default {
     name: "app",
     mounted() {
@@ -79,9 +79,9 @@ App.vue
 
 ## API
 
-### new AuthingGuard(appId, domain, options)
+### new Guard(appId, domain, options)
 
-初始化一个新的 `AuthingGuard` 实例，需要传入你在 [Authing](https://authing.cn/dashboard) 对应应用中的 appId 和域名信息。
+初始化一个新的 `Guard` 实例，需要传入你在 [Authing](https://authing.cn/dashboard) 对应应用中的 appId 和域名信息。
 
 - **appId {String}**: Authing SSO 类应用的 _appId_；
 - **domain {String}**: Authing 中配置的 _域名_. 通常是 \<appDomain\>.authing.cn；
@@ -92,7 +92,7 @@ App.vue
 ```js
 var appId = "YOUR_AUTHING_SSO_APPID";
 var domain = "example.authing.cn";
-var guard = new AuthingGuard(appId, domain, {
+var guard = new Guard(appId, domain, {
   isSSO: true
 });
 
