@@ -42,39 +42,47 @@ import Guard from '@authing/guard';
 
 ## 快速生成登录表单 UI
 
-Guard 套件可以用于快速生成登录表单。这里以 Vue 为例。
+Guard 套件可以用于快速生成登录表单，这里以一个简单的 HTML 为例：
 
-App.vue
 ```html
-<template>
-  <div id="app">
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Guard Example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://fe-static.authing.cn/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@authing/guard/dist/Guard.umd.min.js"></script>
+</head>
+<body>
+
     <div id="my-form"></div>
-  </div>
-</template>
+    
+    <script>
+        const clientId = "5cc2a350e056c76eea71db8a";
+        const guard = new Guard(clientId, undefined, {
+            logo: "https://usercontents.authing.cn/client/logo@2.png",
+            title: "Authing",
+            // 把表单插入到 id 为 my-app-mount-id 的标签
+            mountId: "my-form",
 
-<script>
-  import Guard from "@authing/guard";
-  export default {
-    name: "app",
-    mounted() {
-      // 因为没有涉及到云上 SSO 类应用，所以 appDomain 可以设置为 undefined
-      const clientId = "你的用户池 ID";
-      const guard = new Guard(clientId, undefined, {
-        logo: "https://usercontents.authing.cn/client/logo@2.png",
-        title: "Authing",
-        // 把表单插入到 id 为 my-app-mount-id 的标签
-        mountId: "my-form"
-      });
-      guard.on("authenticated", data => {
-        console.log(data);
-      });
-      guard.on("register", data => {
-        console.log(data);
-      });
-    }
-  }
-</script>
-
+            qrcodeScanning: {
+                redirect: false,
+            }
+        });
+        guard.on("authenticated", data => {
+            console.log(data);
+        });
+        guard.on("register", data => {
+            console.log(data);
+        });
+        guard.on("scanned-success", data => {
+            console.log(data);
+        });
+    </script>
+</body>
+</html>
 ```
 
 ## API
