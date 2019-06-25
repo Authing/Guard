@@ -193,7 +193,7 @@ form-closed     | Login Form 关闭事件   |      null | 用户按下 ESC 或�
 **clientId**     |  **clientId** 与 **appId** 二选一  |      无   | String   | 用户池 ID | -
 **appId** | **clientId** 与 **appId** 二选一 | 无 | String | -
 **domain**     |  否   |      无   | String   | SSO 类应用云上域名 | -
-protocol | 否 | SSO 应用类型，可选值为 oauth、oidc、saml | -
+protocol | 否 | oauth | String | SSO 应用类型，可选值为 oauth、oidc、saml | -
 mountId   |  否   |无|String|指定 Authing form 将在何处显示，接受一个 html 元素 id，不含`#`号。不指定则默认全屏弹出 Modal 登录框|-
 title     |  否   |      Authing  | String   |**产品名称**| -
 logo     |  否   |     [Authing LOGO]  | String   |**产品logo**，默认为 Authing 的官方 Logo| -
