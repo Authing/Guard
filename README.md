@@ -4,25 +4,28 @@
 
 Guard 套件是 Authing 提供的浏览器端单点登录解决方案，开发者可基于此框架在浏览器端实现单点登录的页面及逻辑。
 
-Guard 套件现在可以完全替代 LoginForm 项目，在工程上更易接入，启动速度加快。
-
 Guard 提供的表单拥有以下基本功能：
 
- - 邮箱／密码登录注册
+ - 邮箱密码登录注册
+ - 手机验证码登录
+ - 用户名密码登录
  - 忘记密码以及重置密码
- - 记住账号功能（加密存储到浏览器本地）
- - 社会化登录
- - 小程序扫码登录（需先在后台配置）
+ - 记住账号功能（加密信息存储到浏览器本地）
+ - 社会化登录（微信、Github）
+ - 小程序扫码登录
  - 响应式特性
- - SSO
+ - SSO（支持 SAML、LDAP、OIDC）
+
+![login-form](https://cdn.authing.cn/sdk/guide/image/login-form.png)
+
+[点击体验](https://sample.authing.cn/#/) 或 [在 jsfiddle 上尝试](https://jsfiddle.net/yelexin/Lanvjpct)。
 
 ## 安装
 
 ### 通过 CDN 安装
 
 ```html
-<!-- 施工中-->
-<script src="https://cdn.authing.cn/sdk/javascript/authing-guard.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@authing/authing-guard/dist/Guard.umd.min.js"></script>
 ```
 
 ### 通过 NPM 安装
@@ -31,10 +34,10 @@ Guard 提供的表单拥有以下基本功能：
 $ npm install @authing/authing-guard --save
 ```
 
-接着你可以使用以下方式引入 `AuthingGuard`：
+接着你可以使用以下方式引入 `Guard`：
 
 ```javascript
-import AuthingGuard from '@authing/authing-guard';
+import Guard from '@authing/authing-guard';
 ```
 
 ## 快速生成登录表单 UI
@@ -87,20 +90,20 @@ App.vue
 #### 示例
 
 ```js
-var appId = "YOUR_AUTHING_OAuth_APPID";
+var appId = "YOUR_AUTHING_SSO_APPID";
 var domain = "example.authing.cn";
 var guard = new AuthingGuard(appId, domain, {
   isSSO: true
 });
 
-guard.on('login', (userInfo) => {
+guard.on('authenticated', (userInfo) => {
   console.log('用户登录成功', userInfo);
 
   // Update DOM
 
 });
 
-guard.on('login-error', (error) => {
+guard.on('authenticated-error', (error) => {
   console.log('用户登录失败', error);
   
   // Handle error 
@@ -116,7 +119,6 @@ guard.on('login-error', (error) => {
 
 `authenticated` 事件是 `Authing` 对象初始化后的回调事件。
 
-
 ``` javascript
 guard.on('authing-load', (authing) => {
   console.log('Authing 实例初始化成功', authing);
@@ -126,7 +128,7 @@ guard.on('authing-load', (authing) => {
   // authing.logout
   // authing.checkLoginStaus
   // ...
-  // 更多请参考：https://docs.authing.cn/#/user_service/user_service
+  // 更多请参考：https://docs.authing.cn/authing/sdk/authing-sdk-for-web
 });
 ```
 
@@ -134,7 +136,7 @@ guard.on('authing-load', (authing) => {
 
 显示登录表单，同时允许覆盖初始化时的配置。
 
-- **mountId {String}**: 指定 Authing form 将在何处显示，接受一个 html 元素 id，不含#号。不指定则默认全屏弹出 Modal 登录框。
+- **mountId {String}**: 指定 Guard 将在何处显示，接受一个 html 元素 id，不含#号。不指定则默认全屏弹出 Modal 登录框。
 
 #### 示例
 
@@ -181,20 +183,6 @@ scanning-interval-starting     | 开始监听扫码事件   |      interval | �
 form-closed     | Login Form 关闭事件   |      null | 用户按下 ESC 或点击右上方的关闭按钮后会触发此事件
 
 ### 自定义
-
-Guard 提供的表单拥有以下基本功能：
-
- - 邮箱／密码登录注册
- - 忘记密码以及重置密码
- - 记住账号功能（加密存储到浏览器本地）
- - 社会化登录（需先在后台配置）
- - 小程序扫码登录（需先在后台配置）
- - 响应式特性
- - SSO
-
-![login-form](https://cdn.authing.cn/sdk/guide/image/login-form.png)
-
-[点击体验](https://sample.authing.cn/#/) 或 [在 jsfiddle 上尝试](https://jsfiddle.net/yelexin/Lanvjpct)。
 
 ### UI 定制
 
