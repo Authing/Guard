@@ -25,7 +25,7 @@ Guard 提供的表单拥有以下基本功能：
 ### 通过 CDN 安装
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@authing/guard@0.3.3/dist/Guard.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@authing/guard/dist/Guard.umd.min.js"></script>
 ```
 
 ### 通过 NPM 安装
