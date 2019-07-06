@@ -111,20 +111,20 @@ import Guard from '@authing/guard';
         const guard = new Guard(clientId, {
             logo: "https://usercontents.authing.cn/client/logo@2.png",
             title: "Authing",
-            // 把表单插入到 id 为 my-app-mount-id 的标签
+            // 把表单插入到 id 为 my-form 的标签
             mountId: "my-form",
         });
-        guard.on("authenticated", data => {
+        guard.on("authenticated", userInfo => {
             // 用户登录成功后，你可以直接在这里获取他的用户信息
-            console.log(data);
+            console.log(userInfo);
         });
-        guard.on("register", data => {
+        guard.on("register", userInfo => {
             // 用户注册成功后，你可以直接在这里获取他的用户信息
-            console.log(data);
+            console.log(userInfo);
         });
-        guard.on("scanned-success", data => {
+        guard.on("scanned-success", userInfo => {
             // 用户扫码登录成功后，你可以直接在这里获取他的用户信息
-            console.log(data);
+            console.log(userInfo);
         });
     </script>
 </body>
