@@ -61,7 +61,7 @@ Guard 套件可以用于快速生成登录表单，这里以一个简单的 HTML
     
     <script>
         const clientId = "5cc2a350e056c76eea71db8a";
-        const guard = new Guard(clientId, undefined, {
+        const guard = new Guard(clientId, {
             logo: "https://usercontents.authing.cn/client/logo@2.png",
             title: "Authing",
             // 把表单插入到 id 为 my-app-mount-id 的标签
@@ -87,7 +87,7 @@ Guard 套件可以用于快速生成登录表单，这里以一个简单的 HTML
 
 ## API
 
-### new Guard(appId, domain, options)
+### new Guard(clientId, options)
 
 初始化一个新的 `Guard` 实例，需要传入你在 [Authing](https://authing.cn/dashboard) 对应应用中的 appId 和域名信息。
 
@@ -99,8 +99,11 @@ Guard 套件可以用于快速生成登录表单，这里以一个简单的 HTML
 
 ```js
 var appId = "YOUR_AUTHING_SSO_APPID";
+var clientId = "YOUR_AUTHING_USERPOOL_ID";
 var domain = "example.authing.cn";
-var guard = new Guard(appId, domain, {
+var guard = new Guard(clientId, {
+  appId,
+  domain,
   isSSO: true
 });
 
@@ -225,6 +228,7 @@ hideClose|否|false|Boolean|**是否隐藏登录框右上角的关闭按钮**，
 **qrcodeScanning**.redirect     |  否   |      true  | Boolean   |**是否执行跳转（在用户后台配置的URL）**，若值为false，用户数据会通过 onSuccess 回调函数返回| -
 **qrcodeScanning**.interval     |  否   |      1500  | Number   |每隔多少秒检查一次是否扫码，默认1500 | -
 **qrcodeScanning**.tips     |  否   |      使用 微信 或小程序 身份管家 扫码登录  | String   |提示信息，可写HTML | -
+**useSelfWxapp** | 否 | false | Boolean | 是否使用私有部署的小程序提供二维码，此选项仅供私有部署用户使用 | -
 **host**     |  否   |      {}  | Object   |**小程序扫码登录的配置项**| -
 **host**.user     |  否   |      [Authing 官方链接]  | String   |**GraphQL 链接**，默认 Authing 官方链接，此处用于私有部署 Authing 的用户使用| -
 **host**.oauth     |  否   |      [Authing 官方链接]  | String   |**GraphQL 链接**，默认 Authing 官方链接，此处用于私有部署 Authing 的用户使用| -

@@ -270,17 +270,7 @@ export default {
       }
       switch (this.protocol) {
         case "oidc":
-          if (!this.params.uuid) {
-            // this.$router.replace({
-            //   name: "error",
-            //   query: {
-            //     message: [
-            //       "缺少 OIDC 所必须的参数 uuid",
-            //       "OIDC 应用不能直接输入网址进行登录，需要带参数访问后端 URL，详情请看文档"
-            //     ],
-            //     doc: "https://docs.authing.cn/authing/advanced/oidc/oidc-authorization#shi-yong-shou-quan-ma-mo-shi-authorization-code-flow"
-            //   }
-            // });
+          if (!this.params.uuid) { // 如果用户直接输入网址，什么参数也不带
             // 把 ssoHost 域名第一部分替换成 oidc 应用的 domain 再作为地址
             let ssoHostArr = this.opts.SSOHost.split(".");
             let head = ssoHostArr.shift();
@@ -723,9 +713,7 @@ export default {
       let operationName = "QueryClientHasLDAPConfigs";
       let query =
         `query {
-              ${operationName} (clientId: "` +
-        clientId +
-        `") {   
+              ${operationName} (clientId: "${clientId}") {   
                 result,
               }
             }
@@ -749,16 +737,7 @@ export default {
       localStorage.removeItem("_authing_token");
     },
 
-    handleGoBack: function handleGoBack() {
-      var lastState = this.pageStack.pop();
-      if (lastState) {
-        this.pageVisible = Object.assign({}, lastState);
-      }
-      if (this.loading) {
-        this.unLoading();
-      }
-    },
-    handleClose: function handleClose() {
+    handleClose() {
       if (this.opts.hideClose) {
         return false;
       }

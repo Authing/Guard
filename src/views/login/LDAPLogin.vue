@@ -120,6 +120,7 @@ export default {
       validAuth
         .loginByLDAP(ldapLoginInfo)
         .then(data => {
+          /*
           if (that.rememberMe) {
             localStorage.setItem("_authing_username", that.email);
             localStorage.setItem(
@@ -130,7 +131,7 @@ export default {
             localStorage.removeItem("_authing_username");
             localStorage.removeItem("_authing_password");
           }
-
+*/
           this.showGlobalMessage({
             type: "success",
             message: "验证通过，欢迎你：" + data.username || data.email
