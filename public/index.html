@@ -49,7 +49,8 @@
       };
 
       let appId = getQueryString("app_id") || getQueryString("client_id");
-      const guard = new Guard(appId, undefined, {
+      const guard = new Guard(undefined, {
+        appId,
         hideClose: true,
         isSSO: true,
         SSOHost: location.origin, // 开发模式下，会代理转发到 localhost:5556/authorize

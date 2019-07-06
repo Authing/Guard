@@ -8,8 +8,7 @@ import "./styles/styles.css";
 import "./styles/animations.css";
 
 Vue.config.productionTip = false;
-var AuthingGuard = function(appId, domain, opts) {
-  let clientId = appId || "";
+var AuthingGuard = function(clientId, opts) {
 
   window.Authing = Authing;
 
@@ -55,8 +54,8 @@ var AuthingGuard = function(appId, domain, opts) {
   $authing.opts = opts || {};
 
   $authing.opts.clientId = clientId;
-  $authing.opts.appId = appId;
-  $authing.opts.domain = domain;
+  $authing.opts.appId = opts.appId;
+  $authing.opts.domain = opts.domain;
   $authing.opts.protocol = opts.protocol;
 
   $authing.opts.hideQRCode = opts.hideQRCode || false;
