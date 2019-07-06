@@ -46,7 +46,7 @@ import Guard from '@authing/guard';
 
 作为**与其他 IdP 通信**的客户端，Guard 此场景下充当 SP 和其他 IdP 通信，用于完成相应登录协议发起授权的环节，例如向其他 SAML IdP 发送 SAML Request请求。
 
-
+部署示例：
 ```html
 <!DOCTYPE html>
 <html lang="zh-cn">
@@ -100,8 +100,7 @@ import Guard from '@authing/guard';
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Guard Example</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://fe-static.authing.cn/vue.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@authing/guard/dist/Guard.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@authing/guard@0.3.3/dist/Guard.umd.min.js"></script>
 </head>
 <body>
 
@@ -131,6 +130,7 @@ import Guard from '@authing/guard';
 </body>
 </html>
 ```
+[点击查看用户信息示例](https://docs.authing.cn/authing/sdk/authing-sdk-for-web#deng-lu)
 
 ## API
 
@@ -157,7 +157,7 @@ import Guard from '@authing/guard';
 
 如果你想获取 authing 对象以调用[用户管理接口](https://docs.authing.cn/authing/sdk/authing-sdk-for-web)，请使用如下代码：
 
-`authenticated` 事件是 `Authing` 对象初始化后的回调事件。
+`authing-load` 事件是 `Authing` 对象初始化后的回调事件。
 
 ``` javascript
 guard.on('authing-load', (authing) => {
@@ -205,7 +205,7 @@ Guard 会在以下生命周期中触发相应事件：
 
 事件名称          | 事件说明              | 事件参数 | 事件参数说明
 --------------- | -------------------- | --------| -------- 
-authing-load    | Authing Client ID 验证通过，加载完成   |      authing | authing 对象，可直接操作 ``login``,``register``等方法
+authing-load    | Authing Client ID 验证通过，加载完成   |      authing | authing 对象，可直接操作 ``login``,``register`` 等方法
 authing-unload     | Authing Client ID 验证失败   |      ``error`` | 错误信息
 social-load     | 社会化登录列表加载完成   |      oauthList | 完整的 OAuth 列表，若用户未在后台配置过则为空
 social-unload     | 社会化登录列表加载失败  |      ``error`` | 错误信息
@@ -234,7 +234,7 @@ form-closed     | Login Form 关闭事件   |      null | 用户按下 ESC 或�
 **appId** | **clientId** 与 **appId** 二选一 | 无 | String |
 **domain**     |  否   |      无   | String   | SSO 类应用云上域名 |
 protocol | 否 | oauth | String | SSO 应用类型，可选值为 oauth、oidc、saml |
-mountId   |  否   |无|String|指定 Authing form 将在何处显示，接受一个 html 元素 id，不含`#`号。不指定则默认全屏弹出 Modal 登录框|
+mountId   |  否   |无|String|指定 Authing form 将在何处显示，接受一个 html 元素 id，不含 `#` 号。不指定则默认全屏弹出 Modal 登录框|
 title     |  否   |      Authing  | String   |**产品名称**|
 logo     |  否   |     [Authing LOGO]  | String   |**产品logo**，默认为 Authing 的官方 Logo|
 forceLogin     |  否   |      false  | Boolean   |**是否将注册和登录合并**，合并后如果用户不存在将自动注册|
