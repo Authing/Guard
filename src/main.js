@@ -75,6 +75,7 @@ var AuthingGuard = function(appId, domain, opts) {
 
   $authing.opts.mountId = opts.mountId || null;
   // 初始化小程序扫码登录配置
+  $authing.opts.useSelfWxapp = opts.useSelfWxapp || false;
   if (opts.qrcodeScanning) {
     opts.qrcodeScanning.redirect = !!opts.qrcodeScanning.redirect;
     opts.qrcodeScanning.interval = opts.qrcodeScanning.interval || 1500;

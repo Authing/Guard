@@ -360,6 +360,7 @@ export default {
         clientId: that.clientId || that.opts.clientId,
         timestamp: that.opts.timestamp,
         nonce: that.opts.nonce,
+        useSelfWxapp: that.opts.useSelfWxapp,
         host: that.opts.host
       });
     } catch (err) {
