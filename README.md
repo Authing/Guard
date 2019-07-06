@@ -62,7 +62,7 @@ import Guard from '@authing/guard';
       <strong>We're sorry but sso doesn't work properly without JavaScript enabled.
         Please enable it to continue.</strong>
     </noscript>
-    <script src="https://cdn.jsdelivr.net/npm/@authing/guard@0.3.3/dist/Guard.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@authing/guard/dist/Guard.umd.min.js"></script>
     <script>
       var appId = "YOUR_AUTHING_SSO_APPID";
       var clientId = "YOUR_AUTHING_USERPOOL_ID";
@@ -100,14 +100,14 @@ import Guard from '@authing/guard';
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Guard Example</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdn.jsdelivr.net/npm/@authing/guard@0.3.3/dist/Guard.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@authing/guard/dist/Guard.umd.min.js"></script>
 </head>
 <body>
 
     <div id="my-form"></div>
     
     <script>
-        const clientId = "5cc2a350e056c76eea71db8a";
+        const clientId = "YOUR_AUTHING_USERPOOL_ID";
         const guard = new Guard(clientId, {
             logo: "https://usercontents.authing.cn/client/logo@2.png",
             title: "Authing",
