@@ -25,7 +25,7 @@ Guard 提供的表单拥有以下基本功能：
 ### 通过 CDN 安装
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@authing/guard@0.2.1/dist/Guard.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@authing/guard@0.3.3/dist/Guard.umd.min.js"></script>
 ```
 
 ### 通过 NPM 安装
@@ -39,10 +39,58 @@ $ npm install @authing/guard --save
 ```javascript
 import Guard from '@authing/guard';
 ```
+## SSO 场景
+你想为其他人**提供**身份服务或**使用**他人提供的身份服务。此部分供私有部署用户参考，使用 SaaS 的用户直接使用 Authing 云上部署的 Guard，无需操心 Guard 部署问题，只需关注[如何发起 SSO 登录请求](https://docs.authing.cn/authing/advanced/oidc/oidc-authorization#fa-qi-shou-quan)。
 
-## 快速生成登录表单 UI
+作为 IdP（身份提供商），**对外提供身份服务**，Guard 此场景下用于 IdP 确认用户身份。支持的协议有 OAuth 2.0，OIDC，SAML，LDAP。
 
-Guard 套件可以用于快速生成登录表单，这里以一个简单的 HTML 为例：
+作为**与其他 IdP 通信**的客户端，Guard 此场景下充当 SP 和其他 IdP 通信，用于完成相应登录协议发起授权的环节，例如向其他 SAML IdP 发送 SAML Request请求。
+
+
+```html
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="icon" href="https://fe-static.authing.cn/dist/favicon.png" />
+    <title>Authing SSO</title>
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but sso doesn't work properly without JavaScript enabled.
+        Please enable it to continue.</strong>
+    </noscript>
+    <script src="https://cdn.jsdelivr.net/npm/@authing/guard@0.3.3/dist/Guard.umd.min.js"></script>
+    <script>
+      var appId = "YOUR_AUTHING_SSO_APPID";
+      var clientId = "YOUR_AUTHING_USERPOOL_ID";
+      var domain = "example.authing.cn";
+      const guard = new Guard(clientId, {
+        appId,
+        domain,
+        hideClose: true,
+        isSSO: true,
+        SSOHost: location.origin,
+        qrcodeScanning: {
+          redirect: false
+        },
+        host: {
+          user: "私有部署的内部地址",
+          oauth: "私有部署的内部地址"
+        }
+      });
+    </script>
+  </body>
+</html>
+
+```
+
+## 非 SSO 场景
+开发者直接从 Authing 的用户池中获取用户数据，**不走** OAuth、OIDC 等**协议流程**。如果用户登录成功，你将在前端**直接获取**到他的数据。Guard 此场景下用于为开发者快速生成登录表单 UI，快速接入用户系统。
+
+这里以一个简单的 HTML 为例：
 
 ```html
 <!DOCTYPE html>
@@ -66,18 +114,17 @@ Guard 套件可以用于快速生成登录表单，这里以一个简单的 HTML
             title: "Authing",
             // 把表单插入到 id 为 my-app-mount-id 的标签
             mountId: "my-form",
-
-            qrcodeScanning: {
-                redirect: false,
-            }
         });
         guard.on("authenticated", data => {
+            // 用户登录成功后，你可以直接在这里获取他的用户信息
             console.log(data);
         });
         guard.on("register", data => {
+            // 用户注册成功后，你可以直接在这里获取他的用户信息
             console.log(data);
         });
         guard.on("scanned-success", data => {
+            // 用户扫码登录成功后，你可以直接在这里获取他的用户信息
             console.log(data);
         });
     </script>
@@ -87,42 +134,24 @@ Guard 套件可以用于快速生成登录表单，这里以一个简单的 HTML
 
 ## API
 
-### new Guard(clientId, options)
+### 构造函数 new Guard(clientId, options)
 
-初始化一个新的 `Guard` 实例，需要传入你在 [Authing](https://authing.cn/dashboard) 对应应用中的 appId 和域名信息。
+初始化一个新的 `Guard` 实例。SSO 场景和非 SSO 场景下传参方式有所不同。
 
-- **appId {String}**: Authing SSO 类应用的 _appId_；
-- **domain {String}**: Authing 中配置的 _域名_. 通常是 \<appDomain\>.authing.cn；
+#### SSO 场景
+供私有化部署用户参考，SaaS 用户无需操心 Guard SSO 场景部署。
+
+需要提供用户池 id，在 options 对象中，传入你在 [Authing](https://authing.cn/dashboard) 对应应用中的 appId 和域名信息。
+
+- **clientId**: 用户池 id
 - **options {Object}**: 允许你自定义表单的 UI，相关参数请参考 [自定义](https://github.com/Authing/Guard#自定义)
+- **options.appId {String}**: Authing SSO 类应用的 _appId_；
+- **options.domain {String}**: Authing 中配置的 _域名_. 通常是 \<appDomain\>.authing.cn；
 
-#### 示例
-
-```js
-var appId = "YOUR_AUTHING_SSO_APPID";
-var clientId = "YOUR_AUTHING_USERPOOL_ID";
-var domain = "example.authing.cn";
-var guard = new Guard(clientId, {
-  appId,
-  domain,
-  isSSO: true
-});
-
-guard.on('authenticated', (userInfo) => {
-  console.log('用户登录成功', userInfo);
-
-  // Update DOM
-
-});
-
-guard.on('authenticated-error', (error) => {
-  console.log('用户登录失败', error);
-  
-  // Handle error 
-
-})
-```
-
-如果你想获取其他事件，请参考[这里](https://github.com/Authing/Guard#onevent-callback)。
+#### 非 SSO 场景
+只需提供用户池 id。
+- **clientId**: 用户池 id
+- **options {Object}**: 允许你自定义表单的 UI，相关参数请参考 [自定义](https://github.com/Authing/Guard#自定义)
 
 ### authing 对象
 
@@ -137,7 +166,7 @@ guard.on('authing-load', (authing) => {
   // authing.login
   // authing.register
   // authing.logout
-  // authing.checkLoginStaus
+  // authing.checkLoginStatus
   // ...
   // 更多请参考：https://docs.authing.cn/authing/sdk/authing-sdk-for-web
 });
@@ -199,43 +228,43 @@ form-closed     | Login Form 关闭事件   |      null | 用户按下 ESC 或�
 
 以下是完整的参数列表：
 
-参数名称          | 是否必填              | 默认值   | 类型   |参数说明|回调参数
---------------- | -------------------- | --------| --------|------------|------------
+参数名称          | 是否必填              | 默认值   | 类型   |参数说明|
+--------------- | -------------------- | --------| --------|------------|
 **clientId**     |  **clientId** 与 **appId** 二选一  |      无   | String   | 用户池 ID | -
-**appId** | **clientId** 与 **appId** 二选一 | 无 | String | -
-**domain**     |  否   |      无   | String   | SSO 类应用云上域名 | -
-protocol | 否 | oauth | String | SSO 应用类型，可选值为 oauth、oidc、saml | -
-mountId   |  否   |无|String|指定 Authing form 将在何处显示，接受一个 html 元素 id，不含`#`号。不指定则默认全屏弹出 Modal 登录框|-
-title     |  否   |      Authing  | String   |**产品名称**| -
-logo     |  否   |     [Authing LOGO]  | String   |**产品logo**，默认为 Authing 的官方 Logo| -
-forceLogin     |  否   |      false  | Boolean   |**是否将注册和登录合并**，合并后如果用户不存在将自动注册| -
-hideQRCode     |  否   |      false  | Boolean   |**是否隐藏小程序扫码登录**，在开发者在 Authing 控制台开启小程序扫码登录后，若此项为 true 将不显示小程序扫码登录| -
-hideUP     |  否   |      false  | Boolean   |**是否隐藏用户名-密码登陆**，隐藏后将不显示用户名-密码登录框| -
-hideUsername     |  否   |      false  | Boolean   |**是否隐藏注册时的用户名填写**，隐藏后将不显示用户名输入框| -
+**appId** | **clientId** 与 **appId** 二选一 | 无 | String |
+**domain**     |  否   |      无   | String   | SSO 类应用云上域名 |
+protocol | 否 | oauth | String | SSO 应用类型，可选值为 oauth、oidc、saml |
+mountId   |  否   |无|String|指定 Authing form 将在何处显示，接受一个 html 元素 id，不含`#`号。不指定则默认全屏弹出 Modal 登录框|
+title     |  否   |      Authing  | String   |**产品名称**|
+logo     |  否   |     [Authing LOGO]  | String   |**产品logo**，默认为 Authing 的官方 Logo|
+forceLogin     |  否   |      false  | Boolean   |**是否将注册和登录合并**，合并后如果用户不存在将自动注册|
+hideQRCode     |  否   |      false  | Boolean   |**是否隐藏小程序扫码登录**，在开发者在 Authing 控制台开启小程序扫码登录后，若此项为 true 将不显示小程序扫码登录|
+hideUP     |  否   |      false  | Boolean   |**是否隐藏用户名-密码登陆**，隐藏后将不显示用户名-密码登录框|
+hideUsername     |  否   |      false  | Boolean   |**是否隐藏注册时的用户名填写**，隐藏后将不显示用户名输入框|
 hideRegister | 否 | false | Boolean | **是否隐藏注册框**，隐藏后将不显示注册框
-hideSocial     |  否   |      false  | Boolean   |**是否隐藏社会化登录**，在开发者在 Authing 控制台开启社会化登录后，若此项为 true 将隐藏全部社会化登录| -
-hideClose|否|false|Boolean|**是否隐藏登录框右上角的关闭按钮**，如果隐藏，用户将不能通过点击按钮或按 ESC 关闭登录框| -
-**placeholder**     |  否   |      {}  | Object   |**定制输入框的 paceholder**| -
-**placeholder**.username     |  否   |      请输入用户名  | String   |**定制输入框的 paceholder**| -
-**placeholder**.email     |  否   |      请输入邮箱  | String   |**用户名输入框的 paceholder**| -
-**placeholder**.password     |  否   |      请输入密码  | String   |**邮箱输入框的 paceholder**| -
-**placeholder**.confirmPassword     |  否   |      请确认密码  | String   |**密码输入框的 paceholder**| -
-**placeholder**.verfiyCode     |  否   |      请输入验证码  | String   |**验证码输入框的 paceholder**| -
-**placeholder**.newPassword     |  否   |      请输入新密码  | String   |**新密码输入框的 paceholder**| -
-**placeholder**.phone     |  否   |      请输入手机号  | String   |**手机号输入框的 paceholder**| -
-**placeholder**.phoneCode     |  否   |      4 位验证码  | String   |**手机验证码输入框的 paceholder**| -
-**qrcodeScanning**     |  否   |      {}  | Object   |**小程序扫码登录的配置项**| -
-**qrcodeScanning**.redirect     |  否   |      true  | Boolean   |**是否执行跳转（在用户后台配置的URL）**，若值为false，用户数据会通过 onSuccess 回调函数返回| -
-**qrcodeScanning**.interval     |  否   |      1500  | Number   |每隔多少秒检查一次是否扫码，默认1500 | -
-**qrcodeScanning**.tips     |  否   |      使用 微信 或小程序 身份管家 扫码登录  | String   |提示信息，可写HTML | -
-**useSelfWxapp** | 否 | false | Boolean | 是否使用私有部署的小程序提供二维码，此选项仅供私有部署用户使用 | -
-**host**     |  否   |      {}  | Object   |**小程序扫码登录的配置项**| -
-**host**.user     |  否   |      [Authing 官方链接]  | String   |**GraphQL 链接**，默认 Authing 官方链接，此处用于私有部署 Authing 的用户使用| -
-**host**.oauth     |  否   |      [Authing 官方链接]  | String   |**GraphQL 链接**，默认 Authing 官方链接，此处用于私有部署 Authing 的用户使用| -
-SSOHost | 否 | https://sso.authing.cn | SSO 类应用的通讯地址，默认 Authing 官方链接，此处用于私有部署 Authing 的用户使用 | -
-isSSO | 否 | false | Boolean | 用于标识当前是否为 SSO 模式，如果只是想简单生成登录表单，使用默认 false 即可 | -
-nonce | 否 | [Random] | Number | 随机数，用于防范网络攻击 | -
-timpstamp | 否 | 当前时间戳 | Number | 初始化时的时间戳，用于防范网络攻击 | -
+hideSocial     |  否   |      false  | Boolean   |**是否隐藏社会化登录**，在开发者在 Authing 控制台开启社会化登录后，若此项为 true 将隐藏全部社会化登录|
+hideClose|否|false|Boolean|**是否隐藏登录框右上角的关闭按钮**，如果隐藏，用户将不能通过点击按钮或按 ESC 关闭登录框|
+**placeholder**     |  否   |      {}  | Object   |**定制输入框的 paceholder**|
+**placeholder**.username     |  否   |      请输入用户名  | String   |**定制输入框的 paceholder**|
+**placeholder**.email     |  否   |      请输入邮箱  | String   |**用户名输入框的 paceholder**|
+**placeholder**.password     |  否   |      请输入密码  | String   |**邮箱输入框的 paceholder**|
+**placeholder**.confirmPassword     |  否   |      请确认密码  | String   |**密码输入框的 paceholder**|
+**placeholder**.verfiyCode     |  否   |      请输入验证码  | String   |**验证码输入框的 paceholder**|
+**placeholder**.newPassword     |  否   |      请输入新密码  | String   |**新密码输入框的 paceholder**|
+**placeholder**.phone     |  否   |      请输入手机号  | String   |**手机号输入框的 paceholder**|
+**placeholder**.phoneCode     |  否   |      4 位验证码  | String   |**手机验证码输入框的 paceholder**|
+**qrcodeScanning**     |  否   |      {}  | Object   |**小程序扫码登录的配置项**|
+**qrcodeScanning**.redirect     |  否   |      true  | Boolean   |**是否执行跳转（在用户后台配置的URL）**，若值为false，用户数据会通过 onSuccess 回调函数返回|
+**qrcodeScanning**.interval     |  否   |      1500  | Number   |每隔多少秒检查一次是否扫码，默认1500 |
+**qrcodeScanning**.tips     |  否   |      使用 微信 或小程序 身份管家 扫码登录  | String   |提示信息，可写HTML |
+**useSelfWxapp** | 否 | false | Boolean | 是否使用私有部署的小程序提供二维码，此选项仅供私有部署用户使用 |
+**host**     |  否   |      {}  | Object   |**GraphqlQL 通讯地址配置项**|
+**host**.user     |  否   |      [Authing 官方链接]  | String   |**GraphQL 链接**，默认 Authing 官方链接，此处用于私有部署 Authing 的用户使用|
+**host**.oauth     |  否   |      [Authing 官方链接]  | String   |**GraphQL 链接**，默认 Authing 官方链接，此处用于私有部署 Authing 的用户使用|
+SSOHost | 否 | https://sso.authing.cn | String | SSO 类应用的通讯地址，默认 Authing 官方链接，此处用于私有部署 Authing 的用户使用 |
+isSSO | 否 | false | Boolean | 用于标识当前是否为 SSO 模式，如果只是想简单生成登录表单，使用默认 false 即可 |
+nonce | 否 | [Random] | Number | 随机数，用于防范网络攻击 |
+timpstamp | 否 | 当前时间戳 | Number | 初始化时的时间戳，用于防范网络攻击 |
 
 ## 浏览器兼容性
 
