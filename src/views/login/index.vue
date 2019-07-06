@@ -202,6 +202,7 @@ export default {
     return {
       appLogo: "",
       appName: "",
+      defaultLogo: "https://usercontents.authing.cn/client/logo@2.png",
       clientInfo: {},
 
       rememberMe: false,
@@ -332,7 +333,7 @@ export default {
       this.appName = this.opts.title || this.appInfo.name;
       window.title = `${this.appName} - Authing`;
       document.title = `${this.appName} - Authing`;
-      this.appLogo = this.opts.logo || this.appInfo.image;
+      this.appLogo = this.opts.logo || this.appInfo.image || this.defaultLogo;
       this.clientId = this.appInfo.clientId;
     } catch (erro) {
       console.log(erro);
@@ -358,7 +359,10 @@ export default {
       this.changeLoading({ el: "page", loading: false });
 
       that.authingOnError = true;
-      that.errMsg = "Error: " + err;
+      this.showGlobalMessage({
+        type: "error",
+        message: "Error: " + err.message
+      });
       that.$authing.pub("authing-unload", err);
     }
     if (!auth) {
@@ -450,7 +454,8 @@ export default {
     ...mapActions("data", [
       "saveSocialButtonsList",
       "saveAppInfo",
-      "saveLoginStatus"
+      "saveLoginStatus",
+      "showGlobalMessage"
     ]),
     ...mapActions("protocol", ["saveProtocol"]),
     getSecondLvDomain(hostname) {
