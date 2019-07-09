@@ -39,6 +39,52 @@ $ npm install @authing/guard --save
 ```javascript
 import Guard from '@authing/guard';
 ```
+
+## 非 SSO 场景
+开发者直接从 Authing 的用户池中获取用户数据，**不走** OAuth、OIDC 等**协议流程**。如果用户登录成功，你将在前端**直接获取**到他的数据。Guard 此场景下用于为开发者快速生成登录表单 UI，快速接入用户系统。
+
+这里以一个简单的 HTML 为例：
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Guard Example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/@authing/guard/dist/Guard.umd.min.js"></script>
+</head>
+<body>
+
+    <div id="my-form"></div>
+    
+    <script>
+        const clientId = "YOUR_AUTHING_USERPOOL_ID";
+        const guard = new Guard(clientId, {
+            logo: "https://usercontents.authing.cn/client/logo@2.png",
+            title: "Authing",
+            // 把表单插入到 id 为 my-form 的标签
+            mountId: "my-form",
+        });
+        guard.on("authenticated", userInfo => {
+            // 用户登录成功后，你可以直接在这里获取他的用户信息
+            console.log(userInfo);
+        });
+        guard.on("register", userInfo => {
+            // 用户注册成功后，你可以直接在这里获取他的用户信息
+            console.log(userInfo);
+        });
+        guard.on("scanned-success", userInfo => {
+            // 用户扫码登录成功后，你可以直接在这里获取他的用户信息
+            console.log(userInfo);
+        });
+    </script>
+</body>
+</html>
+```
+[点击查看用户信息示例](https://docs.authing.cn/authing/sdk/authing-sdk-for-web#deng-lu)
+
 ## SSO 场景
 你想为其他人**提供**身份服务或**使用**他人提供的身份服务。此部分供私有部署用户参考，使用 SaaS 的用户直接使用 Authing 云上部署的 Guard，无需操心 Guard 部署问题，只需关注[如何发起 SSO 登录请求](https://docs.authing.cn/authing/advanced/oidc/oidc-authorization#fa-qi-shou-quan)。
 
@@ -87,50 +133,6 @@ import Guard from '@authing/guard';
 
 ```
 
-## 非 SSO 场景
-开发者直接从 Authing 的用户池中获取用户数据，**不走** OAuth、OIDC 等**协议流程**。如果用户登录成功，你将在前端**直接获取**到他的数据。Guard 此场景下用于为开发者快速生成登录表单 UI，快速接入用户系统。
-
-这里以一个简单的 HTML 为例：
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Guard Example</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdn.jsdelivr.net/npm/@authing/guard/dist/Guard.umd.min.js"></script>
-</head>
-<body>
-
-    <div id="my-form"></div>
-    
-    <script>
-        const clientId = "YOUR_AUTHING_USERPOOL_ID";
-        const guard = new Guard(clientId, {
-            logo: "https://usercontents.authing.cn/client/logo@2.png",
-            title: "Authing",
-            // 把表单插入到 id 为 my-form 的标签
-            mountId: "my-form",
-        });
-        guard.on("authenticated", userInfo => {
-            // 用户登录成功后，你可以直接在这里获取他的用户信息
-            console.log(userInfo);
-        });
-        guard.on("register", userInfo => {
-            // 用户注册成功后，你可以直接在这里获取他的用户信息
-            console.log(userInfo);
-        });
-        guard.on("scanned-success", userInfo => {
-            // 用户扫码登录成功后，你可以直接在这里获取他的用户信息
-            console.log(userInfo);
-        });
-    </script>
-</body>
-</html>
-```
-[点击查看用户信息示例](https://docs.authing.cn/authing/sdk/authing-sdk-for-web#deng-lu)
 
 ## API
 
