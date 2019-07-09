@@ -138,6 +138,11 @@ import Guard from '@authing/guard';
 
 初始化一个新的 `Guard` 实例。SSO 场景和非 SSO 场景下传参方式有所不同。
 
+#### 非 SSO 场景
+只需提供用户池 id。
+- **clientId**: 用户池 id
+- **options {Object}**: 允许你自定义表单的 UI，相关参数请参考 [自定义](https://github.com/Authing/Guard#自定义)
+
 #### SSO 场景
 供私有化部署用户参考，SaaS 用户无需操心 Guard SSO 场景部署。
 
@@ -147,11 +152,6 @@ import Guard from '@authing/guard';
 - **options {Object}**: 允许你自定义表单的 UI，相关参数请参考 [自定义](https://github.com/Authing/Guard#自定义)
 - **options.appId {String}**: Authing SSO 类应用的 _appId_；
 - **options.domain {String}**: Authing 中配置的 _域名_. 通常是 \<appDomain\>.authing.cn；
-
-#### 非 SSO 场景
-只需提供用户池 id。
-- **clientId**: 用户池 id
-- **options {Object}**: 允许你自定义表单的 UI，相关参数请参考 [自定义](https://github.com/Authing/Guard#自定义)
 
 ### authing 对象
 
