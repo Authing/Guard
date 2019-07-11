@@ -349,8 +349,8 @@ export default {
     try {
       auth = new Authing({
         clientId: that.clientId || that.opts.clientId,
-        timestamp: that.opts.timestamp,
-        nonce: that.opts.nonce,
+        timestamp: that.opts.timestamp || Date.now(),
+        nonce: that.opts.nonce || Math.random().toString().slice(2),
         useSelfWxapp: that.opts.useSelfWxapp,
         host: that.opts.host
       });
