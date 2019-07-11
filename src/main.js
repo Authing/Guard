@@ -122,8 +122,8 @@ var AuthingGuard = function(clientId, opts) {
 
   $authing.opts.placeholder = opts.placeholder;
   $authing.opts.host = opts.host;
-  $authing.opts.timestamp = Math.round(new Date() / 1000);
-  $authing.opts.nonce = Math.ceil(Math.random() * Math.pow(10, 6));
+  $authing.opts.timestamp = $authing.opts.timestamp || Math.round(new Date() / 1000);
+  $authing.opts.nonce = $authing.opts.nonce || Math.ceil(Math.random() * Math.pow(10, 6));
 
   let emailExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/;
 
