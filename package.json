@@ -16,7 +16,7 @@
     "dist-no-git": "VERSION=`node -e '(function() { console.log(require(\"./package.json\").version) })()'` && rm -rf ../guard-html/* && ejs-cli -b ./public -f index.html -O \"{\\\"version\\\": \\\"$VERSION\\\", \\\"rand\\\": \\\"$RANDOM\\\"}\" > ../guard-html/index.html && cp ./dist/Guard.umd.min.js ../guard-html/Guard.$VERSION.umd.min.js && cp ./dist/Guard.umd.min.js.map ../guard-html/Guard.$VERSION.umd.min.js.map"
   },
   "dependencies": {
-    "authing-js-sdk": "2.4.2",
+    "authing-js-sdk": "2.5.1",
     "axios": "^0.18.0",
     "vue": "^2.6.6",
     "vue-router": "^3.0.1",

@@ -330,7 +330,7 @@ export default {
     }
     try {
       // 获取应用的名称，图标等信息
-      this.appName = this.opts.title || this.appInfo.name;
+      this.appName = this.opts.title || this.appInfo.name || 'Guard';
       window.title = `${this.appName} - Authing`;
       document.title = `${this.appName} - Authing`;
       this.appLogo = this.opts.logo || this.appInfo.image || this.defaultLogo;
