@@ -222,7 +222,7 @@ reset-password-error     | 重置密码失败  |      ``error`` | 错误信息
 scanned-success     | 扫码登录成功   |      user | 用户数据
 scanned-error     | 扫码登录失败  |      ``error`` | 错误信息
 scanning-interval-starting     | 开始监听扫码事件   |      interval | 用户可使用 ``clearInterval`` 停止监听
-form-closed     | Login Form 关闭事件   |      null | 用户按下 ESC 或点击右上方的关闭按钮后会触发此事件
+form-closed     | Guard 关闭事件   |      null | 用户按下 ESC 或点击右上方的关闭按钮后会触发此事件
 
 ### 自定义
 
@@ -232,11 +232,9 @@ form-closed     | Login Form 关闭事件   |      null | 用户按下 ESC 或�
 
 参数名称          | 是否必填              | 默认值   | 类型   |参数说明|
 --------------- | -------------------- | --------| --------|------------|
-**clientId**     |  **clientId** 与 **appId** 二选一  |      无   | String   | 用户池 ID | -
-**appId** | **clientId** 与 **appId** 二选一 | 无 | String |
-**domain**     |  否   |      无   | String   | SSO 类应用云上域名 |
-protocol | 否 | oauth | String | SSO 应用类型，可选值为 oauth、oidc、saml |
-mountId   |  否   |无|String|指定 Authing form 将在何处显示，接受一个 html 元素 id，不含 `#` 号。不指定则默认全屏弹出 Modal 登录框|
+nonce | 否 | [Random] | Number | 随机数，用于防范网络攻击 |
+timpstamp | 否 | 当前时间戳 | Number | 初始化时的时间戳，用于防范网络攻击 |
+mountId   |  否   |无|String|指定 Guard 表单将在何处显示，接受一个 html 元素 id，不含 `#` 号。不指定则默认全屏弹出 Modal 登录框|
 title     |  否   |      Authing  | String   |**产品名称**|
 logo     |  否   |     [Authing LOGO]  | String   |**产品logo**，默认为 Authing 的官方 Logo|
 forceLogin     |  否   |      false  | Boolean   |**是否将注册和登录合并**，合并后如果用户不存在将自动注册|
@@ -259,14 +257,20 @@ hideClose|否|false|Boolean|**是否隐藏登录框右上角的关闭按钮**，
 **qrcodeScanning**.redirect     |  否   |      true  | Boolean   |**是否执行跳转（在用户后台配置的URL）**，若值为false，用户数据会通过 onSuccess 回调函数返回|
 **qrcodeScanning**.interval     |  否   |      1500  | Number   |每隔多少秒检查一次是否扫码，默认1500 |
 **qrcodeScanning**.tips     |  否   |      使用 微信 或小程序 身份管家 扫码登录  | String   |提示信息，可写HTML |
+
+**以下供私有部署用户查看**
+参数名称          | 是否必填              | 默认值   | 类型   |参数说明|
+--------------- | -------------------- | --------| --------|------------|
 **useSelfWxapp** | 否 | false | Boolean | 是否使用私有部署的小程序提供二维码，此选项仅供私有部署用户使用 |
 **host**     |  否   |      {}  | Object   |**GraphqlQL 通讯地址配置项**|
 **host**.user     |  否   |      [Authing 官方链接]  | String   |**GraphQL 链接**，默认 Authing 官方链接，此处用于私有部署 Authing 的用户使用|
 **host**.oauth     |  否   |      [Authing 官方链接]  | String   |**GraphQL 链接**，默认 Authing 官方链接，此处用于私有部署 Authing 的用户使用|
+**appId** | 是 | 无 | String | SSO 应用的云上 ID |
+**domain**     |  否   |      无   | String   | SSO 类应用云上域名 |
+protocol | 否 | oauth | String | 用于显示指定 SSO 应用类型，可选值为 oauth、oidc、saml |
 SSOHost | 否 | https://sso.authing.cn | String | SSO 类应用的通讯地址，默认 Authing 官方链接，此处用于私有部署 Authing 的用户使用 |
 isSSO | 否 | false | Boolean | 用于标识当前是否为 SSO 模式，如果只是想简单生成登录表单，使用默认 false 即可 |
-nonce | 否 | [Random] | Number | 随机数，用于防范网络攻击 |
-timpstamp | 否 | 当前时间戳 | Number | 初始化时的时间戳，用于防范网络攻击 |
+
 
 ## 浏览器兼容性
 
