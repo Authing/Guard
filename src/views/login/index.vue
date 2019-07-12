@@ -368,10 +368,14 @@ export default {
     if (!auth) {
       return;
     }
-
+    let validAuth
     auth
-      .then(validAuth => {
-        that.clientInfo = validAuth.clientInfo;
+      .then(valid => {
+        validAuth = valid
+        return validAuth.queryClientInfo()
+      })
+      .then(clientInfo => {
+        that.clientInfo = clientInfo
         this.changeLoading({ el: "page", loading: false });
 
         // document
