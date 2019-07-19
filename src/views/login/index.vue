@@ -396,7 +396,7 @@ export default {
         */
         that.changeLoading({ el: "socialButtonsList", loading: true });
         validAuth
-          .readOAuthList()
+          .readOAuthList({useGuard: true})
           .then(data => {
             that.$authing.pub("social-load", data);
             that.changeLoading({ el: "socialButtonsList", loading: false });
