@@ -900,11 +900,12 @@
 
   @font-face {
     font-family: '_authing_iconfont';  /* project id 803924 */
-    src: url('//at.alicdn.com/t/font_803924_073p7nal4zk.eot');
-    src: url('//at.alicdn.com/t/font_803924_073p7nal4zk.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_803924_073p7nal4zk.woff') format('woff'),
-    url('//at.alicdn.com/t/font_803924_073p7nal4zk.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_803924_073p7nal4zk.svg#iconfont') format('svg');
+    src: url('//at.alicdn.com/t/font_803924_qxd9g1x1lyl.eot');
+    src: url('//at.alicdn.com/t/font_803924_qxd9g1x1lyl.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_803924_qxd9g1x1lyl.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_803924_qxd9g1x1lyl.woff') format('woff'),
+    url('//at.alicdn.com/t/font_803924_qxd9g1x1lyl.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_803924_qxd9g1x1lyl.svg#iconfont') format('svg');
   }
 
   ._authing_form-footer2 {
