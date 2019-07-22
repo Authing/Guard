@@ -219,7 +219,7 @@ export default {
 */
           that.showGlobalMessage({
             type: "success",
-            message: "验证通过，欢迎你：" + data.username || data.email
+            message: "验证通过，欢迎你：" + (data.username || data.email)
           });
           that.recordLoginInfo(data);
           that.$authing.pub("login", data);
@@ -273,7 +273,7 @@ export default {
                   that.changeLoading({ el: "form", loading: false });
                   that.showGlobalMessage({
                     type: "success",
-                    message: "验证通过，欢迎你：" + data.username || data.email
+                    message: "验证通过，欢迎你：" + (data.username || data.email)
                   });
                   that.$authing.pub("login", data);
                   that.$authing.pub("authenticated", data);

@@ -119,7 +119,7 @@ export default {
         .then(userInfo => {
           this.showGlobalMessage({
             type: "success",
-            message: "验证通过，欢迎你：" + userInfo.username || userInfo.phone
+            message: "验证通过，欢迎你：" + (userInfo.username || userInfo.phone)
           });
           this.recordLoginInfo(userInfo);
           this.$authing.pub("login", userInfo);

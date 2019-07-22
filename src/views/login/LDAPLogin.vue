@@ -134,7 +134,7 @@ export default {
 */
           this.showGlobalMessage({
             type: "success",
-            message: "验证通过，欢迎你：" + data.username || data.email
+            message: "验证通过，欢迎你：" + (data.username || data.email)
           });
           that.recordLoginInfo(data);
           that.$authing.pub("login", data);
