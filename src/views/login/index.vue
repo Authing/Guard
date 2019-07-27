@@ -269,6 +269,15 @@ export default {
         });
         return;
       }
+      // 如果启用了自定义 css
+      if(appInfo.css) {
+        let styleNode = document.createElement('style')
+        styleNode.type = 'text/css'
+        let content = document.createTextNode(appInfo.css)
+        styleNode.appendChild(content)
+        document.head.appendChild(styleNode)
+      }
+
       switch (this.protocol) {
         case "oidc":
           if (!this.params.uuid) { // 如果用户直接输入网址，什么参数也不带
@@ -493,6 +502,7 @@ export default {
     name,
     image,
     clientId
+    css
   }
 }`,
             `query {
@@ -503,6 +513,7 @@ export default {
     client_id,
     redirect_uris,
     domain
+    css
   }
 }`,
             `query {
@@ -511,6 +522,7 @@ export default {
     name,
     image,
     clientId
+    css
   }
 }`
           ];
@@ -560,7 +572,7 @@ export default {
                   "protocol query 参数错误",
                   "protocol 可选值为 oauth，oidc，saml"
                 ],
-                code: "id404"
+                code: "4004"
               }
             });
             return;
@@ -571,6 +583,7 @@ export default {
               name,
               image,
               clientId
+              css
             }
           }`;
         try {
@@ -608,6 +621,7 @@ export default {
     name,
     image,
     clientId
+    css
   }
 }`,
               `query {
@@ -618,6 +632,7 @@ export default {
     client_id,
     redirect_uris,
     domain
+    css
   }
 }`,
               `query {
@@ -626,6 +641,7 @@ export default {
     name,
     image,
     clientId
+    css
   }
 }`
             ];
@@ -686,6 +702,7 @@ export default {
             name,
             image,
             clientId
+            css
           }
         }`;
           let appInfo = await GraphQLClient_getAppInfo.request({ query });

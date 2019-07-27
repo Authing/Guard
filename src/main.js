@@ -8,6 +8,7 @@ import "./styles/styles.css";
 import "./styles/animations.css";
 
 Vue.config.productionTip = false;
+// Vue.config.devtools = true
 var AuthingGuard = function(clientId, opts) {
 
   window.Authing = Authing;
