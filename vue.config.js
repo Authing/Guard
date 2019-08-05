@@ -14,7 +14,7 @@ module.exports = {
     }
   },
   css: { extract: false },
-  publicPath: '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/login' : '/',
   devServer: {
     proxy: {
       '^/authorize': {

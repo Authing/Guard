@@ -215,10 +215,10 @@ AuthingGuard.prototype = {
     }
   }
 };
-if(process.env.NODE_ENV !== 'production') {
+// if(process.env.NODE_ENV !== 'production') {
   if(window) {
     window.Guard = AuthingGuard;
   }
-}
+// }
 
 export default AuthingGuard;
