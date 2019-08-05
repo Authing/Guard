@@ -13,58 +13,58 @@
         Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
-    <script>
-      /* 测试 LoginForm */
-      // let clientId = '5cbd6716aaaa70cb9a58d86f'
-      // const guard = new AuthingGuard(clientId, undefined, {
-      //   hideClose: true,
-      //   isSSO: false,
-      //   qrcodeScanning: {
-      //     redirect: false,
-      //   },
-      //   logo: "https://usercontents.authing.cn/client/logo@2.png",
-      //   title: "Authing",
-      //   host: {
-      //     user: 'http://localhost:5555/graphql',
-      //     oauth: 'http://localhost:5556/graphql',
-      //     // user: 'https://users.authing.cn/graphql',
-      //     // oauth: 'https://oauth.authing.cn/graphql'
-      //   }
-      // });
-      // guard.on('authenticated', data => {
-      //   console.log(data)
-      // })
-      // guard.on('register', data => {
-      //   console.log(data)
-      // })
-      /* 测试 SSO */
-      const getQueryString = function(name) {
-        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-        var r = window.location.search.substr(1).match(reg);
-        if (r != null) {
-          return unescape(r[2]);
-        } else {
-          return null;
-        }
-      };
-
-      let appId = getQueryString("app_id") || getQueryString("client_id");
-      const guard = new Guard(undefined, {
-        appId,
-        hideClose: true,
-        isSSO: true,
-        SSOHost: location.origin, // 开发模式下，会代理转发到 localhost:5556/authorize
-        // SSOHost: 'https://sso.authing.cn',
-        qrcodeScanning: {
-          redirect: false
-        },
-        host: {
-          // user: 'http://localhost:5555/graphql',
-          // oauth: 'http://localhost:5556/graphql',
-          user: "https://users.authing.cn/graphql",
-          oauth: "https://oauth.authing.cn/graphql"
-        }
-      });
-    </script>
   </body>
+  <script>
+    /* 测试 LoginForm */
+    // let clientId = '5cbd6716aaaa70cb9a58d86f'
+    // const guard = new AuthingGuard(clientId, undefined, {
+    //   hideClose: true,
+    //   isSSO: false,
+    //   qrcodeScanning: {
+    //     redirect: false,
+    //   },
+    //   logo: "https://usercontents.authing.cn/client/logo@2.png",
+    //   title: "Authing",
+    //   host: {
+    //     user: 'http://localhost:5555/graphql',
+    //     oauth: 'http://localhost:5556/graphql',
+    //     // user: 'https://users.authing.cn/graphql',
+    //     // oauth: 'https://oauth.authing.cn/graphql'
+    //   }
+    // });
+    // guard.on('authenticated', data => {
+    //   console.log(data)
+    // })
+    // guard.on('register', data => {
+    //   console.log(data)
+    // })
+    /* 测试 SSO */
+    const getQueryString = function(name) {
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+      var r = window.location.search.substr(1).match(reg);
+      if (r != null) {
+        return unescape(r[2]);
+      } else {
+        return null;
+      }
+    };
+
+    let appId = getQueryString("app_id") || getQueryString("client_id");
+    const guard = new Guard(undefined, {
+      appId,
+      hideClose: true,
+      isSSO: true,
+      SSOHost: location.origin, // 开发模式下，会代理转发到 localhost:5556/authorize
+      // SSOHost: 'https://sso.authing.cn',
+      qrcodeScanning: {
+        redirect: false
+      },
+      host: {
+        // user: 'http://localhost:5555/graphql',
+        // oauth: 'http://localhost:5556/graphql',
+        user: "https://users.authing.cn/graphql",
+        oauth: "https://oauth.authing.cn/graphql"
+      }
+    });
+  </script>
 </html>
