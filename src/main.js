@@ -215,5 +215,7 @@ AuthingGuard.prototype = {
     }
   }
 };
-
+if(window) {
+  window.Guard = AuthingGuard;
+}
 export default AuthingGuard;
