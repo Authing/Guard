@@ -20,6 +20,10 @@ module.exports = {
       '^/authorize': {
         target: 'http://localhost:5556/sso',
         changeOrigin: true
+      },
+      '^/oauth': {
+        target: 'http://localhost:5556/',
+        changeOrigin: true
       }
     }
   }
