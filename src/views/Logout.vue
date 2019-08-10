@@ -109,12 +109,12 @@ export default {
 <style>
 @font-face {
   font-family: "icomoon";
-  src: url("./fonts/icomoon/icomoon.eot?srf3rx");
-  src: url("./fonts/icomoon/icomoon.eot?srf3rx#iefix")
+  src: url("../assets/fonts/icomoon/icomoon.eot?srf3rx");
+  src: url("../assets/fonts/icomoon/icomoon.eot?srf3rx#iefix")
       format("embedded-opentype"),
-    url("./fonts/icomoon/icomoon.ttf?srf3rx") format("truetype"),
-    url("./fonts/icomoon/icomoon.woff?srf3rx") format("woff"),
-    url("./fonts/icomoon/icomoon.svg?srf3rx#icomoon") format("svg");
+    url("../assets/fonts/icomoon/icomoon.ttf?srf3rx") format("truetype"),
+    url("../assets/fonts/icomoon/icomoon.woff?srf3rx") format("woff"),
+    url("../assets/fonts/icomoon/icomoon.svg?srf3rx#icomoon") format("svg");
   font-weight: normal;
   font-style: normal;
 }
