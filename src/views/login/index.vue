@@ -186,6 +186,7 @@ import SignUp from "./SignUp";
 import GlobalMessage from "../components/GlobalMessage";
 import ForgetPassword from "./forgetPassword/index";
 import PhoneCodeLogin from "./PhoneCode";
+import SSO from '@authing/sso'
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "app",
@@ -321,7 +322,7 @@ export default {
       this.saveAppInfo({ appInfo });
       this.opts.appId = appInfo._id;
       // 判断是否已经登录过了，已经登录就直接跳转确权页面，不再发送后面那些 http 请求
-      if (this.isLogged()) {
+      if (await this.isLogged()) {
         this.$router.push({
           name: "authorize",
           query: { ...this.$route.query }
@@ -498,9 +499,10 @@ export default {
           let queries = [
             `query {
   QueryAppInfoByDomain(domain: "${domain}") {
-    _id,
-    name,
-    image,
+    _id
+    name
+    image
+    domain
     clientId
     css
   }
@@ -508,10 +510,10 @@ export default {
             `query {
   QueryOIDCAppInfoByDomain(domain: "${domain}") {
     _id,
-    name,
-    image,
-    client_id,
-    redirect_uris,
+    name
+    image
+    client_id
+    redirect_uris
     domain
     css
   }
@@ -521,6 +523,7 @@ export default {
     _id,
     name,
     image,
+    domain
     clientId
     css
   }
@@ -579,9 +582,10 @@ export default {
         }
         const query = `query {
             ${operationName} (domain: "${domain}") {   
-              _id,
-              name,
-              image,
+              _id
+              name
+              domain
+              image
               clientId
               css
             }
@@ -617,29 +621,31 @@ export default {
             let queries = [
               `query {
   QueryAppInfoByAppID(appId: "${appId}") {
-    _id,
-    name,
-    image,
+    _id
+    domain
+    name
+    image
     clientId
     css
   }
 }`,
               `query {
   QueryOIDCAppInfoByAppID(appId: "${appId}") {
-    _id,
-    name,
-    image,
-    client_id,
-    redirect_uris,
+    _id
+    name
+    image
+    client_id
+    redirect_uris
     domain
     css
   }
 }`,
               `query {
   QuerySAMLIdentityProviderInfoByAppID(appId: "${appId}") {
-    _id,
-    name,
-    image,
+    _id
+    domain
+    name
+    image
     clientId
     css
   }
@@ -770,7 +776,7 @@ export default {
         that.removeDom = true;
       }, 800);
     },
-    isLogged() {
+    async isLogged() {
       let appToken = localStorage.getItem("appToken");
 
       if (appToken) {
@@ -794,7 +800,21 @@ export default {
       } else {
         appToken = {};
       }
-
+      let auth = new SSO(
+        {
+          appId: this.appInfo._id,
+          appType: this.protocol,
+          appDomain: this.appInfo.domain+'.localtest.com',
+          nonce: 113,
+          timestamp: Date.now(),
+          dev: true
+        }
+      )
+      let sess = await auth.trackSession()
+      if(!sess.session.appId) {
+        localStorage.clear()
+        return false
+      }
       return appToken[this.opts.appId] && appToken[this.opts.appId].accessToken;
     }
   },
