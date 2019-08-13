@@ -804,10 +804,7 @@ export default {
         {
           appId: this.appInfo._id,
           appType: this.protocol,
-          appDomain: this.appInfo.domain+'.localtest.com',
-          nonce: 113,
-          timestamp: Date.now(),
-          dev: true
+          appDomain: this.appInfo.domain+'.authing.cn',
         }
       )
       let sess = await auth.trackSession()
