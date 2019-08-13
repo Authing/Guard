@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@authing/sso@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@authing/sso/-/sso-0.1.0.tgz#fae1179c66dd1d46137e0072680542d5bbd8272c"
-  integrity sha512-SIcy4LoYVoBFKIPQOmk79T5l66U9yxtlnHxXMi6P4rGiCVpDx6as/0D1zOzzG5l8qFGGQww9q/NKL6pYkMbeHQ==
+"@authing/sso@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@authing/sso/-/sso-0.1.1.tgz#71f0175fe922d621e8ed2a166b719d60736e1789"
+  integrity sha512-cVu17riq5NCExr3Raz75AVbPEu5MCX847Ahs/fm/LfGvSA5d4xMn1VFiQJcZQt/Tmhq/kcwlPOAyL1G67nEbOA==
   dependencies:
     axios "^0.19.0"
     core-js "^2.6.5"
