@@ -79,6 +79,7 @@ export default {
         // 判断是不是来自 authing 社会化登录的 post message
         if (typeof code === "number") {
           if (code !== 200) {
+            console.log(data)
             throw Error(message);
           }
           let userInfo = data.data;
