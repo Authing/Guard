@@ -58,7 +58,7 @@
           >
         </div>
         <div class="row backup">
-          <div class="_authing_form-group" style="margin-bottom:0px;">
+          <div class="_authing_form-group" style="margin-bottom:0px;" v-if="!opts.hidePhone">
             <label class="_authing_label" for="login-remember" style="width:100%">
               <!--<input class="_authing_input" type="checkbox" id="login-remember" style="vertical-align: middle; margin: 0"
                              v-model="rememberMe"><span
