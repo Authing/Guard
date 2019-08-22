@@ -64,6 +64,7 @@ var AuthingGuard = function(clientId, opts) {
   $authing.opts.hideSocial = opts.hideSocial || true;
   $authing.opts.hideUsername = opts.hideUsername || false;
   $authing.opts.hideClose = opts.hideClose || false;
+  $authing.opts.hideRegister = opts.hideRegister || false;
 
   $authing.opts.isSSO = opts.isSSO || false;
   $authing.opts.SSOHost = opts.SSOHost || "https://sso.authing.cn";

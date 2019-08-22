@@ -112,13 +112,13 @@
                   v-bind:class="{
                   'authing-header-tabs-current': emailLoginVisible || LDAPLoginVisible,
                   'width-55': !isScanCodeEnable || opts.hideQRCode || opts.hideUP || opts.forceLogin,
-                  'width-100': (opts.hideUP && opts.hideQRCode) || (opts.hideQRCode && opts.forceLogin) || clientInfo.registerDisabled,
+                  'width-100': (opts.hideUP && opts.hideQRCode) || (opts.hideQRCode && opts.forceLogin) || clientInfo.registerDisabled || opts.hideRegister,
                 }"
                 >
                   <a class="_authing_a" href="javascript:void(0)" @click="gotoLogin">登录</a>
                 </li>
                 <li
-                  v-show="!opts.hideUP && !opts.forceLogin && !clientInfo.registerDisabled"
+                  v-show="!opts.hideUP && !opts.forceLogin && !clientInfo.registerDisabled && !opts.hideRegister"
                   v-bind:class="{
                   'authing-header-tabs-current': signUpVisible,
                   'width-55': !isScanCodeEnable || opts.hideQRCode
