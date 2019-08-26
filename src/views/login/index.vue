@@ -813,7 +813,6 @@ export default {
         appDomain: isSSOAuthing
           ? "sso." + this.opts.baseDomain
           : this.appInfo.domain + '.' + this.opts.baseDomain,
-        dev: true
       });
       let sess = await auth.trackSession();
       if (!sess.session.appId) {
