@@ -50,7 +50,7 @@
                   stroke="#000000"
                   stroke-miterlimit="10"
                   stroke-width="2"
-                ></polyline>
+                />
                 <line
                   fill="none"
                   stroke="#000000"
@@ -60,7 +60,7 @@
                   x2="3.5"
                   y1="12"
                   y2="12"
-                ></line>
+                />
               </svg>
             </span>
             <span @click="handleClose" v-if="!opts.hideClose" class="authing-lock-close-button">
@@ -77,13 +77,13 @@
                   <polygon
                     fill="#373737"
                     points="123.5429688,11.59375 116.4765625,4.5185547 64.0019531,56.9306641 11.5595703,4.4882813     4.4882813,11.5595703 56.9272461,63.9970703 4.4570313,116.4052734 11.5244141,123.4814453 63.9985352,71.0683594     116.4423828,123.5117188 123.5126953,116.4414063 71.0732422,64.0019531   "
-                  ></polygon>
+                  />
                 </g>
               </svg>
             </span>
             <div class="_authing_form-header-bg"></div>
             <div class="_authing_form-header-welcome">
-              <img class="form-header-logo" :src="appLogo">
+              <img class="form-header-logo" :src="appLogo" />
               <div
                 class="_authing_form-header-name"
                 title="Authing"
@@ -91,7 +91,7 @@
             </div>
           </div>
 
-          <GlobalMessage v-show="globalMessage" :message="globalMessage" :type="globalMessageType"/>
+          <GlobalMessage v-show="globalMessage" :message="globalMessage" :type="globalMessageType" />
 
           <div v-show="!authingOnError">
             <div class="authing-header-tabs-container">
@@ -141,7 +141,7 @@
                   :checked="emailLoginVisible"
                   style="width: 12px;"
                   @click="gotoLogin"
-                > 普通登录
+                /> 普通登录
               </label>
               <label>
                 <input
@@ -150,15 +150,15 @@
                   @click="gotoLDAPLogin"
                   :checked="LDAPLoginVisible"
                   style="width: 12px;margin-left:11px"
-                > 使用 LDAP
+                /> 使用 LDAP
               </label>
             </div>
-            <EmailLogin v-show="emailLoginVisible"/>
-            <LDAPLogin v-show="LDAPLoginVisible"/>
-            <SignUp v-if="signUpVisible"/>
-            <QRCode v-if="wxQRCodeVisible"/>
-            <ForgetPassword v-if="forgetPasswordVisible"/>
-            <PhoneCodeLogin v-if="phoneCodeLoginVisible"/>
+            <EmailLogin v-show="emailLoginVisible" />
+            <LDAPLogin v-show="LDAPLoginVisible" />
+            <SignUp v-if="signUpVisible" />
+            <QRCode v-if="wxQRCodeVisible" />
+            <ForgetPassword v-if="forgetPasswordVisible" />
+            <PhoneCodeLogin v-if="phoneCodeLoginVisible" />
             <!-- <div
               class="_authing_form-footer login"
               v-show="!opts.hideUP"
@@ -186,7 +186,7 @@ import SignUp from "./SignUp";
 import GlobalMessage from "../components/GlobalMessage";
 import ForgetPassword from "./forgetPassword/index";
 import PhoneCodeLogin from "./PhoneCode";
-import SSO from '@authing/sso'
+import SSO from "@authing/sso";
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "app",
@@ -271,28 +271,31 @@ export default {
         return;
       }
       // 如果启用了自定义 css
-      if(appInfo.css) {
-        let styleNode = document.createElement('style')
-        styleNode.type = 'text/css'
-        let content = document.createTextNode(appInfo.css)
-        styleNode.appendChild(content)
-        document.head.appendChild(styleNode)
+      if (appInfo.css) {
+        let styleNode = document.createElement("style");
+        styleNode.type = "text/css";
+        let content = document.createTextNode(appInfo.css);
+        styleNode.appendChild(content);
+        document.head.appendChild(styleNode);
       }
 
       switch (this.protocol) {
         case "oidc":
-          if (!this.params.uuid) { // 如果用户直接输入网址，什么参数也不带
+          if (!this.params.uuid) {
+            // 如果用户直接输入网址，什么参数也不带
             // 把 ssoHost 域名第一部分替换成 oidc 应用的 domain 再作为地址
             let ssoHostArr = this.opts.SSOHost.split(".");
             let head = ssoHostArr.shift();
-            let isHttps = false
-            if(~head.indexOf('https')) {
-              isHttps = true
+            let isHttps = false;
+            if (~head.indexOf("https")) {
+              isHttps = true;
             }
             ssoHostArr.unshift(appInfo.domain);
             let ssoHost = ssoHostArr.join(".");
             // 这么写是为了动态生成这个链接，否则私有部署会出问题
-            location.href = `${isHttps ? 'https://' : 'http://'}${ssoHost}/oauth/oidc/auth?client_id=${
+            location.href = `${
+              isHttps ? "https://" : "http://"
+            }${ssoHost}/oauth/oidc/auth?client_id=${
               appInfo.client_id
             }&redirect_uri=${
               appInfo.redirect_uris[0]
@@ -340,7 +343,7 @@ export default {
     }
     try {
       // 获取应用的名称，图标等信息
-      this.appName = this.opts.title || this.appInfo.name || 'Guard';
+      this.appName = this.opts.title || this.appInfo.name || "Guard";
       window.title = `${this.appName} - Authing`;
       document.title = `${this.appName} - Authing`;
       this.appLogo = this.opts.logo || this.appInfo.image || this.defaultLogo;
@@ -365,6 +368,7 @@ export default {
         host: that.opts.host
       });
     } catch (err) {
+      console.log("5322342444442");
       console.log(err);
       this.changeLoading({ el: "page", loading: false });
 
@@ -406,7 +410,7 @@ export default {
         */
         that.changeLoading({ el: "socialButtonsList", loading: true });
         validAuth
-          .readOAuthList({useGuard: true})
+          .readOAuthList({ useGuard: true })
           .then(data => {
             that.$authing.pub("social-load", data);
             that.changeLoading({ el: "socialButtonsList", loading: false });
@@ -440,6 +444,7 @@ export default {
         }
       })
       .catch(err => {
+        console.log("32564574");
         console.log(err);
         this.changeLoading({ el: "page", loading: false });
         this.$router.replace({
@@ -739,8 +744,7 @@ export default {
     },
     async checkHasLDAP(clientId) {
       let operationName = "QueryClientHasLDAPConfigs";
-      let query =
-        `query {
+      let query = `query {
               ${operationName} (clientId: "${clientId}") {   
                 result,
               }
@@ -800,17 +804,21 @@ export default {
       } else {
         appToken = {};
       }
-      let auth = new SSO(
-        {
-          appId: this.appInfo._id,
-          appType: this.protocol,
-          appDomain: this.appInfo.domain+'.authing.cn',
-        }
-      )
-      let sess = await auth.trackSession()
-      if(!sess.session.appId) {
-        localStorage.clear()
-        return false
+      // 是不是 sso.authing.cn 这种总的域名
+      let isSSOAuthing = location.hostname.match(/^sso\./);
+      // baseDomain = authing.cn 这种后面的部分的域名
+      let auth = new SSO({
+        appId: this.appInfo._id,
+        appType: this.protocol,
+        appDomain: isSSOAuthing
+          ? "sso." + this.opts.baseDomain
+          : this.appInfo.domain + '.' + this.opts.baseDomain,
+        dev: true
+      });
+      let sess = await auth.trackSession();
+      if (!sess.session.appId) {
+        localStorage.clear();
+        return false;
       }
       return appToken[this.opts.appId] && appToken[this.opts.appId].accessToken;
     }

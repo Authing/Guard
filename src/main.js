@@ -121,7 +121,12 @@ var AuthingGuard = function(clientId, opts) {
       oauth: "https://oauth.authing.cn/graphql"
     };
   }
-
+  // 除了应用域名以外的其他域名部分
+  try {
+    $authing.opts.baseDomain = opts.host.user.match(/https?:\/\/([^\.]*)\.([^\/]*)/)[2];
+  } catch(err) {
+    $authing.opts.baseDomain = 'authing.cn'
+  }
   $authing.opts.placeholder = opts.placeholder;
   $authing.opts.host = opts.host;
   $authing.opts.timestamp = $authing.opts.timestamp || Math.round(new Date() / 1000);
