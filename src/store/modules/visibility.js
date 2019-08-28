@@ -7,7 +7,8 @@ const pageVisibilities = [
   "emailLogin",
   "signUp",
   "phoneCodeLogin",
-  "LDAPLogin"
+  "LDAPLogin",
+  "MFACode"
 ];
 const state = {
   pageStack: [],
@@ -25,6 +26,7 @@ const state = {
   emailLogin: true,
   // 注册页
   signUp: false,
+  MFACode: false,
 
   // -----------------------------
   // EmailLogin 页面中 LDAP 登录选项可见性
@@ -48,6 +50,7 @@ const getters = {
   signUp: state => state.signUp,
   LDAPLogin: state => state.LDAPLogin,
   loginVerifyCode: state => state.loginVerifyCode,
+  MFACode: state => state.MFACode,
 
   forgetPassword: state =>
     state.forgetPasswordSendEmail ||
@@ -90,6 +93,9 @@ const actions = {
   gotoForgetPasswordNewPassword({ commit }) {
     commit("turnOnPage", { page: "forgetPasswordNewPassword" });
   },
+  gotoMFACode({commit}) {
+    commit("turnOnPage", { page: "MFACode", keepMessage: true });
+  },
   turnOnPage({ commit }, { page }) {
     // commit("removeGlobalMsg");
 
@@ -126,9 +132,10 @@ const mutations = {
   //   state.globalError = false;
   //   state.globalSuccess = false;
   // },
-  turnOnPage(state, { page }) {
+  turnOnPage(state, { page, keepMessage }) {
     // 切换页面时删除 GlobalMessage
-    this.dispatch("data/showGlobalMessage", { type: "", message: "" });
+    if(!keepMessage)
+      this.dispatch("data/showGlobalMessage", { type: "", message: "" });
     // page 是 pageVisibilities 中的一个字符串
     state.pageStack.push(
       pageVisibilities.reduce((acc, val) => {
@@ -141,6 +148,7 @@ const mutations = {
     state[page] = true;
   },
   goBack(state) {
+    this.dispatch("data/showGlobalMessage", { type: "", message: "" });
     let prev = state.pageStack.pop();
     pageVisibilities.map(item => {
       state[item] = prev[item];

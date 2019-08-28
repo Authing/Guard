@@ -159,6 +159,7 @@
             <QRCode v-if="wxQRCodeVisible" />
             <ForgetPassword v-if="forgetPasswordVisible" />
             <PhoneCodeLogin v-if="phoneCodeLoginVisible" />
+            <MFACode v-if="MFACodeVisible"/>
             <!-- <div
               class="_authing_form-footer login"
               v-show="!opts.hideUP"
@@ -186,6 +187,7 @@ import SignUp from "./SignUp";
 import GlobalMessage from "../components/GlobalMessage";
 import ForgetPassword from "./forgetPassword/index";
 import PhoneCodeLogin from "./PhoneCode";
+import MFACode from './MFACode'
 import SSO from "@authing/sso";
 import { mapGetters, mapActions } from "vuex";
 export default {
@@ -197,7 +199,8 @@ export default {
     ForgetPassword,
     GlobalMessage,
     PhoneCodeLogin,
-    LDAPLogin
+    LDAPLogin,
+    MFACode,
   },
   data() {
     return {
@@ -813,6 +816,7 @@ export default {
         appDomain: isSSOAuthing
           ? "sso." + this.opts.baseDomain
           : this.appInfo.domain + '.' + this.opts.baseDomain,
+        dev:true
       });
       let sess = await auth.trackSession();
       if (!sess.session.appId) {
@@ -830,7 +834,8 @@ export default {
       forgetPasswordVisible: "forgetPassword",
       phoneCodeLoginVisible: "phoneCodeLogin",
       LDAPLoginVisible: "LDAPLogin",
-      pageStack: "pageStack"
+      pageStack: "pageStack",
+      MFACodeVisible: "MFACode"
     }),
     ...mapGetters("data", ["globalMessage", "globalMessageType", "appInfo"]),
     ...mapGetters("loading", {

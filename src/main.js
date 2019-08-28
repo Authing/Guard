@@ -21,7 +21,8 @@ var AuthingGuard = function(clientId, opts) {
       VERIFY_CODE: "请输入验证码",
       NEW_PASSWORD: "请输入新密码",
       PHONE: "请输入手机号",
-      PHONE_CODE: "4 位验证码"
+      PHONE_CODE: "4 位验证码",
+      MFA_CODE: "请输入动态口令"
     },
     $authing = this;
 
@@ -98,6 +99,7 @@ var AuthingGuard = function(clientId, opts) {
     opts.placeholder.phone = opts.placeholder.phone || PLACEHOLDER_TEXT.PHONE;
     opts.placeholder.phoneCode =
       opts.placeholder.phoneCode || PLACEHOLDER_TEXT.PHONE_CODE;
+    opts.placeholder.MFACode = opts.placeholder.MFACode || PLACEHOLDER_TEXT.MFA_CODE;
   } else {
     opts.placeholder = {
       username: PLACEHOLDER_TEXT.USERNAME,
@@ -107,7 +109,8 @@ var AuthingGuard = function(clientId, opts) {
       verfiyCode: PLACEHOLDER_TEXT.VERIFY_CODE,
       newPassword: PLACEHOLDER_TEXT.NEW_PASSWORD,
       phone: PLACEHOLDER_TEXT.PHONE,
-      phoneCode: PLACEHOLDER_TEXT.PHONE_CODE
+      phoneCode: PLACEHOLDER_TEXT.PHONE_CODE,
+      MFACode: PLACEHOLDER_TEXT.MFA_CODE
     };
   }
 

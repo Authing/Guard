@@ -25,7 +25,7 @@
             :placeholder="opts.placeholder.email"
             autocomplete="off"
             @keyup.enter="handleLogin"
-          >
+          />
         </div>
         <div class="_authing_form-group">
           <input
@@ -36,7 +36,7 @@
             :placeholder="opts.placeholder.password"
             autocomplete="off"
             @keyup.enter="handleLogin"
-          >
+          />
         </div>
         <div v-show="loginVerifyCodeVisible" class="form-group verify-code">
           <input
@@ -47,7 +47,7 @@
             :placeholder="opts.placeholder.verfiyCode"
             autocomplete="off"
             @keyup.enter="handleLogin"
-          >
+          />
 
           <div class="_authing_verify-code-loading-circle" v-show="loginVerifyCodeLoading"></div>
           <img
@@ -55,7 +55,7 @@
             id="verify-code-img"
             v-show="!loginVerifyCodeLoading"
             @load="handleLoginVerifyCodeLoaded"
-          >
+          />
         </div>
         <div class="row backup">
           <div class="_authing_form-group" style="margin-bottom:0px;" v-if="!opts.hidePhone">
@@ -74,17 +74,19 @@
       </form>
     </div>
     <div class="_authing_form-footer login">
-      <button @click="handleLogin" class="btn btn-primary"><span v-show="!formLoading">登录</span></button>
+      <button @click="handleLogin" class="btn btn-primary">
+        <span v-show="!formLoading">登录</span>
+      </button>
     </div>
   </div>
 </template>
 <script>
 import SocialButtonsList from "./SocialButtonsList";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 export default {
   name: "EmailLogin",
   components: {
-    SocialButtonsList,
+    SocialButtonsList
   },
   created() {
     this.$authing = this.$root.$data.$authing;
@@ -122,7 +124,7 @@ export default {
     ...mapGetters("loading", {
       socialButtonsListLoading: "socialButtonsList",
       loginVerifyCodeLoading: "loginVerifyCode",
-      formLoading: "form",
+      formLoading: "form"
     }),
     ...mapGetters("visibility", {
       loginVerifyCodeVisible: "loginVerifyCode",
@@ -131,15 +133,18 @@ export default {
     ...mapGetters("data", [
       "socialButtonsList",
       "signUpEmail",
-      "signUpPassword"
+      "signUpPassword",
+      "loginFormStash"
     ])
   },
   methods: {
+    ...mapMutations("data", ["setLoginFormStash"]),
     ...mapActions("loading", ["changeLoading"]),
     ...mapActions("visibility", [
       "changeVisibility",
       "gotoForgetPassword",
-      "gotoUsingPhone"
+      "gotoUsingPhone",
+      "gotoMFACode"
     ]),
     ...mapActions("data", [
       "showGlobalMessage",
@@ -169,7 +174,7 @@ export default {
         info = {
           username: this.loginForm.email,
           password: this.loginForm.password
-        }
+        };
         // this.addAnimation("login-username");
         // this.removeRedLine("login-password");
         // this.removeRedLine("verify-code");
@@ -181,7 +186,7 @@ export default {
         info = {
           email: this.loginForm.email,
           password: this.loginForm.password
-        }
+        };
       }
 
       if (!this.loginForm.password) {
@@ -201,7 +206,7 @@ export default {
       if (this.loginVerifyCodeVisible) {
         info.verifyCode = this.verifyCode;
       }
-
+      let infoCopy = {...info}
       validAuth
         .login(info)
         .then(data => {
@@ -216,19 +221,21 @@ export default {
             localStorage.removeItem("_authing_username");
             localStorage.removeItem("_authing_password");
           }
-*/
+          */
           that.showGlobalMessage({
             type: "success",
             message: "验证通过，欢迎你：" + (data.username || data.email)
           });
           that.recordLoginInfo(data);
           that.$authing.pub("login", data);
-          that.$authing.pub("authenticated", data); 
-          this.handleProtocolProcess({ router: this.$router });
+          that.$authing.pub("authenticated", data);
+          setTimeout(() => {
+            this.handleProtocolProcess({ router: this.$router });
+          }, 500)
           that.changeLoading({ el: "form", loading: false });
         })
         .catch(err => {
-          console.log(err)
+          console.log(err);
           that.changeLoading({ el: "form", loading: false });
           that.$authing.pub("login-error", err);
           that.$authing.pub("authenticated-error", err);
@@ -248,6 +255,24 @@ export default {
               visibility: true
             });
             that.verifyCodeUrl = err.message.data.url;
+          }
+          // 需要提供 MFA 口令
+          /*
+          {
+            message: '用户开启了二次验证，需输入 MFA 口令',
+            code: 1635,
+          }
+          */
+          else if (err.message.code === 1635) {
+            that.showGlobalMessage({
+              type: "error",
+              message: err.message.message
+            });
+            that.setLoginFormStash({
+              ...infoCopy,
+              verifyCode: this.verifyCode
+            });
+            that.gotoMFACode();
           }
           // 用户名错误
           else if (
@@ -273,7 +298,8 @@ export default {
                   that.changeLoading({ el: "form", loading: false });
                   that.showGlobalMessage({
                     type: "success",
-                    message: "验证通过，欢迎你：" + (data.username || data.email)
+                    message:
+                      "验证通过，欢迎你：" + (data.username || data.email)
                   });
                   that.$authing.pub("login", data);
                   that.$authing.pub("authenticated", data);

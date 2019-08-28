@@ -5,13 +5,22 @@ const state = {
 
   signUpEmail: "",
   signUpPassword: "",
-
+  
   forgetPasswordEmail: "",
   forgetPasswordVerifyCode: "",
   socialButtonsList: [],
   appInfo: {},
   userInfo: {},
-  isLogged: false
+  isLogged: false,
+
+  // 用于登录过程中，碰到需要输入 MFA 时，存储下上一步的用户名和密码
+  loginFormStash: {
+    email: '',
+    password: '',
+    MFACode: '',
+    verifyCode: '',
+    username: ''
+  }
 };
 const getters = {
   appInfo: state => state.appInfo,
@@ -26,7 +35,8 @@ const getters = {
 
   // 重置密码时填的 email
   forgetPasswordEmail: state => state.forgetPasswordEmail,
-  forgetPasswordVerifyCode: state => state.forgetPasswordVerifyCode
+  forgetPasswordVerifyCode: state => state.forgetPasswordVerifyCode,
+  loginFormStash: state => state.loginFormStash
 };
 const actions = {
   saveLoginStatus({ commit }, { isLogged }) {
@@ -117,6 +127,11 @@ const mutations = {
   },
   setLoginStatus(state, { isLogged }) {
     state.isLogged = isLogged;
+  },
+  setLoginFormStash(state, { email, password, verifyCode, MFACode, username }) {
+    state.loginFormStash = {
+      email, password, verifyCode, MFACode, username
+    }
   }
 };
 
