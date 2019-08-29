@@ -20,7 +20,15 @@ const state = {
     MFACode: '',
     verifyCode: '',
     username: ''
-  }
+  },
+  // 用于社会化登录过程中，碰到需要输入 MFA 时，存储 unionid 以便再次登录
+  loginOpt: {
+    unionid: '',
+    email: '',
+    lastIP: ''
+  },
+  // 如果因 MFA 问题导致登录流程终端，记录一下当前是用户名密码登录还是社会化登录 UP social
+  loginType: ''
 };
 const getters = {
   appInfo: state => state.appInfo,
@@ -36,7 +44,9 @@ const getters = {
   // 重置密码时填的 email
   forgetPasswordEmail: state => state.forgetPasswordEmail,
   forgetPasswordVerifyCode: state => state.forgetPasswordVerifyCode,
-  loginFormStash: state => state.loginFormStash
+  loginFormStash: state => state.loginFormStash,
+  loginOpt: state => state.loginOpt,
+  loginType: state => state.loginType
 };
 const actions = {
   saveLoginStatus({ commit }, { isLogged }) {
@@ -132,6 +142,14 @@ const mutations = {
     state.loginFormStash = {
       email, password, verifyCode, MFACode, username
     }
+  },
+  setLoginOpt(state, { email, unionid, lastIP }) {
+    state.loginOpt = {
+      email, unionid, lastIP
+    }
+  },
+  setLoginType(state, { loginType }) {
+    state.loginType = loginType
   }
 };
 

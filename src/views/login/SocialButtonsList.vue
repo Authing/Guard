@@ -20,7 +20,7 @@
 </template>
 <script>
 import SocialButton from "../components/SocialButton";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 import themes from "../themes/themes";
 
 export default {
@@ -46,6 +46,10 @@ export default {
     ...mapActions("protocol", ["handleProtocolProcess"]),
     ...mapActions("data", ["recordLoginInfo", "showGlobalMessage"]),
     ...mapActions("loading", ["changeLoading"]),
+    ...mapActions("visibility", [
+      "gotoMFACode"
+    ]),
+    ...mapMutations("data", ["setLoginOpt", "setLoginType"]),
     handleClick(url) {
       let leftVal = (screen.width - 500) / 2;
       let topVal = (screen.height - 700) / 2;
@@ -74,10 +78,18 @@ export default {
     receiveMessage(event) {
       try {
         let data = event.data;
+        console.log('data5431')
+        console.log(data)
         let code = data.code;
         let message = data.message;
         // 判断是不是来自 authing 社会化登录的 post message
         if (typeof code === "number") {
+          if(code === 1635) {
+            this.setLoginType({loginType: 'social'})
+            this.setLoginOpt(data.loginOpt)
+            this.gotoMFACode()
+            return
+          }
           if (code !== 200) {
             console.log(data)
             throw Error(message);

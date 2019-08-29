@@ -36,7 +36,7 @@ export default {
     ...mapGetters("loading", {
       formLoading: "form"
     }),
-     ...mapGetters("data", ['loginFormStash']),
+     ...mapGetters("data", ['loginFormStash', 'loginType', 'loginOpt']),
   },
   methods: {
     ...mapActions("loading", ["changeLoading"]),
@@ -58,10 +58,16 @@ export default {
         this.$authing.pub("MFA-format-error", "请输入正确 6 位数字动态口令");
         return false;
       }
-      let info = {...this.loginFormStash}
-      console.log(this.loginFormStash)
+      let info
+      if(this.loginType === 'UP') {
+        console.log(this.loginFormStash)
+        info = {...this.loginFormStash}
+      } else if(this.loginType === 'social') {
+        info = {...this.loginOpt}
+      }
       info.MFACode = this.MFACode
-
+      console.log('info23y543')
+      console.log(info)
       validAuth
         .login(info)
         .then(data => {

@@ -138,7 +138,7 @@ export default {
     ])
   },
   methods: {
-    ...mapMutations("data", ["setLoginFormStash"]),
+    ...mapMutations("data", ["setLoginFormStash", "setLoginType"]),
     ...mapActions("loading", ["changeLoading"]),
     ...mapActions("visibility", [
       "changeVisibility",
@@ -268,6 +268,7 @@ export default {
               type: "error",
               message: err.message.message
             });
+            that.setLoginType({loginType: 'UP'})
             that.setLoginFormStash({
               ...infoCopy,
               verifyCode: this.verifyCode
