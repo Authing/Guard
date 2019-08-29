@@ -266,7 +266,7 @@ export default {
           else if (err.message.code === 1635) {
             that.showGlobalMessage({
               type: "error",
-              message: err.message.message
+              message: err.message.message.replace(/"/g,'')
             });
             that.setLoginType({loginType: 'UP'})
             that.setLoginFormStash({

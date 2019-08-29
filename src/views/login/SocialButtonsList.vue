@@ -66,7 +66,7 @@ export default {
         if (popup.closed) {
           clearInterval(timer);
           that.changeLoading({ el: "form", loading: false });
-          if (!localStorage.getItem("_authing_token")) {
+          if (!localStorage.getItem("_authing_token") && this.globalMessage === '正在进行社会化登录') {
             that.showGlobalMessage({
               type: "error",
               message: "取消社会化登录"
@@ -87,6 +87,10 @@ export default {
           if(code === 1635) {
             this.setLoginType({loginType: 'social'})
             this.setLoginOpt(data.loginOpt)
+            this.showGlobalMessage({
+              type: "error",
+              message: message.replace(/"/g,'')
+            });
             this.gotoMFACode()
             return
           }
@@ -114,7 +118,7 @@ export default {
   },
   computed: {
     ...mapGetters("loading", { socialButtonsListLoading: "socialButtonsList" }),
-    ...mapGetters("data", { socialButtonsList: "socialButtonsList" })
+    ...mapGetters("data", { socialButtonsList: "socialButtonsList", globalMessage: "globalMessage" })
   }
 };
 </script>
