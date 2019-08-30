@@ -10,11 +10,11 @@ module.exports = {
   devServer: {
     proxy: {
       '^/authorize': {
-        target: 'http://localhost:5556/sso',
+        target: 'http://sso.authing.cn',  //sso.authing.cn
         changeOrigin: true
       },
       '^/oauth': {
-        target: 'http://localhost:5556/',
+        target: 'http://sso.authing.cn', //sso.authing.cn
         changeOrigin: true
       }
     }
