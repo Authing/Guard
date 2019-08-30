@@ -4,7 +4,7 @@ import Router from 'vue-router';
 import Authorize from './views/Authorize.vue';
 import ErrorPage from './views/ErrorPage.vue';
 import Logout from './views/Logout.vue'
-
+import Profile from './views/Profile.vue'
 import Login from './views/login/index.vue';
 
 Vue.use(Router);
@@ -37,6 +37,11 @@ export default new Router({
       path: '/error',
       name: 'error',
       component: ErrorPage,
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: Profile,
     }
   ]
 });
