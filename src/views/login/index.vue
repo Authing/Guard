@@ -99,11 +99,11 @@
                 <li
                   v-bind:class="{
                   'authing-header-tabs-current': wxQRCodeVisible || (opts.hideUP && opts.hideSocial),
-                  'width-55': !isScanCodeEnable || opts.hideUP || opts.forceLogin,
-                  'width-100': (opts.hideUP && opts.hideSocial),
+                  'width-55': headerTabCount === 2,
+                  'width-100': headerTabCount === 1,
                   'shadow-eee': (opts.hideUP && opts.hideSocial),
                 }"
-                  v-show="isScanCodeEnable && !opts.hideQRCode && !clientInfo.registerDisabled"
+                  v-show="isScanCodeEnable && !opts.hideQRCode && (!clientInfo.registerDisabled||clientInfo.showWXMPQRCode)"
                 >
                   <a class="_authing_a" href="javascript:void(0)" @click="gotoWxQRCodeScanning">扫码登录</a>
                 </li>
@@ -111,8 +111,8 @@
                   v-show="!(opts.hideUP && opts.hideSocial)"
                   v-bind:class="{
                   'authing-header-tabs-current': emailLoginVisible || LDAPLoginVisible,
-                  'width-55': !isScanCodeEnable || opts.hideQRCode || opts.hideUP || opts.forceLogin,
-                  'width-100': (opts.hideUP && opts.hideQRCode) || (opts.hideQRCode && opts.forceLogin) || clientInfo.registerDisabled || opts.hideRegister,
+                  'width-55': headerTabCount === 2,
+                  'width-100': headerTabCount === 1,
                 }"
                 >
                   <a class="_authing_a" href="javascript:void(0)" @click="gotoLogin">登录</a>
@@ -121,7 +121,7 @@
                   v-show="!opts.hideUP && !opts.forceLogin && !clientInfo.registerDisabled && !opts.hideRegister"
                   v-bind:class="{
                   'authing-header-tabs-current': signUpVisible,
-                  'width-55': !isScanCodeEnable || opts.hideQRCode
+                  'width-55': headerTabCount === 2
                 }"
                 >
                   <a class="_authing_a" @click="gotoSignUp" href="javascript:void(0)">注册</a>
@@ -368,7 +368,7 @@ export default {
         timestamp: that.opts.timestamp,
         nonce: that.opts.nonce,
         useSelfWxapp: that.opts.useSelfWxapp,
-        host: that.opts.host
+        host: that.opts.host,
       });
     } catch (err) {
       console.log("5322342444442");
@@ -827,6 +827,29 @@ export default {
     }
   },
   computed: {
+    headerTabCount() {
+      let arr = ['scan-wx-mp','login','register']
+      if(!this.isScanCodeEnable || this.opts.hideQRCode || (this.clientInfo.registerDisabled&&!this.clientInfo.showWXMPQRCode)) {
+        let idx = arr.findIndex(v => v === 'scan-wx-mp')
+        if(~idx) {
+          arr.splice(idx, 1)
+        }
+      }
+      
+      if(this.opts.hideSocial&&this.opts.hideUP) {
+        let idx = arr.findIndex(v => v === 'login')
+        if(~idx) {
+          arr.splice(idx, 1)
+        }
+      }
+      if(this.opts.hideUP || this.opts.forceLogin || this.clientInfo.registerDisabled || this.opts.hideRegister) {
+        let idx = arr.findIndex(v => v === 'register')
+        if(~idx) {
+          arr.splice(idx, 1)
+        }
+      }
+      return arr.length
+    },
     ...mapGetters("visibility", {
       emailLoginVisible: "emailLogin",
       wxQRCodeVisible: "wxQRCode",
