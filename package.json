@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@authing/sso": "^1.0.1",
-    "authing-js-sdk": "^2.19.0",
+    "authing-js-sdk": "^2.20.0-alpha",
     "axios": "^0.18.0",
     "vue": "^2.6.6",
     "vue-router": "^3.0.1",
