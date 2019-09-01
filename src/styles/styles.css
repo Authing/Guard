@@ -447,7 +447,9 @@
     text-align: center;
     cursor: pointer;
   }
-
+  .authing-header-tabs li.width-33 {
+    width: 33.33%;
+  }
   .authing-header-tabs li.width-55 {
     width: 50%;
   }
