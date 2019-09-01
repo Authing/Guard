@@ -807,7 +807,7 @@ export default {
       } else {
         appToken = {};
       }
-      // 是不是 sso.authing.cn 这种总的域名
+      //是不是 sso.authing.cn 这种总的域名
       let isSSOAuthing = location.hostname.match(/^sso\./);
       // baseDomain = authing.cn 这种后面的部分的域名
       let auth = new SSO({
