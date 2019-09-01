@@ -11,12 +11,12 @@ module.exports = {
     proxy: {
       '^/authorize': {
         // target: 'https://sso.authing.cn/sso',
-        target: 'http://localhost:5556/sso',
+        target: 'http://sso.celebes.live/',
         changeOrigin: true
       },
       '^/oauth': {
         // target: 'https://sso.authing.cn/',
-        target: 'http://localhost:5556/',
+        target: 'http://sso.celebes.live/',
         changeOrigin: true
       }
     }

@@ -19,7 +19,7 @@
               stroke="#000"
               stroke-miterlimit="10"
               stroke-width="2"
-            ></polyline>
+            />
             <line
               fill="none"
               stroke="#000"
@@ -29,7 +29,7 @@
               x2="3.5"
               y1="12"
               y2="12"
-            ></line>
+            />
           </svg>
         </span>
 
@@ -55,21 +55,21 @@
               p-id="2036"
               data-spm-anchor-id="a313x.7781069.0.i1"
               class="selected"
-            ></path>
+            />
             <path
               d="M461.70000001 225c18 0 32.7-14.7 32.7-32.7l0-63.8L894.8 128.5 894.8 895.3l-400.4 0 1e-8-63.1c0-18-14.7-32.7-32.7-32.7s-32.7 14.7-32.70000001 32.7L429 927.7c0 3.49999999 0.6 6.8 1.6 10 4.2 13.3 16.6 23 31.2 23L927.4 960.7c18 0 32.7-14.7 32.7-32.70000001l0-831.9c0-14.2-9.2-26.3-21.8-30.8-3.6-1.4-7.5-2.1-11.5-2.09999999l-463.2 0c-0.6 0-1.3-0.1-1.9-0.1-18 0-32.7 14.7-32.7 32.7l0 96.5c0 18 14.7 32.7 32.70000001 32.7z"
               fill="#000"
               p-id="2037"
               data-spm-anchor-id="a313x.7781069.0.i0"
               class="selected"
-            ></path>
+            />
             <path
               d="M767.2 511.3a33 32.9 90 1 0-65.8 0 33 32.9 90 1 0 65.8 0Z"
               fill="#000000"
               p-id="2038"
               data-spm-anchor-id="a313x.7781069.0.i3"
               class="selected"
-            ></path>
+            />
           </svg>
         </span>
       </div>
@@ -82,15 +82,21 @@
         <div
           class="item"
           style="cursor: pointer"
-          :class="nowPage == 1 ? 'unhover' : ''"
+          :class="nowPage !== 0 ? 'unhover' : ''"
           @click="pageChange(0)"
         >基本资料</div>
         <div
           class="item"
           style="cursor: pointer"
-          :class="nowPage == 0 ? 'unhover' : ''"
+          :class="nowPage !== 1 ? 'unhover' : ''"
           @click="pageChange(1)"
         >详细资料</div>
+        <div
+          class="item"
+          style="cursor: pointer"
+          :class="nowPage !== 2 ? 'unhover' : ''"
+          @click="pageChange(2)"
+        >令牌设置</div>
       </div>
 
       <div class="profile-good_page" v-if="nowPage == 0">
@@ -105,7 +111,7 @@
                 v-model="profileForm.nickName"
                 autocomplete="off"
                 @keyup.enter="saveInfo"
-              >
+              />
               <input
                 type="text"
                 class="_authing_input _authing_form-control"
@@ -114,12 +120,12 @@
                 v-model="profileForm.phoneNumber"
                 autocomplete="off"
                 @keyup.enter="saveInfo"
-              >
+              />
             </div>
           </div>
           <div class="profile-right_bar">
             <div class="profile-avatar_box" @click="choosePhoto">
-              <img :src="profileForm.avatarUrl" class="avatar" style="cursor: pointer">
+              <img :src="profileForm.avatarUrl" class="avatar" style="cursor: pointer" />
               <span style="cursor: pointer">修改头像</span>
             </div>
           </div>
@@ -137,7 +143,7 @@
                 v-model="profileForm.eMail"
                 autocomplete="off"
                 @keyup.enter="saveInfo"
-              >
+              />
             </div>
 
             <div class="profile-input_with_label">
@@ -150,7 +156,7 @@
                 v-model="profileForm.companyName"
                 autocomplete="off"
                 @keyup.enter="saveInfo"
-              >
+              />
             </div>
 
             <div class="profile-input_with_label">
@@ -163,7 +169,7 @@
                 v-model="profileForm.oldPassWord"
                 autocomplete="off"
                 @keyup.enter="saveInfo"
-              >
+              />
             </div>
 
             <div class="profile-input_with_label">
@@ -176,7 +182,7 @@
                 v-model="profileForm.passWord"
                 autocomplete="off"
                 @keyup.enter="saveInfo"
-              >
+              />
             </div>
 
             <div class="profile-input_with_label">
@@ -189,11 +195,23 @@
                 v-model="profileForm.passWord2"
                 autocomplete="off"
                 @keyup.enter="saveInfo"
-              >
+              />
             </div>
           </div>
         </div>
         <div class="whitePage" v-if="loading"></div>
+      </div>
+
+      <div class="profile-settings_page" v-if="nowPage == 2">
+        <div class="profile-user_info">
+          <span class="profile-label">动态令牌</span>
+          <span class="profile-label_info row-flex-end">
+            <label class="switch">
+              <input type="checkbox" v-model="checked" />
+              <div class="slider round"></div>
+            </label>
+          </span>
+        </div>
       </div>
 
       <div
@@ -240,9 +258,26 @@
   </div>
 </template>
 <script>
+// npm install qrcode
+// import qrcode from 'qrcode';
+// import { authenticator } from 'otplib';
+// const user = 'A user name, possibly an email';
+// const service = 'A service name';
+// const secret = authenticator.generateSecret();
+// const otpauth = authenticator.keyuri(user, service, secret);
+
+
+// qrcode.toDataURL(otpauth, (err, imageUrl) => {
+//   if (err) {
+//     console.log('Error with QR');
+//     return;
+//   }
+//   console.log(imageUrl);
+// });
 export default {
   data() {
     return {
+      checked: false,
       $authing: null,
 
       loading: false,
@@ -617,7 +652,7 @@ export default {
 }
 
 .profile-nav_bar .item {
-  width: 50%;
+  width: calc(100% / 3);
   height: 44px;
   color: #5c666f;
   border-bottom: 1px solid #5c666f;
@@ -794,6 +829,11 @@ export default {
 
 .profile-user_info .profile-label_info {
   width: 70%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-content: center;
 }
 
 .msgBar {
@@ -810,5 +850,77 @@ export default {
   font-weight: 400;
   letter-spacing: 0.5px;
   transition: all 0.2s;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 45px;
+  height: 25.5px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 19.5px;
+  width: 19.5px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(19.5px);
+  -ms-transform: translateX(19.5px);
+  transform: translateX(19.5px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.row-flex-end {
+  justify-content: flex-end !important;
+}
+
+.profile-settings_page {
+  width: 100%;
+  height: calc(100% - 145px);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  position: absolute;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
 </style>
