@@ -321,18 +321,25 @@ export default {
       clientId: null
     };
   },
+  created() {
+    this.opts = this.$root.$data.$authing.opts;
+  },
   async mounted() {
     const Authing = require("authing-js-sdk");
     let client_info = JSON.parse(localStorage.getItem("_authing_clientInfo"))
     this.clientInfo = client_info
     let client_id = client_info.clientId || false;
     this.clientId = client_id
+    this.userToken = localStorage.getItem('_authing_token')
     if (client_id) {
       const auth = await new Authing({
         clientId: client_id,
         timestamp: Math.round(new Date() / 1000),
-        nonce: Math.ceil(Math.random() * Math.pow(10, 6))
+        nonce: Math.ceil(Math.random() * Math.pow(10, 6)),
+        host: this.opts.host,
+
       });
+      auth.initUserClient(this.userToken)
       this.$authing = auth;
 
       //已经有资料缓存，可以开始读取
@@ -349,7 +356,7 @@ export default {
     async changeValue() {
       console.log(this.$authing.changeMFA)
       let res = await this.$authing.checkLoginStatus(localStorage.getItem('_authing_token'))
-      alert(res)
+      alert(JSON.stringify(res))
       await this.$authing.changeMFA({
         userId: this.userId,
         userPoolId: this.clientId,
