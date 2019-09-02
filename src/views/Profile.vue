@@ -299,6 +299,7 @@ import QRCode from "qrcode";
 export default {
   data() {
     return {
+      userToken: null,
       remarkChanging: null,
       storageUserInfo: {},
       mfaRemark: "",
@@ -353,16 +354,23 @@ export default {
   watch: {
     mfaRemark() {
       this.changeRemark();
+    },
+    async checked() {
+      await this.changeValue()
     }
   },
   async mounted() {
     const Authing = require("authing-js-sdk");
-    let client_info = JSON.parse(localStorage.getItem("_authing_clientInfo"));
+    let client_info = JSON.parse(localStorage.getItem("_authing_clientInfo")) || null;
+    if(!client_info) {
+      this.notLogin()
+      return;
+    }
     this.clientInfo = client_info;
     let client_id = client_info.clientId || false;
     this.clientId = client_id;
     this.userToken = localStorage.getItem("_authing_token") || null;
-    if (this.userToken) {
+    if (this.userToken && client_info) {
       const auth = await new Authing({
         clientId: client_id,
         timestamp: Math.round(new Date() / 1000),
@@ -405,7 +413,7 @@ export default {
           userId: this.userId,
           userPoolId: this.clientId
         });
-        if (mfaList.queryMFA) {
+        if (mfaList) {
           this.MFA = mfaList.queryMFA;
           this.checked = this.MFA["enable"] || false;
           this.makeQRCode();
