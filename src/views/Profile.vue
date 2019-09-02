@@ -207,7 +207,7 @@
           <span class="profile-label">动态令牌</span>
           <span class="profile-label_info row-flex-end">
             <label class="switch">
-              <input type="checkbox" v-model="checked" />
+              <input type="checkbox" v-model="checked" @change="changeValue" />
               <div class="slider round"></div>
             </label>
           </span>
@@ -258,6 +258,7 @@
   </div>
 </template>
 <script>
+//import { mapGetters } from "vuex";
 // npm install qrcode
 // import qrcode from 'qrcode';
 // import { authenticator } from 'otplib';
@@ -315,12 +316,17 @@ export default {
         lastLoginTime: ""
       },
 
-      userId: null
+      userId: null,
+      clientInfo: {},
+      clientId: null
     };
   },
   async mounted() {
     const Authing = require("authing-js-sdk");
-    let client_id = localStorage.getItem("_authing_clientId") || false;
+    let client_info = JSON.parse(localStorage.getItem("_authing_clientInfo"))
+    this.clientInfo = client_info
+    let client_id = client_info.clientId || false;
+    this.clientId = client_id
     if (client_id) {
       const auth = await new Authing({
         clientId: client_id,
@@ -340,9 +346,18 @@ export default {
     }
   },
   methods: {
+    async changeValue() {
+      console.log(this.$authing.changeMFA)
+      let res = await this.$authing.checkLoginStatus(localStorage.getItem('_authing_token'))
+      alert(res)
+      await this.$authing.changeMFA({
+        userId: this.userId,
+        userPoolId: this.clientId,
+        enable: this.checked
+      })
+    },
     getStorageInfo() {
       let that = this;
-
       let userInfo = JSON.parse(localStorage.getItem("_authing_userInfo"));
       if (userInfo) {
         that.profileForm.eMail = userInfo.email;
