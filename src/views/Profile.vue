@@ -204,13 +204,50 @@
 
       <div class="profile-settings_page" v-if="nowPage == 2">
         <div class="profile-user_info">
-          <span class="profile-label">动态令牌</span>
+          <span class="profile-label">开启动态令牌</span>
           <span class="profile-label_info row-flex-end">
             <label class="switch">
-              <input type="checkbox" v-model="checked" @change="changeValue" />
+              <input type="checkbox" v-model="checked" />
               <div class="slider round"></div>
             </label>
           </span>
+        </div>
+        <div v-if="checked" class="profile-user_info">
+          <span class="profile-label">应用备注</span>
+          <span class="profile-label_info row-flex-end authing-form without-padding">
+            <input
+              type="text"
+              class="_authing_input _authing_form-control mini_input"
+              style="text-align: right"
+              id="profile-name"
+              :placeholder="clientInfo.name ? clientInfo.name : '您的应用备注'"
+              v-model="mfaRemark"
+              autocomplete="off"
+              @change="changeRemark"
+            />
+          </span>
+        </div>
+        <div v-if="checked" class="profile-user_info">
+          <span class="profile-label">令牌密钥</span>
+          <span class="profile-label_info row-flex-end authing-form without-padding">
+            <input
+              type="text"
+              class="_authing_input _authing_form-control mini_input"
+              style="text-align: right"
+              id="profile-name"
+              placeholder="您的应用密钥"
+              :value="MFA.shareKey || ''"
+              autocomplete="off"
+              @click="copyShareKey"
+              readonly
+            />
+          </span>
+        </div>
+        <div class="imgBar">
+          <div v-if="remarkChanging > 0 && checked" class="remarkBox">
+            <div class="k-line k-line10"></div>
+          </div>
+          <img v-if="!remarkChanging && checked" :src="QRCodeImg" />
         </div>
       </div>
 
@@ -258,26 +295,15 @@
   </div>
 </template>
 <script>
-//import { mapGetters } from "vuex";
-// npm install qrcode
-// import qrcode from 'qrcode';
-// import { authenticator } from 'otplib';
-// const user = 'A user name, possibly an email';
-// const service = 'A service name';
-// const secret = authenticator.generateSecret();
-// const otpauth = authenticator.keyuri(user, service, secret);
-
-
-// qrcode.toDataURL(otpauth, (err, imageUrl) => {
-//   if (err) {
-//     console.log('Error with QR');
-//     return;
-//   }
-//   console.log(imageUrl);
-// });
+import QRCode from "qrcode";
 export default {
   data() {
     return {
+      remarkChanging: null,
+      storageUserInfo: {},
+      mfaRemark: "",
+      QRCodeImg: null,
+      MFA: null,
       checked: false,
       $authing: null,
 
@@ -324,48 +350,135 @@ export default {
   created() {
     this.opts = this.$root.$data.$authing.opts;
   },
+  watch: {
+    mfaRemark() {
+      this.changeRemark();
+    }
+  },
   async mounted() {
     const Authing = require("authing-js-sdk");
-    let client_info = JSON.parse(localStorage.getItem("_authing_clientInfo"))
-    this.clientInfo = client_info
+    let client_info = JSON.parse(localStorage.getItem("_authing_clientInfo"));
+    this.clientInfo = client_info;
     let client_id = client_info.clientId || false;
-    this.clientId = client_id
-    this.userToken = localStorage.getItem('_authing_token')
-    if (client_id) {
+    this.clientId = client_id;
+    this.userToken = localStorage.getItem("_authing_token") || null;
+    if (this.userToken) {
       const auth = await new Authing({
         clientId: client_id,
         timestamp: Math.round(new Date() / 1000),
         nonce: Math.ceil(Math.random() * Math.pow(10, 6)),
-        host: this.opts.host,
-
+        host: this.opts.host
       });
-      auth.initUserClient(this.userToken)
+      auth.initUserClient(this.userToken);
       this.$authing = auth;
-
       //已经有资料缓存，可以开始读取
       this.getStorageInfo();
+      this.getMFAInfo();
     } else {
-      this.showSuccessBar("登录身份已过期");
-      setTimeout(() => {
-        location.href = "/error?message=尚未登录&code=id520";
-      }, 1000);
-      this.loading = false;
+      this.notLogin();
     }
   },
   methods: {
-    async changeValue() {
-      console.log(this.$authing.changeMFA)
-      let res = await this.$authing.checkLoginStatus(localStorage.getItem('_authing_token'))
-      alert(JSON.stringify(res))
-      await this.$authing.changeMFA({
-        userId: this.userId,
-        userPoolId: this.clientId,
-        enable: this.checked
-      })
+    makeQRCode() {
+      let that = this;
+      let userPoolName = this.clientInfo.name || "Authing 应用"; //this.clientInfo.name || 'Authing 应用'
+      let userName =
+        this.storageUserInfo.username ||
+        this.storageUserInfo.nickname ||
+        this.storageUserInfo.email ||
+        "佚名";
+      let userRemark =
+        this.mfaRemark && this.mfaRemark !== "" ? this.mfaRemark + '-' + userPoolName : userPoolName;
+      let shareKey = this.MFA.shareKey;
+      let clientId = this.clientId;
+      let qrurl = `otpauth://totp/${userRemark}?secret=${shareKey}&period=60&digits=6&algorithm=SHA1&issuer=${userName}&client=${clientId}`;
+      QRCode.toDataURL(qrurl, (err, res) => {
+        that.QRCodeImg = res;
+      });
     },
+    async getMFAInfo() {
+      let res = await this.$authing.checkLoginStatus(
+        localStorage.getItem("_authing_token")
+      );
+      if (res.code == 200) {
+        let mfaList = await this.$authing.queryMFA({
+          userId: this.userId,
+          userPoolId: this.clientId
+        });
+        if (mfaList.queryMFA) {
+          this.MFA = mfaList.queryMFA;
+          this.checked = this.MFA["enable"] || false;
+          this.makeQRCode();
+        } else {
+          this.showWarnBar("获取动态令牌失败");
+        }
+      } else {
+        this.notLogin();
+      }
+    },
+    notLogin() {
+      this.showSuccessBar("登录身份已过期");
+      let jumpHref;
+      if (!this.clientId) {
+        jumpHref = "/error?message=尚未登录&code=id520";
+      } else {
+        jumpHref = "/login?app_id=" + this.clientId;
+      }
+      setTimeout(() => {
+        location.href = jumpHref;
+      }, 1000);
+      this.loading = false;
+    },
+
+    async changeValue() {
+      let res = await this.$authing.checkLoginStatus(
+        localStorage.getItem("_authing_token")
+      );
+      if (res.code == 200) {
+        this.showSuccessBar("保存修改中");
+        let mfaInfo = await this.$authing.changeMFA({
+          userId: this.userId,
+          userPoolId: this.clientId,
+          enable: this.checked
+        });
+
+        if (mfaInfo.changeMFA) {
+          this.showSuccessBar("保存成功");
+          await this.getMFAInfo();
+          // this.MFA = mfaInfo.changeMFA;
+          // this.checked = this.MFA["enable"] || false;
+        } else {
+          this.showWarnBar("保存修改失败");
+        }
+      } else {
+        this.notLogin();
+      }
+    },
+
+    copyShareKey() {
+      let that = this;
+      function copyText(text, callback) {
+        // 网上找的，为了不多加库真的很拼
+        var tag = document.createElement("input");
+        tag.setAttribute("id", "cp_hgz_input");
+        tag.value = text;
+        document.getElementsByTagName("body")[0].appendChild(tag);
+        document.getElementById("cp_hgz_input").select();
+        document.execCommand("copy");
+        document.getElementById("cp_hgz_input").remove();
+        if (callback) {
+          callback(text);
+        }
+      }
+      copyText(this.MFA.shareKey, () => {
+        that.showSuccessBar("密钥已复制");
+      });
+    },
+
     getStorageInfo() {
       let that = this;
       let userInfo = JSON.parse(localStorage.getItem("_authing_userInfo"));
+      this.storageUserInfo = userInfo;
       if (userInfo) {
         that.profileForm.eMail = userInfo.email;
 
@@ -405,6 +518,18 @@ export default {
           this.showInfo = "";
           this.successShow = false;
         }, 1500);
+      } else {
+        this.showInfo = info;
+      }
+    },
+
+    changeRemark() {
+      if (!this.remarkChanging) {
+        this.remarkChanging = setTimeout(() => {
+          clearTimeout(this.remarkChanging);
+          this.remarkChanging = null;
+          this.makeQRCode();
+        }, 1000);
       }
     },
 
@@ -841,6 +966,7 @@ export default {
   justify-content: flex-start;
   align-items: center;
   border-bottom: 1px dashed #f3f3f3;
+  background: #fff;
 }
 
 .profile-user_info .profile-label {
@@ -944,5 +1070,77 @@ input:checked + .slider:before {
   position: absolute;
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
+  background: #fff;
+}
+
+.mini_input {
+  width: 80%;
+  height: 30px !important;
+  font-size: 13px !important;
+  padding: 6px 0 !important;
+  border-bottom: none !important;
+}
+
+.without-padding {
+  padding: 0 !important;
+}
+
+.imgBar {
+  box-sizing: border-box;
+  padding: 22px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.imgBar > img {
+  display: inline-block;
+  width: 160px;
+  height: 160px;
+}
+
+.imgBar > .remarkBox {
+  margin-top: 11px;
+  width: 149px;
+  height: 149px;
+  background: #fafafa;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  color: #515151;
+}
+
+._authing_form-control[readonly] {
+  background: #fff !important;
+  cursor: pointer;
+}
+
+.k-line10 {
+  animation: k-loadingH 1s cubic-bezier(0.17, 0.37, 0.43, 0.67) infinite;
+  background-color: #2196f3;
+}
+
+@keyframes k-loadingH {
+  0% {
+    width: 15px;
+  }
+  50% {
+    width: 35px;
+    padding: 4px;
+  }
+  100% {
+    width: 15px;
+  }
+}
+
+.k-line {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
 }
 </style>
