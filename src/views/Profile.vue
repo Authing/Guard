@@ -234,7 +234,7 @@
             />
           </span>
         </div>
-        <div class="imgBar">
+        <div v-if="checked" class="imgBar">
           <div v-if="remarkChanging > 0 && checked" class="remarkBox">
             <div class="k-line k-line10"></div>
           </div>
@@ -242,7 +242,7 @@
           <img v-if="navBarKey == 2 && !remarkChanging && checked" src="https://usercontents.authing.cn/mfa_demo.gif" style="border-radius: 6px;" />
           <img v-if="navBarKey == 1 && !remarkChanging && checked" :src="QRCodeImg" />
         </div>
-        <div class="authing-mfa_navbar">
+        <div v-if="checked" class="authing-mfa_navbar">
           <div class="authing-mfa_navbar-item" :style="navBarKey == 0 ? 'background: #fafafa;' : ''" @click="viewNavBar(0)">扫一扫「小登录」</div>
           <div class="authing-mfa_navbar-item" :style="navBarKey == 1 ? 'background: #fafafa;' : ''" @click="viewNavBar(1)">扫码添加动态令牌</div>
           <div class="authing-mfa_navbar-item"
