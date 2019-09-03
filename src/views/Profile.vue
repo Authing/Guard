@@ -106,7 +106,6 @@
               <input
                 type="text"
                 class="_authing_input _authing_form-control"
-                id="profile-name"
                 :placeholder="opt.nickName"
                 v-model="profileForm.nickName"
                 autocomplete="off"
@@ -115,7 +114,6 @@
               <input
                 type="text"
                 class="_authing_input _authing_form-control"
-                id="profile-name"
                 :placeholder="opt.phoneNumber"
                 v-model="profileForm.phoneNumber"
                 autocomplete="off"
@@ -138,7 +136,6 @@
               <input
                 type="text"
                 class="_authing_input _authing_form-control"
-                id="profile-name"
                 :placeholder="opt.eMail"
                 v-model="profileForm.eMail"
                 autocomplete="off"
@@ -151,7 +148,6 @@
               <input
                 type="text"
                 class="_authing_input _authing_form-control"
-                id="profile-name"
                 :placeholder="opt.companyName"
                 v-model="profileForm.companyName"
                 autocomplete="off"
@@ -164,7 +160,6 @@
               <input
                 type="password"
                 class="_authing_input _authing_form-control"
-                id="profile-name"
                 :placeholder="opt.oldPassWord"
                 v-model="profileForm.oldPassWord"
                 autocomplete="off"
@@ -177,7 +172,6 @@
               <input
                 type="password"
                 class="_authing_input _authing_form-control"
-                id="profile-name"
                 :placeholder="opt.passWord"
                 v-model="profileForm.passWord"
                 autocomplete="off"
@@ -190,7 +184,6 @@
               <input
                 type="password"
                 class="_authing_input _authing_form-control"
-                id="profile-name"
                 :placeholder="opt.passWord2"
                 v-model="profileForm.passWord2"
                 autocomplete="off"
@@ -202,7 +195,7 @@
         <div class="whitePage" v-if="loading"></div>
       </div>
 
-      <div class="profile-settings_page" v-if="nowPage == 2">
+      <div class="profile-settings_page" style="overflow-y: hidden !important;" v-if="nowPage == 2">
         <div class="profile-user_info">
           <span class="profile-label">开启动态令牌</span>
           <span class="profile-label_info row-flex-end">
@@ -219,7 +212,6 @@
               type="text"
               class="_authing_input _authing_form-control mini_input"
               style="text-align: right"
-              id="profile-name"
               :placeholder="clientInfo.name ? clientInfo.name : '您的应用备注'"
               v-model="mfaRemark"
               autocomplete="off"
@@ -234,7 +226,6 @@
               type="text"
               class="_authing_input _authing_form-control mini_input"
               style="text-align: right"
-              id="profile-name"
               placeholder="您的应用密钥"
               :value="MFA.shareKey || ''"
               autocomplete="off"
@@ -247,7 +238,16 @@
           <div v-if="remarkChanging > 0 && checked" class="remarkBox">
             <div class="k-line k-line10"></div>
           </div>
-          <img v-if="!remarkChanging && checked" :src="QRCodeImg" />
+          <img v-if="navBarKey == 0 && !remarkChanging && checked" src="https://usercontents.authing.cn/mini-login.jpg" />
+          <img v-if="navBarKey == 2 && !remarkChanging && checked" src="https://usercontents.authing.cn/mfa_demo.gif" style="border-radius: 6px;" />
+          <img v-if="navBarKey == 1 && !remarkChanging && checked" :src="QRCodeImg" />
+        </div>
+        <div class="authing-mfa_navbar">
+          <div class="authing-mfa_navbar-item" :style="navBarKey == 0 ? 'background: #fafafa;' : ''" @click="viewNavBar(0)">扫一扫「小登录」</div>
+          <div class="authing-mfa_navbar-item" :style="navBarKey == 1 ? 'background: #fafafa;' : ''" @click="viewNavBar(1)">扫码添加动态令牌</div>
+          <div class="authing-mfa_navbar-item"
+           :style="(navBarKey == 2 ? 'background: #fafafa;' : '') + 'border-right: none !important;width: calc(100% / 3 + 1px);'"
+           @click="viewNavBar(2)">查看动态令牌密码</div>
         </div>
       </div>
 
@@ -299,6 +299,7 @@ import QRCode from "qrcode";
 export default {
   data() {
     return {
+      navBarKey: 1,
       userToken: null,
       remarkChanging: null,
       storageUserInfo: {},
@@ -356,14 +357,15 @@ export default {
       this.changeRemark();
     },
     async checked() {
-      await this.changeValue()
+      await this.changeValue();
     }
   },
   async mounted() {
     const Authing = require("authing-js-sdk");
-    let client_info = JSON.parse(localStorage.getItem("_authing_clientInfo")) || null;
-    if(!client_info) {
-      this.notLogin()
+    let client_info =
+      JSON.parse(localStorage.getItem("_authing_clientInfo")) || null;
+    if (!client_info) {
+      this.notLogin();
       return;
     }
     this.clientInfo = client_info;
@@ -387,6 +389,9 @@ export default {
     }
   },
   methods: {
+    viewNavBar(item) {
+      this.navBarKey = item
+    },
     makeQRCode() {
       let that = this;
       let userPoolName = this.clientInfo.name || "Authing 应用"; //this.clientInfo.name || 'Authing 应用'
@@ -396,12 +401,15 @@ export default {
         this.storageUserInfo.email ||
         "佚名";
       let userRemark =
-        this.mfaRemark && this.mfaRemark !== "" ? this.mfaRemark + '-' + userPoolName : userPoolName;
+        this.mfaRemark && this.mfaRemark !== ""
+          ? this.mfaRemark + "-" + userPoolName
+          : userPoolName;
       let shareKey = this.MFA.shareKey;
       let clientId = this.clientId;
-      let qrurl = `otpauth://totp/${userRemark}?secret=${shareKey}&period=60&digits=6&algorithm=SHA1&issuer=${userName}&client=${clientId}`;
+      let qrurl = `otpauth://totp/${userRemark}?secret=${shareKey}&period=30&digits=6&algorithm=SHA1&issuer=${userName}&client=${clientId}`;
       QRCode.toDataURL(qrurl, (err, res) => {
         that.QRCodeImg = res;
+        that.navBarKey = 1;
       });
     },
     async getMFAInfo() {
@@ -443,7 +451,9 @@ export default {
         localStorage.getItem("_authing_token")
       );
       if (res.code == 200) {
-        this.showSuccessBar("保存修改中");
+        if (this.nowPage == 2) {
+          this.showSuccessBar("保存修改中");
+        }
         let mfaInfo = await this.$authing.changeMFA({
           userId: this.userId,
           userPoolId: this.clientId,
@@ -451,7 +461,9 @@ export default {
         });
 
         if (mfaInfo.changeMFA) {
-          this.showSuccessBar("保存成功");
+          if (this.nowPage == 2) {
+            this.showSuccessBar("保存成功");
+          }
           await this.getMFAInfo();
           // this.MFA = mfaInfo.changeMFA;
           // this.checked = this.MFA["enable"] || false;
@@ -1150,5 +1162,32 @@ input:checked + .slider:before {
   width: 15px;
   height: 15px;
   border-radius: 15px;
+}
+
+.authing-mfa_navbar {
+  width: 90%;
+  margin: 0 5%;
+  margin-top: 22px;
+  height: 40px;
+  border-radius: 5px;
+  background: #fff;
+  border: 2px solid #eee;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  /* box-shadow: 0px 0px 10px #b3b3b3; */
+}
+
+.authing-mfa_navbar-item {
+  width: calc(100% / 3 - 1px);
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+  color: #707070;
+  border-right: 2px dashed #eee;
+  cursor: pointer;
+  transition: all .3s;
 }
 </style>
