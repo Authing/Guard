@@ -73,7 +73,7 @@ export default {
         this.logoutMsg = '清除缓存中...';
         setTimeout(() => {
             if (!this.isLogged()) {
-                localStorage.setItem('_authing_token', null);
+                localStorage.removeItem('_authing_token')
                 // 若未登录直接跳到用户设置好的 redirect_uri 中
                 location.href = redirect_uri;
             }
@@ -85,10 +85,10 @@ export default {
             if (appToken[appId]) {
                 delete appToken[appId];
                 localStorage.setItem('appToken', JSON.stringify(appToken));
-                localStorage.setItem('_authing_token', null);
+                localStorage.removeItem('_authing_token')
                 location.href = redirect_uri;
             }else {
-                localStorage.setItem('_authing_token', null);
+                localStorage.removeItem('_authing_token')
                 location.href = redirect_uri;
             }
         }, 3000);
