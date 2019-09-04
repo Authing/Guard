@@ -619,7 +619,11 @@ export default {
               that.MFAchecked = false;
             }
           } else {
-            that.showSuccessBar("您取消了开启动态令牌");
+            if(token == '') {
+              that.showSuccessBar("输入不能为空，请按照检查");
+            } else {
+              that.showSuccessBar("动态口令有误，请按照教程检查");
+            }
             that.quiet = true;
             that.MFAchecked = false;
           }
