@@ -213,7 +213,7 @@
             </label>
           </span>
         </div>
-        <div class="profile-user_info">
+        <div v-if="MFAchecked" class="profile-user_info">
           <span class="profile-label">应用备注</span>
           <span class="profile-label_info row-flex-end authing-form without-padding">
             <input
@@ -227,7 +227,7 @@
             />
           </span>
         </div>
-        <div class="profile-user_info">
+        <div v-if="MFAchecked" class="profile-user_info">
           <span class="profile-label">令牌密钥</span>
           <span class="profile-label_info row-flex-end authing-form without-padding">
             <input
@@ -242,7 +242,7 @@
             />
           </span>
         </div>
-        <div class="imgBar">
+        <div v-if="MFAchecked" class="imgBar">
           <div v-if="remarkChanging > 0" class="remarkBox">
             <div class="k-line k-line10"></div>
           </div>
@@ -264,7 +264,7 @@
             :src="QRCodeImg"
           />
         </div>
-        <div class="authing-mfa_navbar">
+        <div v-if="MFAchecked" class="authing-mfa_navbar">
           <div
             id="step1"
             class="authing-mfa_navbar-item"
@@ -343,15 +343,24 @@ export default {
       tourSteps: [
         {
           target: "#step1", // We're using document.querySelector() under the hood
-          content: `<div style="text-align: left;"><div><strong>使用小登录管理你的令牌</strong></div><div>为确保安全，开启前需验证一次动态口令</div><div>1.微信扫描步骤 1 二维码</div><div>2.点击「微信授权」</div><div>3.进入侧边栏</div><div>4.点击「扫码添加动态令牌」</div></div>`
+          content: `<div style="text-align: left;"><div><strong>使用小登录管理你的令牌</strong></div><div>为确保安全，开启前需验证一次动态口令</div><div>1.微信扫描步骤 1 二维码</div><div>2.点击「微信授权」</div><div>3.进入侧边栏</div><div>4.点击「扫码添加动态令牌」</div></div>`,
+          params: {
+              placement: 'bottom'
+          }
         },
         {
           target: "#step2",
-          content: `<div style="text-align: left;"><div><strong>小登录中添加动态令牌码</strong></div><div>请使用小登录扫描步骤 2 二维码</div><div>此外，也可以使用其他令牌工具</div><div>如 Google Authenticator，身份宝等</div></div>`
+          content: `<div style="text-align: left;"><div><strong>小登录中添加动态令牌码</strong></div><div>请使用小登录扫描步骤 2 二维码</div><div>此外，也可以使用其他令牌工具</div><div>如 Google Authenticator，身份宝等</div></div>`,
+          params: {
+              placement: 'bottom'
+          }
         },
         {
           target: "#step3",
-          content: `<div style="text-align: left;"><div><strong>查看您的动态令牌码</strong></div><div>动态令牌码通常是一串 6 位数字</div><div>您可以方便地使用动态令牌</div><div>如需开启动态令牌功能，需要先进行扫码，并验证动态令牌口令</div></div>`
+          content: `<div style="text-align: left;"><div><strong>查看您的动态令牌码</strong></div><div>动态令牌码通常是一串 6 位数字</div><div>您可以方便地使用动态令牌</div><div>如需开启动态令牌功能，需要先进行扫码，并验证动态令牌口令</div></div>`,
+          params: {
+              placement: 'bottom'
+          }
         }
       ],
       tourOptions: {
@@ -1343,7 +1352,7 @@ input:checked + .slider:before {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 10px;
+  font-size: 9px;
   color: #707070;
   border-right: 2px dashed #eee;
   cursor: pointer;
