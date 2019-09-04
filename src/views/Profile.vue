@@ -242,7 +242,7 @@
             />
           </span>
         </div>
-        <div v-if="MFAchecked" class="imgBar">
+        <div v-if="MFAchecked" class="imgBar" id="imgbar">
           <div v-if="remarkChanging > 0" class="remarkBox">
             <div class="k-line k-line10"></div>
           </div>
@@ -270,19 +270,19 @@
             class="authing-mfa_navbar-item"
             :style="navBarKey == 0 ? 'background: #fafafa;' : ''"
             @click="viewNavBar(0)"
-          >1.扫一扫「小登录」</div>
+          ><span class="text-word">1.扫一扫小登录</span></div>
           <div
             id="step2"
             class="authing-mfa_navbar-item"
             :style="navBarKey == 1 ? 'background: #fafafa;' : ''"
             @click="viewNavBar(1)"
-          >2.扫码添加动态令牌</div>
+          ><span class="text-word">2.添加动态令牌</span></div>
           <div
             id="step3"
             class="authing-mfa_navbar-item"
             :style="(navBarKey == 2 ? 'background: #fafafa;' : '') + 'border-right: none !important;width: calc(100% / 3 + 1px);'"
             @click="viewNavBar(2)"
-          >3.查看动态令牌密码</div>
+          ><span class="text-word">3.查看令牌密码</span></div>
         </div>
       </div>
 
@@ -336,30 +336,38 @@ export default {
   data() {
     return {
       tourCallBacks: {
-        onPreviousStep: () => { this.navBarKey = ((this.navBarKey == 1 && 0) || (this.navBarKey == 2 && 1)) },
-        onNextStep: () => { this.navBarKey = ((this.navBarKey == 0 && 1) || (this.navBarKey == 1 && 2)) },
-        onStop: async () => { await this.unnormalChange() }
+        onPreviousStep: () => {
+          this.navBarKey =
+            (this.navBarKey == 1 && 0) || (this.navBarKey == 2 && 1);
+        },
+        onNextStep: () => {
+          this.navBarKey =
+            (this.navBarKey == 0 && 1) || (this.navBarKey == 1 && 2);
+        },
+        onStop: async () => {
+          await this.unnormalChange();
+        }
       },
       tourSteps: [
         {
-          target: "#step1", // We're using document.querySelector() under the hood
+          target: "#imgbar", // We're using document.querySelector() under the hood
           content: `<div style="text-align: left;"><div><strong>使用小登录管理你的令牌</strong></div><div>为确保安全，开启前需验证一次动态口令</div><div>1.微信扫描步骤 1 二维码</div><div>2.点击「微信授权」</div><div>3.进入侧边栏</div><div>4.点击「扫码添加动态令牌」</div></div>`,
           params: {
-              placement: 'bottom'
+            placement: "top"
           }
         },
         {
-          target: "#step2",
+          target: "#imgbar",
           content: `<div style="text-align: left;"><div><strong>小登录中添加动态令牌码</strong></div><div>请使用小登录扫描步骤 2 二维码</div><div>此外，也可以使用其他令牌工具</div><div>如 Google Authenticator，身份宝等</div></div>`,
           params: {
-              placement: 'bottom'
+            placement: "top"
           }
         },
         {
-          target: "#step3",
+          target: "#imgbar",
           content: `<div style="text-align: left;"><div><strong>查看您的动态令牌码</strong></div><div>动态令牌码通常是一串 6 位数字</div><div>您可以方便地使用动态令牌</div><div>如需开启动态令牌功能，需要先进行扫码，并验证动态令牌口令</div></div>`,
           params: {
-              placement: 'bottom'
+            placement: "top"
           }
         }
       ],
@@ -470,7 +478,11 @@ export default {
   },
   methods: {
     viewNavBar(item) {
-      this.navBarKey = item;
+      try {
+        this.$tours['profile_tour'].currentStep = item
+      } finally {
+        this.navBarKey = item;
+      }
     },
     makeQRCode() {
       let that = this;
@@ -570,7 +582,6 @@ export default {
     },
 
     async changeValue(openOrClose) {
-
       this.openOrClose = openOrClose || false;
       let res = await this.$authing.checkLoginStatus(
         localStorage.getItem("_authing_token")
@@ -586,7 +597,7 @@ export default {
             //首次开启，让他开就行了
             await that.normalChange(true);
           } else {
-            //非首次开启，需要验证动态口令，否则驳回开启要求 
+            //非首次开启，需要验证动态口令，否则驳回开启要求
             that.navBarKey = 0;
             that.$tours["profile_tour"].start();
           }
@@ -597,17 +608,13 @@ export default {
     },
 
     async unnormalChange() {
-      let that = this
+      let that = this;
       try {
         //alert(JSON.stringify(that.MFA))
         let secret = that.MFA.shareKey;
         if (secret) {
           let token = prompt("请输入六位动态令牌口令");
-          if (
-            typeof token == "string" &&
-            token.length == 6 &&
-            token > 0
-          ) {
+          if (typeof token == "string" && token.length == 6 && token > 0) {
             let otpRes = otplib.authenticator.check(token, secret);
             if (otpRes) {
               //alert(typeof otpRes);
@@ -619,8 +626,10 @@ export default {
               that.MFAchecked = false;
             }
           } else {
-            if(token == '') {
+            if (token && token == "") {
               that.showSuccessBar("输入不能为空，请检查");
+            } else if(!token) {
+              that.showSuccessBar("您取消了开启动态令牌");
             } else {
               that.showSuccessBar("动态口令有误，请按照教程检查");
             }
@@ -1351,16 +1360,20 @@ input:checked + .slider:before {
 }
 
 .authing-mfa_navbar-item {
-  width: calc(100% / 3 - 1px);
+  width: calc(100% / 3);
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 9px;
   color: #707070;
   border-right: 2px dashed #eee;
   cursor: pointer;
   transition: all 0.3s;
+}
+
+.text-word {
+  font-size: 12px;
+  transform: scale(0.75);
 }
 
 .v-tour {
