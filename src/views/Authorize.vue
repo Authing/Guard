@@ -215,7 +215,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .permission-list {
   max-height: 170px;
   overflow-y: scroll;

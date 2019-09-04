@@ -879,7 +879,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 /* @media screen and (min-width: 480px) {
   ._authing_form-footer.phone-code-wrapper {
     position: absolute;

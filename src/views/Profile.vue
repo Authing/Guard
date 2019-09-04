@@ -442,7 +442,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 /* @import url("../styles/styles.css"); */
 * {
   padding: 0;
