@@ -204,6 +204,7 @@ export default {
   },
   data() {
     return {
+      redirectToProfile: false,
       appLogo: "",
       appName: "",
       defaultLogo: "https://usercontents.authing.cn/client/logo@2.png",
@@ -258,6 +259,9 @@ export default {
   },
   async mounted() {
     if (this.opts.isSSO) {
+      if(this.$route.query.profile) {
+        this.redirectToProfile = true
+      }
       // 上来先查一下 appInfo
       const appInfo = await this.queryAppInfo();
       if (!appInfo) {

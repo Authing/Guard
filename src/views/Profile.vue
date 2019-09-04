@@ -200,12 +200,12 @@
           <span class="profile-label">开启动态令牌</span>
           <span class="profile-label_info row-flex-end">
             <label class="switch">
-              <input type="checkbox" v-model="checked" />
+              <input type="checkbox" v-model="MFAchecked" />
               <div class="slider round"></div>
             </label>
           </span>
         </div>
-        <div v-if="checked" class="profile-user_info">
+        <div class="profile-user_info">
           <span class="profile-label">应用备注</span>
           <span class="profile-label_info row-flex-end authing-form without-padding">
             <input
@@ -219,7 +219,7 @@
             />
           </span>
         </div>
-        <div v-if="checked" class="profile-user_info">
+        <div class="profile-user_info">
           <span class="profile-label">令牌密钥</span>
           <span class="profile-label_info row-flex-end authing-form without-padding">
             <input
@@ -227,27 +227,51 @@
               class="_authing_input _authing_form-control mini_input"
               style="text-align: right"
               placeholder="您的应用密钥"
-              :value="MFA.shareKey || ''"
+              :value="MFA ? MFA.shareKey : ''"
               autocomplete="off"
               @click="copyShareKey"
               readonly
             />
           </span>
         </div>
-        <div v-if="checked" class="imgBar">
-          <div v-if="remarkChanging > 0 && checked" class="remarkBox">
+        <div class="imgBar">
+          <div v-if="remarkChanging > 0" class="remarkBox">
             <div class="k-line k-line10"></div>
           </div>
-          <img v-if="navBarKey == 0 && !remarkChanging && checked" src="https://usercontents.authing.cn/mini-login.jpg" />
-          <img v-if="navBarKey == 2 && !remarkChanging && checked" src="https://usercontents.authing.cn/mfa_demo.gif" style="border-radius: 6px;" />
-          <img v-if="navBarKey == 1 && !remarkChanging && checked" :src="QRCodeImg" />
+          <img
+            v-if="navBarKey == 0 && !remarkChanging"
+            src="https://usercontents.authing.cn/mini-login.jpg"
+          />
+          <img
+            v-if="navBarKey == 2 && !remarkChanging"
+            src="https://usercontents.authing.cn/mfa_demo.gif"
+            style="border-radius: 6px;"
+          />
+          <div
+            v-if="navBarKey == 1 && !remarkChanging && !(QRCodeImg && QRCodeImg !== '')"
+            class="remarkBox"
+          >暂无动态令牌二维码</div>
+          <img
+            v-if="navBarKey == 1 && !remarkChanging && QRCodeImg && QRCodeImg !== ''"
+            :src="QRCodeImg"
+          />
         </div>
-        <div v-if="checked" class="authing-mfa_navbar">
-          <div class="authing-mfa_navbar-item" :style="navBarKey == 0 ? 'background: #fafafa;' : ''" @click="viewNavBar(0)">扫一扫「小登录」</div>
-          <div class="authing-mfa_navbar-item" :style="navBarKey == 1 ? 'background: #fafafa;' : ''" @click="viewNavBar(1)">扫码添加动态令牌</div>
-          <div class="authing-mfa_navbar-item"
-           :style="(navBarKey == 2 ? 'background: #fafafa;' : '') + 'border-right: none !important;width: calc(100% / 3 + 1px);'"
-           @click="viewNavBar(2)">查看动态令牌密码</div>
+        <div class="authing-mfa_navbar">
+          <div
+            class="authing-mfa_navbar-item"
+            :style="navBarKey == 0 ? 'background: #fafafa;' : ''"
+            @click="viewNavBar(0)"
+          >1.扫一扫「小登录」</div>
+          <div
+            class="authing-mfa_navbar-item"
+            :style="navBarKey == 1 ? 'background: #fafafa;' : ''"
+            @click="viewNavBar(1)"
+          >2.扫码添加动态令牌</div>
+          <div
+            class="authing-mfa_navbar-item"
+            :style="(navBarKey == 2 ? 'background: #fafafa;' : '') + 'border-right: none !important;width: calc(100% / 3 + 1px);'"
+            @click="viewNavBar(2)"
+          >3.查看动态令牌密码</div>
         </div>
       </div>
 
@@ -296,16 +320,18 @@
 </template>
 <script>
 import QRCode from "qrcode";
+require("../utils/otplib");
 export default {
   data() {
     return {
+      MFAchecked: false,
       navBarKey: 1,
       userToken: null,
       remarkChanging: null,
       storageUserInfo: {},
       mfaRemark: "",
       QRCodeImg: null,
-      MFA: null,
+      MFA: {},
       checked: false,
       $authing: null,
 
@@ -346,7 +372,9 @@ export default {
 
       userId: null,
       clientInfo: {},
-      clientId: null
+      clientId: null,
+      safetySaving: false,
+      quiet: false
     };
   },
   created() {
@@ -356,8 +384,12 @@ export default {
     mfaRemark() {
       this.changeRemark();
     },
-    async checked() {
-      await this.changeValue();
+    async MFAchecked() {
+      if (!this.safetySaving) {
+        await this.changeValue(this.MFAchecked);
+      } else {
+        this.safetySaving = false;
+      }
     }
   },
   async mounted() {
@@ -390,7 +422,7 @@ export default {
   },
   methods: {
     viewNavBar(item) {
-      this.navBarKey = item
+      this.navBarKey = item;
     },
     makeQRCode() {
       let that = this;
@@ -423,6 +455,7 @@ export default {
         });
         if (mfaList) {
           this.MFA = mfaList.queryMFA;
+          this.saveMFAcheckedSafety(this.MFA["enable"] || false);
           this.checked = this.MFA["enable"] || false;
           this.makeQRCode();
         } else {
@@ -435,10 +468,14 @@ export default {
     notLogin() {
       this.showSuccessBar("登录身份已过期");
       let jumpHref;
-      if (!this.clientId) {
-        jumpHref = "/error?message=尚未登录&code=id520";
+      if(location.hostname.indexOf('authing.cn') > -1) {
+        jumpHref = 'https://' + location.hostname + '/login?profile=1'
       } else {
-        jumpHref = "/login?app_id=" + this.clientId;
+        if (!this.clientId) {
+          jumpHref = "/error?message=尚未登录&code=id520";
+        } else {
+          jumpHref = "/login?app_id=" + this.clientId;
+        }
       }
       setTimeout(() => {
         location.href = jumpHref;
@@ -446,33 +483,100 @@ export default {
       this.loading = false;
     },
 
-    async changeValue() {
+    async changeValue(openOrClose) {
       let res = await this.$authing.checkLoginStatus(
         localStorage.getItem("_authing_token")
       );
-      if (res.code == 200) {
-        if (this.nowPage == 2) {
-          this.showSuccessBar("保存修改中");
+      let that = this;
+      let normalChange = async function(unquiet, strong) {
+        //关闭 MFA 或者首次开启
+        if (that.nowPage == 2) {
+          if (!that.quiet) {
+            that.quiet = false;
+            that.showSuccessBar("保存修改中");
+          }
         }
-        let mfaInfo = await this.$authing.changeMFA({
-          userId: this.userId,
-          userPoolId: this.clientId,
-          enable: this.checked
+        let mfaInfo = await that.$authing.changeMFA({
+          userId: that.userId,
+          userPoolId: that.clientId,
+          enable: typeof strong == "boolean" ? strong : openOrClose || false
         });
 
-        if (mfaInfo.changeMFA) {
-          if (this.nowPage == 2) {
-            this.showSuccessBar("保存成功");
+        if (mfaInfo.changeMFA && unquiet) {
+          if (that.nowPage == 2) {
+            if (!that.quiet) {
+              that.quiet = false;
+              that.showSuccessBar("保存成功");
+            }
           }
-          await this.getMFAInfo();
-          // this.MFA = mfaInfo.changeMFA;
-          // this.checked = this.MFA["enable"] || false;
+          await that.getMFAInfo();
         } else {
-          this.showWarnBar("保存修改失败");
+          if (unquiet) {
+            if (!that.quiet) {
+              that.quiet = false;
+              that.showWarnBar("保存修改失败");
+            }
+          }
+        }
+      };
+      if (res.code == 200) {
+        if (!openOrClose) {
+          await normalChange(true);
+        } else {
+          //开启 MFA
+          if (!that.MFA) {
+            //首次开启，让他开就行了
+            await normalChange(true);
+          } else {
+            //非首次开启，需要验证动态口令，否则驳回开启要求
+            try {
+              //alert(JSON.stringify(that.MFA))
+              let secret = that.MFA.shareKey;
+              if (secret) {
+                let token = prompt("请输入六位动态令牌口令");
+                if (
+                  typeof token == "string" &&
+                  token.length == 6 &&
+                  token > 0
+                ) {
+                  let otpRes = otplib.authenticator.check(token, secret);
+                  if (otpRes) {
+                    //alert(typeof otpRes);
+                    that.quiet = false
+                    await normalChange(true, true);
+                  } else {
+                    that.showSuccessBar("动态口令有误，请按照教程检查");
+                    that.quiet = true;
+                    that.MFAchecked = false;
+                  }
+                } else {
+                  that.showSuccessBar("您取消了开启动态令牌");
+                  that.quiet = true;
+                  that.MFAchecked = false;
+                }
+              } else {
+                that.showWarnBar("获取服务器令牌信息失败");
+                that.quiet = true;
+                that.MFAchecked = false;
+              }
+            } catch (err) {
+              //alert(JSON.stringify(err));
+              that.showWarnBar("保存修改失败：MFA 信息获取失败");
+              that.quiet = true;
+              that.MFAchecked = false;
+            }
+          }
         }
       } else {
         this.notLogin();
       }
+    },
+
+    saveMFAcheckedSafety(tof) {
+      //alert(tof);
+      this.safetySaving = true;
+      this.MFAchecked = tof;
+      this.safetySaving = false;
     },
 
     copyShareKey() {
@@ -1188,6 +1292,6 @@ input:checked + .slider:before {
   color: #707070;
   border-right: 2px dashed #eee;
   cursor: pointer;
-  transition: all .3s;
+  transition: all 0.3s;
 }
 </style>
