@@ -197,6 +197,7 @@
 
       <div class="profile-settings_page" style="overflow-y: hidden !important;" v-if="nowPage == 2">
         <v-tour
+          v-if="MFAchecked"
           name="profile_tour"
           :steps="tourSteps"
           :options="tourOptions"
@@ -335,8 +336,8 @@ export default {
   data() {
     return {
       tourCallBacks: {
-        onPreviousStep: () => { this.navBarKey = ((this.navBarKey == 1 || 0) || (this.navBarKey == 2 || 1)) },
-        onNextStep: () => { this.navBarKey = ((this.navBarKey == 0 || 1) || (this.navBarKey == 1 || 2)) },
+        onPreviousStep: () => { this.navBarKey = ((this.navBarKey == 1 && 0) || (this.navBarKey == 2 && 1)) },
+        onNextStep: () => { this.navBarKey = ((this.navBarKey == 0 && 1) || (this.navBarKey == 1 && 2)) },
         onStop: async () => { await this.unnormalChange() }
       },
       tourSteps: [
