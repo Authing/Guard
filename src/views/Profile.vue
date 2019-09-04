@@ -346,51 +346,7 @@ export default {
   components: { Modal },
   data() {
     return {
-      // tourCallBacks: {
-      //   onPreviousStep: () => {
-      //     this.navBarKey =
-      //       (this.navBarKey == 1 && 0) || (this.navBarKey == 2 && 1);
-      //   },
-      //   onNextStep: () => {
-      //     this.navBarKey =
-      //       (this.navBarKey == 0 && 1) || (this.navBarKey == 1 && 2);
-      //   },
-      //   onStop: async () => {
-      //     await this.unnormalChange();
-      //   }
-      // },
-      // tourSteps: [
-      //   {
-      //     target: "#imgbar", // We're using document.querySelector() under the hood
-      //     content: `<div style="text-align: left;"><div><strong>使用小登录管理你的令牌</strong></div><div>为确保安全，开启前需验证一次动态口令</div><div>1.微信扫描步骤 1 二维码</div><div>2.点击「微信授权」</div><div>3.进入侧边栏</div><div>4.点击「扫码添加动态令牌」</div></div>`,
-      //     params: {
-      //       placement: "top"
-      //     }
-      //   },
-      //   {
-      //     target: "#imgbar",
-      //     content: `<div style="text-align: left;"><div><strong>小登录中添加动态令牌码</strong></div><div>请使用小登录扫描步骤 2 二维码</div><div>此外，也可以使用其他令牌工具</div><div>如 Google Authenticator，身份宝等</div></div>`,
-      //     params: {
-      //       placement: "top"
-      //     }
-      //   },
-      //   {
-      //     target: "#imgbar",
-      //     content: `<div style="text-align: left;"><div><strong>查看您的动态令牌码</strong></div><div>动态令牌码通常是一串 6 位数字</div><div>您可以方便地使用动态令牌</div><div>如需开启动态令牌功能，需要先进行扫码，并验证动态令牌口令</div></div>`,
-      //     params: {
-      //       placement: "top"
-      //     }
-      //   }
-      // ],
-      // tourOptions: {
-      //   labels: {
-      //     buttonSkip: "直接验证",
-      //     buttonPrevious: "上一步",
-      //     buttonNext: "下一步",
-      //     buttonStop: "验证口令"
-      //   }
-      // },
-      MFAchecked: false,
+      MFAchecked: null,
       openOrClose: false,
       navBarKey: 1,
       userToken: null,
@@ -401,7 +357,7 @@ export default {
       MFA: {},
       checked: false,
       $authing: null,
-
+      firstGet: true,
       loading: false,
       nowPage: 0,
       tipsType: "info",
@@ -454,7 +410,12 @@ export default {
     },
     async MFAchecked() {
       if (this.check !== this.MFAchecked) {
-        await this.changeValue(this.MFAchecked);
+        if(this.firstGet) {
+          this.firstGet = false
+        } else {
+          await this.changeValue(this.MFAchecked);
+        }
+        
       }
     },
     async modalShow(val) {
@@ -540,8 +501,8 @@ export default {
         });
         if (mfaList) {
           this.MFA = mfaList.queryMFA || {};
-          this.MFAchecked = this.MFA["enable"] || false;
           this.checked = this.MFA["enable"] || false;
+          this.MFAchecked = this.MFA["enable"] || false;
           this.makeQRCode();
         } else {
           this.showWarnBar("获取动态令牌失败");
@@ -570,7 +531,7 @@ export default {
       this.loading = false;
     },
 
-    normalChange: async function(unquiet, strong) {
+    normalChange: async function() {
       let that = this;
       //关闭 MFA 或者首次开启
       if (that.nowPage == 2) {
@@ -582,50 +543,63 @@ export default {
       let mfaInfo = await that.$authing.changeMFA({
         userId: that.userId,
         userPoolId: that.clientId,
-        enable: typeof strong == "boolean" ? strong : that.openOrClose || false
+        enable: that.MFAchecked
       });
 
-      if (mfaInfo.changeMFA && unquiet) {
+      if (mfaInfo.changeMFA) {
         if (that.nowPage == 2) {
-          if (!that.quiet) {
-            that.quiet = false;
-            that.showSuccessBar("保存成功");
-          }
+          that.showSuccessBar("保存成功");
         }
       } else {
-        if (unquiet) {
-          if (!that.quiet) {
-            that.quiet = false;
-            that.showWarnBar("保存修改失败");
-          }
+        if (!that.quiet) {
+          that.showWarnBar("保存修改失败");
         }
       }
     },
 
-    async changeValue(openOrClose) {
-      this.openOrClose = openOrClose || false;
+    strictChange: async function(value) {
+      let that = this;
+      //关闭 MFA 或者首次开启
+      if (that.nowPage == 2) {
+        // if (!that.quiet) {
+        //   that.quiet = false;
+        //   that.showSuccessBar("保存修改中");
+        // }
+      }
+      let mfaInfo = await that.$authing.changeMFA({
+        userId: that.userId,
+        userPoolId: that.clientId,
+        enable: value
+      });
+
+      if (mfaInfo.changeMFA) {
+        if (that.nowPage == 2 && value) {
+          //that.showSuccessBar("保存成功");
+        }
+      } else {
+        if (value) {
+          that.quiet = false;
+          //that.showWarnBar("保存修改失败");
+        }
+      }
+      await that.getMFAInfo();
+    },
+
+    async changeValue() {
       let res = await this.$authing.checkLoginStatus(
         localStorage.getItem("_authing_token")
       );
       let that = this;
 
       if (res.code == 200) {
-        if (!openOrClose) {
-          await that.normalChange(true);
+        if (!that.MFAchecked) {
+          // 关闭
+          await that.normalChange();
         } else {
-          //开启 MFA
-          if (!that.MFA.shareKey) {
-            //首次开启，让他开就行了
-            await that.normalChange(true);
-          } else {
-            if (openOrClose && that.MFAchecked !== that.checked) {
-              localStorage.setItem("qrcode", that.QRCodeImg);
-              that.changeModalShow({ show: true, qrcode: that.QRCodeImg });
-            }
-            //非首次开启，需要验证动态口令，否则驳回开启要求
-
-            //that.$tours["profile_tour"].start();
-          }
+          //开启
+          // 服务器结果和本地结果不一致，说明要开启
+          localStorage.setItem("qrcode", that.QRCodeImg);
+          that.changeModalShow({ show: true, qrcode: that.QRCodeImg });
         }
       } else {
         this.notLogin();
@@ -645,49 +619,36 @@ export default {
           if (typeof token == "string" && token.length == 6 && token > 0) {
             let otpRes = otplib.authenticator.check(token, secret);
             if (otpRes) {
-              //alert(typeof otpRes);
-              that.quiet = false;
-              that.openOrClose = true;
-              await that.normalChange(true, true);
+              that.showSuccessBar("开启成功");
+              await that.strictChange(true);
             } else {
-              that.quiet = false;
               that.showSuccessBar("动态口令有误，请按照教程检查");
-              that.MFAchecked = false;
+              await that.strictChange(false);
             }
           } else {
             if (!token) {
-              that.quiet = false;
               that.showSuccessBar("您取消了开启动态口令");
+              await that.strictChange(false);
             }
             if (token && token == "") {
-              that.quiet = false;
-              that.MFAchecked = false;
-
               that.showSuccessBar("输入不能为空，请检查");
+              await that.strictChange(false);
             } else if (!token) {
-              that.quiet = false;
-              that.MFAchecked = false;
-
               that.showSuccessBar("输入为空，不能开启动态令牌");
+              await that.strictChange(false);
             } else {
-              that.quiet = false;
-              that.MFAchecked = false;
-
               that.showSuccessBar("动态口令有误，请按照教程检查");
+              await that.strictChange(false);
             }
-            that.quiet = true;
-            that.MFAchecked = false;
           }
         } else {
           that.showWarnBar("获取服务器令牌信息失败");
-          that.quiet = true;
-          that.MFAchecked = false;
+          await that.strictChange(false);
         }
       } catch (err) {
         //alert(JSON.stringify(err));
         that.showWarnBar("保存修改失败：MFA 信息获取失败");
-        that.quiet = true;
-        that.MFAchecked = false;
+        await that.strictChange(false);
       }
     },
 
