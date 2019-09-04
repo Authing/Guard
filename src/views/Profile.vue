@@ -454,9 +454,8 @@ export default {
     async MFAchecked() {
       if (!this.safetySaving) {
         await this.changeValue(this.MFAchecked);
-      } else {
-        this.safetySaving = false;
       }
+      this.safetySaving = false;
     },
     async modalShow(val) {
       if (val == false) {
@@ -618,7 +617,7 @@ export default {
             await that.normalChange(true);
           } else {
             //非首次开启，需要验证动态口令，否则驳回开启要求
-            localStorage.setItem('qrcode', that.QRCodeImg)
+            localStorage.setItem("qrcode", that.QRCodeImg);
             that.changeModalShow({ show: true, qrcode: that.QRCodeImg });
             //that.$tours["profile_tour"].start();
           }
@@ -646,8 +645,8 @@ export default {
               await that.normalChange(true, true);
             } else {
               that.quiet = false;
-
               that.showSuccessBar("动态口令有误，请按照教程检查");
+              that.MFAchecked = false;
             }
           } else {
             if (!token) {
@@ -656,12 +655,18 @@ export default {
             }
             if (token && token == "") {
               that.quiet = false;
+              that.MFAchecked = false;
+
               that.showSuccessBar("输入不能为空，请检查");
             } else if (!token) {
               that.quiet = false;
+              that.MFAchecked = false;
+
               that.showSuccessBar("输入为空，不能开启动态令牌");
             } else {
               that.quiet = false;
+              that.MFAchecked = false;
+
               that.showSuccessBar("动态口令有误，请按照教程检查");
             }
             that.quiet = true;
@@ -684,7 +689,6 @@ export default {
       //alert(tof);
       this.safetySaving = true;
       this.MFAchecked = tof;
-      this.safetySaving = false;
     },
 
     copyShareKey() {
