@@ -18,10 +18,14 @@
   },
   "dependencies": {
     "@authing/sso": "^1.0.1",
-    "authing-js-sdk": "^2.20.0-alpha",
+    "authing-js-sdk": "^2.20.0-alpha.5",
     "axios": "^0.18.0",
+    "otplib": "^11.0.1",
+    "qrcode": "^1.4.1",
+    "thirty-two": "^1.0.2",
     "vue": "^2.6.6",
     "vue-router": "^3.0.1",
+    "vue-tour": "^1.1.0",
     "vuex": "^3.1.1"
   },
   "devDependencies": {

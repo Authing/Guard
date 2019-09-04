@@ -204,6 +204,7 @@ export default {
   },
   data() {
     return {
+      redirectToProfile: false,
       appLogo: "",
       appName: "",
       defaultLogo: "https://usercontents.authing.cn/client/logo@2.png",
@@ -258,6 +259,9 @@ export default {
   },
   async mounted() {
     if (this.opts.isSSO) {
+      if(this.$route.query.profile) {
+        this.redirectToProfile = true
+      }
       // 上来先查一下 appInfo
       const appInfo = await this.queryAppInfo();
       if (!appInfo) {
@@ -807,7 +811,7 @@ export default {
       } else {
         appToken = {};
       }
-      // 是不是 sso.authing.cn 这种总的域名
+      //是不是 sso.authing.cn 这种总的域名
       let isSSOAuthing = location.hostname.match(/^sso\./);
       // baseDomain = authing.cn 这种后面的部分的域名
       let auth = new SSO({

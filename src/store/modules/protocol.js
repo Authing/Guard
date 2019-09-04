@@ -21,6 +21,10 @@ const actions = {
   },
   handleProtocolProcess({ state }, { router }) {
     if (state.isSSO) {
+      if(location.hostname.indexOf('profile') > -1) {
+        location.href = 'https://' + location.hostname + '/profile'
+        return
+      }
       switch (state.protocol) {
         case "oauth":
           this.dispatch("protocol/handleOAuthProcess", { router });

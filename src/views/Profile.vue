@@ -19,7 +19,7 @@
               stroke="#000"
               stroke-miterlimit="10"
               stroke-width="2"
-            ></polyline>
+            />
             <line
               fill="none"
               stroke="#000"
@@ -29,7 +29,7 @@
               x2="3.5"
               y1="12"
               y2="12"
-            ></line>
+            />
           </svg>
         </span>
 
@@ -55,21 +55,21 @@
               p-id="2036"
               data-spm-anchor-id="a313x.7781069.0.i1"
               class="selected"
-            ></path>
+            />
             <path
               d="M461.70000001 225c18 0 32.7-14.7 32.7-32.7l0-63.8L894.8 128.5 894.8 895.3l-400.4 0 1e-8-63.1c0-18-14.7-32.7-32.7-32.7s-32.7 14.7-32.70000001 32.7L429 927.7c0 3.49999999 0.6 6.8 1.6 10 4.2 13.3 16.6 23 31.2 23L927.4 960.7c18 0 32.7-14.7 32.7-32.70000001l0-831.9c0-14.2-9.2-26.3-21.8-30.8-3.6-1.4-7.5-2.1-11.5-2.09999999l-463.2 0c-0.6 0-1.3-0.1-1.9-0.1-18 0-32.7 14.7-32.7 32.7l0 96.5c0 18 14.7 32.7 32.70000001 32.7z"
               fill="#000"
               p-id="2037"
               data-spm-anchor-id="a313x.7781069.0.i0"
               class="selected"
-            ></path>
+            />
             <path
               d="M767.2 511.3a33 32.9 90 1 0-65.8 0 33 32.9 90 1 0 65.8 0Z"
               fill="#000000"
               p-id="2038"
               data-spm-anchor-id="a313x.7781069.0.i3"
               class="selected"
-            ></path>
+            />
           </svg>
         </span>
       </div>
@@ -82,15 +82,21 @@
         <div
           class="item"
           style="cursor: pointer"
-          :class="nowPage == 1 ? 'unhover' : ''"
+          :class="nowPage !== 0 ? 'unhover' : ''"
           @click="pageChange(0)"
         >基本资料</div>
         <div
           class="item"
           style="cursor: pointer"
-          :class="nowPage == 0 ? 'unhover' : ''"
+          :class="nowPage !== 1 ? 'unhover' : ''"
           @click="pageChange(1)"
         >详细资料</div>
+        <div
+          class="item"
+          style="cursor: pointer"
+          :class="nowPage !== 2 ? 'unhover' : ''"
+          @click="pageChange(2)"
+        >令牌设置</div>
       </div>
 
       <div class="profile-good_page" v-if="nowPage == 0">
@@ -100,26 +106,24 @@
               <input
                 type="text"
                 class="_authing_input _authing_form-control"
-                id="profile-name"
                 :placeholder="opt.nickName"
                 v-model="profileForm.nickName"
                 autocomplete="off"
                 @keyup.enter="saveInfo"
-              >
+              />
               <input
                 type="text"
                 class="_authing_input _authing_form-control"
-                id="profile-name"
                 :placeholder="opt.phoneNumber"
                 v-model="profileForm.phoneNumber"
                 autocomplete="off"
                 @keyup.enter="saveInfo"
-              >
+              />
             </div>
           </div>
           <div class="profile-right_bar">
             <div class="profile-avatar_box" @click="choosePhoto">
-              <img :src="profileForm.avatarUrl" class="avatar" style="cursor: pointer">
+              <img :src="profileForm.avatarUrl" class="avatar" style="cursor: pointer" />
               <span style="cursor: pointer">修改头像</span>
             </div>
           </div>
@@ -132,12 +136,11 @@
               <input
                 type="text"
                 class="_authing_input _authing_form-control"
-                id="profile-name"
                 :placeholder="opt.eMail"
                 v-model="profileForm.eMail"
                 autocomplete="off"
                 @keyup.enter="saveInfo"
-              >
+              />
             </div>
 
             <div class="profile-input_with_label">
@@ -145,12 +148,11 @@
               <input
                 type="text"
                 class="_authing_input _authing_form-control"
-                id="profile-name"
                 :placeholder="opt.companyName"
                 v-model="profileForm.companyName"
                 autocomplete="off"
                 @keyup.enter="saveInfo"
-              >
+              />
             </div>
 
             <div class="profile-input_with_label">
@@ -158,12 +160,11 @@
               <input
                 type="password"
                 class="_authing_input _authing_form-control"
-                id="profile-name"
                 :placeholder="opt.oldPassWord"
                 v-model="profileForm.oldPassWord"
                 autocomplete="off"
                 @keyup.enter="saveInfo"
-              >
+              />
             </div>
 
             <div class="profile-input_with_label">
@@ -171,12 +172,11 @@
               <input
                 type="password"
                 class="_authing_input _authing_form-control"
-                id="profile-name"
                 :placeholder="opt.passWord"
                 v-model="profileForm.passWord"
                 autocomplete="off"
                 @keyup.enter="saveInfo"
-              >
+              />
             </div>
 
             <div class="profile-input_with_label">
@@ -184,16 +184,106 @@
               <input
                 type="password"
                 class="_authing_input _authing_form-control"
-                id="profile-name"
                 :placeholder="opt.passWord2"
                 v-model="profileForm.passWord2"
                 autocomplete="off"
                 @keyup.enter="saveInfo"
-              >
+              />
             </div>
           </div>
         </div>
         <div class="whitePage" v-if="loading"></div>
+      </div>
+
+      <div class="profile-settings_page" style="overflow-y: hidden !important;" v-if="nowPage == 2">
+        <v-tour
+          v-if="MFAchecked"
+          name="profile_tour"
+          :steps="tourSteps"
+          :options="tourOptions"
+          :callbacks="tourCallBacks"
+        ></v-tour>
+
+        <div class="profile-user_info">
+          <span class="profile-label">开启动态令牌</span>
+          <span class="profile-label_info row-flex-end">
+            <label class="switch">
+              <input type="checkbox" v-model="MFAchecked" />
+              <div class="slider round"></div>
+            </label>
+          </span>
+        </div>
+        <div v-if="MFAchecked" class="profile-user_info">
+          <span class="profile-label">应用备注</span>
+          <span class="profile-label_info row-flex-end authing-form without-padding">
+            <input
+              type="text"
+              class="_authing_input _authing_form-control mini_input"
+              style="text-align: right"
+              :placeholder="clientInfo.name ? clientInfo.name : '您的应用备注'"
+              v-model="mfaRemark"
+              autocomplete="off"
+              @change="changeRemark"
+            />
+          </span>
+        </div>
+        <div v-if="MFAchecked" class="profile-user_info">
+          <span class="profile-label">令牌密钥</span>
+          <span class="profile-label_info row-flex-end authing-form without-padding">
+            <input
+              type="text"
+              class="_authing_input _authing_form-control mini_input"
+              style="text-align: right"
+              placeholder="您的应用密钥"
+              :value="MFA ? MFA.shareKey : ''"
+              autocomplete="off"
+              @click="copyShareKey"
+              readonly
+            />
+          </span>
+        </div>
+        <div v-if="MFAchecked" class="imgBar" id="imgbar">
+          <div v-if="remarkChanging > 0" class="remarkBox">
+            <div class="k-line k-line10"></div>
+          </div>
+          <img
+            v-if="navBarKey == 0 && !remarkChanging"
+            src="https://usercontents.authing.cn/mini-login.jpg"
+          />
+          <img
+            v-if="navBarKey == 2 && !remarkChanging"
+            src="https://usercontents.authing.cn/mfa_demo.gif"
+            style="border-radius: 6px;"
+          />
+          <div
+            v-if="navBarKey == 1 && !remarkChanging && !(QRCodeImg && QRCodeImg !== '')"
+            class="remarkBox"
+          >暂无动态令牌二维码</div>
+          <img
+            v-if="navBarKey == 1 && !remarkChanging && QRCodeImg && QRCodeImg !== ''"
+            :src="QRCodeImg"
+          />
+        </div>
+        <div v-if="MFAchecked" class="authing-mfa_navbar">
+          <div
+            id="step1"
+            class="authing-mfa_navbar-item"
+            :style="navBarKey == 0 ? 'background: #fafafa;' : ''"
+            @click="viewNavBar(0)"
+          ><span class="text-word">1.扫一扫小登录</span></div>
+          <div
+            id="step2"
+            class="authing-mfa_navbar-item"
+            :style="navBarKey == 1 ? 'background: #fafafa;' : ''"
+            @click="viewNavBar(1)"
+          ><span class="text-word">2.添加动态令牌</span></div>
+          <div
+            id="step3"
+            class="authing-mfa_navbar-item"
+            :style="(navBarKey == 2 ? 'background: #fafafa;' : '') + 'border-right: none !important;width: calc(100% / 3 + 1px);'"
+            @click="viewNavBar(2)"
+          ><span class="text-word">3.查看令牌密码</span></div>
+        </div>
       </div>
 
       <div
@@ -240,9 +330,65 @@
   </div>
 </template>
 <script>
+import QRCode from "qrcode";
+require("../utils/otplib");
 export default {
   data() {
     return {
+      tourCallBacks: {
+        onPreviousStep: () => {
+          this.navBarKey =
+            (this.navBarKey == 1 && 0) || (this.navBarKey == 2 && 1);
+        },
+        onNextStep: () => {
+          this.navBarKey =
+            (this.navBarKey == 0 && 1) || (this.navBarKey == 1 && 2);
+        },
+        onStop: async () => {
+          await this.unnormalChange();
+        }
+      },
+      tourSteps: [
+        {
+          target: "#imgbar", // We're using document.querySelector() under the hood
+          content: `<div style="text-align: left;"><div><strong>使用小登录管理你的令牌</strong></div><div>为确保安全，开启前需验证一次动态口令</div><div>1.微信扫描步骤 1 二维码</div><div>2.点击「微信授权」</div><div>3.进入侧边栏</div><div>4.点击「扫码添加动态令牌」</div></div>`,
+          params: {
+            placement: "top"
+          }
+        },
+        {
+          target: "#imgbar",
+          content: `<div style="text-align: left;"><div><strong>小登录中添加动态令牌码</strong></div><div>请使用小登录扫描步骤 2 二维码</div><div>此外，也可以使用其他令牌工具</div><div>如 Google Authenticator，身份宝等</div></div>`,
+          params: {
+            placement: "top"
+          }
+        },
+        {
+          target: "#imgbar",
+          content: `<div style="text-align: left;"><div><strong>查看您的动态令牌码</strong></div><div>动态令牌码通常是一串 6 位数字</div><div>您可以方便地使用动态令牌</div><div>如需开启动态令牌功能，需要先进行扫码，并验证动态令牌口令</div></div>`,
+          params: {
+            placement: "top"
+          }
+        }
+      ],
+      tourOptions: {
+        labels: {
+          buttonSkip: "直接验证",
+          buttonPrevious: "上一步",
+          buttonNext: "下一步",
+          buttonStop: "验证口令"
+        }
+      },
+      MFAchecked: false,
+      openOrClose: false,
+      navBarKey: 1,
+      userToken: null,
+      remarkChanging: null,
+      storageUserInfo: {},
+      mfaRemark: "",
+      QRCodeImg: null,
+      MFA: {},
+      checked: false,
       $authing: null,
 
       loading: false,
@@ -280,35 +426,260 @@ export default {
         lastLoginTime: ""
       },
 
-      userId: null
+      userId: null,
+      clientInfo: {},
+      clientId: null,
+      safetySaving: false,
+      quiet: false
     };
+  },
+  created() {
+    this.opts = this.$root.$data.$authing.opts;
+  },
+  watch: {
+    mfaRemark() {
+      this.changeRemark();
+    },
+    async MFAchecked() {
+      if (!this.safetySaving) {
+        await this.changeValue(this.MFAchecked);
+      } else {
+        this.safetySaving = false;
+      }
+    }
   },
   async mounted() {
     const Authing = require("authing-js-sdk");
-    let client_id = localStorage.getItem("_authing_clientId") || false;
-    if (client_id) {
+    let client_info =
+      JSON.parse(localStorage.getItem("_authing_clientInfo")) || null;
+    if (!client_info) {
+      this.notLogin();
+      return;
+    }
+    this.clientInfo = client_info;
+    let client_id = client_info.clientId || false;
+    this.clientId = client_id;
+    this.userToken = localStorage.getItem("_authing_token") || null;
+    if (this.userToken && client_info) {
       const auth = await new Authing({
         clientId: client_id,
         timestamp: Math.round(new Date() / 1000),
-        nonce: Math.ceil(Math.random() * Math.pow(10, 6))
+        nonce: Math.ceil(Math.random() * Math.pow(10, 6)),
+        host: this.opts.host
       });
+      auth.initUserClient(this.userToken);
       this.$authing = auth;
-
       //已经有资料缓存，可以开始读取
       this.getStorageInfo();
+      this.getMFAInfo();
     } else {
-      this.showSuccessBar("登录身份已过期");
-      setTimeout(() => {
-        location.href = "/error?message=尚未登录&code=id520";
-      }, 1000);
-      this.loading = false;
+      this.notLogin();
     }
   },
   methods: {
-    getStorageInfo() {
+    viewNavBar(item) {
+      try {
+        this.$tours['profile_tour'].currentStep = item
+      } finally {
+        this.navBarKey = item;
+      }
+    },
+    makeQRCode() {
+      let that = this;
+      let userPoolName = this.clientInfo.name || "Authing 应用"; //this.clientInfo.name || 'Authing 应用'
+      let userName =
+        this.storageUserInfo.username ||
+        this.storageUserInfo.nickname ||
+        this.storageUserInfo.email ||
+        "佚名";
+      let userRemark =
+        this.mfaRemark && this.mfaRemark !== ""
+          ? this.mfaRemark + "-" + userPoolName
+          : userPoolName;
+      let shareKey = this.MFA.shareKey;
+      let clientId = this.clientId;
+      let qrurl = `otpauth://totp/${userRemark}?secret=${shareKey}&period=30&digits=6&algorithm=SHA1&issuer=${userName}&client=${clientId}`;
+      QRCode.toDataURL(qrurl, (err, res) => {
+        that.QRCodeImg = res;
+        that.navBarKey = 1;
+        // try {
+        //   that.$tours['profile_tour'].stop()
+        // } catch {
+
+        // }
+      });
+    },
+    async getMFAInfo() {
+      let res = await this.$authing.checkLoginStatus(
+        localStorage.getItem("_authing_token")
+      );
+      if (res.code == 200) {
+        let mfaList = await this.$authing.queryMFA({
+          userId: this.userId,
+          userPoolId: this.clientId
+        });
+        if (mfaList) {
+          this.MFA = mfaList.queryMFA;
+          this.saveMFAcheckedSafety(this.MFA["enable"] || false);
+          this.checked = this.MFA["enable"] || false;
+          this.makeQRCode();
+        } else {
+          this.showWarnBar("获取动态令牌失败");
+        }
+      } else {
+        this.notLogin();
+      }
+    },
+    notLogin() {
+      this.showSuccessBar("登录身份已过期");
+      let jumpHref;
+      if (location.hostname.indexOf("authing.cn") > -1) {
+        jumpHref = "https://" + location.hostname + "/login?profile=1";
+      } else {
+        if (!this.clientId) {
+          jumpHref = "/error?message=尚未登录&code=id520";
+        } else {
+          jumpHref = "/login?app_id=" + this.clientId;
+        }
+      }
+      setTimeout(() => {
+        location.href = jumpHref;
+      }, 1000);
+      this.loading = false;
+    },
+
+    normalChange: async function(unquiet, strong) {
+      let that = this;
+      //关闭 MFA 或者首次开启
+      if (that.nowPage == 2) {
+        if (!that.quiet) {
+          that.quiet = false;
+          that.showSuccessBar("保存修改中");
+        }
+      }
+      let mfaInfo = await that.$authing.changeMFA({
+        userId: that.userId,
+        userPoolId: that.clientId,
+        enable: typeof strong == "boolean" ? strong : that.openOrClose || false
+      });
+
+      if (mfaInfo.changeMFA && unquiet) {
+        if (that.nowPage == 2) {
+          if (!that.quiet) {
+            that.quiet = false;
+            that.showSuccessBar("保存成功");
+          }
+        }
+        await that.getMFAInfo();
+      } else {
+        if (unquiet) {
+          if (!that.quiet) {
+            that.quiet = false;
+            that.showWarnBar("保存修改失败");
+          }
+        }
+      }
+    },
+
+    async changeValue(openOrClose) {
+      this.openOrClose = openOrClose || false;
+      let res = await this.$authing.checkLoginStatus(
+        localStorage.getItem("_authing_token")
+      );
       let that = this;
 
+      if (res.code == 200) {
+        if (!openOrClose) {
+          await that.normalChange(true);
+        } else {
+          //开启 MFA
+          if (!that.MFA) {
+            //首次开启，让他开就行了
+            await that.normalChange(true);
+          } else {
+            //非首次开启，需要验证动态口令，否则驳回开启要求
+            that.navBarKey = 0;
+            that.$tours["profile_tour"].start();
+          }
+        }
+      } else {
+        this.notLogin();
+      }
+    },
+
+    async unnormalChange() {
+      let that = this;
+      try {
+        //alert(JSON.stringify(that.MFA))
+        let secret = that.MFA.shareKey;
+        if (secret) {
+          let token = prompt("请输入六位动态令牌口令");
+          if (typeof token == "string" && token.length == 6 && token > 0) {
+            let otpRes = otplib.authenticator.check(token, secret);
+            if (otpRes) {
+              //alert(typeof otpRes);
+              that.quiet = false;
+              await that.normalChange(true, true);
+            } else {
+              that.showSuccessBar("动态口令有误，请按照教程检查");
+              that.quiet = true;
+              that.MFAchecked = false;
+            }
+          } else {
+            if (token && token == "") {
+              that.showSuccessBar("输入不能为空，请检查");
+            } else if(!token) {
+              that.showSuccessBar("您取消了开启动态令牌");
+            } else {
+              that.showSuccessBar("动态口令有误，请按照教程检查");
+            }
+            that.quiet = true;
+            that.MFAchecked = false;
+          }
+        } else {
+          that.showWarnBar("获取服务器令牌信息失败");
+          that.quiet = true;
+          that.MFAchecked = false;
+        }
+      } catch (err) {
+        //alert(JSON.stringify(err));
+        that.showWarnBar("保存修改失败：MFA 信息获取失败");
+        that.quiet = true;
+        that.MFAchecked = false;
+      }
+    },
+
+    saveMFAcheckedSafety(tof) {
+      //alert(tof);
+      this.safetySaving = true;
+      this.MFAchecked = tof;
+      this.safetySaving = false;
+    },
+
+    copyShareKey() {
+      let that = this;
+      function copyText(text, callback) {
+        // 网上找的，为了不多加库真的很拼
+        var tag = document.createElement("input");
+        tag.setAttribute("id", "cp_hgz_input");
+        tag.value = text;
+        document.getElementsByTagName("body")[0].appendChild(tag);
+        document.getElementById("cp_hgz_input").select();
+        document.execCommand("copy");
+        document.getElementById("cp_hgz_input").remove();
+        if (callback) {
+          callback(text);
+        }
+      }
+      copyText(this.MFA.shareKey, () => {
+        that.showSuccessBar("密钥已复制");
+      });
+    },
+
+    getStorageInfo() {
+      let that = this;
       let userInfo = JSON.parse(localStorage.getItem("_authing_userInfo"));
+      this.storageUserInfo = userInfo;
       if (userInfo) {
         that.profileForm.eMail = userInfo.email;
 
@@ -348,6 +719,18 @@ export default {
           this.showInfo = "";
           this.successShow = false;
         }, 1500);
+      } else {
+        this.showInfo = info;
+      }
+    },
+
+    changeRemark() {
+      if (!this.remarkChanging) {
+        this.remarkChanging = setTimeout(() => {
+          clearTimeout(this.remarkChanging);
+          this.remarkChanging = null;
+          this.makeQRCode();
+        }, 1000);
       }
     },
 
@@ -617,7 +1000,7 @@ export default {
 }
 
 .profile-nav_bar .item {
-  width: 50%;
+  width: calc(100% / 3);
   height: 44px;
   color: #5c666f;
   border-bottom: 1px solid #5c666f;
@@ -784,6 +1167,7 @@ export default {
   justify-content: flex-start;
   align-items: center;
   border-bottom: 1px dashed #f3f3f3;
+  background: #fff;
 }
 
 .profile-user_info .profile-label {
@@ -794,6 +1178,11 @@ export default {
 
 .profile-user_info .profile-label_info {
   width: 70%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-content: center;
 }
 
 .msgBar {
@@ -810,5 +1199,188 @@ export default {
   font-weight: 400;
   letter-spacing: 0.5px;
   transition: all 0.2s;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 45px;
+  height: 25.5px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 19.5px;
+  width: 19.5px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(19.5px);
+  -ms-transform: translateX(19.5px);
+  transform: translateX(19.5px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.row-flex-end {
+  justify-content: flex-end !important;
+}
+
+.profile-settings_page {
+  width: 100%;
+  height: calc(100% - 145px);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  position: absolute;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  background: #fff;
+}
+
+.mini_input {
+  width: 80%;
+  height: 30px !important;
+  font-size: 13px !important;
+  padding: 6px 0 !important;
+  border-bottom: none !important;
+}
+
+.without-padding {
+  padding: 0 !important;
+}
+
+.imgBar {
+  box-sizing: border-box;
+  padding: 22px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.imgBar > img {
+  display: inline-block;
+  width: 160px;
+  height: 160px;
+}
+
+.imgBar > .remarkBox {
+  margin-top: 11px;
+  width: 149px;
+  height: 149px;
+  background: #fafafa;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  color: #515151;
+}
+
+._authing_form-control[readonly] {
+  background: #fff !important;
+  cursor: pointer;
+}
+
+.k-line10 {
+  animation: k-loadingH 1s cubic-bezier(0.17, 0.37, 0.43, 0.67) infinite;
+  background-color: #2196f3;
+}
+
+@keyframes k-loadingH {
+  0% {
+    width: 15px;
+  }
+  50% {
+    width: 35px;
+    padding: 4px;
+  }
+  100% {
+    width: 15px;
+  }
+}
+
+.k-line {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 15px;
+}
+
+.authing-mfa_navbar {
+  width: 90%;
+  margin: 0 5%;
+  margin-top: 22px;
+  height: 40px;
+  border-radius: 5px;
+  background: #fff;
+  border: 2px solid #eee;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  /* box-shadow: 0px 0px 10px #b3b3b3; */
+}
+
+.authing-mfa_navbar-item {
+  width: calc(100% / 3);
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #707070;
+  border-right: 2px dashed #eee;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.text-word {
+  font-size: 12px;
+  transform: scale(0.75);
+}
+
+.v-tour {
+  position: fixed;
+  z-index: 999;
+  font-size: 11px;
+  opacity: 0.8;
+  min-width: 250px;
 }
 </style>

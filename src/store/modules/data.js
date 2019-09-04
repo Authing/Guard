@@ -69,6 +69,8 @@ const actions = {
         accessToken: userInfo.token,
         userInfo: userInfo
       };
+      localStorage.setItem("_authing_userInfo", JSON.stringify(userInfo));
+      localStorage.setItem("_authing_clientInfo", JSON.stringify(state.appInfo));
       localStorage.setItem("appToken", JSON.stringify(appToken));
     }
     commit("setLoginInfo", { userInfo });
