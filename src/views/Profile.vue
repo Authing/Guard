@@ -441,7 +441,8 @@ export default {
       clientInfo: {},
       clientId: null,
       safetySaving: false,
-      quiet: false
+      quiet: false,
+      getting: false
     };
   },
   created() {
@@ -452,10 +453,9 @@ export default {
       this.changeRemark();
     },
     async MFAchecked() {
-      if (!this.safetySaving) {
+      if (this.check !== this.MFAchecked) {
         await this.changeValue(this.MFAchecked);
       }
-      this.safetySaving = false;
     },
     async modalShow(val) {
       if (val == false) {
@@ -533,20 +533,23 @@ export default {
         localStorage.getItem("_authing_token")
       );
       if (res.code == 200) {
+        this.getting = true;
         let mfaList = await this.$authing.queryMFA({
           userId: this.userId,
           userPoolId: this.clientId
         });
         if (mfaList) {
           this.MFA = mfaList.queryMFA || {};
-          this.saveMFAcheckedSafety(this.MFA["enable"] || false);
+          this.MFAchecked = this.MFA["enable"] || false;
           this.checked = this.MFA["enable"] || false;
           this.makeQRCode();
         } else {
           this.showWarnBar("获取动态令牌失败");
         }
+        this.getting = false;
       } else {
         this.notLogin();
+        this.getting = false;
       }
     },
     notLogin() {
@@ -589,7 +592,6 @@ export default {
             that.showSuccessBar("保存成功");
           }
         }
-        await that.getMFAInfo();
       } else {
         if (unquiet) {
           if (!that.quiet) {
@@ -616,9 +618,12 @@ export default {
             //首次开启，让他开就行了
             await that.normalChange(true);
           } else {
+            if (openOrClose && that.MFAchecked !== that.checked) {
+              localStorage.setItem("qrcode", that.QRCodeImg);
+              that.changeModalShow({ show: true, qrcode: that.QRCodeImg });
+            }
             //非首次开启，需要验证动态口令，否则驳回开启要求
-            localStorage.setItem("qrcode", that.QRCodeImg);
-            that.changeModalShow({ show: true, qrcode: that.QRCodeImg });
+
             //that.$tours["profile_tour"].start();
           }
         }
@@ -642,6 +647,7 @@ export default {
             if (otpRes) {
               //alert(typeof otpRes);
               that.quiet = false;
+              that.openOrClose = true;
               await that.normalChange(true, true);
             } else {
               that.quiet = false;
@@ -683,12 +689,6 @@ export default {
         that.quiet = true;
         that.MFAchecked = false;
       }
-    },
-
-    saveMFAcheckedSafety(tof) {
-      //alert(tof);
-      this.safetySaving = true;
-      this.MFAchecked = tof;
     },
 
     copyShareKey() {
