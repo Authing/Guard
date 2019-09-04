@@ -21,8 +21,8 @@ const actions = {
   },
   handleProtocolProcess({ state }, { router }) {
     if (state.isSSO) {
-      if(location.hostname.indexOf('profile') > -1) {
-        location.href = 'https://' + location.hostname + '/profile'
+      if(location.href.indexOf('profile') > -1) {
+        router.push({name: 'profile'})
         return
       }
       switch (state.protocol) {
