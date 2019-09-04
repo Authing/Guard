@@ -11,22 +11,29 @@ require('vue-tour/dist/vue-tour.css')
 Vue.use(VueTour)
 
 Vue.config.productionTip = false;
+Vue.directive('focus', {
+  // 当被绑定的元素插入到 DOM 中时……
+  inserted: function (el) {
+    // 聚焦元素
+    el.focus()
+  }
+})
 // Vue.config.devtools = true
-var AuthingGuard = function(clientId, opts) {
+var AuthingGuard = function (clientId, opts) {
 
   window.Authing = Authing;
 
   var PLACEHOLDER_TEXT = {
-      USERNAME: "请输入用户名",
-      EMAIL: "请输入邮箱或用户名",
-      PASSWORD: "请输入密码",
-      CONFIRM_PASSWORD: "请确认密码",
-      VERIFY_CODE: "请输入验证码",
-      NEW_PASSWORD: "请输入新密码",
-      PHONE: "请输入手机号",
-      PHONE_CODE: "4 位验证码",
-      MFA_CODE: "请输入动态口令"
-    },
+    USERNAME: "请输入用户名",
+    EMAIL: "请输入邮箱或用户名",
+    PASSWORD: "请输入密码",
+    CONFIRM_PASSWORD: "请确认密码",
+    VERIFY_CODE: "请输入验证码",
+    NEW_PASSWORD: "请输入新密码",
+    PHONE: "请输入手机号",
+    PHONE_CODE: "4 位验证码",
+    MFA_CODE: "请输入动态口令"
+  },
     $authing = this;
 
   $authing.eventsList = {
@@ -130,7 +137,7 @@ var AuthingGuard = function(clientId, opts) {
   // 除了应用域名以外的其他域名部分
   try {
     $authing.opts.baseDomain = opts.host.user.match(/https?:\/\/([^\.]*)\.([^\/]*)/)[2];
-  } catch(err) {
+  } catch (err) {
     $authing.opts.baseDomain = 'authing.cn'
   }
   $authing.opts.placeholder = opts.placeholder;
@@ -168,7 +175,7 @@ var AuthingGuard = function(clientId, opts) {
 };
 
 AuthingGuard.prototype = {
-  show: function(appMountId) {
+  show: function (appMountId) {
     var target =
       document.getElementById(appMountId) ||
       document.getElementById(this.opts.mountId) ||
@@ -206,18 +213,18 @@ AuthingGuard.prototype = {
     });
   },
 
-  hide: function() {
+  hide: function () {
     document.getElementById("_authing_login_form").remove();
   },
 
-  on: function(eventName, cb) {
+  on: function (eventName, cb) {
     eventName = eventName.toLowerCase();
     if (cb && eventName && this.eventsList[eventName]) {
       this.eventsList[eventName].push(cb);
     }
   },
 
-  pub: function(eventName, params) {
+  pub: function (eventName, params) {
     eventName = eventName.toLowerCase();
     if (eventName && this.eventsList[eventName]) {
       for (var i = 0; i < this.eventsList[eventName].length; i++) {
@@ -228,9 +235,9 @@ AuthingGuard.prototype = {
   }
 };
 // if(process.env.NODE_ENV !== 'production') {
-  if(window) {
-    window.Guard = AuthingGuard;
-  }
+if (window) {
+  window.Guard = AuthingGuard;
+}
 // }
 
 export default AuthingGuard;
