@@ -620,7 +620,7 @@ export default {
             }
           } else {
             if(token == '') {
-              that.showSuccessBar("输入不能为空，请按照检查");
+              that.showSuccessBar("输入不能为空，请检查");
             } else {
               that.showSuccessBar("动态口令有误，请按照教程检查");
             }
