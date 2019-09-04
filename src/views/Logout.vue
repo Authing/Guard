@@ -66,25 +66,35 @@ export default {
         this.$router.replace({
           name: "error",
           query: {
-            message: ["app_id 参数错误"]
+            message: ["缺少 app_id 或 client_id 参数"]
           }
         });
+        return
       }
       if (!redirect_uri) {
-        location.href = "/login/error?message=请提供 redirect_uri &code=id404";
+        this.$router.replace({
+          name: "error",
+          query: {
+            message: ["缺少 edirect_uri 参数"]
+          }
+        });
+        return
       }
 
       this.logoutMsg = "退出中...";
-
-      this.removeOIDCSession();
+      try {
+        this.removeOIDCSession();
+      } catch(err) {
+        // do nothing
+      }
 
       this.logoutMsg = "清除缓存中...";
       setTimeout(() => {
-        if (!this.isLogged()) {
-          localStorage.removeItem("_authing_token");
-          // 若未登录直接跳到用户设置好的 redirect_uri 中
-          location.href = redirect_uri;
-        }
+        // if (!this.isLogged()) {
+        //   localStorage.removeItem("_authing_token");
+        //   // 若未登录直接跳到用户设置好的 redirect_uri 中
+        //   location.href = redirect_uri;
+        // }
 
         this.logoutMsg = "退出成功";
 
@@ -101,7 +111,7 @@ export default {
           this.$router.replace({
             name: "error",
             query: {
-              message: ["app_id 参数错误"]
+              message: ["app_id 参数错误或该 app_id 未登录"]
             }
           });
           // location.href = redirect_uri;
