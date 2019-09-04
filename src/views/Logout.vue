@@ -4,11 +4,14 @@
       <iframe v-show="false" @load="logout" :src="sessionEndURL" name="oidc-session-end"></iframe>
       <div class="_authing_container" id="_authing_login_form_content">
         <div class="authing-login-form-wrapper">
-          <div class="_authing_form-wrapper animated fast fadeInUp _authing_authorize_container" style="min-height: 0;">
+          <div
+            class="_authing_form-wrapper animated fast fadeInUp _authing_authorize_container"
+            style="min-height: 0;"
+          >
             <div class="_authing_form-header">
               <!-- <div class="_authing_delta_bg"></div> -->
               <div class="_authing_logo_bar">
-                <img class="_authing_logo_icon" src="../assets/wtf.png">
+                <img class="_authing_logo_icon" src="../assets/wtf.png" />
                 <div class="_authing_logo_text">Authing</div>
               </div>
               <div class="_authing_form-header-bg wrong_bg">
@@ -27,80 +30,92 @@
 export default {
   data() {
     return {
-      logoutMsg: '加载中...',
+      logoutMsg: "加载中...",
 
-      sessionEndURL: `${location.origin}/oauth/oidc/session/end`,
-    //   sessionEndURL: `http://localhost:8080/logout.html`,
+      sessionEndURL: `${location.origin}/oauth/oidc/session/end`
+      //   sessionEndURL: `http://localhost:8080/logout.html`,
     };
   },
   methods: {
     isLogged: function(appId) {
-        const appToken = this.getAppToken();
-        return (appToken[appId] && appToken[appId].accessToken) || false;
+      const appToken = this.getAppToken();
+      return (appToken[appId] && appToken[appId].accessToken) || false;
     },
 
     getAppToken: function() {
-        let appToken = localStorage.getItem('appToken');
+      let appToken = localStorage.getItem("appToken");
 
-        if (appToken) {
-            try {
-                appToken = JSON.parse(appToken);
-            }catch(error) {
-                appToken = {};
-            }
-        }else {
-            appToken = {};
+      if (appToken) {
+        try {
+          appToken = JSON.parse(appToken);
+        } catch (error) {
+          appToken = {};
         }
+      } else {
+        appToken = {};
+      }
 
-        return appToken;
+      return appToken;
     },
 
     async logout() {
-        const appId = this.$route.query.app_id || this.$route.query.client_id;
-        const redirect_uri = this.$route.query.redirect_uri;
+      const appId = this.$route.query.app_id || this.$route.query.client_id;
+      const redirect_uri = this.$route.query.redirect_uri;
 
-        if (!appId) {
-            location.href = '/login/error?message=请提供 app_id 或 client_id&code=id404';
+      if (!appId) {
+        this.$router.replace({
+          name: "error",
+          query: {
+            message: ["app_id 参数错误"]
+          }
+        });
+      }
+      if (!redirect_uri) {
+        location.href = "/login/error?message=请提供 redirect_uri &code=id404";
+      }
+
+      this.logoutMsg = "退出中...";
+
+      this.removeOIDCSession();
+
+      this.logoutMsg = "清除缓存中...";
+      setTimeout(() => {
+        if (!this.isLogged()) {
+          localStorage.removeItem("_authing_token");
+          // 若未登录直接跳到用户设置好的 redirect_uri 中
+          location.href = redirect_uri;
         }
-        if (!redirect_uri) {
-            location.href = '/login/error?message=请提供 redirect_uri &code=id404';
+
+        this.logoutMsg = "退出成功";
+
+        // 若登录则读取 token 然后清空 localStorage
+        const appToken = this.getAppToken();
+        if (appToken[appId]) {
+          delete appToken[appId];
+          localStorage.setItem("appToken", JSON.stringify(appToken));
+          localStorage.removeItem("_authing_token");
+          location.href = redirect_uri;
+        } else {
+          // 如果给了错误的 appid
+          // localStorage.removeItem('_authing_token')
+          this.$router.replace({
+            name: "error",
+            query: {
+              message: ["app_id 参数错误"]
+            }
+          });
+          // location.href = redirect_uri;
         }
-
-        this.logoutMsg = '退出中...';
-
-        this.removeOIDCSession();
-
-        this.logoutMsg = '清除缓存中...';
-        setTimeout(() => {
-            if (!this.isLogged()) {
-                localStorage.removeItem('_authing_token')
-                // 若未登录直接跳到用户设置好的 redirect_uri 中
-                location.href = redirect_uri;
-            }
-
-            this.logoutMsg = '退出成功'; 
-
-            // 若登录则读取 token 然后清空 localStorage
-            const appToken = this.getAppToken();
-            if (appToken[appId]) {
-                delete appToken[appId];
-                localStorage.setItem('appToken', JSON.stringify(appToken));
-                localStorage.removeItem('_authing_token')
-                location.href = redirect_uri;
-            }else {
-                localStorage.removeItem('_authing_token')
-                location.href = redirect_uri;
-            }
-        }, 3000);
+      }, 3000);
     },
 
     removeOIDCSession() {
-        const sessionEndFrame = window.frames['oidc-session-end'].window;
-        // const action = sessionEndFrame.document.getElementById('op.logoutForm').getAttribute('action');
-        // sessionEndFrame.document.getElementById('op.logoutForm').setAttribute('action', action.replace('http://', 'https://'))
-        const logoutBtn = sessionEndFrame.document.querySelector('button');
-        logoutBtn.click();
-    },
+      const sessionEndFrame = window.frames["oidc-session-end"].window;
+      // const action = sessionEndFrame.document.getElementById('op.logoutForm').getAttribute('action');
+      // sessionEndFrame.document.getElementById('op.logoutForm').setAttribute('action', action.replace('http://', 'https://'))
+      const logoutBtn = sessionEndFrame.document.querySelector("button");
+      logoutBtn.click();
+    }
   }
 };
 </script>
