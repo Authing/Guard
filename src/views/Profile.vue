@@ -477,7 +477,7 @@ export default {
           : userPoolName;
       let shareKey = this.MFA.shareKey;
       let clientId = this.clientId;
-      let qrurl = `otpauth://totp/${userRemark}?secret=${shareKey}&period=30&digits=6&algorithm=SHA1&issuer=${userName}&client=${clientId}`;
+      let qrurl = `otpauth://totp/${userRemark}?secret=${shareKey}&period=30&digits=6&issuer=${userName}&client=${clientId}`;
       QRCode.toDataURL(qrurl, (err, res) => {
         that.QRCodeImg = res;
         that.navBarKey = 1;
@@ -616,7 +616,7 @@ export default {
           // );
           let token = this.tokenValue;
           if (typeof token == "string" && token.length == 6 && token > 0) {
-            let otpRes = otplib.authenticator.check(token, secret);
+            let otpRes = otplib.authenticator.verify({token, secret});
             if (otpRes) {
               that.showSuccessBar("开启成功");
               await that.strictChange(true);
