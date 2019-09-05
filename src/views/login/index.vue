@@ -825,7 +825,7 @@ export default {
         // dev:true
       });
       let sess = await auth.trackSession();
-      if (!sess.session.appId) {
+      if (!sess.session) {
         localStorage.removeItem('_authing_token');
         localStorage.removeItem('_authing_userInfo');
         localStorage.removeItem('_authing_clientInfo');
