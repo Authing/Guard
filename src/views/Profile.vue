@@ -515,7 +515,7 @@ export default {
     notLogin() {
       this.showSuccessBar("登录身份已过期");
       // let jumpHref;
-      localStorage.setItem('jump2Profile', true)
+      sessionStorage.setItem('jump2Profile', true)
       this.$router.push({name: 'indexLogin'})
       // if (location.hostname.indexOf("authing.cn") > -1) {
       //   jumpHref = "https://" + location.hostname + "/login?profile=1";

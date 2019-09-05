@@ -22,7 +22,7 @@ const actions = {
   },
   handleProtocolProcess({ state }, { router }) {
     if (state.isSSO) {
-      if(localStorage.getItem('jump2Profile')) {
+      if(sessionStorage.getItem('jump2Profile')) {
         router.push({name: 'profile'})
         return
       }

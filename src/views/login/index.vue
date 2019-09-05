@@ -463,7 +463,7 @@ export default {
       });
   },
   destroyed() {
-    localStorage.removeItem('jump2Profile')
+    sessionStorage.removeItem('jump2Profile')
   },
   methods: {
     ...mapActions("visibility", [
