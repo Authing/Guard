@@ -11,18 +11,10 @@ const state = {
   },
   isSSO: false
 };
-const getQueryString = function(name) {
-  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-  var r = window.location.search.substr(1).match(reg);
-  if (r != null) {
-    return unescape(r[2]);
-  } else {
-    return null;
-  }
-};
+
 const getters = {
   protocol: state => state.protocol,
-  params: state => state.params
+  params: state => state.params,
 };
 const actions = {
   saveProtocol({ commit }, { protocol, params, isSSO }) {
@@ -30,7 +22,7 @@ const actions = {
   },
   handleProtocolProcess({ state }, { router }) {
     if (state.isSSO) {
-      if(Number(getQueryString('profile')) === 1) {
+      if(localStorage.getItem('jump2Profile')) {
         router.push({name: 'profile'})
         return
       }

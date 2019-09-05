@@ -462,7 +462,9 @@ export default {
         that.$authing.pub("authing-unload", err);
       });
   },
-
+  destroyed() {
+    localStorage.removeItem('jump2Profile')
+  },
   methods: {
     ...mapActions("visibility", [
       "gotoWxQRCodeScanning",
@@ -824,7 +826,18 @@ export default {
       });
       let sess = await auth.trackSession();
       if (!sess.session.appId) {
-        localStorage.clear();
+        localStorage.removeItem('_authing_token');
+        localStorage.removeItem('_authing_userInfo');
+        localStorage.removeItem('_authing_clientInfo');
+        try {
+          let appToken = localStorage.getItem('appToken');
+          let obj = JSON.parse(appToken)
+          delete obj[this.opts.appId]
+          localStorage.setItem('appToken', JSON.stringify(obj))
+        }catch(err) {
+          console.log('已处理的err157')
+          console.log(err)
+        }
         return false;
       }
       return appToken[this.opts.appId] && appToken[this.opts.appId].accessToken;
@@ -870,7 +883,7 @@ export default {
       formLoading: "form",
       pageLoading: "page"
     }),
-    ...mapGetters("protocol", ["protocol", "params"])
+    ...mapGetters("protocol", ["protocol", "params"]),
   },
   watch: {
     rememberMe: function(newVal) {

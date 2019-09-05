@@ -514,19 +514,21 @@ export default {
     },
     notLogin() {
       this.showSuccessBar("登录身份已过期");
-      let jumpHref;
-      if (location.hostname.indexOf("authing.cn") > -1) {
-        jumpHref = "https://" + location.hostname + "/login?profile=1";
-      } else {
-        if (!this.clientId) {
-          jumpHref = "/error?message=尚未登录&code=id520";
-        } else {
-          jumpHref = "/login?app_id=" + this.clientId;
-        }
-      }
-      setTimeout(() => {
-        location.href = jumpHref;
-      }, 1000);
+      // let jumpHref;
+      localStorage.setItem('jump2Profile', true)
+      this.$router.push({name: 'indexLogin'})
+      // if (location.hostname.indexOf("authing.cn") > -1) {
+      //   jumpHref = "https://" + location.hostname + "/login?profile=1";
+      // } else {
+      //   if (!this.clientId) {
+      //     jumpHref = "/error?message=尚未登录&code=id520";
+      //   } else {
+      //     jumpHref = "/login?app_id=" + this.clientId;
+      //   }
+      // }
+      // setTimeout(() => {
+      //   location.href = jumpHref;
+      // }, 1000);
       this.loading = false;
     },
 
