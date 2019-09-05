@@ -11,6 +11,15 @@ const state = {
   },
   isSSO: false
 };
+const getQueryString = function(name) {
+  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+  var r = window.location.search.substr(1).match(reg);
+  if (r != null) {
+    return unescape(r[2]);
+  } else {
+    return null;
+  }
+};
 const getters = {
   protocol: state => state.protocol,
   params: state => state.params
@@ -21,7 +30,7 @@ const actions = {
   },
   handleProtocolProcess({ state }, { router }) {
     if (state.isSSO) {
-      if(location.href.indexOf('profile') > -1) {
+      if(Number(getQueryString('profile')) === 1) {
         router.push({name: 'profile'})
         return
       }
