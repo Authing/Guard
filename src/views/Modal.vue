@@ -117,7 +117,9 @@ export default {
   left: calc(50vw - 165px);
   top: calc(50vh - 140px);
   box-sizing: border-box;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 22px 22px;
 }
 
@@ -131,7 +133,6 @@ export default {
 
 .modalTop {
   width: 100%;
-  height: 60%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -146,7 +147,6 @@ export default {
 
 .modalBottom {
   width: 100%;
-  height: 40%;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
