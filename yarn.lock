@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@authing/sso@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@authing/sso/-/sso-1.0.1.tgz#e347afd150be346fb6b561df3120df7e59b84349"
-  integrity sha512-P1tVMV9ts6vvHyTGAvTENjfrRNc1wFUPv3G+OMdQoaNJ7OZkZSXOL3oyjHIOwZGLxcynJvDWD2nJSrytS4MyFA==
+"@authing/sso@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@authing/sso/-/sso-1.0.4.tgz#6e4ae241c6e3a43aaecb50ff9e7fed0a92a2b11b"
+  integrity sha512-eFpk6L0WErHuz0Cnf7n2JXxH5Jt9PQNg2wgRtoP2vHKmgSg5wHfpTVo7JHVo69QeDgkthyi9Urg3icDG5f9EAQ==
   dependencies:
     axios "^0.19.0"
     core-js "^2.6.5"
@@ -1501,10 +1501,10 @@ atob@^2.1.1:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-authing-js-sdk@^2.20.0-alpha.5:
-  version "2.20.0-alpha.5"
-  resolved "https://registry.yarnpkg.com/authing-js-sdk/-/authing-js-sdk-2.20.0-alpha.5.tgz#1171ab2226bcb55a4d36c429d2df4e619cd3c90e"
-  integrity sha512-93oAF/5/ncVx4l12FApiYfNbCtP1jhn4U+fUqaivUxhJZTQTGb+Q3BNLvZsBpBMV+8J3u27IxKhqaRZrVOilkw==
+authing-js-sdk@^2.20.0:
+  version "2.20.0"
+  resolved "https://registry.yarnpkg.com/authing-js-sdk/-/authing-js-sdk-2.20.0.tgz#9f63eb25f6f01f100872c9ad541555761327033e"
+  integrity sha512-b+Jku0GKHPDu6eyMqBXljt4R2uZf45r4nvFEMapuI8ZiT2XNLypgim8tpyYiPDLOvEWFcBHKb2Zp39t8T+sMSA==
   dependencies:
     axios "^0.19.0"
     js-sha1 "^0.6.0"
@@ -5114,6 +5114,11 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
+jump.js@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/jump.js/-/jump.js-1.0.2.tgz#e0641b47f40a38f2139c25fda0500bf28e43015a"
+  integrity sha1-4GQbR/QKOPITnCX9oFAL8o5DAVo=
+
 killable@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/killable/-/killable-1.0.1.tgz#4c8ce441187a061c7474fb87ca08e2a638194892"
@@ -6602,6 +6607,11 @@ pngjs@^3.3.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/pngjs/-/pngjs-3.4.0.tgz#99ca7d725965fb655814eaf65f38f12bbdbf555f"
   integrity sha512-NCrCHhWmnQklfH4MtJMRjZ2a8c80qXeMlQMv2uVp9ISJMTt562SbGd6n2oq0PaPgKm7Z6pL9E2UlLIhC+SHL3w==
+
+popper.js@^1.14.4:
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.15.0.tgz#5560b99bbad7647e9faa475c6b8056621f5a4ff2"
+  integrity sha512-w010cY1oCUmI+9KwwlWki+r5jxKfTFDVoadl7MSrIujHU5MJ5OR6HTDj6Xo8aoR/QsA56x8jKjA59qGH4ELtrA==
 
 portfinder@^1.0.20, portfinder@^1.0.21:
   version "1.0.23"
@@ -8824,7 +8834,17 @@ vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
 
-vue@^2.6.10, vue@^2.6.6:
+vue-tour@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/vue-tour/-/vue-tour-1.1.0.tgz#20da6e6697b8d286438d90616e847e1af9b82801"
+  integrity sha512-AcJ4pksVbKEKyk5qI3sEBQ6rGwhm2psFpqwsht4aT3vGpNi7Ft3359wrQedfctBcCHJATVB3wVBlFkmYfuRgNg==
+  dependencies:
+    hash-sum "^1.0.2"
+    jump.js "^1.0.2"
+    popper.js "^1.14.4"
+    vue "^2.5.17"
+
+vue@^2.5.17, vue@^2.6.10, vue@^2.6.6:
   version "2.6.10"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
   integrity sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==

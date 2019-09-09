@@ -69,12 +69,13 @@
 <script>
 import axios from "axios";
 import { mapGetters, mapActions } from "vuex";
+import GraphQLClient from "../graphql.js";
 
 export default {
   name: "authorize",
   components: {},
   computed: {
-    ...mapGetters("data", ["appInfo", "isLogged"]),
+    ...mapGetters("data", ["appInfo", "userInfo", "isLogged"]),
     ...mapGetters("protocol", ["protocol", "params"]),
     ...mapGetters("loading", {
       formLoading: "form"
@@ -94,6 +95,10 @@ export default {
     // 进入确权页面，查询所需权限列表
     if (this.protocol === "oidc") {
       this.queryOIDCScopes(this.params.uuid);
+    } else if(this.protocol === 'oauth'){
+      this.queryOAuthScopes()
+    }else{
+      this.showPage = true
     }
 
     window.onresize = () => {
@@ -179,7 +184,29 @@ export default {
       
       window.history.back();
     },
-
+    async queryOAuthScopes() {
+      this.checkAuthorized = true
+      let query = `
+        query isAppAuthorizedByUser {
+          isAppAuthorizedByUser(userId: "${this.userInfo._id}", appId: "${this.appInfo._id}") {
+            authorized
+          }
+        }
+      `
+      let GraphQLClient_checkAuthorized = new GraphQLClient({
+        headers: {
+          Authorization: this.userInfo.token
+        },
+        baseURL: this.opts.host.oauth
+      });
+      let res = await GraphQLClient_checkAuthorized.request({query})
+      if(res.isAppAuthorizedByUser.authorized) {
+        this.redirectURL()
+      } else {
+        this.checkAuthorized = false
+        this.showPage = true
+      }
+    },
     async queryOIDCScopes(uuid) {
       this.checkAuthorized = true
 
