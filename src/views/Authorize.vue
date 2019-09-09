@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-show="!showPage">跳转中...</div>
+    <div v-show="!showPage && !checkAuthorized">跳转中...</div>
     <div class="authorize" v-show="showPage">
       <div class="_authing_container" id="_authing_login_form_content">
         <div class="authing-login-form-wrapper">
@@ -83,18 +83,19 @@ export default {
   created() {
     this.$authing = this.$root.$data.$authing;
     this.opts = this.$root.$data.$authing.opts;
-  },
-  mounted() {
     // 如果已经登录，准备直接跳转走
     if (this.isLogged && !(this.protocol === 'oidc' && this.params.consent !== 'none')) {
       this.showPage = false;
       this.redirectURL();
       return;
     }
+  },
+  mounted() {
     // 进入确权页面，查询所需权限列表
     if (this.protocol === "oidc") {
       this.queryOIDCScopes(this.params.uuid);
     }
+
     window.onresize = () => {
       return (() => {
         window.screenWidth = document.body.scrollWidth;
@@ -105,6 +106,8 @@ export default {
   methods: {
     ...mapActions("loading", ["changeLoading"]),
     redirectURL() {
+      // 这个标志位是标志是否在检查用户是否授权过用户池
+      this.checkAuthorized = false
       const host = this.$root.SSOHost;
       // 根据不同的协议，确权后执行不同的后续流程
       if (this.protocol === "oidc") {
@@ -178,6 +181,8 @@ export default {
     },
 
     async queryOIDCScopes(uuid) {
+      this.checkAuthorized = true
+
       const url = `${
         window.location.origin
       }/oauth/oidc/interaction/${uuid}/login`;
@@ -195,6 +200,17 @@ export default {
           redirectTo: 'http://localhost:5556/oauth/oidc/auth/ca763762-0b42-4f23-aaf9-f0e9909fa68a'
           }
         */
+        if(result.data.authorized) {
+          this.showPage = false;
+          location.href = result.data.redirectTo
+          this.checkAuthorized = false
+
+          return
+        } else {
+          this.showPage = true;
+          this.checkAuthorized = false
+
+        }
         this.scopes = result.data;
       } catch (err) {
         // location.href = location.pathname + 'error?message=缺少 OIDC 所必须的参数 uuid';
@@ -206,10 +222,11 @@ export default {
   data() {
     return {
       screenWidth: document.body.scrollWidth,
-      showPage: true,
+      showPage: false,
       scopes: {
         scopeMeanings: []
-      }
+      },
+      checkAuthorized: false,
     };
   }
 };
