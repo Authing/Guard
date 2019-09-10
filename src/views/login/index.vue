@@ -835,8 +835,7 @@ export default {
           delete obj[this.opts.appId]
           localStorage.setItem('appToken', JSON.stringify(obj))
         }catch(err) {
-          console.log('已处理的err157')
-          console.log(err)
+          // 什么也不做，吞掉 error
         }
         return false;
       }
