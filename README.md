@@ -286,6 +286,10 @@ Guard 会在以下生命周期中触发相应事件：
 
 如果你遇到问题，请打开 Issue 提出问题。
 
+## Get Help
+
+1. Join us on Gitter: [#authing-chat](https://gitter.im/authing-chat/community)
+
 ## 开发者信息
 
 [Authing](https://authing.cn)
