@@ -45,14 +45,11 @@ export default {
     getAppToken: function() {
       let appToken = localStorage.getItem("appToken");
 
-      if (appToken) {
-        try {
-          appToken = JSON.parse(appToken);
-        } catch (error) {
-          appToken = {};
-        }
-      } else {
-        appToken = {};
+      try {
+        appToken = JSON.parse(appToken);
+      } catch (error) {
+        appToken = null
+        localStorage.removeItem('appToken')
       }
 
       return appToken;
@@ -61,7 +58,7 @@ export default {
     async logout() {
       const appId = this.$route.query.app_id || this.$route.query.client_id;
       const redirect_uri = this.$route.query.redirect_uri;
-
+      // 参数检查
       if (!appId) {
         this.$router.replace({
           name: "error",
@@ -69,54 +66,56 @@ export default {
             message: ["缺少 app_id 或 client_id 参数"]
           }
         });
-        return
+        return;
       }
       if (!redirect_uri) {
         this.$router.replace({
           name: "error",
           query: {
-            message: ["缺少 edirect_uri 参数"]
+            message: ["缺少 redirect_uri 参数"]
           }
         });
-        return
+        return;
       }
 
-      this.logoutMsg = "退出中...";
-      try {
-        this.removeOIDCSession();
-      } catch(err) {
-        // do nothing
-      }
+      // this.logoutMsg = "退出中...";
 
       this.logoutMsg = "清除缓存中...";
-      setTimeout(() => {
-        // if (!this.isLogged()) {
-        //   localStorage.removeItem("_authing_token");
-        //   // 若未登录直接跳到用户设置好的 redirect_uri 中
-        //   location.href = redirect_uri;
-        // }
+      // setTimeout(() => {
+      // if (!this.isLogged()) {
+      //   localStorage.removeItem("_authing_token");
+      //   // 若未登录直接跳到用户设置好的 redirect_uri 中
+      //   location.href = redirect_uri;
+      // }
 
-        this.logoutMsg = "退出成功";
+      // this.logoutMsg = "退出成功";
 
-        // 若登录则读取 token 然后清空 localStorage
-        const appToken = this.getAppToken();
-        if (appToken[appId]) {
-          delete appToken[appId];
-          localStorage.setItem("appToken", JSON.stringify(appToken));
-          localStorage.removeItem("_authing_token");
+      // 若登录则读取 token 然后清空 localStorage
+      const appToken = this.getAppToken();
+      if (appToken && appToken[appId]) {
+        delete appToken[appId];
+        localStorage.setItem("appToken", JSON.stringify(appToken));
+        localStorage.removeItem("_authing_token");
+        setTimeout(() => {
           location.href = redirect_uri;
-        } else {
-          // 如果给了错误的 appid
-          // localStorage.removeItem('_authing_token')
-          this.$router.replace({
-            name: "error",
-            query: {
-              message: ["app_id 参数错误或该 app_id 未登录"]
-            }
-          });
-          // location.href = redirect_uri;
+        }, 3000)
+        try {
+          this.removeOIDCSession();
+        } catch (err) {
+          // do nothing
         }
-      }, 3000);
+      } else {
+        // 如果给了错误的 appid
+        // localStorage.removeItem('_authing_token')
+        this.$router.replace({
+          name: "error",
+          query: {
+            message: ["app_id 参数错误或该 app_id 未登录"]
+          }
+        });
+        // location.href = redirect_uri;
+      }
+      // }, 1000);
     },
 
     removeOIDCSession() {
