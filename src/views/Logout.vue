@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="authorize">
-      <iframe v-show="false" @load="logout" :src="sessionEndURL" name="oidc-session-end"></iframe>
+      <iframe v-show="false" @load.once="logout" :src="sessionEndURL" name="oidc-session-end"></iframe>
       <div class="_authing_container" id="_authing_login_form_content">
         <div class="authing-login-form-wrapper">
           <div
