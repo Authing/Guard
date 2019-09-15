@@ -499,7 +499,7 @@ export default {
           userPoolId: this.clientId
         });
         if (mfaList) {
-          this.MFA = mfaList.queryMFA || {};
+          this.MFA = mfaList || {};
           this.checked = this.MFA["enable"] || false;
           this.MFAchecked = this.MFA["enable"] || false;
           this.makeQRCode();
