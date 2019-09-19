@@ -9,6 +9,7 @@
           autocomplete="off"
           v-model="password"
           :placeholder="opts.placeholder.newPassword"
+          @keyup.enter="handleSubmitForgetPasswordNewPassword" 
         >
       </div>
     </div>

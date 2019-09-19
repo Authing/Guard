@@ -9,6 +9,7 @@
           autocomplete="off"
           :placeholder="opts.placeholder.verfiyCode"
           v-model="verifyCode"
+          @keyup.enter="handleSubmitForgetPasswordVerifyCode"
         >
       </div>
     </div>

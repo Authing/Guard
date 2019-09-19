@@ -26,7 +26,7 @@ export default {
     var scanOpts = this.opts.qrcodeScanning || {
       redirect: true,
       interval: 1500,
-      tips: "使用 微信 或小程序 身份管家 扫码登录"
+      tips: "使用微信扫码登录"
     };
 
     let that = this;
