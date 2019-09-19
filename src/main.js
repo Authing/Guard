@@ -91,7 +91,7 @@ var AuthingGuard = function (clientId, opts) {
   if (opts.qrcodeScanning) {
     opts.qrcodeScanning.redirect = !!opts.qrcodeScanning.redirect;
     opts.qrcodeScanning.interval = opts.qrcodeScanning.interval || 1500;
-    opts.qrcodeScanning.tips = opts.qrcodeScanning.tips || null;
+    opts.qrcodeScanning.tips = opts.qrcodeScanning.tips || "使用微信扫码登录";
   }
   // 初始化 placeholder 配置
   if (opts.placeholder) {
