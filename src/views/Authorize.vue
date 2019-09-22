@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-show="!showPage && !checkAuthorized">跳转中...</div>
+    <div class="authing-loading-circle screen-center" v-if="!showPage && !checkAuthorized"></div>
     <div class="authorize" v-show="showPage">
       <div class="_authing_container" id="_authing_login_form_content">
         <div class="authing-login-form-wrapper">
