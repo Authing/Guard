@@ -159,7 +159,7 @@
             <QRCode v-if="wxQRCodeVisible" />
             <ForgetPassword v-if="forgetPasswordVisible" />
             <PhoneCodeLogin v-if="phoneCodeLoginVisible" />
-            <MFACode v-if="MFACodeVisible"/>
+            <MFACode v-if="MFACodeVisible" />
             <!-- <div
               class="_authing_form-footer login"
               v-show="!opts.hideUP"
@@ -187,7 +187,7 @@ import SignUp from "./SignUp";
 import GlobalMessage from "../components/GlobalMessage";
 import ForgetPassword from "./forgetPassword/index";
 import PhoneCodeLogin from "./PhoneCode";
-import MFACode from './MFACode'
+import MFACode from "./MFACode";
 import SSO from "@authing/sso";
 import { mapGetters, mapActions } from "vuex";
 export default {
@@ -200,7 +200,7 @@ export default {
     GlobalMessage,
     PhoneCodeLogin,
     LDAPLogin,
-    MFACode,
+    MFACode
   },
   data() {
     return {
@@ -259,8 +259,8 @@ export default {
   },
   async mounted() {
     if (this.opts.isSSO) {
-      if(this.$route.query.profile) {
-        this.redirectToProfile = true
+      if (this.$route.query.profile) {
+        this.redirectToProfile = true;
       }
       // 上来先查一下 appInfo
       const appInfo = await this.queryAppInfo();
@@ -363,107 +363,64 @@ export default {
       return;
     }
     var that = this;
-    var auth = null;
     this.checkHasLDAP(that.clientId);
 
-    try {
-      auth = new Authing({
-        clientId: that.clientId || that.opts.clientId,
-        timestamp: that.opts.timestamp,
-        nonce: that.opts.nonce,
-        useSelfWxapp: that.opts.useSelfWxapp,
-        host: that.opts.host,
-      });
-    } catch (err) {
-      console.log("5322342444442");
-      console.log(err);
-      this.changeLoading({ el: "page", loading: false });
-
-      that.authingOnError = true;
-      this.showGlobalMessage({
-        type: "error",
-        message: "Error: " + err.message
-      });
-      that.$authing.pub("authing-unload", err);
-    }
-    if (!auth) {
-      return;
-    }
-
-    auth
-      .then(validAuth => {
-        that.clientInfo = validAuth.clientInfo;
+    let auth = new Authing({
+      userPoolId: that.clientId || that.opts.clientId,
+      useSelfWxapp: that.opts.useSelfWxapp,
+      host: that.opts.host,
+      onInitError: err => {
         this.changeLoading({ el: "page", loading: false });
 
-        // document
-        //   .getElementById("_authing_login_form_content")
-        //   .classList.remove("hide");
-        window.validAuth = validAuth;
-
-        that.$authing.pub("authing-load", validAuth);
-
-        /*
-        if (localStorage.getItem("_authing_username")) {
-          that.rememberMe = true;
-          that.loginForm.email = localStorage.getItem("_authing_username");
-        }
-
-        if (localStorage.getItem("_authing_password")) {
-          that.loginForm.password = that.decrypt(
-            localStorage.getItem("_authing_password"),
-            $authing.opts.clientId
-          );
-        }
-        */
-        that.changeLoading({ el: "socialButtonsList", loading: true });
-        validAuth
-          .readOAuthList({ useGuard: true })
-          .then(data => {
-            that.$authing.pub("social-load", data);
-            that.changeLoading({ el: "socialButtonsList", loading: false });
-            // 刨去 微信扫码登录 的方式
-            var socialButtonsList = data.filter(function(item) {
-              if (item.alias === "wxapp") {
-                that.isScanCodeEnable = true;
-              }
-              return item.enabled === true && item.alias !== "wxapp";
-            });
-
-            that.saveSocialButtonsList({ socialButtonsList });
-
-            if (!that.opts.hideSocial) {
-              return;
-            }
-
-            if (socialButtonsList.length === 0 && that.opts.hideUP) {
-              that.opts.hideSocial = true;
-              that.gotoWxQRCodeScanning();
-            }
-          })
-          .catch(err => {
-            console.log(err);
-            that.$authing.pub("social-unload", err);
-            that.changeLoading({ el: "form", loading: false });
-          });
-
-        if (that.opts.hideSocial && that.opts.hideUP) {
-          that.gotoWxQRCodeScanning();
-        }
-      })
-      .catch(err => {
-        console.log("32564574");
-        console.log(err);
-        this.changeLoading({ el: "page", loading: false });
-        this.$router.replace({
-          name: "error",
-          query: { message: "app_id 或 client_id 错误", code: "id404" }
+        this.authingOnError = true;
+        this.showGlobalMessage({
+          type: "error",
+          message: "Error: " + err.message
         });
-        that.authingOnError = true;
-        that.$authing.pub("authing-unload", err);
+        this.$authing.pub("authing-unload", err);
+      }
+    });
+
+    let userPoolSettings = await auth.getUserPoolSettings(
+      that.clientId || that.opts.clientId
+    );
+    this.changeLoading({ el: "page", loading: false });
+
+    window.validAuth = auth;
+    this.$authing.pub("authing-load", validAuth);
+    if (that.opts.hideSocial && that.opts.hideUP) {
+      that.gotoWxQRCodeScanning();
+    }
+    try {
+      this.changeLoading({ el: "socialButtonsList", loading: true });
+      let data = await auth.readOAuthList({ userGuard: true });
+      that.$authing.pub("social-load", data);
+      that.changeLoading({ el: "socialButtonsList", loading: false });
+      // 刨去 微信扫码登录 的方式
+      var socialButtonsList = data.filter(function(item) {
+        if (item.alias === "wxapp") {
+          that.isScanCodeEnable = true;
+        }
+        return item.enabled === true && item.alias !== "wxapp";
       });
+
+      that.saveSocialButtonsList({ socialButtonsList });
+
+      if (!that.opts.hideSocial) {
+        return;
+      }
+
+      if (socialButtonsList.length === 0 && that.opts.hideUP) {
+        that.opts.hideSocial = true;
+        that.gotoWxQRCodeScanning();
+      }
+    } catch (err) {
+      that.$authing.pub("social-unload", err);
+      that.changeLoading({ el: "form", loading: false });
+    }
   },
   destroyed() {
-    sessionStorage.removeItem('jump2Profile')
+    sessionStorage.removeItem("jump2Profile");
   },
   methods: {
     ...mapActions("visibility", [
@@ -821,20 +778,20 @@ export default {
         appType: this.protocol,
         appDomain: isSSOAuthing
           ? "sso." + this.opts.baseDomain
-          : this.appInfo.domain + '.' + this.opts.baseDomain,
-        // dev:true
+          : this.appInfo.domain + "." + this.opts.baseDomain,
+        dev: true
       });
       let sess = await auth.trackSession();
       if (!sess.session) {
-        localStorage.removeItem('_authing_token');
-        localStorage.removeItem('_authing_userInfo');
-        localStorage.removeItem('_authing_clientInfo');
+        localStorage.removeItem("_authing_token");
+        localStorage.removeItem("_authing_userInfo");
+        localStorage.removeItem("_authing_clientInfo");
         try {
-          let appToken = localStorage.getItem('appToken');
-          let obj = JSON.parse(appToken)
-          delete obj[this.opts.appId]
-          localStorage.setItem('appToken', JSON.stringify(obj))
-        }catch(err) {
+          let appToken = localStorage.getItem("appToken");
+          let obj = JSON.parse(appToken);
+          delete obj[this.opts.appId];
+          localStorage.setItem("appToken", JSON.stringify(obj));
+        } catch (err) {
           // 什么也不做，吞掉 error
         }
         return false;
@@ -844,27 +801,36 @@ export default {
   },
   computed: {
     headerTabCount() {
-      let arr = ['scan-wx-mp','login','register']
-      if(!this.isScanCodeEnable || this.opts.hideQRCode || (this.clientInfo.registerDisabled&&!this.clientInfo.showWXMPQRCode)) {
-        let idx = arr.findIndex(v => v === 'scan-wx-mp')
-        if(~idx) {
-          arr.splice(idx, 1)
+      let arr = ["scan-wx-mp", "login", "register"];
+      if (
+        !this.isScanCodeEnable ||
+        this.opts.hideQRCode ||
+        (this.clientInfo.registerDisabled && !this.clientInfo.showWXMPQRCode)
+      ) {
+        let idx = arr.findIndex(v => v === "scan-wx-mp");
+        if (~idx) {
+          arr.splice(idx, 1);
         }
       }
-      
-      if(this.opts.hideSocial&&this.opts.hideUP) {
-        let idx = arr.findIndex(v => v === 'login')
-        if(~idx) {
-          arr.splice(idx, 1)
+
+      if (this.opts.hideSocial && this.opts.hideUP) {
+        let idx = arr.findIndex(v => v === "login");
+        if (~idx) {
+          arr.splice(idx, 1);
         }
       }
-      if(this.opts.hideUP || this.opts.forceLogin || this.clientInfo.registerDisabled || this.opts.hideRegister) {
-        let idx = arr.findIndex(v => v === 'register')
-        if(~idx) {
-          arr.splice(idx, 1)
+      if (
+        this.opts.hideUP ||
+        this.opts.forceLogin ||
+        this.clientInfo.registerDisabled ||
+        this.opts.hideRegister
+      ) {
+        let idx = arr.findIndex(v => v === "register");
+        if (~idx) {
+          arr.splice(idx, 1);
         }
       }
-      return arr.length
+      return arr.length;
     },
     ...mapGetters("visibility", {
       emailLoginVisible: "emailLogin",
@@ -882,7 +848,7 @@ export default {
       formLoading: "form",
       pageLoading: "page"
     }),
-    ...mapGetters("protocol", ["protocol", "params"]),
+    ...mapGetters("protocol", ["protocol", "params"])
   },
   watch: {
     rememberMe: function(newVal) {

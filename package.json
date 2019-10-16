@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@authing/sso": "^1.0.4",
-    "authing-js-sdk": "^2.23.0",
+    "authing-js-sdk": "/Users/mark/workdir/authing/authing.js",
     "axios": "^0.18.0",
     "otplib": "^11.0.1",
     "qrcode": "^1.4.1",

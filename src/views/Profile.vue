@@ -436,11 +436,10 @@ export default {
     this.clientId = client_id;
     this.userToken = localStorage.getItem("_authing_token") || null;
     if (this.userToken && client_info) {
-      const auth = await new Authing({
-        clientId: client_id,
-        timestamp: Math.round(new Date() / 1000),
-        nonce: Math.ceil(Math.random() * Math.pow(10, 6)),
-        host: this.opts.host
+      const auth = new Authing({
+        userPoolId: that.clientId || that.opts.clientId,
+        useSelfWxapp: that.opts.useSelfWxapp,
+        host: that.opts.host,
       });
       auth.initUserClient(this.userToken);
       this.$authing = auth;
