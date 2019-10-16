@@ -393,27 +393,31 @@ export default {
       that.gotoWxQRCodeScanning();
     }
     try {
-      this.changeLoading({ el: "socialButtonsList", loading: true });
-      let data = await auth.readOAuthList({ userGuard: true });
-      this.$authing.pub("social-load", data);
-      this.changeLoading({ el: "socialButtonsList", loading: false });
-      // 刨去 微信扫码登录 的方式
-      var socialButtonsList = data.filter(function(item) {
-        if (item.alias === "wxapp") {
-          this.isScanCodeEnable = true;
+      if (this.opts.hideSocial === false) {
+        // 不隐藏社会化登录时，才加载社会化登录列表
+        this.changeLoading({ el: "socialButtonsList", loading: true });
+        let data = await auth.readOAuthList({ userGuard: true });
+        this.$authing.pub("social-load", data);
+        this.changeLoading({ el: "socialButtonsList", loading: false });
+        // 刨去 微信扫码登录 的方式
+        let socialButtonsList = data.filter(function(item) {
+          if (item.alias === "wxapp") {
+            this.isScanCodeEnable = true;
+          }
+          return item.enabled === true && item.alias !== "wxapp";
+        });
+
+        this.saveSocialButtonsList({ socialButtonsList });
+
+        // if (!this.opts.hideSocial) {
+        //   return;
+        // }
+
+        if (socialButtonsList.length === 0 && this.opts.hideUP) {
+          // 如果没开启社会化登录，同时指定隐藏用户密码登录，就自动转到小程序扫码登录
+          this.opts.hideSocial = true;
+          this.gotoWxQRCodeScanning();
         }
-        return item.enabled === true && item.alias !== "wxapp";
-      });
-
-      this.saveSocialButtonsList({ socialButtonsList });
-
-      if (!this.opts.hideSocial) {
-        return;
-      }
-
-      if (socialButtonsList.length === 0 && this.opts.hideUP) {
-        this.opts.hideSocial = true;
-        this.gotoWxQRCodeScanning();
       }
     } catch (err) {
       this.$authing.pub("social-unload", err);

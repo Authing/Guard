@@ -72,7 +72,7 @@ var AuthingGuard = function (clientId, opts) {
 
   $authing.opts.hideQRCode = opts.hideQRCode || false;
   $authing.opts.hideUP = opts.hideUP || false;
-  $authing.opts.hideSocial = opts.hideSocial || true;
+  $authing.opts.hideSocial = opts.hideSocial || false;
   $authing.opts.hideUsername = opts.hideUsername || false;
   $authing.opts.hideClose = opts.hideClose || false;
   $authing.opts.hideRegister = opts.hideRegister || false;
