@@ -384,6 +384,7 @@ export default {
     let userPoolSettings = await auth.getUserPoolSettings(
       that.clientId || that.opts.clientId
     );
+    this.clientInfo = userPoolSettings;
     this.changeLoading({ el: "page", loading: false });
 
     window.validAuth = auth;
@@ -394,29 +395,29 @@ export default {
     try {
       this.changeLoading({ el: "socialButtonsList", loading: true });
       let data = await auth.readOAuthList({ userGuard: true });
-      that.$authing.pub("social-load", data);
-      that.changeLoading({ el: "socialButtonsList", loading: false });
+      this.$authing.pub("social-load", data);
+      this.changeLoading({ el: "socialButtonsList", loading: false });
       // 刨去 微信扫码登录 的方式
       var socialButtonsList = data.filter(function(item) {
         if (item.alias === "wxapp") {
-          that.isScanCodeEnable = true;
+          this.isScanCodeEnable = true;
         }
         return item.enabled === true && item.alias !== "wxapp";
       });
 
-      that.saveSocialButtonsList({ socialButtonsList });
+      this.saveSocialButtonsList({ socialButtonsList });
 
-      if (!that.opts.hideSocial) {
+      if (!this.opts.hideSocial) {
         return;
       }
 
-      if (socialButtonsList.length === 0 && that.opts.hideUP) {
-        that.opts.hideSocial = true;
-        that.gotoWxQRCodeScanning();
+      if (socialButtonsList.length === 0 && this.opts.hideUP) {
+        this.opts.hideSocial = true;
+        this.gotoWxQRCodeScanning();
       }
     } catch (err) {
-      that.$authing.pub("social-unload", err);
-      that.changeLoading({ el: "form", loading: false });
+      this.$authing.pub("social-unload", err);
+      this.changeLoading({ el: "form", loading: false });
     }
   },
   destroyed() {

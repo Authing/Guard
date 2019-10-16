@@ -66,7 +66,7 @@ export default {
         if (popup.closed) {
           clearInterval(timer);
           that.changeLoading({ el: "form", loading: false });
-          if (!localStorage.getItem("_authing_token") && this.globalMessage === '正在进行社会化登录') {
+          if (!localStorage.getItem("_authing_token") && that.globalMessage === '正在进行社会化登录') {
             that.showGlobalMessage({
               type: "error",
               message: "取消社会化登录"
@@ -78,8 +78,6 @@ export default {
     receiveMessage(event) {
       try {
         let data = event.data;
-        console.log('data5431')
-        console.log(data)
         let code = data.code;
         let message = data.message;
         // 判断是不是来自 authing 社会化登录的 post message
