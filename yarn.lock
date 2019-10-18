@@ -1476,7 +1476,7 @@ atob@^2.1.1:
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
 "authing-js-sdk@file:../authing.js":
-  version "3.0.0-alpha"
+  version "3.0.0-rc.1"
   dependencies:
     axios "^0.19.0"
     jsencrypt "^3.0.0-rc.1"

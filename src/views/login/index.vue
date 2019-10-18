@@ -388,6 +388,7 @@ export default {
     this.changeLoading({ el: "page", loading: false });
 
     window.validAuth = auth;
+    window.validAuth.clientInfo = userPoolSettings
     this.$authing.pub("authing-load", validAuth);
     if (that.opts.hideSocial && that.opts.hideUP) {
       that.gotoWxQRCodeScanning();
@@ -400,13 +401,12 @@ export default {
         this.$authing.pub("social-load", data);
         this.changeLoading({ el: "socialButtonsList", loading: false });
         // 刨去 微信扫码登录 的方式
-        let socialButtonsList = data.filter(function(item) {
+        let socialButtonsList = data.filter((item) => {
           if (item.alias === "wxapp") {
             this.isScanCodeEnable = true;
           }
           return item.enabled === true && item.alias !== "wxapp";
         });
-
         this.saveSocialButtonsList({ socialButtonsList });
 
         // if (!this.opts.hideSocial) {
@@ -784,7 +784,7 @@ export default {
         appDomain: isSSOAuthing
           ? "sso." + this.opts.baseDomain
           : this.appInfo.domain + "." + this.opts.baseDomain,
-        dev: true
+        // dev: true
       });
       let sess = await auth.trackSession();
       if (!sess.session) {
