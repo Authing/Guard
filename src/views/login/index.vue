@@ -397,7 +397,7 @@ export default {
       if (this.opts.hideSocial === false) {
         // 不隐藏社会化登录时，才加载社会化登录列表
         this.changeLoading({ el: "socialButtonsList", loading: true });
-        let data = await auth.readOAuthList({ userGuard: true });
+        let data = await auth.readOAuthList({ useGuard: true });
         this.$authing.pub("social-load", data);
         this.changeLoading({ el: "socialButtonsList", loading: false });
         // 刨去 微信扫码登录 的方式
@@ -787,6 +787,7 @@ export default {
         // dev: true
       });
       let sess = await auth.trackSession();
+      // let sess = {session:null}
       if (!sess.session) {
         localStorage.removeItem("_authing_token");
         localStorage.removeItem("_authing_userInfo");
