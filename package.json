@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard",
-  "version": "1.5.10",
+  "version": "1.6.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Authing/Guard.git"
@@ -17,8 +17,8 @@
     "dist-no-git": "rm -rf ../guard-html/* && ejs-cli -b ./public -f index.html -O \"{\\\"rand\\\": \\\"$RANDOM\\\"}\" > ../guard-html/index.html && cp ./dist/Guard.umd.min.js ../guard-html/Guard.umd.min.js && cp ./dist/Guard.umd.min.js.map ../guard-html/Guard.umd.min.js.map"
   },
   "dependencies": {
-    "@authing/sso": "^1.0.4",
-    "authing-js-sdk": "/Users/mark/workdir/authing/authing.js",
+    "@authing/sso": "^1.3.0",
+    "authing-js-sdk": "^3.0.0-rc.3",
     "axios": "^0.18.0",
     "otplib": "^11.0.1",
     "qrcode": "^1.4.1",
