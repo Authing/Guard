@@ -35,6 +35,7 @@ export default {
       validAuth.startWXAppScaning({
         mount: "qrcode-node",
         enableFetchPhone: validAuth.clientInfo.useMiniLogin,
+        useSelfWxapp: validAuth.clientInfo.useSelfWxapp,
         onSuccess: function(res) {
           that.$authing.pub("scanned-success", res);
           localStorage.setItem("_authing_token", res.data.token);

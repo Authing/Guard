@@ -424,6 +424,7 @@ export default {
     }
   },
   async mounted() {
+    let that = this
     const Authing = require("authing-js-sdk");
     let client_info =
       JSON.parse(localStorage.getItem("_authing_clientInfo")) || null;
