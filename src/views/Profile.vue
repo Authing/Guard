@@ -441,8 +441,8 @@ export default {
         userPoolId: that.clientId || that.opts.clientId,
         useSelfWxapp: that.opts.useSelfWxapp,
         host: that.opts.host,
+        accessToken: this.userToken
       });
-      auth.initUserClient(this.userToken);
       this.$authing = auth;
       //已经有资料缓存，可以开始读取
       this.getStorageInfo();
