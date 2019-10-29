@@ -505,7 +505,6 @@ export default {
           userId: this.userId,
           userPoolId: this.clientId
         });
-        console.log(mfaList)
         this.MFAchecked = !!mfaList && mfaList.enable
         // if (mfaList) {
         this.MFA = mfaList || {};
@@ -630,8 +629,6 @@ export default {
           // );
           let token = this.tokenValue;
           if (typeof token == "string" && token.length == 6 && token > 0) {
-            console.log('token, secret235345896')
-            console.log(token, secret)
             let otpRes = otplib.authenticator.verify({token, secret});
             if (otpRes) {
               that.showSuccessBar("开启成功");
@@ -803,7 +800,7 @@ export default {
       this.$authing
         .update(opt)
         .then(e => {
-          console.log(e);
+          // console.log(e);
           localStorage.setItem("_authing_userInfo", JSON.stringify(e));
           setTimeout(() => {
             this.getStorageInfo();
