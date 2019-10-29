@@ -498,14 +498,14 @@ export default {
           userId: this.userId,
           userPoolId: this.clientId
         });
-        if (mfaList) {
+        // if (mfaList) {
           this.MFA = mfaList || {};
           this.checked = this.MFA["enable"] || false;
           this.MFAchecked = this.MFA["enable"] || false;
           this.makeQRCode();
-        } else {
-          this.showWarnBar("获取动态令牌失败");
-        }
+        // } else {
+          // this.showWarnBar("获取动态令牌失败");
+        // }
         this.getting = false;
       } else {
         this.notLogin();
