@@ -209,7 +209,7 @@
           <span class="profile-label">开启动态令牌</span>
           <span class="profile-label_info row-flex-end">
             <label class="switch">
-              <input type="checkbox" v-model="MFAchecked" />
+              <input type="checkbox" v-model="MFAchecked" @change="handleChangeMFA"/>
               <div class="slider round"></div>
             </label>
           </span>
@@ -408,15 +408,15 @@ export default {
     mfaRemark() {
       this.changeRemark();
     },
-    async MFAchecked() {
-      if (this.check !== this.MFAchecked) {
-        if (this.firstGet) {
-          this.firstGet = false;
-        } else {
-          await this.changeValue(this.MFAchecked);
-        }
-      }
-    },
+    // async MFAchecked() {
+    //   if (this.check !== this.MFAchecked) {
+    //     if (this.firstGet) {
+    //       this.firstGet = false;
+    //     } else {
+    //       await this.changeValue(this.MFAchecked);
+    //     }
+    //   }
+    // },
     async modalShow(val) {
       if (val == false) {
         await this.unnormalChange();
@@ -456,6 +456,10 @@ export default {
   },
   methods: {
     ...mapActions("profile", ["changeModalShow"]),
+    async handleChangeMFA(e) {
+      let checked = e.target.checked
+      await this.changeValue(checked);
+    },
     viewNavBar(item) {
       //try {
       //this.$tours['profile_tour'].currentStep = item
@@ -464,29 +468,32 @@ export default {
       //}
     },
     makeQRCode() {
-      let that = this;
-      let userPoolName = this.clientInfo.name || "Authing 应用"; //this.clientInfo.name || 'Authing 应用'
-      let userName =
-        this.storageUserInfo.username ||
-        this.storageUserInfo.nickname ||
-        this.storageUserInfo.email ||
-        "佚名";
-      let userRemark =
-        this.mfaRemark && this.mfaRemark !== ""
-          ? this.mfaRemark + "-" + userPoolName
-          : userPoolName;
-      let shareKey = this.MFA.shareKey;
-      let clientId = this.clientId;
-      let qrurl = `otpauth://totp/${userRemark}?secret=${shareKey}&period=30&digits=6&issuer=${userName}&client=${clientId}`;
-      QRCode.toDataURL(qrurl, (err, res) => {
-        that.QRCodeImg = res;
-        that.navBarKey = 1;
-        // try {
-        //   that.$tours['profile_tour'].stop()
-        // } catch {
+      return new Promise((resovle) => {
+        let that = this;
+        let userPoolName = this.clientInfo.name || "Authing 应用"; //this.clientInfo.name || 'Authing 应用'
+        let userName =
+          this.storageUserInfo.username ||
+          this.storageUserInfo.nickname ||
+          this.storageUserInfo.email ||
+          "佚名";
+        let userRemark =
+          this.mfaRemark && this.mfaRemark !== ""
+            ? this.mfaRemark + "-" + userPoolName
+            : userPoolName;
+        let shareKey = this.MFA.shareKey;
+        let clientId = this.clientId;
+        let qrurl = `otpauth://totp/${userRemark}?secret=${shareKey}&period=30&digits=6&issuer=${userName}&client=${clientId}`;
+        QRCode.toDataURL(qrurl, (err, res) => {
+          that.QRCodeImg = res;
+          that.navBarKey = 1;
+          // try {
+          //   that.$tours['profile_tour'].stop()
+          // } catch {
+          resovle(res)
+          // }
+        });
 
-        // }
-      });
+      })
     },
     async getMFAInfo() {
       let res = await this.$authing.checkLoginStatus(
@@ -498,11 +505,15 @@ export default {
           userId: this.userId,
           userPoolId: this.clientId
         });
+        console.log(mfaList)
+        this.MFAchecked = !!mfaList && mfaList.enable
         // if (mfaList) {
-          this.MFA = mfaList || {};
-          this.checked = this.MFA["enable"] || false;
-          this.MFAchecked = this.MFA["enable"] || false;
+        this.MFA = mfaList || {};
+          // this.checked = this.MFA["enable"] || false;
+          // this.MFAchecked = this.MFA["enable"] || false;
+        if (mfaList) {
           this.makeQRCode();
+        }
         // } else {
           // this.showWarnBar("获取动态令牌失败");
         // }
@@ -599,8 +610,9 @@ export default {
         } else {
           //开启
           // 服务器结果和本地结果不一致，说明要开启
-          localStorage.setItem("qrcode", that.QRCodeImg);
-          that.changeModalShow({ show: true, qrcode: that.QRCodeImg });
+          let data = await this.makeQRCode()
+          localStorage.setItem("qrcode", data);
+          that.changeModalShow({ show: true, qrcode: data });
         }
       } else {
         this.notLogin();
@@ -618,6 +630,8 @@ export default {
           // );
           let token = this.tokenValue;
           if (typeof token == "string" && token.length == 6 && token > 0) {
+            console.log('token, secret235345896')
+            console.log(token, secret)
             let otpRes = otplib.authenticator.verify({token, secret});
             if (otpRes) {
               that.showSuccessBar("开启成功");
