@@ -467,7 +467,15 @@ export default {
       this.navBarKey = item;
       //}
     },
-    makeQRCode() {
+    async makeQRCode() {
+      if(!this.MFA.shareKey) {
+        let mfaInfo = await this.$authing.changeMFA({
+          userId: this.userId,
+          userPoolId: this.clientId,
+          enable: false
+        });
+        this.MFA = mfaInfo
+      }
       return new Promise((resovle) => {
         let that = this;
         let userPoolName = this.clientInfo.name || "Authing 应用"; //this.clientInfo.name || 'Authing 应用'
@@ -596,14 +604,14 @@ export default {
       await that.getMFAInfo();
     },
 
-    async changeValue() {
+    async changeValue(checked) {
       let res = await this.$authing.checkLoginStatus(
         localStorage.getItem("_authing_token")
       );
       let that = this;
 
       if (res.code == 200) {
-        if (!that.MFAchecked) {
+        if (!checked) {
           // 关闭
           await that.normalChange();
         } else {
