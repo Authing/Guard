@@ -251,10 +251,10 @@ Guard 会在以下生命周期中触发相应事件：
 | hideSocial                      | 否       | false                                | Boolean | **是否隐藏社会化登录**，在开发者在 Authing 控制台开启社会化登录后，若此项为 true 将隐藏全部社会化登录           |
 | hideClose                       | 否       | false                                | Boolean | **是否隐藏登录框右上角的关闭按钮**，如果隐藏，用户将不能通过点击按钮或按 ESC 关闭登录框                         |
 | **placeholder**                 | 否       | {}                                   | Object  | **定制输入框的 paceholder**                                                                                     |
-| **placeholder**.username        | 否       | 请输入用户名                         | String  | **定制输入框的 paceholder**                                                                                     |
-| **placeholder**.email           | 否       | 请输入邮箱                           | String  | **用户名输入框的 paceholder**                                                                                   |
-| **placeholder**.password        | 否       | 请输入密码                           | String  | **邮箱输入框的 paceholder**                                                                                     |
-| **placeholder**.confirmPassword | 否       | 请确认密码                           | String  | **密码输入框的 paceholder**                                                                                     |
+| **placeholder**.username        | 否       | 请输入用户名                         | String  | **用户名输入框的 paceholder**                                                                                     |
+| **placeholder**.email           | 否       | 请输入邮箱                           | String  | **邮箱输入框的 paceholder**                                                                                   |
+| **placeholder**.password        | 否       | 请输入密码                           | String  | **密码输入框的 paceholder**                                                                                     |
+| **placeholder**.confirmPassword | 否       | 请确认密码                           | String  | **确认密码输入框的 paceholder**                                                                                     |
 | **placeholder**.verfiyCode      | 否       | 请输入验证码                         | String  | **验证码输入框的 paceholder**                                                                                   |
 | **placeholder**.newPassword     | 否       | 请输入新密码                         | String  | **新密码输入框的 paceholder**                                                                                   |
 | **placeholder**.phone           | 否       | 请输入手机号                         | String  | **手机号输入框的 paceholder**                                                                                   |
