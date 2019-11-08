@@ -286,6 +286,11 @@ export default {
         document.head.appendChild(styleNode);
       }
 
+      // 如果启用了自定义配置
+      if (appInfo.customStyles) {
+        // 在这里根据自定义配置修改相应界面
+      }
+
       switch (this.protocol) {
         case "oidc":
           if (!this.params.uuid) {
@@ -401,7 +406,7 @@ export default {
         this.$authing.pub("social-load", data);
         this.changeLoading({ el: "socialButtonsList", loading: false });
         // 刨去 微信扫码登录 的方式
-        let socialButtonsList = data.filter((item) => {
+        let socialButtonsList = data.filter(item => {
           if (item.alias === "wxapp") {
             this.isScanCodeEnable = true;
           }
@@ -474,36 +479,61 @@ export default {
         if (!protocol) {
           let queries = [
             `query {
-  QueryAppInfoByDomain(domain: "${domain}") {
-    _id
-    name
-    image
-    domain
-    clientId
-    css
-  }
-}`,
+              QueryAppInfoByDomain(domain: "${domain}") {
+                _id
+                name
+                image
+                domain
+                clientId
+                css
+              }
+            }`,
             `query {
-  QueryOIDCAppInfoByDomain(domain: "${domain}") {
-    _id,
-    name
-    image
-    client_id
-    redirect_uris
-    domain
-    css
-  }
-}`,
+              QueryOIDCAppInfoByDomain(domain: "${domain}") {
+                _id,
+                name
+                image
+                client_id
+                redirect_uris
+                domain
+                css
+                customStyles {
+                  forceLogin
+                  hideQRCode
+                  hideUP
+                  hideUsername
+                  hideRegister
+                  hidePhone
+                  hideSocial
+                  hideClose
+                  placeholder {
+                    username
+                    email
+                    password
+                    confirmPassword
+                    verfiyCode
+                    newPassword
+                    phone
+                    phoneCode
+                  }
+                  qrcodeScanning {
+                    redirect
+                    interval
+                    tips
+                  }
+                }
+              }
+            }`,
             `query {
-  QuerySAMLIdentityProviderInfoByDomain(domain: "${domain}") {
-    _id,
-    name,
-    image,
-    domain
-    clientId
-    css
-  }
-}`
+              QuerySAMLIdentityProviderInfoByDomain(domain: "${domain}") {
+                _id,
+                name,
+                image,
+                domain
+                clientId
+                css
+              }
+            }`
           ];
           let appInfos = await Promise.all(
             queries.map(q => GraphQLClient_getAppInfo.request({ query: q }))
@@ -556,7 +586,10 @@ export default {
             });
             return;
         }
-        const query = `query {
+
+        let query;
+        if (operationName !== "QueryOIDCAppInfoByDomain") {
+          query = `query {
             ${operationName} (domain: "${domain}") {   
               _id
               name
@@ -566,6 +599,44 @@ export default {
               css
             }
           }`;
+        } else {
+          query = `query {
+            ${operationName} (domain: "${domain}") {   
+              _id
+              name
+              domain
+              image
+              clientId
+              css
+              customStyles {
+                forceLogin
+                hideQRCode
+                hideUP
+                hideUsername
+                hideRegister
+                hidePhone
+                hideSocial
+                hideClose
+                placeholder {
+                  username
+                  email
+                  password
+                  confirmPassword
+                  verfiyCode
+                  newPassword
+                  phone
+                  phoneCode
+                }
+                qrcodeScanning {
+                  redirect
+                  interval
+                  tips
+                }
+              }
+            }
+          }`;
+        }
+
         try {
           let appInfo = await GraphQLClient_getAppInfo.request({ query });
           // console.log("queryAppInfo");
@@ -596,36 +667,61 @@ export default {
           if (!protocol) {
             let queries = [
               `query {
-  QueryAppInfoByAppID(appId: "${appId}") {
-    _id
-    domain
-    name
-    image
-    clientId
-    css
-  }
-}`,
+                QueryAppInfoByAppID(appId: "${appId}") {
+                  _id
+                  domain
+                  name
+                  image
+                  clientId
+                  css
+                }
+              }`,
               `query {
-  QueryOIDCAppInfoByAppID(appId: "${appId}") {
-    _id
-    name
-    image
-    client_id
-    redirect_uris
-    domain
-    css
-  }
-}`,
+                QueryOIDCAppInfoByAppID(appId: "${appId}") {
+                  _id
+                  name
+                  image
+                  client_id
+                  redirect_uris
+                  domain
+                  css
+                  customStyles {
+                    forceLogin
+                    hideQRCode
+                    hideUP
+                    hideUsername
+                    hideRegister
+                    hidePhone
+                    hideSocial
+                    hideClose
+                    placeholder {
+                      username
+                      email
+                      password
+                      confirmPassword
+                      verfiyCode
+                      newPassword
+                      phone
+                      phoneCode
+                    }
+                    qrcodeScanning {
+                      redirect
+                      interval
+                      tips
+                    }
+                  }
+                }
+              }`,
               `query {
-  QuerySAMLIdentityProviderInfoByAppID(appId: "${appId}") {
-    _id
-    domain
-    name
-    image
-    clientId
-    css
-  }
-}`
+                  QuerySAMLIdentityProviderInfoByAppID(appId: "${appId}") {
+                    _id
+                    domain
+                    name
+                    image
+                    clientId
+                    css
+                }
+              }`
             ];
             let appInfos = await Promise.all(
               queries.map(q => GraphQLClient_getAppInfo.request({ query: q }))
@@ -678,15 +774,54 @@ export default {
               });
               return;
           }
-          const query = `query {
-          ${operationName} (appId: "${appId}") {
-            _id,
-            name,
-            image,
-            clientId
-            css
+
+          let query;
+          if (operationName !== "QueryOIDCAppInfoByAppID") {
+            query = `query {
+              ${operationName} (appId: "${appId}") {
+                _id,
+                name,
+                image,
+                clientId
+                css
+              }
+            }`;
+          } else {
+            query = `query {
+              ${operationName} (appId: "${appId}") {
+                _id,
+                name,
+                image,
+                clientId
+                css
+                customStyles {
+                  forceLogin
+                  hideQRCode
+                  hideUP
+                  hideUsername
+                  hideRegister
+                  hidePhone
+                  hideSocial
+                  hideClose
+                  placeholder {
+                    username
+                    email
+                    password
+                    confirmPassword
+                    verfiyCode
+                    newPassword
+                    phone
+                    phoneCode
+                  }
+                  qrcodeScanning {
+                    redirect
+                    interval
+                    tips
+                  }
+                }
+              }
+            }`;
           }
-        }`;
           let appInfo = await GraphQLClient_getAppInfo.request({ query });
           switch (protocol) {
             case "oidc":
@@ -787,7 +922,7 @@ export default {
         // dev: true
       });
       let sess = await auth.trackSession();
-      // let sess = {session:null}
+      // let sess = { session: null };
       if (!sess.session) {
         localStorage.removeItem("_authing_token");
         localStorage.removeItem("_authing_userInfo");
