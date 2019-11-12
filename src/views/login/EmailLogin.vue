@@ -3,7 +3,7 @@
     <div class="form-body">
       <!-- 暂时隐藏 社会化登录 按钮们 -->
       <SocialButtonsList
-        v-if="!socialButtonsListLoading && socialButtonsList.length > 0 && !opts.hideUP"
+        v-if="!socialButtonsListLoading && socialButtonsList.length > 0"
       />
 
       <P
@@ -11,7 +11,7 @@
         v-show="!socialButtonsListLoading && socialButtonsList.length > 0 && !opts.hideUP"
       >或者</P>
 
-      <form style="margin-bottom:16px" class="authing-form animate-box no-shadow">
+      <form style="margin-bottom:16px" class="authing-form animate-box no-shadow" v-show="!opts.hideUP">
         <div v-show="opts.forceLogin" class="authing_force_login_tips" style="text-align:center">
           <p>输入帐号密码登录</p>
           <p>如果您没有帐号，我们会自动创建</p>
@@ -73,8 +73,8 @@
         </div>
       </form>
     </div>
-    <div class="_authing_form-footer login">
-      <button @click="handleLogin" class="btn btn-primary">
+    <div class="_authing_form-footer login" :class="{'height-10': opts.hideUP}">
+      <button @click="handleLogin" class="btn btn-primary" v-show="!opts.hideUP">
         <span v-show="!formLoading">登录</span>
       </button>
     </div>
@@ -88,9 +88,14 @@ export default {
   components: {
     SocialButtonsList
   },
+  props: {
+    opts: {
+      type: Object,
+    }
+  },
   created() {
     this.$authing = this.$root.$data.$authing;
-    this.opts = this.$root.$data.$authing.opts;
+    // this.opts = this.$root.$data.$authing.opts;
   },
   mounted() {
     this.loginForm.email = this.signUpEmail || "";
@@ -353,4 +358,7 @@ export default {
 };
 </script>
 <style scoped>
+.height-10 {
+  height: 10px !important;
+}
 </style>

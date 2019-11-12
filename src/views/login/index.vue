@@ -153,7 +153,7 @@
                 /> 使用 LDAP
               </label>
             </div>
-            <EmailLogin v-show="emailLoginVisible" />
+            <EmailLogin v-show="emailLoginVisible" :opts="opts" />
             <LDAPLogin v-show="LDAPLoginVisible" />
             <SignUp v-if="signUpVisible" />
             <QRCode v-if="wxQRCodeVisible" />
@@ -171,7 +171,7 @@
             </div>-->
             <div class="authing-loading-circle" v-show="formLoading"></div>
 
-            <div class="_authing_form-footer-non-up" v-show="opts.hideUP"></div>
+            <!-- <div class="_authing_form-footer-non-up" v-show="opts.hideUP"></div> -->
           </div>
         </div>
       </div>
@@ -289,6 +289,7 @@ export default {
       // 如果启用了自定义配置
       if (appInfo.customStyles) {
         // 在这里根据自定义配置修改相应界面
+        this.opts = this.$root.$data.$authing.opts = {...this.$root.$data.$authing.opts, ...appInfo.customStyles}
       }
 
       switch (this.protocol) {
