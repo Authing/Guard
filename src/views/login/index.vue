@@ -311,7 +311,7 @@ export default {
             }${ssoHost}/oauth/oidc/auth?client_id=${
               appInfo.client_id
             }&redirect_uri=${
-              appInfo.redirect_uris[0]
+              encodeURIComponent(appInfo.redirect_uris[0])
             }&scope=openid profile&response_type=code&state=${Math.random()
               .toString(26)
               .slice(2)}`;
