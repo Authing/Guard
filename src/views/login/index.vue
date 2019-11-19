@@ -411,7 +411,7 @@ export default {
           if (item.alias === "wxapp") {
             this.isScanCodeEnable = true;
           }
-          return item.enabled === true && item.alias !== "wxapp";
+          return item.enabled === true && item.alias !== "wxapp" && item.alias !== 'wechatapp';
         });
         this.saveSocialButtonsList({ socialButtonsList });
 
@@ -904,7 +904,7 @@ export default {
             localStorage.setItem("appToken", appToken);
           }
         } catch (error) {
-          console.log(error);
+          // console.log(error);
           appToken = {};
           localStorage.removeItem("appToken");
         }
