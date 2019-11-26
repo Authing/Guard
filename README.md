@@ -84,7 +84,7 @@ import Guard from "@authing/guard";
 </html>
 ```
 
-[点击查看用户信息示例](https://docs.authing.cn/authing/sdk/authing-sdk-for-web#deng-lu)
+[点击查看用户信息示例](https://docs.authing.cn/authing/sdk/sdk-for-javascript#deng-lu)
 
 ## SSO 场景
 
@@ -163,7 +163,7 @@ import Guard from "@authing/guard";
 
 ### authing 对象
 
-如果你想获取 authing 对象以调用[用户管理接口](https://docs.authing.cn/authing/sdk/authing-sdk-for-web)，请使用如下代码：
+如果你想获取 authing 对象以调用[用户管理接口](https://docs.authing.cn/authing/sdk/sdk-for-javascript)，请使用如下代码：
 
 `authing-load` 事件是 `Authing` 对象初始化后的回调事件。
 
@@ -176,7 +176,7 @@ guard.on("authing-load", authing => {
   // authing.logout
   // authing.checkLoginStatus
   // ...
-  // 更多请参考：https://docs.authing.cn/authing/sdk/authing-sdk-for-web
+  // 更多请参考：https://docs.authing.cn/authing/sdk/sdk-for-javascript
 });
 ```
 
