@@ -411,7 +411,7 @@ export default {
           if (item.alias === "wxapp") {
             this.isScanCodeEnable = true;
           }
-          return item.enabled === true && item.alias !== "wxapp" && item.alias !== 'wechatapp';
+          return item.enabled === true && item.alias !== "wxapp" && item.alias !== 'wechatapp' && item.alias !== 'wechatmp';
         });
         this.saveSocialButtonsList({ socialButtonsList });
 

@@ -22,6 +22,17 @@ export default {
         background: '#090'
       }
     },
+    // 移动微信网页授权
+    wechatmp: {
+      icon: '\uf262',
+      iconStyle: {
+        background: '#060'
+      },
+      buttonStyle: {
+        color: '#fff',
+        background: '#090'
+      }
+    },
     qq: {
       icon: '\ue600',
       iconStyle: {
