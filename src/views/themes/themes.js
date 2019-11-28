@@ -51,7 +51,28 @@ export default {
         color: '#fff',
         background: '#FF3333'
       }
-    }
+    },
 
+    wechatmp: {
+      icon: '\uf262',
+      iconStyle: {
+        background: '#060'
+      },
+      buttonStyle: {
+        color: '#fff',
+        background: '#090'
+      }
+    },
+
+    wechatmobile: {
+      icon: '\uf262',
+      iconStyle: {
+        background: '#060'
+      },
+      buttonStyle: {
+        color: '#fff',
+        background: '#090'
+      }
+    }
   }
 }

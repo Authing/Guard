@@ -1,7 +1,11 @@
 <template>
   <div>
     <div class="form-body">
-      <form @submit.prevent="() => { return false; }" style="margin-bottom:16px" class="authing-form no-shadow">
+      <form
+        @submit.prevent="() => { return false; }"
+        style="margin-bottom:16px"
+        class="authing-form no-shadow"
+      >
         <div class="_authing_form-group">
           <input
             type="text"
@@ -11,7 +15,7 @@
             :placeholder="opts.placeholder.phone"
             autocomplete="off"
             @keyup.enter="handleLoginByPhoneCode"
-          >
+          />
         </div>
         <div class="_authing_form-group" style="display:flex; align-items: flex-end;">
           <input
@@ -22,7 +26,7 @@
             :placeholder="opts.placeholder.phoneCode"
             autocomplete="off"
             @keyup.enter="handleLoginByPhoneCode"
-          >
+          />
           <div class="_authing_form-footer phone-code-wrapper" style="flex-basis: 50%;">
             <button
               @click="handleSendingPhoneCode"
@@ -41,7 +45,9 @@
       </form>
     </div>
     <div class="_authing_form-footer login" v-show="!opts.hideUP">
-      <button @click="handleLoginByPhoneCode" class="btn btn-primary"><span v-show="!formLoading">登录</span></button>
+      <button @click="handleLoginByPhoneCode" class="btn btn-primary">
+        <span v-show="!formLoading">登录</span>
+      </button>
     </div>
   </div>
 </template>
@@ -71,15 +77,13 @@ export default {
     ]),
     ...mapActions("data", [
       "showGlobalMessage",
-      'removeAnimation',
-      'removeRedLine',
-      'addRedLine',
-      'addAnimation',
-      'recordLoginInfo'
+      "removeAnimation",
+      "removeRedLine",
+      "addRedLine",
+      "addAnimation",
+      "recordLoginInfo"
     ]),
-    ...mapActions("protocol", [
-      'handleProtocolProcess'
-    ]),
+    ...mapActions("protocol", ["handleProtocolProcess"]),
     ...mapActions("loading", ["changeLoading"]),
     handleLoginByPhoneCode() {
       if (!/^1[3-8]\d{9}$/.test(this.phone)) {
@@ -119,9 +123,11 @@ export default {
         .then(userInfo => {
           this.showGlobalMessage({
             type: "success",
-            message: "验证通过，欢迎你：" + (userInfo.username || userInfo.phone)
+            message:
+              "验证通过，欢迎你：" + (userInfo.username || userInfo.phone)
           });
           this.recordLoginInfo(userInfo);
+          userInfo._loginMethod = "phone";
           this.$authing.pub("login", userInfo);
           this.$authing.pub("authenticated", userInfo);
           this.handleProtocolProcess({ router: this.$router });
@@ -166,7 +172,7 @@ export default {
             message: err.message
           });
         });
-    },
+    }
   }
 };
 </script>
