@@ -18,9 +18,7 @@
   </div>
 </template>
 <script>
-
 export default {
-
   props: {
     name: {
       type: String,
@@ -38,11 +36,23 @@ export default {
     },
     url: {
       type: String
+    },
+    isNative: {
+      type: Boolean,
+      default: false
+    },
+    loginType: {
+      type: String,
+      default: ""
     }
   },
   methods: {
     handleClick() {
-      this.$emit('social-btn-click', this.url)
+      if (this.isNative) {
+        this.$emit("post-start-native-login-message", this.loginType);
+      } else {
+        this.$emit("social-btn-click", this.url);
+      }
     }
   }
 };
