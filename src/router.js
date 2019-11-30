@@ -9,14 +9,14 @@ import Login from './views/login/index.vue';
 
 Vue.use(Router);
 
-export default new Router({
-  mode: 'history',
+const isNative = !!window.ReactNativeWebView
+let routerConfig = {
   base: process.env.BASE_URL,
   routes: [
     {
       path: "*",
       redirect: "/error"
-    },    
+    },
     {
       path: '/',
       alias: '/login',
@@ -32,7 +32,7 @@ export default new Router({
       path: '/profile/logout',
       name: 'logout',
       component: Logout,
-    },    
+    },
     {
       path: '/error',
       name: 'error',
@@ -44,4 +44,11 @@ export default new Router({
       component: Profile,
     }
   ]
-});
+}
+if (!isNative) {
+  routerConfig.mode = "history"
+}
+
+const router = new Router(routerConfig);
+
+export default router
