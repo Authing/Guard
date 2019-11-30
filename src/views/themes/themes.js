@@ -73,6 +73,17 @@ export default {
         color: '#fff',
         background: '#090'
       }
+    },
+
+    alipaymobile: {
+      icon: '\ue62e',
+      iconStyle: {
+        background: '#07f'
+      },
+      buttonStyle: {
+        color: '#fff',
+        background: '#0cf'
+      }
     }
   }
 }
