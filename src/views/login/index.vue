@@ -408,7 +408,6 @@ export default {
         // 不隐藏社会化登录时，才加载社会化登录列表
         this.changeLoading({ el: "socialButtonsList", loading: true });
         let data = await auth.readOAuthList({ useGuard: true });
-        this.$authing.pub("social-load", data);
         this.changeLoading({ el: "socialButtonsList", loading: false });
 
         // 刨去 微信扫码登录 的方式
@@ -427,10 +426,26 @@ export default {
           } else {
             return (
               item.enabled === true &&
-              (item.alias === "wechatmobile" || item.alias === "alipaymobile")
+              (item.alias === "wechatios" ||
+                item.alias === "alipaymobile" ||
+                item.alias === "wechatandroid")
             );
           }
         });
+
+        socialButtonsList = socialButtonsList.map(item => {
+          if (
+            item.alias === "alipaymobile" ||
+            item.alias === "wechatios" ||
+            item.alias === "wechatandroid"
+          ) {
+            item.isNative = true;
+          }
+          return item;
+        });
+
+        this.$authing.pub("social-load", socialButtonsList);
+
         this.saveSocialButtonsList({ socialButtonsList });
 
         // if (!this.opts.hideSocial) {
@@ -933,16 +948,16 @@ export default {
       //是不是 sso.authing.cn 这种总的域名
       let isSSOAuthing = location.hostname.match(/^sso\./);
       // baseDomain = authing.cn 这种后面的部分的域名
-      // let auth = new SSO({
-      //   appId: this.appInfo._id,
-      //   appType: this.protocol,
-      //   appDomain: isSSOAuthing
-      //     ? "sso." + this.opts.baseDomain
-      //     : this.appInfo.domain + "." + this.opts.baseDomain
-      //   // dev: true
-      // });
-      // let sess = await auth.trackSession();
-      let sess = { session: null };
+      let auth = new SSO({
+        appId: this.appInfo._id,
+        appType: this.protocol,
+        appDomain: isSSOAuthing
+          ? "sso." + this.opts.baseDomain
+          : this.appInfo.domain + "." + this.opts.baseDomain
+        // dev: true
+      });
+      let sess = await auth.trackSession();
+      // let sess = { session: null };
       if (!sess.session) {
         localStorage.removeItem("_authing_token");
         localStorage.removeItem("_authing_userInfo");

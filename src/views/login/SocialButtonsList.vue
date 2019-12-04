@@ -130,28 +130,25 @@ export default {
         ) {
           // console.log(window.ReactNativeWebView.nativeLoginResponse)
           const {
-            loginMethod,
             success,
             data
           } = window.ReactNativeWebView.nativeLoginResponse;
-          console.log(window.ReactNativeWebView.nativeLoginResponse);
           if (success) {
             self.showGlobalMessage({
               type: "success",
               message: "验证通过，欢迎你：" + data.nickname || data.username
             });
-            data._loginMethod = "支付宝";
             self.$authing.pub("login", data);
             self.$authing.pub("authenticated", data);
           } else {
-            const errmsg = !!data ? "登录失败：" + data : "登录失败";
+            const errmsg = data ? "登录失败：" + data : "登录失败";
             self.showGlobalMessage({
               type: "error",
               message: errmsg
             });
             self.$authing.pub(
               "login-error",
-              `${loginType} 登录失败：${errmsg}`
+              `${loginType} ${errmsg}`
             );
           }
           delete window.ReactNativeWebView.nativeLoginResponse;

@@ -127,7 +127,6 @@ export default {
               "验证通过，欢迎你：" + (userInfo.username || userInfo.phone)
           });
           this.recordLoginInfo(userInfo);
-          userInfo._loginMethod = "phone";
           this.$authing.pub("login", userInfo);
           this.$authing.pub("authenticated", userInfo);
           this.handleProtocolProcess({ router: this.$router });

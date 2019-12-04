@@ -113,7 +113,11 @@ export default {
     redirectURL() {
       // 这个标志位是标志是否在检查用户是否授权过用户池
       this.checkAuthorized = false
-      const host = this.$root.SSOHost;
+
+      // 本地测试：使用  192.168.2.16:5556
+      // const host = this.$root.SSOHost;
+      const host = '192.168.2.16:5556'
+
       // 根据不同的协议，确权后执行不同的后续流程
       if (this.protocol === "oidc") {
         // 这两者是等价的

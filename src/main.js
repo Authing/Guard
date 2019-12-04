@@ -236,7 +236,6 @@ AuthingGuard.prototype = {
         params
       }))
     }
-    delete params['_loginMethod']
 
     eventName = eventName.toLowerCase();
     if (eventName && this.eventsList[eventName]) {

@@ -235,7 +235,6 @@ export default {
           });
           that.recordLoginInfo(data);
           // 记录登录方式，需要传给 native 端
-          data._loginMethod = info.email ? "email" : "username";
           that.$authing.pub("login", data);
           that.$authing.pub("authenticated", data);
           setTimeout(() => {
@@ -315,7 +314,6 @@ export default {
                     message:
                       "验证通过，欢迎你：" + (data.username || data.email)
                   });
-                  data._loginMethod = info.email ? "email" : "username";
                   that.$authing.pub("login", data);
                   that.$authing.pub("authenticated", data);
                   // @TODO 进行协议后续流程
