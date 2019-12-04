@@ -115,8 +115,8 @@ export default {
       this.checkAuthorized = false
 
       // 本地测试：使用  192.168.2.16:5556
-      // const host = this.$root.SSOHost;
-      const host = '192.168.2.16:5556'
+      const host = this.$root.SSOHost;
+      // const host = '192.168.2.16:5556'
 
       // 根据不同的协议，确权后执行不同的后续流程
       if (this.protocol === "oidc") {
