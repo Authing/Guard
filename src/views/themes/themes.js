@@ -62,7 +62,27 @@ export default {
         color: '#fff',
         background: '#FF3333'
       }
-    }
+    },
+    wechatmobile: {
+      icon: '\uf262',
+      iconStyle: {
+        background: '#060'
+      },
+      buttonStyle: {
+        color: '#fff',
+        background: '#090'
+      }
+    },
 
+    alipaymobile: {
+      icon: '\ue62e',
+      iconStyle: {
+        background: '#07f'
+      },
+      buttonStyle: {
+        color: '#fff',
+        background: '#0cf'
+      }
+    }
   }
 }

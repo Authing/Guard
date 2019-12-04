@@ -264,6 +264,7 @@ export default {
       }
       // 上来先查一下 appInfo
       const appInfo = await this.queryAppInfo();
+      console.log(appInfo);
       if (!appInfo) {
         this.$router.replace({
           name: "error",
@@ -289,7 +290,10 @@ export default {
       // 如果启用了自定义配置
       if (appInfo.customStyles) {
         // 在这里根据自定义配置修改相应界面
-        this.opts = this.$root.$data.$authing.opts = {...this.$root.$data.$authing.opts, ...appInfo.customStyles}
+        this.opts = this.$root.$data.$authing.opts = {
+          ...this.$root.$data.$authing.opts,
+          ...appInfo.customStyles
+        };
       }
 
       switch (this.protocol) {
@@ -310,9 +314,9 @@ export default {
               isHttps ? "https://" : "http://"
             }${ssoHost}/oauth/oidc/auth?client_id=${
               appInfo.client_id
-            }&redirect_uri=${
-              encodeURIComponent(appInfo.redirect_uris[0])
-            }&scope=openid profile&response_type=code&state=${Math.random()
+            }&redirect_uri=${encodeURIComponent(
+              appInfo.redirect_uris[0]
+            )}&scope=openid profile&response_type=code&state=${Math.random()
               .toString(26)
               .slice(2)}`;
             return;
@@ -394,7 +398,7 @@ export default {
     this.changeLoading({ el: "page", loading: false });
 
     window.validAuth = auth;
-    window.validAuth.clientInfo = userPoolSettings
+    window.validAuth.clientInfo = userPoolSettings;
     this.$authing.pub("authing-load", validAuth);
     if (that.opts.hideSocial && that.opts.hideUP) {
       that.gotoWxQRCodeScanning();
@@ -404,15 +408,44 @@ export default {
         // 不隐藏社会化登录时，才加载社会化登录列表
         this.changeLoading({ el: "socialButtonsList", loading: true });
         let data = await auth.readOAuthList({ useGuard: true });
-        this.$authing.pub("social-load", data);
         this.changeLoading({ el: "socialButtonsList", loading: false });
+
         // 刨去 微信扫码登录 的方式
+        // 如果是 native 端，只保留移动应用
         let socialButtonsList = data.filter(item => {
           if (item.alias === "wxapp") {
             this.isScanCodeEnable = true;
           }
-          return item.enabled === true && item.alias !== "wxapp" && item.alias !== 'wechatapp' && item.alias !== 'wechatmp';
+
+          if (!that.opts.isNative) {
+            return (
+              item.enabled === true &&
+              item.alias !== "wxapp" &&
+              item.alias !== "wechatapp"
+            );
+          } else {
+            return (
+              item.enabled === true &&
+              (item.alias === "wechatios" ||
+                item.alias === "alipaymobile" ||
+                item.alias === "wechatandroid")
+            );
+          }
         });
+
+        socialButtonsList = socialButtonsList.map(item => {
+          if (
+            item.alias === "alipaymobile" ||
+            item.alias === "wechatios" ||
+            item.alias === "wechatandroid"
+          ) {
+            item.isNative = true;
+          }
+          return item;
+        });
+
+        this.$authing.pub("social-load", socialButtonsList);
+
         this.saveSocialButtonsList({ socialButtonsList });
 
         // if (!this.opts.hideSocial) {
@@ -833,6 +866,7 @@ export default {
               return appInfo["QuerySAMLIdentityProviderInfoByAppID"];
           }
         } catch (err) {
+          console.log(err);
           this.$router.replace({
             name: "error",
             query: {
@@ -919,7 +953,7 @@ export default {
         appType: this.protocol,
         appDomain: isSSOAuthing
           ? "sso." + this.opts.baseDomain
-          : this.appInfo.domain + "." + this.opts.baseDomain,
+          : this.appInfo.domain + "." + this.opts.baseDomain
         // dev: true
       });
       let sess = await auth.trackSession();

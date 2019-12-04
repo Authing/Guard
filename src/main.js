@@ -65,6 +65,9 @@ var AuthingGuard = function (clientId, opts) {
   opts = opts || {};
   $authing.opts = opts || {};
 
+  // 是否为 native 端
+  $authing.opts.isNative = opts.isNative || false
+
   $authing.opts.clientId = clientId;
   $authing.opts.appId = opts.appId;
   $authing.opts.domain = opts.domain;
@@ -225,6 +228,15 @@ AuthingGuard.prototype = {
   },
 
   pub: function (eventName, params) {
+
+    // 需要发送数据给 native 端
+    if (this.opts.isNative) {
+      window.ReactNativeWebView.postMessage(JSON.stringify({
+        eventName,
+        params
+      }))
+    }
+
     eventName = eventName.toLowerCase();
     if (eventName && this.eventsList[eventName]) {
       for (var i = 0; i < this.eventsList[eventName].length; i++) {

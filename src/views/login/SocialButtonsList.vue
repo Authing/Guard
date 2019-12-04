@@ -13,7 +13,10 @@
       :iconStyle="socialButtonsThemes[item.alias].iconStyle"
       :buttonStyle="socialButtonsThemes[item.alias].buttonStyle"
       :url="item.url"
+      :isNative="item.isNative"
+      :loginType="item.alias"
       @social-btn-click="handleClick"
+      @post-start-native-login-message="postStartNativeLoginMessage"
       class="_authing_form-group"
     />
   </div>
@@ -46,9 +49,7 @@ export default {
     ...mapActions("protocol", ["handleProtocolProcess"]),
     ...mapActions("data", ["recordLoginInfo", "showGlobalMessage"]),
     ...mapActions("loading", ["changeLoading"]),
-    ...mapActions("visibility", [
-      "gotoMFACode"
-    ]),
+    ...mapActions("visibility", ["gotoMFACode"]),
     ...mapMutations("data", ["setLoginOpt", "setLoginType"]),
     handleClick(url) {
       let leftVal = (screen.width - 500) / 2;
@@ -66,7 +67,10 @@ export default {
         if (popup.closed) {
           clearInterval(timer);
           that.changeLoading({ el: "form", loading: false });
-          if (!localStorage.getItem("_authing_token") && that.globalMessage === '正在进行社会化登录') {
+          if (
+            !localStorage.getItem("_authing_token") &&
+            that.globalMessage === "正在进行社会化登录"
+          ) {
             that.showGlobalMessage({
               type: "error",
               message: "取消社会化登录"
@@ -82,18 +86,18 @@ export default {
         let message = data.message;
         // 判断是不是来自 authing 社会化登录的 post message
         if (typeof code === "number") {
-          if(code === 1635) {
-            this.setLoginType({loginType: 'social'})
-            this.setLoginOpt(data.loginOpt)
+          if (code === 1635) {
+            this.setLoginType({ loginType: "social" });
+            this.setLoginOpt(data.loginOpt);
             this.showGlobalMessage({
               type: "error",
-              message: message.replace(/"/g,'')
+              message: message.replace(/"/g, "")
             });
-            this.gotoMFACode()
-            return
+            this.gotoMFACode();
+            return;
           }
           if (code !== 200) {
-            console.log(data)
+            console.log(data);
             throw Error(message);
           }
           let userInfo = data.data;
@@ -112,11 +116,56 @@ export default {
         this.changeLoading({ el: "form", loading: false });
         this.showGlobalMessage({ type: "error", message: e.message });
       }
+    },
+
+    postStartNativeLoginMessage(loginType) {
+      this.$authing.pub("start-native-login", loginType);
+      this.showGlobalMessage({ type: "warn", message: "正在进行社会化登录" });
+      const self = this;
+
+      function waitForNativeResponse() {
+        if (
+          window.ReactNativeWebView &&
+          window.ReactNativeWebView.nativeLoginResponse
+        ) {
+          // console.log(window.ReactNativeWebView.nativeLoginResponse)
+          const {
+            success,
+            data
+          } = window.ReactNativeWebView.nativeLoginResponse;
+          if (success) {
+            self.showGlobalMessage({
+              type: "success",
+              message: "验证通过，欢迎你：" + data.nickname || data.username
+            });
+            self.$authing.pub("login", data);
+            self.$authing.pub("authenticated", data);
+          } else {
+            const errmsg = data ? "登录失败：" + data : "登录失败";
+            self.showGlobalMessage({
+              type: "error",
+              message: errmsg
+            });
+            self.$authing.pub(
+              "login-error",
+              `${loginType} ${errmsg}`
+            );
+          }
+          delete window.ReactNativeWebView.nativeLoginResponse;
+        } else {
+          setTimeout(waitForNativeResponse, 200);
+        }
+      }
+
+      waitForNativeResponse();
     }
   },
   computed: {
     ...mapGetters("loading", { socialButtonsListLoading: "socialButtonsList" }),
-    ...mapGetters("data", { socialButtonsList: "socialButtonsList", globalMessage: "globalMessage" })
+    ...mapGetters("data", {
+      socialButtonsList: "socialButtonsList",
+      globalMessage: "globalMessage"
+    })
   }
 };
 </script>

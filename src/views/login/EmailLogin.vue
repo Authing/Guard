@@ -2,16 +2,18 @@
   <div>
     <div class="form-body">
       <!-- 暂时隐藏 社会化登录 按钮们 -->
-      <SocialButtonsList
-        v-if="!socialButtonsListLoading && socialButtonsList.length > 0"
-      />
+      <SocialButtonsList v-if="!socialButtonsListLoading && socialButtonsList.length > 0" />
 
       <P
         class="_authing_form-tip"
         v-show="!socialButtonsListLoading && socialButtonsList.length > 0 && !opts.hideUP"
       >或者</P>
 
-      <form style="margin-bottom:16px" class="authing-form animate-box no-shadow" v-show="!opts.hideUP">
+      <form
+        style="margin-bottom:16px"
+        class="authing-form animate-box no-shadow"
+        v-show="!opts.hideUP"
+      >
         <div v-show="opts.forceLogin" class="authing_force_login_tips" style="text-align:center">
           <p>输入帐号密码登录</p>
           <p>如果您没有帐号，我们会自动创建</p>
@@ -90,7 +92,7 @@ export default {
   },
   props: {
     opts: {
-      type: Object,
+      type: Object
     }
   },
   created() {
@@ -211,7 +213,7 @@ export default {
       if (this.loginVerifyCodeVisible) {
         info.verifyCode = this.verifyCode;
       }
-      let infoCopy = {...info}
+      let infoCopy = { ...info };
       validAuth
         .login(info)
         .then(data => {
@@ -232,22 +234,27 @@ export default {
             message: "验证通过，欢迎你：" + (data.username || data.email)
           });
           that.recordLoginInfo(data);
+          // 记录登录方式，需要传给 native 端
           that.$authing.pub("login", data);
           that.$authing.pub("authenticated", data);
           setTimeout(() => {
             this.handleProtocolProcess({ router: this.$router });
-          }, 500)
+          }, 500);
           that.changeLoading({ el: "form", loading: false });
         })
         .catch(err => {
-          console.log(err);
           that.changeLoading({ el: "form", loading: false });
-          that.$authing.pub("login-error", err);
-          that.$authing.pub("authenticated-error", err);
-          that.showGlobalMessage({
-            type: "error",
-            message: err.message.message
-          });
+
+          if (!this.$authing.opts.forceLogin) {
+            // 如果开启了强制登录、就不要显示此报错了，不然页面会出现红色错误突然一闪的情况
+            that.$authing.pub("login-error", err);
+            that.$authing.pub("authenticated-error", err);
+            that.showGlobalMessage({
+              type: "error",
+              message: err.message.message
+            });
+          }
+
           // 验证码错误
           if (err.message.code === 2000 || err.message.code === 2001) {
             that.addAnimation("verify-code");
@@ -271,9 +278,9 @@ export default {
           else if (err.message.code === 1635) {
             that.showGlobalMessage({
               type: "error",
-              message: err.message.message.replace(/"/g,'')
+              message: err.message.message.replace(/"/g, "")
             });
-            that.setLoginType({loginType: 'UP'})
+            that.setLoginType({ loginType: "UP" });
             that.setLoginFormStash({
               ...infoCopy,
               verifyCode: this.verifyCode
