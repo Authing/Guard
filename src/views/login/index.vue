@@ -419,9 +419,7 @@ export default {
 
           if (!that.opts.isNative) {
             return (
-              item.enabled === true &&
-              item.alias !== "wxapp" &&
-              item.alias !== "wechatapp"
+              item.enabled === true && !["wxapp","wechatapp","wechatmp"].includes(item.alias)
             );
           } else {
             return (
