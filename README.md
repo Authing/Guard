@@ -241,6 +241,7 @@ Guard 会在以下生命周期中触发相应事件：
 | timpstamp                       | 否       | 当前时间戳                           | Number  | 初始化时的时间戳，用于防范网络攻击                                                                              |
 | mountId                         | 否       | 无                                   | String  | 指定 Guard 表单将在何处显示，接受一个 html 元素 id，不含 `#` 号。不指定则默认全屏弹出 Modal 登录框              |
 | title                           | 否       | Authing                              | String  | **产品名称**                                                                                                    |
+| **css** | 否 |  |  String | 自定义 CSS 样式，如果指定了，会在 DOM 的 head 中插入一个 `<style type="text/css"></style>` 节点。如 `body {background:#6699 !important;}`。
 | logo                            | 否       | [Authing LOGO]                       | String  | **产品 logo**，默认为 Authing 的官方 Logo                                                                       |
 | forceLogin                      | 否       | false                                | Boolean | **是否将注册和登录合并**，合并后如果用户不存在将自动注册                                                        |
 | hideQRCode                      | 否       | false                                | Boolean | **是否隐藏小程序扫码登录**，在开发者在 Authing 控制台开启小程序扫码登录后，若此项为 true 将不显示小程序扫码登录 |
