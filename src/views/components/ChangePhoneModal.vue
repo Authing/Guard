@@ -411,6 +411,6 @@ export default {
   letter-spacing: 0.7px;
   font-weight: 300;
   cursor: pointer;
-  border-radius: 5px;
+  /* border-radius: 5px; */
 }
 </style>
