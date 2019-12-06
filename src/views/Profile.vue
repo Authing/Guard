@@ -1,6 +1,7 @@
 <template>
   <div class="profile-page">
-    <Modal />
+    <ConfigMFAModal />
+    <!-- <ChangeEmailModal /> -->
     <div class="profile-edit_box">
       <div class="profile-top_bar">
         <span class="authing-lock-back-button" @click="returnPage">
@@ -14,8 +15,23 @@
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
           >
-            <polyline fill="none" points="12.5,21 3.5,12 12.5,3 " stroke="#000" stroke-miterlimit="10" stroke-width="2" />
-            <line fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2" x1="22" x2="3.5" y1="12" y2="12" />
+            <polyline
+              fill="none"
+              points="12.5,21 3.5,12 12.5,3 "
+              stroke="#000"
+              stroke-miterlimit="10"
+              stroke-width="2"
+            />
+            <line
+              fill="none"
+              stroke="#000"
+              stroke-miterlimit="10"
+              stroke-width="2"
+              x1="22"
+              x2="3.5"
+              y1="12"
+              y2="12"
+            />
           </svg>
         </span>
 
@@ -49,21 +65,40 @@
               data-spm-anchor-id="a313x.7781069.0.i0"
               class="selected"
             />
-            <path d="M767.2 511.3a33 32.9 90 1 0-65.8 0 33 32.9 90 1 0 65.8 0Z" fill="#000000" p-id="2038" data-spm-anchor-id="a313x.7781069.0.i3" class="selected" />
+            <path
+              d="M767.2 511.3a33 32.9 90 1 0-65.8 0 33 32.9 90 1 0 65.8 0Z"
+              fill="#000000"
+              p-id="2038"
+              data-spm-anchor-id="a313x.7781069.0.i3"
+              class="selected"
+            />
           </svg>
         </span>
       </div>
       <div
         class="msgBar"
         :style="(successShow ? 'height: 44px;' : 'height: 0px;') + 'background: ' + ((tipsType == 'warn' && '#ff3e00') || (tipsType == 'info' && '#00a1ea') || '#00a1ea')"
-      >
-        {{ showInfo }}
-      </div>
+      >{{ showInfo }}</div>
 
       <div class="profile-nav_bar">
-        <div class="item" style="cursor: pointer" :class="nowPage !== 0 ? 'unhover' : ''" @click="pageChange(0)">基本资料</div>
-        <div class="item" style="cursor: pointer" :class="nowPage !== 1 ? 'unhover' : ''" @click="pageChange(1)">详细资料</div>
-        <div class="item" style="cursor: pointer" :class="nowPage !== 2 ? 'unhover' : ''" @click="pageChange(2)">令牌设置</div>
+        <div
+          class="item"
+          style="cursor: pointer"
+          :class="nowPage !== 0 ? 'unhover' : ''"
+          @click="pageChange(0)"
+        >基本资料</div>
+        <div
+          class="item"
+          style="cursor: pointer"
+          :class="nowPage !== 1 ? 'unhover' : ''"
+          @click="pageChange(1)"
+        >详细资料</div>
+        <div
+          class="item"
+          style="cursor: pointer"
+          :class="nowPage !== 2 ? 'unhover' : ''"
+          @click="pageChange(2)"
+        >令牌设置</div>
       </div>
 
       <div class="profile-good_page" v-if="nowPage == 0">
@@ -100,7 +135,14 @@
           <div class="authing-form" style="padding: 0 22px;">
             <div class="profile-input_with_label">
               <span>邮箱</span>
-              <input type="text" class="_authing_input _authing_form-control" :placeholder="opt.eMail" v-model="profileForm.eMail" autocomplete="off" @keyup.enter="saveInfo" />
+              <input
+                type="text"
+                class="_authing_input _authing_form-control"
+                :placeholder="opt.eMail"
+                v-model="profileForm.eMail"
+                autocomplete="off"
+                @keyup.enter="saveInfo"
+              />
             </div>
 
             <div class="profile-input_with_label">
@@ -206,16 +248,39 @@
           <div v-if="remarkChanging > 0" class="remarkBox">
             <div class="k-line k-line10"></div>
           </div>
-          <img v-if="navBarKey == 0 && !remarkChanging" src="https://usercontents.authing.cn/mini-login.jpg" />
-          <img v-if="navBarKey == 2 && !remarkChanging" src="https://usercontents.authing.cn/mfa_demo.gif" style="border-radius: 6px;" />
-          <div v-if="navBarKey == 1 && !remarkChanging && !(QRCodeImg && QRCodeImg !== '')" class="remarkBox">暂无动态令牌二维码</div>
-          <img v-if="navBarKey == 1 && !remarkChanging && QRCodeImg && QRCodeImg !== ''" :src="QRCodeImg" />
+          <img
+            v-if="navBarKey == 0 && !remarkChanging"
+            src="https://usercontents.authing.cn/mini-login.jpg"
+          />
+          <img
+            v-if="navBarKey == 2 && !remarkChanging"
+            src="https://usercontents.authing.cn/mfa_demo.gif"
+            style="border-radius: 6px;"
+          />
+          <div
+            v-if="navBarKey == 1 && !remarkChanging && !(QRCodeImg && QRCodeImg !== '')"
+            class="remarkBox"
+          >暂无动态令牌二维码</div>
+          <img
+            v-if="navBarKey == 1 && !remarkChanging && QRCodeImg && QRCodeImg !== ''"
+            :src="QRCodeImg"
+          />
         </div>
         <div v-if="MFAchecked" class="authing-mfa_navbar">
-          <div id="step1" class="authing-mfa_navbar-item" :style="navBarKey == 0 ? 'background: #fafafa;' : ''" @click="viewNavBar(0)">
+          <div
+            id="step1"
+            class="authing-mfa_navbar-item"
+            :style="navBarKey == 0 ? 'background: #fafafa;' : ''"
+            @click="viewNavBar(0)"
+          >
             <span class="text-word">1.扫一扫小登录</span>
           </div>
-          <div id="step2" class="authing-mfa_navbar-item" :style="navBarKey == 1 ? 'background: #fafafa;' : ''" @click="viewNavBar(1)">
+          <div
+            id="step2"
+            class="authing-mfa_navbar-item"
+            :style="navBarKey == 1 ? 'background: #fafafa;' : ''"
+            @click="viewNavBar(1)"
+          >
             <span class="text-word">2.添加动态令牌</span>
           </div>
           <div
@@ -229,7 +294,11 @@
         </div>
       </div>
 
-      <div class="profile-good_page" :style="nowPage == 1 ? 'overflow: hidden' : ''" v-if="nowPage == 1">
+      <div
+        class="profile-good_page"
+        :style="nowPage == 1 ? 'overflow: hidden' : ''"
+        v-if="nowPage == 1"
+      >
         <div class="profile-user_info">
           <span class="profile-label">用户名</span>
           <span class="profile-label_info">{{ userInfo.userName }}</span>
@@ -256,7 +325,12 @@
         </div>
       </div>
 
-      <div v-if="nowPage == 0" :class="loading ? 'profile-buttons_bar_loading' : 'profile-buttons_bar'" :style="loading ? '' : 'cursor: pointer'" @click="saveInfo">
+      <div
+        v-if="nowPage == 0"
+        :class="loading ? 'profile-buttons_bar_loading' : 'profile-buttons_bar'"
+        :style="loading ? '' : 'cursor: pointer'"
+        @click="saveInfo"
+      >
         <span>{{ loading ? '' : '保存' }}</span>
         <div class="profile-loading-icon" v-if="loading"></div>
       </div>
@@ -264,13 +338,15 @@
   </div>
 </template>
 <script>
-import QRCode from 'qrcode';
-import Modal from './Modal';
-require('../utils/otplib');
-import { mapGetters, mapActions } from 'vuex';
+import QRCode from "qrcode";
+import ConfigMFAModal from "./components/ConfigMFAModal";
+import ChangePhoneModal from "./components/ChangePhoneModal";
+import ChangeEmailModal from "./components/ChangeEmailModal";
+require("../utils/otplib");
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-  components: { Modal },
+  components: { ConfigMFAModal, ChangePhoneModal, ChangeEmailModal },
   data() {
     return {
       MFAchecked: null,
@@ -279,7 +355,7 @@ export default {
       userToken: null,
       remarkChanging: null,
       storageUserInfo: {},
-      mfaRemark: '',
+      mfaRemark: "",
       QRCodeImg: null,
       MFA: {},
       checked: false,
@@ -287,37 +363,37 @@ export default {
       firstGet: true,
       loading: false,
       nowPage: 0,
-      tipsType: 'info',
+      tipsType: "info",
       successShow: false,
-      showInfo: '',
+      showInfo: "",
       opt: {
-        nickName: '请输入昵称',
-        phoneNumber: '请输入手机号',
-        eMail: '请输入邮箱',
-        companyName: '请输入公司名称（选填）',
-        oldPassWord: '修改密码，请输入旧密码',
-        passWord: '请输入新密码',
-        passWord2: '请重复密码'
+        nickName: "请输入昵称",
+        phoneNumber: "请输入手机号",
+        eMail: "请输入邮箱",
+        companyName: "请输入公司名称（选填）",
+        oldPassWord: "修改密码，请输入旧密码",
+        passWord: "请输入新密码",
+        passWord2: "请重复密码"
       },
 
       profileForm: {
-        nickName: '',
-        phoneNumber: '',
-        avatarUrl: 'https://usercontents.authing.cn/client/logo@2.png',
-        eMail: '',
-        companyName: '',
-        oldPassWord: '',
-        passWord: '',
-        passWord2: ''
+        nickName: "",
+        phoneNumber: "",
+        avatarUrl: "https://usercontents.authing.cn/client/logo@2.png",
+        eMail: "",
+        companyName: "",
+        oldPassWord: "",
+        passWord: "",
+        passWord2: ""
       },
 
       userInfo: {
-        userName: '',
-        registMethod: '',
-        registTime: '',
-        loginCount: '',
-        lastLoginLocation: '',
-        lastLoginTime: ''
+        userName: "",
+        registMethod: "",
+        registTime: "",
+        loginCount: "",
+        lastLoginLocation: "",
+        lastLoginTime: ""
       },
 
       userId: null,
@@ -352,8 +428,9 @@ export default {
   },
   async mounted() {
     let that = this;
-    const Authing = require('authing-js-sdk');
-    let client_info = JSON.parse(localStorage.getItem('_authing_clientInfo')) || null;
+    const Authing = require("authing-js-sdk");
+    let client_info =
+      JSON.parse(localStorage.getItem("_authing_clientInfo")) || null;
     if (!client_info) {
       this.notLogin();
       return;
@@ -361,7 +438,7 @@ export default {
     this.clientInfo = client_info;
     let client_id = client_info.clientId || false;
     this.clientId = client_id;
-    this.userToken = localStorage.getItem('_authing_token') || null;
+    this.userToken = localStorage.getItem("_authing_token") || null;
     if (this.userToken && client_info) {
       const auth = new Authing({
         userPoolId: that.clientId || that.opts.clientId,
@@ -371,17 +448,17 @@ export default {
       });
       this.$authing = auth;
       //已经有资料缓存，可以开始读取
-      this.getStorageInfo();
+      await this.getStorageInfo();
       this.getMFAInfo();
     } else {
       this.notLogin();
     }
   },
   computed: {
-    ...mapGetters('profile', ['modalShow', 'tokenValue'])
+    ...mapGetters("profile", ["modalShow", "tokenValue"])
   },
   methods: {
-    ...mapActions('profile', ['changeModalShow']),
+    ...mapActions("profile", ["changeModalShow"]),
     async handleChangeMFA(e) {
       let checked = e.target.checked;
       await this.changeValue(checked);
@@ -404,9 +481,16 @@ export default {
       }
       return new Promise(resovle => {
         let that = this;
-        let userPoolName = this.clientInfo.name || 'Authing 应用'; //this.clientInfo.name || 'Authing 应用'
-        let userName = this.storageUserInfo.username || this.storageUserInfo.nickname || this.storageUserInfo.email || '佚名';
-        let userRemark = this.mfaRemark && this.mfaRemark !== '' ? this.mfaRemark + '-' + userPoolName : userPoolName;
+        let userPoolName = this.clientInfo.name || "Authing 应用"; //this.clientInfo.name || 'Authing 应用'
+        let userName =
+          this.storageUserInfo.username ||
+          this.storageUserInfo.nickname ||
+          this.storageUserInfo.email ||
+          "佚名";
+        let userRemark =
+          this.mfaRemark && this.mfaRemark !== ""
+            ? this.mfaRemark + "-" + userPoolName
+            : userPoolName;
         let shareKey = this.MFA.shareKey;
         let clientId = this.clientId;
         let qrurl = `otpauth://totp/${userRemark}?secret=${shareKey}&period=30&digits=6&issuer=${userName}&client=${clientId}`;
@@ -422,7 +506,9 @@ export default {
       });
     },
     async getMFAInfo() {
-      let res = await this.$authing.checkLoginStatus(localStorage.getItem('_authing_token'));
+      let res = await this.$authing.checkLoginStatus(
+        localStorage.getItem("_authing_token")
+      );
       if (res.code == 200) {
         this.getting = true;
         let mfaList = await this.$authing.queryMFA({
@@ -447,10 +533,10 @@ export default {
       }
     },
     notLogin() {
-      this.showSuccessBar('登录身份已过期');
+      this.showSuccessBar("登录身份已过期");
       // let jumpHref;
-      sessionStorage.setItem('jump2Profile', true);
-      this.$router.push({ name: 'indexLogin' });
+      sessionStorage.setItem("jump2Profile", true);
+      this.$router.push({ name: "indexLogin" });
       // if (location.hostname.indexOf("authing.cn") > -1) {
       //   jumpHref = "https://" + location.hostname + "/login?profile=1";
       // } else {
@@ -472,7 +558,7 @@ export default {
       if (that.nowPage == 2) {
         if (!that.quiet) {
           that.quiet = false;
-          that.showSuccessBar('保存修改中');
+          that.showSuccessBar("保存修改中");
         }
       }
       let mfaInfo = await that.$authing.changeMFA({
@@ -483,11 +569,11 @@ export default {
 
       if (mfaInfo.changeMFA) {
         if (that.nowPage == 2) {
-          that.showSuccessBar('保存成功');
+          that.showSuccessBar("保存成功");
         }
       } else {
         if (!that.quiet) {
-          that.showWarnBar('保存修改失败');
+          that.showWarnBar("保存修改失败");
         }
       }
     },
@@ -521,7 +607,9 @@ export default {
     },
 
     async changeValue(checked) {
-      let res = await this.$authing.checkLoginStatus(localStorage.getItem('_authing_token'));
+      let res = await this.$authing.checkLoginStatus(
+        localStorage.getItem("_authing_token")
+      );
       let that = this;
 
       if (res.code == 200) {
@@ -532,7 +620,7 @@ export default {
           //开启
           // 服务器结果和本地结果不一致，说明要开启
           let data = await this.makeQRCode();
-          localStorage.setItem('qrcode', data);
+          localStorage.setItem("qrcode", data);
           that.changeModalShow({ show: true, qrcode: data });
         }
       } else {
@@ -550,38 +638,38 @@ export default {
           //   inputerr ? "六位动态口令有误，请重试" : "请输入六位动态令牌口令"
           // );
           let token = this.tokenValue;
-          if (typeof token == 'string' && token.length == 6 && token > 0) {
+          if (typeof token == "string" && token.length == 6 && token > 0) {
             let otpRes = otplib.authenticator.verify({ token, secret });
             if (otpRes) {
-              that.showSuccessBar('开启成功');
+              that.showSuccessBar("开启成功");
               await that.strictChange(true);
             } else {
-              that.showSuccessBar('动态口令有误，请按照教程检查');
+              that.showSuccessBar("动态口令有误，请按照教程检查");
               await that.strictChange(false);
             }
           } else {
             if (!token) {
-              that.showSuccessBar('您取消了开启动态口令');
+              that.showSuccessBar("您取消了开启动态口令");
               await that.strictChange(false);
             }
-            if (token && token == '') {
-              that.showSuccessBar('输入不能为空，请检查');
+            if (token && token == "") {
+              that.showSuccessBar("输入不能为空，请检查");
               await that.strictChange(false);
             } else if (!token) {
-              that.showSuccessBar('输入为空，不能开启动态令牌');
+              that.showSuccessBar("输入为空，不能开启动态令牌");
               await that.strictChange(false);
             } else {
-              that.showSuccessBar('动态口令有误，请按照教程检查');
+              that.showSuccessBar("动态口令有误，请按照教程检查");
               await that.strictChange(false);
             }
           }
         } else {
-          that.showWarnBar('获取服务器令牌信息失败');
+          that.showWarnBar("获取服务器令牌信息失败");
           await that.strictChange(false);
         }
       } catch (err) {
         //alert(JSON.stringify(err));
-        that.showWarnBar('保存修改失败：MFA 信息获取失败');
+        that.showWarnBar("保存修改失败：MFA 信息获取失败");
         await that.strictChange(false);
       }
     },
@@ -590,25 +678,30 @@ export default {
       let that = this;
       function copyText(text, callback) {
         // 网上找的，为了不多加库真的很拼
-        var tag = document.createElement('input');
-        tag.setAttribute('id', 'cp_hgz_input');
+        var tag = document.createElement("input");
+        tag.setAttribute("id", "cp_hgz_input");
         tag.value = text;
-        document.getElementsByTagName('body')[0].appendChild(tag);
-        document.getElementById('cp_hgz_input').select();
-        document.execCommand('copy');
-        document.getElementById('cp_hgz_input').remove();
+        document.getElementsByTagName("body")[0].appendChild(tag);
+        document.getElementById("cp_hgz_input").select();
+        document.execCommand("copy");
+        document.getElementById("cp_hgz_input").remove();
         if (callback) {
           callback(text);
         }
       }
       copyText(this.MFA.shareKey, () => {
-        that.showSuccessBar('密钥已复制');
+        that.showSuccessBar("密钥已复制");
       });
     },
 
-    getStorageInfo() {
+    async getStorageInfo() {
       let that = this;
-      let userInfo = JSON.parse(localStorage.getItem('_authing_userInfo'));
+      let userInfo = JSON.parse(localStorage.getItem("_authing_userInfo"));
+      // 拉取最新用户数据
+      userInfo = await this.$authing.user({
+        id: userInfo._id
+      });
+
       this.storageUserInfo = userInfo;
       if (userInfo) {
         that.profileForm.eMail = userInfo.email;
@@ -638,21 +731,27 @@ export default {
 
     quitLogin() {
       try {
-        let userPoolInfo = JSON.parse(localStorage.getItem('_authing_clientInfo'));
+        let userPoolInfo = JSON.parse(
+          localStorage.getItem("_authing_clientInfo")
+        );
         let appId = userPoolInfo._id;
-        this.$router.push(`/profile/logout?app_id=${appId}&redirect_uri=${encodeURIComponent(location.origin)}`);
+        this.$router.push(
+          `/profile/logout?app_id=${appId}&redirect_uri=${encodeURIComponent(
+            location.origin
+          )}`
+        );
       } catch (err) {
-        conosle.log(err)
+        conosle.log(err);
       }
     },
 
     showSuccessBar(info) {
       if (!this.successShow) {
-        this.tipsType = 'info';
+        this.tipsType = "info";
         this.successShow = true;
         this.showInfo = info;
         setTimeout(() => {
-          this.showInfo = '';
+          this.showInfo = "";
           this.successShow = false;
         }, 1500);
       } else {
@@ -672,28 +771,34 @@ export default {
 
     showWarnBar(info) {
       if (!this.successShow) {
-        this.tipsType = 'warn';
+        this.tipsType = "warn";
         this.successShow = true;
         this.showInfo = info;
         setTimeout(() => {
-          this.showInfo = '';
+          this.showInfo = "";
           this.successShow = false;
         }, 1500);
       }
     },
 
     async saveInfo() {
-      if (this.profileForm.oldPassWord !== '') {
+      if (this.profileForm.oldPassWord !== "") {
         if (this.profileForm.passWord !== this.profileForm.passWord2) {
-          this.showWarnBar('两次密码输入不一致');
-        } else if (this.profileForm.passWord == '' || this.profileForm.passWord2 == '') {
-          this.showWarnBar('新密码不能为空');
+          this.showWarnBar("两次密码输入不一致");
+        } else if (
+          this.profileForm.passWord == "" ||
+          this.profileForm.passWord2 == ""
+        ) {
+          this.showWarnBar("新密码不能为空");
         } else {
           this.loading = true;
           await this.startSaveInfo();
         }
-      } else if (this.profileForm.oldPassWord == '' && (this.profileForm.passWord !== '' || this.profileForm.passWord2 !== '')) {
-        this.showWarnBar('请输入旧密码');
+      } else if (
+        this.profileForm.oldPassWord == "" &&
+        (this.profileForm.passWord !== "" || this.profileForm.passWord2 !== "")
+      ) {
+        this.showWarnBar("请输入旧密码");
       } else {
         this.loading = true;
         await this.startSaveInfo();
@@ -723,22 +828,22 @@ export default {
         .update(opt)
         .then(e => {
           // console.log(e);
-          localStorage.setItem('_authing_userInfo', JSON.stringify(e));
-          setTimeout(() => {
-            this.getStorageInfo();
+          localStorage.setItem("_authing_userInfo", JSON.stringify(e));
+          setTimeout(async () => {
+            await this.getStorageInfo();
             this.loading = false;
-            this.showSuccessBar('个人信息已成功更新');
-            this.profileForm.oldPassWord = '';
-            this.profileForm.passWord = '';
-            this.profileForm.passWord2 = '';
+            this.showSuccessBar("个人信息已成功更新");
+            this.profileForm.oldPassWord = "";
+            this.profileForm.passWord = "";
+            this.profileForm.passWord2 = "";
           }, 200);
         })
         .catch(err => {
           const { code, message } = err.message;
           if (code == 2203) {
-            this.profileForm.oldPassWord = '';
-            this.profileForm.passWord = '';
-            this.profileForm.passWord2 = '';
+            this.profileForm.oldPassWord = "";
+            this.profileForm.passWord = "";
+            this.profileForm.passWord2 = "";
           }
           this.showWarnBar(`${code}：${message}`);
           this.loading = false;
@@ -760,7 +865,7 @@ export default {
 * {
   padding: 0;
   margin: 0;
-  font-family: 'Inconsolata', Arial, sans-serif;
+  font-family: "Inconsolata", Arial, sans-serif;
 }
 
 .profile-page {
@@ -940,7 +1045,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Inconsolata', Arial, sans-serif;
+  font-family: "Inconsolata", Arial, sans-serif;
 }
 
 .unhover {
@@ -1020,7 +1125,8 @@ export default {
   height: 22px;
   border-width: 2px;
   border-style: solid;
-  border-color: rgba(0, 0, 0, 0.4) rgba(0, 0, 0, 0.4) rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 0, 0, 0.4) rgba(0, 0, 0, 0.4) rgba(0, 0, 0, 0.2)
+    rgba(0, 0, 0, 0.2);
   opacity: 0.9;
   border-radius: 20px;
   -webkit-animation: rotate 1s linear infinite;
@@ -1155,7 +1261,7 @@ export default {
 
 .slider:before {
   position: absolute;
-  content: '';
+  content: "";
   height: 19.5px;
   width: 19.5px;
   left: 3px;
