@@ -27,10 +27,10 @@
             autocomplete="off"
             @keyup.enter="handleLoginByPhoneCode"
           />
-          <div class="_authing_form-footer phone-code-wrapper" style="flex-basis: 50%;">
+          <div class="phone-code-wrapper" style="flex-basis: 50%;">
             <button
               @click="handleSendingPhoneCode"
-              style="height: 40px;font-size: 12px;border-radius: 0px;"
+              style="height: 40px;font-size: 12px;border-radius: 0px;border:none;"
               class="btn btn-primary"
             >获取验证码</button>
           </div>
@@ -182,5 +182,19 @@ input::-webkit-inner-spin-button {
 }
 input[type="number"] {
   -moz-appearance: textfield;
+}
+.phone-code-wrapper > .btn{
+  width: 100%;
+  border-radius: 0px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  height: 60px;
+  font-size: 16px;
+  background: #00a1ea;
+  box-shadow: none!important;
+  font-weight: 200;
+  color: #fff;
+  outline: 0;
+  cursor: pointer;
 }
 </style>

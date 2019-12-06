@@ -1034,23 +1034,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-/* @media screen and (min-width: 480px) {
-  ._authing_form-footer.phone-code-wrapper {
-    position: absolute;
-    right: 22px;
-    margin-top: 0px !important;
-  }
-} */
-
-@media screen and (max-width: 480px) {
-  ._authing_form-footer.phone-code-wrapper {
-    position: relative;
-  }
-
-  /* #login-phoneCode {
-    margin-top: 55px;
-  } */
-}
-</style>
