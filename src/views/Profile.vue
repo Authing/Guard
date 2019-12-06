@@ -1,8 +1,8 @@
 <template>
   <div class="profile-page">
     <ConfigMFAModal />
-    <ChangeEmailModal :$authing="$authing"/>
-    <!-- <ChangePhoneModal /> -->
+    <ChangeEmailModal :$authing="$authing" />
+    <ChangePhoneModal :$authing="$authing" />
     <div class="profile-edit_box">
       <div class="profile-top_bar">
         <span class="authing-lock-back-button" @click="returnPage">
@@ -120,7 +120,8 @@
                 :placeholder="opt.phoneNumber"
                 v-model="profileForm.phoneNumber"
                 autocomplete="off"
-                @keyup.enter="saveInfo"
+                style="cursor:pointer"
+                @click="() => {this.changePhoneModalShow({show: true})}"
               />
             </div>
           </div>
@@ -716,7 +717,7 @@ export default {
       userInfo = await this.$authing.user({
         id: userInfo._id
       });
-      localStorage.setItem("_authing_userInfo", JSON.stringify(userInfo))
+      localStorage.setItem("_authing_userInfo", JSON.stringify(userInfo));
 
       // 拉取用户池非机密配置，如是否需要验证旧手机、旧邮箱
       const res = await axios({
