@@ -1,7 +1,8 @@
 <template>
   <div class="profile-page">
     <ConfigMFAModal />
-    <!-- <ChangeEmailModal /> -->
+    <ChangeEmailModal :$authing="$authing"/>
+    <!-- <ChangePhoneModal /> -->
     <div class="profile-edit_box">
       <div class="profile-top_bar">
         <span class="authing-lock-back-button" @click="returnPage">
@@ -139,9 +140,10 @@
                 type="text"
                 class="_authing_input _authing_form-control"
                 :placeholder="opt.eMail"
-                v-model="profileForm.eMail"
+                :value="profileForm.eMail"
                 autocomplete="off"
-                @keyup.enter="saveInfo"
+                style="cursor:pointer"
+                @click="() => {this.changeEmailModalShow({show:true})}"
               />
             </div>
 
@@ -342,8 +344,10 @@ import QRCode from "qrcode";
 import ConfigMFAModal from "./components/ConfigMFAModal";
 import ChangePhoneModal from "./components/ChangePhoneModal";
 import ChangeEmailModal from "./components/ChangeEmailModal";
-require("../utils/otplib");
 import { mapGetters, mapActions } from "vuex";
+const axios = require("axios");
+
+require("../utils/otplib");
 
 export default {
   components: { ConfigMFAModal, ChangePhoneModal, ChangeEmailModal },
@@ -455,10 +459,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("profile", ["modalShow", "tokenValue"])
+    ...mapGetters("profile", [
+      "modalShow",
+      "emailModalShow",
+      "phoneModalShow",
+      "tokenValue"
+    ])
   },
   methods: {
-    ...mapActions("profile", ["changeModalShow"]),
+    ...mapActions("profile", [
+      "changeModalShow",
+      "changeEmailModalShow",
+      "changePhoneModalShow",
+      "changeVerifyOldEmail",
+      "changeVerifyOldPhone"
+    ]),
     async handleChangeMFA(e) {
       let checked = e.target.checked;
       await this.changeValue(checked);
@@ -701,6 +716,41 @@ export default {
       userInfo = await this.$authing.user({
         id: userInfo._id
       });
+      localStorage.setItem("_authing_userInfo", JSON.stringify(userInfo))
+
+      // 拉取用户池非机密配置，如是否需要验证旧手机、旧邮箱
+      const res = await axios({
+        url: this.opts.host.user,
+        method: "post",
+        headers: {
+          Authorization: userInfo.token
+        },
+        data: {
+          query: `
+query queryUserPoolCommonInfo($userPoolId: String!){
+  queryUserPoolCommonInfo(userPoolId: $userPoolId){
+    changePhoneStrategy{
+      verifyOldPhone
+    }
+    changeEmailStrategy{
+      verifyOldEmail
+    }
+  }
+}
+          `,
+          variables: {
+            userPoolId: userInfo.registerInClient
+          }
+        }
+      });
+      let data = res.data.data;
+      if (data) {
+        data = data.queryUserPoolCommonInfo;
+        const verifyOldEmail = data.changeEmailStrategy.verifyOldEmail;
+        const verifyOldPhone = data.changePhoneStrategy.verifyOldPhone;
+        this.changeVerifyOldEmail({ verify: verifyOldEmail });
+        this.changeVerifyOldPhone({ verify: verifyOldPhone });
+      }
 
       this.storageUserInfo = userInfo;
       if (userInfo) {
