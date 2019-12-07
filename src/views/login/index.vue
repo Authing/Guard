@@ -258,13 +258,21 @@ export default {
     };
   },
   async mounted() {
+    // 判断 opts 中是否传入了自定义 css
+    if (this.opts.css) {
+      let styleNode = document.createElement("style");
+      styleNode.type = "text/css";
+      let content = document.createTextNode(this.opts.css);
+      styleNode.appendChild(content);
+      document.head.appendChild(styleNode);
+    }
+
     if (this.opts.isSSO) {
       if (this.$route.query.profile) {
         this.redirectToProfile = true;
       }
       // 上来先查一下 appInfo
       const appInfo = await this.queryAppInfo();
-      console.log(appInfo);
       if (!appInfo) {
         this.$router.replace({
           name: "error",
@@ -419,9 +427,7 @@ export default {
 
           if (!that.opts.isNative) {
             return (
-              item.enabled === true &&
-              item.alias !== "wxapp" &&
-              item.alias !== "wechatapp"
+              item.enabled === true && !["wxapp","wechatapp","wechatmp"].includes(item.alias)
             );
           } else {
             return (
@@ -1036,23 +1042,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-/* @media screen and (min-width: 480px) {
-  ._authing_form-footer.phone-code-wrapper {
-    position: absolute;
-    right: 22px;
-    margin-top: 0px !important;
-  }
-} */
-
-@media screen and (max-width: 480px) {
-  ._authing_form-footer.phone-code-wrapper {
-    position: relative;
-  }
-
-  /* #login-phoneCode {
-    margin-top: 55px;
-  } */
-}
-</style>
