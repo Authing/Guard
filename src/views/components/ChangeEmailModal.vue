@@ -282,6 +282,7 @@ export default {
             oldEmail: this.currentEmail,
             oldEmailCode: this.currentEmailCode
           });
+          localStorage.setItem("_authing_userInfo", JSON.stringify(res));
           alert("修改邮箱成功！");
           setTimeout(() => {
             location.reload();
@@ -299,6 +300,7 @@ export default {
             email: this.currentEmail,
             emailCode: this.currentEmailCode
           });
+          localStorage.setItem("_authing_userInfo", JSON.stringify(res));
           alert("修改邮箱成功！");
           setTimeout(() => {
             location.reload();

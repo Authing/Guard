@@ -281,6 +281,7 @@ export default {
             oldPhone: this.currentPhone,
             oldPhoneCode: this.currentPhoneCode
           });
+          localStorage.setItem("_authing_userInfo", JSON.stringify(res));
           alert("修改手机号成功！");
           setTimeout(() => {
             location.reload();
@@ -299,6 +300,7 @@ export default {
             phone: this.currentPhone,
             phoneCode: this.currentPhoneCode
           });
+          localStorage.setItem("_authing_userInfo", JSON.stringify(res));
           alert("修改手机号成功！");
           setTimeout(() => {
             location.reload();
