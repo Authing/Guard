@@ -157,7 +157,7 @@ export default {
                   that.$authing.pub("login", data);
                   that.$authing.pub("authenticated", data);
                   // @TODO 进行协议后续流程
-                  that.handleProtocolProcess(data);
+                  that.handleProtocolProcess({router: that.$router});
                   that.recordLoginInfo(data);
                 })
                 .catch(function(err) {
