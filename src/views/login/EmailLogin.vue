@@ -307,6 +307,12 @@ export default {
                   email: that.loginForm.email,
                   password: that.loginForm.password
                 })
+                .then(() => {
+                  return validAuth.login({
+                    email: that.loginForm.email,
+                    password: that.loginForm.password
+                  })
+                })
                 .then(function(data) {
                   that.changeLoading({ el: "form", loading: false });
                   that.showGlobalMessage({
