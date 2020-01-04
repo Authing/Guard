@@ -37,7 +37,7 @@ export default {
         enableFetchPhone: validAuth.clientInfo.useMiniLogin,
         useSelfWxapp: validAuth.clientInfo.useSelfWxapp,
         onSuccess: function(res) {
-          that.$authing.pub("scanned-success", res);
+          that.$authing.pub("scanned-success", res.data);
           localStorage.setItem("_authing_token", res.data.token);
           that.recordLoginInfo(res.data);
           that.handleProtocolProcess({ router: that.$router });
