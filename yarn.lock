@@ -1475,10 +1475,10 @@ atob@^2.1.1:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-authing-js-sdk@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/authing-js-sdk/-/authing-js-sdk-3.3.0.tgz#88d82c56c507c508c9842e4fc7f831dac477aa6c"
-  integrity sha512-iSEsBOX8GOBxoNjBp2gR/GSfln2oXc7EPtNmLb3PYh06U25qphO4tVMRcuyLUpfLLMsvW3QAsIO/Wu106Zc67w==
+authing-js-sdk@^3.3.3:
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/authing-js-sdk/-/authing-js-sdk-3.3.3.tgz#9b1c022e06dfa17fb5895e3fb62f093968042285"
+  integrity sha512-wOV/LQn3LQ9a6+2kxidZRGD3yJQd0PxAxUDU7XkpTATYrDjZvTuYVXCCV5XGUODI+Uv2zbHNBKSeRTJKcYTGQw==
   dependencies:
     axios "^0.19.0"
     jsencrypt "^3.0.0-rc.1"
