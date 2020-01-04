@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard",
-  "version": "1.9.9",
+  "version": "1.9.10",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Authing/Guard.git"
@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@authing/sso": "^1.3.0",
-    "authing-js-sdk": "^3.3.3",
+    "authing-js-sdk": "^3.3.4",
     "axios": "^0.18.0",
     "otplib": "^11.0.1",
     "qrcode": "^1.4.1",
