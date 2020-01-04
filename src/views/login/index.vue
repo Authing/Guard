@@ -557,7 +557,6 @@ export default {
                     phoneCode
                   }
                   qrcodeScanning {
-                    redirect
                     interval
                     tips
                   }
@@ -668,7 +667,6 @@ export default {
                   phoneCode
                 }
                 qrcodeScanning {
-                  redirect
                   interval
                   tips
                 }
@@ -745,7 +743,6 @@ export default {
                       phoneCode
                     }
                     qrcodeScanning {
-                      redirect
                       interval
                       tips
                     }
@@ -854,7 +851,6 @@ export default {
                     phoneCode
                   }
                   qrcodeScanning {
-                    redirect
                     interval
                     tips
                   }
