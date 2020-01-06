@@ -955,8 +955,12 @@ export default {
         appType: this.protocol,
         appDomain: isSSOAuthing
           ? "sso." + this.opts.baseDomain
-          : this.appInfo.domain + "." + this.opts.baseDomain
-        // dev: true
+          : this.appInfo.domain + "." + this.opts.baseDomain,
+        host: {
+          oauth: this.opts.host.oauth,
+          user: this.opts.host.user
+        },
+        // dev: window.isDev
       });
       let sess = await auth.trackSession();
       // let sess = { session: null };

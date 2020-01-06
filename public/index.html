@@ -48,7 +48,12 @@
         return null;
       }
     };
-
+    let hostName = location.hostname
+    if(hostName.endsWith('littleimp.cn')) {
+      window.isDev = true
+    }
+    let userGqlEndPoint = window.isDev ? 'https://core.littleimp.cn/graphql' : 'https://users.authing.cn/graphql'
+    let oauthGqlEndPoint = window.isDev ? 'https://core.littleimp.cn/graphql' : 'https://oauth.authing.cn/graphql'
     let appId = getQueryString("app_id") || getQueryString("client_id");
     const guard = new Guard(undefined, {
       appId,
@@ -64,8 +69,8 @@
         // oauth: 'http://oauth.localtest.com/graphql'
         // user: 'http://localhost:3000/graphql',
         // oauth: 'http://localhost:3000/graphql',
-        user: "https://users.authing.cn/graphql",
-        oauth: "https://oauth.authing.cn/graphql"
+        user: userGqlEndPoint,
+        oauth: oauthGqlEndPoint
       }
     });
   </script>
