@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import SSO from "@authing/sso";
+
 export default {
   data() {
     return {
@@ -58,6 +60,23 @@ export default {
     async logout() {
       const appId = this.$route.query.app_id || this.$route.query.client_id;
       const redirect_uri = this.$route.query.redirect_uri;
+      let isSSOAuthing = location.hostname.match(/^sso\./);
+      this.opts = this.$root.$data.$authing.opts;
+      let domain = location.hostname.split('.').shift()
+      let auth = new SSO({
+        appId,
+        appType: this.protocol,
+        appDomain: isSSOAuthing
+          ? "sso." + this.opts.baseDomain
+          : domain + "." + this.opts.baseDomain,
+        host: {
+          oauth: this.opts.host.oauth,
+          user: this.opts.host.user
+        },
+        // dev: window.isDev
+      });
+      let result = await auth.logout()
+      console.log(result)
       // 参数检查
       if (!appId) {
         this.$router.replace({
