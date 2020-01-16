@@ -2,7 +2,11 @@
   <div>
     <div class="form-body">
       <form
-        @submit.prevent="() => { return false; }"
+        @submit.prevent="
+          () => {
+            return false;
+          }
+        "
         style="margin-bottom:16px"
         class="authing-form no-shadow"
       >
@@ -14,10 +18,14 @@
             v-model="phone"
             :placeholder="opts.placeholder.phone"
             autocomplete="off"
-            @keyup.enter="handleLoginByPhoneCode"
+            @keyup.enter="nextStepOrSubmit"
           />
         </div>
-        <div class="_authing_form-group" style="display:flex; align-items: flex-end;">
+        <div
+          class="_authing_form-group"
+          style="display:flex; align-items: flex-end;"
+          v-if="this.loginMethod == 'code'"
+        >
           <input
             type="number"
             class="_authing_input _authing_form-control"
@@ -32,21 +40,62 @@
               @click="handleSendingPhoneCode"
               style="height: 40px;font-size: 12px;border-radius: 0px;border:none;"
               class="btn btn-primary"
-            >获取验证码</button>
+            >
+              获取验证码
+            </button>
           </div>
         </div>
-        <div class="row">
+        <div class="_authing_form-group" v-if="this.loginMethod == 'password'">
+          <input
+            type="password"
+            class="_authing_input _authing_form-control"
+            id="login-password"
+            v-model="password"
+            :placeholder="opts.placeholder.password"
+            autocomplete="off"
+            @keyup.enter="handleLoginByPhoneCode"
+          />
+        </div>
+        <div class="row" v-if="this.needNextStep">
           <div class="_authing_form-group" style="margin-bottom:0px;">
-            <label class="_authing_label" for="login-remember" style="width:100%">
-              <a class="_authing_a" @click="gotoLogin">使用邮箱登录</a>
+            <label
+              class="_authing_label"
+              for="login-remember"
+              tyle="width:100%"
+            >
+              <a class="_authing_a" @click="loginMethod = 'password'"
+                >使用密码登录</a
+              >
+            </label>
+          </div>
+          <div class="_authing_form-group" style="margin-bottom:0px;">
+            <label
+              class="_authing_label"
+              for="login-remember"
+              tyle="width:100%"
+            >
+              <a class="_authing_a" @click="loginMethod = 'code'"
+                >使用验证码登录</a
+              >
             </label>
           </div>
         </div>
       </form>
     </div>
-    <div class="_authing_form-footer login" v-show="!opts.hideUP">
-      <button @click="handleLoginByPhoneCode" class="btn btn-primary">
-        <span v-show="!formLoading">登录</span>
+    <div
+      class="_authing_form-footer login"
+      v-show="!opts.hideUP && !this.needNextStep"
+    >
+      <button @click="nextStep" class="btn btn-primary">
+        <span v-show="!formLoading">下一步 </span>
+      </button>
+    </div>
+    <div
+      class="_authing_form-footer login"
+      v-show="!opts.hideUP && this.needNextStep"
+    >
+      <button @click="handleLogin" class="btn btn-primary">
+        <span v-show="!formLoading">登录 </span>
       </button>
     </div>
   </div>
@@ -56,6 +105,9 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
+      loginMethod: null,
+      needNextStep: false,
+      password: "",
       phone: "",
       phoneCode: ""
     };
@@ -73,7 +125,8 @@ export default {
     ...mapActions("visibility", [
       "changeVisibility",
       "gotoForgetPassword",
-      "gotoLogin"
+      "gotoLogin",
+      "gotoUsingPhonePassword"
     ]),
     ...mapActions("data", [
       "showGlobalMessage",
@@ -85,6 +138,91 @@ export default {
     ]),
     ...mapActions("protocol", ["handleProtocolProcess"]),
     ...mapActions("loading", ["changeLoading"]),
+    nextStep() {
+      if (!/^1[3-8]\d{9}$/.test(this.phone)) {
+        this.showGlobalMessage({
+          type: "error",
+          message: "请填写正确的手机号"
+        });
+        this.addAnimation("login-phone");
+        this.$authing.pub("login-error", "请填写正确的手机号");
+        this.$authing.pub("authenticated-error", "请填写正确的手机号");
+        return;
+      }
+      console.log("检测成功");
+      this.showGlobalMessage({
+        type: "info",
+        message: "请选择登陆方式"
+      });
+      this.needNextStep = true;
+    },
+    handleLogin() {
+      switch (this.loginMethod) {
+        case "password":
+          this.handleLoginByPhonePassword();
+          break;
+        case "code":
+          this.handleLoginByPhoneCode();
+          break;
+        default:
+          break;
+      }
+    },
+    handleLoginByPhonePassword() {
+      if (!/^1[3-8]\d{9}$/.test(this.phone)) {
+        this.showGlobalMessage({
+          type: "error",
+          message: "请填写正确的手机号"
+        });
+        this.addAnimation("login-phone");
+        this.$authing.pub("login-error", "请填写正确的手机号");
+        this.$authing.pub("authenticated-error", "请填写正确的手机号");
+        return;
+      }
+      if (!this.password) {
+        this.showGlobalMessage({
+          type: "error",
+          message: "请输入密码"
+        });
+        this.addAnimation("login-password");
+        this.removeRedLine("verify-code");
+        this.removeRedLine("login-username");
+        this.changeLoading({ el: "form", loading: false });
+        this.$authing.pub("login-error", "请输入密码");
+        this.$authing.pub("authenticated-error", "请输入密码");
+        return false;
+      }
+      this.changeLoading({ el: "form", loading: true });
+      console.log(validAuth.loginByPhonePassword);
+      validAuth
+        .loginByPhonePassword({ phone: this.phone, password: this.password })
+        .then(userInfo => {
+          this.showGlobalMessage({
+            type: "success",
+            message:
+              "验证通过，欢迎你：" + (userInfo.username || userInfo.phone)
+          });
+          this.recordLoginInfo(userInfo);
+          this.$authing.pub("login", userInfo);
+          this.$authing.pub("authenticated", userInfo);
+          this.handleProtocolProcess({ router: this.$router });
+          this.changeLoading({ el: "form", loading: false });
+        })
+        .catch(err => {
+          this.changeLoading({ el: "form", loading: false });
+          this.showGlobalMessage({
+            type: "error",
+            message: err.message.message
+          });
+        });
+    },
+    nextStepOrSubmit() {
+      if (!this.needNextStep) {
+        this.nextStep();
+      } else {
+        this.handleLogin();
+      }
+    },
     handleLoginByPhoneCode() {
       if (!/^1[3-8]\d{9}$/.test(this.phone)) {
         this.showGlobalMessage({
@@ -183,7 +321,7 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
-.phone-code-wrapper > .btn{
+.phone-code-wrapper > .btn {
   width: 100%;
   border-radius: 0px;
   border-bottom-left-radius: 5px;
@@ -191,7 +329,7 @@ input[type="number"] {
   height: 60px;
   font-size: 16px;
   background: #00a1ea;
-  box-shadow: none!important;
+  box-shadow: none !important;
   font-weight: 200;
   color: #fff;
   outline: 0;
