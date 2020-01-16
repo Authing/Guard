@@ -1,16 +1,22 @@
 <template>
   <div id="_authing_login_form" @keyup.esc="handleClose" v-if="!removeDom">
     <div class="authing-loading-circle screen-center" v-if="pageLoading"></div>
-    <div class="authing-cover-layer" v-if="$parent.isMountedInModal && !closeForm"></div>
+    <div
+      class="authing-cover-layer"
+      v-if="$parent.isMountedInModal && !closeForm"
+    ></div>
     <div
       class="_authing_container"
       id="_authing_login_form_content"
-      :class="{hide: pageLoading, 'authing-login-form-modal': $parent.isMountedInModal}"
+      :class="{
+        hide: pageLoading,
+        'authing-login-form-modal': $parent.isMountedInModal
+      }"
     >
       <div
         v-if="!closeForm"
         class="authing-form-badge-bottom"
-        :class="{'authing-form-badge-white': $parent.isMountedInModal}"
+        :class="{ 'authing-form-badge-white': $parent.isMountedInModal }"
       >
         <a
           href="https://authing.cn/?utm_source=form&amp;utm_campaign=badge&amp;utm_medium=widget"
@@ -22,19 +28,26 @@
           <span>Authing</span>
         </a>
       </div>
-      <div class="authing-login-form-wrapper" :class="{'z-index1000': $parent.isMountedInModal}">
+      <div
+        class="authing-login-form-wrapper"
+        :class="{ 'z-index1000': $parent.isMountedInModal }"
+      >
         <div
           class="_authing_form-wrapper"
           :class="{
-        'authing-loading-wrapper': formLoading || socialButtonsListLoading,
-        animated: true,
-        fast: true,
-        fadeInUp: !closeForm,
-        fadeOutDown: closeForm
-      }"
+            'authing-loading-wrapper': formLoading || socialButtonsListLoading,
+            animated: true,
+            fast: true,
+            fadeInUp: !closeForm,
+            fadeOutDown: closeForm
+          }"
         >
           <div class="_authing_form-header">
-            <span v-if="pageStack.length > 0" @click="goBack" class="authing-lock-back-button">
+            <span
+              v-if="pageStack.length > 0"
+              @click="goBack"
+              class="authing-lock-back-button"
+            >
               <svg
                 focusable="false"
                 enable-background="new 0 0 24 24"
@@ -63,7 +76,11 @@
                 />
               </svg>
             </span>
-            <span @click="handleClose" v-if="!opts.hideClose" class="authing-lock-close-button">
+            <span
+              @click="handleClose"
+              v-if="!opts.hideClose"
+              class="authing-lock-close-button"
+            >
               <svg
                 focusable="false"
                 enable-background="new 0 0 128 128"
@@ -84,47 +101,77 @@
             <div class="_authing_form-header-bg"></div>
             <div class="_authing_form-header-welcome">
               <img class="form-header-logo" :src="appLogo" />
-              <div
-                class="_authing_form-header-name"
-                title="Authing"
-              >{{forgetPasswordVisible ? '重置密码' : appName}}</div>
+              <div class="_authing_form-header-name" title="Authing">
+                {{ forgetPasswordVisible ? "重置密码" : appName }}
+              </div>
             </div>
           </div>
 
-          <GlobalMessage v-show="globalMessage" :message="globalMessage" :type="globalMessageType" />
+          <GlobalMessage
+            v-show="globalMessage"
+            :message="globalMessage"
+            :type="globalMessageType"
+          />
 
           <div v-show="!authingOnError">
             <div class="authing-header-tabs-container">
               <ul class="authing-header-tabs">
                 <li
                   v-bind:class="{
-                  'authing-header-tabs-current': wxQRCodeVisible || (opts.hideUP && opts.hideSocial),
-                  'width-55': headerTabCount === 2,
-                  'width-100': headerTabCount === 1,
-                  'shadow-eee': (opts.hideUP && opts.hideSocial),
-                }"
-                  v-show="isScanCodeEnable && !opts.hideQRCode && (!clientInfo.registerDisabled||clientInfo.showWXMPQRCode)"
+                    'authing-header-tabs-current':
+                      wxQRCodeVisible || (opts.hideUP && opts.hideSocial),
+                    'width-55': headerTabCount === 2,
+                    'width-100': headerTabCount === 1,
+                    'shadow-eee': opts.hideUP && opts.hideSocial
+                  }"
+                  v-show="
+                    isScanCodeEnable &&
+                      !opts.hideQRCode &&
+                      (!clientInfo.registerDisabled ||
+                        clientInfo.showWXMPQRCode)
+                  "
                 >
-                  <a class="_authing_a" href="javascript:void(0)" @click="gotoWxQRCodeScanning">扫码登录</a>
+                  <a
+                    class="_authing_a"
+                    href="javascript:void(0)"
+                    @click="gotoWxQRCodeScanning"
+                    >扫码登录</a
+                  >
                 </li>
                 <li
                   v-show="!(opts.hideUP && opts.hideSocial)"
                   v-bind:class="{
-                  'authing-header-tabs-current': emailLoginVisible || LDAPLoginVisible,
-                  'width-55': headerTabCount === 2,
-                  'width-100': headerTabCount === 1,
-                }"
+                    'authing-header-tabs-current':
+                      emailLoginVisible || LDAPLoginVisible,
+                    'width-55': headerTabCount === 2,
+                    'width-100': headerTabCount === 1
+                  }"
                 >
-                  <a class="_authing_a" href="javascript:void(0)" @click="gotoLogin">登录</a>
+                  <a
+                    class="_authing_a"
+                    href="javascript:void(0)"
+                    @click="gotoLogin"
+                    >登录</a
+                  >
                 </li>
                 <li
-                  v-show="!opts.hideUP && !opts.forceLogin && !clientInfo.registerDisabled && !opts.hideRegister"
+                  v-show="
+                    !opts.hideUP &&
+                      !opts.forceLogin &&
+                      !clientInfo.registerDisabled &&
+                      !opts.hideRegister
+                  "
                   v-bind:class="{
-                  'authing-header-tabs-current': signUpVisible,
-                  'width-55': headerTabCount === 2
-                }"
+                    'authing-header-tabs-current': signUpVisible,
+                    'width-55': headerTabCount === 2
+                  }"
                 >
-                  <a class="_authing_a" @click="gotoSignUp" href="javascript:void(0)">注册</a>
+                  <a
+                    class="_authing_a"
+                    @click="gotoSignUp"
+                    href="javascript:void(0)"
+                    >注册</a
+                  >
                 </li>
               </ul>
             </div>
@@ -141,7 +188,8 @@
                   :checked="emailLoginVisible"
                   style="width: 12px;"
                   @click="gotoLogin"
-                /> 普通登录
+                />
+                普通登录
               </label>
               <label>
                 <input
@@ -150,7 +198,8 @@
                   @click="gotoLDAPLogin"
                   :checked="LDAPLoginVisible"
                   style="width: 12px;margin-left:11px"
-                /> 使用 LDAP
+                />
+                使用 LDAP
               </label>
             </div>
             <EmailLogin v-show="emailLoginVisible" :opts="opts" />
@@ -158,8 +207,9 @@
             <SignUp v-if="signUpVisible" />
             <QRCode v-if="wxQRCodeVisible" />
             <ForgetPassword v-if="forgetPasswordVisible" />
-            <PhoneCodeLogin v-if="phoneCodeLoginVisible" />
+            <PhoneLogin v-if="phoneCodeLoginVisible" />
             <MFACode v-if="MFACodeVisible" />
+            <SignUpByPhone v-if="signUpByPhoneVisible" />
             <!-- <div
               class="_authing_form-footer login"
               v-show="!opts.hideUP"
@@ -186,9 +236,10 @@ import QRCode from "./QRCode";
 import SignUp from "./SignUp";
 import GlobalMessage from "../components/GlobalMessage";
 import ForgetPassword from "./forgetPassword/index";
-import PhoneCodeLogin from "./PhoneCode";
+import PhoneLogin from "./PhoneLogin";
+import SignUpByPhone from "./SignUpByPhone";
 import MFACode from "./MFACode";
-import SSO from "@authing/sso";
+// import SSO from "@authing/sso";
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "app",
@@ -198,9 +249,10 @@ export default {
     QRCode,
     ForgetPassword,
     GlobalMessage,
-    PhoneCodeLogin,
     LDAPLogin,
-    MFACode
+    MFACode,
+    SignUpByPhone,
+    PhoneLogin
   },
   data() {
     return {
@@ -427,7 +479,8 @@ export default {
 
           if (!that.opts.isNative) {
             return (
-              item.enabled === true && !["wxapp","wechatapp","wechatmp"].includes(item.alias)
+              item.enabled === true &&
+              !["wxapp", "wechatapp", "wechatmp"].includes(item.alias)
             );
           } else {
             return (
@@ -948,18 +1001,18 @@ export default {
         appToken = {};
       }
       //是不是 sso.authing.cn 这种总的域名
-      let isSSOAuthing = location.hostname.match(/^sso\./);
+      // let isSSOAuthing = location.hostname.match(/^sso\./);
       // baseDomain = authing.cn 这种后面的部分的域名
-      let auth = new SSO({
-        appId: this.appInfo._id,
-        appType: this.protocol,
-        appDomain: isSSOAuthing
-          ? "sso." + this.opts.baseDomain
-          : this.appInfo.domain + "." + this.opts.baseDomain
-        // dev: true
-      });
-      let sess = await auth.trackSession();
-      // let sess = { session: null };
+      // let auth = new SSO({
+      //   appId: this.appInfo._id,
+      //   appType: this.protocol,
+      //   appDomain: isSSOAuthing
+      //     ? "sso." + this.opts.baseDomain
+      //     : this.appInfo.domain + "." + this.opts.baseDomain
+      //   // dev: true
+      // });
+      // let sess = await auth.trackSession();
+      let sess = { session: null };
       if (!sess.session) {
         localStorage.removeItem("_authing_token");
         localStorage.removeItem("_authing_userInfo");
@@ -1014,8 +1067,11 @@ export default {
       emailLoginVisible: "emailLogin",
       wxQRCodeVisible: "wxQRCode",
       signUpVisible: "signUp",
+      signUpByPhoneVisible: "signUpByPhone",
       forgetPasswordVisible: "forgetPassword",
       phoneCodeLoginVisible: "phoneCodeLogin",
+      phonePasswordLoginVisible: "phonePasswordLogin",
+      isPhoneLogin: "",
       LDAPLoginVisible: "LDAPLogin",
       pageStack: "pageStack",
       MFACodeVisible: "MFACode"
