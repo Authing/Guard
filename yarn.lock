@@ -1475,10 +1475,10 @@ atob@^2.1.1:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-authing-js-sdk@^3.3.4:
-  version "3.3.4"
-  resolved "https://registry.yarnpkg.com/authing-js-sdk/-/authing-js-sdk-3.3.4.tgz#67fdbdde53bef908b7c7b184a1b7e9c7879adcc7"
-  integrity sha512-NjV6SqB38/IjOQ/NFy1gM4DabCuXBqLTrZjP/w3f5+hzwhQTm6s3pSw0t0tIwaW1Cfy8gnXNJBZYQ9K4tkyZ5w==
+authing-js-sdk@3.4.1:
+  version "3.4.1"
+  resolved "https://registry.npm.taobao.org/authing-js-sdk/download/authing-js-sdk-3.4.1.tgz?cache=0&sync_timestamp=1579267407874&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fauthing-js-sdk%2Fdownload%2Fauthing-js-sdk-3.4.1.tgz#ce928dcce580fcd250e3f3f9a4e3583a31d2485e"
+  integrity sha1-zpKNzOWA/NJQ4/P5pONYOjHSSF4=
   dependencies:
     axios "^0.19.0"
     jsencrypt "^3.0.0-rc.1"
