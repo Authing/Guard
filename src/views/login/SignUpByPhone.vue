@@ -137,7 +137,7 @@ export default {
         }
       }, 1000);
       validAuth
-        .getVerificationCode(this.signUpForm.phone)
+        .sendRegisterPhoneCode(this.signUpForm.phone)
         .then(() => {
           this.changeLoading({ el: "form", loading: false });
 
