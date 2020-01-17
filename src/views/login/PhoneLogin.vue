@@ -1,6 +1,13 @@
 <template>
   <div>
-    <div class="form-body">
+    <form
+      class="form-body"
+      @submit.prevent="
+        () => {
+          return false;
+        }
+      "
+    >
       <div style="margin-bottom:16px" class="authing-form no-shadow">
         <div class="_authing_form-group">
           <input
@@ -32,8 +39,9 @@
               @click="handleSendingPhoneCode"
               style="height: 40px;font-size: 12px;border-radius: 0px;border:none;"
               class="btn btn-primary"
+              :class="{ 'btn-ban': countDown !== 0 }"
             >
-              获取验证码
+              {{ countDown === 0 ? "获取验证码" : `${countDown} 秒后重试` }}
             </button>
           </div>
         </div>
@@ -45,7 +53,7 @@
             v-model="password"
             :placeholder="opts.placeholder.password"
             autocomplete="off"
-            @keyup.enter="handleLoginByPhoneCode"
+            @keyup.enter="handleLogin"
           />
         </div>
         <div class="row" v-if="this.needNextStep">
@@ -73,7 +81,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </form>
     <div
       class="_authing_form-footer login"
       v-show="!opts.hideUP && !this.needNextStep"
@@ -97,6 +105,7 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
+      countDown: 0,
       loginMethod: null,
       needNextStep: false,
       password: "",
@@ -277,6 +286,9 @@ export default {
         });
     },
     handleSendingPhoneCode: function handleSendingPhoneCode() {
+      if (this.countDown !== 0) {
+        return;
+      }
       if (!/^1[3-8]\d{9}$/.test(this.phone)) {
         this.showGlobalMessage({
           type: "error",
@@ -288,7 +300,14 @@ export default {
         return;
       }
       this.changeLoading({ el: "form", loading: true });
-
+      this.countDown = 60;
+      const timer = setInterval(() => {
+        this.countDown -= 1;
+        if (this.countDown <= 0) {
+          clearInterval(timer);
+          this.countDown = 0;
+        }
+      }, 1000);
       validAuth
         .getVerificationCode(this.phone)
         .then(() => {
