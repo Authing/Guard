@@ -151,7 +151,7 @@ export default {
 
           this.showGlobalMessage({
             type: "error",
-            message: err.message
+            message: JSON.parse(err.message).message
           });
         });
     },
@@ -179,6 +179,7 @@ export default {
           type: "error",
           message: "验证码为四位，请重新输入"
         });
+        this.changeLoading({ el: "form", loading: false });
         this.addAnimation("sign-up-phoneCode");
         this.$authing.pub("register-error", "验证码为四位，请重新输入");
         this.$authing.pub("authenticated-error", "验证码为四位，请重新输入");
@@ -245,7 +246,7 @@ export default {
           that.changeLoading({ el: "form", loading: false });
           that.showGlobalMessage({
             type: "error",
-            message: err.message.message
+            message: JSON.parse(err.message).message
           });
           that.$authing.pub("register-error", err);
           if (err.message.code === 2026) {

@@ -245,7 +245,7 @@ Guard 会在以下生命周期中触发相应事件：
 | logo                            | 否       | [Authing LOGO]                       | String  | **产品 logo**，默认为 Authing 的官方 Logo                                                                       |
 | forceLogin                      | 否       | false                                | Boolean | **是否将注册和登录合并**，合并后如果用户不存在将自动注册                                                        |
 | hideQRCode                      | 否       | false                                | Boolean | **是否隐藏小程序扫码登录**，在开发者在 Authing 控制台开启小程序扫码登录后，若此项为 true 将不显示小程序扫码登录 |
-| hideUP                          | 否       | false                                | Boolean | **是否隐藏用户名-密码登陆**，隐藏后将不显示用户名-密码登录框                                                    |
+| hideUP                          | 否       | false                                | Boolean | **是否隐藏用户名-密码登录**，隐藏后将不显示用户名-密码登录框                                                    |
 | hideUsername                    | 否       | false                                | Boolean | **是否隐藏注册时的用户名填写**，隐藏后将不显示用户名输入框                                                      |
 | hideRegister                    | 否       | false                                | Boolean | **是否隐藏注册框**，隐藏后将不显示注册框                                                                        |
 | hidePhone                       | 否       | false                                | Boolean | **是否隐藏使用手机登录**，隐藏后将不显示使用手机登录                                                            |

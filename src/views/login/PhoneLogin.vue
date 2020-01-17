@@ -159,7 +159,7 @@ export default {
       console.log("检测成功");
       this.showGlobalMessage({
         type: "info",
-        message: "请选择登陆方式"
+        message: "请选择登录方式"
       });
       this.needNextStep = true;
     },
@@ -323,7 +323,7 @@ export default {
 
           this.showGlobalMessage({
             type: "error",
-            message: err.message
+            message: JSON.parse(err.message).message
           });
         });
     }

@@ -239,7 +239,7 @@ import ForgetPassword from "./forgetPassword/index";
 import PhoneLogin from "./PhoneLogin";
 import SignUpByPhone from "./SignUpByPhone";
 import MFACode from "./MFACode";
-// import SSO from "@authing/sso";
+import SSO from "@authing/sso";
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "app",
