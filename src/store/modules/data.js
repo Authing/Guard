@@ -5,7 +5,8 @@ const state = {
 
   signUpEmail: "",
   signUpPassword: "",
-  
+  signUpPhone: "",
+  signUpUsername: "",
   forgetPasswordEmail: "",
   forgetPasswordVerifyCode: "",
   socialButtonsList: [],
@@ -15,20 +16,20 @@ const state = {
 
   // 用于登录过程中，碰到需要输入 MFA 时，存储下上一步的用户名和密码
   loginFormStash: {
-    email: '',
-    password: '',
-    MFACode: '',
-    verifyCode: '',
-    username: ''
+    email: "",
+    password: "",
+    MFACode: "",
+    verifyCode: "",
+    username: ""
   },
   // 用于社会化登录过程中，碰到需要输入 MFA 时，存储 unionid 以便再次登录
   loginOpt: {
-    unionid: '',
-    email: '',
-    lastIP: ''
+    unionid: "",
+    email: "",
+    lastIP: ""
   },
   // 如果因 MFA 问题导致登录流程终端，记录一下当前是用户名密码登录还是社会化登录 UP social
-  loginType: ''
+  loginType: ""
 };
 const getters = {
   appInfo: state => state.appInfo,
@@ -37,10 +38,11 @@ const getters = {
   globalMessage: state => state.globalMessage,
   globalMessageType: state => state.globalMessageType,
   socialButtonsList: state => state.socialButtonsList,
-  // 注册时填写的邮箱和密码，用于自动填充
+  // 注册时填写的信息，用于自动填充
+  signUpUsername: state => state.signUpUsername,
   signUpEmail: state => state.signUpEmail,
   signUpPassword: state => state.signUpPassword,
-
+  signUpPhone: state => state.signUpPhone,
   // 重置密码时填的 email
   forgetPasswordEmail: state => state.forgetPasswordEmail,
   forgetPasswordVerifyCode: state => state.forgetPasswordVerifyCode,
@@ -70,7 +72,10 @@ const actions = {
         userInfo: userInfo
       };
       localStorage.setItem("_authing_userInfo", JSON.stringify(userInfo));
-      localStorage.setItem("_authing_clientInfo", JSON.stringify(state.appInfo));
+      localStorage.setItem(
+        "_authing_clientInfo",
+        JSON.stringify(state.appInfo)
+      );
       localStorage.setItem("appToken", JSON.stringify(appToken));
     }
     commit("setLoginInfo", { userInfo });
@@ -78,8 +83,8 @@ const actions = {
   showGlobalMessage({ commit }, { type, message }) {
     commit("setGlobalMessage", { type, message });
   },
-  saveSignUpInfo({ commit }, { email, password }) {
-    commit("setSignUpInfo", { email, password });
+  saveSignUpInfo({ commit }, { email, phone, password, username }) {
+    commit("setSignUpInfo", { email, phone, password, username });
   },
   saveForgetPasswordEmail({ commit }, { email }) {
     commit("setForgetPasswordEmail", { email });
@@ -118,9 +123,11 @@ const mutations = {
     state.globalMessage = message;
     state.globalMessageType = type;
   },
-  setSignUpInfo(state, { email, password }) {
+  setSignUpInfo(state, { email, phone, password, username }) {
+    state.signUpPhone = phone;
     state.signUpEmail = email;
     state.signUpPassword = password;
+    state.signUpUsername = username;
   },
   setForgetPasswordEmail(state, { email }) {
     state.forgetPasswordEmail = email;
@@ -142,16 +149,22 @@ const mutations = {
   },
   setLoginFormStash(state, { email, password, verifyCode, MFACode, username }) {
     state.loginFormStash = {
-      email, password, verifyCode, MFACode, username
-    }
+      email,
+      password,
+      verifyCode,
+      MFACode,
+      username
+    };
   },
   setLoginOpt(state, { email, unionid, lastIP }) {
     state.loginOpt = {
-      email, unionid, lastIP
-    }
+      email,
+      unionid,
+      lastIP
+    };
   },
   setLoginType(state, { loginType }) {
-    state.loginType = loginType
+    state.loginType = loginType;
   }
 };
 

@@ -8,6 +8,7 @@ module.exports = {
   css: { extract: false },
   publicPath: process.env.NODE_ENV === 'production' ? '/login' : '/',
   devServer: {
+    disableHostCheck: true,
     proxy: {
       '^/authorize': {
         // target: 'https://sso.authing.cn/sso',

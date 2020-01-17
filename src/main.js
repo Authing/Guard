@@ -4,36 +4,35 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
 import Authing from "authing-js-sdk";
-import VueTour from "vue-tour"
+import VueTour from "vue-tour";
 import "./styles/styles.css";
 import "./styles/animations.css";
-require('vue-tour/dist/vue-tour.css')
-Vue.use(VueTour)
+require("vue-tour/dist/vue-tour.css");
+Vue.use(VueTour);
 
 Vue.config.productionTip = false;
-Vue.directive('focus', {
+Vue.directive("focus", {
   // 当被绑定的元素插入到 DOM 中时……
-  inserted: function (el) {
+  inserted: function(el) {
     // 聚焦元素
-    el.focus()
+    el.focus();
   }
-})
+});
 // Vue.config.devtools = true
-var AuthingGuard = function (clientId, opts) {
-
+var AuthingGuard = function(clientId, opts) {
   window.Authing = Authing;
 
   var PLACEHOLDER_TEXT = {
-    USERNAME: "请输入用户名",
-    EMAIL: "请输入邮箱或用户名",
-    PASSWORD: "请输入密码",
-    CONFIRM_PASSWORD: "请确认密码",
-    VERIFY_CODE: "请输入验证码",
-    NEW_PASSWORD: "请输入新密码",
-    PHONE: "请输入手机号",
-    PHONE_CODE: "4 位验证码",
-    MFA_CODE: "请输入动态口令"
-  },
+      USERNAME: "请输入用户名",
+      EMAIL: "请输入邮箱或用户名",
+      PASSWORD: "请输入密码",
+      CONFIRM_PASSWORD: "请确认密码",
+      VERIFY_CODE: "请输入验证码",
+      NEW_PASSWORD: "请输入新密码",
+      PHONE: "请输入手机号",
+      PHONE_CODE: "4 位验证码",
+      MFA_CODE: "请输入动态口令"
+    },
     $authing = this;
 
   $authing.eventsList = {
@@ -66,7 +65,7 @@ var AuthingGuard = function (clientId, opts) {
   $authing.opts = opts || {};
 
   // 是否为 native 端
-  $authing.opts.isNative = opts.isNative || false
+  $authing.opts.isNative = opts.isNative || false;
 
   $authing.opts.clientId = clientId;
   $authing.opts.appId = opts.appId;
@@ -112,7 +111,8 @@ var AuthingGuard = function (clientId, opts) {
     opts.placeholder.phone = opts.placeholder.phone || PLACEHOLDER_TEXT.PHONE;
     opts.placeholder.phoneCode =
       opts.placeholder.phoneCode || PLACEHOLDER_TEXT.PHONE_CODE;
-    opts.placeholder.MFACode = opts.placeholder.MFACode || PLACEHOLDER_TEXT.MFA_CODE;
+    opts.placeholder.MFACode =
+      opts.placeholder.MFACode || PLACEHOLDER_TEXT.MFA_CODE;
   } else {
     opts.placeholder = {
       username: PLACEHOLDER_TEXT.USERNAME,
@@ -139,14 +139,18 @@ var AuthingGuard = function (clientId, opts) {
   }
   // 除了应用域名以外的其他域名部分
   try {
-    $authing.opts.baseDomain = opts.host.user.match(/https?:\/\/([^\.]*)\.([^\/]*)/)[2];
+    $authing.opts.baseDomain = opts.host.user.match(
+      /https?:\/\/([^\.]*)\.([^\/]*)/
+    )[2];
   } catch (err) {
-    $authing.opts.baseDomain = 'authing.cn'
+    $authing.opts.baseDomain = "authing.cn";
   }
   $authing.opts.placeholder = opts.placeholder;
   $authing.opts.host = opts.host;
-  $authing.opts.timestamp = $authing.opts.timestamp || Math.round(new Date() / 1000);
-  $authing.opts.nonce = $authing.opts.nonce || Math.ceil(Math.random() * Math.pow(10, 6));
+  $authing.opts.timestamp =
+    $authing.opts.timestamp || Math.round(new Date() / 1000);
+  $authing.opts.nonce =
+    $authing.opts.nonce || Math.ceil(Math.random() * Math.pow(10, 6));
 
   let emailExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/;
 
@@ -178,7 +182,7 @@ var AuthingGuard = function (clientId, opts) {
 };
 
 AuthingGuard.prototype = {
-  show: function (appMountId) {
+  show: function(appMountId) {
     var target =
       document.getElementById(appMountId) ||
       document.getElementById(this.opts.mountId) ||
@@ -216,25 +220,26 @@ AuthingGuard.prototype = {
     });
   },
 
-  hide: function () {
+  hide: function() {
     document.getElementById("_authing_login_form").remove();
   },
 
-  on: function (eventName, cb) {
+  on: function(eventName, cb) {
     eventName = eventName.toLowerCase();
     if (cb && eventName && this.eventsList[eventName]) {
       this.eventsList[eventName].push(cb);
     }
   },
 
-  pub: function (eventName, params) {
-
+  pub: function(eventName, params) {
     // 需要发送数据给 native 端
     if (this.opts.isNative) {
-      window.ReactNativeWebView.postMessage(JSON.stringify({
-        eventName,
-        params
-      }))
+      window.ReactNativeWebView.postMessage(
+        JSON.stringify({
+          eventName,
+          params
+        })
+      );
     }
 
     eventName = eventName.toLowerCase();

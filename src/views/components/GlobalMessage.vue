@@ -1,12 +1,15 @@
 <template>
   <div
     class="authing-global-message"
-    :class="{ 'authing-global-message-success': type === 'success',
-    'authing-global-message-warn': type === 'warn',
-    'authing-global-message-error': type === 'error'}"
+    :class="{
+      'authing-global-message-success': type === 'success',
+      'authing-global-message-warn': type === 'warn',
+      'authing-global-message-error': type === 'error',
+      'authing-global-message-info': type === 'info'
+    }"
   >
     <span class="animated fadeInUp">
-      <span>{{message}}</span>
+      <span>{{ message }}</span>
     </span>
   </div>
 </template>
@@ -26,5 +29,4 @@ export default {
   methods: {}
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

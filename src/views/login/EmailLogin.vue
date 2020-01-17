@@ -2,19 +2,30 @@
   <div>
     <div class="form-body">
       <!-- 暂时隐藏 社会化登录 按钮们 -->
-      <SocialButtonsList v-if="!socialButtonsListLoading && socialButtonsList.length > 0" />
+      <SocialButtonsList
+        v-if="!socialButtonsListLoading && socialButtonsList.length > 0"
+      />
 
       <P
         class="_authing_form-tip"
-        v-show="!socialButtonsListLoading && socialButtonsList.length > 0 && !opts.hideUP"
-      >或者</P>
+        v-show="
+          !socialButtonsListLoading &&
+            socialButtonsList.length > 0 &&
+            !opts.hideUP
+        "
+        >或者</P
+      >
 
       <form
         style="margin-bottom:16px"
         class="authing-form animate-box no-shadow"
         v-show="!opts.hideUP"
       >
-        <div v-show="opts.forceLogin" class="authing_force_login_tips" style="text-align:center">
+        <div
+          v-show="opts.forceLogin"
+          class="authing_force_login_tips"
+          style="text-align:center"
+        >
           <p>输入帐号密码登录</p>
           <p>如果您没有帐号，我们会自动创建</p>
         </div>
@@ -51,7 +62,10 @@
             @keyup.enter="handleLogin"
           />
 
-          <div class="_authing_verify-code-loading-circle" v-show="loginVerifyCodeLoading"></div>
+          <div
+            class="_authing_verify-code-loading-circle"
+            v-show="loginVerifyCodeLoading"
+          ></div>
           <img
             :src="verifyCodeUrl"
             id="verify-code-img"
@@ -60,8 +74,16 @@
           />
         </div>
         <div class="row backup">
-          <div class="_authing_form-group" style="margin-bottom:0px;" v-if="!opts.hidePhone">
-            <label class="_authing_label" for="login-remember" style="width:100%">
+          <div
+            class="_authing_form-group"
+            style="margin-bottom:0px;"
+            v-if="!opts.hidePhone"
+          >
+            <label
+              class="_authing_label"
+              for="login-remember"
+              style="width:100%"
+            >
               <!--<input class="_authing_input" type="checkbox" id="login-remember" style="vertical-align: middle; margin: 0"
                              v-model="rememberMe"><span
               style="vertical-align: middle"> 记住我</span>-->
@@ -75,8 +97,15 @@
         </div>
       </form>
     </div>
-    <div class="_authing_form-footer login" :class="{'height-10': opts.hideUP}">
-      <button @click="handleLogin" class="btn btn-primary" v-show="!opts.hideUP">
+    <div
+      class="_authing_form-footer login"
+      :class="{ 'height-10': opts.hideUP }"
+    >
+      <button
+        @click="handleLogin"
+        class="btn btn-primary"
+        v-show="!opts.hideUP"
+      >
         <span v-show="!formLoading">登录</span>
       </button>
     </div>
@@ -100,7 +129,8 @@ export default {
     // this.opts = this.$root.$data.$authing.opts;
   },
   mounted() {
-    this.loginForm.email = this.signUpEmail || "";
+    console.log(this.signUpUsername, this.signUpEmail + "🐎");
+    this.loginForm.email = this.signUpEmail || this.signUpUsername || "";
     this.loginForm.password = this.signUpPassword || "";
   },
   watch: {
@@ -112,7 +142,7 @@ export default {
         !this.loginForm.email &&
         !this.loginForm.password
       ) {
-        this.loginForm.email = this.signUpEmail || "";
+        this.loginForm.email = this.signUpEmail || this.signUpUsername || "";
         this.loginForm.password = this.signUpPassword || "";
       }
     }
@@ -141,7 +171,8 @@ export default {
       "socialButtonsList",
       "signUpEmail",
       "signUpPassword",
-      "loginFormStash"
+      "loginFormStash",
+      "signUpUsername"
     ])
   },
   methods: {
@@ -311,7 +342,7 @@ export default {
                   return validAuth.login({
                     email: that.loginForm.email,
                     password: that.loginForm.password
-                  })
+                  });
                 })
                 .then(function(data) {
                   that.changeLoading({ el: "form", loading: false });
@@ -323,7 +354,7 @@ export default {
                   that.$authing.pub("login", data);
                   that.$authing.pub("authenticated", data);
                   that.recordLoginInfo(data);
-                  that.handleProtocolProcess({router: that.$router});
+                  that.handleProtocolProcess({ router: that.$router });
                 })
                 .catch(function(err) {
                   that.changeLoading({ el: "form", loading: false });
