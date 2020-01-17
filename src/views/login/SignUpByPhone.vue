@@ -53,8 +53,9 @@
             @click="handleSendingPhoneCode"
             style="height: 40px;font-size: 12px;border-radius: 0px;border:none;"
             class="btn btn-primary"
+            :class="{ 'btn-ban': countDown !== 0 }"
           >
-            获取验证码
+            {{ countDown === 0 ? "获取验证码" : `${countDown} 秒后重试` }}
           </button>
         </div>
       </div>
@@ -79,6 +80,7 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
+      countDown: 0,
       signUpForm: {
         phone: "",
         password: "",
@@ -112,6 +114,9 @@ export default {
       "addAnimation"
     ]),
     handleSendingPhoneCode() {
+      if (this.countDown !== 0) {
+        return;
+      }
       if (!/^1[3-8]\d{9}$/.test(this.signUpForm.phone)) {
         this.showGlobalMessage({
           type: "error",
@@ -123,7 +128,14 @@ export default {
         return;
       }
       this.changeLoading({ el: "form", loading: true });
-
+      this.countDown = 60;
+      const timer = setInterval(() => {
+        this.countDown -= 1;
+        if (this.countDown <= 0) {
+          clearInterval(timer);
+          this.countDown = 0;
+        }
+      }, 1000);
       validAuth
         .getVerificationCode(this.signUpForm.phone)
         .then(() => {
