@@ -6,7 +6,9 @@ const pageVisibilities = [
   "wxQRCode",
   "emailLogin",
   "signUp",
+  "signUpByPhone",
   "phoneCodeLogin",
+  "phonePasswordLogin",
   "LDAPLogin",
   "MFACode"
 ];
@@ -22,10 +24,12 @@ const state = {
   wxQRCode: false,
   // 通过手机号登录页
   phoneCodeLogin: false,
+  phonePasswordLogin: false,
   // email 登录页
   emailLogin: true,
   // 注册页
   signUp: false,
+  signUpByPhone:false,
   MFACode: false,
 
   // -----------------------------
@@ -47,11 +51,12 @@ const getters = {
   wxQRCode: state => state.wxQRCode,
   emailLogin: state => state.emailLogin,
   phoneCodeLogin: state => state.phoneCodeLogin,
+  phonePasswordLogin: state => state.phonePasswordLogin,
   signUp: state => state.signUp,
+  signUpByPhone: state => state.signUpByPhone,
   LDAPLogin: state => state.LDAPLogin,
   loginVerifyCode: state => state.loginVerifyCode,
   MFACode: state => state.MFACode,
-
   forgetPassword: state =>
     state.forgetPasswordSendEmail ||
     state.forgetPasswordVerifyCode ||
@@ -75,6 +80,9 @@ const actions = {
   gotoSignUp({ commit }) {
     commit("turnOnPage", { page: "signUp" });
   },
+  gotoSignUpByPhone({commit}){
+    commit("turnOnPage", { page: "signUpByPhone"});
+  },
   gotoLogin({ commit }) {
     commit("turnOnPage", { page: "emailLogin" });
   },
@@ -83,6 +91,9 @@ const actions = {
   },
   gotoForgetPassword({ commit }) {
     commit("turnOnPage", { page: "forgetPasswordSendEmail" });
+  },
+  gotoUsingPhonePassword({ commit }) {
+    commit("turnOnPage", { page: "phonePasswordLogin" });
   },
   gotoUsingPhone({ commit }) {
     commit("turnOnPage", { page: "phoneCodeLogin" });
