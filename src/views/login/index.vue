@@ -448,7 +448,8 @@ export default {
           message: "Error: " + err.message
         });
         this.$authing.pub("authing-unload", err);
-      }
+      },
+      passwordEncPublicKey: that.opts.passwordEncPublicKey
     });
 
     let userPoolSettings = await auth.getUserPoolSettings(

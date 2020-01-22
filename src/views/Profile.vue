@@ -449,7 +449,8 @@ export default {
         userPoolId: that.clientId || that.opts.clientId,
         useSelfWxapp: that.opts.useSelfWxapp,
         host: that.opts.host,
-        accessToken: this.userToken
+        accessToken: this.userToken,
+        passwordEncPublicKey: that.opts.passwordEncPublicKey
       });
       this.$authing = auth;
       //已经有资料缓存，可以开始读取
