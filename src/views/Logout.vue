@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="authorize">
-      <iframe v-show="false" @load.once="logout" :src="sessionEndURL" name="oidc-session-end"></iframe>
+      <iframe
+        v-show="false"
+        @load.once="logout"
+        :src="sessionEndURL"
+        name="oidc-session-end"
+      ></iframe>
       <div class="_authing_container" id="_authing_login_form_content">
         <div class="authing-login-form-wrapper">
           <div
@@ -27,8 +32,7 @@
 </template>
 
 <script>
-import SSO from "@authing/sso";
-
+import axios from "axios";
 export default {
   data() {
     return {
@@ -50,33 +54,45 @@ export default {
       try {
         appToken = JSON.parse(appToken);
       } catch (error) {
-        appToken = null
-        localStorage.removeItem('appToken')
+        appToken = null;
+        localStorage.removeItem("appToken");
       }
 
       return appToken;
     },
 
     async logout() {
+      const url = `${window.location.origin}/cas/logout`;
+
+      const appToken = this.getAppToken();
+      const result = await axios
+        .get(url, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("_authing_token")}`
+          },
+          withCredentials: true
+        })
+        .catch(err => {
+          console.log("cas退出报错");
+          console.log(err);
+        });
+
+      // this.logoutMsg = "退出中...";
+
+      this.logoutMsg = "清除缓存中...";
+      // setTimeout(() => {
+      if (!this.isLogged()) {
+        localStorage.removeItem("_authing_token");
+        // 若未登录直接跳到用户设置好的 redirect_uri 中
+        location.href = redirect_uri;
+      }
+
+      // this.logoutMsg = "退出成功";
+
+      // 若登录则读取 token 然后清空 localStorage
       const appId = this.$route.query.app_id || this.$route.query.client_id;
       const redirect_uri = this.$route.query.redirect_uri;
-      let isSSOAuthing = location.hostname.match(/^sso\./);
-      this.opts = this.$root.$data.$authing.opts;
-      let domain = location.hostname.split('.').shift()
-      let auth = new SSO({
-        appId,
-        appType: this.protocol,
-        appDomain: isSSOAuthing
-          ? "sso." + this.opts.baseDomain
-          : domain + "." + this.opts.baseDomain,
-        host: {
-          oauth: this.opts.host.oauth,
-          user: this.opts.host.user
-        },
-        // dev: window.isDev
-      });
-      let result = await auth.logout()
-      console.log(result)
+      console.log(result);
       // 参数检查
       if (!appId) {
         this.$router.replace({
@@ -96,28 +112,13 @@ export default {
         });
         return;
       }
-
-      // this.logoutMsg = "退出中...";
-
-      this.logoutMsg = "清除缓存中...";
-      // setTimeout(() => {
-      // if (!this.isLogged()) {
-      //   localStorage.removeItem("_authing_token");
-      //   // 若未登录直接跳到用户设置好的 redirect_uri 中
-      //   location.href = redirect_uri;
-      // }
-
-      // this.logoutMsg = "退出成功";
-
-      // 若登录则读取 token 然后清空 localStorage
-      const appToken = this.getAppToken();
       if (appToken && appToken[appId]) {
         delete appToken[appId];
         localStorage.setItem("appToken", JSON.stringify(appToken));
         localStorage.removeItem("_authing_token");
         setTimeout(() => {
           location.href = redirect_uri;
-        }, 3000)
+        }, 3000);
         try {
           this.removeOIDCSession();
         } catch (err) {
@@ -147,7 +148,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped>
 @font-face {
