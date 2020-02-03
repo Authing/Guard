@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: build
+        run: |
+             npm install 
+             npm run build-pack
+         
+      - name: npm push
+        run: |
+             npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+             npm publish
+        env:
+             NPM_TOKEN: '${{secrets.NPM_AUTH_TOKEN}}'
