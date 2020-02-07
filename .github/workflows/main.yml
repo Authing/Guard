@@ -29,7 +29,7 @@ jobs:
           options: ''
           ssh_options: '-p ${{secrets.SERVER_PORT}}'
           src: 'dist/'
-          dest: 'labs@${{secrets.SERVER_HOST}}:/mnt/authing/Guard/dist_tmp/'
+          dest: 'labs@${{secrets.SERVER_HOST}}:/mnt/authing/Guard/dist/'
       - name: npm push
         run: |
              npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
