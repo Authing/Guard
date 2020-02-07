@@ -23,7 +23,7 @@
       >
         <div
           v-show="opts.forceLogin"
-          class="authing_force_login_tips"
+          class="__authing_force_login_tips"
           style="text-align:center"
         >
           <p>输入帐号密码登录</p>
