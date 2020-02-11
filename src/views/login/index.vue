@@ -376,7 +376,7 @@ export default {
               appInfo.client_id
             }&redirect_uri=${encodeURIComponent(
               appInfo.redirect_uris[0]
-            )}&scope=openid profile&response_type=code&state=${Math.random()
+            )}&scope=openid profile email phone offline_access&response_type=code&state=${Math.random()
               .toString(26)
               .slice(2)}`;
             return;
