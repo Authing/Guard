@@ -1,12 +1,7 @@
 <template>
   <div>
     <div class="authorize">
-      <iframe
-        v-show="false"
-        @load.once="logout"
-        :src="sessionEndURL"
-        name="oidc-session-end"
-      ></iframe>
+      <iframe v-show="false" @load.once="logout" :src="sessionEndURL" name="oidc-session-end"></iframe>
       <div class="_authing_container" id="_authing_login_form_content">
         <div class="authing-login-form-wrapper">
           <div
@@ -43,11 +38,6 @@ export default {
     };
   },
   methods: {
-    isLogged: function(appId) {
-      const appToken = this.getAppToken();
-      return (appToken[appId] && appToken[appId].accessToken) || false;
-    },
-
     getAppToken: function() {
       let appToken = localStorage.getItem("appToken");
 
@@ -59,6 +49,11 @@ export default {
       }
 
       return appToken;
+    },
+    isLogged: function(appId) {
+      const appToken = this.getAppToken();
+      if (!appToken) return false;
+      return (appToken[appId] && appToken[appId].accessToken) || false;
     },
 
     async logout() {
