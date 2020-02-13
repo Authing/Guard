@@ -75,7 +75,7 @@ export default {
       // this.logoutMsg = "退出中...";
 
       this.logoutMsg = "清除缓存中...";
-      // setTimeout(() => {
+      const redirect_uri = this.$route.query.redirect_uri;
       if (!this.isLogged()) {
         localStorage.removeItem("_authing_token");
         // 若未登录直接跳到用户设置好的 redirect_uri 中
@@ -86,7 +86,6 @@ export default {
 
       // 若登录则读取 token 然后清空 localStorage
       const appId = this.$route.query.app_id || this.$route.query.client_id;
-      const redirect_uri = this.$route.query.redirect_uri;
       console.log(result);
       // 参数检查
       if (!appId) {
