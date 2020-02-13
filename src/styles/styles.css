@@ -1085,3 +1085,10 @@ span.authing-form-badge-logo {
 .marginTop11 {
   margin-top: -15px;
 }
+
+.__authing_force_login_tips {
+  margin-bottom: 11px;
+}
+.__authing_force_login_tips p {
+  font-size: 12px;
+}
