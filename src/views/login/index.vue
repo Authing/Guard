@@ -429,7 +429,7 @@ export default {
       console.log(erro);
       that.authingOnError = true;
       that.$authing.pub("authing-unload", erro);
-      this.$router.replace({ name: "error", query: { message: erro } });
+      this.$router.replace({ name: "error", query: { message: ['设置 Guard 界面信息出错'] } });
       return;
     }
     var that = this;
@@ -747,7 +747,7 @@ export default {
           this.$router.replace({
             name: "error",
             query: {
-              message: [err.message.message || err.message],
+              message: ['获取 App 信息失败'],
               code: "id404"
             }
           });
@@ -926,7 +926,7 @@ export default {
           this.$router.replace({
             name: "error",
             query: {
-              message: [err.message.message || err.message],
+              message: ['获取 App 信息出错'],
               code: "id404"
             }
           });
