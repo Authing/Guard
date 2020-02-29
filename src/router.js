@@ -15,7 +15,7 @@ let routerConfig = {
   routes: [
     {
       path: "*",
-      redirect: "/error"
+      redirect: "/"
     },
     {
       path: '/',
