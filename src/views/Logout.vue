@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="authorize">
-      <iframe v-show="false" @load.once="logout" :src="sessionEndURL" name="oidc-session-end"></iframe>
+      <iframe
+        v-show="false"
+        @load.once="logout"
+        :src="sessionEndURL"
+        name="oidc-session-end"
+      ></iframe>
       <div class="_authing_container" id="_authing_login_form_content">
         <div class="authing-login-form-wrapper">
           <div
@@ -12,7 +17,7 @@
               <!-- <div class="_authing_delta_bg"></div> -->
               <div class="_authing_logo_bar">
                 <img class="_authing_logo_icon" src="../assets/wtf.png" />
-                <div class="_authing_logo_text">Authing</div>
+                <div class="_authing_logo_text">高等教育出版社</div>
               </div>
               <div class="_authing_form-header-bg wrong_bg">
                 <div>{{ logoutMsg }}</div>

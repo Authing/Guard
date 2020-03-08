@@ -3,34 +3,39 @@
     <div class="authorize">
       <div class="_authing_container" id="_authing_login_form_content">
         <div class="authing-login-form-wrapper">
-          <div class="_authing_form-wrapper animated fast fadeInUp _authing_authorize_container">
+          <div
+            class="_authing_form-wrapper animated fast fadeInUp _authing_authorize_container"
+          >
             <div class="_authing_form-header">
               <!-- <div class="_authing_delta_bg"></div> -->
               <div class="_authing_logo_bar">
-                <img class="_authing_logo_icon" src="../assets/wtf.png">
-                <div class="_authing_logo_text">Authing</div>
+                <img class="_authing_logo_icon" src="../assets/wtf.png" />
+                <div class="_authing_logo_text">高等教育出版社</div>
               </div>
               <div class="_authing_form-header-bg wrong_bg">
                 <div>抱歉，似乎出错了</div>
               </div>
             </div>
-            <img v-show="false" alt="Vue logo" src="../assets/logo.png">
+            <img v-show="false" alt="Vue logo" src="../assets/logo.png" />
             <div class="_authing_form_authorize_info">
               <div class="_div_authorize_block2">
                 <div class="_div_info_text green">
                   <span>错误信息</span>
                 </div>
                 <ul>
-                  <li v-for="item in errorMessage" :key="item">{{item}}</li>
+                  <li v-for="item in errorMessage" :key="item">{{ item }}</li>
                 </ul>
               </div>
 
-              <div class="_div_line"/>
+              <div class="_div_line" />
               <div class="_see_doctor">
                 参见开发文档：<a :href="doc" target="_blank">docs.authing.cn</a>
               </div>
             </div>
-            <div class="_authing_form-footer _authing_form-footer2" v-if="false">
+            <div
+              class="_authing_form-footer _authing_form-footer2"
+              v-if="false"
+            >
               <button class="btn" @click="returnBack">返回</button>
             </div>
           </div>
@@ -57,20 +62,19 @@ export default {
   methods: {
     checkError() {
       let message = this.$route.query.message || ["抱歉，似乎出错了"];
-      if(!Array.isArray(message)) {
-        message = [message]
+      if (!Array.isArray(message)) {
+        message = [message];
       }
       this.errorMessage = message;
-      this.doc = this.$route.query.doc || "https://docs.authing.cn"
+      this.doc = this.$route.query.doc || "https://docs.authing.cn";
     },
 
     returnBack() {
       // $route.back(-1);
-    },
+    }
   }
 };
 </script>
-
 
 <style scoped>
 @font-face {

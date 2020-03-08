@@ -1,22 +1,33 @@
 <template>
   <div>
-    <div class="authing-loading-circle screen-center" v-if="!showPage && !checkAuthorized"></div>
+    <div
+      class="authing-loading-circle screen-center"
+      v-if="!showPage && !checkAuthorized"
+    ></div>
     <div class="authorize" v-show="showPage">
       <div class="_authing_container" id="_authing_login_form_content">
         <div class="authing-login-form-wrapper">
-          <div class="_authing_form-wrapper animated fast fadeInUp _authing_authorize_container">
+          <div
+            class="_authing_form-wrapper animated fast fadeInUp _authing_authorize_container"
+          >
             <div class="_authing_form-header">
               <div class="_authing_delta_bg"></div>
               <div class="_authing_logo_bar">
-                <img class="_authing_logo_icon" src="../assets/wtf.png">
-                <div class="_authing_logo_text">Authing</div>
+                <img class="_authing_logo_icon" src="../assets/wtf.png" />
+                <div class="_authing_logo_text">高等教育出版社</div>
               </div>
               <div class="_authing_item_logo_bar">
                 <img
                   class="_authing_delta_circle"
-                  :style="{marginTop: screenWidth >= 463 ? '60px' : ((580 - screenWidth + 15) * (170 / 580) + 170) / 4 + 'px'}"
+                  :style="{
+                    marginTop:
+                      screenWidth >= 463
+                        ? '60px'
+                        : ((580 - screenWidth + 15) * (170 / 580) + 170) / 4 +
+                          'px'
+                  }"
                   :src="!formLoading ? appInfo['image'] : ''"
-                >
+                />
               </div>
 
               <!---->
@@ -27,20 +38,38 @@
               <div title="Authing" class="_authing_form-header-name">Authing</div>
               </div>-->
             </div>
-            <img v-show="false" alt="Vue logo" :src="appInfo.images">
+            <img v-show="false" alt="Vue logo" :src="appInfo.images" />
             <div class="_authing_form_authorize_info">
               <div class="_div_authorize_block">
                 <div class="_div_info_text">
                   <span>登录</span>
-                  <a class="url" @click="() => { return false }">{{appInfo['name']}}</a>
+                  <a
+                    class="url"
+                    @click="
+                      () => {
+                        return false;
+                      }
+                    "
+                    >{{ appInfo["name"] }}</a
+                  >
                 </div>
                 <ul>
-                  <template v-if="scopes.scopeMeanings.length > 0 && protocol === 'oidc'">
+                  <template
+                    v-if="
+                      scopes.scopeMeanings.length > 0 && protocol === 'oidc'
+                    "
+                  >
                     <div class="permission-list">
-                      <li :key="scope" v-for="scope in scopes.scopeMeanings">获取你的{{scope}}</li>
+                      <li :key="scope" v-for="scope in scopes.scopeMeanings">
+                        获取你的{{ scope }}
+                      </li>
                     </div>
                   </template>
-                  <template v-if="scopes.scopeMeanings.length === 0 && protocol === 'oidc'">
+                  <template
+                    v-if="
+                      scopes.scopeMeanings.length === 0 && protocol === 'oidc'
+                    "
+                  >
                     <li>获取 scope 失败，会话可能过期，请重新登录</li>
                   </template>
                   <template v-if="protocol === 'saml'">
@@ -52,12 +81,19 @@
                 </ul>
               </div>
 
-              <div class="_div_line"/>
+              <div class="_div_line" />
             </div>
 
             <div v-show="!formLoading" class="_authing_form-footer two_buttons">
-              <button class="btn btn-primary" @click="redirectURL">授权登录</button>
-              <button class="btn btn-primary btn-cancel" @click="cancelAuthorize">取消</button>
+              <button class="btn btn-primary" @click="redirectURL">
+                授权登录
+              </button>
+              <button
+                class="btn btn-primary btn-cancel"
+                @click="cancelAuthorize"
+              >
+                取消
+              </button>
             </div>
           </div>
         </div>
@@ -85,7 +121,10 @@ export default {
     this.$authing = this.$root.$data.$authing;
     this.opts = this.$root.$data.$authing.opts;
     // 如果已经登录，准备直接跳转走
-    if (this.isLogged && !(this.protocol === 'oidc' && this.params.consent !== 'none')) {
+    if (
+      this.isLogged &&
+      !(this.protocol === "oidc" && this.params.consent !== "none")
+    ) {
       this.showPage = false;
       this.redirectURL();
       return;
@@ -95,10 +134,10 @@ export default {
     // 进入确权页面，查询所需权限列表
     if (this.protocol === "oidc") {
       this.queryOIDCScopes(this.params.uuid);
-    } else if(this.protocol === 'oauth'){
-      this.queryOAuthScopes()
-    }else{
-      this.showPage = true
+    } else if (this.protocol === "oauth") {
+      this.queryOAuthScopes();
+    } else {
+      this.showPage = true;
     }
 
     window.onresize = () => {
@@ -112,7 +151,7 @@ export default {
     ...mapActions("loading", ["changeLoading"]),
     redirectURL() {
       // 这个标志位是标志是否在检查用户是否授权过用户池
-      this.checkAuthorized = false
+      this.checkAuthorized = false;
 
       // 本地测试：使用  192.168.2.16:5556
       const host = this.$root.SSOHost;
@@ -162,20 +201,24 @@ export default {
             this.appInfo._id
           }/SingleSignOnService?authorization_header=${localStorage.getItem(
             "_authing_token"
-          )}&SAMLRequest=${encodeURIComponent(this.params.SAMLRequest)}&Signature=${
-            encodeURIComponent(this.params.Signature)
-          }&SigAlg=${encodeURIComponent(this.params.SigAlg)}`;
+          )}&SAMLRequest=${encodeURIComponent(
+            this.params.SAMLRequest
+          )}&Signature=${encodeURIComponent(
+            this.params.Signature
+          )}&SigAlg=${encodeURIComponent(this.params.SigAlg)}`;
         }
       } else {
         // oauth
         // 因为只输入域名不输入任何参数，默认是 oauth，所以给这些字段设置一些默认值
-        location.href = `${host}/authorize?app_id=${this.appInfo._id || this.$route.query.app_id || this.$route.query.client_id}&state=${
-          this.params.state || Math.random().toString().slice(2)
-        }&response_type=${this.params.response_type || 'code'}&redirect_uri=${
-          this.params.redirect_uri || ''
-        }&scope=${
-          this.params.scope || 'profile'
-        }&authorization_header=${localStorage.getItem(
+        location.href = `${host}/authorize?app_id=${this.appInfo._id ||
+          this.$route.query.app_id ||
+          this.$route.query.client_id}&state=${this.params.state ||
+          Math.random()
+            .toString()
+            .slice(2)}&response_type=${this.params.response_type ||
+          "code"}&redirect_uri=${this.params.redirect_uri || ""}&scope=${this
+          .params.scope ||
+          "profile"}&authorization_header=${localStorage.getItem(
           "_authing_token"
         )}&confirm_authorize=1`;
       }
@@ -185,38 +228,36 @@ export default {
       // redirect to
       localStorage.setItem("appToken", "");
       localStorage.setItem("_authing_token", "");
-      
+
       window.history.back();
     },
     async queryOAuthScopes() {
-      this.checkAuthorized = true
+      this.checkAuthorized = true;
       let query = `
         query isAppAuthorizedByUser {
           isAppAuthorizedByUser(userId: "${this.userInfo._id}", appId: "${this.appInfo._id}") {
             authorized
           }
         }
-      `
+      `;
       let GraphQLClient_checkAuthorized = new GraphQLClient({
         headers: {
           Authorization: this.userInfo.token
         },
         baseURL: this.opts.host.oauth
       });
-      let res = await GraphQLClient_checkAuthorized.request({query})
-      if(res.isAppAuthorizedByUser.authorized) {
-        this.redirectURL()
+      let res = await GraphQLClient_checkAuthorized.request({ query });
+      if (res.isAppAuthorizedByUser.authorized) {
+        this.redirectURL();
       } else {
-        this.checkAuthorized = false
-        this.showPage = true
+        this.checkAuthorized = false;
+        this.showPage = true;
       }
     },
     async queryOIDCScopes(uuid) {
-      this.checkAuthorized = true
+      this.checkAuthorized = true;
 
-      const url = `${
-        window.location.origin
-      }/oauth/oidc/interaction/${uuid}/login`;
+      const url = `${window.location.origin}/oauth/oidc/interaction/${uuid}/login`;
       try {
         const result = await axios.post(url, null, {
           headers: {
@@ -231,16 +272,15 @@ export default {
           redirectTo: 'http://localhost:5556/oauth/oidc/auth/ca763762-0b42-4f23-aaf9-f0e9909fa68a'
           }
         */
-        if(result.data.authorized) {
+        if (result.data.authorized) {
           this.showPage = false;
-          location.href = result.data.redirectTo
-          this.checkAuthorized = false
+          location.href = result.data.redirectTo;
+          this.checkAuthorized = false;
 
-          return
+          return;
         } else {
           this.showPage = true;
-          this.checkAuthorized = false
-
+          this.checkAuthorized = false;
         }
         this.scopes = result.data;
       } catch (err) {
@@ -257,7 +297,7 @@ export default {
       scopes: {
         scopeMeanings: []
       },
-      checkAuthorized: false,
+      checkAuthorized: false
     };
   }
 };

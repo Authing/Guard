@@ -384,7 +384,7 @@ export default {
       profileForm: {
         nickName: "",
         phoneNumber: "",
-        avatarUrl: "https://usercontents.authing.cn/client/logo@2.png",
+        avatarUrl: "http://2d.hep.com.cn/img/icon-108.png",
         eMail: "",
         companyName: "",
         oldPassWord: "",

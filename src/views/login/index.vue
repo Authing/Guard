@@ -25,7 +25,7 @@
         >
           <span>Protected with</span>
           <span class="authing-form-badge-logo"></span>
-          <span>Authing</span>
+          <span>高等教育出版社</span>
         </a>
       </div>
       <div
@@ -259,7 +259,7 @@ export default {
       redirectToProfile: false,
       appLogo: "",
       appName: "",
-      defaultLogo: "https://usercontents.authing.cn/client/logo@2.png",
+      defaultLogo: "http://2d.hep.com.cn/img/icon-108.png",
       clientInfo: {},
 
       rememberMe: false,
@@ -429,7 +429,10 @@ export default {
       console.log(erro);
       that.authingOnError = true;
       that.$authing.pub("authing-unload", erro);
-      this.$router.replace({ name: "error", query: { message: ['设置 Guard 界面信息出错'] } });
+      this.$router.replace({
+        name: "error",
+        query: { message: ["设置 Guard 界面信息出错"] }
+      });
       return;
     }
     var that = this;
@@ -747,7 +750,7 @@ export default {
           this.$router.replace({
             name: "error",
             query: {
-              message: ['获取 App 信息失败'],
+              message: ["获取 App 信息失败"],
               code: "id404"
             }
           });
@@ -926,7 +929,7 @@ export default {
           this.$router.replace({
             name: "error",
             query: {
-              message: ['获取 App 信息出错'],
+              message: ["获取 App 信息出错"],
               code: "id404"
             }
           });
@@ -1013,7 +1016,7 @@ export default {
         host: {
           oauth: this.opts.host.oauth,
           user: this.opts.host.user
-        },
+        }
         // dev: window.isDev
       });
       let sess = await auth.trackSession();

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <link rel="icon" href="https://fe-static.authing.cn/dist/favicon.png" />
-    <title>Authing SSO</title>
+    <title>高等教育出版社 SSO</title>
   </head>
   <body>
     <noscript>
@@ -56,7 +56,10 @@
         "https://core.littleimp.cn/graphql",
         "https://core.littleimp.cn/graphql"
       ],
-      localhost: ["http://localhost:5510", "http://localhost:5510"]
+      localhost: [
+        "http://localhost:5510/graphql/",
+        "http://localhost:5510/graphql/"
+      ]
     };
     getEndpoint = hostName => {
       for (index in EndpointSwitch) {
