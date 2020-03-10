@@ -23,7 +23,7 @@
           target="_blank"
           class="_authing_a authing-form-badge"
         >
-          <span>Protected with</span>
+          <span>Protected with </span>
           <span>高等教育出版社</span>
         </a>
       </div>
