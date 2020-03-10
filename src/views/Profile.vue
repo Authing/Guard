@@ -36,7 +36,11 @@
           </svg>
         </span>
 
-        <span class="authing-lock-back-button" @click="quitLogin" style="left: 44px">
+        <span
+          class="authing-lock-back-button"
+          @click="quitLogin"
+          style="left: 44px"
+        >
           <!-- ;border-color: #fcce4f; background: #fcce4f -->
           <svg
             t="1557666285087"
@@ -78,8 +82,16 @@
       </div>
       <div
         class="msgBar"
-        :style="(successShow ? 'height: 44px;' : 'height: 0px;') + 'background: ' + ((tipsType == 'warn' && '#ff3e00') || (tipsType == 'info' && '#00a1ea') || '#00a1ea')"
-      >{{ showInfo }}</div>
+        :style="
+          (successShow ? 'height: 44px;' : 'height: 0px;') +
+            'background: ' +
+            ((tipsType == 'warn' && '#ff3e00') ||
+              (tipsType == 'info' && '#00a1ea') ||
+              '#00a1ea')
+        "
+      >
+        {{ showInfo }}
+      </div>
 
       <div class="profile-nav_bar">
         <div
@@ -87,19 +99,25 @@
           style="cursor: pointer"
           :class="nowPage !== 0 ? 'unhover' : ''"
           @click="pageChange(0)"
-        >基本资料</div>
+        >
+          基本资料
+        </div>
         <div
           class="item"
           style="cursor: pointer"
           :class="nowPage !== 1 ? 'unhover' : ''"
           @click="pageChange(1)"
-        >详细资料</div>
+        >
+          详细资料
+        </div>
         <div
           class="item"
           style="cursor: pointer"
           :class="nowPage !== 2 ? 'unhover' : ''"
           @click="pageChange(2)"
-        >令牌设置</div>
+        >
+          令牌设置
+        </div>
       </div>
 
       <div class="profile-good_page" v-if="nowPage == 0">
@@ -121,13 +139,21 @@
                 v-model="profileForm.phoneNumber"
                 autocomplete="off"
                 style="cursor:pointer"
-                @click="() => {this.changePhoneModalShow({show: true})}"
+                @click="
+                  () => {
+                    this.changePhoneModalShow({ show: true });
+                  }
+                "
               />
             </div>
           </div>
           <div class="profile-right_bar">
             <div class="profile-avatar_box" @click="choosePhoto">
-              <img :src="profileForm.avatarUrl" class="avatar" style="cursor: pointer" />
+              <img
+                :src="profileForm.avatarUrl"
+                class="avatar"
+                style="cursor: pointer"
+              />
               <span style="cursor: pointer">修改头像</span>
             </div>
           </div>
@@ -144,7 +170,11 @@
                 :value="profileForm.eMail"
                 autocomplete="off"
                 style="cursor:pointer"
-                @click="() => {this.changeEmailModalShow({show:true})}"
+                @click="
+                  () => {
+                    this.changeEmailModalShow({ show: true });
+                  }
+                "
               />
             </div>
 
@@ -200,7 +230,11 @@
         <div class="whitePage" v-if="loading"></div>
       </div>
 
-      <div class="profile-settings_page" style="overflow-y: hidden !important;" v-if="nowPage == 2">
+      <div
+        class="profile-settings_page"
+        style="overflow-y: hidden !important;"
+        v-if="nowPage == 2"
+      >
         <!-- <v-tour
           v-if="MFAchecked && typeof(MFA.enable) == 'boolean' && !MFA.enable"
           name="profile_tour"
@@ -213,14 +247,20 @@
           <span class="profile-label">开启动态令牌</span>
           <span class="profile-label_info row-flex-end">
             <label class="switch">
-              <input type="checkbox" v-model="MFAchecked" @change="handleChangeMFA" />
+              <input
+                type="checkbox"
+                v-model="MFAchecked"
+                @change="handleChangeMFA"
+              />
               <div class="slider round"></div>
             </label>
           </span>
         </div>
         <div v-if="MFAchecked" class="profile-user_info">
           <span class="profile-label">应用备注</span>
-          <span class="profile-label_info row-flex-end authing-form without-padding">
+          <span
+            class="profile-label_info row-flex-end authing-form without-padding"
+          >
             <input
               type="text"
               class="_authing_input _authing_form-control mini_input"
@@ -234,7 +274,9 @@
         </div>
         <div v-if="MFAchecked" class="profile-user_info">
           <span class="profile-label">令牌密钥</span>
-          <span class="profile-label_info row-flex-end authing-form without-padding">
+          <span
+            class="profile-label_info row-flex-end authing-form without-padding"
+          >
             <input
               type="text"
               class="_authing_input _authing_form-control mini_input"
@@ -261,11 +303,19 @@
             style="border-radius: 6px;"
           />
           <div
-            v-if="navBarKey == 1 && !remarkChanging && !(QRCodeImg && QRCodeImg !== '')"
+            v-if="
+              navBarKey == 1 &&
+                !remarkChanging &&
+                !(QRCodeImg && QRCodeImg !== '')
+            "
             class="remarkBox"
-          >暂无动态令牌二维码</div>
+          >
+            暂无动态令牌二维码
+          </div>
           <img
-            v-if="navBarKey == 1 && !remarkChanging && QRCodeImg && QRCodeImg !== ''"
+            v-if="
+              navBarKey == 1 && !remarkChanging && QRCodeImg && QRCodeImg !== ''
+            "
             :src="QRCodeImg"
           />
         </div>
@@ -289,7 +339,10 @@
           <div
             id="step3"
             class="authing-mfa_navbar-item"
-            :style="(navBarKey == 2 ? 'background: #fafafa;' : '') + 'border-right: none !important;width: calc(100% / 3 + 1px);'"
+            :style="
+              (navBarKey == 2 ? 'background: #fafafa;' : '') +
+                'border-right: none !important;width: calc(100% / 3 + 1px);'
+            "
             @click="viewNavBar(2)"
           >
             <span class="text-word">3.查看令牌密码</span>
@@ -312,7 +365,9 @@
         </div>
         <div class="profile-user_info">
           <span class="profile-label">上次登录地点</span>
-          <span class="profile-label_info">{{ userInfo.lastLoginLocation }}</span>
+          <span class="profile-label_info">{{
+            userInfo.lastLoginLocation
+          }}</span>
         </div>
         <div class="profile-user_info">
           <span class="profile-label">登录次数</span>
@@ -334,7 +389,7 @@
         :style="loading ? '' : 'cursor: pointer'"
         @click="saveInfo"
       >
-        <span>{{ loading ? '' : '保存' }}</span>
+        <span>{{ loading ? "" : "保存" }}</span>
         <div class="profile-loading-icon" v-if="loading"></div>
       </div>
     </div>
@@ -384,7 +439,7 @@ export default {
       profileForm: {
         nickName: "",
         phoneNumber: "",
-        avatarUrl: "http://2d.hep.com.cn/img/icon-108.png",
+        avatarUrl: "https://2d.hep.com.cn/img/icon-108.png",
         eMail: "",
         companyName: "",
         oldPassWord: "",
