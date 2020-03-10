@@ -259,7 +259,7 @@ export default {
       redirectToProfile: false,
       appLogo: "",
       appName: "",
-      defaultLogo: "http://2d.hep.com.cn/img/icon-108.png",
+      defaultLogo: "https://2d.hep.com.cn/img/icon-108.png",
       clientInfo: {},
 
       rememberMe: false,
