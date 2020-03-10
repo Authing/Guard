@@ -24,7 +24,7 @@
           class="_authing_a authing-form-badge"
         >
           <span>Protected with </span>
-          <span>高等教育出版社</span>
+          <span>高等教育出版社用户中心</span>
         </a>
       </div>
       <div
