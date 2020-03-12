@@ -41,6 +41,9 @@
   //   console.log(data)
   // })
   /* 测试 SSO */
+  String.prototype.endsWith = function (suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+  };
   const getQueryString = function (name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
     var r = window.location.search.substr(1).match(reg);
