@@ -1,92 +1,98 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <link rel="icon" href="https://fe-static.authing.cn/dist/favicon.png" />
-    <title>Authing SSO</title>
-  </head>
-  <body>
-    <noscript>
-      <strong
-        >We're sorry but sso doesn't work properly without JavaScript enabled.
-        Please enable it to continue.</strong
-      >
-    </noscript>
-    <div id="app"></div>
-  </body>
-  <script>
-    /* 测试 LoginForm */
-    // let clientId = '5cbd6716aaaa70cb9a58d86f'
-    // const guard = new AuthingGuard(clientId, undefined, {
-    //   hideClose: true,
-    //   isSSO: false,
-    //   qrcodeScanning: {
-    //     redirect: false,
-    //   },
-    //   logo: "https://usercontents.authing.cn/client/logo@2.png",
-    //   title: "Authing",
-    //   host: {
-    //     user: 'http://localhost:5555/graphql',
-    //     oauth: 'http://localhost:5556/graphql',
-    //     // user: 'https://users.authing.cn/graphql',
-    //     // oauth: 'https://oauth.authing.cn/graphql'
-    //   }
-    // });
-    // guard.on('authenticated', data => {
-    //   console.log(data)
-    // })
-    // guard.on('register', data => {
-    //   console.log(data)
-    // })
-    /* 测试 SSO */
-    const getQueryString = function(name) {
-      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-      var r = window.location.search.substr(1).match(reg);
-      if (r != null) {
-        return unescape(r[2]);
-      } else {
-        return null;
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <link rel="icon" href="https://fe-static.authing.cn/dist/favicon.png" />
+  <title>Authing SSO</title>
+</head>
+
+<body>
+  <noscript>
+    <strong>We're sorry but sso doesn't work properly without JavaScript enabled.
+      Please enable it to continue.</strong>
+  </noscript>
+  <div id="app"></div>
+</body>
+<script>
+  /* 测试 LoginForm */
+  // let clientId = '5cbd6716aaaa70cb9a58d86f'
+  // const guard = new AuthingGuard(clientId, undefined, {
+  //   hideClose: true,
+  //   isSSO: false,
+  //   qrcodeScanning: {
+  //     redirect: false,
+  //   },
+  //   logo: "https://usercontents.authing.cn/client/logo@2.png",
+  //   title: "Authing",
+  //   host: {
+  //     user: 'http://localhost:5555/graphql',
+  //     oauth: 'http://localhost:5556/graphql',
+  //     // user: 'https://users.authing.cn/graphql',
+  //     // oauth: 'https://oauth.authing.cn/graphql'
+  //   }
+  // });
+  // guard.on('authenticated', data => {
+  //   console.log(data)
+  // })
+  // guard.on('register', data => {
+  //   console.log(data)
+  // })
+  /* 测试 SSO */
+  String.prototype.endsWith = function (suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+  };
+  const getQueryString = function (name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) {
+      return unescape(r[2]);
+    } else {
+      return null;
+    }
+  };
+  let hostName = location.hostname;
+  let EndpointSwitch = {
+    "littleimp.cn": [
+      "https://core.littleimp.cn/graphql",
+      "https://core.littleimp.cn/graphql"
+    ],
+    localhost: ["http://localhost:5510", "http://localhost:5510"]
+  };
+  function getEndpoint(hostName) {
+    for (index in EndpointSwitch) {
+      window.isDev = true;
+      if (hostName.endsWith(index)) {
+        return EndpointSwitch[index];
       }
-    };
-    let hostName = location.hostname;
-    let EndpointSwitch = {
-      "littleimp.cn": [
-        "https://core.littleimp.cn/graphql",
-        "https://core.littleimp.cn/graphql"
-      ],
-      localhost: ["http://localhost:5510", "http://localhost:5510"]
-    };
-    getEndpoint = hostName => {
-      for (index in EndpointSwitch) {
-        window.isDev = true;
-        if (hostName.endsWith(index)) {
-          return EndpointSwitch[index];
-        }
-      }
-      window.isDev = false;
-      return [
-        "https://users.authing.cn/graphql",
-        "https://oauth.authing.cn/graphql"
-      ];
-    };
-    let [userGqlEndPoint, oauthGqlEndPoint] = getEndpoint(hostName);
-    let appId = getQueryString("app_id") || getQueryString("client_id");
-    const guard = new Guard(undefined, {
-      appId,
-      hideClose: true,
-      isSSO: true,
-      SSOHost: location.origin, // 开发模式下，会代理转发到 localhost:5556/authorize
-      // SSOHost: 'https://sso.authing.cn',
-      qrcodeScanning: {
-        redirect: false
-      },
-      host: {
-        user: userGqlEndPoint,
-        oauth: oauthGqlEndPoint
-      },
-      passwordEncPublicKey: undefined
-    });
-  </script>
+    }
+    window.isDev = false;
+    return [
+      "https://users.authing.cn/graphql",
+      "https://oauth.authing.cn/graphql"
+    ];
+  };
+  // let [userGqlEndPoint, oauthGqlEndPoint] = getEndpoint(hostName);
+  let userGqlEndPoint = getEndpoint(hostName)[0]
+  let oauthGqlEndPoint = getEndpoint(hostName)[1]
+  let appId = getQueryString("app_id") || getQueryString("client_id");
+  const guard = new Guard(undefined, {
+    appId: appId,
+    hideClose: true,
+    isSSO: true,
+    SSOHost: location.origin, // 开发模式下，会代理转发到 localhost:5556/authorize
+    // SSOHost: 'https://sso.authing.cn',
+    qrcodeScanning: {
+      redirect: false
+    },
+    host: {
+      user: userGqlEndPoint,
+      oauth: oauthGqlEndPoint
+    },
+    passwordEncPublicKey: undefined
+  });
+</script>
+
 </html>
