@@ -20,8 +20,9 @@
           target="_blank"
           class="_authing_a authing-form-badge"
         >
-          <span>Protected with </span>
-          <span>高等教育出版社用户中心</span>
+          <span>Protected with</span>
+          <span class="authing-form-badge-logo"></span>
+          <span>Authing</span>
         </a>
       </div>
       <div class="authing-login-form-wrapper" :class="{ 'z-index1000': $parent.isMountedInModal }">
@@ -99,29 +100,32 @@
             <div class="authing-header-tabs-container">
               <ul class="authing-header-tabs">
                 <li
+                  v-bind:class="{
+                    'authing-header-tabs-current':
+                      wxQRCodeVisible || (opts.hideUP && opts.hideSocial),
+                    'width-55': headerTabCount === 2,
+                    'width-100': headerTabCount === 1,
+                    'shadow-eee': opts.hideUP && opts.hideSocial
+                  }"
+                  v-show="
+                    isScanCodeEnable &&
+                      !opts.hideQRCode &&
+                      (!clientInfo.registerDisabled ||
+                        clientInfo.showWXMPQRCode)
+                  "
+                >
+                  <a class="_authing_a" href="javascript:void(0)" @click="CodeScanning">扫码登录</a>
+                </li>
+                <li
                   v-show="!(opts.hideUP && opts.hideSocial)"
                   v-bind:class="{
                     'authing-header-tabs-current':
-                      emailLoginVisible || LDAPLoginVisible,
+                      phoneCheck,
                     'width-55': headerTabCount === 2,
                     'width-100': headerTabCount === 1
                   }"
                 >
-                  <a class="_authing_a" href="javascript:void(0)" @click="gotoLogin">登录</a>
-                </li>
-                <li
-                  v-show="
-                    !opts.hideUP &&
-                      !opts.forceLogin &&
-                      !clientInfo.registerDisabled &&
-                      !opts.hideRegister
-                  "
-                  v-bind:class="{
-                    'authing-header-tabs-current': signUpVisible,
-                    'width-55': headerTabCount === 2
-                  }"
-                >
-                  <a class="_authing_a" @click="gotoSignUp" href="javascript:void(0)">注册</a>
+                  <a class="_authing_a" href="javascript:void(0)" @click="usingPhone">手机验证码登录</a>
                 </li>
               </ul>
             </div>
@@ -206,17 +210,18 @@ export default {
   },
   data() {
     return {
+      phoneCheck: false,
       redirectToProfile: false,
       appLogo: "",
       appName: "",
-      defaultLogo: "https://2d.hep.com.cn/img/icon-108.png",
+      defaultLogo: "https://usercontents.authing.cn/client/logo@2.png",
       clientInfo: {},
 
       rememberMe: false,
 
       verifyCodeLoading: true,
 
-      isScanCodeEnable: false,
+      isScanCodeEnable: true,
 
       opts: {},
 
@@ -414,9 +419,10 @@ export default {
     window.validAuth = auth;
     window.validAuth.clientInfo = userPoolSettings;
     this.$authing.pub("authing-load", validAuth);
-    if (that.opts.hideSocial && that.opts.hideUP) {
-      that.gotoWxQRCodeScanning();
-    }
+    // if (that.opts.hideSocial && that.opts.hideUP) {
+    //   that.gotoWxQRCodeScanning();
+    // }
+    this.gotoWxQRCodeScanning();
     try {
       if (this.opts.hideSocial === false) {
         // 不隐藏社会化登录时，才加载社会化登录列表
@@ -475,7 +481,7 @@ export default {
       this.$authing.pub("social-unload", err);
       this.changeLoading({ el: "form", loading: false });
     }
-    // this.changeCode();
+    this.changeCode();
   },
   destroyed() {
     sessionStorage.removeItem("jump2Profile");
@@ -487,7 +493,8 @@ export default {
       "gotoSignUp",
       "gotoLogin",
       "gotoLDAPLogin",
-      "goBack"
+      "goBack",
+      "gotoUsingPhone"
     ]),
     ...mapActions("loading", ["changeLoading"]),
     ...mapActions("data", [
@@ -506,49 +513,54 @@ export default {
       }
       return null;
     },
-    // CodeScanning() {
-    //   this.gotoWxQRCodeScanning();
-    //   this.changeCode();
-    // },
-    // changeCode() {
-    //   let that = this;
-    //   let scanOpts = this.opts.qrcodeScanning || {
-    //     redirect: true,
-    //     interval: 1500,
-    //     tips: "使用微信扫码登录"
-    //   };
-    //   validAuth.startWXAppScaning({
-    //     mount: "qrcode-node",
-    //     enableFetchPhone: validAuth.clientInfo.useMiniLogin,
-    //     useSelfWxapp: validAuth.clientInfo.useSelfWxapp,
-    //     onSuccess: function(res) {
-    //       console.log("bbb");
-    //       that.$authing.pub("scanned-success", res.data);
-    //       localStorage.setItem("_authing_token", res.data.token);
-    //       that.recordLoginInfo(res.data);
-    //       that.handleProtocolProcess({ router: that.$router });
-    //     },
+    usingPhone() {
+      this.gotoUsingPhone();
+      this.phoneCheck = true;
+    },
+    CodeScanning() {
+      this.phoneCheck = false;
+      this.gotoWxQRCodeScanning();
+      this.changeCode();
+    },
+    changeCode() {
+      let that = this;
+      let scanOpts = this.opts.qrcodeScanning || {
+        redirect: true,
+        interval: 1500,
+        tips: "使用微信扫码登录"
+      };
+      validAuth.startWXAppScaning({
+        mount: "qrcode-node",
+        enableFetchPhone: validAuth.clientInfo.useMiniLogin,
+        useSelfWxapp: validAuth.clientInfo.useSelfWxapp,
+        onSuccess: function(res) {
+          console.log("bbb");
+          that.$authing.pub("scanned-success", res.data);
+          localStorage.setItem("_authing_token", res.data.token);
+          that.recordLoginInfo(res.data);
+          that.handleProtocolProcess({ router: that.$router });
+        },
 
-    //     onError: function(err) {
-    //       that.$authing.pub("scanned-error", err);
-    //       /*
-    //       that.$router.replace({
-    //         name: "error",s
-    //         query: { message: "小程序扫码错误", code: "500" }
-    //       });
-    //       */
-    //     },
+        onError: function(err) {
+          that.$authing.pub("scanned-error", err);
+          /*
+          that.$router.replace({
+            name: "error",s
+            query: { message: "小程序扫码错误", code: "500" }
+          });
+          */
+        },
 
-    //     onIntervalStarting: function(interval) {
-    //       that.$authing.pub("scanning-interval-starting", interval);
-    //     },
-    //     interval: scanOpts.interval,
+        onIntervalStarting: function(interval) {
+          that.$authing.pub("scanning-interval-starting", interval);
+        },
+        interval: scanOpts.interval,
 
-    //     redirect: scanOpts.redirect,
+        redirect: scanOpts.redirect,
 
-    //     tips: scanOpts.tips
-    //   });
-    // },
+        tips: scanOpts.tips
+      });
+    },
     async queryAppInfo(protocol) {
       protocol = protocol || this.protocol;
       let hostname = location.hostname;
@@ -1096,3 +1108,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.authing-header-tabs li {
+  width: 37.33%;
+}
+</style>

@@ -32,6 +32,7 @@ export default {
     // let that = this;
     // let validAuth = window.validAuth;
     if (!this.isWxQRCodeGenerated) {
+      console.log("111");
       // validAuth.startWXAppScaning({
       //   mount: "qrcode-node",
       //   enableFetchPhone: validAuth.clientInfo.useMiniLogin,

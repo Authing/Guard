@@ -6,6 +6,9 @@ import ErrorPage from './views/ErrorPage.vue';
 import Logout from './views/Logout.vue'
 import Profile from './views/Profile.vue'
 import Login from './views/login/index.vue';
+import Regedit from './views/regedit/regedit.vue'
+import Simple from './views/simple/index.vue'
+import TeaIdentity from './views/teaIdentity/teaIdentity.vue'
 
 Vue.use(Router);
 
@@ -22,6 +25,11 @@ let routerConfig = {
       alias: '/login',
       name: 'indexLogin',
       component: Login,
+    },
+    {
+      path: '/simple',
+      name: 'simple',
+      component: Simple
     },
     {
       path: '/authorize/confirm',
@@ -42,6 +50,16 @@ let routerConfig = {
       path: '/profile',
       name: 'profile',
       component: Profile,
+    },
+    {
+      path: '/regedit',
+      name: 'regedit',
+      component: Regedit
+    },
+    {
+      path: '/teaIdentity',
+      name: 'teaIdentity',
+      component: TeaIdentity
     }
   ]
 }

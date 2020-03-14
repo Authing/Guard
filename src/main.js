@@ -8,31 +8,46 @@ import VueTour from "vue-tour";
 import "./styles/styles.css";
 import "./styles/animations.css";
 require("vue-tour/dist/vue-tour.css");
+import { Button, Select, Form, FormItem, Input, Radio, RadioGroup, DatePicker, Upload, Option, Checkbox, Image, Row, Col } from 'element-ui';
 Vue.use(VueTour);
+Vue.use(Button)
+Vue.use(Select)
+Vue.use(Form)
+Vue.use(FormItem)
+Vue.use(Input)
+Vue.use(Radio)
+Vue.use(RadioGroup)
+Vue.use(DatePicker)
+Vue.use(Upload)
+Vue.use(Option)
+Vue.use(Checkbox)
+Vue.use(Image)
+Vue.use(Row)
+Vue.use(Col)
 
 Vue.config.productionTip = false;
 Vue.directive("focus", {
   // 当被绑定的元素插入到 DOM 中时……
-  inserted: function(el) {
+  inserted: function (el) {
     // 聚焦元素
     el.focus();
   }
 });
 // Vue.config.devtools = true
-var AuthingGuard = function(clientId, opts) {
+var AuthingGuard = function (clientId, opts) {
   window.Authing = Authing;
 
   var PLACEHOLDER_TEXT = {
-      USERNAME: "请输入用户名",
-      EMAIL: "请输入邮箱或用户名",
-      PASSWORD: "请输入密码",
-      CONFIRM_PASSWORD: "请确认密码",
-      VERIFY_CODE: "请输入验证码",
-      NEW_PASSWORD: "请输入新密码",
-      PHONE: "请输入手机号",
-      PHONE_CODE: "4 位验证码",
-      MFA_CODE: "请输入动态口令"
-    },
+    USERNAME: "请输入用户名",
+    EMAIL: "请输入邮箱或用户名",
+    PASSWORD: "请输入密码",
+    CONFIRM_PASSWORD: "请确认密码",
+    VERIFY_CODE: "请输入验证码",
+    NEW_PASSWORD: "请输入新密码",
+    PHONE: "请输入手机号",
+    PHONE_CODE: "4 位验证码",
+    MFA_CODE: "请输入动态口令"
+  },
     $authing = this;
 
   $authing.eventsList = {
@@ -188,7 +203,7 @@ var AuthingGuard = function(clientId, opts) {
 };
 
 AuthingGuard.prototype = {
-  show: function(appMountId) {
+  show: function (appMountId) {
     var target =
       document.getElementById(appMountId) ||
       document.getElementById(this.opts.mountId) ||
@@ -226,18 +241,18 @@ AuthingGuard.prototype = {
     });
   },
 
-  hide: function() {
+  hide: function () {
     document.getElementById("_authing_login_form").remove();
   },
 
-  on: function(eventName, cb) {
+  on: function (eventName, cb) {
     eventName = eventName.toLowerCase();
     if (cb && eventName && this.eventsList[eventName]) {
       this.eventsList[eventName].push(cb);
     }
   },
 
-  pub: function(eventName, params) {
+  pub: function (eventName, params) {
     // 需要发送数据给 native 端
     if (this.opts.isNative) {
       window.ReactNativeWebView.postMessage(

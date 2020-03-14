@@ -29,7 +29,7 @@ const state = {
   emailLogin: true,
   // 注册页
   signUp: false,
-  signUpByPhone:false,
+  signUpByPhone: false,
   MFACode: false,
 
   // -----------------------------
@@ -80,8 +80,8 @@ const actions = {
   gotoSignUp({ commit }) {
     commit("turnOnPage", { page: "signUp" });
   },
-  gotoSignUpByPhone({commit}){
-    commit("turnOnPage", { page: "signUpByPhone"});
+  gotoSignUpByPhone({ commit }) {
+    commit("turnOnPage", { page: "signUpByPhone" });
   },
   gotoLogin({ commit }) {
     commit("turnOnPage", { page: "emailLogin" });
@@ -104,7 +104,7 @@ const actions = {
   gotoForgetPasswordNewPassword({ commit }) {
     commit("turnOnPage", { page: "forgetPasswordNewPassword" });
   },
-  gotoMFACode({commit}) {
+  gotoMFACode({ commit }) {
     commit("turnOnPage", { page: "MFACode", keepMessage: true });
   },
   turnOnPage({ commit }, { page }) {
@@ -145,7 +145,7 @@ const mutations = {
   // },
   turnOnPage(state, { page, keepMessage }) {
     // 切换页面时删除 GlobalMessage
-    if(!keepMessage)
+    if (!keepMessage)
       this.dispatch("data/showGlobalMessage", { type: "", message: "" });
     // page 是 pageVisibilities 中的一个字符串
     state.pageStack.push(

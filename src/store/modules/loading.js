@@ -14,15 +14,15 @@ const getters = {
   page: state => state.page,
 }
 const actions = {
-  changeLoading({commit}, {el, loading}) {
+  changeLoading({ commit }, { el, loading }) {
     // console.log('改变元素 loading 状态')
     // console.log({el, loading})
-    commit('setLoading', {el, loading})
+    commit('setLoading', { el, loading })
   }
 }
 
 const mutations = {
-  setLoading(state, {el, loading}) {
+  setLoading(state, { el, loading }) {
     state[el] = loading
   }
 }

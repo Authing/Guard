@@ -69,12 +69,10 @@
               <!--<input class="_authing_input" type="checkbox" id="login-remember" style="vertical-align: middle; margin: 0"
                              v-model="rememberMe"><span
               style="vertical-align: middle"> 记住我</span>-->
-              <a class="_authing_a" @click="gotoUsingPhone">手机短信登录</a>
+              <a class="_authing_a" @click="gotoUsingPhone">使用手机登录</a>
             </label>
           </div>
-          <!-- <div style="font-size:14px">
-            <a class="_authing_a" @click="CodeScanning">扫码登录</a>
-          </div>-->
+
           <div style="font-size:14px">
             <a class="_authing_a" @click="gotoForgetPassword">忘记密码？</a>
           </div>
@@ -159,8 +157,7 @@ export default {
       "changeVisibility",
       "gotoForgetPassword",
       "gotoUsingPhone",
-      "gotoMFACode",
-      "gotoWxQRCodeScanning"
+      "gotoMFACode"
     ]),
     ...mapActions("data", [
       "showGlobalMessage",
@@ -173,49 +170,6 @@ export default {
     ...mapActions("protocol", ["handleProtocolProcess"]),
     handleLoginVerifyCodeLoaded() {
       this.changeLoading({ el: "loginVerifyCode", loading: false });
-    },
-    CodeScanning() {
-      this.gotoWxQRCodeScanning();
-      this.changeCode();
-    },
-    changeCode() {
-      let that = this;
-      let scanOpts = this.opts.qrcodeScanning || {
-        redirect: true,
-        interval: 1500,
-        tips: "使用微信扫码登录"
-      };
-      validAuth.startWXAppScaning({
-        mount: "qrcode-node",
-        enableFetchPhone: validAuth.clientInfo.useMiniLogin,
-        useSelfWxapp: validAuth.clientInfo.useSelfWxapp,
-        onSuccess: function(res) {
-          console.log("bbb");
-          that.$authing.pub("scanned-success", res.data);
-          localStorage.setItem("_authing_token", res.data.token);
-          that.recordLoginInfo(res.data);
-          that.handleProtocolProcess({ router: that.$router });
-        },
-
-        onError: function(err) {
-          that.$authing.pub("scanned-error", err);
-          /*
-          that.$router.replace({
-            name: "error",s
-            query: { message: "小程序扫码错误", code: "500" }
-          });
-          */
-        },
-
-        onIntervalStarting: function(interval) {
-          that.$authing.pub("scanning-interval-starting", interval);
-        },
-        interval: scanOpts.interval,
-
-        redirect: scanOpts.redirect,
-
-        tips: scanOpts.tips
-      });
     },
     handleLogin() {
       this.changeLoading({ el: "form", loading: true });

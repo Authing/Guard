@@ -1,238 +1,196 @@
 <template>
-  <div id="_authing_login_form" @keyup.esc="handleClose" v-if="!removeDom">
-    <div class="authing-loading-circle screen-center" v-if="pageLoading"></div>
-    <div class="authing-cover-layer" v-if="$parent.isMountedInModal && !closeForm"></div>
-    <div
-      class="_authing_container"
-      id="_authing_login_form_content"
-      :class="{
-        hide: pageLoading,
-        'authing-login-form-modal': $parent.isMountedInModal
-      }"
-    >
-      <div
-        v-if="!closeForm"
-        class="authing-form-badge-bottom"
-        :class="{ 'authing-form-badge-white': $parent.isMountedInModal }"
-      >
-        <a
-          href="https://authing.cn/?utm_source=form&amp;utm_campaign=badge&amp;utm_medium=widget"
-          target="_blank"
-          class="_authing_a authing-form-badge"
-        >
-          <span>Protected with </span>
-          <span>高等教育出版社用户中心</span>
-        </a>
-      </div>
-      <div class="authing-login-form-wrapper" :class="{ 'z-index1000': $parent.isMountedInModal }">
-        <div
-          class="_authing_form-wrapper"
-          :class="{
-            'authing-loading-wrapper': formLoading || socialButtonsListLoading,
-            animated: true,
-            fast: true,
-            fadeInUp: !closeForm,
-            fadeOutDown: closeForm
-          }"
-        >
-          <div class="_authing_form-header">
-            <span v-if="pageStack.length > 0" @click="goBack" class="authing-lock-back-button">
-              <svg
-                focusable="false"
-                enable-background="new 0 0 24 24"
-                version="1.0"
-                viewBox="0 0 24 24"
-                xml:space="preserve"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-              >
-                <polyline
-                  fill="none"
-                  points="12.5,21 3.5,12 12.5,3 "
-                  stroke="#000000"
-                  stroke-miterlimit="10"
-                  stroke-width="2"
-                />
-                <line
-                  fill="none"
-                  stroke="#000000"
-                  stroke-miterlimit="10"
-                  stroke-width="2"
-                  x1="22"
-                  x2="3.5"
-                  y1="12"
-                  y2="12"
-                />
-              </svg>
-            </span>
-            <span @click="handleClose" v-if="!opts.hideClose" class="authing-lock-close-button">
-              <svg
-                focusable="false"
-                enable-background="new 0 0 128 128"
-                version="1.1"
-                viewBox="0 0 128 128"
-                xml:space="preserve"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-              >
-                <g>
-                  <polygon
-                    fill="#373737"
-                    points="123.5429688,11.59375 116.4765625,4.5185547 64.0019531,56.9306641 11.5595703,4.4882813     4.4882813,11.5595703 56.9272461,63.9970703 4.4570313,116.4052734 11.5244141,123.4814453 63.9985352,71.0683594     116.4423828,123.5117188 123.5126953,116.4414063 71.0732422,64.0019531   "
-                  />
-                </g>
-              </svg>
-            </span>
-            <div class="_authing_form-header-bg"></div>
-            <div class="_authing_form-header-welcome">
-              <img class="form-header-logo" :src="appLogo" />
-              <div
-                class="_authing_form-header-name"
-                title="Authing"
-              >{{ forgetPasswordVisible ? "重置密码" : appName }}</div>
-            </div>
-          </div>
+  <div class="con">
+    <div class="regBox">
+      <el-form :model="currentUser" label-width="120px" :rules="rules" ref="ruleForm">
+        <el-form-item label="邮箱">
+          <el-input v-model="currentUser.email" class="regInput"></el-input>
+        </el-form-item>
+        <el-form-item label="昵称">
+          <el-input v-model="currentUser.name" class="regInput"></el-input>
+        </el-form-item>
+        <el-form-item label="性别">
+          <el-radio v-model="currentUser.gender" label="1">男</el-radio>
+          <el-radio v-model="currentUser.gender" label="2">女</el-radio>
+        </el-form-item>
+        <el-form-item label="出生日期">
+          <el-date-picker v-model="currentUser.borth" type="date" placeholder="请选择出生日期"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="所在省份" required prop="province">
+          <el-select v-model="currentUser.province" placeholder="请选择">
+            <el-option
+              v-for="item in proOptions"
+              :key="item.id"
+              :label="item.description"
+              :value="item.description"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="所在学校" required prop="school">
+          <el-select v-model="currentUser.school" placeholder="请选择" filterable>
+            <el-option
+              v-for="item in schOptions"
+              :key="item.nodeid"
+              :label="item.text"
+              :value="item.text"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="用户职业" required prop="job">
+          <el-radio-group v-model="currentUser.job">
+            <el-radio :label="1">教师</el-radio>
+            <el-radio :label="2">学生</el-radio>
+            <el-radio :label="3">教务人员</el-radio>
+            <el-radio :label="4">培训教育机构</el-radio>
+            <el-radio :label="5">其他</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="感兴趣的专业" style="margin-bottom:8px;" required>
+          <el-select
+            v-model="currentUser.intreMajor1"
+            placeholder="请选择"
+            class="majorSelect"
+            @change="majorChange"
+            filterable
+          >
+            <el-option
+              v-for="item in majorOptions"
+              :key="item.nodeid"
+              :label="item.text"
+              :value="item.text"
+            ></el-option>
+          </el-select>
+          <el-select
+            v-model="currentUser.intreMajor2"
+            placeholder="请选择"
+            class="majorSelect"
+            @change="majorChange"
+            filterable
+          >
+            <el-option
+              v-for="item in majorOptions"
+              :key="item.nodeid"
+              :label="item.text"
+              :value="item.text"
+            ></el-option>
+          </el-select>
+          <el-select
+            v-model="currentUser.intreMajor3"
+            placeholder="请选择"
+            class="majorSelect"
+            @change="majorChange"
+            filterable
+          >
+            <el-option
+              v-for="item in majorOptions"
+              :key="item.nodeid"
+              :label="item.text"
+              :value="item.text"
+            ></el-option>
+          </el-select>
+          <span class="majorTips">最多可添加3个专业</span>
+          <div class="interTips" v-show="showInterTip">请选择感兴趣的专业</div>
+        </el-form-item>
 
-          <GlobalMessage v-show="globalMessage" :message="globalMessage" :type="globalMessageType" />
-
-          <div v-show="!authingOnError">
-            <div class="authing-header-tabs-container">
-              <ul class="authing-header-tabs">
-                <li
-                  v-show="!(opts.hideUP && opts.hideSocial)"
-                  v-bind:class="{
-                    'authing-header-tabs-current':
-                      emailLoginVisible || LDAPLoginVisible,
-                    'width-55': headerTabCount === 2,
-                    'width-100': headerTabCount === 1
-                  }"
-                >
-                  <a class="_authing_a" href="javascript:void(0)" @click="gotoLogin">登录</a>
-                </li>
-                <li
-                  v-show="
-                    !opts.hideUP &&
-                      !opts.forceLogin &&
-                      !clientInfo.registerDisabled &&
-                      !opts.hideRegister
-                  "
-                  v-bind:class="{
-                    'authing-header-tabs-current': signUpVisible,
-                    'width-55': headerTabCount === 2
-                  }"
-                >
-                  <a class="_authing_a" @click="gotoSignUp" href="javascript:void(0)">注册</a>
-                </li>
-              </ul>
-            </div>
-
-            <div
-              v-if="hasLDAP && (emailLoginVisible || LDAPLoginVisible)"
-              class="ldap-radios"
-              style="font-size: 13px;color:#777;padding: 0 11px;margin-top:11px;padding-top:6px"
-            >
-              <label>
-                <input
-                  type="radio"
-                  name="ldap"
-                  :checked="emailLoginVisible"
-                  style="width: 12px;"
-                  @click="gotoLogin"
-                />
-                普通登录
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="ldap"
-                  @click="gotoLDAPLogin"
-                  :checked="LDAPLoginVisible"
-                  style="width: 12px;margin-left:11px"
-                />
-                使用 LDAP
-              </label>
-            </div>
-            <EmailLogin v-show="emailLoginVisible" :opts="opts" />
-            <LDAPLogin v-show="LDAPLoginVisible" />
-            <SignUp v-if="signUpVisible" />
-            <QRCode v-show="wxQRCodeVisible" />
-            <ForgetPassword v-if="forgetPasswordVisible" />
-            <PhoneLogin v-if="phoneCodeLoginVisible" />
-            <MFACode v-if="MFACodeVisible" />
-            <SignUpByPhone v-if="signUpByPhoneVisible" />
-            <!-- <div
-              class="_authing_form-footer login"
-              v-show="!opts.hideUP"
-              :class="{
-              'no-height': pageVisible.wxQRCodeVisible
-            }"
-            >
-              
-            </div>-->
-            <div class="authing-loading-circle" v-show="formLoading"></div>
-
-            <!-- <div class="_authing_form-footer-non-up" v-show="opts.hideUP"></div> -->
-          </div>
+        <el-form-item label="QQ">
+          <el-input v-model="currentUser.QQ" size="medium" class="regInput"></el-input>
+        </el-form-item>
+        <el-form-item label prop="checked">
+          <el-checkbox label="我已阅读并同意高教出版社门户网络使用协议" v-model="currentUser.checked"></el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">点击完成</el-button>
+          <el-button>取消</el-button>
+        </el-form-item>
+      </el-form>
+      <div class="avatarBox">
+        <div class="avatarDefault">
+          <img src id="avatarImg" v-show="showImg" />
         </div>
+        <span @click="onChooseImg" class="chooseImgBt">点击上传头像</span>
       </div>
     </div>
   </div>
 </template>
 <script>
 import GraphQLClient from "../../graphql.js";
-import EmailLogin from "./EmailLogin";
-import LDAPLogin from "./LDAPLogin";
-import QRCode from "./QRCode";
-import SignUp from "./SignUp";
-import GlobalMessage from "../components/GlobalMessage";
-import ForgetPassword from "./forgetPassword/index";
-import PhoneLogin from "./PhoneLogin";
-import SignUpByPhone from "./SignUpByPhone";
-import MFACode from "./MFACode";
-import SSO from "@authing/sso";
 import { mapGetters, mapActions } from "vuex";
 export default {
-  name: "app",
-  components: {
-    EmailLogin,
-    SignUp,
-    QRCode,
-    ForgetPassword,
-    GlobalMessage,
-    LDAPLogin,
-    MFACode,
-    SignUpByPhone,
-    PhoneLogin
-  },
   data() {
+    let validateSure = (rule, value, callback) => {
+      if (this.currentUser.checked) {
+        callback();
+      } else {
+        callback(new Error("请同意协议哦"));
+      }
+    };
     return {
+      currentUser: {
+        email: "",
+        gender: "1",
+        province: "",
+        school: "",
+        job: 1,
+        intreMajor1: "",
+        intreMajor2: "",
+        intreMajor3: "",
+        checked: false,
+        img: ""
+      },
+      proOptions: null,
+      schOptions: [],
+      majorOptions: [
+        {
+          value: "计算机",
+          label: "计算机"
+        },
+        {
+          value: "教师教育",
+          label: "教师教育"
+        },
+        {
+          value: "软件工程",
+          label: "软件工程"
+        }
+      ],
+      $authing: null,
+      opts: {},
       redirectToProfile: false,
       appLogo: "",
       appName: "",
-      defaultLogo: "https://2d.hep.com.cn/img/icon-108.png",
+      defaultLogo: "https://usercontents.authing.cn/client/logo@2.png",
       clientInfo: {},
-
-      rememberMe: false,
-
-      verifyCodeLoading: true,
-
-      isScanCodeEnable: false,
-
-      opts: {},
-
+      userToken: "",
       authingOnError: false,
 
       closeForm: false,
       removeDom: false,
 
-      $authing: null,
-
-      hasLDAP: false
+      hasLDAP: false,
+      showImg: false,
+      rules: {
+        province: [
+          { required: true, message: "请选择省份", trigger: "change" }
+        ],
+        school: [
+          {
+            required: true,
+            message: "请选择学校",
+            trigger: "change"
+          }
+        ],
+        job: [{ required: true, message: "请选择职业", trigger: "change" }],
+        checked: [{ validator: validateSure, trigger: "change" }]
+      },
+      showInterTip: false,
+      userId: "",
+      major: [],
+      school: []
     };
   },
   created() {
     this.$authing = this.$root.$data.$authing;
     this.opts = this.$root.$data.$authing.opts;
+
     // 将协议的 query 参数存入 vuex
     this.saveProtocol({
       protocol: this.opts.protocol || this.$route.query.protocol,
@@ -241,17 +199,6 @@ export default {
       },
       isSSO: this.opts.isSSO
     });
-
-    /* 先注释，没有 protocol 参数就默认为 oauth，上面已经处理
-    if (!this.protocol) {
-      this.$router.replace({
-        name: "error",
-        query: { message: "缺少协议参数 protocol", code: "id400" }
-      });
-
-    }
-    */
-
     document.onkeydown = event => {
       var e = event || window.event || arguments.callee.caller.arguments[0];
       if (e && e.keyCode === 27) {
@@ -260,15 +207,6 @@ export default {
     };
   },
   async mounted() {
-    // 判断 opts 中是否传入了自定义 css
-    if (this.opts.css) {
-      let styleNode = document.createElement("style");
-      styleNode.type = "text/css";
-      let content = document.createTextNode(this.opts.css);
-      styleNode.appendChild(content);
-      document.head.appendChild(styleNode);
-    }
-
     if (this.opts.isSSO) {
       if (this.$route.query.profile) {
         this.redirectToProfile = true;
@@ -305,68 +243,6 @@ export default {
           ...appInfo.customStyles
         };
       }
-
-      switch (this.protocol) {
-        case "oidc":
-          if (!this.params.uuid) {
-            // 如果用户直接输入网址，什么参数也不带
-            // 把 ssoHost 域名第一部分替换成 oidc 应用的 domain 再作为地址
-            let ssoHostArr = this.opts.SSOHost.split(".");
-            let head = ssoHostArr.shift();
-            let isHttps = false;
-            if (~head.indexOf("https")) {
-              isHttps = true;
-            }
-            ssoHostArr.unshift(appInfo.domain);
-            let ssoHost = ssoHostArr.join(".");
-            // 这么写是为了动态生成这个链接，否则私有部署会出问题
-            location.href = `${
-              isHttps ? "https://" : "http://"
-            }${ssoHost}/oauth/oidc/auth?client_id=${
-              appInfo.client_id
-            }&redirect_uri=${encodeURIComponent(
-              appInfo.redirect_uris[0]
-            )}&scope=openid profile email phone offline_access&response_type=code&state=${Math.random()
-              .toString(26)
-              .slice(2)}`;
-            return;
-          }
-          break;
-        case "saml":
-          if (!this.params.SAMLRequest) {
-            this.$router.replace({
-              name: "error",
-              query: {
-                message: [
-                  "缺少 SAML 所必须的参数 SAMLRequest",
-                  "SAML 应用不能直接输入网址进行登录，需要带参数访问后端 URL，详情请看文档"
-                ],
-                doc:
-                  "https://docs.authing.cn/authing/advanced/use-saml/configure-authing-as-sp-and-idp#kai-shi-shi-yong"
-              }
-            });
-            return;
-          }
-      }
-
-      this.saveAppInfo({ appInfo });
-      this.opts.appId = appInfo._id;
-      // 判断是否已经登录过了，已经登录就直接跳转确权页面，不再发送后面那些 http 请求
-      if (await this.isLogged()) {
-        this.$router.push({
-          name: "authorize",
-          query: { ...this.$route.query }
-        });
-        this.saveLoginStatus({ isLogged: true });
-        return;
-      }
-
-      const { code: errorCode } = this.$route.query;
-
-      // token 错误或已经过期的情况
-      if (errorCode && Number(errorCode) === 2207) {
-        this.clearLocalStorage();
-      }
     }
     try {
       // 获取应用的名称，图标等信息
@@ -385,13 +261,15 @@ export default {
       });
       return;
     }
+
     var that = this;
     this.checkHasLDAP(that.clientId);
-
+    this.userToken = localStorage.getItem("_authing_token") || null;
     let auth = new Authing({
       userPoolId: that.clientId || that.opts.clientId,
       useSelfWxapp: that.opts.useSelfWxapp,
       host: that.opts.host,
+      accessToken: that.userToken,
       onInitError: err => {
         this.changeLoading({ el: "page", loading: false });
 
@@ -475,12 +353,105 @@ export default {
       this.$authing.pub("social-unload", err);
       this.changeLoading({ el: "form", loading: false });
     }
-    // this.changeCode();
+    fetch("https://node2d-public.hep.com.cn/province.json").then(res => {
+      // console.log(res);
+      res.json().then(resp => {
+        // console.log(resp);
+        this.proOptions = resp.province;
+      });
+    });
+    fetch("https://node2d-public.hep.com.cn/zy.json").then(res => {
+      res.json().then(resp => {
+        this.majorOptions = resp;
+      });
+      // console.log(res);
+      // this.majorOptions = [];
+      // res.text().then(resp => {
+      //   // console.log(JSON.parse(resp.substring(0, resp.length - 2)));
+      //   let cateArr = JSON.parse(resp.substring(0, resp.length - 2));
+      //   this.handleArr(cateArr);
+      //   console.log("zy");
+      //   console.log(JSON.stringify(this.majorOptions));
+      // });
+    });
+    this.schOptions = [];
+    fetch("https://node2d-public.hep.com.cn/school.json").then(res => {
+      res.json().then(resp => {
+        // this.school = resp;
+        this.schOptions = resp;
+      });
+    });
   },
   destroyed() {
     sessionStorage.removeItem("jump2Profile");
   },
   methods: {
+    handleArr(arr) {
+      for (let val of arr) {
+        if (val.nodes) {
+          this.handleArr(val.nodes);
+        } else {
+          this.majorOptions.push(val);
+        }
+      }
+    },
+    majorChange() {
+      this.showInterTip = false;
+    },
+    onChooseImg() {
+      let that = this;
+      window.validAuth.selectAvatarFile(val => {
+        this.currentUser.img = val;
+        let rd = new FileReader();
+        rd.readAsDataURL(val);
+        rd.onloadend = function(e) {
+          console.log(e);
+          document.getElementById("avatarImg").src = e.target.result;
+          that.showImg = true;
+        };
+      });
+    },
+    onSubmit() {
+      // console.log(this.currentUser);
+      this.$refs["ruleForm"].validate(valid => {
+        if (valid) {
+          if (
+            this.currentUser.intreMajor1 ||
+            this.currentUser.intreMajor2 ||
+            this.currentUser.intreMajor3
+          ) {
+            window.validAuth
+              .setMetadata({
+                _id: this.userId,
+                key: "currentUser",
+                value: JSON.stringify(this.currentUser)
+              })
+              .then(
+                res => {
+                  console.log("res");
+                  console.log(res);
+                },
+                err => {
+                  console.log("err");
+                  console.log(err);
+                }
+              );
+            ////////这里提交表单
+          } else {
+            this.showInterTip = true;
+            return false;
+          }
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    handleAvatarSuccess(res, file) {
+      console.log(res);
+      console.log(file);
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
     ...mapActions("visibility", [
       "gotoWxQRCodeScanning",
       "removeGlobalMsg",
@@ -506,49 +477,6 @@ export default {
       }
       return null;
     },
-    // CodeScanning() {
-    //   this.gotoWxQRCodeScanning();
-    //   this.changeCode();
-    // },
-    // changeCode() {
-    //   let that = this;
-    //   let scanOpts = this.opts.qrcodeScanning || {
-    //     redirect: true,
-    //     interval: 1500,
-    //     tips: "使用微信扫码登录"
-    //   };
-    //   validAuth.startWXAppScaning({
-    //     mount: "qrcode-node",
-    //     enableFetchPhone: validAuth.clientInfo.useMiniLogin,
-    //     useSelfWxapp: validAuth.clientInfo.useSelfWxapp,
-    //     onSuccess: function(res) {
-    //       console.log("bbb");
-    //       that.$authing.pub("scanned-success", res.data);
-    //       localStorage.setItem("_authing_token", res.data.token);
-    //       that.recordLoginInfo(res.data);
-    //       that.handleProtocolProcess({ router: that.$router });
-    //     },
-
-    //     onError: function(err) {
-    //       that.$authing.pub("scanned-error", err);
-    //       /*
-    //       that.$router.replace({
-    //         name: "error",s
-    //         query: { message: "小程序扫码错误", code: "500" }
-    //       });
-    //       */
-    //     },
-
-    //     onIntervalStarting: function(interval) {
-    //       that.$authing.pub("scanning-interval-starting", interval);
-    //     },
-    //     interval: scanOpts.interval,
-
-    //     redirect: scanOpts.redirect,
-
-    //     tips: scanOpts.tips
-    //   });
-    // },
     async queryAppInfo(protocol) {
       protocol = protocol || this.protocol;
       let hostname = location.hostname;
@@ -956,13 +884,6 @@ export default {
         console.log(erro);
       }
     },
-    clearLocalStorage() {
-      localStorage.removeItem("appToken");
-      localStorage.removeItem("_authing_username");
-      localStorage.removeItem("_authing_password");
-      localStorage.removeItem("_authing_token");
-    },
-
     handleClose() {
       if (this.opts.hideClose) {
         return false;
@@ -976,59 +897,65 @@ export default {
     },
     async isLogged() {
       let appToken = localStorage.getItem("appToken");
-
-      if (appToken) {
-        try {
-          appToken = JSON.parse(appToken);
-          let accessToken = appToken[this.opts.appId].accessToken;
-          let payload = accessToken.split(".")[1];
-          let decoded = window.atob(payload);
-          decoded = JSON.parse(decoded);
-          let expired = parseInt(Date.now() / 1000) > decoded.exp;
-          if (expired) {
-            delete appToken[this.opts.appId];
-            localStorage.removeItem("_authing_token");
-            localStorage.setItem("appToken", appToken);
-          }
-        } catch (error) {
-          // console.log(error);
-          appToken = {};
-          localStorage.removeItem("appToken");
-        }
-      } else {
-        appToken = {};
-      }
+      console.log(
+        JSON.parse(appToken)["5e664d9374ca0dcac98c5765"].userInfo._id
+      );
+      this.userId = JSON.parse(appToken)[
+        "5e664d9374ca0dcac98c5765"
+      ].userInfo._id;
+      //
+      // if (appToken) {
+      //   try {
+      //     appToken = JSON.parse(appToken);
+      //     let accessToken = appToken[this.opts.appId].accessToken;
+      //     let payload = accessToken.split(".")[1];
+      //     let decoded = window.atob(payload);
+      //     decoded = JSON.parse(decoded);
+      //     let expired = parseInt(Date.now() / 1000) > decoded.exp;
+      //     if (expired) {
+      //       delete appToken[this.opts.appId];
+      //       localStorage.removeItem("_authing_token");
+      //       localStorage.setItem("appToken", appToken);
+      //     }
+      //   } catch (error) {
+      //     // console.log(error);
+      //     appToken = {};
+      //     localStorage.removeItem("appToken");
+      //   }
+      // } else {
+      //   appToken = {};
+      // }
       //是不是 sso.authing.cn 这种总的域名
-      let isSSOAuthing = location.hostname.match(/^sso\./);
-      // baseDomain = authing.cn 这种后面的部分的域名
-      let auth = new SSO({
-        appId: this.appInfo._id,
-        appType: this.protocol,
-        appDomain: isSSOAuthing
-          ? "sso." + this.opts.baseDomain
-          : this.appInfo.domain + "." + this.opts.baseDomain,
-        host: {
-          oauth: this.opts.host.oauth,
-          user: this.opts.host.user
-        }
-        // dev: window.isDev
-      });
-      let sess = await auth.trackSession();
-      // let sess = { session: null };
-      if (!sess.session) {
-        localStorage.removeItem("_authing_token");
-        localStorage.removeItem("_authing_userInfo");
-        localStorage.removeItem("_authing_clientInfo");
-        try {
-          let appToken = localStorage.getItem("appToken");
-          let obj = JSON.parse(appToken);
-          delete obj[this.opts.appId];
-          localStorage.setItem("appToken", JSON.stringify(obj));
-        } catch (err) {
-          // 什么也不做，吞掉 error
-        }
-        return false;
-      }
+      // let isSSOAuthing = location.hostname.match(/^sso\./);
+      // // baseDomain = authing.cn 这种后面的部分的域名
+      // let auth = new SSO({
+      //   appId: this.appInfo._id,
+      //   appType: this.protocol,
+      //   appDomain: isSSOAuthing
+      //     ? "sso." + this.opts.baseDomain
+      //     : this.appInfo.domain + "." + this.opts.baseDomain,
+      //   host: {
+      //     oauth: this.opts.host.oauth,
+      //     user: this.opts.host.user
+      //   }
+      //   // dev: window.isDev
+      // });
+      // let sess = await auth.trackSession();
+      // // let sess = { session: null };
+      // if (!sess.session) {
+      //   localStorage.removeItem("_authing_token");
+      //   localStorage.removeItem("_authing_userInfo");
+      //   localStorage.removeItem("_authing_clientInfo");
+      //   try {
+      //     let appToken = localStorage.getItem("appToken");
+      //     let obj = JSON.parse(appToken);
+      //     delete obj[this.opts.appId];
+      //     localStorage.setItem("appToken", JSON.stringify(obj));
+      //   } catch (err) {
+      //     // 什么也不做，吞掉 error
+      //   }
+      //   return false;
+      // }
       return appToken[this.opts.appId] && appToken[this.opts.appId].accessToken;
     }
   },
@@ -1085,14 +1012,48 @@ export default {
       pageLoading: "page"
     }),
     ...mapGetters("protocol", ["protocol", "params"])
-  },
-  watch: {
-    rememberMe: function(newVal) {
-      if (newVal === false) {
-        localStorage.removeItem("_authing_username");
-        localStorage.removeItem("_authing_password");
-      }
-    }
   }
 };
 </script>
+<style scoped>
+.con {
+  width: 60%;
+  margin-left: 18%;
+}
+.regInput {
+  width: 220px;
+}
+#avatarImg {
+  width: 100%;
+  height: 100%;
+}
+.chooseImgBt {
+  color: hsl(207, 68%, 67%);
+  font-size: 12px;
+  cursor: pointer;
+  margin-left: 15px;
+}
+.majorSelect {
+  margin-right: 25px;
+  margin-bottom: 10px;
+}
+.avatarDefault {
+  width: 100px;
+  height: 100px;
+  border: 1px dashed #cccccc;
+}
+.avatarBox {
+  position: absolute;
+  top: 15px;
+  left: 726px;
+}
+.majorTips {
+  font-size: 13px;
+  color: #a29090;
+}
+.interTips {
+  color: red;
+  font-size: 12px;
+  line-height: 12px;
+}
+</style>
