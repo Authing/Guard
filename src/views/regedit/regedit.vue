@@ -279,8 +279,10 @@ export default {
     },
     onChooseImg() {
       let that = this;
-      window.validAuth.selectAvatarFile(val => {
-        this.currentUser.avatar = val;
+      window.validAuth.selectAvatarFile(async val => {
+        that.currentUser.avatar = await window.validAuth._uploadAvatar({
+          photo: val
+        });
         let rd = new FileReader();
         rd.readAsDataURL(val);
         rd.onloadend = function(e) {
@@ -297,11 +299,17 @@ export default {
             this.currentUser.intreMajor2 ||
             this.currentUser.intreMajor3
           ) {
-            window.validAuth.setMetadata({
-              _id: this.userId,
-              key: "currentUser",
-              value: JSON.stringify(this.currentUser)
-            });
+            window.validAuth
+              .setMetadata({
+                _id: this.userId,
+                key: "currentUser",
+                value: JSON.stringify(this.currentUser)
+              })
+              .then(res => {
+                if (res) {
+                  $message.success({ message: "您已成功完善信息" });
+                }
+              });
             ////////这里提交表单
           } else {
             this.showInterTip = true;
