@@ -353,7 +353,9 @@ export default {
                 value: "待审核"
               })
               .then(res => {
-                console.log(res);
+                if (res) {
+                  $message.success({ message: "您已成功提交审核" });
+                }
               });
             ////////这里提交表单
           } else {

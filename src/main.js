@@ -9,7 +9,7 @@ import "./styles/styles.css";
 import "./styles/animations.css";
 import 'element-ui/lib/theme-chalk/index.css'
 require("vue-tour/dist/vue-tour.css");
-import { Button, Select, Form, FormItem, Input, Radio, RadioGroup, DatePicker, Upload, Option, Checkbox, Image, Row, Col } from 'element-ui';
+import { Button, Select, Form, FormItem, Input, Radio, RadioGroup, DatePicker, Upload, Option, Checkbox, Image, Row, Col, Message } from 'element-ui';
 Vue.use(VueTour);
 Vue.use(Button)
 Vue.use(Select)
@@ -25,7 +25,8 @@ Vue.use(Checkbox)
 Vue.use(Image)
 Vue.use(Row)
 Vue.use(Col)
-
+Vue.component(Message)
+window.$message = Message
 Vue.config.productionTip = false;
 Vue.directive("focus", {
   // 当被绑定的元素插入到 DOM 中时……
