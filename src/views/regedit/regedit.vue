@@ -2,7 +2,7 @@
   <div class="con">
     <div class="regBox">
       <el-form :model="currentUser" label-width="120px" :rules="rules" ref="ruleForm">
-        <el-form-item label="邮箱">
+        <el-form-item label="邮箱" prop="email">
           <el-input v-model="currentUser.email" class="regInput"></el-input>
         </el-form-item>
         <el-form-item label="昵称">
@@ -13,7 +13,7 @@
           <el-radio v-model="currentUser.gender" label="2">女</el-radio>
         </el-form-item>
         <el-form-item label="出生日期">
-          <el-date-picker v-model="currentUser.borth" type="date" placeholder="请选择出生日期"></el-date-picker>
+          <el-date-picker v-model="currentUser.birthDate" type="date" placeholder="请选择出生日期"></el-date-picker>
         </el-form-item>
         <el-form-item label="所在省份" required prop="province">
           <el-select v-model="currentUser.province" placeholder="请选择">
@@ -99,7 +99,6 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">点击完成</el-button>
-          <el-button>取消</el-button>
         </el-form-item>
       </el-form>
       <div class="avatarBox">
@@ -112,7 +111,6 @@
   </div>
 </template>
 <script>
-import GraphQLClient from "../../graphql.js";
 import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
@@ -121,6 +119,19 @@ export default {
         callback();
       } else {
         callback(new Error("请同意协议哦"));
+      }
+    };
+    let regE = /^([A-z0-9]{6,18})(\w|\-)+@[A-z0-9]+\.([A-z]{2,3})$/;
+    let emailVal = (rule, value, callback) => {
+      if (value) {
+        let valueBool = value.trim().match(regE);
+        if (valueBool) {
+          callback();
+        } else {
+          callback(new Error("请填写正确的邮箱。"));
+        }
+      } else {
+        callback();
       }
     };
     return {
@@ -133,39 +144,21 @@ export default {
         intreMajor1: "",
         intreMajor2: "",
         intreMajor3: "",
-        checked: false,
-        img: ""
+        checked: true,
+        avatar: ""
       },
       proOptions: null,
       schOptions: [],
-      majorOptions: [
-        {
-          value: "计算机",
-          label: "计算机"
-        },
-        {
-          value: "教师教育",
-          label: "教师教育"
-        },
-        {
-          value: "软件工程",
-          label: "软件工程"
-        }
-      ],
+      majorOptions: [],
       $authing: null,
       opts: {},
       redirectToProfile: false,
-      appLogo: "",
-      appName: "",
-      defaultLogo: "https://usercontents.authing.cn/client/logo@2.png",
       clientInfo: {},
       userToken: "",
       authingOnError: false,
 
       closeForm: false,
       removeDom: false,
-
-      hasLDAP: false,
       showImg: false,
       rules: {
         province: [
@@ -179,7 +172,13 @@ export default {
           }
         ],
         job: [{ required: true, message: "请选择职业", trigger: "change" }],
-        checked: [{ validator: validateSure, trigger: "change" }]
+        checked: [{ validator: validateSure, trigger: "change" }],
+        email: [
+          {
+            validator: emailVal,
+            trigger: "blur"
+          }
+        ]
       },
       showInterTip: false,
       userId: "",
@@ -212,62 +211,15 @@ export default {
         this.redirectToProfile = true;
       }
       // 上来先查一下 appInfo
-      const appInfo = await this.queryAppInfo();
-      if (!appInfo) {
-        this.$router.replace({
-          name: "error",
-          query: {
-            message: [
-              "应用不存在",
-              "请确认传递了正确的 protocol query 参数，不传默认该地址为 OAuth 应用",
-              "protocol 参数可选值为 oauth、oidc、saml"
-            ]
-          }
-        });
-        return;
-      }
-      // 如果启用了自定义 css
-      if (appInfo.css) {
-        let styleNode = document.createElement("style");
-        styleNode.type = "text/css";
-        let content = document.createTextNode(appInfo.css);
-        styleNode.appendChild(content);
-        document.head.appendChild(styleNode);
-      }
-
-      // 如果启用了自定义配置
-      if (appInfo.customStyles) {
-        // 在这里根据自定义配置修改相应界面
-        this.opts = this.$root.$data.$authing.opts = {
-          ...this.$root.$data.$authing.opts,
-          ...appInfo.customStyles
-        };
-      }
     }
-    try {
-      // 获取应用的名称，图标等信息
-      this.appName = this.opts.title || this.appInfo.name || "Guard";
-      window.title = `${this.appName} - Authing`;
-      document.title = `${this.appName} - Authing`;
-      this.appLogo = this.opts.logo || this.appInfo.image || this.defaultLogo;
-      this.clientId = this.appInfo.clientId;
-    } catch (erro) {
-      console.log(erro);
-      that.authingOnError = true;
-      that.$authing.pub("authing-unload", erro);
-      this.$router.replace({
-        name: "error",
-        query: { message: ["设置 Guard 界面信息出错"] }
-      });
-      return;
-    }
-
-    var that = this;
-    this.checkHasLDAP(that.clientId);
+    this.clientId =
+      JSON.parse(localStorage.getItem("_authing_clientInfo"))["_id"] || null;
     this.userToken = localStorage.getItem("_authing_token") || null;
+    this.userId =
+      JSON.parse(localStorage.getItem("_authing_userInfo"))["_id"] || null;
+    const that = this;
     let auth = new Authing({
       userPoolId: that.clientId || that.opts.clientId,
-      useSelfWxapp: that.opts.useSelfWxapp,
       host: that.opts.host,
       accessToken: that.userToken,
       onInitError: err => {
@@ -292,71 +244,9 @@ export default {
     window.validAuth = auth;
     window.validAuth.clientInfo = userPoolSettings;
     this.$authing.pub("authing-load", validAuth);
-    if (that.opts.hideSocial && that.opts.hideUP) {
-      that.gotoWxQRCodeScanning();
-    }
-    try {
-      if (this.opts.hideSocial === false) {
-        // 不隐藏社会化登录时，才加载社会化登录列表
-        this.changeLoading({ el: "socialButtonsList", loading: true });
-        let data = await auth.readOAuthList({ useGuard: true });
-        this.changeLoading({ el: "socialButtonsList", loading: false });
 
-        // 刨去 微信扫码登录 的方式
-        // 如果是 native 端，只保留移动应用
-        let socialButtonsList = data.filter(item => {
-          if (item.alias === "wxapp") {
-            this.isScanCodeEnable = true;
-          }
-
-          if (!that.opts.isNative) {
-            return (
-              item.enabled === true &&
-              !["wxapp", "wechatapp", "wechatmp"].includes(item.alias)
-            );
-          } else {
-            return (
-              item.enabled === true &&
-              (item.alias === "wechatios" ||
-                item.alias === "alipaymobile" ||
-                item.alias === "wechatandroid")
-            );
-          }
-        });
-
-        socialButtonsList = socialButtonsList.map(item => {
-          if (
-            item.alias === "alipaymobile" ||
-            item.alias === "wechatios" ||
-            item.alias === "wechatandroid"
-          ) {
-            item.isNative = true;
-          }
-          return item;
-        });
-
-        this.$authing.pub("social-load", socialButtonsList);
-
-        this.saveSocialButtonsList({ socialButtonsList });
-
-        // if (!this.opts.hideSocial) {
-        //   return;
-        // }
-
-        if (socialButtonsList.length === 0 && this.opts.hideUP) {
-          // 如果没开启社会化登录，同时指定隐藏用户密码登录，就自动转到小程序扫码登录
-          this.opts.hideSocial = true;
-          this.gotoWxQRCodeScanning();
-        }
-      }
-    } catch (err) {
-      this.$authing.pub("social-unload", err);
-      this.changeLoading({ el: "form", loading: false });
-    }
     fetch("https://node2d-public.hep.com.cn/province.json").then(res => {
-      // console.log(res);
       res.json().then(resp => {
-        // console.log(resp);
         this.proOptions = resp.province;
       });
     });
@@ -364,15 +254,6 @@ export default {
       res.json().then(resp => {
         this.majorOptions = resp;
       });
-      // console.log(res);
-      // this.majorOptions = [];
-      // res.text().then(resp => {
-      //   // console.log(JSON.parse(resp.substring(0, resp.length - 2)));
-      //   let cateArr = JSON.parse(resp.substring(0, resp.length - 2));
-      //   this.handleArr(cateArr);
-      //   console.log("zy");
-      //   console.log(JSON.stringify(this.majorOptions));
-      // });
     });
     this.schOptions = [];
     fetch("https://node2d-public.hep.com.cn/school.json").then(res => {
@@ -381,38 +262,34 @@ export default {
         this.schOptions = resp;
       });
     });
+    window.validAuth.metadata(this.userId).then(res => {
+      if (JSON.parse(res.list[0].value)) {
+        this.currentUser = JSON.parse(res.list[0].value);
+        this.currentUser.job = 1;
+        this.currentUser.checked = true;
+      }
+    });
   },
   destroyed() {
     sessionStorage.removeItem("jump2Profile");
   },
   methods: {
-    handleArr(arr) {
-      for (let val of arr) {
-        if (val.nodes) {
-          this.handleArr(val.nodes);
-        } else {
-          this.majorOptions.push(val);
-        }
-      }
-    },
     majorChange() {
       this.showInterTip = false;
     },
     onChooseImg() {
       let that = this;
       window.validAuth.selectAvatarFile(val => {
-        this.currentUser.img = val;
+        this.currentUser.avatar = val;
         let rd = new FileReader();
         rd.readAsDataURL(val);
         rd.onloadend = function(e) {
-          console.log(e);
           document.getElementById("avatarImg").src = e.target.result;
           that.showImg = true;
         };
       });
     },
     onSubmit() {
-      // console.log(this.currentUser);
       this.$refs["ruleForm"].validate(valid => {
         if (valid) {
           if (
@@ -420,22 +297,11 @@ export default {
             this.currentUser.intreMajor2 ||
             this.currentUser.intreMajor3
           ) {
-            window.validAuth
-              .setMetadata({
-                _id: this.userId,
-                key: "currentUser",
-                value: JSON.stringify(this.currentUser)
-              })
-              .then(
-                res => {
-                  console.log("res");
-                  console.log(res);
-                },
-                err => {
-                  console.log("err");
-                  console.log(err);
-                }
-              );
+            window.validAuth.setMetadata({
+              _id: this.userId,
+              key: "currentUser",
+              value: JSON.stringify(this.currentUser)
+            });
             ////////这里提交表单
           } else {
             this.showInterTip = true;
@@ -446,11 +312,6 @@ export default {
           return false;
         }
       });
-    },
-    handleAvatarSuccess(res, file) {
-      console.log(res);
-      console.log(file);
-      this.imageUrl = URL.createObjectURL(file.raw);
     },
     ...mapActions("visibility", [
       "gotoWxQRCodeScanning",
@@ -468,422 +329,6 @@ export default {
       "showGlobalMessage"
     ]),
     ...mapActions("protocol", ["saveProtocol"]),
-    getSecondLvDomain(hostname) {
-      if (!hostname) return null;
-      let hostnameSplit = hostname.split(".");
-      // 只有域名部分由三部分以上组成才算拥有二级域名
-      if (hostnameSplit.length >= 3) {
-        return hostnameSplit[0];
-      }
-      return null;
-    },
-    async queryAppInfo(protocol) {
-      protocol = protocol || this.protocol;
-      let hostname = location.hostname;
-      let domain =
-        this.getSecondLvDomain(this.opts.domain) ||
-        this.getSecondLvDomain(hostname);
-      let appId =
-        this.opts.appId ||
-        this.$route.query.app_id ||
-        this.$route.query.client_id;
-      let operationName;
-      let GraphQLClient_getAppInfo = new GraphQLClient({
-        baseURL: this.opts.host.oauth
-      });
-
-      // 优先通过二级域名查找此应用信息
-      if (domain && domain !== "sso") {
-        // 如果没有提供 protocol 参数，就挨个查一遍吧
-        if (!protocol) {
-          let queries = [
-            `query {
-              QueryAppInfoByDomain(domain: "${domain}") {
-                _id
-                name
-                image
-                domain
-                clientId
-                css
-              }
-            }`,
-            `query {
-              QueryOIDCAppInfoByDomain(domain: "${domain}") {
-                _id,
-                name
-                image
-                client_id
-                redirect_uris
-                domain
-                css
-                customStyles {
-                  forceLogin
-                  hideQRCode
-                  hideUP
-                  hideUsername
-                  hideRegister
-                  hidePhone
-                  hideSocial
-                  hideClose
-                  placeholder {
-                    username
-                    email
-                    password
-                    confirmPassword
-                    verfiyCode
-                    newPassword
-                    phone
-                    phoneCode
-                  }
-                  qrcodeScanning {
-                    interval
-                    tips
-                  }
-                }
-              }
-            }`,
-            `query {
-              QuerySAMLIdentityProviderInfoByDomain(domain: "${domain}") {
-                _id,
-                name,
-                image,
-                domain
-                clientId
-                css
-              }
-            }`
-          ];
-          let appInfos = await Promise.all(
-            queries.map(q => GraphQLClient_getAppInfo.request({ query: q }))
-          );
-          let [
-            { QueryAppInfoByDomain },
-            { QueryOIDCAppInfoByDomain },
-            { QuerySAMLIdentityProviderInfoByDomain }
-          ] = appInfos;
-          this.saveProtocol({
-            protocol: QuerySAMLIdentityProviderInfoByDomain
-              ? "saml"
-              : QueryOIDCAppInfoByDomain
-              ? "oidc"
-              : QueryAppInfoByDomain
-              ? "oauth"
-              : "",
-            params: {
-              ...this.$route.query
-            },
-            isSSO: this.opts.isSSO
-          });
-          return (
-            QuerySAMLIdentityProviderInfoByDomain ||
-            QueryOIDCAppInfoByDomain ||
-            QueryAppInfoByDomain
-          );
-        }
-        // 根据不同的 protocol 查找不同类型的 app
-        switch (protocol) {
-          case "oidc":
-            operationName = "QueryOIDCAppInfoByDomain";
-            break;
-          case "oauth":
-            operationName = "QueryAppInfoByDomain";
-            break;
-          case "saml":
-            operationName = "QuerySAMLIdentityProviderInfoByDomain";
-            break;
-          default:
-            this.$router.replace({
-              name: "error",
-              query: {
-                message: [
-                  "protocol query 参数错误",
-                  "protocol 可选值为 oauth，oidc，saml"
-                ],
-                code: "4004"
-              }
-            });
-            return;
-        }
-
-        let query;
-        if (operationName !== "QueryOIDCAppInfoByDomain") {
-          query = `query {
-            ${operationName} (domain: "${domain}") {   
-              _id
-              name
-              domain
-              image
-              clientId
-              css
-            }
-          }`;
-        } else {
-          query = `query {
-            ${operationName} (domain: "${domain}") {   
-              _id
-              name
-              domain
-              image
-              clientId
-              css
-              customStyles {
-                forceLogin
-                hideQRCode
-                hideUP
-                hideUsername
-                hideRegister
-                hidePhone
-                hideSocial
-                hideClose
-                placeholder {
-                  username
-                  email
-                  password
-                  confirmPassword
-                  verfiyCode
-                  newPassword
-                  phone
-                  phoneCode
-                }
-                qrcodeScanning {
-                  interval
-                  tips
-                }
-              }
-            }
-          }`;
-        }
-
-        try {
-          let appInfo = await GraphQLClient_getAppInfo.request({ query });
-          // console.log("queryAppInfo");
-          // console.log(appInfo);
-          // 返回对应的 app 信息
-          switch (protocol) {
-            case "oidc":
-              return appInfo["QueryOIDCAppInfoByDomain"];
-            case "oauth":
-              return appInfo["QueryAppInfoByDomain"];
-            case "saml":
-              return appInfo["QuerySAMLIdentityProviderInfoByDomain"];
-          }
-        } catch (err) {
-          console.log(err);
-          this.$router.replace({
-            name: "error",
-            query: {
-              message: ["获取 App 信息失败"],
-              code: "id404"
-            }
-          });
-        }
-      } else if (appId) {
-        // 如果没有二级域名，就通过 appId 查找
-        try {
-          // 如果没有提供 protocol 参数，就挨个查一遍吧
-          if (!protocol) {
-            let queries = [
-              `query {
-                QueryAppInfoByAppID(appId: "${appId}") {
-                  _id
-                  domain
-                  name
-                  image
-                  clientId
-                  css
-                }
-              }`,
-              `query {
-                QueryOIDCAppInfoByAppID(appId: "${appId}") {
-                  _id
-                  name
-                  image
-                  client_id
-                  redirect_uris
-                  domain
-                  css
-                  customStyles {
-                    forceLogin
-                    hideQRCode
-                    hideUP
-                    hideUsername
-                    hideRegister
-                    hidePhone
-                    hideSocial
-                    hideClose
-                    placeholder {
-                      username
-                      email
-                      password
-                      confirmPassword
-                      verfiyCode
-                      newPassword
-                      phone
-                      phoneCode
-                    }
-                    qrcodeScanning {
-                      interval
-                      tips
-                    }
-                  }
-                }
-              }`,
-              `query {
-                  QuerySAMLIdentityProviderInfoByAppID(appId: "${appId}") {
-                    _id
-                    domain
-                    name
-                    image
-                    clientId
-                    css
-                }
-              }`
-            ];
-            let appInfos = await Promise.all(
-              queries.map(q => GraphQLClient_getAppInfo.request({ query: q }))
-            );
-            let [
-              { QueryAppInfoByAppID },
-              { QueryOIDCAppInfoByAppID },
-              { QuerySAMLIdentityProviderInfoByAppID }
-            ] = appInfos;
-            this.saveProtocol({
-              protocol: QuerySAMLIdentityProviderInfoByAppID
-                ? "saml"
-                : QueryOIDCAppInfoByAppID
-                ? "oidc"
-                : QueryAppInfoByAppID
-                ? "oauth"
-                : "",
-              params: {
-                ...this.$route.query
-              },
-              isSSO: this.opts.isSSO
-            });
-            return (
-              QuerySAMLIdentityProviderInfoByAppID ||
-              QueryOIDCAppInfoByAppID ||
-              QueryAppInfoByAppID
-            );
-          }
-
-          switch (protocol) {
-            case "oidc":
-              operationName = "QueryOIDCAppInfoByAppID";
-              break;
-            case "oauth":
-              operationName = "QueryAppInfoByAppID";
-              break;
-            case "saml":
-              operationName = "QuerySAMLIdentityProviderInfoByAppID";
-              break;
-            default:
-              this.$router.replace({
-                name: "error",
-                query: {
-                  message: [
-                    "protocol query 参数错误",
-                    "protocol 可选值为 oauth，oidc，saml"
-                  ],
-                  code: "id404"
-                }
-              });
-              return;
-          }
-
-          let query;
-          if (operationName !== "QueryOIDCAppInfoByAppID") {
-            query = `query {
-              ${operationName} (appId: "${appId}") {
-                _id,
-                name,
-                image,
-                clientId
-                css
-              }
-            }`;
-          } else {
-            query = `query {
-              ${operationName} (appId: "${appId}") {
-                _id,
-                name,
-                image,
-                clientId
-                css
-                customStyles {
-                  forceLogin
-                  hideQRCode
-                  hideUP
-                  hideUsername
-                  hideRegister
-                  hidePhone
-                  hideSocial
-                  hideClose
-                  placeholder {
-                    username
-                    email
-                    password
-                    confirmPassword
-                    verfiyCode
-                    newPassword
-                    phone
-                    phoneCode
-                  }
-                  qrcodeScanning {
-                    interval
-                    tips
-                  }
-                }
-              }
-            }`;
-          }
-          let appInfo = await GraphQLClient_getAppInfo.request({ query });
-          switch (protocol) {
-            case "oidc":
-              return appInfo["QueryOIDCAppInfoByAppID"];
-            case "oauth":
-              return appInfo["QueryAppInfoByAppID"];
-            case "saml":
-              return appInfo["QuerySAMLIdentityProviderInfoByAppID"];
-          }
-        } catch (err) {
-          console.log(err);
-          this.$router.replace({
-            name: "error",
-            query: {
-              message: ["获取 App 信息出错"],
-              code: "id404"
-            }
-          });
-        }
-      } else {
-        // 使用 sso.authing.cn 又没有提供 appId clientId 的情况
-        this.$router.replace({
-          name: "error",
-          query: { message: ["缺少 app_id 或 client_id"], code: "id404" }
-        });
-      }
-    },
-    async checkHasLDAP(clientId) {
-      let operationName = "QueryClientHasLDAPConfigs";
-      let query = `query {
-              ${operationName} (clientId: "${clientId}") {   
-                result,
-              }
-            }
-        `;
-
-      let GraphQLClient_getInfo = new GraphQLClient({
-        baseURL: this.opts.host.oauth
-      });
-
-      try {
-        const hasLDAP = await GraphQLClient_getInfo.request({ query });
-        this.hasLDAP = hasLDAP.QueryClientHasLDAPConfigs.result;
-      } catch (erro) {
-        console.log(erro);
-      }
-    },
     handleClose() {
       if (this.opts.hideClose) {
         return false;
@@ -894,104 +339,9 @@ export default {
       setTimeout(function() {
         that.removeDom = true;
       }, 800);
-    },
-    async isLogged() {
-      let appToken = localStorage.getItem("appToken");
-      console.log(
-        JSON.parse(appToken)["5e664d9374ca0dcac98c5765"].userInfo._id
-      );
-      this.userId = JSON.parse(appToken)[
-        "5e664d9374ca0dcac98c5765"
-      ].userInfo._id;
-      //
-      // if (appToken) {
-      //   try {
-      //     appToken = JSON.parse(appToken);
-      //     let accessToken = appToken[this.opts.appId].accessToken;
-      //     let payload = accessToken.split(".")[1];
-      //     let decoded = window.atob(payload);
-      //     decoded = JSON.parse(decoded);
-      //     let expired = parseInt(Date.now() / 1000) > decoded.exp;
-      //     if (expired) {
-      //       delete appToken[this.opts.appId];
-      //       localStorage.removeItem("_authing_token");
-      //       localStorage.setItem("appToken", appToken);
-      //     }
-      //   } catch (error) {
-      //     // console.log(error);
-      //     appToken = {};
-      //     localStorage.removeItem("appToken");
-      //   }
-      // } else {
-      //   appToken = {};
-      // }
-      //是不是 sso.authing.cn 这种总的域名
-      // let isSSOAuthing = location.hostname.match(/^sso\./);
-      // // baseDomain = authing.cn 这种后面的部分的域名
-      // let auth = new SSO({
-      //   appId: this.appInfo._id,
-      //   appType: this.protocol,
-      //   appDomain: isSSOAuthing
-      //     ? "sso." + this.opts.baseDomain
-      //     : this.appInfo.domain + "." + this.opts.baseDomain,
-      //   host: {
-      //     oauth: this.opts.host.oauth,
-      //     user: this.opts.host.user
-      //   }
-      //   // dev: window.isDev
-      // });
-      // let sess = await auth.trackSession();
-      // // let sess = { session: null };
-      // if (!sess.session) {
-      //   localStorage.removeItem("_authing_token");
-      //   localStorage.removeItem("_authing_userInfo");
-      //   localStorage.removeItem("_authing_clientInfo");
-      //   try {
-      //     let appToken = localStorage.getItem("appToken");
-      //     let obj = JSON.parse(appToken);
-      //     delete obj[this.opts.appId];
-      //     localStorage.setItem("appToken", JSON.stringify(obj));
-      //   } catch (err) {
-      //     // 什么也不做，吞掉 error
-      //   }
-      //   return false;
-      // }
-      return appToken[this.opts.appId] && appToken[this.opts.appId].accessToken;
     }
   },
   computed: {
-    headerTabCount() {
-      let arr = ["scan-wx-mp", "login", "register"];
-      if (
-        !this.isScanCodeEnable ||
-        this.opts.hideQRCode ||
-        (this.clientInfo.registerDisabled && !this.clientInfo.showWXMPQRCode)
-      ) {
-        let idx = arr.findIndex(v => v === "scan-wx-mp");
-        if (~idx) {
-          arr.splice(idx, 1);
-        }
-      }
-
-      if (this.opts.hideSocial && this.opts.hideUP) {
-        let idx = arr.findIndex(v => v === "login");
-        if (~idx) {
-          arr.splice(idx, 1);
-        }
-      }
-      if (
-        this.opts.hideUP ||
-        this.opts.forceLogin ||
-        this.clientInfo.registerDisabled ||
-        this.opts.hideRegister
-      ) {
-        let idx = arr.findIndex(v => v === "register");
-        if (~idx) {
-          arr.splice(idx, 1);
-        }
-      }
-      return arr.length;
-    },
     ...mapGetters("visibility", {
       emailLoginVisible: "emailLogin",
       wxQRCodeVisible: "wxQRCode",
