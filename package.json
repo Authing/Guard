@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@authing/sso": "^1.3.0",
-    "authing-js-sdk": "^3.16.2",
+    "authing-js-sdk": "^3.16.4",
     "axios": "^0.18.0",
     "element-ui": "^2.13.0",
     "otplib": "^11.0.1",

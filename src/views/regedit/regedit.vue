@@ -213,7 +213,8 @@ export default {
       // 上来先查一下 appInfo
     }
     this.clientId =
-      JSON.parse(localStorage.getItem("_authing_clientInfo"))["_id"] || null;
+      JSON.parse(localStorage.getItem("_authing_clientInfo"))["clientId"] ||
+      null;
     this.userToken = localStorage.getItem("_authing_token") || null;
     this.userId =
       JSON.parse(localStorage.getItem("_authing_userInfo"))["_id"] || null;
@@ -222,9 +223,9 @@ export default {
       userPoolId: that.clientId || that.opts.clientId,
       host: that.opts.host,
       accessToken: that.userToken,
+      cdnHost: "https://node2d-public.hep.com.cn",
       onInitError: err => {
         this.changeLoading({ el: "page", loading: false });
-
         this.authingOnError = true;
         this.showGlobalMessage({
           type: "error",
@@ -263,8 +264,15 @@ export default {
       });
     });
     window.validAuth.metadata(this.userId).then(res => {
-      if (JSON.parse(res.list[0].value)) {
-        this.currentUser = JSON.parse(res.list[0].value);
+      let str = "";
+      str = str + res.list[0].value;
+      if (JSON.parse(str)) {
+        this.currentUser = JSON.parse(str);
+        // console.log(this.currentUser);
+        document.getElementById(
+          "avatarImg"
+        ).src = this.currentUser.avatar.photo;
+        this.showImg = true;
         this.currentUser.job = 1;
         this.currentUser.checked = true;
       }
@@ -279,16 +287,10 @@ export default {
     },
     onChooseImg() {
       let that = this;
-      window.validAuth.selectAvatarFile(async val => {
-        that.currentUser.avatar = await window.validAuth._uploadAvatar({
-          photo: val
-        });
-        let rd = new FileReader();
-        rd.readAsDataURL(val);
-        rd.onloadend = function(e) {
-          document.getElementById("avatarImg").src = e.target.result;
-          that.showImg = true;
-        };
+      window.validAuth.selectAvatarFile(val => {
+        document.getElementById("avatarImg").src = val;
+        this.showImg = true;
+        window.validAuth.update({ _id: that.userId, photo: val });
       });
     },
     onSubmit() {
@@ -307,6 +309,7 @@ export default {
               })
               .then(res => {
                 if (res) {
+                  console.log(res);
                   $message.success({ message: "您已成功完善信息" });
                 }
               });
