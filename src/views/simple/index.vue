@@ -397,6 +397,7 @@ export default {
       userPoolId: that.clientId || that.opts.clientId,
       useSelfWxapp: that.opts.useSelfWxapp,
       host: that.opts.host,
+      cdnHost: "https://node2d-public.hep.com.cn",
       onInitError: err => {
         this.changeLoading({ el: "page", loading: false });
 

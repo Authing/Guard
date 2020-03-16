@@ -276,7 +276,8 @@ export default {
       // 上来先查一下 appInfo
     }
     this.clientId =
-      JSON.parse(localStorage.getItem("_authing_clientInfo"))["_id"] || null;
+      JSON.parse(localStorage.getItem("_authing_clientInfo"))["clientId"] ||
+      null;
     this.userToken = localStorage.getItem("_authing_token") || null;
     this.userId =
       JSON.parse(localStorage.getItem("_authing_userInfo"))["_id"] || null;
@@ -285,6 +286,8 @@ export default {
       userPoolId: that.clientId || that.opts.clientId,
       host: that.opts.host,
       accessToken: that.userToken,
+
+      cdnHost: "https://node2d-public.hep.com.cn",
       onInitError: err => {
         this.changeLoading({ el: "page", loading: false });
 
@@ -308,13 +311,17 @@ export default {
     window.validAuth.clientInfo = userPoolSettings;
     this.$authing.pub("authing-load", validAuth);
     window.validAuth.metadata(this.userId).then(res => {
-      for (let val of res.list) {
-        if (val.key === "currentUser") {
-          this.ruleForm = JSON.parse(val.value);
-        }
-        if (val.key === "status") {
-          if (val.value !== "待审核") {
-            this.status = 1;
+      if (res) {
+        for (let val of res.list) {
+          if (val.key === "teaIdentityForm") {
+            this.ruleForm = JSON.parse(val.value);
+            document.getElementById("avatarImg").src = this.ruleForm.img;
+            this.showImg = true;
+          }
+          if (val.key === "status") {
+            if (val.value !== "待审核") {
+              this.status = 1;
+            }
           }
         }
       }
@@ -328,12 +335,12 @@ export default {
       let that = this;
       window.validAuth.selectAvatarFile(val => {
         this.imgTips = false;
-        this.ruleForm.img = val;
         let rd = new FileReader();
         rd.readAsDataURL(val);
         rd.onloadend = function(e) {
           document.getElementById("avatarImg").src = e.target.result;
           that.showImg = true;
+          that.ruleForm.img = e.target.result;
         };
       });
     },
@@ -341,11 +348,16 @@ export default {
       this.$refs["ruleForm"].validate(valid => {
         if (valid) {
           if (this.ruleForm.img) {
-            window.validAuth.setMetadata({
-              _id: this.userId,
-              key: "currentUser",
-              value: JSON.stringify(this.ruleForm)
-            });
+            // console.log(this.ruleForm.img);
+            window.validAuth
+              .setMetadata({
+                _id: this.userId,
+                key: "teaIdentityForm",
+                value: JSON.stringify(this.ruleForm)
+              })
+              .then(res => {
+                console.log(res);
+              });
             window.validAuth
               .setMetadata({
                 _id: this.userId,

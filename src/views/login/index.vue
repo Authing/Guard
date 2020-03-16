@@ -20,7 +20,7 @@
           target="_blank"
           class="_authing_a authing-form-badge"
         >
-          <span>Protected with </span>
+          <span>Protected with</span>
           <span>高等教育出版社用户中心</span>
         </a>
       </div>
@@ -392,6 +392,8 @@ export default {
       userPoolId: that.clientId || that.opts.clientId,
       useSelfWxapp: that.opts.useSelfWxapp,
       host: that.opts.host,
+
+      cdnHost: "https://node2d-public.hep.com.cn",
       onInitError: err => {
         this.changeLoading({ el: "page", loading: false });
 
