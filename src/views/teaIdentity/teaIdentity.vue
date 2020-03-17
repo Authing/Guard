@@ -355,7 +355,6 @@ export default {
       this.$refs["ruleForm"].validate(valid => {
         if (valid) {
           if (this.ruleForm.img) {
-            console.log(this.ruleForm.img);
             window.validAuth.setMetadata({
               _id: this.userId,
               key: "teaIdentityForm",

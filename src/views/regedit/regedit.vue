@@ -288,7 +288,6 @@ export default {
         str = str + res.list[0].value;
         if (JSON.parse(str)) {
           this.currentUser = JSON.parse(str);
-          console.log(this.currentUser);
           if (this.currentUser.photo) {
             document.getElementById("avatarImg").src = this.currentUser.photo;
             this.showImg = true;
@@ -339,7 +338,6 @@ export default {
               })
               .then(res => {
                 if (res) {
-                  console.log(res);
                   $message.success({ message: "您已成功完善信息" });
                 }
               });
