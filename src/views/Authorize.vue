@@ -1,15 +1,10 @@
 <template>
   <div>
-    <div
-      class="authing-loading-circle screen-center"
-      v-if="!showPage && !checkAuthorized"
-    ></div>
+    <div class="authing-loading-circle screen-center" v-if="!showPage && !checkAuthorized"></div>
     <div class="authorize" v-show="showPage">
       <div class="_authing_container" id="_authing_login_form_content">
         <div class="authing-login-form-wrapper">
-          <div
-            class="_authing_form-wrapper animated fast fadeInUp _authing_authorize_container"
-          >
+          <div class="_authing_form-wrapper animated fast fadeInUp _authing_authorize_container">
             <div class="_authing_form-header">
               <div class="_authing_delta_bg"></div>
               <div class="_authing_logo_bar">
@@ -50,8 +45,7 @@
                         return false;
                       }
                     "
-                    >{{ appInfo["name"] }}</a
-                  >
+                  >{{ appInfo["name"] }}</a>
                 </div>
                 <ul>
                   <template
@@ -60,9 +54,7 @@
                     "
                   >
                     <div class="permission-list">
-                      <li :key="scope" v-for="scope in scopes.scopeMeanings">
-                        获取你的{{ scope }}
-                      </li>
+                      <li :key="scope" v-for="scope in scopes.scopeMeanings">获取你的{{ scope }}</li>
                     </div>
                   </template>
                   <template
@@ -85,15 +77,8 @@
             </div>
 
             <div v-show="!formLoading" class="_authing_form-footer two_buttons">
-              <button class="btn btn-primary" @click="redirectURL">
-                授权登录
-              </button>
-              <button
-                class="btn btn-primary btn-cancel"
-                @click="cancelAuthorize"
-              >
-                取消
-              </button>
+              <button class="btn btn-primary" @click="redirectURL">授权登录</button>
+              <button class="btn btn-primary btn-cancel" @click="cancelAuthorize">取消</button>
             </div>
           </div>
         </div>
@@ -133,6 +118,7 @@ export default {
   mounted() {
     // 进入确权页面，查询所需权限列表
     if (this.protocol === "oidc") {
+      console.log(this.params.uuid);
       this.queryOIDCScopes(this.params.uuid);
     } else if (this.protocol === "oauth") {
       this.queryOAuthScopes();

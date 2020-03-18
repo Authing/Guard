@@ -22,8 +22,16 @@ const actions = {
   },
   handleProtocolProcess({ state }, { router }) {
     if (state.isSSO) {
-      if(sessionStorage.getItem('jump2Profile')) {
-        router.push({name: 'profile'})
+      if (sessionStorage.getItem('jump2Profile')) {
+        router.push({ name: 'profile' })
+        return
+      }
+      if (sessionStorage.getItem('jumpRegedit')) {
+        router.push({ name: 'regedit' })
+        return
+      }
+      if (sessionStorage.getItem('jumpTeaIentity')) {
+        router.push({ name: 'teaIdentity' })
         return
       }
       switch (state.protocol) {

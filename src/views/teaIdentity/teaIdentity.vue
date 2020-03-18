@@ -1,5 +1,12 @@
 <template>
   <div class="con">
+    <el-dialog title="未登录提示" :visible="dialogShow" width="30%">
+      <span>您还未登录，点击确定跳转至登陆页面</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogShow = false">取 消</el-button>
+        <el-button type="primary" @click="handleLogin">确 定</el-button>
+      </span>
+    </el-dialog>
     <div class="bdround bgwhite regbox" style="border:5px solid #c0ecf4;">
       <div class="text-center f_30 whrite lh-40 padt50 tcherbg"></div>
       <el-form
@@ -205,7 +212,6 @@ export default {
       majorOptions: [],
       $authing: null,
       opts: {},
-      redirectToProfile: false,
       appLogo: "",
       appName: "",
       defaultLogo: "https://usercontents.authing.cn/client/logo@2.png",
@@ -215,7 +221,7 @@ export default {
 
       closeForm: false,
       removeDom: false,
-
+      dialogShow: false,
       hasLDAP: false,
       showImg: false,
       rules: {
@@ -269,95 +275,91 @@ export default {
         this.schoolList = resp;
       });
     });
-    if (this.opts.isSSO) {
-      if (this.$route.query.profile) {
-        this.redirectToProfile = true;
-      }
-      // 上来先查一下 appInfo
-    }
-    this.clientId =
-      JSON.parse(localStorage.getItem("_authing_clientInfo"))["clientId"] ||
-      null;
-    this.userToken = localStorage.getItem("_authing_token") || null;
-    this.userId =
-      JSON.parse(localStorage.getItem("_authing_userInfo"))["_id"] || null;
-    const that = this;
-    let auth = new Authing({
-      userPoolId: that.clientId || that.opts.clientId,
-      host: that.opts.host,
-      accessToken: that.userToken,
+    if (!localStorage.getItem("_authing_clientInfo")) {
+      this.dialogShow = true;
+    } else {
+      this.clientId =
+        JSON.parse(localStorage.getItem("_authing_clientInfo"))["clientId"] ||
+        null;
+      this.userToken = localStorage.getItem("_authing_token") || null;
+      this.userId =
+        JSON.parse(localStorage.getItem("_authing_userInfo"))["_id"] || null;
+      const that = this;
+      let auth = new Authing({
+        userPoolId: that.clientId || that.opts.clientId,
+        host: that.opts.host,
+        accessToken: that.userToken,
 
-      cdnHost: "https://node2d-public.hep.com.cn",
-      onInitError: err => {
-        this.changeLoading({ el: "page", loading: false });
+        cdnHost: "https://node2d-public.hep.com.cn",
+        onInitError: err => {
+          this.changeLoading({ el: "page", loading: false });
 
-        this.authingOnError = true;
-        this.showGlobalMessage({
-          type: "error",
-          message: "Error: " + err.message
-        });
-        this.$authing.pub("authing-unload", err);
-      },
-      passwordEncPublicKey: that.opts.passwordEncPublicKey
-    });
+          this.authingOnError = true;
+          this.showGlobalMessage({
+            type: "error",
+            message: "Error: " + err.message
+          });
+          this.$authing.pub("authing-unload", err);
+        },
+        passwordEncPublicKey: that.opts.passwordEncPublicKey
+      });
 
-    let userPoolSettings = await auth.getUserPoolSettings(
-      that.clientId || that.opts.clientId
-    );
-    this.clientInfo = userPoolSettings;
-    this.changeLoading({ el: "page", loading: false });
+      let userPoolSettings = await auth.getUserPoolSettings(
+        that.clientId || that.opts.clientId
+      );
+      this.clientInfo = userPoolSettings;
+      this.changeLoading({ el: "page", loading: false });
 
-    window.validAuth = auth;
-    window.validAuth.clientInfo = userPoolSettings;
-    this.$authing.pub("authing-load", validAuth);
-    window.validAuth.metadata(this.userId).then(res => {
-      if (res) {
-        for (let val of res.list) {
-          if (val.key === "teaIdentityForm") {
-            this.ruleForm = JSON.parse(val.value);
-            document.getElementById("avatarImg").src = this.ruleForm.img;
-            this.showImg = true;
-          }
-          if (val.key === "status") {
-            if (val.value !== "待审核") {
-              this.status = 1;
+      window.validAuth = auth;
+      window.validAuth.clientInfo = userPoolSettings;
+      this.$authing.pub("authing-load", validAuth);
+      window.validAuth.metadata(this.userId).then(res => {
+        if (res) {
+          for (let val of res.list) {
+            if (val.key === "teaIdentityForm") {
+              this.ruleForm = JSON.parse(val.value);
+              document.getElementById("avatarImg").src = this.ruleForm.img;
+              this.showImg = true;
+            }
+            if (val.key === "status") {
+              if (val.value !== "待审核") {
+                this.status = 1;
+              }
             }
           }
         }
-      }
-    });
+      });
+    }
   },
   destroyed() {
     sessionStorage.removeItem("jump2Profile");
   },
   methods: {
+    handleLogin() {
+      //跳转到登录页面
+      sessionStorage.setItem("jumpTeaIentity", true);
+      this.$router.push({
+        name: "indexLogin"
+      });
+      this.dialogShow = false;
+    },
     onChooseImg() {
-      let that = this;
       window.validAuth.selectAvatarFile(val => {
         this.imgTips = false;
-        let rd = new FileReader();
-        rd.readAsDataURL(val);
-        rd.onloadend = function(e) {
-          document.getElementById("avatarImg").src = e.target.result;
-          that.showImg = true;
-          that.ruleForm.img = e.target.result;
-        };
+        document.getElementById("avatarImg").src = val;
+        this.showImg = true;
+        this.ruleForm.img = val;
       });
     },
     onSubmit() {
       this.$refs["ruleForm"].validate(valid => {
         if (valid) {
           if (this.ruleForm.img) {
-            // console.log(this.ruleForm.img);
-            window.validAuth
-              .setMetadata({
-                _id: this.userId,
-                key: "teaIdentityForm",
-                value: JSON.stringify(this.ruleForm)
-              })
-              .then(res => {
-                console.log(res);
-              });
+            window.validAuth.setMetadata({
+              _id: this.userId,
+              key: "teaIdentityForm",
+              value: JSON.stringify(this.ruleForm)
+            });
             window.validAuth
               .setMetadata({
                 _id: this.userId,

@@ -1,7 +1,14 @@
 <template>
   <div class="con">
+    <el-dialog title="未登录提示" :visible="dialogShow" width="30%">
+      <span>您还未登录，点击确定跳转至登陆页面</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogShow = false">取 消</el-button>
+        <el-button type="primary" @click="handleLogin">确 定</el-button>
+      </span>
+    </el-dialog>
     <div class="regBox">
-      <el-form :model="currentUser" label-width="120px" :rules="rules" ref="ruleForm">
+      <el-form :model="currentUser" label-width="150px" :rules="rules" ref="ruleForm">
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="currentUser.email" class="regInput"></el-input>
         </el-form-item>
@@ -73,6 +80,7 @@
               :value="item.text"
             ></el-option>
           </el-select>
+          <br />
           <el-select
             v-model="currentUser.intreMajor3"
             placeholder="请选择"
@@ -95,7 +103,16 @@
           <el-input v-model="currentUser.QQ" size="medium" class="regInput"></el-input>
         </el-form-item>
         <el-form-item label prop="checked">
-          <el-checkbox label="我已阅读并同意高教出版社门户网络使用协议" v-model="currentUser.checked"></el-checkbox>
+          <el-checkbox label="我已阅读并同意高教出版社门户网络使用协议" v-model="currentUser.checked">
+            <a
+              href="https://ebook.hep.com.cn/ebooks/index.html#/staticys"
+              target="_blank"
+              style="text-decoration: none;
+    font-size: 12px;
+    color: #555;
+}"
+            >我已阅读并同意高教出版社门户网络使用协议</a>
+          </el-checkbox>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">点击完成</el-button>
@@ -121,7 +138,7 @@ export default {
         callback(new Error("请同意协议哦"));
       }
     };
-    let regE = /^([A-z0-9]{6,18})(\w|\-)+@[A-z0-9]+\.([A-z]{2,3})$/;
+    let regE = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/;
     let emailVal = (rule, value, callback) => {
       if (value) {
         let valueBool = value.trim().match(regE);
@@ -147,6 +164,7 @@ export default {
         checked: true,
         avatar: ""
       },
+      dialogShow: false,
       proOptions: null,
       schOptions: [],
       majorOptions: [],
@@ -212,76 +230,86 @@ export default {
       }
       // 上来先查一下 appInfo
     }
-    this.clientId =
-      JSON.parse(localStorage.getItem("_authing_clientInfo"))["clientId"] ||
-      null;
-    this.userToken = localStorage.getItem("_authing_token") || null;
-    this.userId =
-      JSON.parse(localStorage.getItem("_authing_userInfo"))["_id"] || null;
-    const that = this;
-    let auth = new Authing({
-      userPoolId: that.clientId || that.opts.clientId,
-      host: that.opts.host,
-      accessToken: that.userToken,
-      cdnHost: "https://node2d-public.hep.com.cn",
-      onInitError: err => {
-        this.changeLoading({ el: "page", loading: false });
-        this.authingOnError = true;
-        this.showGlobalMessage({
-          type: "error",
-          message: "Error: " + err.message
+    if (!localStorage.getItem("_authing_clientInfo")) {
+      this.dialogShow = true;
+    } else {
+      this.clientId =
+        JSON.parse(localStorage.getItem("_authing_clientInfo"))["clientId"] ||
+        null;
+      this.userToken = localStorage.getItem("_authing_token") || null;
+      this.userId =
+        JSON.parse(localStorage.getItem("_authing_userInfo"))["_id"] || null;
+      const that = this;
+      let auth = new Authing({
+        userPoolId: that.clientId || that.opts.clientId,
+        host: that.opts.host,
+        accessToken: that.userToken,
+        cdnHost: "https://node2d-public.hep.com.cn",
+        onInitError: err => {
+          this.changeLoading({ el: "page", loading: false });
+          this.authingOnError = true;
+          this.showGlobalMessage({
+            type: "error",
+            message: "Error: " + err.message
+          });
+          this.$authing.pub("authing-unload", err);
+        },
+        passwordEncPublicKey: that.opts.passwordEncPublicKey
+      });
+
+      let userPoolSettings = await auth.getUserPoolSettings(
+        that.clientId || that.opts.clientId
+      );
+      this.clientInfo = userPoolSettings;
+      this.changeLoading({ el: "page", loading: false });
+
+      window.validAuth = auth;
+      window.validAuth.clientInfo = userPoolSettings;
+      this.$authing.pub("authing-load", validAuth);
+
+      fetch("https://node2d-public.hep.com.cn/province.json").then(res => {
+        res.json().then(resp => {
+          this.proOptions = resp.province;
         });
-        this.$authing.pub("authing-unload", err);
-      },
-      passwordEncPublicKey: that.opts.passwordEncPublicKey
-    });
-
-    let userPoolSettings = await auth.getUserPoolSettings(
-      that.clientId || that.opts.clientId
-    );
-    this.clientInfo = userPoolSettings;
-    this.changeLoading({ el: "page", loading: false });
-
-    window.validAuth = auth;
-    window.validAuth.clientInfo = userPoolSettings;
-    this.$authing.pub("authing-load", validAuth);
-
-    fetch("https://node2d-public.hep.com.cn/province.json").then(res => {
-      res.json().then(resp => {
-        this.proOptions = resp.province;
       });
-    });
-    fetch("https://node2d-public.hep.com.cn/zy.json").then(res => {
-      res.json().then(resp => {
-        this.majorOptions = resp;
+      fetch("https://node2d-public.hep.com.cn/zy.json").then(res => {
+        res.json().then(resp => {
+          this.majorOptions = resp;
+        });
       });
-    });
-    this.schOptions = [];
-    fetch("https://node2d-public.hep.com.cn/school.json").then(res => {
-      res.json().then(resp => {
-        // this.school = resp;
-        this.schOptions = resp;
+      this.schOptions = [];
+      fetch("https://node2d-public.hep.com.cn/school.json").then(res => {
+        res.json().then(resp => {
+          this.schOptions = resp;
+        });
       });
-    });
-    window.validAuth.metadata(this.userId).then(res => {
-      let str = "";
-      str = str + res.list[0].value;
-      if (JSON.parse(str)) {
-        this.currentUser = JSON.parse(str);
-        // console.log(this.currentUser);
-        document.getElementById(
-          "avatarImg"
-        ).src = this.currentUser.avatar.photo;
-        this.showImg = true;
-        this.currentUser.job = 1;
-        this.currentUser.checked = true;
-      }
-    });
+      window.validAuth.metadata(this.userId).then(res => {
+        let str = "";
+        str = str + res.list[0].value;
+        if (JSON.parse(str)) {
+          this.currentUser = JSON.parse(str);
+          if (this.currentUser.photo) {
+            document.getElementById("avatarImg").src = this.currentUser.photo;
+            this.showImg = true;
+          }
+          this.currentUser.job = 1;
+          this.currentUser.checked = true;
+        }
+      });
+    }
   },
   destroyed() {
     sessionStorage.removeItem("jump2Profile");
   },
   methods: {
+    handleLogin() {
+      //跳转到登录页面
+      sessionStorage.setItem("jumpRegedit", true);
+      this.$router.push({
+        name: "indexLogin"
+      });
+      this.dialogShow = false;
+    },
     majorChange() {
       this.showInterTip = false;
     },
@@ -290,6 +318,7 @@ export default {
       window.validAuth.selectAvatarFile(val => {
         document.getElementById("avatarImg").src = val;
         this.showImg = true;
+        this.currentUser.photo = val;
         window.validAuth.update({ _id: that.userId, photo: val });
       });
     },
@@ -309,7 +338,6 @@ export default {
               })
               .then(res => {
                 if (res) {
-                  console.log(res);
                   $message.success({ message: "您已成功完善信息" });
                 }
               });
@@ -378,8 +406,8 @@ export default {
 </script>
 <style scoped>
 .con {
-  width: 60%;
-  margin-left: 18%;
+  background: #f1f1f1;
+  padding-top: 30px;
 }
 .regInput {
   width: 220px;
@@ -405,7 +433,7 @@ export default {
 }
 .avatarBox {
   position: absolute;
-  top: 15px;
+  top: 120px;
   left: 726px;
 }
 .majorTips {
@@ -416,5 +444,15 @@ export default {
   color: red;
   font-size: 12px;
   line-height: 12px;
+}
+.regBox {
+  width: 65%;
+  border: 1px solid #ccc;
+  margin-left: 223px;
+  border-radius: 2px;
+  box-shadow: 1px 1px 1px 1px #ccc;
+  background: #fff;
+  padding-top: 50px;
+  padding-left: 45px;
 }
 </style>
