@@ -1,7 +1,11 @@
 <template>
   <div>
     <form style="margin-bottom:16px" class="authing-form animate-box no-shadow">
-      <div v-show="opts.forceLogin" class="__authing_force_login_tips" style="text-align:center">
+      <div
+        v-show="opts.forceLogin"
+        class="__authing_force_login_tips"
+        style="text-align:center"
+      >
         <p>输入帐号密码登录</p>
         <p>如果您没有帐号，我们会自动创建</p>
       </div>
@@ -14,8 +18,8 @@
           v-model="email"
           placeholder="请输入 LDAP 的用户名"
           autocomplete="off"
-          @keyup.enter="handleLDAPLogin"
-        >
+          @keydown.13="handleLDAPLogin"
+        />
       </div>
       <div class="_authing_form-group">
         <input
@@ -25,8 +29,8 @@
           v-model="password"
           :placeholder="opts.placeholder.password"
           autocomplete="off"
-          @keyup.enter="handleLDAPLogin"
-        >
+          @keydown.13="handleLDAPLogin"
+        />
       </div>
       <div v-show="loginVerifyCodeVisible" class="form-group verify-code">
         <input
@@ -36,16 +40,19 @@
           v-model="verifyCode"
           :placeholder="opts.placeholder.verfiyCode"
           autocomplete="off"
-          @keyup.enter="handleLDAPLogin"
-        >
+          @keydown.13="handleLDAPLogin"
+        />
 
-        <div class="_authing_verify-code-loading-circle" v-show="loginVerifyCodeLoading"></div>
+        <div
+          class="_authing_verify-code-loading-circle"
+          v-show="loginVerifyCodeLoading"
+        ></div>
         <img
           :src="verifyCodeUrl"
           id="verify-code-img"
           v-show="!loginVerifyCodeLoading"
           @load="handleLoginVerifyCodeLoaded"
-        >
+        />
       </div>
       <div class="row backup">
         <div class="_authing_form-group" style="margin-bottom:0px;">
@@ -63,7 +70,9 @@
       </div>
     </form>
     <div class="_authing_form-footer login" v-show="!opts.hideUP">
-      <button @click="handleLDAPLogin" class="btn btn-primary"><span v-show="!formLoading">登录</span></button>
+      <button @click="handleLDAPLogin" class="btn btn-primary">
+        <span v-show="!formLoading">登录</span>
+      </button>
     </div>
   </div>
 </template>
@@ -100,11 +109,11 @@ export default {
     ...mapActions("loading", ["changeLoading"]),
     ...mapActions("data", [
       "showGlobalMessage",
-      'removeAnimation',
-      'removeRedLine',
-      'addRedLine',
-      'addAnimation',
-      'recordLoginInfo'
+      "removeAnimation",
+      "removeRedLine",
+      "addRedLine",
+      "addAnimation",
+      "recordLoginInfo"
     ]),
     ...mapActions("protocol", ["handleProtocolProcess"]),
     handleLoginVerifyCodeLoaded() {
@@ -164,5 +173,4 @@ export default {
   }
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

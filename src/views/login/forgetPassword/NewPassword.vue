@@ -9,12 +9,17 @@
           autocomplete="off"
           v-model="password"
           :placeholder="opts.placeholder.newPassword"
-          @keyup.enter="handleSubmitForgetPasswordNewPassword" 
-        >
+          @keydown.13="handleSubmitForgetPasswordNewPassword"
+        />
       </div>
     </div>
     <div class="_authing_form-footer login" v-show="!opts.hideUP">
-      <button @click="handleSubmitForgetPasswordNewPassword" class="btn btn-primary"><span v-show="!formLoading">提交新密码</span></button>
+      <button
+        @click="handleSubmitForgetPasswordNewPassword"
+        class="btn btn-primary"
+      >
+        <span v-show="!formLoading">提交新密码</span>
+      </button>
     </div>
   </div>
 </template>
@@ -30,7 +35,7 @@ export default {
     ...mapGetters("data", ["forgetPasswordVerifyCode", "forgetPasswordEmail"]),
     ...mapGetters("loading", {
       formLoading: "form"
-    }),
+    })
   },
   created() {
     this.$authing = this.$root.$data.$authing;
@@ -39,7 +44,11 @@ export default {
   methods: {
     ...mapActions("loading", ["changeLoading"]),
     ...mapActions("visibility", ["gotoLogin"]),
-    ...mapActions("data", ["showGlobalMessage", "saveSignUpInfo", "addAnimation"]),
+    ...mapActions("data", [
+      "showGlobalMessage",
+      "saveSignUpInfo",
+      "addAnimation"
+    ]),
     handleSubmitForgetPasswordNewPassword() {
       var that = this;
       this.changeLoading({ el: "form", loading: true });
@@ -77,7 +86,10 @@ export default {
             type: "success",
             message: "修改密码成功"
           });
-          that.saveSignUpInfo({email: that.forgetPasswordEmail, password: this.password})
+          that.saveSignUpInfo({
+            email: that.forgetPasswordEmail,
+            password: this.password
+          });
           that.gotoLogin();
         })
         .catch(err => {
@@ -92,5 +104,4 @@ export default {
   }
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>
