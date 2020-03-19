@@ -381,6 +381,10 @@ export default {
             that.addAnimation("login-password");
             that.removeRedLine("verify-code");
             that.removeRedLine("login-username");
+            that.showGlobalMessage({
+              type: "error",
+              message: err.message.message
+            });
             if (err.message.data.url) {
               that.verifyCodeUrl = err.message.data.url;
             } else {
