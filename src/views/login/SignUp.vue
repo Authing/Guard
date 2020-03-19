@@ -31,7 +31,7 @@
           id="sign-up-password"
           v-model="signUpForm.password"
           :placeholder="opts.placeholder.password"
-          autocomplete="off"
+          autocomplete="new-password"
           @keyup.enter="handleSignUp"
         />
       </div>
