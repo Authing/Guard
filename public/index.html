@@ -18,6 +18,12 @@
     <div id="app"></div>
   </body>
   <script>
+    window.onload = function resize() {
+      // 防止移动端登录按钮被遮挡
+      document.getElementsByClassName(
+        "authing-login-form-wrapper"
+      )[0].style.height = window.innerHeight + "px";
+    };
     /* 测试 LoginForm */
     // let clientId = '5cbd6716aaaa70cb9a58d86f'
     // const guard = new AuthingGuard(clientId, undefined, {
