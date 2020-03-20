@@ -23,7 +23,7 @@
           <el-date-picker v-model="currentUser.birthDate" type="date" placeholder="请选择出生日期"></el-date-picker>
         </el-form-item>
         <el-form-item label="所在省份" required prop="province">
-          <el-select v-model="currentUser.province" placeholder="请选择">
+          <el-select v-model="currentUser.province" placeholder="请选择" @change="changeProvince">
             <el-option
               v-for="item in proOptions"
               :key="item.id"
@@ -104,14 +104,13 @@
         </el-form-item>
         <el-form-item label prop="checked">
           <el-checkbox label="我已阅读并同意高教出版社门户网络使用协议" v-model="currentUser.checked">
-            <a
-              href="https://ebook.hep.com.cn/ebooks/index.html#/staticys"
+            <router-link
               target="_blank"
-              style="text-decoration: none;
+              :to="{path:'/PrivacyPolicy'}"
+              style="    text-decoration: none;
     font-size: 12px;
-    color: #555;
-}"
-            >我已阅读并同意高教出版社门户网络使用协议</a>
+    color: #6a5d5d;"
+            >高教出版社门户网络使用协议</router-link>
           </el-checkbox>
         </el-form-item>
         <el-form-item>
@@ -124,6 +123,16 @@
         </div>
         <span @click="onChooseImg" class="chooseImgBt">点击上传头像</span>
       </div>
+    </div>
+    <div v-if="!closeForm" class="authing-form-badge-bottom">
+      <a
+        href="https://authing.cn/?utm_source=form&amp;utm_campaign=badge&amp;utm_medium=widget"
+        target="_blank"
+        class="_authing_a authing-form-badge"
+      >
+        <span>Protected with</span>
+        <span>高等教育出版社用户中心</span>
+      </a>
     </div>
   </div>
 </template>
@@ -200,8 +209,8 @@ export default {
       },
       showInterTip: false,
       userId: "",
-      major: [],
-      school: []
+      schoolList: [],
+      currentProvince: ""
     };
   },
   created() {
@@ -281,6 +290,7 @@ export default {
       fetch("https://node2d-public.hep.com.cn/school.json").then(res => {
         res.json().then(resp => {
           this.schOptions = resp;
+          this.schoolList = resp;
         });
       });
       window.validAuth.metadata(this.userId).then(res => {
@@ -302,6 +312,13 @@ export default {
     sessionStorage.removeItem("jump2Profile");
   },
   methods: {
+    changeProvince(e) {
+      this.currentProvince = e;
+      console.log(this.schoolList);
+      this.schOptions = this.schoolList.filter(v => {
+        return v.text.includes(e);
+      });
+    },
     handleLogin() {
       //跳转到登录页面
       sessionStorage.setItem("jumpRegedit", true);
@@ -322,6 +339,13 @@ export default {
         window.validAuth.update({ _id: that.userId, photo: val });
       });
     },
+    backPage() {
+      //格式检验
+      let reg = /^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/;
+      if (reg.test(this.params.redirect_uri)) {
+        location.href = this.params.redirect_uri;
+      }
+    },
     onSubmit() {
       this.$refs["ruleForm"].validate(valid => {
         if (valid) {
@@ -340,6 +364,7 @@ export default {
                 if (res) {
                   $message.success({ message: "您已成功完善信息" });
                 }
+                this.backPage();
               });
             ////////这里提交表单
           } else {
@@ -454,5 +479,17 @@ export default {
   background: #fff;
   padding-top: 50px;
   padding-left: 45px;
+}
+.authing-form-badge-bottom {
+  position: fixed;
+  bottom: 15px;
+  left: 15px;
+  z-index: 5;
+  text-align: center;
+  padding: 6px 10px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-box-shadow: 2px -2px 5px #eaeaea;
+  box-shadow: 2px -2px 5px #eaeaea;
 }
 </style>

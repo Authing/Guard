@@ -7,7 +7,8 @@
         <el-button type="primary" @click="handleLogin">确 定</el-button>
       </span>
     </el-dialog>
-    <div class="bdround bgwhite regbox" style="border:5px solid #c0ecf4;">
+    <div class="bdround bgwhite regbox" style="border:5px solid #c0ecf4;" v-show="!submitted">
+      <!-- 未提交过审核 -->
       <div class="text-center f_30 whrite lh-40 padt50 tcherbg"></div>
       <el-form
         :model="ruleForm"
@@ -65,7 +66,7 @@
               <span v-show="imgTips" class="imgTips">教师资格证忘了上传哦</span>
             </el-form-item>
 
-            <el-form-item label="所在省份" prop="province">
+            <!-- <el-form-item label="所在省份" prop="province">
               <el-select style="width:220px;" v-model="ruleForm.province" placeholder="请选择省份">
                 <el-option
                   v-for="province in provinceList"
@@ -75,7 +76,7 @@
                 ></el-option>
               </el-select>
               <span class="f_12 black3 padl15">请填写所在省份，认证后可以修改</span>
-            </el-form-item>
+            </el-form-item>-->
 
             <el-form-item label="所在学校" prop="school">
               <el-select
@@ -169,6 +170,27 @@
         </el-row>
       </el-form>
     </div>
+    <div v-show="submitted">
+      <!-- 如果通过审核了，提示请耐心等待，并跳回其他页面或等待用户关闭 -->
+      <el-dialog title="未登录提示" width="30%" :visible="tipsSubmitted">
+        <span>您的审核已提交，请耐心等待，如有修改，请点击修改。</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="handleEdit">修改</el-button>
+          <el-button @click="backPage" v-show="showReturn">返回</el-button>
+          <el-button @click="closePage" v-show="!showReturn">关闭</el-button>
+        </span>
+      </el-dialog>
+    </div>
+    <div v-if="!closeForm" class="authing-form-badge-bottom">
+      <a
+        href="https://authing.cn/?utm_source=form&amp;utm_campaign=badge&amp;utm_medium=widget"
+        target="_blank"
+        class="_authing_a authing-form-badge"
+      >
+        <span>Protected with</span>
+        <span>高等教育出版社用户中心</span>
+      </a>
+    </div>
   </div>
 </template>
 <script>
@@ -194,7 +216,7 @@ export default {
         gender: "1",
         birthDate: "",
         tel: "",
-        province: "",
+        // province: "",
         school: "",
         department: "",
         profession: "",
@@ -207,6 +229,8 @@ export default {
         certificatesUrls: ""
       },
       status: 0,
+      submitted: false,
+      tipsSubmitted: true,
       provinceList: [],
       schoolList: [],
       majorOptions: [],
@@ -225,9 +249,9 @@ export default {
       hasLDAP: false,
       showImg: false,
       rules: {
-        province: [
-          { required: true, message: "请选择省份", trigger: "change" }
-        ],
+        // province: [
+        //   { required: true, message: "请选择省份", trigger: "change" }
+        // ],
         school: [
           {
             required: true,
@@ -237,6 +261,7 @@ export default {
         ],
         tel: [{ validator: phoneVal, trigger: "blur" }]
       },
+      showReturn: false,
       userId: "",
       imgTips: ""
     };
@@ -258,6 +283,9 @@ export default {
         this.handleClose();
       }
     };
+    if (this.params.redirect_uri) {
+      this.showReturn = true;
+    }
   },
   async mounted() {
     fetch("https://node2d-public.hep.com.cn/zy.json").then(res => {
@@ -265,11 +293,11 @@ export default {
         this.majorOptions = resp;
       });
     });
-    fetch("https://node2d-public.hep.com.cn/province.json").then(res => {
-      res.json().then(resp => {
-        this.provinceList = resp.province;
-      });
-    });
+    // fetch("https://node2d-public.hep.com.cn/province.json").then(res => {
+    //   res.json().then(resp => {
+    //     this.provinceList = resp.province;
+    //   });
+    // });
     fetch("https://node2d-public.hep.com.cn/school.json").then(res => {
       res.json().then(resp => {
         this.schoolList = resp;
@@ -315,17 +343,28 @@ export default {
       this.$authing.pub("authing-load", validAuth);
       window.validAuth.metadata(this.userId).then(res => {
         if (res) {
+          let regeditUser = null;
+          let teaIdentityUser = null;
           for (let val of res.list) {
+            if (val.key === "currentUser") {
+              regeditUser = JSON.parse(val.value);
+            }
             if (val.key === "teaIdentityForm") {
-              this.ruleForm = JSON.parse(val.value);
-              document.getElementById("avatarImg").src = this.ruleForm.img;
-              this.showImg = true;
+              teaIdentityUser = JSON.parse(val.value);
             }
             if (val.key === "status") {
               if (val.value !== "待审核") {
+                //审核通过
                 this.status = 1;
+              } else {
+                //提交审核但未通过
+                this.status = 0;
+                this.submitted = true;
               }
             }
+            this.ruleForm = Object.assign({}, regeditUser, teaIdentityUser);
+            document.getElementById("avatarImg").src = this.ruleForm.img;
+            this.showImg = true;
           }
         }
       });
@@ -335,6 +374,21 @@ export default {
     sessionStorage.removeItem("jump2Profile");
   },
   methods: {
+    handleEdit() {
+      this.dialogShow = false;
+      this.submitted = false;
+      this.tipsSubmitted = false;
+    },
+    backPage() {
+      //格式检验
+      let reg = /^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+$/;
+      if (reg.test(this.params.redirect_uri)) {
+        location.href = this.params.redirect_uri;
+      }
+    },
+    closePage() {
+      window.close();
+    },
     handleLogin() {
       //跳转到登录页面
       sessionStorage.setItem("jumpTeaIentity", true);
@@ -370,6 +424,7 @@ export default {
                 if (res) {
                   $message.success({ message: "您已成功提交审核" });
                 }
+                this.backPage();
               });
             ////////这里提交表单
           } else {
@@ -446,7 +501,7 @@ export default {
 <style scoped>
 .con {
   width: 60%;
-  margin-left: 18%;
+  margin-left: 15%;
 }
 
 .userdata {
@@ -485,5 +540,18 @@ export default {
   color: red;
   font-size: 12px;
   margin-left: 20px;
+}
+
+.authing-form-badge-bottom {
+  position: fixed;
+  bottom: 15px;
+  left: 15px;
+  z-index: 5;
+  text-align: center;
+  padding: 6px 10px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-box-shadow: 2px -2px 5px #eaeaea;
+  box-shadow: 2px -2px 5px #eaeaea;
 }
 </style>
