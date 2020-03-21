@@ -814,7 +814,7 @@ export default {
     },
     async isLogged() {
       let appToken = localStorage.getItem('appToken');
-
+      let casLogged = false;
       if (appToken) {
         try {
           appToken = JSON.parse(appToken);
@@ -882,11 +882,12 @@ export default {
             userInfo: sess.userInfo
           };
           localStorage.setItem('appToken', JSON.stringify(obj));
+          casLogged = true;
         } catch (err) {
           void 0;
         }
       }
-      return appToken[this.opts.appId] && appToken[this.opts.appId].accessToken;
+      return casLogged || (appToken[this.opts.appId] && appToken[this.opts.appId].accessToken);
     }
   },
   computed: {
