@@ -275,23 +275,17 @@ export default {
         })
         .catch(err => {
           that.changeLoading({ el: "form", loading: false });
-          // 因为 Guard 显示不报错，所以将下面的注释，也没有出现下面描述的问题
-          // if (!this.$authing.opts.forceLogin) {
-            // 如果开启了强制登录、就不要显示此报错了，不然页面会出现红色错误突然一闪的情况
+          // 验证码错误
+          if (err.message.code === 2000 || err.message.code === 2001) {
+            that.addAnimation("verify-code");
+            that.removeRedLine("login-username");
+            that.removeRedLine("login-password");
             that.$authing.pub("login-error", err);
             that.$authing.pub("authenticated-error", err);
             that.showGlobalMessage({
               type: "error",
               message: err.message.message
             });
-          // }
-
-          // 验证码错误
-          if (err.message.code === 2000 || err.message.code === 2001) {
-            that.addAnimation("verify-code");
-            that.removeRedLine("login-username");
-            that.removeRedLine("login-password");
-
             that.changeLoading({ el: "loginVerifyCode", loading: true });
             that.changeVisibility({
               el: "loginVerifyCode",
@@ -367,6 +361,12 @@ export default {
                 });
               return false;
             } else {
+              that.$authing.pub("login-error", err);
+              that.$authing.pub("authenticated-error", err);
+              that.showGlobalMessage({
+                type: "error",
+                message: err.message.message
+              });
               that.addAnimation("login-username");
               that.removeRedLine("login-password");
               that.removeRedLine("verify-code");
@@ -381,6 +381,12 @@ export default {
             that.addAnimation("login-password");
             that.removeRedLine("verify-code");
             that.removeRedLine("login-username");
+            that.$authing.pub("login-error", err);
+            that.$authing.pub("authenticated-error", err);
+            that.showGlobalMessage({
+              type: "error",
+              message: err.message.message
+            });
             if (err.message.data.url) {
               that.verifyCodeUrl = err.message.data.url;
             } else {
