@@ -275,8 +275,8 @@ export default {
         })
         .catch(err => {
           that.changeLoading({ el: "form", loading: false });
-
-          if (!this.$authing.opts.forceLogin) {
+          // 因为 Guard 显示不报错，所以将下面的注释，也没有出现下面描述的问题
+          // if (!this.$authing.opts.forceLogin) {
             // 如果开启了强制登录、就不要显示此报错了，不然页面会出现红色错误突然一闪的情况
             that.$authing.pub("login-error", err);
             that.$authing.pub("authenticated-error", err);
@@ -284,7 +284,7 @@ export default {
               type: "error",
               message: err.message.message
             });
-          }
+          // }
 
           // 验证码错误
           if (err.message.code === 2000 || err.message.code === 2001) {
