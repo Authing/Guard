@@ -37,7 +37,7 @@
             v-model="loginForm.email"
             :placeholder="opts.placeholder.email"
             autocomplete="off"
-            @keyup.enter="handleLogin"
+            @keydown.13="handleLogin"
           />
         </div>
         <div class="_authing_form-group">
@@ -48,7 +48,7 @@
             v-model="loginForm.password"
             :placeholder="opts.placeholder.password"
             autocomplete="off"
-            @keyup.enter="handleLogin"
+            @keydown.13="handleLogin"
           />
         </div>
         <div v-show="loginVerifyCodeVisible" class="form-group verify-code">
@@ -59,7 +59,7 @@
             v-model="verifyCode"
             :placeholder="opts.placeholder.verfiyCode"
             autocomplete="off"
-            @keyup.enter="handleLogin"
+            @keydown.13="handleLogin"
           />
 
           <div
