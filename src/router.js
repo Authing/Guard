@@ -9,6 +9,7 @@ import Login from './views/login/index.vue';
 import Regedit from './views/regedit/regedit.vue'
 import Simple from './views/simple/index.vue'
 import TeaIdentity from './views/teaIdentity/teaIdentity.vue'
+import PrivacyPolicy from './views/privacyPolicy.vue'
 
 Vue.use(Router);
 
@@ -60,6 +61,11 @@ let routerConfig = {
       path: '/teaIdentity',
       name: 'teaIdentity',
       component: TeaIdentity
+    },
+    {
+      path: '/privacyPolicy',
+      name: 'privacyPolicy',
+      component: PrivacyPolicy
     }
   ]
 }
