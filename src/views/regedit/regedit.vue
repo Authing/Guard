@@ -9,9 +9,6 @@
     </el-dialog>
     <div class="regBox">
       <el-form :model="currentUser" label-width="150px" :rules="rules" ref="ruleForm">
-        <el-form-item label="邮箱" prop="email">
-          <el-input v-model="currentUser.email" class="regInput"></el-input>
-        </el-form-item>
         <el-form-item label="昵称">
           <el-input v-model="currentUser.name" class="regInput"></el-input>
         </el-form-item>
@@ -23,7 +20,7 @@
           <el-date-picker v-model="currentUser.birthDate" type="date" placeholder="请选择出生日期"></el-date-picker>
         </el-form-item>
         <el-form-item label="所在省份" required prop="province">
-          <el-select v-model="currentUser.province" placeholder="请选择" @change="changeProvince">
+          <el-select v-model="currentUser.province" placeholder="请选择">
             <el-option
               v-for="item in proOptions"
               :key="item.id"
@@ -147,22 +144,8 @@ export default {
         callback(new Error("请同意协议哦"));
       }
     };
-    let regE = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/;
-    let emailVal = (rule, value, callback) => {
-      if (value) {
-        let valueBool = value.trim().match(regE);
-        if (valueBool) {
-          callback();
-        } else {
-          callback(new Error("请填写正确的邮箱。"));
-        }
-      } else {
-        callback();
-      }
-    };
     return {
       currentUser: {
-        email: "",
         gender: "1",
         province: "",
         school: "",
@@ -199,18 +182,12 @@ export default {
           }
         ],
         job: [{ required: true, message: "请选择职业", trigger: "change" }],
-        checked: [{ validator: validateSure, trigger: "change" }],
-        email: [
-          {
-            validator: emailVal,
-            trigger: "blur"
-          }
-        ]
+        checked: [{ validator: validateSure, trigger: "change" }]
       },
       showInterTip: false,
       userId: "",
-      schoolList: [],
-      currentProvince: ""
+      currentProvince: "",
+      userInfo: ""
     };
   },
   created() {
@@ -248,6 +225,7 @@ export default {
       this.userToken = localStorage.getItem("_authing_token") || null;
       this.userId =
         JSON.parse(localStorage.getItem("_authing_userInfo"))["_id"] || null;
+      this.userInfo = JSON.parse(localStorage.getItem("_authing_userInfo"));
       const that = this;
       let auth = new Authing({
         userPoolId: that.clientId || that.opts.clientId,
@@ -290,20 +268,30 @@ export default {
       fetch("https://node2d-public.hep.com.cn/school.json").then(res => {
         res.json().then(resp => {
           this.schOptions = resp;
-          this.schoolList = resp;
         });
       });
       window.validAuth.metadata(this.userId).then(res => {
-        let str = "";
-        str = str + res.list[0].value;
-        if (JSON.parse(str)) {
-          this.currentUser = JSON.parse(str);
-          if (this.currentUser.photo) {
-            document.getElementById("avatarImg").src = this.currentUser.photo;
-            this.showImg = true;
+        if (res) {
+          for (let val of res.list) {
+            if (val.key === "currentUser") {
+              let str = "";
+              str = str + res.list[0].value;
+              if (JSON.parse(str)) {
+                this.currentUser = JSON.parse(str);
+                if (this.currentUser.photo) {
+                  document.getElementById(
+                    "avatarImg"
+                  ).src = this.currentUser.photo;
+                  this.showImg = true;
+                }
+                this.currentUser.job = 1;
+                this.currentUser.checked = true;
+                if (!this.currentUser.nickname) {
+                  this.currentUser.nickname = this.userInfo.nickname;
+                }
+              }
+            }
           }
-          this.currentUser.job = 1;
-          this.currentUser.checked = true;
         }
       });
     }
@@ -312,13 +300,6 @@ export default {
     sessionStorage.removeItem("jump2Profile");
   },
   methods: {
-    changeProvince(e) {
-      this.currentProvince = e;
-      console.log(this.schoolList);
-      this.schOptions = this.schoolList.filter(v => {
-        return v.text.includes(e);
-      });
-    },
     handleLogin() {
       //跳转到登录页面
       sessionStorage.setItem("jumpRegedit", true);
