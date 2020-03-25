@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="form-body">
-      <!-- 暂时隐藏 社会化登录 按钮们 -->
       <SocialButtonsList
         v-if="!socialButtonsListLoading && socialButtonsList.length > 0"
       />
