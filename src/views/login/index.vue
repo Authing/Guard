@@ -814,7 +814,7 @@ export default {
     },
     async isLogged() {
       let appToken = localStorage.getItem('appToken');
-      let casLogged = false;
+
       if (appToken) {
         try {
           appToken = JSON.parse(appToken);
@@ -864,30 +864,8 @@ export default {
           // 什么也不做，吞掉 error
         }
         return false;
-      } else {
-        // 如果 trackSession 得到结果了，就更新本地存储的一些 token
-        localStorage.setItem('_authing_token', sess.userInfo.token);
-        localStorage.setItem('_authing_userinfo', JSON.stringify(sess.userInfo));
-        try {
-          let obj = {};
-          let appToken = localStorage.getItem('appToken');
-          try {
-            obj = JSON.parse(appToken);
-          } catch (err) {
-            void 0;
-          }
-          obj = obj || {};
-          obj[this.opts.appId] = {
-            accessToken: sess.userInfo.token,
-            userInfo: sess.userInfo
-          };
-          localStorage.setItem('appToken', JSON.stringify(obj));
-          casLogged = true;
-        } catch (err) {
-          void 0;
-        }
       }
-      return casLogged || (appToken[this.opts.appId] && appToken[this.opts.appId].accessToken);
+      return appToken[this.opts.appId] && appToken[this.opts.appId].accessToken;
     }
   },
   computed: {
