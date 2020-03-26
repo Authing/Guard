@@ -65,36 +65,14 @@
               <div slot="tip" class="f_12 black3">请上传教师资格证，只能上传jpg/png文件，且不超过4Mb。认证后不可修改。</div>
               <span v-show="imgTips" class="imgTips">教师资格证忘了上传哦</span>
             </el-form-item>
-
-            <!-- <el-form-item label="所在省份" prop="province">
-              <el-select style="width:220px;" v-model="ruleForm.province" placeholder="请选择省份">
-                <el-option
-                  v-for="province in provinceList"
-                  :key="province.id"
-                  :label="province.description"
-                  :value="province.description"
-                ></el-option>
-              </el-select>
-              <span class="f_12 black3 padl15">请填写所在省份，认证后可以修改</span>
-            </el-form-item>-->
-
-            <el-form-item label="所在学校" prop="school">
-              <el-select
-                style="width:220px;"
-                v-model="ruleForm.school"
-                placeholder="请选择学校"
-                filterable
-              >
-                <el-option
-                  v-for="school in schoolList"
-                  :label="school.text"
-                  :value="school.text"
-                  :key="school.nodeid"
-                ></el-option>
-              </el-select>
+            <el-form-item label="学校" required style="margin-bottom:9px">
+              <span
+                class="schoolSpan"
+                @click="alertChooseProvince"
+              >{{schoolTextShow?province1+"-"+school1:"点击选择学校"}}</span>
               <span class="f_12 black3 padl15">请填写所在学校，认证后可以修改</span>
+              <span class="schoolTips" v-show="showSchoolTips">学校不能为空</span>
             </el-form-item>
-
             <el-form-item label="所在院系" prop="department" required>
               <el-input style="width:220px;" v-model="ruleForm.department"></el-input>
               <span class="f_12 black3 padl15">请填写所在院系，认证后可以修改</span>
@@ -170,6 +148,45 @@
         </el-row>
       </el-form>
     </div>
+    <div class="modelProvince" v-show="provinceChooseShow">
+      <span style="font-weight:bold;
+    margin: 8px 8px 8px;
+    display: inline-block;">选择:</span>
+      <hr />
+      <div class="provinceBox">
+        <span
+          class="proOptions"
+          v-for="item in provinceList"
+          :key="item.nodeid"
+          @click="chooseProvince(item)"
+        >{{item.text}}</span>
+      </div>
+    </div>
+    <div class="modelSchool" v-show="schoolChooseShow">
+      <span style="font-weight:bold;
+    margin: 8px 8px 8px;
+    display: inline-block;">
+        {{currentProvince.text}}
+        <span
+          style="font-weight: normal;
+    margin-left: 806px;cursor:pointer
+"
+          @click="closeChoose"
+        >X</span>
+      </span>
+      <hr />
+      <div class="schoolBox" v-if="schoolList">
+        <span
+          class="schOptions"
+          v-for="item in schoolList"
+          :key="item.nodeid"
+          @click="chooseSchool(item)"
+        >{{item.text}}</span>
+      </div>
+      <div class="schoolNull" v-else>
+        <span>此城市下没有找到大学哦~</span>
+      </div>
+    </div>
     <div v-show="submitted">
       <!-- 如果通过审核了，提示请耐心等待，并跳回其他页面或等待用户关闭 -->
       <el-dialog title="未登录提示" width="30%" :visible="tipsSubmitted">
@@ -195,6 +212,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
+import schoolJson from "./../../../public/school.json";
 export default {
   data() {
     let phone_reg = new RegExp(/^\d{3}-\d{7,8}|\d{4}-\d{7,8}$/);
@@ -216,7 +234,7 @@ export default {
         gender: "1",
         birthDate: "",
         tel: "",
-        // province: "",
+        province: "",
         school: "",
         department: "",
         profession: "",
@@ -228,6 +246,8 @@ export default {
         postcode: "",
         certificatesUrls: ""
       },
+      province1: "",
+      school1: "",
       status: 0,
       submitted: false,
       tipsSubmitted: true,
@@ -249,21 +269,17 @@ export default {
       hasLDAP: false,
       showImg: false,
       rules: {
-        // province: [
-        //   { required: true, message: "请选择省份", trigger: "change" }
-        // ],
-        school: [
-          {
-            required: true,
-            message: "请选择学校",
-            trigger: "change"
-          }
-        ],
         tel: [{ validator: phoneVal, trigger: "blur" }]
       },
       showReturn: false,
       userId: "",
-      imgTips: ""
+      imgTips: "",
+      testJson: [],
+      schoolTextShow: false,
+      provinceChooseShow: false,
+      schoolChooseShow: false,
+      currentProvince: { text: "北京" },
+      showSchoolTips: false
     };
   },
   created() {
@@ -288,21 +304,17 @@ export default {
     }
   },
   async mounted() {
+    this.testJson = schoolJson;
     fetch("https://node2d-public.hep.com.cn/zy.json").then(res => {
       res.json().then(resp => {
         this.majorOptions = resp;
       });
     });
-    // fetch("https://node2d-public.hep.com.cn/province.json").then(res => {
-    //   res.json().then(resp => {
-    //     this.provinceList = resp.province;
-    //   });
-    // });
-    fetch("https://node2d-public.hep.com.cn/school.json").then(res => {
-      res.json().then(resp => {
-        this.schoolList = resp;
-      });
-    });
+    // fetch("https://sso.hep.com.cn/account/bulidJsonSchoolTree")
+    //   .then(res => res.json())
+    //   .then(resp => console.log(resp));
+    //此处获取 大学列表赋值给testJson,对testJson进行处理
+    this.handleSchool();
     if (!localStorage.getItem("_authing_clientInfo")) {
       this.dialogShow = true;
     } else {
@@ -365,6 +377,12 @@ export default {
             this.ruleForm = Object.assign({}, regeditUser, teaIdentityUser);
             document.getElementById("avatarImg").src = this.ruleForm.img;
             this.showImg = true;
+            // console.log(this.ruleForm);
+            if (this.ruleForm.school) {
+              this.province1 = this.ruleForm.province;
+              this.school1 = this.ruleForm.school;
+              this.schoolTextShow = true;
+            }
           }
         }
       });
@@ -374,6 +392,35 @@ export default {
     sessionStorage.removeItem("jump2Profile");
   },
   methods: {
+    chooseProvince(val) {
+      this.showSchoolTips = false;
+      this.currentProvince = val;
+      this.provinceChooseShow = false;
+      this.schoolChooseShow = true;
+      //从jsonTest里面 找到 nodeid==val.node的,this.schoolList = nodes
+      for (let value of this.testJson) {
+        if (value.nodeid === val.nodeid) {
+          this.schoolList = value.nodes;
+        }
+      }
+    },
+    chooseSchool(val) {
+      this.schoolTextShow = true;
+      this.school1 = val.text;
+      this.province1 = this.currentProvince.text;
+      this.ruleForm.province = this.currentProvince.text;
+      this.schoolChooseShow = false;
+      this.ruleForm.school = val.text;
+    },
+    alertChooseProvince() {
+      //弹出城市窗口，选择后记录选择的城市，关闭城市窗口，打开对应的大学列表窗口，选择后记录大学，关闭大学列表窗口
+      this.provinceChooseShow = true;
+    },
+    handleSchool() {
+      for (let val of this.testJson) {
+        this.provinceList.push(val);
+      }
+    },
     handleEdit() {
       this.dialogShow = false;
       this.submitted = false;
@@ -409,33 +456,48 @@ export default {
       this.$refs["ruleForm"].validate(valid => {
         if (valid) {
           if (this.ruleForm.img) {
-            window.validAuth.setMetadata({
-              _id: this.userId,
-              key: "teaIdentityForm",
-              value: JSON.stringify(this.ruleForm)
-            });
-            window.validAuth
-              .setMetadata({
-                _id: this.userId,
-                key: "status",
-                value: "待审核"
-              })
-              .then(res => {
-                if (res) {
-                  $message.success({ message: "您已成功提交审核" });
-                }
-                this.backPage();
-              });
-            ////////这里提交表单
+            if (this.ruleForm.school) {
+              this.handleSubmit();
+            } else {
+              this.showSchoolTips = true;
+              return false;
+            }
           } else {
-            this.imgTips = true;
+            console.log("error submit!!");
             return false;
           }
         } else {
-          console.log("error submit!!");
+          this.imgTips = true;
           return false;
         }
       });
+    },
+    closeChoose() {
+      this.schoolChooseShow = false;
+      if (this.ruleForm.school) {
+        this.schoolTextShow = true;
+      } else {
+        this.schoolTextShow = false;
+      }
+    },
+    handleSubmit() {
+      window.validAuth.setMetadata({
+        _id: this.userId,
+        key: "teaIdentityForm",
+        value: JSON.stringify(this.ruleForm)
+      });
+      window.validAuth
+        .setMetadata({
+          _id: this.userId,
+          key: "status",
+          value: "待审核"
+        })
+        .then(res => {
+          if (res) {
+            $message.success({ message: "您已成功提交审核" });
+          }
+          this.backPage();
+        });
     },
     ...mapActions("visibility", [
       "gotoWxQRCodeScanning",
@@ -503,7 +565,79 @@ export default {
   width: 60%;
   margin-left: 15%;
 }
-
+.schoolTips {
+  color: red;
+  font-size: 12px;
+  display: block;
+  line-height: 20px;
+}
+.modelProvince {
+  width: 50%;
+  background: #f5f7faf0;
+  border: 1px solid #cccccc;
+  height: 300px;
+  position: absolute;
+  left: 325px;
+  top: 558px;
+  border-radius: 5px;
+}
+.provinceBox {
+  width: 100%;
+  height: 256px;
+  overflow: auto;
+}
+.schoolBox {
+  width: 100%;
+  height: 332px;
+  overflow: auto;
+}
+.schoolNull {
+  text-align: center;
+  display: block;
+  width: 100%;
+  height: 350px;
+  overflow: auto;
+}
+.modelSchool {
+  width: 70%;
+  background: #f5f7faf0;
+  border: 1px solid #cccccc;
+  height: 393px;
+  position: absolute;
+  left: 200px;
+  top: 526px;
+  border-radius: 5px;
+}
+.schoolSpan {
+  display: inline-block;
+  width: 220px;
+  border: 1px solid #cccccc7d;
+  border-radius: 5px;
+  line-height: 38px;
+  text-align: center;
+  color: #606266;
+  cursor: pointer;
+}
+.proOptions {
+  cursor: pointer;
+  width: 146px;
+  margin-right: 6px;
+  margin-bottom: 10px;
+  display: inline-block;
+  text-align: center;
+}
+.schOptions {
+  cursor: pointer;
+  width: 272px;
+  margin-right: 6px;
+  margin-bottom: 10px;
+  display: inline-block;
+  text-align: center;
+}
+.proOptions:hover,
+.schOptions:hover {
+  color: rgba(11, 125, 149, 1);
+}
 .userdata {
   display: block;
   float: left;
