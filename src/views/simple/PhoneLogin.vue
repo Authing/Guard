@@ -46,14 +46,13 @@
           </div>
         </div>
         <el-checkbox label="隐私政策" v-model="checked" @change="changeCheck">
-          <a
-            href="https://ebook.hep.com.cn/ebooks/index.html#/staticys"
+          <router-link
             target="_blank"
-            style="text-decoration: none;
+            :to="{path:'/PrivacyPolicy'}"
+            style="    text-decoration: none;
     font-size: 12px;
-    color: #555;
-}"
-          >隐私政策</a>
+    color: #6a5d5d;"
+          >同意《隐私政策》</router-link>
         </el-checkbox>
         <br />
         <span class="privateTips" v-show="showPriTips">请同意隐私政策</span>

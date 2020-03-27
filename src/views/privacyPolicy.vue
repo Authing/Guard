@@ -465,34 +465,6 @@
             </section>
           </section>
         </section>
-        <section
-          id="udesk_container"
-          style="color: rgb(0, 0, 0); font-size: medium; font-family: &quot;Microsoft YaHei&quot;;"
-        >
-          <section id="udesk_btn">
-            <a
-              style="display: block; position: fixed; box-sizing: border-box; font-size: 13px; color: rgb(255, 255, 255); text-align: center; cursor: pointer; text-decoration: none; z-index: 1000000000; border-width: 1px 1px 0px; border-top-style: solid; border-right-style: solid; border-left-style: solid; border-top-color: rgba(0, 0, 0, 0.1); border-right-color: rgba(0, 0, 0, 0.1); border-left-color: rgba(0, 0, 0, 0.1); border-image: initial; border-bottom-style: initial; border-bottom-color: initial; background-color: rgb(48, 122, 232); height: 40px; right: 0px; bottom: 0px; margin: 3px 30px;"
-            >
-              <span
-                style="margin: 7px 7px 0px; padding: 0px; display: block; float: left; width: 24px; height: 24px;"
-              >
-                <img
-                  src="https://static-ud.udesk.cn/img/msg2@68x66.png"
-                  style="width: 24px; height: 24px;"
-                  data-ratio="1"
-                  data-w="48"
-                />
-              </span>
-              <span
-                style="margin: 0px; padding: 0px; display: block; float: left; width: 1px; height: 39px; background-color: rgba(0, 0, 0, 0.08); vertical-align: middle;"
-              ></span>
-              <span
-                id="udesk_btn_text"
-                style="margin: 0px 10px; padding: 0px; display: block; float: left; height: 40px; line-height: 40px; overflow-y: hidden; font-size: 13px; color: #FFFFFF;"
-              >在线咨询</span>
-            </a>
-          </section>
-        </section>
         <p>
           <br />
         </p>

@@ -52,7 +52,7 @@
             style="    text-decoration: none;
     font-size: 12px;
     color: #6a5d5d;"
-          >隐私政策</router-link>
+          >同意《隐私政策》</router-link>
         </el-checkbox>
         <br />
         <span class="privateTips" v-show="showPriTips">请同意隐私政策</span>

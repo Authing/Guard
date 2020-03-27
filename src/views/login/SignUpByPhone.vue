@@ -35,10 +35,7 @@
           @keyup.enter="handleSignUp"
         />
       </div>
-      <div
-        class="_authing_form-group"
-        style="display:flex; align-items: flex-end;"
-      >
+      <div class="_authing_form-group" style="display:flex; align-items: flex-end;">
         <input
           type="number"
           class="_authing_input _authing_form-control"
@@ -54,18 +51,28 @@
             style="height: 40px;font-size: 12px;border-radius: 0px;border:none;"
             class="btn btn-primary"
             :class="{ 'btn-ban': countDown !== 0 }"
-          >
-            {{ countDown === 0 ? "获取验证码" : `${countDown} 秒后重试` }}
-          </button>
+          >{{ countDown === 0 ? "获取验证码" : `${countDown} 秒后重试` }}</button>
         </div>
       </div>
-      <div class="row" style="margin-bottom:0px;float:right;">
+      <div class="row" style="margin-bottom:0px;">
+        <el-checkbox label="隐私政策" v-model="checked" @change="changeCheck">
+          <router-link
+            target="_blank"
+            :to="{path:'/PrivacyPolicy'}"
+            style="    text-decoration: none;
+    font-size: 12px;
+    color: #6a5d5d;"
+          >同意《隐私政策》</router-link>
+        </el-checkbox>
+        <br />
+
         <div class="_authing_form-group">
           <label class="_authing_label" for="login-remember" style="width:100%">
             <a class="_authing_a" @click="gotoSignUp">使用邮箱注册</a>
           </label>
         </div>
       </div>
+      <span class="privateTips" v-show="showPriTips">请同意隐私政策</span>
     </div>
 
     <div class="_authing_form-footer login" v-show="!opts.hideUP">
@@ -86,7 +93,9 @@ export default {
         password: "",
         phoneCode: "",
         rePassword: ""
-      }
+      },
+      showPriTips: false,
+      checked: true
     };
   },
   created() {
@@ -113,6 +122,11 @@ export default {
       "addRedLine",
       "addAnimation"
     ]),
+    changeCheck(e) {
+      if (e === true) {
+        this.showPriTips = false;
+      }
+    },
     handleSendingPhoneCode() {
       if (this.countDown !== 0) {
         return;
@@ -157,7 +171,10 @@ export default {
     },
     handleSignUp() {
       var that = this;
-
+      if (this.checked === false) {
+        this.showPriTips = true;
+        return false;
+      }
       this.changeLoading({ el: "form", loading: true });
       if (!/^1[3-8]\d{9}$/.test(this.signUpForm.phone)) {
         this.showGlobalMessage({
@@ -264,6 +281,10 @@ export default {
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
+}
+.privateTips {
+  color: red;
+  font-size: 12px;
 }
 .phone-code-wrapper > .btn {
   width: 100%;

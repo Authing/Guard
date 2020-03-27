@@ -47,13 +47,25 @@
           @keyup.enter="handleSignUp"
         />
       </div>
-      <div class="row" style="margin-bottom:0px;float:right;">
+      <div class="row" style="margin-bottom:0px;">
+        <el-checkbox label="隐私政策" v-model="checked" @change="changeCheck">
+          <router-link
+            target="_blank"
+            :to="{path:'/PrivacyPolicy'}"
+            style="    text-decoration: none;
+    font-size: 12px;
+    color: #6a5d5d;"
+          >同意《隐私政策》</router-link>
+        </el-checkbox>
+
         <div class="_authing_form-group">
           <label class="_authing_label" for="login-remember" style="width:100%">
             <a class="_authing_a" @click="gotoSignUpByPhone">使用手机号注册</a>
           </label>
         </div>
+        <br />
       </div>
+      <span class="privateTips" v-show="showPriTips">请同意隐私政策</span>
     </form>
 
     <div class="_authing_form-footer login" v-show="!opts.hideUP">
@@ -73,7 +85,9 @@ export default {
         password: "",
         email: "",
         rePassword: ""
-      }
+      },
+      checked: true,
+      showPriTips: false
     };
   },
   created() {
@@ -100,6 +114,11 @@ export default {
       "addRedLine",
       "addAnimation"
     ]),
+    changeCheck(e) {
+      if (e === true) {
+        this.showPriTips = false;
+      }
+    },
     checkEmail: function checkEmail() {
       if (!this.$root.emailExp.test(this.signUpForm.email)) {
         this.showGlobalMessage({
@@ -115,6 +134,10 @@ export default {
       }
     },
     handleSignUp() {
+      if (this.checked === false) {
+        this.showPriTips = true;
+        return false;
+      }
       var that = this;
       this.changeLoading({ el: "form", loading: true });
 
@@ -222,4 +245,9 @@ export default {
   }
 };
 </script>
-<style scoped></style>
+<style scoped>
+.privateTips {
+  color: red;
+  font-size: 12px;
+}
+</style>

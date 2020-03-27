@@ -63,7 +63,18 @@
             @load="handleLoginVerifyCodeLoaded"
           />
         </div>
-        <div class="row backup">
+        <el-checkbox label="隐私政策" v-model="checked" @change="changeCheck">
+          <router-link
+            target="_blank"
+            :to="{path:'/PrivacyPolicy'}"
+            style="    text-decoration: none;
+    font-size: 12px;
+    color: #6a5d5d;"
+          >同意《隐私政策》</router-link>
+        </el-checkbox>
+        <br />
+        <span class="privateTips" v-show="showPriTips">请同意隐私政策</span>
+        <div class="row backup" style="margin-top: 5px;">
           <div class="_authing_form-group" style="margin-bottom:0px;" v-if="!opts.hidePhone">
             <label class="_authing_label" for="login-remember" style="width:100%">
               <!--<input class="_authing_input" type="checkbox" id="login-remember" style="vertical-align: middle; margin: 0"
@@ -131,7 +142,9 @@ export default {
       loginForm: {
         email: "",
         password: ""
-      }
+      },
+      showPriTips: false,
+      checked: true
     };
   },
   computed: {
@@ -178,6 +191,11 @@ export default {
       this.gotoWxQRCodeScanning();
       this.changeCode();
     },
+    changeCheck(e) {
+      if (e === true) {
+        this.showPriTips = false;
+      }
+    },
     changeCode() {
       let that = this;
       let scanOpts = this.opts.qrcodeScanning || {
@@ -218,6 +236,10 @@ export default {
       });
     },
     handleLogin() {
+      if (this.checked === false) {
+        this.showPriTips = true;
+        return false;
+      }
       this.changeLoading({ el: "form", loading: true });
       let that = this;
       let info = {
@@ -428,5 +450,9 @@ export default {
 <style scoped>
 .height-10 {
   height: 10px !important;
+}
+.privateTips {
+  color: red;
+  font-size: 12px;
 }
 </style>
