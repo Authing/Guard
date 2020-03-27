@@ -107,7 +107,7 @@
               style="    text-decoration: none;
     font-size: 12px;
     color: #6a5d5d;"
-            >高教出版社门户网络使用协议</router-link>
+            >同意《高教出版社门户网络使用协议》</router-link>
           </el-checkbox>
         </el-form-item>
         <el-form-item>

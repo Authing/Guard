@@ -69,7 +69,7 @@
               <!--<input class="_authing_input" type="checkbox" id="login-remember" style="vertical-align: middle; margin: 0"
                              v-model="rememberMe"><span
               style="vertical-align: middle"> 记住我</span>-->
-              <a class="_authing_a" @click="gotoUsingPhone">使用手机登录</a>
+              <a class="_authing_a" @click="gotoUsingPhone">手机短信登录</a>
             </label>
           </div>
 
