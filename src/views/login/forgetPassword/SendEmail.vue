@@ -9,13 +9,15 @@
           :placeholder="opts.placeholder.email"
           autocomplete="off"
           v-model="email"
-          @keyup.enter="handleForgetPasswordSendEmail"
-        >
+          @keydown.13="handleForgetPasswordSendEmail"
+        />
       </div>
     </div>
 
     <div class="_authing_form-footer login" v-show="!opts.hideUP">
-      <button @click="handleForgetPasswordSendEmail" class="btn btn-primary"><span v-show="!formLoading">发送邮件</span></button>
+      <button @click="handleForgetPasswordSendEmail" class="btn btn-primary">
+        <span v-show="!formLoading">发送邮件</span>
+      </button>
     </div>
   </div>
 </template>
@@ -34,12 +36,16 @@ export default {
   computed: {
     ...mapGetters("loading", {
       formLoading: "form"
-    }),
+    })
   },
   methods: {
     ...mapActions("loading", ["changeLoading"]),
     ...mapActions("visibility", ["gotoForgetPasswordVerifyCode"]),
-    ...mapActions("data", ["showGlobalMessage", "saveForgetPasswordEmail", "addAnimation"]),
+    ...mapActions("data", [
+      "showGlobalMessage",
+      "saveForgetPasswordEmail",
+      "addAnimation"
+    ]),
 
     handleForgetPasswordSendEmail() {
       var that = this;
@@ -66,7 +72,7 @@ export default {
             type: "success",
             message: "验证码已发送至您的邮箱：" + that.email
           });
-          this.saveForgetPasswordEmail({email: this.email})
+          this.saveForgetPasswordEmail({ email: this.email });
           that.gotoForgetPasswordVerifyCode();
         })
         .catch(err => {
@@ -81,5 +87,4 @@ export default {
   }
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

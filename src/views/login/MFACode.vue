@@ -9,13 +9,15 @@
           :placeholder="opts.placeholder.MFACode"
           autocomplete="off"
           v-model="MFACode"
-          @keyup.enter="handleSubmitMFA"
-        >
+          @keydown.13="handleSubmitMFA"
+        />
       </div>
     </div>
 
     <div class="_authing_form-footer login" v-show="!opts.hideUP">
-      <button @click="handleSubmitMFA" class="btn btn-primary"><span v-show="!formLoading">提交</span></button>
+      <button @click="handleSubmitMFA" class="btn btn-primary">
+        <span v-show="!formLoading">提交</span>
+      </button>
     </div>
   </div>
 </template>
@@ -25,7 +27,7 @@ export default {
   created() {
     this.$authing = this.$root.$data.$authing;
     this.opts = this.$root.$data.$authing.opts;
-    console.log(this.opts.placeholder)
+    console.log(this.opts.placeholder);
   },
   data() {
     return {
@@ -36,12 +38,17 @@ export default {
     ...mapGetters("loading", {
       formLoading: "form"
     }),
-     ...mapGetters("data", ['loginFormStash', 'loginType', 'loginOpt']),
+    ...mapGetters("data", ["loginFormStash", "loginType", "loginOpt"])
   },
   methods: {
     ...mapActions("loading", ["changeLoading"]),
     ...mapActions("visibility", ["gotoForgetPasswordVerifyCode"]),
-    ...mapActions("data", ["showGlobalMessage", "saveForgetPasswordEmail", "addAnimation", "recordLoginInfo"]),
+    ...mapActions("data", [
+      "showGlobalMessage",
+      "saveForgetPasswordEmail",
+      "addAnimation",
+      "recordLoginInfo"
+    ]),
     ...mapActions("protocol", ["handleProtocolProcess"]),
 
     handleSubmitMFA() {
@@ -58,16 +65,16 @@ export default {
         this.$authing.pub("MFA-format-error", "请输入正确 6 位数字动态口令");
         return false;
       }
-      let info
-      if(this.loginType === 'UP') {
-        console.log(this.loginFormStash)
-        info = {...this.loginFormStash}
-      } else if(this.loginType === 'social') {
-        info = {...this.loginOpt}
+      let info;
+      if (this.loginType === "UP") {
+        console.log(this.loginFormStash);
+        info = { ...this.loginFormStash };
+      } else if (this.loginType === "social") {
+        info = { ...this.loginOpt };
       }
-      info.MFACode = this.MFACode
-      console.log('info23y543')
-      console.log(info)
+      info.MFACode = this.MFACode;
+      console.log("info23y543");
+      console.log(info);
       validAuth
         .login(info)
         .then(data => {
@@ -89,14 +96,14 @@ export default {
           });
           that.recordLoginInfo(data);
           that.$authing.pub("login", data);
-          that.$authing.pub("authenticated", data); 
+          that.$authing.pub("authenticated", data);
           setTimeout(() => {
             this.handleProtocolProcess({ router: this.$router });
-          }, 500)
+          }, 500);
           that.changeLoading({ el: "form", loading: false });
         })
         .catch(err => {
-          console.log(err)
+          console.log(err);
           that.changeLoading({ el: "form", loading: false });
           that.$authing.pub("login-error", err);
           that.$authing.pub("authenticated-error", err);
@@ -125,8 +132,8 @@ export default {
           }
           */
           else if (err.message.code === 1635) {
-            that.setLoginFormStash(info)
-            that.gotoMFACode()
+            that.setLoginFormStash(info);
+            that.gotoMFACode();
           }
           // 用户名错误
           else if (
@@ -152,18 +159,19 @@ export default {
                   return validAuth.login({
                     email: that.loginForm.email,
                     password: that.loginForm.password
-                  })
+                  });
                 })
                 .then(function(data) {
                   that.changeLoading({ el: "form", loading: false });
                   that.showGlobalMessage({
                     type: "success",
-                    message: "验证通过，欢迎你：" + (data.username || data.email)
+                    message:
+                      "验证通过，欢迎你：" + (data.username || data.email)
                   });
                   that.$authing.pub("login", data);
                   that.$authing.pub("authenticated", data);
                   // @TODO 进行协议后续流程
-                  that.handleProtocolProcess({router: that.$router});
+                  that.handleProtocolProcess({ router: that.$router });
                   that.recordLoginInfo(data);
                 })
                 .catch(function(err) {
@@ -206,5 +214,4 @@ export default {
   }
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

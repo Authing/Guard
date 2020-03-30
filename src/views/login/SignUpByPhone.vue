@@ -9,7 +9,7 @@
           v-model="signUpForm.phone"
           :placeholder="opts.placeholder.phone"
           autocomplete="off"
-          @keyup.enter="handleSignUp"
+          @keydown.13="handleSignUp"
         />
       </div>
       <div class="_authing_form-group">
@@ -20,7 +20,7 @@
           v-model="signUpForm.password"
           :placeholder="opts.placeholder.password"
           autocomplete="off"
-          @keyup.enter="handleSignUp"
+          @keydown.13="handleSignUp"
         />
       </div>
       <div class="_authing_form-group">
@@ -32,7 +32,7 @@
           v-model="signUpForm.rePassword"
           :placeholder="opts.placeholder.confirmPassword"
           autocomplete="off"
-          @keyup.enter="handleSignUp"
+          @keydown.13="handleSignUp"
         />
       </div>
       <div
@@ -46,7 +46,7 @@
           v-model="signUpForm.phoneCode"
           :placeholder="opts.placeholder.phoneCode"
           autocomplete="off"
-          @keyup.enter="handleSignUp"
+          @keydown.13="handleSignUp"
         />
         <div class="phone-code-wrapper" style="flex-basis: 50%;">
           <button

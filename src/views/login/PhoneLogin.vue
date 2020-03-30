@@ -17,7 +17,7 @@
             v-model="phone"
             :placeholder="opts.placeholder.phone"
             autocomplete="off"
-            @keyup.enter="nextStepOrSubmit"
+            @keydown.13="nextStepOrSubmit"
           />
         </div>
         <div
@@ -32,7 +32,7 @@
             v-model="phoneCode"
             :placeholder="opts.placeholder.phoneCode"
             autocomplete="off"
-            @keyup.enter="handleLoginByPhoneCode"
+            @keydown.13="handleLoginByPhoneCode"
           />
           <div class="phone-code-wrapper" style="flex-basis: 50%;">
             <button
@@ -53,7 +53,7 @@
             v-model="password"
             :placeholder="opts.placeholder.password"
             autocomplete="off"
-            @keyup.enter="handleLogin"
+            @keydown.13="handleLogin"
           />
         </div>
         <div class="row" v-if="this.needNextStep">
