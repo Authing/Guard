@@ -197,8 +197,8 @@
                 class="_authing_input _authing_form-control"
                 :placeholder="opt.oldPassWord"
                 v-model="profileForm.oldPassWord"
-                autocomplete="off"
-                @keydown.13="saveInfo"
+                autocomplete="new-password"
+                @keyup.13="saveInfo"
               />
             </div>
 
@@ -209,8 +209,8 @@
                 class="_authing_input _authing_form-control"
                 :placeholder="opt.passWord"
                 v-model="profileForm.passWord"
-                autocomplete="off"
-                @keydown.13="saveInfo"
+                autocomplete="new-password"
+                @keyup.13="saveInfo"
               />
             </div>
 
@@ -221,8 +221,8 @@
                 class="_authing_input _authing_form-control"
                 :placeholder="opt.passWord2"
                 v-model="profileForm.passWord2"
-                autocomplete="off"
-                @keydown.13="saveInfo"
+                autocomplete="new-password"
+                @keyup.13="saveInfo"
               />
             </div>
           </div>

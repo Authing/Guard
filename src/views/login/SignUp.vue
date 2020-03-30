@@ -31,8 +31,8 @@
           id="sign-up-password"
           v-model="signUpForm.password"
           :placeholder="opts.placeholder.password"
-          autocomplete="off"
-          @keydown.13="handleSignUp"
+          autocomplete="new-password"
+          @keyup.13="handleSignUp"
         />
       </div>
       <div class="_authing_form-group">

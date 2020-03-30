@@ -1,10 +1,7 @@
 <template>
   <div id="_authing_login_form" @keyup.esc="handleClose" v-if="!removeDom">
     <div class="authing-loading-circle screen-center" v-if="pageLoading"></div>
-    <div
-      class="authing-cover-layer"
-      v-if="$parent.isMountedInModal && !closeForm"
-    ></div>
+    <div class="authing-cover-layer" v-if="$parent.isMountedInModal && !closeForm"></div>
     <div
       class="_authing_container"
       id="_authing_login_form_content"
@@ -13,25 +10,14 @@
         'authing-login-form-modal': $parent.isMountedInModal
       }"
     >
-      <div
-        v-if="!closeForm"
-        class="authing-form-badge-bottom"
-        :class="{ 'authing-form-badge-white': $parent.isMountedInModal }"
-      >
-        <a
-          href="https://authing.cn/?utm_source=form&amp;utm_campaign=badge&amp;utm_medium=widget"
-          target="_blank"
-          class="_authing_a authing-form-badge"
-        >
+      <div v-if="!closeForm" class="authing-form-badge-bottom" :class="{ 'authing-form-badge-white': $parent.isMountedInModal }">
+        <a href="https://authing.cn/?utm_source=form&amp;utm_campaign=badge&amp;utm_medium=widget" target="_blank" class="_authing_a authing-form-badge">
           <span>Protected with</span>
           <span class="authing-form-badge-logo"></span>
           <span>Authing</span>
         </a>
       </div>
-      <div
-        class="authing-login-form-wrapper"
-        :class="{ 'z-index1000': $parent.isMountedInModal }"
-      >
+      <div class="authing-login-form-wrapper" :class="{ 'z-index1000': $parent.isMountedInModal }">
         <div
           class="_authing_form-wrapper"
           :class="{
@@ -43,11 +29,7 @@
           }"
         >
           <div class="_authing_form-header">
-            <span
-              v-if="pageStack.length > 0"
-              @click="goBack"
-              class="authing-lock-back-button"
-            >
+            <span v-if="pageStack.length > 0" @click="goBack" class="authing-lock-back-button">
               <svg
                 focusable="false"
                 enable-background="new 0 0 24 24"
@@ -57,30 +39,11 @@
                 xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
               >
-                <polyline
-                  fill="none"
-                  points="12.5,21 3.5,12 12.5,3 "
-                  stroke="#000000"
-                  stroke-miterlimit="10"
-                  stroke-width="2"
-                />
-                <line
-                  fill="none"
-                  stroke="#000000"
-                  stroke-miterlimit="10"
-                  stroke-width="2"
-                  x1="22"
-                  x2="3.5"
-                  y1="12"
-                  y2="12"
-                />
+                <polyline fill="none" points="12.5,21 3.5,12 12.5,3 " stroke="#000000" stroke-miterlimit="10" stroke-width="2" />
+                <line fill="none" stroke="#000000" stroke-miterlimit="10" stroke-width="2" x1="22" x2="3.5" y1="12" y2="12" />
               </svg>
             </span>
-            <span
-              @click="handleClose"
-              v-if="!opts.hideClose"
-              class="authing-lock-close-button"
-            >
+            <span @click="handleClose" v-if="!opts.hideClose" class="authing-lock-close-button">
               <svg
                 focusable="false"
                 enable-background="new 0 0 128 128"
@@ -102,103 +65,56 @@
             <div class="_authing_form-header-welcome">
               <img class="form-header-logo" :src="appLogo" />
               <div class="_authing_form-header-name" title="Authing">
-                {{ forgetPasswordVisible ? "重置密码" : appName }}
+                {{ forgetPasswordVisible ? '重置密码' : appName }}
               </div>
             </div>
           </div>
 
-          <GlobalMessage
-            v-show="globalMessage"
-            :message="globalMessage"
-            :type="globalMessageType"
-          />
+          <GlobalMessage v-show="globalMessage" :message="globalMessage" :type="globalMessageType" />
 
           <div v-show="!authingOnError">
             <div class="authing-header-tabs-container">
               <ul class="authing-header-tabs">
                 <li
                   v-bind:class="{
-                    'authing-header-tabs-current':
-                      wxQRCodeVisible || (opts.hideUP && opts.hideSocial),
+                    'authing-header-tabs-current': wxQRCodeVisible || (opts.hideUP && opts.hideSocial),
                     'width-55': headerTabCount === 2,
                     'width-100': headerTabCount === 1,
                     'shadow-eee': opts.hideUP && opts.hideSocial
                   }"
-                  v-show="
-                    isScanCodeEnable &&
-                      !opts.hideQRCode &&
-                      (!clientInfo.registerDisabled ||
-                        clientInfo.showWXMPQRCode)
-                  "
+                  v-show="isScanCodeEnable && !opts.hideQRCode && (!clientInfo.registerDisabled || clientInfo.showWXMPQRCode)"
                 >
-                  <a
-                    class="_authing_a"
-                    href="javascript:void(0)"
-                    @click="gotoWxQRCodeScanning"
-                    >扫码登录</a
-                  >
+                  <a class="_authing_a" href="javascript:void(0)" @click="gotoWxQRCodeScanning">扫码登录</a>
                 </li>
                 <li
                   v-show="!(opts.hideUP && opts.hideSocial)"
                   v-bind:class="{
-                    'authing-header-tabs-current':
-                      emailLoginVisible || LDAPLoginVisible,
+                    'authing-header-tabs-current': emailLoginVisible || LDAPLoginVisible,
                     'width-55': headerTabCount === 2,
                     'width-100': headerTabCount === 1
                   }"
                 >
-                  <a
-                    class="_authing_a"
-                    href="javascript:void(0)"
-                    @click="gotoLogin"
-                    >登录</a
-                  >
+                  <a class="_authing_a" href="javascript:void(0)" @click="gotoLogin">登录</a>
                 </li>
                 <li
-                  v-show="
-                    !opts.hideUP &&
-                      !opts.forceLogin &&
-                      !clientInfo.registerDisabled &&
-                      !opts.hideRegister
-                  "
+                  v-show="!opts.hideUP && !opts.forceLogin && !clientInfo.registerDisabled && !opts.hideRegister"
                   v-bind:class="{
                     'authing-header-tabs-current': signUpVisible,
                     'width-55': headerTabCount === 2
                   }"
                 >
-                  <a
-                    class="_authing_a"
-                    @click="gotoSignUp"
-                    href="javascript:void(0)"
-                    >注册</a
-                  >
+                  <a class="_authing_a" @click="gotoSignUp" href="javascript:void(0)">注册</a>
                 </li>
               </ul>
             </div>
 
-            <div
-              v-if="hasLDAP && (emailLoginVisible || LDAPLoginVisible)"
-              class="ldap-radios"
-              style="font-size: 13px;color:#777;padding: 0 11px;margin-top:11px;padding-top:6px"
-            >
+            <div v-if="hasLDAP && (emailLoginVisible || LDAPLoginVisible)" class="ldap-radios" style="font-size: 13px;color:#777;padding: 0 11px;margin-top:11px;padding-top:6px">
               <label>
-                <input
-                  type="radio"
-                  name="ldap"
-                  :checked="emailLoginVisible"
-                  style="width: 12px;"
-                  @click="gotoLogin"
-                />
+                <input type="radio" name="ldap" :checked="emailLoginVisible" style="width: 12px;" @click="gotoLogin" />
                 普通登录
               </label>
               <label>
-                <input
-                  type="radio"
-                  name="ldap"
-                  @click="gotoLDAPLogin"
-                  :checked="LDAPLoginVisible"
-                  style="width: 12px;margin-left:11px"
-                />
+                <input type="radio" name="ldap" @click="gotoLDAPLogin" :checked="LDAPLoginVisible" style="width: 12px;margin-left:11px" />
                 使用 LDAP
               </label>
             </div>
@@ -229,20 +145,20 @@
   </div>
 </template>
 <script>
-import GraphQLClient from "../../graphql.js";
-import EmailLogin from "./EmailLogin";
-import LDAPLogin from "./LDAPLogin";
-import QRCode from "./QRCode";
-import SignUp from "./SignUp";
-import GlobalMessage from "../components/GlobalMessage";
-import ForgetPassword from "./forgetPassword/index";
-import PhoneLogin from "./PhoneLogin";
-import SignUpByPhone from "./SignUpByPhone";
-import MFACode from "./MFACode";
-import SSO from "@authing/sso";
-import { mapGetters, mapActions } from "vuex";
+import GraphQLClient from '../../graphql.js';
+import EmailLogin from './EmailLogin';
+import LDAPLogin from './LDAPLogin';
+import QRCode from './QRCode';
+import SignUp from './SignUp';
+import GlobalMessage from '../components/GlobalMessage';
+import ForgetPassword from './forgetPassword/index';
+import PhoneLogin from './PhoneLogin';
+import SignUpByPhone from './SignUpByPhone';
+import MFACode from './MFACode';
+import SSO from '@authing/sso';
+import { mapGetters, mapActions } from 'vuex';
 export default {
-  name: "app",
+  name: 'app',
   components: {
     EmailLogin,
     SignUp,
@@ -257,9 +173,9 @@ export default {
   data() {
     return {
       redirectToProfile: false,
-      appLogo: "",
-      appName: "",
-      defaultLogo: "https://usercontents.authing.cn/client/logo@2.png",
+      appLogo: '',
+      appName: '',
+      defaultLogo: 'https://usercontents.authing.cn/client/logo@2.png',
       clientInfo: {},
 
       rememberMe: false,
@@ -312,8 +228,8 @@ export default {
   async mounted() {
     // 判断 opts 中是否传入了自定义 css
     if (this.opts.css) {
-      let styleNode = document.createElement("style");
-      styleNode.type = "text/css";
+      let styleNode = document.createElement('style');
+      styleNode.type = 'text/css';
       let content = document.createTextNode(this.opts.css);
       styleNode.appendChild(content);
       document.head.appendChild(styleNode);
@@ -327,21 +243,17 @@ export default {
       const appInfo = await this.queryAppInfo();
       if (!appInfo) {
         this.$router.replace({
-          name: "error",
+          name: 'error',
           query: {
-            message: [
-              "应用不存在",
-              "请确认传递了正确的 protocol query 参数，不传默认该地址为 OAuth 应用",
-              "protocol 参数可选值为 oauth、oidc、saml"
-            ]
+            message: ['应用不存在', '请确认传递了正确的 protocol query 参数，不传默认该地址为 OAuth 应用', 'protocol 参数可选值为 oauth、oidc、saml']
           }
         });
         return;
       }
       // 如果启用了自定义 css
       if (appInfo.css) {
-        let styleNode = document.createElement("style");
-        styleNode.type = "text/css";
+        let styleNode = document.createElement('style');
+        styleNode.type = 'text/css';
         let content = document.createTextNode(appInfo.css);
         styleNode.appendChild(content);
         document.head.appendChild(styleNode);
@@ -357,24 +269,20 @@ export default {
       }
 
       switch (this.protocol) {
-        case "oidc":
+        case 'oidc':
           if (!this.params.uuid) {
             // 如果用户直接输入网址，什么参数也不带
             // 把 ssoHost 域名第一部分替换成 oidc 应用的 domain 再作为地址
-            let ssoHostArr = this.opts.SSOHost.split(".");
+            let ssoHostArr = this.opts.SSOHost.split('.');
             let head = ssoHostArr.shift();
             let isHttps = false;
-            if (~head.indexOf("https")) {
+            if (~head.indexOf('https')) {
               isHttps = true;
             }
             ssoHostArr.unshift(appInfo.domain);
-            let ssoHost = ssoHostArr.join(".");
+            let ssoHost = ssoHostArr.join('.');
             // 这么写是为了动态生成这个链接，否则私有部署会出问题
-            location.href = `${
-              isHttps ? "https://" : "http://"
-            }${ssoHost}/oauth/oidc/auth?client_id=${
-              appInfo.client_id
-            }&redirect_uri=${encodeURIComponent(
+            location.href = `${isHttps ? 'https://' : 'http://'}${ssoHost}/oauth/oidc/auth?client_id=${appInfo.client_id}&redirect_uri=${encodeURIComponent(
               appInfo.redirect_uris[0]
             )}&scope=openid profile email phone offline_access&response_type=code&state=${Math.random()
               .toString(26)
@@ -382,17 +290,13 @@ export default {
             return;
           }
           break;
-        case "saml":
+        case 'saml':
           if (!this.params.SAMLRequest) {
             this.$router.replace({
-              name: "error",
+              name: 'error',
               query: {
-                message: [
-                  "缺少 SAML 所必须的参数 SAMLRequest",
-                  "SAML 应用不能直接输入网址进行登录，需要带参数访问后端 URL，详情请看文档"
-                ],
-                doc:
-                  "https://docs.authing.cn/authing/advanced/use-saml/configure-authing-as-sp-and-idp#kai-shi-shi-yong"
+                message: ['缺少 SAML 所必须的参数 SAMLRequest', 'SAML 应用不能直接输入网址进行登录，需要带参数访问后端 URL，详情请看文档'],
+                doc: 'https://docs.authing.cn/authing/advanced/use-saml/configure-authing-as-sp-and-idp#kai-shi-shi-yong'
               }
             });
             return;
@@ -404,7 +308,7 @@ export default {
       // 判断是否已经登录过了，已经登录就直接跳转确权页面，不再发送后面那些 http 请求
       if (await this.isLogged()) {
         this.$router.push({
-          name: "authorize",
+          name: 'authorize',
           query: { ...this.$route.query }
         });
         this.saveLoginStatus({ isLogged: true });
@@ -420,7 +324,7 @@ export default {
     }
     try {
       // 获取应用的名称，图标等信息
-      this.appName = this.opts.title || this.appInfo.name || "Guard";
+      this.appName = this.opts.title || this.appInfo.name || 'Guard';
       window.title = `${this.appName} - Authing`;
       document.title = `${this.appName} - Authing`;
       this.appLogo = this.opts.logo || this.appInfo.image || this.defaultLogo;
@@ -428,8 +332,8 @@ export default {
     } catch (erro) {
       console.log(erro);
       that.authingOnError = true;
-      that.$authing.pub("authing-unload", erro);
-      this.$router.replace({ name: "error", query: { message: ['设置 Guard 界面信息出错'] } });
+      that.$authing.pub('authing-unload', erro);
+      this.$router.replace({ name: 'error', query: { message: ['设置 Guard 界面信息出错'] } });
       return;
     }
     var that = this;
@@ -440,71 +344,57 @@ export default {
       useSelfWxapp: that.opts.useSelfWxapp,
       host: that.opts.host,
       onInitError: err => {
-        this.changeLoading({ el: "page", loading: false });
+        this.changeLoading({ el: 'page', loading: false });
 
         this.authingOnError = true;
         this.showGlobalMessage({
-          type: "error",
-          message: "Error: " + err.message
+          type: 'error',
+          message: 'Error: ' + err.message
         });
-        this.$authing.pub("authing-unload", err);
+        this.$authing.pub('authing-unload', err);
       },
       passwordEncPublicKey: that.opts.passwordEncPublicKey
     });
 
-    let userPoolSettings = await auth.getUserPoolSettings(
-      that.clientId || that.opts.clientId
-    );
+    let userPoolSettings = await auth.getUserPoolSettings(that.clientId || that.opts.clientId);
     this.clientInfo = userPoolSettings;
-    this.changeLoading({ el: "page", loading: false });
+    this.changeLoading({ el: 'page', loading: false });
 
     window.validAuth = auth;
     window.validAuth.clientInfo = userPoolSettings;
-    this.$authing.pub("authing-load", validAuth);
+    this.$authing.pub('authing-load', validAuth);
     if (that.opts.hideSocial && that.opts.hideUP) {
       that.gotoWxQRCodeScanning();
     }
     try {
       if (this.opts.hideSocial === false) {
         // 不隐藏社会化登录时，才加载社会化登录列表
-        this.changeLoading({ el: "socialButtonsList", loading: true });
+        this.changeLoading({ el: 'socialButtonsList', loading: true });
         let data = await auth.readOAuthList({ useGuard: true });
-        this.changeLoading({ el: "socialButtonsList", loading: false });
+        this.changeLoading({ el: 'socialButtonsList', loading: false });
 
         // 刨去 微信扫码登录 的方式
         // 如果是 native 端，只保留移动应用
         let socialButtonsList = data.filter(item => {
-          if (item.alias === "wxapp") {
+          if (item.alias === 'wxapp') {
             this.isScanCodeEnable = true;
           }
 
           if (!that.opts.isNative) {
-            return (
-              item.enabled === true &&
-              !["wxapp", "wechatapp", "wechatmp"].includes(item.alias)
-            );
+            return item.enabled === true && !['wxapp', 'wechatapp', 'wechatmp'].includes(item.alias);
           } else {
-            return (
-              item.enabled === true &&
-              (item.alias === "wechatios" ||
-                item.alias === "alipaymobile" ||
-                item.alias === "wechatandroid")
-            );
+            return item.enabled === true && (item.alias === 'wechatios' || item.alias === 'alipaymobile' || item.alias === 'wechatandroid');
           }
         });
 
         socialButtonsList = socialButtonsList.map(item => {
-          if (
-            item.alias === "alipaymobile" ||
-            item.alias === "wechatios" ||
-            item.alias === "wechatandroid"
-          ) {
+          if (item.alias === 'alipaymobile' || item.alias === 'wechatios' || item.alias === 'wechatandroid') {
             item.isNative = true;
           }
           return item;
         });
 
-        this.$authing.pub("social-load", socialButtonsList);
+        this.$authing.pub('social-load', socialButtonsList);
 
         this.saveSocialButtonsList({ socialButtonsList });
 
@@ -519,33 +409,21 @@ export default {
         }
       }
     } catch (err) {
-      this.$authing.pub("social-unload", err);
-      this.changeLoading({ el: "form", loading: false });
+      this.$authing.pub('social-unload', err);
+      this.changeLoading({ el: 'form', loading: false });
     }
   },
   destroyed() {
-    sessionStorage.removeItem("jump2Profile");
+    sessionStorage.removeItem('jump2Profile');
   },
   methods: {
-    ...mapActions("visibility", [
-      "gotoWxQRCodeScanning",
-      "removeGlobalMsg",
-      "gotoSignUp",
-      "gotoLogin",
-      "gotoLDAPLogin",
-      "goBack"
-    ]),
-    ...mapActions("loading", ["changeLoading"]),
-    ...mapActions("data", [
-      "saveSocialButtonsList",
-      "saveAppInfo",
-      "saveLoginStatus",
-      "showGlobalMessage"
-    ]),
-    ...mapActions("protocol", ["saveProtocol"]),
+    ...mapActions('visibility', ['gotoWxQRCodeScanning', 'removeGlobalMsg', 'gotoSignUp', 'gotoLogin', 'gotoLDAPLogin', 'goBack']),
+    ...mapActions('loading', ['changeLoading']),
+    ...mapActions('data', ['saveSocialButtonsList', 'saveAppInfo', 'saveLoginStatus', 'showGlobalMessage']),
+    ...mapActions('protocol', ['saveProtocol']),
     getSecondLvDomain(hostname) {
       if (!hostname) return null;
-      let hostnameSplit = hostname.split(".");
+      let hostnameSplit = hostname.split('.');
       // 只有域名部分由三部分以上组成才算拥有二级域名
       if (hostnameSplit.length >= 3) {
         return hostnameSplit[0];
@@ -555,20 +433,15 @@ export default {
     async queryAppInfo(protocol) {
       protocol = protocol || this.protocol;
       let hostname = location.hostname;
-      let domain =
-        this.getSecondLvDomain(this.opts.domain) ||
-        this.getSecondLvDomain(hostname);
-      let appId =
-        this.opts.appId ||
-        this.$route.query.app_id ||
-        this.$route.query.client_id;
+      let domain = this.getSecondLvDomain(this.opts.domain) || this.getSecondLvDomain(hostname);
+      let appId = this.opts.appId || this.$route.query.app_id || this.$route.query.client_id;
       let operationName;
       let GraphQLClient_getAppInfo = new GraphQLClient({
         baseURL: this.opts.host.oauth
       });
 
       // 优先通过二级域名查找此应用信息
-      if (domain && domain !== "sso") {
+      if (domain && domain !== 'sso') {
         // 如果没有提供 protocol 参数，就挨个查一遍吧
         if (!protocol) {
           let queries = [
@@ -628,60 +501,41 @@ export default {
               }
             }`
           ];
-          let appInfos = await Promise.all(
-            queries.map(q => GraphQLClient_getAppInfo.request({ query: q }))
-          );
-          let [
-            { QueryAppInfoByDomain },
-            { QueryOIDCAppInfoByDomain },
-            { QuerySAMLIdentityProviderInfoByDomain }
-          ] = appInfos;
+          let appInfos = await Promise.all(queries.map(q => GraphQLClient_getAppInfo.request({ query: q })));
+          let [{ QueryAppInfoByDomain }, { QueryOIDCAppInfoByDomain }, { QuerySAMLIdentityProviderInfoByDomain }] = appInfos;
           this.saveProtocol({
-            protocol: QuerySAMLIdentityProviderInfoByDomain
-              ? "saml"
-              : QueryOIDCAppInfoByDomain
-              ? "oidc"
-              : QueryAppInfoByDomain
-              ? "oauth"
-              : "",
+            protocol: QuerySAMLIdentityProviderInfoByDomain ? 'saml' : QueryOIDCAppInfoByDomain ? 'oidc' : QueryAppInfoByDomain ? 'oauth' : '',
             params: {
               ...this.$route.query
             },
             isSSO: this.opts.isSSO
           });
-          return (
-            QuerySAMLIdentityProviderInfoByDomain ||
-            QueryOIDCAppInfoByDomain ||
-            QueryAppInfoByDomain
-          );
+          return QuerySAMLIdentityProviderInfoByDomain || QueryOIDCAppInfoByDomain || QueryAppInfoByDomain;
         }
         // 根据不同的 protocol 查找不同类型的 app
         switch (protocol) {
-          case "oidc":
-            operationName = "QueryOIDCAppInfoByDomain";
+          case 'oidc':
+            operationName = 'QueryOIDCAppInfoByDomain';
             break;
-          case "oauth":
-            operationName = "QueryAppInfoByDomain";
+          case 'oauth':
+            operationName = 'QueryAppInfoByDomain';
             break;
-          case "saml":
-            operationName = "QuerySAMLIdentityProviderInfoByDomain";
+          case 'saml':
+            operationName = 'QuerySAMLIdentityProviderInfoByDomain';
             break;
           default:
             this.$router.replace({
-              name: "error",
+              name: 'error',
               query: {
-                message: [
-                  "protocol query 参数错误",
-                  "protocol 可选值为 oauth，oidc，saml"
-                ],
-                code: "4004"
+                message: ['protocol query 参数错误', 'protocol 可选值为 oauth，oidc，saml'],
+                code: '4004'
               }
             });
             return;
         }
 
         let query;
-        if (operationName !== "QueryOIDCAppInfoByDomain") {
+        if (operationName !== 'QueryOIDCAppInfoByDomain') {
           query = `query {
             ${operationName} (domain: "${domain}") {   
               _id
@@ -735,20 +589,20 @@ export default {
           // console.log(appInfo);
           // 返回对应的 app 信息
           switch (protocol) {
-            case "oidc":
-              return appInfo["QueryOIDCAppInfoByDomain"];
-            case "oauth":
-              return appInfo["QueryAppInfoByDomain"];
-            case "saml":
-              return appInfo["QuerySAMLIdentityProviderInfoByDomain"];
+            case 'oidc':
+              return appInfo['QueryOIDCAppInfoByDomain'];
+            case 'oauth':
+              return appInfo['QueryAppInfoByDomain'];
+            case 'saml':
+              return appInfo['QuerySAMLIdentityProviderInfoByDomain'];
           }
         } catch (err) {
           console.log(err);
           this.$router.replace({
-            name: "error",
+            name: 'error',
             query: {
               message: ['获取 App 信息失败'],
-              code: "id404"
+              code: 'id404'
             }
           });
         }
@@ -814,60 +668,41 @@ export default {
                 }
               }`
             ];
-            let appInfos = await Promise.all(
-              queries.map(q => GraphQLClient_getAppInfo.request({ query: q }))
-            );
-            let [
-              { QueryAppInfoByAppID },
-              { QueryOIDCAppInfoByAppID },
-              { QuerySAMLIdentityProviderInfoByAppID }
-            ] = appInfos;
+            let appInfos = await Promise.all(queries.map(q => GraphQLClient_getAppInfo.request({ query: q })));
+            let [{ QueryAppInfoByAppID }, { QueryOIDCAppInfoByAppID }, { QuerySAMLIdentityProviderInfoByAppID }] = appInfos;
             this.saveProtocol({
-              protocol: QuerySAMLIdentityProviderInfoByAppID
-                ? "saml"
-                : QueryOIDCAppInfoByAppID
-                ? "oidc"
-                : QueryAppInfoByAppID
-                ? "oauth"
-                : "",
+              protocol: QuerySAMLIdentityProviderInfoByAppID ? 'saml' : QueryOIDCAppInfoByAppID ? 'oidc' : QueryAppInfoByAppID ? 'oauth' : '',
               params: {
                 ...this.$route.query
               },
               isSSO: this.opts.isSSO
             });
-            return (
-              QuerySAMLIdentityProviderInfoByAppID ||
-              QueryOIDCAppInfoByAppID ||
-              QueryAppInfoByAppID
-            );
+            return QuerySAMLIdentityProviderInfoByAppID || QueryOIDCAppInfoByAppID || QueryAppInfoByAppID;
           }
 
           switch (protocol) {
-            case "oidc":
-              operationName = "QueryOIDCAppInfoByAppID";
+            case 'oidc':
+              operationName = 'QueryOIDCAppInfoByAppID';
               break;
-            case "oauth":
-              operationName = "QueryAppInfoByAppID";
+            case 'oauth':
+              operationName = 'QueryAppInfoByAppID';
               break;
-            case "saml":
-              operationName = "QuerySAMLIdentityProviderInfoByAppID";
+            case 'saml':
+              operationName = 'QuerySAMLIdentityProviderInfoByAppID';
               break;
             default:
               this.$router.replace({
-                name: "error",
+                name: 'error',
                 query: {
-                  message: [
-                    "protocol query 参数错误",
-                    "protocol 可选值为 oauth，oidc，saml"
-                  ],
-                  code: "id404"
+                  message: ['protocol query 参数错误', 'protocol 可选值为 oauth，oidc，saml'],
+                  code: 'id404'
                 }
               });
               return;
           }
 
           let query;
-          if (operationName !== "QueryOIDCAppInfoByAppID") {
+          if (operationName !== 'QueryOIDCAppInfoByAppID') {
             query = `query {
               ${operationName} (appId: "${appId}") {
                 _id,
@@ -914,33 +749,33 @@ export default {
           }
           let appInfo = await GraphQLClient_getAppInfo.request({ query });
           switch (protocol) {
-            case "oidc":
-              return appInfo["QueryOIDCAppInfoByAppID"];
-            case "oauth":
-              return appInfo["QueryAppInfoByAppID"];
-            case "saml":
-              return appInfo["QuerySAMLIdentityProviderInfoByAppID"];
+            case 'oidc':
+              return appInfo['QueryOIDCAppInfoByAppID'];
+            case 'oauth':
+              return appInfo['QueryAppInfoByAppID'];
+            case 'saml':
+              return appInfo['QuerySAMLIdentityProviderInfoByAppID'];
           }
         } catch (err) {
           console.log(err);
           this.$router.replace({
-            name: "error",
+            name: 'error',
             query: {
               message: ['获取 App 信息出错'],
-              code: "id404"
+              code: 'id404'
             }
           });
         }
       } else {
         // 使用 sso.authing.cn 又没有提供 appId clientId 的情况
         this.$router.replace({
-          name: "error",
-          query: { message: ["缺少 app_id 或 client_id"], code: "id404" }
+          name: 'error',
+          query: { message: ['缺少 app_id 或 client_id'], code: 'id404' }
         });
       }
     },
     async checkHasLDAP(clientId) {
-      let operationName = "QueryClientHasLDAPConfigs";
+      let operationName = 'QueryClientHasLDAPConfigs';
       let query = `query {
               ${operationName} (clientId: "${clientId}") {   
                 result,
@@ -960,10 +795,10 @@ export default {
       }
     },
     clearLocalStorage() {
-      localStorage.removeItem("appToken");
-      localStorage.removeItem("_authing_username");
-      localStorage.removeItem("_authing_password");
-      localStorage.removeItem("_authing_token");
+      localStorage.removeItem('appToken');
+      localStorage.removeItem('_authing_username');
+      localStorage.removeItem('_authing_password');
+      localStorage.removeItem('_authing_token');
     },
 
     handleClose() {
@@ -972,31 +807,31 @@ export default {
       }
       var that = this;
       this.closeForm = true;
-      this.$authing.pub("form-closed");
+      this.$authing.pub('form-closed');
       setTimeout(function() {
         that.removeDom = true;
       }, 800);
     },
     async isLogged() {
-      let appToken = localStorage.getItem("appToken");
+      let appToken = localStorage.getItem('appToken');
 
       if (appToken) {
         try {
           appToken = JSON.parse(appToken);
           let accessToken = appToken[this.opts.appId].accessToken;
-          let payload = accessToken.split(".")[1];
+          let payload = accessToken.split('.')[1];
           let decoded = window.atob(payload);
           decoded = JSON.parse(decoded);
           let expired = parseInt(Date.now() / 1000) > decoded.exp;
           if (expired) {
             delete appToken[this.opts.appId];
-            localStorage.removeItem("_authing_token");
-            localStorage.setItem("appToken", appToken);
+            localStorage.removeItem('_authing_token');
+            localStorage.setItem('appToken', appToken);
           }
         } catch (error) {
           // console.log(error);
           appToken = {};
-          localStorage.removeItem("appToken");
+          localStorage.removeItem('appToken');
         }
       } else {
         appToken = {};
@@ -1007,26 +842,24 @@ export default {
       let auth = new SSO({
         appId: this.appInfo._id,
         appType: this.protocol,
-        appDomain: isSSOAuthing
-          ? "sso." + this.opts.baseDomain
-          : this.appInfo.domain + "." + this.opts.baseDomain,
+        appDomain: isSSOAuthing ? 'sso.' + this.opts.baseDomain : this.appInfo.domain + '.' + this.opts.baseDomain,
         host: {
           oauth: this.opts.host.oauth,
           user: this.opts.host.user
-        },
+        }
         // dev: window.isDev
       });
       let sess = await auth.trackSession();
       // let sess = { session: null };
       if (!sess.session) {
-        localStorage.removeItem("_authing_token");
-        localStorage.removeItem("_authing_userInfo");
-        localStorage.removeItem("_authing_clientInfo");
+        localStorage.removeItem('_authing_token');
+        localStorage.removeItem('_authing_userInfo');
+        localStorage.removeItem('_authing_clientInfo');
         try {
-          let appToken = localStorage.getItem("appToken");
+          let appToken = localStorage.getItem('appToken');
           let obj = JSON.parse(appToken);
           delete obj[this.opts.appId];
-          localStorage.setItem("appToken", JSON.stringify(obj));
+          localStorage.setItem('appToken', JSON.stringify(obj));
         } catch (err) {
           // 什么也不做，吞掉 error
         }
@@ -1037,63 +870,54 @@ export default {
   },
   computed: {
     headerTabCount() {
-      let arr = ["scan-wx-mp", "login", "register"];
-      if (
-        !this.isScanCodeEnable ||
-        this.opts.hideQRCode ||
-        (this.clientInfo.registerDisabled && !this.clientInfo.showWXMPQRCode)
-      ) {
-        let idx = arr.findIndex(v => v === "scan-wx-mp");
+      let arr = ['scan-wx-mp', 'login', 'register'];
+      if (!this.isScanCodeEnable || this.opts.hideQRCode || (this.clientInfo.registerDisabled && !this.clientInfo.showWXMPQRCode)) {
+        let idx = arr.findIndex(v => v === 'scan-wx-mp');
         if (~idx) {
           arr.splice(idx, 1);
         }
       }
 
       if (this.opts.hideSocial && this.opts.hideUP) {
-        let idx = arr.findIndex(v => v === "login");
+        let idx = arr.findIndex(v => v === 'login');
         if (~idx) {
           arr.splice(idx, 1);
         }
       }
-      if (
-        this.opts.hideUP ||
-        this.opts.forceLogin ||
-        this.clientInfo.registerDisabled ||
-        this.opts.hideRegister
-      ) {
-        let idx = arr.findIndex(v => v === "register");
+      if (this.opts.hideUP || this.opts.forceLogin || this.clientInfo.registerDisabled || this.opts.hideRegister) {
+        let idx = arr.findIndex(v => v === 'register');
         if (~idx) {
           arr.splice(idx, 1);
         }
       }
       return arr.length;
     },
-    ...mapGetters("visibility", {
-      emailLoginVisible: "emailLogin",
-      wxQRCodeVisible: "wxQRCode",
-      signUpVisible: "signUp",
-      signUpByPhoneVisible: "signUpByPhone",
-      forgetPasswordVisible: "forgetPassword",
-      phoneCodeLoginVisible: "phoneCodeLogin",
-      phonePasswordLoginVisible: "phonePasswordLogin",
-      isPhoneLogin: "",
-      LDAPLoginVisible: "LDAPLogin",
-      pageStack: "pageStack",
-      MFACodeVisible: "MFACode"
+    ...mapGetters('visibility', {
+      emailLoginVisible: 'emailLogin',
+      wxQRCodeVisible: 'wxQRCode',
+      signUpVisible: 'signUp',
+      signUpByPhoneVisible: 'signUpByPhone',
+      forgetPasswordVisible: 'forgetPassword',
+      phoneCodeLoginVisible: 'phoneCodeLogin',
+      phonePasswordLoginVisible: 'phonePasswordLogin',
+      isPhoneLogin: '',
+      LDAPLoginVisible: 'LDAPLogin',
+      pageStack: 'pageStack',
+      MFACodeVisible: 'MFACode'
     }),
-    ...mapGetters("data", ["globalMessage", "globalMessageType", "appInfo"]),
-    ...mapGetters("loading", {
-      socialButtonsListLoading: "socialButtonsList",
-      formLoading: "form",
-      pageLoading: "page"
+    ...mapGetters('data', ['globalMessage', 'globalMessageType', 'appInfo']),
+    ...mapGetters('loading', {
+      socialButtonsListLoading: 'socialButtonsList',
+      formLoading: 'form',
+      pageLoading: 'page'
     }),
-    ...mapGetters("protocol", ["protocol", "params"])
+    ...mapGetters('protocol', ['protocol', 'params'])
   },
   watch: {
     rememberMe: function(newVal) {
       if (newVal === false) {
-        localStorage.removeItem("_authing_username");
-        localStorage.removeItem("_authing_password");
+        localStorage.removeItem('_authing_username');
+        localStorage.removeItem('_authing_password');
       }
     }
   }

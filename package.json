@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard",
-  "version": "1.12.7",
+  "version": "1.12.9",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Authing/Guard.git"
