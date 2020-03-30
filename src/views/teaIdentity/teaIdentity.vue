@@ -413,7 +413,6 @@ export default {
       this.ruleForm.school = val.text;
     },
     alertChooseProvince() {
-      //弹出城市窗口，选择后记录选择的城市，关闭城市窗口，打开对应的大学列表窗口，选择后记录大学，关闭大学列表窗口
       this.provinceChooseShow = true;
     },
     handleSchool() {
