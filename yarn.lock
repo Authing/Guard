@@ -1475,13 +1475,16 @@ atob@^2.1.1:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-authing-js-sdk@3.5.0:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/authing-js-sdk/-/authing-js-sdk-3.5.0.tgz#569226a9d69dd58cdf2ce3f2c1be9cdb990016d1"
-  integrity sha512-nRT/+Fi21Jqyb/rh7T3i62Pq+Xn3DMPV7s1syxJhKRlmQSqtEINBjoT3cYNbadnOwiECNxP779p0RD7+KvwiXA==
+authing-js-sdk@^3.17.3:
+  version "3.17.3"
+  resolved "https://registry.npm.taobao.org/authing-js-sdk/download/authing-js-sdk-3.17.3.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fauthing-js-sdk%2Fdownload%2Fauthing-js-sdk-3.17.3.tgz#401a570a5df08aece81bdaf2526b128cd4172e8e"
+  integrity sha1-QBpXCl3wiuzoG9ryUmsSjNQXLo4=
   dependencies:
     axios "^0.19.0"
+    core-js "3"
     jsencrypt "^3.0.0-rc.1"
+    lodash "^4.17.15"
+    querystring "^0.2.0"
 
 autoprefixer@^9.5.1:
   version "9.6.1"
@@ -2350,6 +2353,11 @@ copy-webpack-plugin@^4.6.0:
     minimatch "^3.0.4"
     p-limit "^1.0.0"
     serialize-javascript "^1.4.0"
+
+core-js@3:
+  version "3.6.4"
+  resolved "https://registry.npmjs.org/core-js/-/core-js-3.6.4.tgz#440a83536b458114b9cb2ac1580ba377dc470647"
+  integrity sha512-4paDGScNgZP2IXXilaffL9X7968RuvwlkK3xWtZRVqgd8SYNiVKRJvkFd1aqqEuPfN7E68ZHEp9hDj6lHj4Hyw==
 
 core-js@^2.6.5:
   version "2.6.9"
@@ -6843,9 +6851,9 @@ querystring-es3@^0.2.0:
   resolved "https://registry.yarnpkg.com/querystring-es3/-/querystring-es3-0.2.1.tgz#9ec61f79049875707d69414596fd907a4d711e73"
   integrity sha1-nsYfeQSYdXB9aUFFlv2Qek1xHnM=
 
-querystring@0.2.0:
+querystring@0.2.0, querystring@^0.2.0:
   version "0.2.0"
-  resolved "https://registry.yarnpkg.com/querystring/-/querystring-0.2.0.tgz#b209849203bb25df820da756e747005878521620"
+  resolved "https://registry.npmjs.org/querystring/-/querystring-0.2.0.tgz#b209849203bb25df820da756e747005878521620"
   integrity sha1-sgmEkgO7Jd+CDadW50cAWHhSFiA=
 
 querystringify@^2.1.1:

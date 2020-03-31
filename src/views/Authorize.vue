@@ -56,7 +56,7 @@
             </div>
 
             <div v-show="!formLoading" class="_authing_form-footer two_buttons">
-              <button class="btn btn-primary" @click="redirectURL">授权登录</button>
+              <button class="btn btn-primary" @click="redirectURL" :class="{ 'btn-ban': buttonLoading }">授权登录</button>
               <button class="btn btn-primary btn-cancel" @click="cancelAuthorize">取消</button>
             </div>
           </div>
@@ -113,7 +113,10 @@ export default {
     redirectURL() {
       // 这个标志位是标志是否在检查用户是否授权过用户池
       this.checkAuthorized = false
-
+      if(this.buttonLoading){
+        return
+      }
+      this.buttonLoading = true
       // 本地测试：使用  192.168.2.16:5556
       const host = this.$root.SSOHost;
       // const host = '192.168.2.16:5556'
@@ -252,6 +255,7 @@ export default {
 
   data() {
     return {
+      buttonLoading : false,
       screenWidth: document.body.scrollWidth,
       showPage: false,
       scopes: {
