@@ -10,6 +10,7 @@ const pageVisibilities = [
   "phoneCodeLogin",
   "phonePasswordLogin",
   "LDAPLogin",
+  "ADLogin",
   "MFACode"
 ];
 const state = {
@@ -35,6 +36,8 @@ const state = {
   // -----------------------------
   // EmailLogin 页面中 LDAP 登录选项可见性
   LDAPLogin: false,
+  // EmailLogin 中 Ad 登录的可见性
+  ADLogin: false,
   // 登录频繁时，要求用户输入验证码
   loginVerifyCode: false
   // 登录成功和错误提示
@@ -55,6 +58,7 @@ const getters = {
   signUp: state => state.signUp,
   signUpByPhone: state => state.signUpByPhone,
   LDAPLogin: state => state.LDAPLogin,
+  ADLogin: state => state.ADLogin,
   loginVerifyCode: state => state.loginVerifyCode,
   MFACode: state => state.MFACode,
   forgetPassword: state =>
@@ -88,6 +92,9 @@ const actions = {
   },
   gotoLDAPLogin({ commit }) {
     commit("turnOnPage", { page: "LDAPLogin" });
+  },
+  gotoADLogin({ commit }) {
+    commit("turnOnPage", { page: "ADLogin" });
   },
   gotoForgetPassword({ commit }) {
     commit("turnOnPage", { page: "forgetPasswordSendEmail" });
