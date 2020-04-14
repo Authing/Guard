@@ -108,7 +108,7 @@
               </ul>
             </div>
 
-            <div v-if="(hasLDAP || hasAd) && (emailLoginVisible || LDAPLoginVisible)" class="ldap-radios" style="font-size: 13px;color:#777;padding: 0 11px;margin-top:11px;padding-top:6px">
+            <div v-if="(hasLDAP || hasAd) && (emailLoginVisible || LDAPLoginVisible || ADLoginVisible)" class="ldap-radios" style="font-size: 13px;color:#777;padding: 0 11px;margin-top:11px;padding-top:6px">
               <label>
                 <input type="radio" name="ldap" :checked="emailLoginVisible" style="width: 12px;" @click="gotoLogin" />
                 普通登录
