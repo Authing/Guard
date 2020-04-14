@@ -124,7 +124,7 @@
                 普通登录
               </label>
               <label>
-                <input type="radio" name="ad" @click="gotoADLogin" :checked="ADVisible" style="width: 12px;margin-left:11px" />
+                <input type="radio" name="ad" @click="gotoAdLogin" :checked="ADLoginVisible" style="width: 12px;margin-left:11px" />
                 使用 AD
               </label>
             </div>
@@ -377,7 +377,7 @@ export default {
 
     window.validAuth = auth;
     window.validAuth.clientInfo = userPoolSettings;
-    this.checkHasAD( that.opts.app_id,this.protocol)
+    this.checkHasAD( that.opts.appId,this.protocol)
     this.$authing.pub('authing-load', validAuth);
     if (that.opts.hideSocial && that.opts.hideUP) {
       that.gotoWxQRCodeScanning();
@@ -813,13 +813,13 @@ export default {
     },
     async checkHasAD(providerId,providerType) {
       providerType = this.appType||providerType
+      providerType = providerType.toLowerCase()=='oidc'?'OIDC':'OAuth'
       try{
-        console.log(validAuth.loginByAD)
         const adConnector = await validAuth.adConnectorByProvider({
           providerId,
           providerType,
         })
-        if (adConnector._id){
+        if (adConnector&&adConnector._id){
           window.adConnector = adConnector
           this.hasAd = true;
         }

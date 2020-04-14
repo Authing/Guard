@@ -128,7 +128,7 @@ export default {
       };
       this.changeLoading({ el: "form", loading: true });
       validAuth
-        .loginByAD(adLoginInfo)
+        .loginByAd(adLoginInfo)
         .then(data => {
           /*
           if (that.rememberMe) {

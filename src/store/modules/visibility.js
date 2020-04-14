@@ -93,7 +93,7 @@ const actions = {
   gotoLDAPLogin({ commit }) {
     commit("turnOnPage", { page: "LDAPLogin" });
   },
-  gotoADLogin({ commit }) {
+  gotoAdLogin({ commit }) {
     commit("turnOnPage", { page: "ADLogin" });
   },
   gotoForgetPassword({ commit }) {
