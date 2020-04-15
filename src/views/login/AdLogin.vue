@@ -131,9 +131,9 @@ export default {
           type: "error",
           message: "请输入密码"
         });
-        this.addAnimation("login-password");
-        this.removeRedLine("verify-code");
-        this.removeRedLine("login-username");
+        this.addAnimation("ad-login-password");
+        this.removeRedLine("ad-verify-code");
+        this.removeRedLine("ad-login-username");
         this.changeLoading({ el: "form", loading: false });
         this.$authing.pub("login-error", "请输入密码");
         this.$authing.pub("authenticated-error", "请输入密码");
@@ -144,9 +144,9 @@ export default {
           type: "error",
           message: "请输入用户名"
         });
-        this.addAnimation("login-username");
-        this.removeRedLine("verify-code");
-        this.removeRedLine("login-password");
+        this.addAnimation("ad-login-username");
+        this.removeRedLine("ad-verify-code");
+        this.removeRedLine("ad-login-password");
         this.changeLoading({ el: "form", loading: false });
         this.$authing.pub("login-error", "请输入密码");
         this.$authing.pub("authenticated-error", "请输入密码");
