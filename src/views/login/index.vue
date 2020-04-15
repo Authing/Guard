@@ -108,18 +108,23 @@
               </ul>
             </div>
 
-            <div v-if="hasLDAP && (emailLoginVisible || LDAPLoginVisible)" class="ldap-radios" style="font-size: 13px;color:#777;padding: 0 11px;margin-top:11px;padding-top:6px">
+            <div v-if="(hasLDAP || hasAd) && (emailLoginVisible || LDAPLoginVisible || ADLoginVisible)" class="ldap-radios" style="font-size: 13px;color:#777;padding: 0 11px;margin-top:11px;padding-top:6px">
               <label>
                 <input type="radio" name="ldap" :checked="emailLoginVisible" style="width: 12px;" @click="gotoLogin" />
                 普通登录
               </label>
-              <label>
+              <label v-if="hasLDAP">
                 <input type="radio" name="ldap" @click="gotoLDAPLogin" :checked="LDAPLoginVisible" style="width: 12px;margin-left:11px" />
                 使用 LDAP
+              </label>
+              <label v-if="hasAd">
+                <input type="radio" name="ad" @click="gotoAdLogin" :checked="ADLoginVisible" style="width: 12px;margin-left:11px" />
+                使用 AD
               </label>
             </div>
             <EmailLogin v-show="emailLoginVisible" :opts="opts" />
             <LDAPLogin v-show="LDAPLoginVisible" />
+            <ADLogin v-show="ADLoginVisible"/>
             <SignUp v-if="signUpVisible" />
             <QRCode v-if="wxQRCodeVisible" />
             <ForgetPassword v-if="forgetPasswordVisible" />
@@ -148,6 +153,7 @@
 import GraphQLClient from '../../graphql.js';
 import EmailLogin from './EmailLogin';
 import LDAPLogin from './LDAPLogin';
+import ADLogin from './AdLogin'
 import QRCode from './QRCode';
 import SignUp from './SignUp';
 import GlobalMessage from '../components/GlobalMessage';
@@ -166,6 +172,7 @@ export default {
     ForgetPassword,
     GlobalMessage,
     LDAPLogin,
+    ADLogin,
     MFACode,
     SignUpByPhone,
     PhoneLogin
@@ -193,7 +200,9 @@ export default {
 
       $authing: null,
 
-      hasLDAP: false
+      hasLDAP: false,
+      hasAd: false,
+      appType: '',
     };
   },
   created() {
@@ -362,6 +371,7 @@ export default {
 
     window.validAuth = auth;
     window.validAuth.clientInfo = userPoolSettings;
+    this.checkHasAD( that.opts.appId,this.protocol)
     this.$authing.pub('authing-load', validAuth);
     if (that.opts.hideSocial && that.opts.hideUP) {
       that.gotoWxQRCodeScanning();
@@ -417,7 +427,7 @@ export default {
     sessionStorage.removeItem('jump2Profile');
   },
   methods: {
-    ...mapActions('visibility', ['gotoWxQRCodeScanning', 'removeGlobalMsg', 'gotoSignUp', 'gotoLogin', 'gotoLDAPLogin', 'goBack']),
+    ...mapActions('visibility', ['gotoWxQRCodeScanning', 'removeGlobalMsg', 'gotoSignUp', 'gotoLogin', 'gotoLDAPLogin','gotoAdLogin', 'goBack']),
     ...mapActions('loading', ['changeLoading']),
     ...mapActions('data', ['saveSocialButtonsList', 'saveAppInfo', 'saveLoginStatus', 'showGlobalMessage']),
     ...mapActions('protocol', ['saveProtocol']),
@@ -588,6 +598,7 @@ export default {
           // console.log("queryAppInfo");
           // console.log(appInfo);
           // 返回对应的 app 信息
+          this.appType = protocol
           switch (protocol) {
             case 'oidc':
               return appInfo['QueryOIDCAppInfoByDomain'];
@@ -794,6 +805,22 @@ export default {
         console.log(erro);
       }
     },
+    async checkHasAD(providerId,providerType) {
+      providerType = this.appType||providerType
+      providerType = providerType.toLowerCase()=='oidc'?'OIDC':'OAuth'
+      try{
+        const adConnector = await validAuth.adConnectorByProvider({
+          providerId,
+          providerType,
+        })
+        if (adConnector&&adConnector._id){
+          window.adConnector = adConnector
+          this.hasAd = true;
+        }
+      }catch (error){
+        console.log(error);
+      }
+    },
     clearLocalStorage() {
       localStorage.removeItem('appToken');
       localStorage.removeItem('_authing_username');
@@ -902,6 +929,7 @@ export default {
       phonePasswordLoginVisible: 'phonePasswordLogin',
       isPhoneLogin: '',
       LDAPLoginVisible: 'LDAPLogin',
+      ADLoginVisible: 'ADLogin',
       pageStack: 'pageStack',
       MFACodeVisible: 'MFACode'
     }),
