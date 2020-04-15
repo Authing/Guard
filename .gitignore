@@ -23,3 +23,5 @@ yarn-error.log*
 test.js
 ssl/
 test.sh
+
+dist.tar.gz
