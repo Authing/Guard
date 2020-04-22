@@ -162,7 +162,6 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
-import schoolJson from "./../../../public/school.json";
 export default {
   data() {
     let validateSure = (rule, value, callback) => {
@@ -225,7 +224,6 @@ export default {
   created() {
     this.$authing = this.$root.$data.$authing;
     this.opts = this.$root.$data.$authing.opts;
-    this.testJson = schoolJson;
     // 将协议的 query 参数存入 vuex
     this.saveProtocol({
       protocol: this.opts.protocol || this.$route.query.protocol,
@@ -291,7 +289,12 @@ export default {
           this.majorOptions = resp;
         });
       });
-      this.handleSchool();
+      fetch("https://node2d-public.hep.com.cn/school2.json").then(res => {
+        res.json().then(resp => {
+          this.testJson = resp;
+          this.handleSchool();
+        });
+      });
 
       window.validAuth.metadata(this.userId).then(res => {
         if (res) {

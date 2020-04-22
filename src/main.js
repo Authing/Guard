@@ -7,7 +7,6 @@ import Authing from "authing-js-sdk";
 import VueTour from "vue-tour";
 import "./styles/styles.css";
 import "./styles/animations.css";
-import 'element-ui/lib/theme-chalk/index.css'
 require("vue-tour/dist/vue-tour.css");
 import { Button, Select, Form, FormItem, Input, Radio, RadioGroup, DatePicker, Upload, Option, Checkbox, Image, Row, Col, Message, Dialog } from 'element-ui';
 Vue.use(VueTour);

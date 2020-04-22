@@ -189,8 +189,8 @@
     </div>
     <div v-show="submitted">
       <!-- 如果通过审核了，提示请耐心等待，并跳回其他页面或等待用户关闭 -->
-      <el-dialog title="未登录提示" width="30%" :visible="tipsSubmitted">
-        <span>您的审核已提交，请耐心等待，如有修改，请点击修改。</span>
+      <el-dialog title="审核提示" width="30%" :visible="tipsSubmitted">
+        <span>{{tips[userStatus]}}</span>
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="handleEdit">修改</el-button>
           <el-button @click="backPage" v-show="showReturn">返回</el-button>
@@ -212,7 +212,6 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
-import schoolJson from "./../../../public/school.json";
 export default {
   data() {
     let phone_reg = new RegExp(/^\d{3}-\d{7,8}|\d{4}-\d{7,8}$/);
@@ -248,9 +247,9 @@ export default {
       },
       province1: "",
       school1: "",
-      status: 0,
+      status: 0, // 是否审核通过，用来控制是否可修改用户信息
       submitted: false,
-      tipsSubmitted: true,
+      tipsSubmitted: false,
       provinceList: [],
       schoolList: [],
       majorOptions: [],
@@ -279,7 +278,14 @@ export default {
       provinceChooseShow: false,
       schoolChooseShow: false,
       currentProvince: { text: "北京" },
-      showSchoolTips: false
+      showSchoolTips: false,
+      userStatus: "firstAudit", //firstAudit还未提交过
+      // certifing审核中 certified 已通过 reject已拒绝
+      tips: {
+        certifing: "您的审核申请已提交，请耐心等待，如有修改，请点击修改。",
+        certified: "您的审核申请已通过，点击修改可修改部分信息。",
+        reject: "您的审核申请已被拒绝，请修改信息后重新提交。"
+      }
     };
   },
   created() {
@@ -304,17 +310,18 @@ export default {
     }
   },
   async mounted() {
-    this.testJson = schoolJson;
     fetch("https://node2d-public.hep.com.cn/zy.json").then(res => {
       res.json().then(resp => {
         this.majorOptions = resp;
       });
     });
-    // fetch("https://sso.hep.com.cn/account/bulidJsonSchoolTree")
-    //   .then(res => res.json())
-    //   .then(resp => console.log(resp));
-    //此处获取 大学列表赋值给testJson,对testJson进行处理
-    this.handleSchool();
+    fetch("https://node2d-public.hep.com.cn/school2.json").then(res => {
+      res.json().then(resp => {
+        this.testJson = resp;
+        //此处获取 大学列表赋值给testJson,对testJson进行处理
+        this.handleSchool();
+      });
+    });
     if (!localStorage.getItem("_authing_clientInfo")) {
       this.dialogShow = true;
     } else {
@@ -333,7 +340,6 @@ export default {
         cdnHost: "https://node2d-public.hep.com.cn",
         onInitError: err => {
           this.changeLoading({ el: "page", loading: false });
-
           this.authingOnError = true;
           this.showGlobalMessage({
             type: "error",
@@ -353,6 +359,41 @@ export default {
       window.validAuth = auth;
       window.validAuth.clientInfo = userPoolSettings;
       this.$authing.pub("authing-load", validAuth);
+      const permissionLost = await auth.userGroupList(this.userId);
+      //permissionLost.totalCount = 0就是没有提交过审核
+      if (permissionLost.totalCount === 0) {
+        this.userStatus = "firstAudit";
+        this.status = 0;
+        this.submitted = false;
+        this.tipsSubmitted = false;
+      } else {
+        for (let val of permissionLost.rawList) {
+          if (val === "group_teacher_certifing") {
+            //如果是待审核
+            //提示已提交，正审核，可修改
+            this.userStatus = "certifing";
+            this.status = 0;
+            this.submitted = true;
+            this.tipsSubmitted = true;
+          }
+          if (val === "group_teacher_certified") {
+            //如果是已通过
+            // 不应该跳过来，可以不处理
+            this.userStatus = "certified";
+            this.status = 1;
+            this.submitted = true;
+            this.tipsSubmitted = true;
+          }
+          if (val === "group_teacher_certified_reject") {
+            //如果是在reject组里
+            // 提示 您的已拒绝，请点击修改后重新提交
+            this.userStatus = "reject";
+            this.status = 0;
+            this.submitted = true;
+            this.tipsSubmitted = true;
+          }
+        }
+      }
       window.validAuth.metadata(this.userId).then(res => {
         if (res) {
           let regeditUser = null;
@@ -364,20 +405,9 @@ export default {
             if (val.key === "teaIdentityForm") {
               teaIdentityUser = JSON.parse(val.value);
             }
-            if (val.key === "status") {
-              if (val.value !== "待审核") {
-                //审核通过
-                this.status = 1;
-              } else {
-                //提交审核但未通过
-                this.status = 0;
-                this.submitted = true;
-              }
-            }
             this.ruleForm = Object.assign({}, regeditUser, teaIdentityUser);
             document.getElementById("avatarImg").src = this.ruleForm.img;
             this.showImg = true;
-            // console.log(this.ruleForm);
             if (this.ruleForm.school) {
               this.province1 = this.ruleForm.province;
               this.school1 = this.ruleForm.school;
@@ -480,20 +510,87 @@ export default {
       }
     },
     handleSubmit() {
-      window.validAuth.setMetadata({
-        _id: this.userId,
-        key: "teaIdentityForm",
-        value: JSON.stringify(this.ruleForm)
-      });
+      // firstAudit还未提交过
+      // certifing审核中 certified 已通过 reject已拒绝
+      switch (this.userStatus) {
+        case "firstAudit":
+          //首次提交，放到用户角色certifing里
+          fetch("http://localhost:3000/updateUserRole", {
+            method: "POST",
+            body: JSON.stringify({
+              userId: this.userId,
+              role: "teacher_certifing_newHep"
+            }),
+            headers: {
+              "Content-Type": "application/json",
+              authorization: "Bearer " + this.userToken
+            }
+          })
+            .then(res => res.json())
+            .then(resp => {
+              if (resp.success) {
+                this.updateMetaData();
+              }
+            });
+          break;
+        case "certifing":
+          this.updateMetaData();
+          //正在审核，角色不变，更新metadata里面数据
+          break;
+        case "certified":
+          this.updateMetaData();
+          //审核通过了，角色不变，更新metadata数据
+          break;
+        case "reject":
+          //拒绝了，放到certifing角色里，从reject组里拿出来
+          fetch("http://localhost:3000/updateUserRole", {
+            method: "POST",
+            body: JSON.stringify({
+              userId: this.userId,
+              role: "teacher_certifing_newHep"
+            }),
+            headers: {
+              "Content-Type": "application/json",
+              authorization: "Bearer " + this.userToken
+            }
+          })
+            .then(res => res.json())
+            .then(resp => {
+              if(resp.success) {
+                fetch("http://localhost:3000/removeUserGroup", {
+                method: "POST",
+                body: JSON.stringify({
+                  userId: this.userId,
+                  group: "group_teacher_certified_reject"
+                }),
+                headers: {
+                  "Content-Type": "application/json",
+                  authorization: "Bearer " + this.userToken
+                }
+              })
+                .then(res => res.json())
+                .then(resp => {
+                  if(resp.r.code === 200) {
+                    this.updateMetaData();
+                  }
+                })
+              }
+            });
+          break;
+        default:
+          break;
+      }
+    },
+    updateMetaData() {
       window.validAuth
         .setMetadata({
           _id: this.userId,
-          key: "status",
-          value: "待审核"
+          key: "teaIdentityForm",
+          value: JSON.stringify(this.ruleForm)
         })
         .then(res => {
           if (res) {
-            $message.success({ message: "您已成功提交审核" });
+            $message.success({ message: "您已成功提交审核信息" });
           }
           this.backPage();
         });
