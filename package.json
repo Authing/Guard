@@ -10,6 +10,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "prebuild-pack": "node handle.js",
     "build-pack": "vue-cli-service build --target lib --name Guard ./src/main.js",
     "build-dev": "npx vue-cli-service build --target lib --mode development --name Guard ./src/main.js",
     "generate": "ejs-cli -b ./public -f index.html -O \"{\\\"rand\\\": \\\"$RANDOM\\\"}\" > ./dist/index.html",
