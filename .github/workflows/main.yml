@@ -15,10 +15,11 @@ jobs:
         with:
           node-version: 12
       - name: handle vue
-        run : node handle.js
+        run : |
+            npm install 
+            node handle.js
       - name: build pack
         run: |
-             npm install 
              npm run build-pack
       - name: npm push
         run: |
