@@ -14,10 +14,21 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-      - name: build
+      - name: handle vue
+        run : node handle.js
+      - name: build pack
         run: |
              npm install 
              npm run build-pack
+      - name: npm push
+        run: |
+             npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+             npm publish
+        env:
+             NPM_TOKEN: '${{secrets.NPM_AUTH_TOKEN}}'
+      - name: build dist
+        run: |
+            npm install 
       - name: Deploy to server
         id: deploy
         uses: Pendect/action-rsyncer@v1.1.0
@@ -29,9 +40,4 @@ jobs:
           ssh_options: '-p ${{secrets.SERVER_PORT}}'
           src: 'dist/'
           dest: 'labs@${{secrets.SERVER_HOST}}:/mnt/authing/Guard/dist/'
-      - name: npm push
-        run: |
-             npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
-             npm publish
-        env:
-             NPM_TOKEN: '${{secrets.NPM_AUTH_TOKEN}}'
+
