@@ -18,7 +18,6 @@ jobs:
         run: |
              npm install 
              npm run build-pack
-             npm run build
       - name: Deploy to server
         id: deploy
         uses: Pendect/action-rsyncer@v1.1.0
