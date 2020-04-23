@@ -27,7 +27,7 @@ jobs:
              NPM_TOKEN: '${{secrets.NPM_AUTH_TOKEN}}'
       - name: build dist
         run: |
-            npm install 
+            npm run build
       - name: Deploy to server
         id: deploy
         uses: Pendect/action-rsyncer@v1.1.0
