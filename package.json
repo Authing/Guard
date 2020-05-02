@@ -21,6 +21,7 @@
     "authing-js-sdk": "^3.18.7",
     "axios": "^0.18.0",
     "babel-plugin-import": "^1.13.0",
+    "better-qiniu-webpack-plugin": "^0.0.6",
     "element-ui": "^2.13.0",
     "otplib": "^11.0.1",
     "qrcode": "^1.4.1",
