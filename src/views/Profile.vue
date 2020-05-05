@@ -36,7 +36,11 @@
           </svg>
         </span>
 
-        <span class="authing-lock-back-button" @click="quitLogin" style="left: 44px">
+        <span
+          class="authing-lock-back-button"
+          @click="quitLogin"
+          style="left: 44px"
+        >
           <!-- ;border-color: #fcce4f; background: #fcce4f -->
           <svg
             t="1557666285087"
@@ -93,19 +97,25 @@
           style="cursor: pointer"
           :class="nowPage !== 0 ? 'unhover' : ''"
           @click="pageChange(0)"
-        >基本资料</div>
+        >
+          基本资料
+        </div>
         <div
           class="item"
           style="cursor: pointer"
           :class="nowPage !== 1 ? 'unhover' : ''"
           @click="pageChange(1)"
-        >详细资料</div>
+        >
+          详细资料
+        </div>
         <div
           class="item"
           style="cursor: pointer"
           :class="nowPage !== 2 ? 'unhover' : ''"
           @click="pageChange(2)"
-        >令牌设置</div>
+        >
+          令牌设置
+        </div>
       </div>
 
       <div class="profile-good_page" v-if="nowPage == 0">
@@ -118,7 +128,7 @@
                 :placeholder="opt.nickName"
                 v-model="profileForm.nickName"
                 autocomplete="off"
-                @keyup.enter="saveInfo"
+                @keydown.13="saveInfo"
               />
               <input
                 type="text"
@@ -137,7 +147,11 @@
           </div>
           <div class="profile-right_bar">
             <div class="profile-avatar_box" @click="choosePhoto">
-              <img :src="profileForm.avatarUrl" class="avatar" style="cursor: pointer" />
+              <img
+                :src="profileForm.avatarUrl"
+                class="avatar"
+                style="cursor: pointer"
+              />
               <span style="cursor: pointer">修改头像</span>
             </div>
           </div>
@@ -170,7 +184,7 @@
                 :placeholder="opt.companyName"
                 v-model="profileForm.companyName"
                 autocomplete="off"
-                @keyup.enter="saveInfo"
+                @keydown.13="saveInfo"
               />
             </div>
 
@@ -181,8 +195,8 @@
                 class="_authing_input _authing_form-control"
                 :placeholder="opt.oldPassWord"
                 v-model="profileForm.oldPassWord"
-                autocomplete="off"
-                @keyup.enter="saveInfo"
+                autocomplete="new-password"
+                @keyup.13="saveInfo"
               />
             </div>
 
@@ -193,8 +207,8 @@
                 class="_authing_input _authing_form-control"
                 :placeholder="opt.passWord"
                 v-model="profileForm.passWord"
-                autocomplete="off"
-                @keyup.enter="saveInfo"
+                autocomplete="new-password"
+                @keyup.13="saveInfo"
               />
             </div>
 
@@ -205,8 +219,8 @@
                 class="_authing_input _authing_form-control"
                 :placeholder="opt.passWord2"
                 v-model="profileForm.passWord2"
-                autocomplete="off"
-                @keyup.enter="saveInfo"
+                autocomplete="new-password"
+                @keyup.13="saveInfo"
               />
             </div>
           </div>
@@ -214,7 +228,11 @@
         <div class="whitePage" v-if="loading"></div>
       </div>
 
-      <div class="profile-settings_page" style="overflow-y: hidden !important;" v-if="nowPage == 2">
+      <div
+        class="profile-settings_page"
+        style="overflow-y: hidden !important;"
+        v-if="nowPage == 2"
+      >
         <!-- <v-tour
           v-if="MFAchecked && typeof(MFA.enable) == 'boolean' && !MFA.enable"
           name="profile_tour"
@@ -227,14 +245,20 @@
           <span class="profile-label">开启动态令牌</span>
           <span class="profile-label_info row-flex-end">
             <label class="switch">
-              <input type="checkbox" v-model="MFAchecked" @change="handleChangeMFA" />
+              <input
+                type="checkbox"
+                v-model="MFAchecked"
+                @change="handleChangeMFA"
+              />
               <div class="slider round"></div>
             </label>
           </span>
         </div>
         <div v-if="MFAchecked" class="profile-user_info">
           <span class="profile-label">应用备注</span>
-          <span class="profile-label_info row-flex-end authing-form without-padding">
+          <span
+            class="profile-label_info row-flex-end authing-form without-padding"
+          >
             <input
               type="text"
               class="_authing_input _authing_form-control mini_input"
@@ -248,7 +272,9 @@
         </div>
         <div v-if="MFAchecked" class="profile-user_info">
           <span class="profile-label">令牌密钥</span>
-          <span class="profile-label_info row-flex-end authing-form without-padding">
+          <span
+            class="profile-label_info row-flex-end authing-form without-padding"
+          >
             <input
               type="text"
               class="_authing_input _authing_form-control mini_input"
@@ -281,7 +307,9 @@
                 !(QRCodeImg && QRCodeImg !== '')
             "
             class="remarkBox"
-          >暂无动态令牌二维码</div>
+          >
+            暂无动态令牌二维码
+          </div>
           <img
             v-if="
               navBarKey == 1 && !remarkChanging && QRCodeImg && QRCodeImg !== ''

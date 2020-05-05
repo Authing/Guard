@@ -14,33 +14,33 @@
         <input
           type="text"
           class="_authing_input _authing_form-control"
-          id="ldap-login-username"
+          id="ad-login-username"
           v-model="email"
-          placeholder="请输入 LDAP 的用户名"
+          placeholder="请输入 AD 的用户名"
           autocomplete="off"
-          @keyup.enter="handleLDAPLogin"
+          @keydown.13="handleADLogin"
         />
       </div>
       <div class="_authing_form-group">
         <input
           type="password"
           class="_authing_input _authing_form-control"
-          id="ldap-login-password"
+          id="ad-login-password"
           v-model="password"
           :placeholder="opts.placeholder.password"
           autocomplete="off"
-          @keyup.enter="handleLDAPLogin"
+          @keydown.13="handleADLogin"
         />
       </div>
       <div v-show="loginVerifyCodeVisible" class="form-group verify-code">
         <input
           type="text"
           class="_authing_input _authing_form-control"
-          id="ldap-verify-code"
+          id="ad-verify-code"
           v-model="verifyCode"
           :placeholder="opts.placeholder.verfiyCode"
           autocomplete="off"
-          @keyup.enter="handleLDAPLogin"
+          @keydown.13="handleADLogin"
         />
 
         <div
@@ -60,7 +60,7 @@
             <!--<input class="_authing_input" type="checkbox" id="login-remember" style="vertical-align: middle; margin: 0"
                              v-model="rememberMe"><span
             style="vertical-align: middle"> 记住我</span>-->
-            <a class="_authing_a" @click="gotoUsingPhone">使用手机验证码登录</a>
+            <a class="_authing_a" @click="gotoUsingPhone">使用手机登录</a>
           </label>
         </div>
 
@@ -70,7 +70,7 @@
       </div>
     </form>
     <div class="_authing_form-footer login" v-show="!opts.hideUP">
-      <button @click="handleLDAPLogin" class="btn btn-primary">
+      <button @click="handleADLogin" class="btn btn-primary">
         <span v-show="!formLoading">登录</span>
       </button>
     </div>
@@ -119,15 +119,42 @@ export default {
     handleLoginVerifyCodeLoaded() {
       this.changeLoading({ el: "loginVerifyCode", loading: false });
     },
-    handleLDAPLogin() {
+    handleADLogin() {
       const that = this;
-      const ldapLoginInfo = {
+      const adLoginInfo = {
+        adConnectorId: window.adConnector._id,
         username: that.email,
         password: that.password
       };
+      if (!this.password) {
+        this.showGlobalMessage({
+          type: "error",
+          message: "请输入密码"
+        });
+        this.addAnimation("ad-login-password");
+        this.removeRedLine("ad-verify-code");
+        this.removeRedLine("ad-login-username");
+        this.changeLoading({ el: "form", loading: false });
+        this.$authing.pub("login-error", "请输入密码");
+        this.$authing.pub("authenticated-error", "请输入密码");
+        return false;
+      }
+      if (!this.email) {
+        this.showGlobalMessage({
+          type: "error",
+          message: "请输入用户名"
+        });
+        this.addAnimation("ad-login-username");
+        this.removeRedLine("ad-verify-code");
+        this.removeRedLine("ad-login-password");
+        this.changeLoading({ el: "form", loading: false });
+        this.$authing.pub("login-error", "请输入密码");
+        this.$authing.pub("authenticated-error", "请输入密码");
+        return false;
+      }
       this.changeLoading({ el: "form", loading: true });
       validAuth
-        .loginByLDAP(ldapLoginInfo)
+        .loginByAd(adLoginInfo)
         .then(data => {
           /*
           if (that.rememberMe) {

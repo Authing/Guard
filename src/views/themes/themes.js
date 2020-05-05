@@ -83,6 +83,73 @@ export default {
         color: '#fff',
         background: '#0cf'
       }
-    }
+    },
+
+    // 企业微信
+    "wechatwork-web": {
+      icon: '\uf262',
+      iconStyle: {
+        background: '#335899'
+      },
+      buttonStyle: {
+        color: '#fff',
+        background: '#335883'
+      }
+    },
+
+    "wechatwork-qrconnect": {
+      icon: '\uf262',
+      iconStyle: {
+        background: '#335899'
+      },
+      buttonStyle: {
+        color: '#fff',
+        background: '#335883'
+      }
+    },
+
+    "wechatwork-corp-qrconnect": {
+      icon: '\uf262',
+      iconStyle: {
+        background: '#335899'
+      },
+      buttonStyle: {
+        color: '#fff',
+        background: '#335883'
+      }
+    },
+
+    "wechatwork-corp-web": {
+      icon: '\uf262',
+      iconStyle: {
+        background: '#335899'
+      },
+      buttonStyle: {
+        color: '#fff',
+        background: '#335883'
+      }
+    },
+
+    "wechatwork-3rd-web": {
+      icon: '\uf262',
+      iconStyle: {
+        background: '#335899'
+      },
+      buttonStyle: {
+        color: '#fff',
+        background: '#335883'
+      }
+    },
+
+    "wechatwork-3rd-qrconnect": {
+      icon: '\uf262',
+      iconStyle: {
+        background: '#335899'
+      },
+      buttonStyle: {
+        color: '#fff',
+        background: '#335883'
+      }
+    },
   }
 }

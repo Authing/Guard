@@ -21,6 +21,10 @@ yarn-error.log*
 *.sw*
 
 test.js
+ssl/
+test.sh
 
 test.sh
 ssl
+dist.tar.gz
+package-lock.json

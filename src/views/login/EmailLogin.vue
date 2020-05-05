@@ -30,7 +30,7 @@
             v-model="loginForm.email"
             :placeholder="opts.placeholder.email"
             autocomplete="off"
-            @keyup.enter="handleLogin"
+            @keydown.13="handleLogin"
           />
         </div>
         <div class="_authing_form-group">
@@ -41,7 +41,7 @@
             v-model="loginForm.password"
             :placeholder="opts.placeholder.password"
             autocomplete="off"
-            @keyup.enter="handleLogin"
+            @keydown.13="handleLogin"
           />
         </div>
         <div v-show="loginVerifyCodeVisible" class="form-group verify-code">
@@ -52,7 +52,7 @@
             v-model="verifyCode"
             :placeholder="opts.placeholder.verfiyCode"
             autocomplete="off"
-            @keyup.enter="handleLogin"
+            @keydown.13="handleLogin"
           />
 
           <div class="_authing_verify-code-loading-circle" v-show="loginVerifyCodeLoading"></div>
@@ -117,7 +117,6 @@ export default {
     // this.opts = this.$root.$data.$authing.opts;
   },
   mounted() {
-    console.log(this.signUpUsername, this.signUpEmail + "🐎");
     this.loginForm.email = this.signUpEmail || this.signUpUsername || "";
     this.loginForm.password = this.signUpPassword || "";
   },
@@ -319,23 +318,17 @@ export default {
         .catch(err => {
           console.log(err.message);
           that.changeLoading({ el: "form", loading: false });
-
-          if (!this.$authing.opts.forceLogin) {
-            // 如果开启了强制登录、就不要显示此报错了，不然页面会出现红色错误突然一闪的情况
+          // 验证码错误
+          if (err.message.code === 2000 || err.message.code === 2001) {
+            that.addAnimation("verify-code");
+            that.removeRedLine("login-username");
+            that.removeRedLine("login-password");
             that.$authing.pub("login-error", err);
             that.$authing.pub("authenticated-error", err);
             that.showGlobalMessage({
               type: "error",
               message: err.message.message
             });
-          }
-
-          // 验证码错误
-          if (err.message.code === 2000 || err.message.code === 2001) {
-            that.addAnimation("verify-code");
-            that.removeRedLine("login-username");
-            that.removeRedLine("login-password");
-
             that.changeLoading({ el: "loginVerifyCode", loading: true });
             that.changeVisibility({
               el: "loginVerifyCode",
@@ -413,6 +406,12 @@ export default {
                 });
               return false;
             } else {
+              that.$authing.pub("login-error", err);
+              that.$authing.pub("authenticated-error", err);
+              that.showGlobalMessage({
+                type: "error",
+                message: err.message.message
+              });
               that.addAnimation("login-username");
               that.removeRedLine("login-password");
               that.removeRedLine("verify-code");
@@ -427,6 +426,12 @@ export default {
             that.addAnimation("login-password");
             that.removeRedLine("verify-code");
             that.removeRedLine("login-username");
+            that.$authing.pub("login-error", err);
+            that.$authing.pub("authenticated-error", err);
+            that.showGlobalMessage({
+              type: "error",
+              message: err.message.message
+            });
             if (err.message.data.url) {
               that.verifyCodeUrl = err.message.data.url;
             } else {

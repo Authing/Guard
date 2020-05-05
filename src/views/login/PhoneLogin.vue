@@ -34,7 +34,7 @@
             v-model="phoneCode"
             :placeholder="opts.placeholder.phoneCode"
             autocomplete="off"
-            @keyup.enter="handleLoginByPhoneCode"
+            @keydown.13="handleLoginByPhoneCode"
           />
           <div class="phone-code-wrapper" style="flex-basis: 50%;">
             <button

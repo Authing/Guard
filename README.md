@@ -60,8 +60,8 @@ import Guard from "@authing/guard";
     <div id="my-form"></div>
 
     <script>
-      const clientId = "YOUR_AUTHING_USERPOOL_ID";
-      const guard = new Guard(clientId, {
+      const userPoolId = "YOUR_AUTHING_USERPOOL_ID";
+      const guard = new Guard(userPoolId, {
         logo: "https://usercontents.authing.cn/client/logo@2.png",
         title: "Authing",
         // 把表单插入到 id 为 my-form 的标签
@@ -116,9 +116,9 @@ import Guard from "@authing/guard";
     <script src="https://cdn.jsdelivr.net/npm/@authing/guard/dist/Guard.umd.min.js"></script>
     <script>
       var appId = "YOUR_AUTHING_SSO_APPID";
-      var clientId = "YOUR_AUTHING_USERPOOL_ID";
+      var userPoolId = "YOUR_AUTHING_USERPOOL_ID";
       var domain = "example.authing.cn";
-      const guard = new Guard(clientId, {
+      const guard = new Guard(userPoolId, {
         appId,
         domain,
         hideClose: true,
@@ -139,7 +139,7 @@ import Guard from "@authing/guard";
 
 ## API
 
-### 构造函数 new Guard(clientId, options)
+### 构造函数 new Guard(userPoolId, options)
 
 初始化一个新的 `Guard` 实例。SSO 场景和非 SSO 场景下传参方式有所不同。
 
@@ -147,7 +147,7 @@ import Guard from "@authing/guard";
 
 只需提供用户池 id。
 
-- **clientId**: 用户池 id
+- **userPoolId**: 用户池 id
 - **options {Object}**: 允许你自定义表单的 UI，相关参数请参考 [自定义](https://github.com/Authing/Guard#自定义)
 
 #### SSO 场景
@@ -156,7 +156,7 @@ import Guard from "@authing/guard";
 
 需要提供用户池 id，在 options 对象中，传入你在 [Authing](https://authing.cn/dashboard) 对应应用中的 appId 和域名信息。
 
-- **clientId**: 用户池 id
+- **userPoolId**: 用户池 id
 - **options {Object}**: 允许你自定义表单的 UI，相关参数请参考 [自定义](https://github.com/Authing/Guard#自定义)
 - **options.appId {String}**: Authing SSO 类应用的 _appId_；
 - **options.domain {String}**: Authing 中配置的 _域名_. 通常是 \<appDomain\>.authing.cn；
@@ -261,7 +261,7 @@ Guard 会在以下生命周期中触发相应事件：
 | **placeholder**.phone           | 否       | 请输入手机号                         | String  | **手机号输入框的 paceholder**                                                                                   |
 | **placeholder**.phoneCode       | 否       | 4 位验证码                           | String  | **手机验证码输入框的 paceholder**                                                                               |
 | **qrcodeScanning**              | 否       | {}                                   | Object  | **小程序扫码登录的配置项**                                                                                      |
-| **qrcodeScanning**.redirect     | 否       | true                                 | Boolean | **是否执行跳转（在用户后台配置的 URL）**，若值为 false，用户数据会通过 onSuccess 回调函数返回                   |
+| **qrcodeScanning**.redirect     | 否       | true                                 | Boolean | **是否执行跳转（在用户后台配置的 URL）**，若值为 false，用户数据可通过 .on('authenticated') 回调函数获取                  |
 | **qrcodeScanning**.interval     | 否       | 1500                                 | Number  | 每隔多少秒检查一次是否扫码，默认 1500                                                                           |
 | **qrcodeScanning**.tips         | 否       | 使用 微信 或小程序 身份管家 扫码登录 | String  | 提示信息，可写 HTML                                                                                             |
 

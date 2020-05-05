@@ -9,12 +9,17 @@
           autocomplete="off"
           :placeholder="opts.placeholder.verfiyCode"
           v-model="verifyCode"
-          @keyup.enter="handleSubmitForgetPasswordVerifyCode"
-        >
+          @keydown.13="handleSubmitForgetPasswordVerifyCode"
+        />
       </div>
     </div>
     <div class="_authing_form-footer login" v-show="!opts.hideUP">
-      <button @click="handleSubmitForgetPasswordVerifyCode" class="btn btn-primary"><span v-show="!formLoading">提交验证码</span></button>
+      <button
+        @click="handleSubmitForgetPasswordVerifyCode"
+        class="btn btn-primary"
+      >
+        <span v-show="!formLoading">提交验证码</span>
+      </button>
     </div>
   </div>
 </template>
@@ -34,12 +39,16 @@ export default {
     ...mapGetters("data", ["forgetPasswordEmail"]),
     ...mapGetters("loading", {
       formLoading: "form"
-    }),
+    })
   },
   methods: {
     ...mapActions("loading", ["changeLoading"]),
     ...mapActions("visibility", ["gotoForgetPasswordNewPassword"]),
-    ...mapActions("data", ["showGlobalMessage", "saveForgetPasswordVerifyCode", "addAnimation"]),
+    ...mapActions("data", [
+      "showGlobalMessage",
+      "saveForgetPasswordVerifyCode",
+      "addAnimation"
+    ]),
     handleSubmitForgetPasswordVerifyCode: function handleSubmitForgetPasswordVerifyCode() {
       var that = this;
       this.changeLoading({ el: "form", loading: true });
@@ -66,7 +75,7 @@ export default {
             type: "success",
             message: data.message
           });
-          this.saveForgetPasswordVerifyCode({verifyCode: this.verifyCode})
+          this.saveForgetPasswordVerifyCode({ verifyCode: this.verifyCode });
           this.gotoForgetPasswordNewPassword();
         })
         .catch(err => {
@@ -82,5 +91,4 @@ export default {
   }
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

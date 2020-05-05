@@ -9,7 +9,7 @@
           v-model="signUpForm.username"
           :placeholder="opts.placeholder.username"
           autocomplete="off"
-          @keyup.enter="handleSignUp"
+          @keydown.13="handleSignUp"
         />
       </div>
       <div class="_authing_form-group">
@@ -21,7 +21,7 @@
           @blur="checkEmail"
           :placeholder="opts.placeholder.email.replace('或用户名', '')"
           autocomplete="off"
-          @keyup.enter="handleSignUp"
+          @keydown.13="handleSignUp"
         />
       </div>
       <div class="_authing_form-group">
@@ -31,8 +31,8 @@
           id="sign-up-password"
           v-model="signUpForm.password"
           :placeholder="opts.placeholder.password"
-          autocomplete="off"
-          @keyup.enter="handleSignUp"
+          autocomplete="new-password"
+          @keyup.13="handleSignUp"
         />
       </div>
       <div class="_authing_form-group">
@@ -44,7 +44,7 @@
           v-model="signUpForm.rePassword"
           :placeholder="opts.placeholder.confirmPassword"
           autocomplete="off"
-          @keyup.enter="handleSignUp"
+          @keydown.13="handleSignUp"
         />
       </div>
       <div class="row" style="margin-bottom:0px;">
