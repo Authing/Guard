@@ -25,3 +25,4 @@ ssl/
 test.sh
 
 dist.tar.gz
+package-lock.json

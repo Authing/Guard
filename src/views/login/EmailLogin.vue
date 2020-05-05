@@ -128,7 +128,6 @@ export default {
     // this.opts = this.$root.$data.$authing.opts;
   },
   mounted() {
-    console.log(this.signUpUsername, this.signUpEmail + "🐎");
     this.loginForm.email = this.signUpEmail || this.signUpUsername || "";
     this.loginForm.password = this.signUpPassword || "";
   },
