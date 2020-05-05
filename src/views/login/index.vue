@@ -452,75 +452,31 @@ export default {
 
       // 优先通过二级域名查找此应用信息
       if (domain && domain !== 'sso') {
-        // 如果没有提供 protocol 参数，就挨个查一遍吧
+        // 如果没有提供 protocol 参数，通过 QueryProviderInfoByDomain 接口在所有类型的应用中查询一遍
         if (!protocol) {
-          let queries = [
-            `query {
-              QueryAppInfoByDomain(domain: "${domain}") {
-                _id
-                name
-                image
-                domain
-                clientId
-                css
-              }
-            }`,
-            `query {
-              QueryOIDCAppInfoByDomain(domain: "${domain}") {
-                _id,
-                name
-                image
-                client_id
-                redirect_uris
-                domain
-                css
-                customStyles {
-                  forceLogin
-                  hideQRCode
-                  hideUP
-                  hideUsername
-                  hideRegister
-                  hidePhone
-                  hideSocial
-                  hideClose
-                  placeholder {
-                    username
-                    email
-                    password
-                    confirmPassword
-                    verfiyCode
-                    newPassword
-                    phone
-                    phoneCode
-                  }
-                  qrcodeScanning {
-                    interval
-                    tips
-                  }
-                }
-              }
-            }`,
-            `query {
-              QuerySAMLIdentityProviderInfoByDomain(domain: "${domain}") {
-                _id,
-                name,
-                image,
-                domain
-                clientId
-                css
-              }
-            }`
-          ];
-          let appInfos = await Promise.all(queries.map(q => GraphQLClient_getAppInfo.request({ query: q })));
-          let [{ QueryAppInfoByDomain }, { QueryOIDCAppInfoByDomain }, { QuerySAMLIdentityProviderInfoByDomain }] = appInfos;
+          let query = `query QueryProviderInfoByDomain {
+            queryProviderInfoByDomain(domain: "${domain}") {
+              _id
+              type
+              name
+              image
+              domain
+              clientId
+              client_id
+              css
+              redirect_uris
+            }
+          }`
+          let appInfo = await GraphQLClient_getAppInfo.request({ query })
+          appInfo = appInfo.queryProviderInfoByDomain
           this.saveProtocol({
-            protocol: QuerySAMLIdentityProviderInfoByDomain ? 'saml' : QueryOIDCAppInfoByDomain ? 'oidc' : QueryAppInfoByDomain ? 'oauth' : '',
+            protocol: appInfo.type,
             params: {
               ...this.$route.query
             },
             isSSO: this.opts.isSSO
           });
-          return QuerySAMLIdentityProviderInfoByDomain || QueryOIDCAppInfoByDomain || QueryAppInfoByDomain;
+          return appInfo;
         }
         // 根据不同的 protocol 查找不同类型的 app
         switch (protocol) {
@@ -620,75 +576,31 @@ export default {
       } else if (appId) {
         // 如果没有二级域名，就通过 appId 查找
         try {
-          // 如果没有提供 protocol 参数，就挨个查一遍吧
+          // 如果没有提供 protocol 参数，使用 queryProviderInfoByAppId 接口统一查询
           if (!protocol) {
-            let queries = [
-              `query {
-                QueryAppInfoByAppID(appId: "${appId}") {
-                  _id
-                  domain
-                  name
-                  image
-                  clientId
-                  css
-                }
-              }`,
-              `query {
-                QueryOIDCAppInfoByAppID(appId: "${appId}") {
-                  _id
-                  name
-                  image
-                  client_id
-                  redirect_uris
-                  domain
-                  css
-                  customStyles {
-                    forceLogin
-                    hideQRCode
-                    hideUP
-                    hideUsername
-                    hideRegister
-                    hidePhone
-                    hideSocial
-                    hideClose
-                    placeholder {
-                      username
-                      email
-                      password
-                      confirmPassword
-                      verfiyCode
-                      newPassword
-                      phone
-                      phoneCode
-                    }
-                    qrcodeScanning {
-                      interval
-                      tips
-                    }
-                  }
-                }
-              }`,
-              `query {
-                  QuerySAMLIdentityProviderInfoByAppID(appId: "${appId}") {
-                    _id
-                    domain
-                    name
-                    image
-                    clientId
-                    css
-                }
-              }`
-            ];
-            let appInfos = await Promise.all(queries.map(q => GraphQLClient_getAppInfo.request({ query: q })));
-            let [{ QueryAppInfoByAppID }, { QueryOIDCAppInfoByAppID }, { QuerySAMLIdentityProviderInfoByAppID }] = appInfos;
+            let query = `query QueryProviderInfoByAppId {
+              queryProviderInfoByAppId(appId: "${appId}") {
+                _id
+                type
+                name
+                image
+                domain
+                redirect_uris
+                client_id
+                clientId
+                css
+              }
+            }`
+            let appInfo = await GraphQLClient_getAppInfo.request({ query })
+            appInfo = appInfo.queryProviderInfoByDomain
             this.saveProtocol({
-              protocol: QuerySAMLIdentityProviderInfoByAppID ? 'saml' : QueryOIDCAppInfoByAppID ? 'oidc' : QueryAppInfoByAppID ? 'oauth' : '',
+              protocol: appInfo.type,
               params: {
                 ...this.$route.query
               },
               isSSO: this.opts.isSSO
             });
-            return QuerySAMLIdentityProviderInfoByAppID || QueryOIDCAppInfoByAppID || QueryAppInfoByAppID;
+            return appInfo;
           }
 
           switch (protocol) {
