@@ -9,6 +9,13 @@
       "
     >
       <div style="margin-bottom:16px" class="authing-form no-shadow">
+         <div
+          class="__authing_force_login_tips"
+          style="text-align:center"
+        >
+          <p>使用手机号验证码登录</p>
+          <p>如果您没有帐号，我们会自动创建</p>
+        </div>
         <div class="_authing_form-group">
           <input
             type="text"
@@ -62,6 +69,7 @@
               class="_authing_label"
               for="login-remember"
               tyle="width:100%"
+              v-if="!opts.hidePhonePassword"
             >
               <a class="_authing_a" @click="loginMethod = 'password'"
                 >使用密码登录</a
@@ -74,7 +82,7 @@
               for="login-remember"
               tyle="width:100%"
             >
-              <a class="_authing_a" @click="loginMethod = 'code'"
+              <a class="_authing_a" @click="handleChoosePhoneCodeLogin"
                 >使用验证码登录</a
               >
             </label>
@@ -136,6 +144,7 @@ export default {
     ]),
     ...mapActions("data", [
       "showGlobalMessage",
+      "hideGlobalMessage",
       "removeAnimation",
       "removeRedLine",
       "addRedLine",
@@ -154,13 +163,21 @@ export default {
         this.$authing.pub("login-error", "请填写正确的手机号");
         this.$authing.pub("authenticated-error", "请填写正确的手机号");
         return;
+      } else {
+        this.removeRedLine("login-phone");
       }
-      console.log("检测成功");
-      this.showGlobalMessage({
-        type: "info",
-        message: "请选择登录方式"
-      });
-      this.needNextStep = true;
+
+      if (!this.opts.hidePhonePassword){
+        this.showGlobalMessage({
+          type: "info",
+          message: "请选择登录方式"
+        });
+        this.needNextStep = true;
+      } else {
+        // 隐藏了手机号密码登录
+        this.needNextStep = false
+        this.handleChoosePhoneCodeLogin()
+      }
     },
     handleLogin() {
       switch (this.loginMethod) {
@@ -324,6 +341,11 @@ export default {
             message: JSON.parse(err.message).message
           });
         });
+    },
+    handleChoosePhoneCodeLogin(){
+      this.loginMethod = 'code'
+      this.handleSendingPhoneCode()
+      this.hideGlobalMessage()
     }
   }
 };

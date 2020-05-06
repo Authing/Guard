@@ -277,6 +277,7 @@ export default {
         };
       }
 
+      console.log(this.opts)
       // 优先登录方式
       switch (this.opts.defaultLoginMethod) {
         case "PHONE":
@@ -554,6 +555,7 @@ export default {
                 hideSocial
                 hideClose
                 defaultLoginMethod
+                hidePhonePassword
                 placeholder {
                   username
                   email
@@ -677,6 +679,7 @@ export default {
                   hideSocial
                   hideClose
                   defaultLoginMethod
+                  hidePhonePassword
                   placeholder {
                     username
                     email
