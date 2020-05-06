@@ -83,6 +83,12 @@ const actions = {
   showGlobalMessage({ commit }, { type, message }) {
     commit("setGlobalMessage", { type, message });
   },
+  hideGlobalMessage({ commit }) {
+    commit('setGlobalMessage', {
+      type: "",
+      message: ""
+    })
+  },
   saveSignUpInfo({ commit }, { email, phone, password, username }) {
     commit("setSignUpInfo", { email, phone, password, username });
   },
@@ -112,7 +118,7 @@ const actions = {
     document.getElementById(className).classList.add("animated");
     document.getElementById(className).classList.add("shake");
     document.getElementById(className).classList.add("err-hint");
-    setTimeout(function() {
+    setTimeout(function () {
       actions.removeAnimation(_, className);
     }, 500);
   }

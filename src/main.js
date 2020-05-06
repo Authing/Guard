@@ -84,6 +84,8 @@ var AuthingGuard = function(clientId, opts) {
   $authing.opts.forceLogin = opts.forceLogin || false;
   $authing.opts.title = opts.title || null;
   $authing.opts.logo = opts.logo || null;
+  $authing.opts.defaultLoginMethod = opts.defaultLoginMethod || "PASSWORD"
+  opts.defaultLoginMethod = opts.defaultLoginMethod || "PASSWORD"
 
   // this.initLinks($authing.opts.SSOHost);
   $authing.opts.passwordEncPublicKey = opts.passwordEncPublicKey || `-----BEGIN PUBLIC KEY-----

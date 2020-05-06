@@ -273,9 +273,33 @@ export default {
         // 在这里根据自定义配置修改相应界面
         this.opts = this.$root.$data.$authing.opts = {
           ...this.$root.$data.$authing.opts,
-          ...appInfo.customStyles
+          ...appInfo.customStyles,
         };
       }
+
+      console.log(this.opts)
+      // 优先登录方式
+      switch (this.opts.defaultLoginMethod) {
+        case "PHONE":
+          for(let elem of document.getElementsByClassName('_authing_a')){
+            elem.style['pointer-events'] = "none"
+          }
+          setTimeout(() => {
+            for(let elem of document.getElementsByClassName('authing-lock-back-button')){
+              elem.style.display = "none"
+            }
+          }, 500)
+          this.gotoUsingPhone()
+          break;
+        case "PASSWORD":
+          break;
+        case "QRCODE":
+          this.gotoWxQRCodeScanning()
+          break;
+        default:
+          break;
+      }
+
 
       switch (this.protocol) {
         case 'oidc':
@@ -427,7 +451,7 @@ export default {
     sessionStorage.removeItem('jump2Profile');
   },
   methods: {
-    ...mapActions('visibility', ['gotoWxQRCodeScanning', 'removeGlobalMsg', 'gotoSignUp', 'gotoLogin', 'gotoLDAPLogin','gotoAdLogin', 'goBack']),
+    ...mapActions('visibility', ['gotoWxQRCodeScanning', 'removeGlobalMsg', 'gotoSignUp', 'gotoLogin', 'gotoLDAPLogin','gotoAdLogin', 'goBack', 'gotoUsingPhone']),
     ...mapActions('loading', ['changeLoading']),
     ...mapActions('data', ['saveSocialButtonsList', 'saveAppInfo', 'saveLoginStatus', 'showGlobalMessage']),
     ...mapActions('protocol', ['saveProtocol']),
@@ -530,6 +554,8 @@ export default {
                 hidePhone
                 hideSocial
                 hideClose
+                defaultLoginMethod
+                hidePhonePassword
                 placeholder {
                   username
                   email
@@ -592,7 +618,7 @@ export default {
               }
             }`
             let appInfo = await GraphQLClient_getAppInfo.request({ query })
-            appInfo = appInfo.queryProviderInfoByDomain
+            appInfo = appInfo.queryProviderInfoByAppId
             this.saveProtocol({
               protocol: appInfo.type,
               params: {
@@ -652,6 +678,8 @@ export default {
                   hidePhone
                   hideSocial
                   hideClose
+                  defaultLoginMethod
+                  hidePhonePassword
                   placeholder {
                     username
                     email
