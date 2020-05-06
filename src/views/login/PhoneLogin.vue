@@ -199,7 +199,6 @@ export default {
         return false;
       }
       this.changeLoading({ el: "form", loading: true });
-      console.log(validAuth.loginByPhonePassword);
       validAuth
         .loginByPhonePassword({ phone: this.phone, password: this.password })
         .then(userInfo => {

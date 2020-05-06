@@ -273,30 +273,30 @@ export default {
         // 在这里根据自定义配置修改相应界面
         this.opts = this.$root.$data.$authing.opts = {
           ...this.$root.$data.$authing.opts,
-          ...appInfo.customStyles
+          ...appInfo.customStyles,
         };
+      }
 
-        // 优先登录方式
-        switch (appInfo.customStyles.defaultLoginMethod) {
-          case "PHONE":
-            for(let elem of document.getElementsByClassName('_authing_a')){
-              elem.style['pointer-events'] = "none"
+      // 优先登录方式
+      switch (this.opts.defaultLoginMethod) {
+        case "PHONE":
+          for(let elem of document.getElementsByClassName('_authing_a')){
+            elem.style['pointer-events'] = "none"
+          }
+          setTimeout(() => {
+            for(let elem of document.getElementsByClassName('authing-lock-back-button')){
+              elem.style.display = "none"
             }
-            setTimeout(() => {
-              for(let elem of document.getElementsByClassName('authing-lock-back-button')){
-                elem.style.display = "none"
-              }
-            }, 500)
-            this.gotoUsingPhone()
-            break;
-          case "PASSWORD":
-            break;
-          case "QRCODE":
-            this.gotoWxQRCodeScanning()
-            break;
-          default:
-            break;
-        }
+          }, 500)
+          this.gotoUsingPhone()
+          break;
+        case "PASSWORD":
+          break;
+        case "QRCODE":
+          this.gotoWxQRCodeScanning()
+          break;
+        default:
+          break;
       }
 
 
