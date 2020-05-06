@@ -250,6 +250,7 @@ Guard 会在以下生命周期中触发相应事件：
 | hideUsername                    | 否       | false                                | Boolean | **是否隐藏注册时的用户名填写**，隐藏后将不显示用户名输入框                                                      |
 | hideRegister                    | 否       | false                                | Boolean | **是否隐藏注册框**，隐藏后将不显示注册框                                                                        |
 | hidePhone                       | 否       | false                                | Boolean | **是否隐藏使用手机登录**，隐藏后将不显示使用手机登录                                                            |
+| hidePhonePassword                       | 否       | false                                | Boolean | **是否隐藏使用手机密码登录**，隐藏后将不显示使用手机+密码登录                                                            |
 | hideSocial                      | 否       | false                                | Boolean | **是否隐藏社会化登录**，在开发者在 Authing 控制台开启社会化登录后，若此项为 true 将隐藏全部社会化登录           |
 | hideClose                       | 否       | false                                | Boolean | **是否隐藏登录框右上角的关闭按钮**，如果隐藏，用户将不能通过点击按钮或按 ESC 关闭登录框                         |
 | **placeholder**                 | 否       | {}                                   | Object  | **定制输入框的 paceholder**                                                                                     |
