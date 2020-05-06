@@ -81,6 +81,7 @@
               class="_authing_label"
               for="login-remember"
               tyle="width:100%"
+              v-if="!opts.hidePhonePassword"
             >
               <a class="_authing_a" @click="handleChoosePhoneCodeLogin"
                 >使用验证码登录</a
@@ -175,7 +176,7 @@ export default {
         this.needNextStep = true;
       } else {
         // 隐藏了手机号密码登录
-        this.needNextStep = false
+        this.needNextStep = true
         this.handleChoosePhoneCodeLogin()
       }
     },

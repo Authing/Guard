@@ -12,8 +12,8 @@ module.exports = {
   publicPath: process.env.NODE_ENV === "production" ? "/login" : "/",
   devServer: {
     https: true,
-    // cert: fs.readFileSync(path.join(__dirname,'ssl/fullchain1.pem')),
-    // key: fs.readFileSync(path.join(__dirname,'ssl/privkey1.pem')),
+    // cert: fs.readFileSync(path.join(__dirname,'ssl/214413890430280.pem')),
+    // key: fs.readFileSync(path.join(__dirname,'ssl/214413890430280.key')),
     disableHostCheck: true,
     port: 443,
     proxy: {
