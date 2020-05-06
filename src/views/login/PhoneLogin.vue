@@ -126,7 +126,6 @@ export default {
   mounted() {
     this.phone = this.signUpPhone || "";
     this.password = this.signUpPassword || "";
-    console.log(this.signUpPhone);
   },
   methods: {
     ...mapActions("visibility", [

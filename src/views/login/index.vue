@@ -275,7 +275,30 @@ export default {
           ...this.$root.$data.$authing.opts,
           ...appInfo.customStyles
         };
+
+        // 优先登录方式
+        switch (appInfo.customStyles.defaultLoginMethod) {
+          case "PHONE":
+            for(let elem of document.getElementsByClassName('_authing_a')){
+              elem.style['pointer-events'] = "none"
+            }
+            setTimeout(() => {
+              for(let elem of document.getElementsByClassName('authing-lock-back-button')){
+                elem.style.display = "none"
+              }
+            }, 500)
+            this.gotoUsingPhone()
+            break;
+          case "PASSWORD":
+            break;
+          case "QRCODE":
+            this.gotoWxQRCodeScanning()
+            break;
+          default:
+            break;
+        }
       }
+
 
       switch (this.protocol) {
         case 'oidc':
@@ -427,7 +450,7 @@ export default {
     sessionStorage.removeItem('jump2Profile');
   },
   methods: {
-    ...mapActions('visibility', ['gotoWxQRCodeScanning', 'removeGlobalMsg', 'gotoSignUp', 'gotoLogin', 'gotoLDAPLogin','gotoAdLogin', 'goBack']),
+    ...mapActions('visibility', ['gotoWxQRCodeScanning', 'removeGlobalMsg', 'gotoSignUp', 'gotoLogin', 'gotoLDAPLogin','gotoAdLogin', 'goBack', 'gotoUsingPhone']),
     ...mapActions('loading', ['changeLoading']),
     ...mapActions('data', ['saveSocialButtonsList', 'saveAppInfo', 'saveLoginStatus', 'showGlobalMessage']),
     ...mapActions('protocol', ['saveProtocol']),
@@ -530,6 +553,7 @@ export default {
                 hidePhone
                 hideSocial
                 hideClose
+                defaultLoginMethod
                 placeholder {
                   username
                   email
@@ -592,7 +616,7 @@ export default {
               }
             }`
             let appInfo = await GraphQLClient_getAppInfo.request({ query })
-            appInfo = appInfo.queryProviderInfoByDomain
+            appInfo = appInfo.queryProviderInfoByAppId
             this.saveProtocol({
               protocol: appInfo.type,
               params: {
@@ -652,6 +676,7 @@ export default {
                   hidePhone
                   hideSocial
                   hideClose
+                  defaultLoginMethod
                   placeholder {
                     username
                     email
