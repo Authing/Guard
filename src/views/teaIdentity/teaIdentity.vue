@@ -515,7 +515,7 @@ export default {
       switch (this.userStatus) {
         case "firstAudit":
           //首次提交，放到用户角色certifing里
-          fetch("http://localhost:3000/updateUserRole", {
+          fetch("https://2d.hep.com.cn/teacher-backend/updateUserRole", {
             method: "POST",
             body: JSON.stringify({
               userId: this.userId,
@@ -543,7 +543,7 @@ export default {
           break;
         case "reject":
           //拒绝了，放到certifing角色里，从reject组里拿出来
-          fetch("http://localhost:3000/updateUserRole", {
+          fetch("https://2d.hep.com.cn/teacher-backend/updateUserRole", {
             method: "POST",
             body: JSON.stringify({
               userId: this.userId,
@@ -556,24 +556,24 @@ export default {
           })
             .then(res => res.json())
             .then(resp => {
-              if(resp.success) {
-                fetch("http://localhost:3000/removeUserGroup", {
-                method: "POST",
-                body: JSON.stringify({
-                  userId: this.userId,
-                  group: "group_teacher_certified_reject"
-                }),
-                headers: {
-                  "Content-Type": "application/json",
-                  authorization: "Bearer " + this.userToken
-                }
-              })
-                .then(res => res.json())
-                .then(resp => {
-                  if(resp.r.code === 200) {
-                    this.updateMetaData();
+              if (resp.success) {
+                fetch("https://2d.hep.com.cn/teacher-backend/removeUserGroup", {
+                  method: "POST",
+                  body: JSON.stringify({
+                    userId: this.userId,
+                    group: "group_teacher_certified_reject"
+                  }),
+                  headers: {
+                    "Content-Type": "application/json",
+                    authorization: "Bearer " + this.userToken
                   }
                 })
+                  .then(res => res.json())
+                  .then(resp => {
+                    if (resp.r.code === 200) {
+                      this.updateMetaData();
+                    }
+                  });
               }
             });
           break;
