@@ -493,6 +493,7 @@ export default {
           }`
           let appInfo = await GraphQLClient_getAppInfo.request({ query })
           appInfo = appInfo.queryProviderInfoByDomain
+          if (!appInfo) return appInfo;
           this.saveProtocol({
             protocol: appInfo.type,
             params: {
@@ -619,6 +620,7 @@ export default {
             }`
             let appInfo = await GraphQLClient_getAppInfo.request({ query })
             appInfo = appInfo.queryProviderInfoByAppId
+            if (!appInfo) return appInfo;
             this.saveProtocol({
               protocol: appInfo.type,
               params: {
