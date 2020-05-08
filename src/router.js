@@ -1,31 +1,31 @@
 /* jshint esversion: 6 */
-import Vue from 'vue';
-import Router from 'vue-router';
-import Authorize from './views/Authorize.vue';
-import ErrorPage from './views/ErrorPage.vue';
+import Vue from 'vue'
+import Router from 'vue-router'
+import Authorize from './views/Authorize.vue'
+import ErrorPage from './views/ErrorPage.vue'
 import Logout from './views/Logout.vue'
 import Profile from './views/Profile.vue'
-import Login from './views/login/index.vue';
+import Login from './views/login/index.vue'
 import Regedit from './views/regedit/regedit.vue'
 import Simple from './views/simple/index.vue'
 import TeaIdentity from './views/teaIdentity/teaIdentity.vue'
 import PrivacyPolicy from './views/privacyPolicy.vue'
 
-Vue.use(Router);
+Vue.use(Router)
 
 const isNative = !!window.ReactNativeWebView
 let routerConfig = {
   base: process.env.BASE_URL,
   routes: [
     {
-      path: "*",
-      redirect: "/"
+      path: '*',
+      redirect: '/'
     },
     {
       path: '/',
       alias: '/login',
       name: 'indexLogin',
-      component: Login,
+      component: Login
     },
     {
       path: '/simple',
@@ -35,31 +35,31 @@ let routerConfig = {
     {
       path: '/authorize/confirm',
       name: 'authorize',
-      component: Authorize,
+      component: Authorize
     },
     {
       path: '/profile/logout',
       name: 'logout',
-      component: Logout,
+      component: Logout
     },
     {
       path: '/error',
       name: 'error',
-      component: ErrorPage,
+      component: ErrorPage
     },
     {
       path: '/profile',
       name: 'profile',
-      component: Profile,
+      component: Profile
     },
     {
-      path: '/regedit',
-      name: 'regedit',
+      path: '/profile/hep',
+      name: 'hepProfile',
       component: Regedit
     },
     {
-      path: '/teaIdentity',
-      name: 'teaIdentity',
+      path: '/teacher',
+      name: 'teacher',
       component: TeaIdentity
     },
     {
@@ -70,9 +70,9 @@ let routerConfig = {
   ]
 }
 if (!isNative) {
-  routerConfig.mode = "history"
+  routerConfig.mode = 'history'
 }
 
-const router = new Router(routerConfig);
+const router = new Router(routerConfig)
 
 export default router

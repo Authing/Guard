@@ -1,0 +1,7 @@
+{
+  "printWidth": 150,
+  "parser": "flow",
+  "singleQuote":true,
+  "semi": false,
+  "space_after_anon_function": true
+}
