@@ -89,7 +89,7 @@
                 <li
                   v-show="!(opts.hideUP && opts.hideSocial)"
                   v-bind:class="{
-                    'authing-header-tabs-current': emailLoginVisible || LDAPLoginVisible,
+                    'authing-header-tabs-current': emailLoginVisible || LDAPLoginVisible || phoneCodeLoginVisible || phonePasswordLoginVisible,
                     'width-55': headerTabCount === 2,
                     'width-100': headerTabCount === 1
                   }"

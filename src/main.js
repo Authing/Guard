@@ -202,7 +202,9 @@ var AuthingGuard = function(clientId, opts) {
     }
   });
 
-  this.on("authenticated-error", onAuthenticatedError);
+  if (opts.appId === "5e3ce9dadf5382920a69a76a") {
+    this.on("authenticated-error", onAuthenticatedError);
+  }
 };
 
 AuthingGuard.prototype = {
