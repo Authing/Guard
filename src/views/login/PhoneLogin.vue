@@ -1,5 +1,19 @@
 <template>
   <div>
+    <SocialButtonsList
+      v-if="!socialButtonsListLoading && socialButtonsList.length > 0"
+    />
+
+    <P
+      class="_authing_form-tip"
+      v-show="
+        !socialButtonsListLoading &&
+        socialButtonsList.length > 0 &&
+        !opts.hideUP
+      "
+      >或者</P
+    >
+
     <form
       class="form-body"
       @submit.prevent="
@@ -8,11 +22,8 @@
         }
       "
     >
-      <div style="margin-bottom:16px" class="authing-form no-shadow">
-         <div
-          class="__authing_force_login_tips"
-          style="text-align:center"
-        >
+      <div style="margin-bottom: 16px;" class="authing-form no-shadow">
+        <div class="__authing_force_login_tips" style="text-align: center;">
           <p>使用手机号验证码登录</p>
           <p>如果您没有帐号，我们会自动创建</p>
         </div>
@@ -29,7 +40,7 @@
         </div>
         <div
           class="_authing_form-group"
-          style="display:flex; align-items: flex-end;"
+          style="display: flex; align-items: flex-end;"
           v-if="this.loginMethod == 'code'"
         >
           <input
@@ -44,7 +55,12 @@
           <div class="phone-code-wrapper" style="flex-basis: 50%;">
             <button
               @click="handleSendingPhoneCode"
-              style="height: 40px;font-size: 12px;border-radius: 0px;border:none;"
+              style="
+                height: 40px;
+                font-size: 12px;
+                border-radius: 0px;
+                border: none;
+              "
               class="btn btn-primary"
               :class="{ 'btn-ban': countDown !== 0 }"
             >
@@ -64,7 +80,7 @@
           />
         </div>
         <div class="row" v-if="this.needNextStep">
-          <div class="_authing_form-group" style="margin-bottom:0px;">
+          <div class="_authing_form-group" style="margin-bottom: 0px;">
             <label
               class="_authing_label"
               for="login-remember"
@@ -76,7 +92,7 @@
               >
             </label>
           </div>
-          <div class="_authing_form-group" style="margin-bottom:0px;">
+          <div class="_authing_form-group" style="margin-bottom: 0px;">
             <label
               class="_authing_label"
               for="login-remember"
@@ -89,8 +105,18 @@
             </label>
           </div>
         </div>
+        <div class="_authing_form-group" style="margin-bottom: 0;">
+          <label
+            class="_authing_label"
+            for="login-remember"
+            style="width: 100%;"
+          >
+            <a class="_authing_a" @click="gotoLogin">使用邮箱登录</a>
+          </label>
+        </div>
       </div>
     </form>
+
     <div
       class="_authing_form-footer login"
       v-show="!opts.hideUP && !this.needNextStep"
@@ -110,8 +136,12 @@
   </div>
 </template>
 <script>
+import SocialButtonsList from "./SocialButtonsList";
 import { mapActions, mapGetters } from "vuex";
 export default {
+  components: {
+    SocialButtonsList
+  },
   data() {
     return {
       countDown: 0,
@@ -128,9 +158,14 @@ export default {
   },
   computed: {
     ...mapGetters("loading", {
+      socialButtonsListLoading: "socialButtonsList",
       formLoading: "form"
     }),
-    ...mapGetters("data", ["signUpPhone", "signUpPassword"])
+    ...mapGetters("data", [
+      "socialButtonsList",
+      "signUpPhone",
+      "signUpPassword"
+    ])
   },
   mounted() {
     this.phone = this.signUpPhone || "";
@@ -168,7 +203,7 @@ export default {
         this.removeRedLine("login-phone");
       }
 
-      if (!this.opts.hidePhonePassword){
+      if (!this.opts.hidePhonePassword) {
         this.showGlobalMessage({
           type: "info",
           message: "请选择登录方式"
@@ -176,8 +211,8 @@ export default {
         this.needNextStep = true;
       } else {
         // 隐藏了手机号密码登录
-        this.needNextStep = true
-        this.handleChoosePhoneCodeLogin()
+        this.needNextStep = true;
+        this.handleChoosePhoneCodeLogin();
       }
     },
     handleLogin() {
@@ -343,10 +378,10 @@ export default {
           });
         });
     },
-    handleChoosePhoneCodeLogin(){
-      this.loginMethod = 'code'
-      this.handleSendingPhoneCode()
-      this.hideGlobalMessage()
+    handleChoosePhoneCodeLogin() {
+      this.loginMethod = "code";
+      this.handleSendingPhoneCode();
+      this.hideGlobalMessage();
     }
   }
 };
