@@ -20,29 +20,6 @@ Vue.directive("focus", {
 });
 // Vue.config.devtools = true
 
-// 检查登录成功后的状态
-const onAuthenticated = userinfo => {
-  if (userinfo.signedUp === userinfo.lastLogin) {
-    // 初次登录
-    // 检查是否手机号注册
-    if (userinfo.registerMethod !== "phone:message") {
-      if (location.host === "localhost") {
-        location.href = "http://localhost:3000/bind-phone";
-      } else {
-        location.href = "https://authing.co/bind-phone";
-      }
-    }
-  } else {
-    // 老用户，需要检查是否绑定了手机号
-    if (!userinfo.phone) {
-      if (location.host === "localhost") {
-        location.href = "http://localhost:3000/bind-phone";
-      } else {
-        location.href = "https://authing.co/bind-phone";
-      }
-    }
-  }
-};
 
 var AuthingGuard = function(clientId, opts) {
   window.Authing = Authing;
@@ -215,11 +192,6 @@ var AuthingGuard = function(clientId, opts) {
     }
   });
 
-  // 添加事件回调
-  // if (opts.appId === "5e3ce9dadf5382920a69a76a") {
-  if (opts.appId === "5e72d72e3798fb03e1d57b13") {
-    this.on("authenticated", onAuthenticated);
-  }
 };
 
 AuthingGuard.prototype = {
