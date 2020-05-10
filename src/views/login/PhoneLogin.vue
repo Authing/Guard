@@ -105,7 +105,11 @@
             </label>
           </div>
         </div>
-        <div class="_authing_form-group" style="margin-bottom: 0;">
+        <div
+          v-show="!opts.hideUP && !this.needNextStep"
+          class="_authing_form-group"
+          style="margin-bottom: 0;"
+        >
           <label
             class="_authing_label"
             for="login-remember"
