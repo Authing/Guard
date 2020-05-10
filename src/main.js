@@ -20,6 +20,16 @@ Vue.directive("focus", {
 });
 // Vue.config.devtools = true
 
+// 登录失败回调
+const onAuthenticatedError = error => {
+  // console.log(error);
+  // 用户不存在的话
+  if (error.message.code === 2004) {
+    setTimeout(() => {
+      location.href = "https://authing.co/sign-up";
+    }, 1500);
+  }
+};
 
 var AuthingGuard = function(clientId, opts) {
   window.Authing = Authing;
@@ -192,6 +202,7 @@ var AuthingGuard = function(clientId, opts) {
     }
   });
 
+  this.on("authenticated-error", onAuthenticatedError);
 };
 
 AuthingGuard.prototype = {
