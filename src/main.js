@@ -19,6 +19,31 @@ Vue.directive("focus", {
   }
 });
 // Vue.config.devtools = true
+
+// 检查登录成功后的状态
+const onAuthenticated = userinfo => {
+  if (userinfo.signedUp === userinfo.lastLogin) {
+    // 初次登录
+    // 检查是否手机号注册
+    if (userinfo.registerMethod !== "phone:message") {
+      if (location.host === "localhost") {
+        location.href = "http://localhost:3000/bind-phone";
+      } else {
+        location.href = "https//authing.co/bind-phone";
+      }
+    }
+  } else {
+    // 老用户，需要检查是否绑定了手机号
+    if (!userinfo.phone) {
+      if (location.host === "localhost") {
+        location.href = "http://localhost:3000/bind-phone";
+      } else {
+        location.href = "https//authing.co/bind-phone";
+      }
+    }
+  }
+};
+
 var AuthingGuard = function(clientId, opts) {
   window.Authing = Authing;
 
@@ -84,16 +109,18 @@ var AuthingGuard = function(clientId, opts) {
   $authing.opts.forceLogin = opts.forceLogin || false;
   $authing.opts.title = opts.title || null;
   $authing.opts.logo = opts.logo || null;
-  $authing.opts.defaultLoginMethod = opts.defaultLoginMethod || "PASSWORD"
-  opts.defaultLoginMethod = opts.defaultLoginMethod || "PASSWORD"
+  $authing.opts.defaultLoginMethod = opts.defaultLoginMethod || "PASSWORD";
+  opts.defaultLoginMethod = opts.defaultLoginMethod || "PASSWORD";
 
   // this.initLinks($authing.opts.SSOHost);
-  $authing.opts.passwordEncPublicKey = opts.passwordEncPublicKey || `-----BEGIN PUBLIC KEY-----
+  $authing.opts.passwordEncPublicKey =
+    opts.passwordEncPublicKey ||
+    `-----BEGIN PUBLIC KEY-----
   MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC4xKeUgQ+Aoz7TLfAfs9+paePb
   5KIofVthEopwrXFkp8OCeocaTHt9ICjTT2QeJh6cZaDaArfZ873GPUn00eOIZ7Ae
   +TiA2BKHbCvloW3w5Lnqm70iSsUi5Fmu9/2+68GZRH9L7Mlh8cFksCicW2Y2W2uM
   GKl64GDcIq3au+aqJQIDAQAB
-  -----END PUBLIC KEY-----`
+  -----END PUBLIC KEY-----`;
 
   $authing.opts.mountId = opts.mountId || null;
   // 初始化小程序扫码登录配置
@@ -187,6 +214,11 @@ var AuthingGuard = function(clientId, opts) {
       opts: opts
     }
   });
+
+  // 添加事件回调
+  if (opts.appId === "5e3ce9dadf5382920a69a76a") {
+    this.on("authenticated", onAuthenticated);
+  }
 };
 
 AuthingGuard.prototype = {
