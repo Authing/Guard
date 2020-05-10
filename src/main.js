@@ -29,7 +29,7 @@ const onAuthenticated = userinfo => {
       if (location.host === "localhost") {
         location.href = "http://localhost:3000/bind-phone";
       } else {
-        location.href = "https//authing.co/bind-phone";
+        location.href = "https://authing.co/bind-phone";
       }
     }
   } else {
@@ -38,7 +38,7 @@ const onAuthenticated = userinfo => {
       if (location.host === "localhost") {
         location.href = "http://localhost:3000/bind-phone";
       } else {
-        location.href = "https//authing.co/bind-phone";
+        location.href = "https://authing.co/bind-phone";
       }
     }
   }
@@ -216,7 +216,8 @@ var AuthingGuard = function(clientId, opts) {
   });
 
   // 添加事件回调
-  if (opts.appId === "5e3ce9dadf5382920a69a76a") {
+  // if (opts.appId === "5e3ce9dadf5382920a69a76a") {
+  if (opts.appId === "5e72d72e3798fb03e1d57b13") {
     this.on("authenticated", onAuthenticated);
   }
 };
