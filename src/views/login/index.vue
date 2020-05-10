@@ -277,18 +277,17 @@ export default {
         };
       }
 
-      console.log(this.opts)
       // 优先登录方式
       switch (this.opts.defaultLoginMethod) {
         case "PHONE":
-          for(let elem of document.getElementsByClassName('_authing_a')){
-            elem.style['pointer-events'] = "none"
-          }
-          setTimeout(() => {
-            for(let elem of document.getElementsByClassName('authing-lock-back-button')){
-              elem.style.display = "none"
-            }
-          }, 500)
+          // for(let elem of document.getElementsByClassName('_authing_a')){
+          //   elem.style['pointer-events'] = "none"
+          // }
+          // setTimeout(() => {
+          //   for(let elem of document.getElementsByClassName('authing-lock-back-button')){
+          //     elem.style.display = "none"
+          //   }
+          // }, 500)
           this.gotoUsingPhone()
           break;
         case "PASSWORD":
