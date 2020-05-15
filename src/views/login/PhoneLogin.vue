@@ -1,7 +1,12 @@
 <template>
   <div>
     <SocialButtonsList
-      v-if="!socialButtonsListLoading && socialButtonsList.length > 0"
+      v-if="
+        !socialButtonsListLoading &&
+        socialButtonsList.length > 0 &&
+        !opts.hideUP &&
+        !this.needNextStep
+      "
     />
 
     <P
@@ -9,7 +14,8 @@
       v-show="
         !socialButtonsListLoading &&
         socialButtonsList.length > 0 &&
-        !opts.hideUP
+        !opts.hideUP &&
+        !this.needNextStep
       "
       >或者</P
     >
