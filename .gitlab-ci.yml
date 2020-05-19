@@ -1,6 +1,7 @@
 stages: 
   - build
   - deploy
+  - publish
 cache:
   untracked: true
   key: ${CI_COMMIT_REF_SLUG}
@@ -49,3 +50,12 @@ deploy to prod:
   script: 
     - rsync -arzv --delete -e "ssh -i ~/.ssh/id_rsa" dist/ ${PROD_HOST}:/mnt/authing/guard  --rsync-path="sudo rsync"
   when: manual
+publish:
+  stage: publish
+  when: manual
+  script:
+    - yarn
+    - yarn build 
+    - yarn run build-pack
+    - yarn config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+    - yarn publish
