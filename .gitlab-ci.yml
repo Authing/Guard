@@ -34,7 +34,14 @@ deploy to pre:
 deploy to prod:
   image: instrumentisto/rsync-ssh
   stage: deploy
-  environment: prod
+  environment: cn
+  script: 
+    - rsync -arzv --delete -e "ssh -i ~/.ssh/id_rsa" dist/ ${PROD_HOST}:/mnt/authing/guard  --rsync-path="sudo rsync"
+  when: manual
+deploy to prod:
+  image: instrumentisto/rsync-ssh
+  stage: deploy
+  environment: co
   script: 
     - rsync -arzv --delete -e "ssh -i ~/.ssh/id_rsa" dist/ ${PROD_HOST}:/mnt/authing/guard  --rsync-path="sudo rsync"
   when: manual
