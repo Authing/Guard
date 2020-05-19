@@ -2,9 +2,13 @@ stages:
   - build
   - deploy
 cache:
+  untracked: true
   key: ${CI_COMMIT_REF_SLUG}
   paths:
-  - node_modules/
+    - node_modules/
+    - _site/vendor/
+    - .bundled/
+    - .yarn
 
 before_script:
   - mkdir -p ~/.ssh
