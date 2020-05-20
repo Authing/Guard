@@ -27,7 +27,14 @@ build:
   artifacts:
     paths:
       - dist
-
+deploy to test:
+  image: instrumentisto/rsync-ssh
+  environment: hosts
+  stage: deploy
+  script: 
+    - rsync -arzv --delete -e "ssh -i ~/.ssh/id_rsa" dist/ ${TEST_HOST}:/mnt/authing/guard --rsync-path="sudo rsync"
+  only: 
+    - master
 deploy to pre:
   image: instrumentisto/rsync-ssh
   environment: hosts
