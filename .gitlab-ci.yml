@@ -54,8 +54,6 @@ publish:
   stage: publish
   when: manual
   script:
-    - yarn
-    - yarn build 
-    - yarn run build-pack
-    - yarn config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
-    - yarn publish
+    - npm run build-pack
+    - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+    - npm publish
