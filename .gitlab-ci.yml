@@ -32,15 +32,15 @@ deploy to test:
   environment: hosts
   stage: deploy
   script: 
-    - rsync -arzv --delete -e "ssh -i ~/.ssh/id_rsa" dist/ ${TEST_HOST}:/mnt/authing/guard --rsync-path="sudo rsync"
+    - rsync -arzv --delete -e "ssh -i ~/.ssh/id_rsa" dist/ ${HOST}:/mnt/test/authing/guard --rsync-path="sudo rsync"
   only: 
-    - master
+    - test
 deploy to pre:
   image: instrumentisto/rsync-ssh
   environment: hosts
   stage: deploy
   script: 
-    - rsync -arzv --delete -e "ssh -i ~/.ssh/id_rsa" dist/ ${PRE_HOST}:/mnt/pre/authing/guard --rsync-path="sudo rsync"
+    - rsync -arzv --delete -e "ssh -i ~/.ssh/id_rsa" dist/ ${HOST}:/mnt/pre/authing/guard --rsync-path="sudo rsync"
   only: 
     - master
 deploy to cn:
@@ -48,14 +48,14 @@ deploy to cn:
   stage: deploy
   environment: cn
   script: 
-    - rsync -arzv --delete -e "ssh -i ~/.ssh/id_rsa" dist/ ${PROD_HOST}:/mnt/authing/guard  --rsync-path="sudo rsync"
+    - rsync -arzv --delete -e "ssh -i ~/.ssh/id_rsa" dist/ ${HOST}:/mnt/cn/authing/guard  --rsync-path="sudo rsync"
   when: manual
 deploy to co:
   image: instrumentisto/rsync-ssh
   stage: deploy
   environment: co
   script: 
-    - rsync -arzv --delete -e "ssh -i ~/.ssh/id_rsa" dist/ ${PROD_HOST}:/mnt/authing/guard  --rsync-path="sudo rsync"
+    - rsync -arzv --delete -e "ssh -i ~/.ssh/id_rsa" dist/ ${HOST}:/mnt/co/authing/guard  --rsync-path="sudo rsync"
   when: manual
 publish:
   stage: publish
