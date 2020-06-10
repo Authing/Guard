@@ -1,7 +1,6 @@
 /* jshint esversion: 6 */
 
-var axios = require('axios');
-
+import axios from 'axios'
 class GraphQLClient {
     TIMEOUT = 20000;
 
