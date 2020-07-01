@@ -748,6 +748,11 @@ export default {
     },
     async checkHasAD(providerId,providerType) {
       providerType = this.appType||providerType
+      if(!providerType) {
+        // 如果是通过 new Guard(userPoolId) 这样直接使用的方式，不支持连接ad
+        this.hasAd = false;
+        return
+      }
       providerType = providerType.toLowerCase()=='oidc'?'OIDC':'OAuth'
       try{
         const adConnector = await validAuth.adConnectorByProvider({

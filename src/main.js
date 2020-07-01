@@ -7,7 +7,7 @@ import Authing from "authing-js-sdk";
 import VueTour from "vue-tour";
 import "./styles/styles.css";
 import "./styles/animations.css";
-require("vue-tour/dist/vue-tour.css");
+import "vue-tour/dist/vue-tour.css";
 Vue.use(VueTour);
 
 Vue.config.productionTip = false;

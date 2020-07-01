@@ -401,9 +401,9 @@ import ConfigMFAModal from "./components/ConfigMFAModal";
 import ChangePhoneModal from "./components/ChangePhoneModal";
 import ChangeEmailModal from "./components/ChangeEmailModal";
 import { mapGetters, mapActions } from "vuex";
-const axios = require("axios");
-
-require("../utils/otplib");
+import axios from 'axios'
+import otplib from "otplib"
+import  Authing from "authing-js-sdk";
 
 export default {
   components: { ConfigMFAModal, ChangePhoneModal, ChangeEmailModal },
@@ -488,7 +488,6 @@ export default {
   },
   async mounted() {
     let that = this;
-    const Authing = require("authing-js-sdk");
     let client_info =
       JSON.parse(localStorage.getItem("_authing_clientInfo")) || null;
     if (!client_info) {

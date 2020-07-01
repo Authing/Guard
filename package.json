@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard",
-  "version": "1.15.3",
+  "version": "1.15.5",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Authing/Guard.git"
@@ -10,18 +10,14 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "prebuild-pack": "node handle.js",
-    "build-pack": "vue-cli-service build --target lib --name Guard ./src/main.js",
-    "build-dev": "npx vue-cli-service build --target lib --mode development --name Guard ./src/main.js",
-    "generate": "ejs-cli -b ./public -f index.html -O \"{\\\"rand\\\": \\\"$RANDOM\\\"}\" > ./dist/index.html",
-    "dist": "rm -rf ../guard-html/* && ejs-cli -b ./public -f index.html -O \"{\\\"rand\\\": \\\"$RANDOM\\\"}\" > ../guard-html/index.html && cp ./dist/Guard.umd.min.js ../guard-html/Guard.umd.min.js && cp ./dist/Guard.umd.min.js.map ../guard-html/Guard.umd.min.js.map && cd ../guard-html && git add . && git commit -m 'Update' && git push -f origin master",
-    "dist-no-git": "rm -rf ../guard-html/* && ejs-cli -b ./public -f index.html -O \"{\\\"rand\\\": \\\"$RANDOM\\\"}\" > ../guard-html/index.html && cp ./dist/Guard.umd.min.js ../guard-html/Guard.umd.min.js && cp ./dist/Guard.umd.min.js.map ../guard-html/Guard.umd.min.js.map"
+    "build-pack": "vue-cli-service build --inline-vue --target lib --name Guard ./src/main.js",
+    "build-dev": "npx vue-cli-service build --inline-vue --target lib --mode development --name Guard ./src/main.js"
   },
   "dependencies": {
     "@authing/sso": "^1.3.0",
     "authing-js-sdk": "^3.18.6",
     "axios": "^0.18.0",
-    "otplib": "^11.0.1",
+    "otplib": "^12.0.1",
     "qrcode": "^1.4.1",
     "thirty-two": "^1.0.2",
     "vue": "^2.6.6",
