@@ -27,4 +27,3 @@ test.sh
 dist.tar.gz
 package-lock.json
 config.js
-.env

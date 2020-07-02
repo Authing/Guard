@@ -1,4 +1,10 @@
 const fs = require('fs');
-let txt = fs.readFileSync('node_modules/@vue/cli-service/lib/commands/build/resolveLibConfig.js').toString();
-txt = txt.replace(/\/\/ externalize Vue([\s\S]*?)\n\n/g ,"")
-fs.writeFileSync('node_modules/@vue/cli-service/lib/commands/build/resolveLibConfig.js', txt);
+require('dotenv').config()
+const filename = 'dist/index.html'
+fs.writeFileSync(
+  filename, 
+  fs.readFileSync(filename)
+    .toString()
+    .replace(/process.env.API_POINT/g, `'${process.env.API_POINT}'`)
+    .replace("process.env.PUBLIC_KEY", `'${process.env.PUBLIC_KEY}'`)
+);

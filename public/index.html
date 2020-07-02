@@ -87,8 +87,8 @@
       ];
     }
     // let [userGqlEndPoint, oauthGqlEndPoint] = getEndpoint(hostName);
-    let userGqlEndPoint = getEndpoint(hostName)[0];
-    let oauthGqlEndPoint = getEndpoint(hostName)[1];
+    let userGqlEndPoint = process.env.API_POINT || getEndpoint(hostName)[0];
+    let oauthGqlEndPoint = process.env.API_POINT || getEndpoint(hostName)[1];
     let appId = getQueryString("app_id") || getQueryString("client_id");
     const guard = new Guard(undefined, {
       appId: appId,
@@ -103,7 +103,7 @@
         user: userGqlEndPoint,
         oauth: oauthGqlEndPoint
       },
-      passwordEncPublicKey: undefined
+      passwordEncPublicKey: process.env.PUBLIC_KEY
     });
   </script>
 </html>
