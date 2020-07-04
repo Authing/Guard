@@ -256,6 +256,9 @@ export default {
             location.href = result.data.redirectTo;
             this.checkAuthorized = false;
             return;
+          } else {
+            this.showPage = true;
+            this.checkAuthorized = false;
           }
         } else {
           this.showPage = true;
