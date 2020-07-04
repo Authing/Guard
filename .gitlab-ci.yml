@@ -96,6 +96,8 @@ deploy to co:
   when: manual
   dependencies:
     - build_prod
+  only:
+    - master
 
 publish:
   stage: publish
