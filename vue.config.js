@@ -3,6 +3,9 @@ const Dotenv = require("dotenv-webpack");
 // const path = require("path")
 // const fs = require("fs")
 
+require('dotenv').config({
+  path: '.env'
+})
 let host = process.env.ServerHost || "http://localhost:5510";
 module.exports = {
   lintOnSave: false,
@@ -21,7 +24,7 @@ module.exports = {
     ],
   },
   css: { extract: false },
-  publicPath: process.env.Container?"/":process.env.NODE_ENV === "production" ? "/login" : "/",
+  publicPath: process.env.PUBLIC_PATH || "/",
   devServer: {
     https: true,
     // cert: fs.readFileSync(path.join(__dirname,'ssl/214413890430280.pem')),

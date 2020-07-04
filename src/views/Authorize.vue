@@ -8,7 +8,7 @@
             <div class="_authing_form-header">
               <div class="_authing_delta_bg"></div>
               <div class="_authing_logo_bar">
-                <img class="_authing_logo_icon" src="../assets/wtf.png">
+                <img class="_authing_logo_icon" src="../assets/wtf.png" />
                 <div class="_authing_logo_text">Authing</div>
               </div>
               <div class="_authing_item_logo_bar">
@@ -16,7 +16,7 @@
                   class="_authing_delta_circle"
                   :style="{marginTop: screenWidth >= 463 ? '60px' : ((580 - screenWidth + 15) * (170 / 580) + 170) / 4 + 'px'}"
                   :src="!formLoading ? appInfo['image'] : ''"
-                >
+                />
               </div>
 
               <!---->
@@ -27,7 +27,7 @@
               <div title="Authing" class="_authing_form-header-name">Authing</div>
               </div>-->
             </div>
-            <img v-show="false" alt="Vue logo" :src="appInfo.images">
+            <img v-show="false" alt="Vue logo" :src="appInfo.images" />
             <div class="_authing_form_authorize_info">
               <div class="_div_authorize_block">
                 <div class="_div_info_text">
@@ -52,11 +52,15 @@
                 </ul>
               </div>
 
-              <div class="_div_line"/>
+              <div class="_div_line" />
             </div>
 
             <div v-show="!formLoading" class="_authing_form-footer two_buttons">
-              <button class="btn btn-primary" @click="redirectURL" :class="{ 'btn-ban': buttonLoading }">授权登录</button>
+              <button
+                class="btn btn-primary"
+                @click="redirectURL"
+                :class="{ 'btn-ban': buttonLoading }"
+              >授权登录</button>
               <button class="btn btn-primary btn-cancel" @click="cancelAuthorize">取消</button>
             </div>
           </div>
@@ -85,7 +89,10 @@ export default {
     this.$authing = this.$root.$data.$authing;
     this.opts = this.$root.$data.$authing.opts;
     // 如果已经登录，准备直接跳转走
-    if (this.isLogged && !(this.protocol === 'oidc' && this.params.consent !== 'none')) {
+    if (
+      this.isLogged &&
+      !(this.protocol === "oidc" && this.params.consent !== "none")
+    ) {
       this.showPage = false;
       this.redirectURL();
       return;
@@ -94,11 +101,12 @@ export default {
   mounted() {
     // 进入确权页面，查询所需权限列表
     if (this.protocol === "oidc") {
+      // 查询是否需要显示应用授权页面
       this.queryOIDCScopes(this.params.uuid);
-    } else if(this.protocol === 'oauth'){
-      this.queryOAuthScopes()
-    }else{
-      this.showPage = true
+    } else if (this.protocol === "oauth") {
+      this.queryOAuthScopes();
+    } else {
+      this.showPage = true;
     }
 
     window.onresize = () => {
@@ -112,11 +120,11 @@ export default {
     ...mapActions("loading", ["changeLoading"]),
     redirectURL() {
       // 这个标志位是标志是否在检查用户是否授权过用户池
-      this.checkAuthorized = false
-      if(this.buttonLoading){
-        return
+      this.checkAuthorized = false;
+      if (this.buttonLoading) {
+        return;
       }
-      this.buttonLoading = true
+      this.buttonLoading = true;
       // 本地测试：使用  192.168.2.16:5556
       const host = this.$root.SSOHost;
       // const host = '192.168.2.16:5556'
@@ -165,20 +173,24 @@ export default {
             this.appInfo._id
           }/SingleSignOnService?authorization_header=${localStorage.getItem(
             "_authing_token"
-          )}&SAMLRequest=${encodeURIComponent(this.params.SAMLRequest)}&Signature=${
-            encodeURIComponent(this.params.Signature)
-          }&SigAlg=${encodeURIComponent(this.params.SigAlg)}`;
+          )}&SAMLRequest=${encodeURIComponent(
+            this.params.SAMLRequest
+          )}&Signature=${encodeURIComponent(
+            this.params.Signature
+          )}&SigAlg=${encodeURIComponent(this.params.SigAlg)}`;
         }
       } else {
         // oauth
         // 因为只输入域名不输入任何参数，默认是 oauth，所以给这些字段设置一些默认值
-        location.href = `${host}/authorize?app_id=${this.appInfo._id || this.$route.query.app_id || this.$route.query.client_id}&state=${
-          this.params.state || Math.random().toString().slice(2)
-        }&response_type=${this.params.response_type || 'code'}&redirect_uri=${
-          this.params.redirect_uri || ''
-        }&scope=${
-          this.params.scope || 'profile'
-        }&authorization_header=${localStorage.getItem(
+        location.href = `${host}/authorize?app_id=${this.appInfo._id ||
+          this.$route.query.app_id ||
+          this.$route.query.client_id}&state=${this.params.state ||
+          Math.random()
+            .toString()
+            .slice(2)}&response_type=${this.params.response_type ||
+          "code"}&redirect_uri=${this.params.redirect_uri || ""}&scope=${this
+          .params.scope ||
+          "profile"}&authorization_header=${localStorage.getItem(
           "_authing_token"
         )}&confirm_authorize=1`;
       }
@@ -188,38 +200,35 @@ export default {
       // redirect to
       localStorage.setItem("appToken", "");
       localStorage.setItem("_authing_token", "");
-      
+
       window.history.back();
     },
     async queryOAuthScopes() {
-      this.checkAuthorized = true
+      this.checkAuthorized = true;
       let query = `
         query isAppAuthorizedByUser {
           isAppAuthorizedByUser(userId: "${this.userInfo._id}", appId: "${this.appInfo._id}") {
             authorized
           }
         }
-      `
+      `;
       let GraphQLClient_checkAuthorized = new GraphQLClient({
         headers: {
           Authorization: this.userInfo.token
         },
         baseURL: this.opts.host.oauth
       });
-      let res = await GraphQLClient_checkAuthorized.request({query})
-      if(res.isAppAuthorizedByUser.authorized) {
-        this.redirectURL()
+      let res = await GraphQLClient_checkAuthorized.request({ query });
+      if (res.isAppAuthorizedByUser.authorized) {
+        this.redirectURL();
       } else {
-        this.checkAuthorized = false
-        this.showPage = true
+        this.checkAuthorized = false;
+        this.showPage = true;
       }
     },
     async queryOIDCScopes(uuid) {
-      this.checkAuthorized = true
-
-      const url = `${
-        window.location.origin
-      }/oauth/oidc/interaction/${uuid}/login`;
+      this.checkAuthorized = true;
+      const url = `${window.location.origin}/oauth/oidc/interaction/${uuid}/login`;
       try {
         const result = await axios.post(url, null, {
           headers: {
@@ -234,16 +243,26 @@ export default {
           redirectTo: 'http://localhost:5556/oauth/oidc/auth/ca763762-0b42-4f23-aaf9-f0e9909fa68a'
           }
         */
-        if(result.data.authorized) {
+        let appInfo = localStorage.getItem("authing_appInfo");
+        if (result.data.authorized) {
           this.showPage = false;
-          location.href = result.data.redirectTo
-          this.checkAuthorized = false
-
-          return
+          location.href = result.data.redirectTo;
+          this.checkAuthorized = false;
+          return;
+        } else if (appInfo) {
+          appInfo = JSON.parse(appInfo);
+          if (!appInfo.confirmAuthorization) {
+            this.showPage = false;
+            location.href = result.data.redirectTo;
+            this.checkAuthorized = false;
+            return;
+          } else {
+            this.showPage = true;
+            this.checkAuthorized = false;
+          }
         } else {
           this.showPage = true;
-          this.checkAuthorized = false
-
+          this.checkAuthorized = false;
         }
         this.scopes = result.data;
       } catch (err) {
@@ -255,13 +274,13 @@ export default {
 
   data() {
     return {
-      buttonLoading : false,
+      buttonLoading: false,
       screenWidth: document.body.scrollWidth,
       showPage: false,
       scopes: {
         scopeMeanings: []
       },
-      checkAuthorized: false,
+      checkAuthorized: false
     };
   }
 };
