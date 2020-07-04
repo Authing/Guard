@@ -6,7 +6,6 @@ const Dotenv = require("dotenv-webpack");
 require('dotenv').config({
   path: '.env'
 })
-console.log(process.env)
 let host = process.env.ServerHost || "http://localhost:5510";
 module.exports = {
   lintOnSave: false,
