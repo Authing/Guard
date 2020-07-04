@@ -1,4 +1,4 @@
-stages: 
+stages:
   - build
   - deploy
   - publish
@@ -18,45 +18,85 @@ before_script:
   - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
   - chmod 700 ~/.ssh/id_rsa
   - echo "$SSH_CONFIG" > ~/.ssh/config
-build:
+
+build_prod:
   stage: build
+  environment:
+    name: prod
+  only:
+    - master
   script:
+    - echo "$ENV" > .env
     - yarn config set registry "https://registry.npm.taobao.org"
     - yarn
-    - yarn build 
+    - yarn build
   artifacts:
     paths:
       - dist
+
+build_test:
+  stage: build
+  only:
+    - test
+  environment:
+    name: test
+  script:
+    - echo "$ENV" > .env
+    - yarn config set registry "https://registry.npm.taobao.org"
+    - yarn
+    - yarn build
+  artifacts:
+    paths:
+      - dist
+
 deploy to test:
   image: instrumentisto/rsync-ssh
-  environment: hosts
+  environment:
+    name: test
   stage: deploy
-  script: 
-    - rsync -arzv --delete -e "ssh -i ~/.ssh/id_rsa" dist/ ${HOST}:/mnt/test/authing/guard 
-  only: 
+  dependencies:
+    - build_test
+  script:
+    - rsync -arzv --delete -e "ssh -i ~/.ssh/id_rsa" dist/ ${HOST}:/mnt/test/authing/guard
+  only:
     - test
+
 deploy to pre:
   image: instrumentisto/rsync-ssh
-  environment: hosts
+  environment:
+    name: pre
   stage: deploy
-  script: 
-    - rsync -arzv --delete -e "ssh -i ~/.ssh/id_rsa" dist/ ${HOST}:/mnt/pre/authing/guard 
-  only: 
+  dependencies:
+    - build_prod
+  script:
+    - rsync -arzv --delete -e "ssh -i ~/.ssh/id_rsa" dist/ ${HOST}:/mnt/pre/authing/guard
+  only:
     - master
+
 deploy to cn:
   image: instrumentisto/rsync-ssh
   stage: deploy
-  environment: cn
-  script: 
-    - rsync -arzv --delete -e "ssh -i ~/.ssh/id_rsa" dist/ ${HOST}:/mnt/cn/authing/guard  
+  dependencies:
+    - build_prod
+  environment:
+    name: cn
+  script:
+    - rsync -arzv --delete -e "ssh -i ~/.ssh/id_rsa" dist/ ${HOST}:/mnt/cn/authing/guard
   when: manual
+  only:
+    - master
+
 deploy to co:
   image: instrumentisto/rsync-ssh
   stage: deploy
-  environment: co
-  script: 
-    - rsync -arzv --delete -e "ssh -i ~/.ssh/id_rsa" dist/ ${HOST}:/mnt/co/authing/guard 
+  environment:
+    name: co
+  script:
+    - rsync -arzv --delete -e "ssh -i ~/.ssh/id_rsa" dist/ ${HOST}:/mnt/co/authing/guard
   when: manual
+  dependencies:
+    - build_prod
+
 publish:
   stage: publish
   when: manual
@@ -64,3 +104,5 @@ publish:
     - npm run build-pack
     - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
     - npm publish
+  only:
+    - master
