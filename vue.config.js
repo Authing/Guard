@@ -21,7 +21,7 @@ module.exports = {
     ],
   },
   css: { extract: false },
-  publicPath: process.env.NODE_ENV === "production" ? "/login" : "/",
+  publicPath: process.env.Container?"/":process.env.NODE_ENV === "production" ? "/login" : "/",
   devServer: {
     https: true,
     // cert: fs.readFileSync(path.join(__dirname,'ssl/214413890430280.pem')),
