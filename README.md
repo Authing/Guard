@@ -39,7 +39,42 @@ $ npm install @authing/guard --save
 ```javascript
 import Guard from "@authing/guard";
 ```
-
+## 本地开发 Guard
+### 1. 安装所有依赖
+   - 使用 yarn 安装
+  ```
+  yarn install 
+  ```
+### 2. 修改配置文件
+  在根目录创建 `.env` 文件，其中内容为
+  ```env
+  API_ENDPOINT=<Graphql 接口 URL>
+  PUBLIC_KEY=<公钥内容>
+  ServerHost=<接口 URL>
+  ``` 
+  例如:
+  ```env 
+  API_ENDPOINT=https://core.authing.co/graphql
+  PUBLIC_KEY=-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7NenkvIec2fWq00HupLe6pXaXosTtw7AeIL+R2T2ok0tvJXSm4YLcm2ftjYCvL1jnxYzfBjRYgHRuwnETc6fVYe1OWiwvKUA8tVZ0EC5t2ovoK5twC/+xpfxs9bNKVeopVIx6b7W+x+mzPUGQBQUO8EzZlKmoo73Kzy8xlBdmoKdOkFN3uQxJGh0yZZQjn1wo7+syxBlYHRnKXwR+nqqwsrO9w12wLzzrtUQOiuc96KmgoPMh2vvmtZxLnKhKHRvGmJE/GY0l7K5ktuHHTiESG3TsMfVgvEVBqUD6+5Jh3TXQ8uwlUsvC7eq0ursLu1ldrk6x7tclfdcuqhpoGkvHwIDAQAB-----END PUBLIC KEY-----
+  ServerHost=https://core.authing.co/
+  ```    
+  由于
+  随后手动替换 `public/index.html` 中的文件   
+  将其中的 `<%= htmlWebpackPlugin.options.API_ENDPOINT %>` 和 `<%= htmlWebpackPlugin.options.PUBLIC_KEY %>` 分别替换为 `.env` 文件中的`API_ENDPOINT` 和 `PUBLIC_KEY` 内容。
+  最终效果如下：
+  ```
+  ...
+        host: {
+        user: "https://core.authing.co/graphql",
+        oauth: "https://core.authing.co/graphql",
+      },
+      passwordEncPublicKey: "-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA7NenkvIec2fWq00HupLe6pXaXosTtw7AeIL+R2T2ok0tvJXSm4YLcm2ftjYCvL1jnxYzfBjRYgHRuwnETc6fVYe1OWiwvKUA8tVZ0EC5t2ovoK5twC/+xpfxs9bNKVeopVIx6b7W+x+mzPUGQBQUO8EzZlKmoo73Kzy8xlBdmoKdOkFN3uQxJGh0yZZQjn1wo7+syxBlYHRnKXwR+nqqwsrO9w12wLzzrtUQOiuc96KmgoPMh2vvmtZxLnKhKHRvGmJE/GY0l7K5ktuHHTiESG3TsMfVgvEVBqUD6+5Jh3TXQ8uwlUsvC7eq0ursLu1ldrk6x7tclfdcuqhpoGkvHwIDAQAB-----END PUBLIC KEY-----",
+    });
+  ...
+  ```
+### 3. 启动服务
+  执行 `yarn serve` 
+### 4. 修改 Host
 ## 非 SSO 场景
 
 开发者直接从 Authing 的用户池中获取用户数据，**不走** OAuth、OIDC 等**协议流程**。如果用户登录成功，你将在前端**直接获取**到他的数据。Guard 此场景下用于为开发者快速生成登录表单 UI，快速接入用户系统。
