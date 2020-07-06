@@ -630,7 +630,6 @@ export default {
               image
               clientId
               css
-              confirmAuthorization
             }
           }`;
         } else {
@@ -764,7 +763,6 @@ export default {
                 image,
                 clientId
                 css
-                confirmAuthorization
               }
             }`;
           } else {
