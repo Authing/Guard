@@ -504,7 +504,8 @@ export default {
         useSelfWxapp: that.opts.useSelfWxapp,
         host: that.opts.host,
         accessToken: this.userToken,
-        passwordEncPublicKey: that.opts.passwordEncPublicKey
+        passwordEncPublicKey: that.opts.passwordEncPublicKey,
+        timeout: that.opts.timeout
       });
       this.$authing = auth;
       //已经有资料缓存，可以开始读取

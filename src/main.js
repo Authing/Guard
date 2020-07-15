@@ -109,6 +109,7 @@ var AuthingGuard = function(clientId, opts) {
   GKl64GDcIq3au+aqJQIDAQAB
   -----END PUBLIC KEY-----`;
 
+  $authing.opts.timeout = opts.timeout || 30000;
   $authing.opts.mountId = opts.mountId || null;
   // 初始化小程序扫码登录配置
   $authing.opts.useSelfWxapp = opts.useSelfWxapp || false;

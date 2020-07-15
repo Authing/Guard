@@ -385,7 +385,9 @@ export default {
         });
         this.$authing.pub('authing-unload', err);
       },
-      passwordEncPublicKey: that.opts.passwordEncPublicKey
+      passwordEncPublicKey: that.opts.passwordEncPublicKey,
+      timeout: that.opts.timeout
+
     });
 
     let userPoolSettings = await auth.getUserPoolSettings(that.clientId || that.opts.clientId);
