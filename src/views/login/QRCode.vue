@@ -30,7 +30,8 @@ export default {
     };
 
     let that = this;
-    let validAuth = window.validAuth;
+    setTimeout(()=>{
+      let validAuth = window.validAuth;
     if (!this.isWxQRCodeGenerated) {
       validAuth.startWXAppScaning({
         mount: "qrcode-node",
@@ -65,6 +66,7 @@ export default {
       });
       this.isWxQRCodeGenerated = true;
     }
+    },500)
   }
 };
 </script>

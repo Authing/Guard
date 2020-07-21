@@ -47,10 +47,10 @@
         redirect: false
       },
       host: {
-        user: "<%= htmlWebpackPlugin.options.API_ENDPOINT %>",
-        oauth: "<%= htmlWebpackPlugin.options.API_ENDPOINT %>",
+        user: "http://localhost:5510/graphql",
+        oauth: "http://localhost:5510/graphql",
       },
-      passwordEncPublicKey: "<%= htmlWebpackPlugin.options.PUBLIC_KEY %>",
+      passwordEncPublicKey: "-----BEGIN PUBLIC KEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDc7pdyhi99OX31ddJkpqJfvRDLAIK0cHeAFJgooSG+dt3bD0jcwXEiR1i0QLf3LqQvQ8cXG58nWcQSEqbPlorBEpMsxQYaQUqMFs3iPuCA/18YIZRgUpw2J63nFMkVzOKdQuNnaGp+hktat6nCpx3zvaUL8mbfjn4gygUeUdyCbQIDAQAB-----END PUBLIC KEY-----",
     });
   </script>
 </html>
