@@ -30,41 +30,43 @@ export default {
     };
 
     let that = this;
-    let validAuth = window.validAuth;
-    if (!this.isWxQRCodeGenerated) {
-      validAuth.startWXAppScaning({
-        mount: "qrcode-node",
-        enableFetchPhone: validAuth.clientInfo.useMiniLogin,
-        useSelfWxapp: validAuth.clientInfo.useSelfWxapp,
-        onSuccess: function(res) {
-          that.$authing.pub("scanned-success", res.data);
-          localStorage.setItem("_authing_token", res.data.token);
-          that.recordLoginInfo(res.data);
-          that.handleProtocolProcess({ router: that.$router });
-        },
+    setTimeout(() => {
+      let validAuth = window.validAuth;
+      if (!this.isWxQRCodeGenerated) {
+        validAuth.startWXAppScaning({
+          mount: "qrcode-node",
+          enableFetchPhone: validAuth.clientInfo.useMiniLogin,
+          useSelfWxapp: validAuth.clientInfo.useSelfWxapp,
+          onSuccess: function(res) {
+            that.$authing.pub("scanned-success", res.data);
+            localStorage.setItem("_authing_token", res.data.token);
+            that.recordLoginInfo(res.data);
+            that.handleProtocolProcess({ router: that.$router });
+          },
 
-        onError: function(err) {
-          that.$authing.pub("scanned-error", err);
-          /*
+          onError: function(err) {
+            that.$authing.pub("scanned-error", err);
+            /*
           that.$router.replace({
             name: "error",s
             query: { message: "小程序扫码错误", code: "500" }
           });
           */
-        },
+          },
 
-        onIntervalStarting: function(interval) {
-          that.$authing.pub("scanning-interval-starting", interval);
-        },
+          onIntervalStarting: function(interval) {
+            that.$authing.pub("scanning-interval-starting", interval);
+          },
 
-        interval: scanOpts.interval,
+          interval: scanOpts.interval,
 
-        redirect: scanOpts.redirect,
+          redirect: scanOpts.redirect,
 
-        tips: scanOpts.tips
-      });
-      this.isWxQRCodeGenerated = true;
-    }
+          tips: scanOpts.tips
+        });
+        this.isWxQRCodeGenerated = true;
+      }
+    }, 300);
   }
 };
 </script>
