@@ -11,7 +11,7 @@ const state = {
   },
   isSSO: false
 };
-
+let isFirst = true
 const getters = {
   protocol: state => state.protocol,
   params: state => state.params,
@@ -59,7 +59,7 @@ const actions = {
       console.log(err);
     }
   },
-  handleOIDCProcess({ state }, { router }) {
+  handleOIDCProcess({ state, rootState }, { router }) {
     try {
       // let appId = state.params.app_id || state.params.client_id;
       // let redirectURI = state.params.redirect_uri;
@@ -69,7 +69,17 @@ const actions = {
       // let nonce = state.params.nonce;
       // let prompt = state.params.prompt;
       // let _state = state.params.state;
-
+      // 如果 oidc 应用开启了选择用户组织机构和角色
+      if(rootState.data.appInfo.customStyles.chooseOrg && isFirst) {
+        isFirst = false
+        router.push({
+          name: "chooseOrg",
+          query: {
+            ...state.params
+          }
+        });
+        return
+      }
       let uuid = state.params.uuid;
       if (!uuid) {
         router.replace({

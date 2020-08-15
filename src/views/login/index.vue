@@ -647,6 +647,7 @@ export default {
               customStyles {
                 forceLogin
                 hideQRCode
+                chooseOrg
                 hideUP
                 hideUsername
                 hideRegister
@@ -779,6 +780,7 @@ export default {
                 customStyles {
                   forceLogin
                   hideQRCode
+                  chooseOrg
                   hideUP
                   hideUsername
                   hideRegister

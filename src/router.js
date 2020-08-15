@@ -6,7 +6,7 @@ import ErrorPage from './views/ErrorPage.vue';
 import Logout from './views/Logout.vue'
 import Profile from './views/Profile.vue'
 import Login from './views/login/index.vue';
-
+import ChooseOrgPage from './views/ChooseOrgPage.vue'
 Vue.use(Router);
 
 const isNative = !!window.ReactNativeWebView
@@ -37,6 +37,11 @@ let routerConfig = {
       path: '/error',
       name: 'error',
       component: ErrorPage,
+    },
+    {
+      path: '/choose-org',
+      name: 'chooseOrg',
+      component: ChooseOrgPage
     },
     {
       path: '/profile',
