@@ -22,8 +22,8 @@ const actions = {
   },
   handleProtocolProcess({ state }, { router }) {
     if (state.isSSO) {
-      if(sessionStorage.getItem('jump2Profile')) {
-        router.push({name: 'profile'})
+      if (sessionStorage.getItem('jump2Profile')) {
+        router.push({ name: 'profile' })
         return
       }
       switch (state.protocol) {
@@ -70,7 +70,12 @@ const actions = {
       // let prompt = state.params.prompt;
       // let _state = state.params.state;
       // 如果 oidc 应用开启了选择用户组织机构和角色
-      if(rootState.data.appInfo.customStyles.chooseOrg && isFirst) {
+      let chooseOrg = false
+      try {
+        chooseOrg = rootState.data.appInfo.customStyles.chooseOrg
+      // eslint-disable-next-line no-empty
+      } catch (err) {}
+      if (chooseOrg && isFirst) {
         isFirst = false
         router.push({
           name: "chooseOrg",
