@@ -46,9 +46,9 @@
 
             <OrgItem
               v-for="item in orgs"
-              :key="item.org._id"
-              :org-name="item.org.rootNode.name"
-              :role-name="item.role.name"
+              :key="item.orgId"
+              :org-name="item.orgMame"
+              :role-name="item.roleName"
               style="margin-bottom: 8px;"
               @click.native="handleChooseOrg(item)"
             />
@@ -90,8 +90,20 @@ export default {
       },
     });
     this.orgs = orgsResult.data;
+    let tmp = [];
+    this.orgs.map((item) => {
+      item.roles.map((role) => {
+        tmp.push({
+          orgId: item.org._id,
+          orgMame: item.org.rootNode.name,
+          roleName: role.name,
+          roleId: role._id
+        });
+      });
+    });
+    this.orgs = tmp
     // 如果用户没有多个组织，就直接跳走
-    if(this.orgs.length <=1) {
+    if (this.orgs.length <= 1) {
       this.handleProtocolProcess({ router: this.$router });
     }
   },
@@ -110,7 +122,7 @@ export default {
 
       await axios.post(
         api,
-        { roleId: org.role._id, orgId: org.org._id },
+        { roleId: org.roleId, orgId: org.orgId },
         { headers: { authorization: token } }
       );
       this.handleProtocolProcess({ router: this.$router });
