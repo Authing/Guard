@@ -48,7 +48,7 @@
               v-for="item in orgs"
               :key="item.org._id"
               :org-name="item.org.rootNode.name"
-              :role-name="item.role"
+              :role-name="item.role.name"
               style="margin-bottom: 8px;"
               @click.native="handleChooseOrg(item)"
             />
@@ -110,7 +110,7 @@ export default {
 
       await axios.post(
         api,
-        { roleName: org.role, orgId: org.org._id },
+        { roleId: org.role._id, orgId: org.org._id },
         { headers: { authorization: token } }
       );
       this.handleProtocolProcess({ router: this.$router });
