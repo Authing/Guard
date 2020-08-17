@@ -31,8 +31,8 @@ const onAuthenticatedError = error => {
   }
 };
 
+window.Authing = Authing;
 var AuthingGuard = function(clientId, opts) {
-  window.Authing = Authing;
 
   var PLACEHOLDER_TEXT = {
       USERNAME: "请输入用户名",
