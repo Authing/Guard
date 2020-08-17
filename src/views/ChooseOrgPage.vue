@@ -82,7 +82,7 @@ export default {
   },
   async mounted() {
     this.opts = this.$root.$data.$authing.opts;
-    const api = "http://localhost:5510/api/v1/get_user_orgs";
+    const api = "https://core.teamory.cn/api/v1/get_user_orgs";
     let token = localStorage.getItem("_authing_token");
     let orgsResult = await axios.get(api, {
       headers: {
@@ -105,7 +105,7 @@ export default {
   methods: {
     ...mapActions("protocol", ["handleProtocolProcess"]),
     async handleChooseOrg(org) {
-      const api = "http://localhost:5510/api/v1/choose_user_org";
+      const api = "https://core.teamory.cn/api/v1/choose_user_org";
       let token = localStorage.getItem("_authing_token");
 
       await axios.post(

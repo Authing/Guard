@@ -24,7 +24,7 @@ module.exports = {
     ],
   },
   css: { extract: false },
-  publicPath: process.env.PUBLIC_PATH || "/",
+  publicPath: process.env.PUBLIC_PATH || "/login",
   devServer: {
     https: true,
     // cert: fs.readFileSync(path.join(__dirname,'ssl/214413890430280.pem')),

@@ -47,11 +47,11 @@
         redirect: false
       },
       host: {
-        user: "<%= htmlWebpackPlugin.options.API_ENDPOINT %>",
-        oauth: "<%= htmlWebpackPlugin.options.API_ENDPOINT %>",
+        user: "https://core.teamory.cn/graphql",
+        oauth: "https://core.teamory.cn/graphql",
       },
       timeout: 30000,
-      passwordEncPublicKey: "<%= htmlWebpackPlugin.options.PUBLIC_KEY %>",
+      passwordEncPublicKey: "-----BEGIN PUBLIC KEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC4xKeUgQ+Aoz7TLfAfs9+paePb5KIofVthEopwrXFkp8OCeocaTHt9ICjTT2QeJh6cZaDaArfZ873GPUn00eOIZ7Ae+TiA2BKHbCvloW3w5Lnqm70iSsUi5Fmu9/2+68GZRH9L7Mlh8cFksCicW2Y2W2uMGKl64GDcIq3au+aqJQIDAQAB-----END PUBLIC KEY-----",
     });
   </script>
 </html>
