@@ -10,7 +10,6 @@
         'authing-login-form-modal': $parent.isMountedInModal
       }"
     >
-    
       <div class="authing-login-form-wrapper" :class="{ 'z-index1000': $parent.isMountedInModal }">
         <div
           class="_authing_form-wrapper"
@@ -79,18 +78,27 @@ export default {
     this.orgs = orgsResult.data;
     let tmp = [];
     this.orgs.map((item) => {
-      item.roles.map((role) => {
+      if (item.roles && item.roles.length) {
+        item.roles.map((role) => {
+          tmp.push({
+            orgId: item.org._id,
+            orgMame: item.org.rootNode.name,
+            roleName: role.name,
+            roleId: role._id,
+          });
+        });
+      } else {
         tmp.push({
           orgId: item.org._id,
           orgMame: item.org.rootNode.name,
-          roleName: role.name,
-          roleId: role._id
+          roleName: '暂无',
+          roleId: '暂无',
         });
-      });
+      }
     });
-    this.orgs = tmp
+    this.orgs = tmp;
     // 如果用户没有多个组织，就直接跳走
-    if (this.orgs.length <= 1) {
+    if (this.orgs.length === 0) {
       this.handleProtocolProcess({ router: this.$router });
     }
   },
