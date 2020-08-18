@@ -12,7 +12,7 @@
               <!-- <div class="_authing_delta_bg"></div> -->
               <div class="_authing_logo_bar">
                 <img class="_authing_logo_icon" src="../assets/wtf.png" />
-                <div class="_authing_logo_text">Authing</div>
+                <div class="_authing_logo_text">Tencent</div>
               </div>
               <div class="_authing_form-header-bg wrong_bg">
                 <div>{{ logoutMsg }}</div>
