@@ -10,20 +10,7 @@
         'authing-login-form-modal': $parent.isMountedInModal
       }"
     >
-      <div
-        class="authing-form-badge-bottom"
-        :class="{ 'authing-form-badge-white': $parent.isMountedInModal }"
-      >
-        <a
-          href="https://authing.cn/?utm_source=form&amp;utm_campaign=badge&amp;utm_medium=widget"
-          target="_blank"
-          class="_authing_a authing-form-badge"
-        >
-          <span>Protected with</span>
-          <span class="authing-form-badge-logo"></span>
-          <span>Authing</span>
-        </a>
-      </div>
+    
       <div class="authing-login-form-wrapper" :class="{ 'z-index1000': $parent.isMountedInModal }">
         <div
           class="_authing_form-wrapper"
