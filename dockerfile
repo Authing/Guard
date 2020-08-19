@@ -1,4 +1,4 @@
-FROM node:12.14.0 as BASE_IMAGE
+FROM node:12 as BASE_IMAGE
 WORKDIR /app
 COPY package.json .
 RUN yarn --registry https://registry.npm.taobao.org/
