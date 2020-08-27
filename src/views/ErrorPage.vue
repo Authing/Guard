@@ -8,13 +8,13 @@
               <!-- <div class="_authing_delta_bg"></div> -->
               <div class="_authing_logo_bar">
                 <img class="_authing_logo_icon" src="../assets/wtf.png">
-                <div class="_authing_logo_text">Authing</div>
+                <div class="_authing_logo_text">Tencent</div>
               </div>
               <div class="_authing_form-header-bg wrong_bg">
                 <div>抱歉，似乎出错了</div>
               </div>
             </div>
-            <img v-show="false" alt="Vue logo" src="../assets/logo.png">
+            <img v-show="false" alt="Vue logo" src="../assets/wtf.png">
             <div class="_authing_form_authorize_info">
               <div class="_div_authorize_block2">
                 <div class="_div_info_text green">
@@ -27,7 +27,7 @@
 
               <div class="_div_line"/>
               <div class="_see_doctor">
-                参见开发文档：<a :href="doc" target="_blank">docs.authing.cn</a>
+                参见开发文档：<a :href="doc" target="_blank">docs.teamory.cn</a>
               </div>
             </div>
             <div class="_authing_form-footer _authing_form-footer2" v-if="false">
@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       errorMessage: ["抱歉, 似乎出错了"],
-      doc: "https://docs.authing.cn"
+      doc: "https://docs.teamory.cn"
     };
   },
 
@@ -61,7 +61,7 @@ export default {
         message = [message]
       }
       this.errorMessage = message;
-      this.doc = this.$route.query.doc || "https://docs.authing.cn"
+      this.doc = this.$route.query.doc || "https://docs.teamory.cn"
     },
 
     returnBack() {

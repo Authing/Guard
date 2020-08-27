@@ -370,7 +370,7 @@ export default {
                   "SAML 应用不能直接输入网址进行登录，需要带参数访问后端 URL，详情请看文档"
                 ],
                 doc:
-                  "https://docs.authing.cn/authing/advanced/use-saml/configure-authing-as-sp-and-idp#kai-shi-shi-yong"
+                  "https://docs.teamory.cn/authing/advanced/use-saml/configure-authing-as-sp-and-idp#kai-shi-shi-yong"
               }
             });
             return;
