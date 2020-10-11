@@ -104,7 +104,7 @@ export default {
           this.recordLoginInfo(userInfo);
           localStorage.setItem("_authing_token", userInfo.token);
           this.handleProtocolProcess({ router: this.$router });
-          self.$authing.pub("login", data);
+          this.$authing.pub("login", data);
           this.$authing.pub("authenticated", data.data);
           this.showGlobalMessage({
             type: "success",
