@@ -88,7 +88,7 @@ import Guard from "@authing/guard";
 
 ## SSO 场景
 
-你想为其他人**提供**身份服务或**使用**他人提供的身份服务。此部分供私有部署用户参考，使用 SaaS 的用户直接使用 Authing 云上部署的 Guard，无需操心 Guard 部署问题，只需关注[如何发起 SSO 登录请求](https://docs.authing.cn/authing/advanced/oidc/oidc-authorization#fa-qi-shou-quan)。
+你想为其他人**提供**身份服务或**使用**他人提供的身份服务。此部分供私有部署用户参考，使用 SaaS 的用户直接使用 Authing 云上部署的 Guard，无需操心 Guard 部署问题，只需关注[如何发起 SSO 登录请求](https://docs.authing.cn/sdk/guard/#sso-%E5%9C%BA%E6%99%AF)。
 
 作为 IdP（身份提供商），**对外提供身份服务**，Guard 此场景下用于 IdP 确认用户身份。支持的协议有 OAuth 2.0，OIDC，SAML，LDAP。
 
