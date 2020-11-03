@@ -154,7 +154,7 @@ import Guard from "@authing/guard";
 
 供私有化部署用户参考，SaaS 用户无需操心 Guard SSO 场景部署。
 
-需要提供用户池 id，在 options 对象中，传入你在 [Authing](https://authing.cn/dashboard) 对应应用中的 appId 和域名信息。
+需要提供用户池 id，在 options 对象中，传入你在 [Authing](https://console.authing.cn) 对应应用中的 appId 和域名信息。
 
 - **userPoolId**: 用户池 id
 - **options {Object}**: 允许你自定义表单的 UI，相关参数请参考 [自定义](https://github.com/Authing/Guard#自定义)
