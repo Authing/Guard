@@ -1572,10 +1572,10 @@ atob@^2.1.2:
   resolved "https://registry.npm.taobao.org/atob/download/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha1-bZUX654DDSQ2ZmZR6GvZ9vE1M8k=
 
-authing-js-sdk@^3.18.6:
-  version "3.20.2"
-  resolved "https://registry.npm.taobao.org/authing-js-sdk/download/authing-js-sdk-3.20.2.tgz#37cb19e66a9f6a72a21a232314e612ed02c39e2e"
-  integrity sha1-N8sZ5mqfanKiGiMjFOYS7QLDni4=
+authing-js-sdk@^3.22.2:
+  version "3.22.2"
+  resolved "https://registry.npmjs.org/authing-js-sdk/-/authing-js-sdk-3.22.2.tgz#243fb58b2d678a0b5144d4a2e450ae8ab7bd0f9f"
+  integrity sha512-SUYGDfOKEVgTf+lhoPn8HWyWBbIxDloGivJzcwlTRE+ywbMPoRMw16xBXWZhmuzo/KqKeOK3LQS5hL/i4+Y5xQ==
   dependencies:
     axios "^0.19.0"
     core-js "3"
