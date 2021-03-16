@@ -8,6 +8,8 @@ import VueTour from "vue-tour";
 import "./styles/styles.css";
 import "./styles/animations.css";
 import "vue-tour/dist/vue-tour.css";
+import "core-js";
+
 Vue.use(VueTour);
 
 Vue.config.productionTip = false;
