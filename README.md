@@ -88,7 +88,7 @@ import Guard from "@authing/guard";
 
 ## SSO 场景
 
-你想为其他人**提供**身份服务或**使用**他人提供的身份服务。此部分供私有部署用户参考，使用 SaaS 的用户直接使用 Authing 云上部署的 Guard，无需操心 Guard 部署问题，只需关注[如何发起 SSO 登录请求](https://docs.authing.cn/authing/advanced/oidc/oidc-authorization#fa-qi-shou-quan)。
+你想为其他人**提供**身份服务或**使用**他人提供的身份服务。此部分供私有部署用户参考，使用 SaaS 的用户直接使用 Authing 云上部署的 Guard，无需操心 Guard 部署问题，只需关注[如何发起 SSO 登录请求](https://docs.authing.cn/sdk/guard/#sso-%E5%9C%BA%E6%99%AF)。
 
 作为 IdP（身份提供商），**对外提供身份服务**，Guard 此场景下用于 IdP 确认用户身份。支持的协议有 OAuth 2.0，OIDC，SAML，LDAP。
 
@@ -154,7 +154,7 @@ import Guard from "@authing/guard";
 
 供私有化部署用户参考，SaaS 用户无需操心 Guard SSO 场景部署。
 
-需要提供用户池 id，在 options 对象中，传入你在 [Authing](https://authing.cn/dashboard) 对应应用中的 appId 和域名信息。
+需要提供用户池 id，在 options 对象中，传入你在 [Authing](https://console.authing.cn) 对应应用中的 appId 和域名信息。
 
 - **userPoolId**: 用户池 id
 - **options {Object}**: 允许你自定义表单的 UI，相关参数请参考 [自定义](https://github.com/Authing/Guard#自定义)
