@@ -1,3 +1,7 @@
+# Archived
+
+当前仓库已废弃，如需使用 Authing Guard Component 请访问最新仓库 [authing-ui-components](https://github.com/Authing/authing-ui-components)
+
 # Guard
 
 [Authing](https://authing.cn) 是一个企业级身份认证提供商，其集成了 OAuth、LDAP、OIDC 等多种身份认证和授权解决方案。
