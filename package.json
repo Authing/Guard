@@ -1,69 +1,71 @@
 {
-  "name": "@authing/guard",
-  "version": "1.16.7",
+  "name": "guard",
+  "version": "1.0.0",
+  "description": "",
+  "module": "dist/guard.esm.bundler.js",
+  "main": "dist/guard.cjs.js",
+  "types": "dist/guard.d.ts",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "lint": "eslint --ext .ts src/**",
+    "lint:fix": "eslint --fix --ext .ts src/**"
+  },
+  "buildOptions": {
+    "name": "Guard",
+    "formats": [
+      "esm-bundler",
+      "esm-browser",
+      "cjs",
+      "global",
+      "amd",
+      "umd"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-transform-runtime": "^7.16.10",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.18.6",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^18.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.1.3",
+    "@rollup/plugin-replace": "^2.3.4",
+    "@rollup/plugin-typescript": "^8.3.0",
+    "@types/react": "^16.9.53",
+    "@types/react-dom": "^16.9.8",
+    "@typescript-eslint/eslint-plugin": "^5.10.1",
+    "@typescript-eslint/parser": "^5.10.1",
+    "babel-plugin-add-module-exports": "^1.0.4",
+    "eslint": "^8.7.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.30.1",
+    "execa": "^4.0.2",
+    "fs-extra": "^10.1.0",
+    "lint-staged": "^12.3.2",
+    "prettier": "^2.5.1",
+    "rollup": "^2.68.0",
+    "rollup-plugin-dts": "^4.2.2",
+    "rollup-plugin-polyfill-node": "^0.6.2",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.27.2",
+    "typescript": "4.2.2"
+  },
+  "dependencies": {
+    "@authing/react-ui-components": "^3.1.31",
+    "authing-js-sdk": "^4.23.35",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Authing/Guard.git"
   },
-  "main": "dist/Guard.umd.min.js",
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "build-pack": "vue-cli-service build --inline-vue --target lib --name Guard ./src/main.js",
-    "build-dev": "npx vue-cli-service build --inline-vue --target lib --mode development --name Guard ./src/main.js"
-  },
-  "dependencies": {
-    "@authing/sso": "^1.3.0",
-    "authing-js-sdk": "^3.22.2",
-    "axios": "^0.18.0",
-    "otplib": "^12.0.1",
-    "qrcode": "^1.4.1",
-    "thirty-two": "^1.0.2",
-    "vue": "^2.6.6",
-    "vue-router": "^3.0.1",
-    "vue-tour": "^1.1.0",
-    "vuex": "^3.1.1"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.4.0",
-    "@vue/cli-plugin-eslint": "^3.4.0",
-    "@vue/cli-service": "^3.4.0",
-    "babel-eslint": "^10.0.1",
-    "dotenv": "^8.2.0",
-    "dotenv-webpack": "^1.8.0",
-    "ejs-cli": "^2.0.1",
-    "eslint": "^5.8.0",
-    "eslint-plugin-vue": "^5.0.0",
-    "html-webpack-plugin": "^4.3.0",
-    "lint-staged": "^8.1.0",
-    "vue-template-compiler": "^2.5.21"
-  },
-  "gitHooks": {
-    "pre-commit": "lint-staged"
-  },
-  "lint-staged": {
-    "*.js": [
-      "vue-cli-service lint",
-      "git add"
-    ],
-    "*.vue": [
-      "vue-cli-service lint",
-      "git add"
-    ]
-  },
-  "description": "[Authing](https://authing.cn) 是一个企业级身份认证提供商，其集成了 OAuth、LDAP、OIDC 等多种身份认证和授权解决方案。",
+  "author": "https://github.com/Authing",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Authing/Guard/issues"
   },
-  "homepage": "https://github.com/Authing/Guard#readme",
-  "keywords": [
-    "Authing",
-    "Guard",
-    "AaaS",
-    "IDaaS",
-    "Identity"
-  ],
-  "author": "Authing",
-  "license": "MIT"
+  "homepage": "https://github.com/Authing/Guard#readme"
 }
