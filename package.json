@@ -167,7 +167,7 @@
   },
   "dependencies": {
     "@authing/react-ui-components": "^3.1.31",
-    "authing-js-sdk": "^4.23.34",
+    "authing-js-sdk": "^4.23.35",
     "react-router-dom": "^5.1.2"
   }
 }

@@ -9,7 +9,7 @@ export default function Callback () {
   const handleCallback = async () => {
     const guard = new Guard({
       appId: '62de1209719e5be69d3449e0',
-      appHost: 'https://guard-demo-2022.authing.cn',
+      host: 'https://guard-demo-2022.authing.cn',
       redirectUri: 'http://localhost:3000/callback'
     })
     
@@ -19,7 +19,7 @@ export default function Callback () {
 
   useEffect(() => {
     handleCallback()
-  }, [])
+  })
 
   return <div>This is Callback page</div>
 }

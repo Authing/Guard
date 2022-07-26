@@ -40,30 +40,45 @@ type CodeMethod = 'S256' | 'plain'
 interface GuardOptions {
   appId: string,
   mode?: GuardMode,
-  defaultScene?: GuardModuleType,
+  defaultScenes?: GuardModuleType,
   lang?: Lang,
   isSSO?: boolean,
-  appHost: string, // 私有化部署时的 IP 地址
+  host: string, // 私有化部署时的 IP 地址
   scope?: string, // OIDC scope
   redirectUri: string,
   state?: string // OIDC 状态
+  config?: Partial<GuardLocalConfig> // 兼容之前的 config，新用户可不传
 }
 
 export class Guard {
   private appId?: string
+  private config?: Partial<GuardLocalConfig>
   private visible?: boolean
   private el?: string
   public authClient: AuthenticationClient
 
   constructor(options: GuardOptions) {
-    const { appId, mode = 'normal', appHost, redirectUri } = options
+    const {
+      appId, mode = 'normal', redirectUri,
+      isSSO, defaultScenes, lang, host,
+      config
+    } = options
 
     this.appId = appId
+
+    this.config = Object.assign({}, config || {}, {
+      isSSO,
+      defaultScenes,
+      lang,
+      host,
+      mode
+    })
+
     this.visible = !!!(mode === GuardMode.Modal)
 
     this.authClient = new AuthenticationClient({
       appId,
-      appHost,
+      appHost: host,
       redirectUri,
       tokenEndPointAuthMethod: 'none',
       introspectionEndPointAuthMethod: 'none'
@@ -199,16 +214,17 @@ export class Guard {
   /**
    * 获取当前用户信息
    */
-  async trackSession () {
-    return await this.authClient.getCurrentUser()
+  trackSession () {
+    return this.authClient.getCurrentUser()
   }
 
   logout () {
     const redirectUri = window.location.origin
     const idToken = localStorage.getItem('idToken')
+    let logoutUrl = ''
 
     if (idToken) {
-      this.authClient.buildLogoutUrl({
+      logoutUrl = this.authClient.buildLogoutUrl({
         expert: true,
         redirectUri,
         idToken
@@ -217,7 +233,7 @@ export class Guard {
 
     localStorage.clear()
 
-    window.location.href = redirectUri
+    window.location.href = logoutUrl || redirectUri
   }
 
   updateIdToken () {
@@ -249,7 +265,9 @@ export class Guard {
       <ReactAuthingGuard
         {...(evts as GuardEvents)}
         appId={this.appId}
+        config={this.config as GuardComponentConfig}
         visible={this.visible}
+        authClient={this.authClient}
       />,
       Guard.getGuardContainer(this.el),
       cb

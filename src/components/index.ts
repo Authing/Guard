@@ -35,6 +35,7 @@ export {
   GuardEventsCamelToKebabMap,
   GuardEventsCamelToKebabMapping,
 };
+
 export type {
   GuardConfig,
   GuardLocalConfig,

@@ -6,15 +6,20 @@ import {
   Route
 } from 'react-router-dom'
 
-import Login from 'src/pages/Login'
-import Callback from 'src/pages/Callback'
-import Personal from 'src/pages/Personal'
+import Home from '../pages/Home'
+import Login from '../pages/Login'
+import Callback from '../pages/Callback'
+import Personal from '../pages/Personal'
+import Jump from '../pages/Jump'
 
 export default function RouterComponent () {
   return (
     <Router basename='/'>
       <Switch>
       <Route exact path='/'>
+          <Home />
+        </Route>
+        <Route exact path='/login'>
           <Login />
         </Route>
         <Route exact path='/callback'>
@@ -22,6 +27,9 @@ export default function RouterComponent () {
         </Route>
         <Route exact path='/personal'>
           <Personal />
+        </Route>
+        <Route exact path='/jump'>
+          <Jump />
         </Route>
       </Switch>
     </Router>
