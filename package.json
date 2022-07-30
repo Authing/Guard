@@ -1,7 +1,9 @@
 {
   "name": "root",
   "scripts": {
-    "link": "lerna link"
+    "link": "lerna link",
+    "publish:official": "lerna publish from-package --yes",
+    "publish:alpha": "lerna publish from-package --canary --yes --pre-dist-tag alpha --preid alpha"
   },
   "workspaces": [
     "packages/*"

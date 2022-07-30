@@ -64,12 +64,12 @@ jobs:
         if: ${{ github.ref_name == 'master' }}
         run: |
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
-          yarn publish:official
+          npm run publish:official
           echo "publish:official successfully 🚀"
           
       - name: publish alpha
         if: ${{ github.ref_name != 'master' }}
         run: |
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
-          yarn publish:alpha
+          npm run publish:alpha
           echo "publish:alpha successfully 🚀"
