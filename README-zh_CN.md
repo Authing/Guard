@@ -1,5 +1,5 @@
 <div align=center>
-  <img width="200" src="https://files.authing.co/authing-console/authing-logo-new-20210924.svg" />
+  <img width="300" src="https://files.authing.co/authing-console/authing-logo-new-20210924.svg" />
 </div>
 
 <h1 align="center">Guard</h1>
