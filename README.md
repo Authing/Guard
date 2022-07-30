@@ -1,6 +1,10 @@
 # Guard
 
-<div align=center><img width="300" src="https://files.authing.co/authing-console/authing-logo-new-20210924.svg"></div>
+<div align=center>
+  <img width="300" src="https://files.authing.co/authing-console/authing-logo-new-20210924.svg" />
+</div>
+
+<br />
 
 <div align="center">
   <a href="javascript:;"><img src="https://img.shields.io/badge/test-passing-brightgreen" /></a>
@@ -14,18 +18,54 @@
 
 The Guard helps developers shield the details of the underlying authentication and tedious UI development. It enables enterprises and developers to quickly launch a secure, customizable UI unified login form.
 
+<div align="center">
+  <img src="./guard.png" width="650" />
+</div>
+
+<br />
+
 ## Ecosystem
 
 |Project|Status|Description
 |-----|----|----|
-|@authing/react-ui-components|[![npm version](https://badge.fury.io/js/@authing%2Freact-ui-components.svg)](https://www.npmjs.com/package/@authing/react-ui-components)|Guard for react|
-|@authing/vue-ui-components|[![npm version](https://badge.fury.io/js/@authing%2Fvue-ui-components.svg)](https://www.npmjs.com/package/@authing/vue-ui-components)|Guard for Vue|
-|@authing/ng-ui-components|[![npm version](https://badge.fury.io/js/@authing%2Fng-ui-components.svg)](https://www.npmjs.com/package/@authing/ng-ui-components)|Guard for angular|
-|@authing/native-js-ui-components|[![npm version](https://badge.fury.io/js/@authing%2Fnative-js-ui-components.svg)](https://www.npmjs.com/package/@authing/native-js-ui-components)|Guard for JavaScript|
+|guard-react|[![npm version](https://badge.fury.io/js/@authing%2Freact-ui-components.svg)](https://www.npmjs.com/package/@authing/react-ui-components)|Guard for react|
+|guard-vue|[![npm version](https://badge.fury.io/js/@authing%2Fvue-ui-components.svg)](https://www.npmjs.com/package/@authing/vue-ui-components)|Guard for Vue|
+|guard-angular|[![npm version](https://badge.fury.io/js/@authing%2Fng-ui-components.svg)](https://www.npmjs.com/package/@authing/ng-ui-components)|Guard for angular|
+|guard.js|[![npm version](https://badge.fury.io/js/@authing%2Fnative-js-ui-components.svg)](https://www.npmjs.com/package/@authing/native-js-ui-components)|Guard for JavaScript|
+
+## Features
+
+- Rich login and registration methods
+
+Account password / phone verification / APP scan code / corporate identity source / social login.
+
+- Built in multiple functions, no need to write additional code
+
+Built-in interactive UI for forgetting the password, MFA function, users do not need to write any additional code to complete tasks.
+
+- Have a responsive layout
+
+Perfectly compatible with mobile and PC, you can easily customize the login box style with CSS.
+
+- Compatible with all mainstream front-end frameworks
+
+Including login components such as React, Vue, Angular, JavaScript, etc.
+
+- SSO
+
+Authing supports many protocols such as OAuth2, OIDC, SAML, LDAP, etc. Developers can easily implement single sign-on with a minimum of five lines of code and realize login customization.
+
+<div align="center">
+  <img src="https://files.authing.co/authing-website/guard-framework-img-v2.png" />
+</div>
+
+## Online preview
+
+Click to [sample-sso.authing.cn](https://sample-sso.authing.cn/login?app_id=5d70d0e991fdd597019df70d&protocol=oidc&finish_login_url=%2Finteraction%2Foidc%2Fd7223e6b-b796-4068-a3f2-298d527993c2%2Flogin&login_page_context=)
 
 ## Documentation
 
-To check out live examples and docs, visit [docs.authing.cn](https://docs.authing.cn/v2/reference/guard/v2/)
+To check out live examples and docs, visit [docs](https://docs.authing.cn/v2/reference/guard/v2/)
 
 ## Questions
 

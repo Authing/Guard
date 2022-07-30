@@ -1,0 +1,75 @@
+name: release
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Please enter your github name'
+        required: true
+      email:
+        description: 'Please enter your github email'
+        required: true
+      version:
+        description: 'Please enter your release version'
+        required: true
+        
+jobs:
+
+  readyGo:
+
+    runs-on: ubuntu-latest
+
+    env: 
+      PUBLISH_OPTS: ${{ github.ref_name == 'master' && '--verbose' || '--verbose --tag=alpha' }}
+      VERSION: ${{ github.event.inputs.version }}
+      NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+    steps:
+
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16.13.1
+          registry-url: https://registry.npmjs.org/
+          
+      - name: before scripts
+        run: |
+          echo "Current branch: ${{ github.ref_name }}"
+          echo "Current publish version: ${{ github.event.inputs.version }}"
+          echo "Current user.name: ${{ github.event.inputs.name }}"
+          echo "Current user.email: ${{ github.event.inputs.email }}"
+      
+      - name: set git config
+        run: |
+          git config --global user.email ${{ github.event.inputs.email }}
+          git config --global user.name ${{ github.event.inputs.name }}
+          
+      - name: install packages
+        run: |
+          lerna run prepack
+
+      - name: lint codes
+        run: |
+          lerna run lint
+
+      - name: build
+        run: |
+          lerna run build
+
+      - name: release version
+        run: |
+          lerna version $VERSION --yes
+          
+      - name: publish official
+        if: ${{ github.ref_name == 'master' }}
+        run: |
+          npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
+          yarn publish:official
+          echo "publish:official successfully 🚀"
+          
+      - name: publish alpha
+        if: ${{ github.ref_name != 'master' }}
+        run: |
+          npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
+          yarn publish:alpha
+          echo "publish:alpha successfully 🚀"
