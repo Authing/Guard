@@ -4,9 +4,9 @@
 
 <h1 align="center">Guard</h1>
 
-English | [简体中文](./README-zh_CN.md) |
+[English](./README.md) | 简体中文 |
 
-The Guard helps developers shield the details of the underlying authentication and tedious UI development. It enables enterprises and developers to quickly launch a secure, customizable UI unified login form.
+通用登录组件（Guard）帮助开发者屏蔽了很多底层认证的实现细节，同时也包括繁琐的 UI 开发。使得企业和开发者可以快速上线安全的、跨平台的统一登录表单。
 
 <br />
 
@@ -26,9 +26,9 @@ The Guard helps developers shield the details of the underlying authentication a
 
 <br />
 
-## 🌍 Ecosystem
+## 🌍 生态系统
 
-|Project|Status|Description
+|项目|状态|描述
 |-----|----|----|
 |guard-react|[![npm version](https://badge.fury.io/js/@authing%2Freact-ui-components.svg)](https://www.npmjs.com/package/@authing/react-ui-components)|Guard for react|
 |guard-vue|[![npm version](https://badge.fury.io/js/@authing%2Fvue-ui-components.svg)](https://www.npmjs.com/package/@authing/vue-ui-components)|Guard for Vue|
@@ -37,7 +37,7 @@ The Guard helps developers shield the details of the underlying authentication a
 
 <br />
 
-## 🖥 Environment Support
+## 🖥 环境支持
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Safari |
 | --- | --- | --- | --- |
@@ -45,27 +45,27 @@ The Guard helps developers shield the details of the underlying authentication a
 
 <br />
 
-## ✨ Features
+## ✨ 特性
 
-### 🌈 Rich login and registration methods
+### 🌈 拥有丰富的登录注册方式
 
-Account password / phone verification / APP scan code / corporate identity source / social login.
+账号密码 / 手机验证码 / APP 扫码 / 小程序扫码 / 企业身份源 / 社会化登录。
 
-### 📦 Built in multiple functions, no need to write additional code
+### 📦 内置多种功能，无需额外编写代码
 
-Built-in interactive UI for forgetting the password, MFA function, users do not need to write any additional code to complete tasks.
+内置了忘记密码的交互 UI、多因素认证（MFA）功能，用户无需编写任何额外代码，即可使用该组件完成任务。
 
-### 🛡 Have a responsive layout
+### 🛡 拥有响应式布局
 
-Perfectly compatible with mobile and PC, you can easily customize the login box style with CSS.
+不仅完美兼容移动端和 PC 端，还可以用 CSS 轻松自定义登录框样式。
 
-### 🎇 Compatible with all mainstream front-end frameworks
+### 🎇 兼容前端所有主流框架
 
-Including login components such as React, Vue, Angular, JavaScript, etc.
+包括 React、Vue、Angular、JavaScript 等登录组件。
 
-### 🎨 SSO
+### 🎨 单点登录
 
-Authing supports many protocols such as OAuth2, OIDC, SAML, LDAP, etc. Developers can easily implement single sign-on with a minimum of five lines of code and realize login customization.
+Authing 支持 OAuth2、OIDC、SAML、LDAP 等多种协议，开发者可以配合统一用户池，最低五行代码轻松实现单点登录，实现登录定制化。
 
 <div align="center">
   <img src="https://files.authing.co/authing-website/guard-framework-img-v2.png" width="650" />
@@ -73,39 +73,41 @@ Authing supports many protocols such as OAuth2, OIDC, SAML, LDAP, etc. Developer
 
 <br />
 
-## 👀 Online preview
+## 👀 在线体验
 
-Click to [sample-sso.authing.cn](https://sample-sso.authing.cn/login?app_id=5d70d0e991fdd597019df70d&protocol=oidc&finish_login_url=%2Finteraction%2Foidc%2Fd7223e6b-b796-4068-a3f2-298d527993c2%2Flogin&login_page_context=)
+点击查看 [sample-sso.authing.cn](https://sample-sso.authing.cn/login?app_id=5d70d0e991fdd597019df70d&protocol=oidc&finish_login_url=%2Finteraction%2Foidc%2Fd7223e6b-b796-4068-a3f2-298d527993c2%2Flogin&login_page_context=)
 
 <br />
 
-## 📚 Documentation
+## 📚 文档
 
-To check out live examples and docs, visit [docs](https://docs.authing.cn/v2/reference/guard/v2/)
+更多示例和使用说明可参考[官方文档](https://docs.authing.cn/v2/reference/guard/v2/)
 
 <br />
 
 ## ❓ Questions
 
-For questions and support please use the [official forum](https://forum.authing.cn/). The issue list of this repo is exclusively for bug reports and feature requests.
+如果需要在线技术支持，可访问[官方论坛](https://forum.authing.cn/). 此仓库的 issue 仅用于上报 Bug 和提交新功能特性。
+
+
 
 <br />
 
-## 👍 Changelog
+## 👍 更新日志
 
-Detailed changes for each release are documented in the [release notes](https://docs.authing.cn/v2/reference/guard/v2/guard-changelog.html).
+详细发布记录可参考[更新日志](https://docs.authing.cn/v2/reference/guard/v2/guard-changelog.html).
 
 <br />
 
-## 🤝 Contribution
+## 🤝 开源共建
 
-- Fork it
-- Create your feature branch (git checkout -b my-new-feature)
-- Commit your changes (git commit -am 'Add some feature')
-- Push to the branch (git push -u origin my-new-feature)
-- Create new Pull Request
+- Fork 此仓库
+- 创建自己的 git 分支 (git checkout -b my-new-feature)
+- 提交你的修改 (git commit -am 'Add some feature')
+- 将修改内容推送到远程分支 (git push -u origin my-new-feature)
+- 创建一个 Pull Request
 
-Thank you to all the people who already contributed to Guard!
+感谢所有为 Guard 做出贡献的人！
 
 <div>
   <a href="https://github.com/leinue"><img width="30px" src="https://avatars.githubusercontent.com/u/2469688?v=4" /></a>
@@ -142,7 +144,7 @@ Thank you to all the people who already contributed to Guard!
 
 <br />
 
-## 🎁 License
+## 🎁 开源许可
 
 [MIT](https://opensource.org/licenses/MIT)
 

@@ -4,7 +4,7 @@ declare module 'guard.js/index' {
   import { GuardLocalConfig } from '@authing/react-ui-components/components/Guard/config';
   import { AuthenticationClient, AuthenticationClientOptions } from 'authing-js-sdk';
   export { GuardMode, GuardScenes, LoginMethods, getAuthClient, initAuthClient, RegisterMethods, GuardEventsCamelToKebabMap, GuardEventsCamelToKebabMapping };
-  export type { GuardConfig, GuardLocalConfig, GuardEvents, User, UserConfig, CommonMessage, GuardEventsHandler, AuthenticationClient, GuardEventsHandlerKebab, GuardEventsKebabToCamelType, };
+  export type { GuardConfig, GuardLocalConfig, GuardEvents, User, UserConfig, CommonMessage, GuardEventsHandler, AuthenticationClient, GuardEventsHandlerKebab, GuardEventsKebabToCamelType };
   export type GuardEventListeners = {
       [key in keyof GuardEventsKebabToCamelType]: Exclude<Required<GuardEventsKebabToCamelType>[key], undefined>[];
   };

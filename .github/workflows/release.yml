@@ -55,6 +55,11 @@ jobs:
       - name: build
         run: |
           lerna run build
+      
+      - name: auto commit
+        run: |
+          git add .
+          git commit -m "feat: CI build"
 
       - name: release version
         run: |
