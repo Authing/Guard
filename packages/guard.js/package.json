@@ -4,6 +4,9 @@
   "description": "Guard for JS",
   "module": "dist/guard.min.js",
   "types": "dist/guard.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "prepack": "npm ci",
     "build": "node scripts/build.js",
