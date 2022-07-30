@@ -8,8 +8,6 @@ English | [简体中文](./README-zh_CN.md) |
 
 The Guard helps developers shield the details of the underlying authentication and tedious UI development. It enables enterprises and developers to quickly launch a secure, customizable UI unified login form.
 
-<br />
-
 <div align="center">
   <a href="javascript:;"><img src="https://img.shields.io/badge/test-passing-brightgreen" /></a>
   <a href="https://forum.authing.cn/" target="_blank"><img src="https://img.shields.io/badge/chat-forum-blue" /></a>
@@ -24,8 +22,6 @@ The Guard helps developers shield the details of the underlying authentication a
   <img src="./guard.png" width="650" />
 </div>
 
-<br />
-
 ## 🌍 Ecosystem
 
 |Project|Status|Description
@@ -35,15 +31,11 @@ The Guard helps developers shield the details of the underlying authentication a
 |guard-angular|[![npm version](https://badge.fury.io/js/@authing%2Fng-ui-components.svg)](https://www.npmjs.com/package/@authing/ng-ui-components)|Guard for angular|
 |guard.js|[![npm version](https://badge.fury.io/js/@authing%2Fnative-js-ui-components.svg)](https://www.npmjs.com/package/@authing/native-js-ui-components)|Guard for JavaScript|
 
-<br />
-
 ## 🖥 Environment Support
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Safari |
 | --- | --- | --- | --- |
 | IE11, Edge | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
-
-<br />
 
 ## ✨ Features
 
@@ -71,31 +63,21 @@ Authing supports many protocols such as OAuth2, OIDC, SAML, LDAP, etc. Developer
   <img src="https://files.authing.co/authing-website/guard-framework-img-v2.png" width="650" />
 </div>
 
-<br />
-
 ## 👀 Online preview
 
 Click to [sample-sso.authing.cn](https://sample-sso.authing.cn/login?app_id=5d70d0e991fdd597019df70d&protocol=oidc&finish_login_url=%2Finteraction%2Foidc%2Fd7223e6b-b796-4068-a3f2-298d527993c2%2Flogin&login_page_context=)
-
-<br />
 
 ## 📚 Documentation
 
 To check out live examples and docs, visit [docs](https://docs.authing.cn/v2/reference/guard/v2/)
 
-<br />
-
 ## ❓ Questions
 
 For questions and support please use the [official forum](https://forum.authing.cn/). The issue list of this repo is exclusively for bug reports and feature requests.
 
-<br />
-
 ## 👍 Changelog
 
 Detailed changes for each release are documented in the [release notes](https://docs.authing.cn/v2/reference/guard/v2/guard-changelog.html).
-
-<br />
 
 ## 🤝 Contribution
 
@@ -139,8 +121,6 @@ Thank you to all the people who already contributed to Guard!
   <a href="https://github.com/Xuancaosu"><img width="30px" src="https://avatars.githubusercontent.com/u/51688262?s=96&v=4" /></a>
   <a href="https://github.com/zhaoyiming0803"><img width="30px" src="https://avatars.githubusercontent.com/u/25874685?s=96&v=4" /></a>
 </div>
-
-<br />
 
 ## 🎁 License
 
