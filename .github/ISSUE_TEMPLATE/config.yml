@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+ - name: Questions
+   url: https://forum.authing.cn/
+   about: For general questions, support requests and discussions
+ - name: Document
+   url: https://docs.authing.cn/v2/reference/guard/v2/
+   about: Authing Guard
