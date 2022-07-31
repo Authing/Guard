@@ -8,8 +8,6 @@
 
 通用登录组件（Guard）帮助开发者屏蔽了很多底层认证的实现细节，同时也包括繁琐的 UI 开发。使得企业和开发者可以快速上线安全的、跨平台的统一登录表单。
 
-<br />
-
 <div align="center">
   <a href="javascript:;"><img src="https://img.shields.io/badge/test-passing-brightgreen" /></a>
   <a href="https://forum.authing.cn/" target="_blank"><img src="https://img.shields.io/badge/chat-forum-blue" /></a>
@@ -24,8 +22,6 @@
   <img src="./guard.png" width="650" />
 </div>
 
-<br />
-
 ## 🌍 生态系统
 
 |项目|状态|描述
@@ -35,15 +31,11 @@
 |guard-angular|[![npm version](https://badge.fury.io/js/@authing%2Fng-ui-components.svg)](https://www.npmjs.com/package/@authing/ng-ui-components)|Guard for angular|
 |guard.js|[![npm version](https://badge.fury.io/js/@authing%2Fnative-js-ui-components.svg)](https://www.npmjs.com/package/@authing/native-js-ui-components)|Guard for JavaScript|
 
-<br />
-
 ## 🖥 环境支持
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Safari |
 | --- | --- | --- | --- |
 | IE11, Edge | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
-
-<br />
 
 ## ✨ 特性
 
@@ -71,33 +63,21 @@ Authing 支持 OAuth2、OIDC、SAML、LDAP 等多种协议，开发者可以配�
   <img src="https://files.authing.co/authing-website/guard-framework-img-v2.png" width="650" />
 </div>
 
-<br />
-
 ## 👀 在线体验
 
 点击查看 [sample-sso.authing.cn](https://sample-sso.authing.cn/login?app_id=5d70d0e991fdd597019df70d&protocol=oidc&finish_login_url=%2Finteraction%2Foidc%2Fd7223e6b-b796-4068-a3f2-298d527993c2%2Flogin&login_page_context=)
-
-<br />
 
 ## 📚 文档
 
 更多示例和使用说明可参考[官方文档](https://docs.authing.cn/v2/reference/guard/v2/)
 
-<br />
-
 ## ❓ Questions
 
 如果需要在线技术支持，可访问[官方论坛](https://forum.authing.cn/). 此仓库的 issue 仅用于上报 Bug 和提交新功能特性。
 
-
-
-<br />
-
 ## 👍 更新日志
 
 详细发布记录可参考[更新日志](https://docs.authing.cn/v2/reference/guard/v2/guard-changelog.html).
-
-<br />
 
 ## 🤝 开源共建
 
@@ -141,8 +121,6 @@ Authing 支持 OAuth2、OIDC、SAML、LDAP 等多种协议，开发者可以配�
   <a href="https://github.com/Xuancaosu"><img width="30px" src="https://avatars.githubusercontent.com/u/51688262?s=96&v=4" /></a>
   <a href="https://github.com/zhaoyiming0803"><img width="30px" src="https://avatars.githubusercontent.com/u/25874685?s=96&v=4" /></a>
 </div>
-
-<br />
 
 ## 🎁 开源许可
 
