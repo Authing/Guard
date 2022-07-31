@@ -1,8 +1,8 @@
 const path = require('path')
 const rm = require('rimraf')
 const webpack = require('webpack')
-const webpackEsmBundlerConfig = require('./webpack.config.esm-bundler')
-const webpackGlobalConfig = require('./webpack.config.global')
+const webpackEsmBundlerConfig = require('./webpack.esm.config')
+const webpackGlobalConfig = require('./webpack.global.config')
 
 try {
   rm.sync(path.resolve(__dirname, '../', 'dist'))

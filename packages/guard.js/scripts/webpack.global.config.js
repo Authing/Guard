@@ -13,7 +13,7 @@ module.exports = {
     filename: 'guard.min.js',
     path: resolve('dist/global'),
     library: {
-      name: 'guardjs',
+      name: 'GuardFactory',
       type: 'global'
     }
   },

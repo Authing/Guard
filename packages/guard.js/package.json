@@ -20,6 +20,7 @@
     "@types/react-dom": "^16.9.8",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
+    "ali-oss": "^6.16.0",
     "css-loader": "^6.7.1",
     "eslint": "^8.7.0",
     "eslint-config-prettier": "^8.3.0",
