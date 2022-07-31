@@ -1,7 +1,8 @@
 const path = require('path')
 const rm = require('rimraf')
 const webpack = require('webpack')
-const webpackConfig = require('./webpack.config')
+const webpackEsmBundlerConfig = require('./webpack.config.esm-bundler')
+const webpackGlobalConfig = require('./webpack.config.global')
 
 try {
   rm.sync(path.resolve(__dirname, '../', 'dist'))
@@ -12,7 +13,14 @@ try {
 readyGo()
 
 function readyGo () {
-  webpack(webpackConfig, (error) => {
-    console.log(error)
+  webpack(webpackEsmBundlerConfig, (error) => {
+    if (error) {
+      console.error('build guard.js esm bundler error: ', error)
+    }
+  })
+  webpack(webpackGlobalConfig, (error) => {
+    if (error) {
+      console.error('build guard.js global error: ', error)
+    }
   })
 }
