@@ -53,7 +53,7 @@ const guard = new Guard({
 })
 ```
 
-## APIs
+## Guard provides three login modes
 
 ### Redirect mode
 
@@ -85,7 +85,19 @@ guard.start('#root').then(userInfo => {
 })
 ```
 
-Regist events
+### modal mode
+
+When the parameter 'mode' of Guard instantiation is' modal ', the modal mode is started, and the following API can be used to display and hide the guard.
+
+``` javascript
+guard.show()
+```
+
+``` javascript
+guard.hide()
+```
+
+## Regist events
 
 ``` javascript
 guard.on('load', e => {
@@ -99,7 +111,7 @@ guard.on('login', userInfo => {
 // ......
 ```
 
-### Integrate authing js sdk instance
+## Integrate authing js sdk instance
 
 Guard integrated AuthenticationClient, so you can use `guard.authClient` to access all apis of AuthenticationClient, etc:
 
