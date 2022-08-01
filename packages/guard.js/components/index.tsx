@@ -1,8 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import { createRoot } from "react-dom/client";
-
 import {
   Guard as ReactAuthingGuard,
   GuardMode,
@@ -67,10 +65,12 @@ export type GuardEventListeners = {
 
 type CodeMethod = 'S256' | 'plain'
 
+type Align = 'none' | 'left' | 'center' | 'right'
+
 interface GuardOptions {
   appId: string
   mode?: GuardMode
-  defaultScenes?: GuardModuleType
+  defaultScene?: GuardModuleType
   tenantId?: string
   lang?: Lang
   isSSO?: boolean
@@ -80,6 +80,7 @@ interface GuardOptions {
   state?: string // OIDC 状态
   config?: Partial<GuardLocalConfig> // 兼容之前的 config，新用户可不传
   authClientOptions?: AuthenticationClientOptions
+  align?: Align
 }
 
 export class Guard {
@@ -89,6 +90,7 @@ export class Guard {
   private visible?: boolean
   private el?: string
   public authClient: AuthenticationClient
+  private align?: Align
 
   constructor(options: GuardOptions) {
     const {
@@ -96,20 +98,23 @@ export class Guard {
       mode = 'normal',
       redirectUri,
       isSSO,
-      defaultScenes,
+      defaultScene,
       lang,
       host,
       tenantId,
+      align = 'none',
       config,
       authClientOptions
     } = options
 
     this.appId = appId
     this.tenantId = tenantId
+    this.align = align
 
     this.config = Object.assign({}, config || {}, {
       isSSO,
-      defaultScenes,
+      // 向后兼容
+      defaultScenes: defaultScene,
       lang,
       host,
       mode
@@ -320,17 +325,19 @@ export class Guard {
       })
     }, {} as GuardEvents)
 
-    const root = createRoot(Guard.getGuardContainer(this.el) as HTMLElement)
-
-    return root.render(
-      <ReactAuthingGuard
-        {...(evts as GuardEvents)}
-        appId={this.appId}
-        tenantId={this.tenantId}
-        config={this.config}
-        visible={this.visible}
-        authClient={this.authClient}
-      />
+    return ReactDOM.render(
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: this.align }}>
+        <ReactAuthingGuard
+          {...(evts as GuardEvents)}
+          appId={this.appId}
+          tenantId={this.tenantId}
+          config={this.config}
+          visible={this.visible}
+          authClient={this.authClient}
+        />
+      </div>,
+      Guard.getGuardContainer(this.config?.target),
+      cb
     )
   }
 
