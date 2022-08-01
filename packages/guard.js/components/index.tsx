@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import { createRoot } from "react-dom/client";
+import { createRoot } from 'react-dom/client'
 
 import {
   Guard as ReactAuthingGuard,
@@ -163,8 +163,18 @@ export class Guard {
    * @param el String
    * @returns Promise
    */
-  async start(el: string) {
+  async start(el: string, scene?: GuardModuleType, sceneContext?: any) {
     this.el = el
+
+    // GuardModuleType 是一个枚举类 包含所有的场景
+    // 只有 注册、忘记密码、反馈问题 不需要上下文，其他的需要上下文
+    if (scene || sceneContext) {
+      this.config = {
+        ...this.config,
+        defaultScenes: scene,
+        defaultInitData: sceneContext
+      }
+    }
 
     this.render()
 
@@ -179,6 +189,32 @@ export class Guard {
         resolve(userInfo)
       })
     })
+  }
+
+  // 注册的 不需要上下文
+  async registerStart(el: string) {
+    const scene = GuardModuleType.REGISTER
+
+    return this.start(el, scene)
+  }
+
+  async forgetPasswordStart(el: string) {
+    const scene = GuardModuleType.FORGET_PWD
+
+    return this.start(el, scene)
+  }
+
+  async feedbackQuestionStart(el: string) {
+    const scene = GuardModuleType.ANY_QUESTIONS
+
+    return this.start(el, scene)
+  }
+
+  // MFA 初始化需要上下文
+  async mfaStart(el: string, context: any) {
+    const scene = GuardModuleType.MFA
+
+    return this.start(el, scene, context)
   }
 
   /**
