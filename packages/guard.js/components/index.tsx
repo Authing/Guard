@@ -67,7 +67,7 @@ type CodeMethod = 'S256' | 'plain'
 
 type Align = 'none' | 'left' | 'center' | 'right'
 
-interface GuardOptions {
+export interface GuardOptions {
   appId: string
   mode?: GuardMode
   defaultScene?: GuardModuleType
@@ -326,7 +326,13 @@ export class Guard {
     }, {} as GuardEvents)
 
     return ReactDOM.render(
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: this.align }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: this.align
+        }}
+      >
         <ReactAuthingGuard
           {...(evts as GuardEvents)}
           appId={this.appId}

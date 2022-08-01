@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
 
 import { Guard } from '../../../components'
+// import { Guard } from '../../../dist/esm/guard.min.js'
 
-export default function Login () {
+export default function Login() {
   const effects = async () => {
     const guard = new Guard({
       appId: '62e22721c889dd44bad1dda2',
@@ -24,7 +25,7 @@ export default function Login () {
       }, 2000)
     })
 
-    guard.on('login', (userInfo) => {
+    guard.on('login', userInfo => {
       console.log('userInfo: ', userInfo)
       // ....... 跳转
     })
