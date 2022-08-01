@@ -10,8 +10,5 @@
   ],
   "engines": {
     "node": ">=16.13.1"
-  },
-  "devDependencies": {
-    "rimraf": "^2.6.2"
   }
 }
