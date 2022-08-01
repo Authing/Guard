@@ -55,26 +55,6 @@ const guard = new Guard({
 
 ## Guard provides three login modes
 
-### Redirect mode
-
-Login by code, redirect to login page
-
-``` javascript
-guard.startWithRedirect()
-```
-
-Auto handle redirect callback
-
-``` javascript
-guard.handleRedirectCallback()
-```
-
-Logout
-
-``` javascript
-guard.logout()
-```
-
 ### Embed mode
 
 Render Guard component
@@ -95,6 +75,26 @@ guard.show()
 
 ``` javascript
 guard.hide()
+```
+
+### Redirect mode
+
+Login by code, redirect to login page
+
+``` javascript
+guard.startWithRedirect()
+```
+
+Auto handle redirect callback
+
+``` javascript
+guard.handleRedirectCallback()
+```
+
+Logout
+
+``` javascript
+guard.logout()
 ```
 
 ## Regist events

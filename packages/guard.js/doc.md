@@ -45,7 +45,7 @@ Guard 是 Authing 提供的一种轻便的认证组件，你可以把它嵌入�
 |名称|类型|默认值|必传|描述|
 |-----|----|----|----|----|
 |appId|String| - |否| appId|
-|mode|normal / modal|normal| 否 |Guard 展示模式|
+|mode|normal / modal|normal| 否 |Guard 组件展示模式|
 |defaultScene|GuardModuleType|login| 否 |组件默认渲染界面|
 |lang|zh-CN / en-US|zh-CN| 否 |语言|
 |isSSO|Boolean|true|否|是否是单点登录|
@@ -80,26 +80,6 @@ const guard = new Guard({
 
 ## Guard 提供三种登录模式
 
-### 跳转模式
-
-登录页调用 `startWithRedirect`，通过页面跳转获取 code
-
-``` javascript
-guard.startWithRedirect()
-```
-
-在回调页面执行 `handleRedirectCallback`， Guard 将自动为你处理包括 code 换 token 等各种繁琐的操作。
-
-``` javascript
-guard.handleRedirectCallback()
-```
-
-退出登录
-
-``` javascript
-guard.logout()
-```
-
 ### 嵌入模式
 
 使用 `start` 方法渲染 Guard 组件，登录完成之后可以自动获取到用户信息。
@@ -126,6 +106,26 @@ guard.show()
 
 ``` javascript
 guard.hide()
+```
+
+### 跳转模式
+
+登录页调用 `startWithRedirect`，通过页面跳转获取 code
+
+``` javascript
+guard.startWithRedirect()
+```
+
+在回调页面执行 `handleRedirectCallback`， Guard 将自动为你处理包括 code 换 token 等各种繁琐的操作。
+
+``` javascript
+guard.handleRedirectCallback()
+```
+
+退出登录
+
+``` javascript
+guard.logout()
 ```
 
 ## 事件
@@ -169,7 +169,7 @@ guard.authClient.validateToken()
 | 名称                  | 类型                                                      | 描述                                                                                                                                                                                                                              | 默认值                 |
 | :-------------------- | :-------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------- |
 | target                | String                                                    | 指定 Guard 表单的挂载点，接受 [querySelector (opens new window)](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector)能接受的所有参数或者 dom 元素，若未传入，Guard 会自动生成一个 div 标签放入 body 的最后面 | -                      |
-| mode                  | [GuardMode](#GuardMode)                | Guard 展示模式                                                                                                                                                                                                                    | normal       |
+| mode                  | [GuardMode](#GuardMode)                | Guard 组件展示模式                                                                                                                                                                                                                    | normal       |
 | title                 | String                                                    | 产品名称                                                                                                                                                                                                                          | Authing 控制台中的配置 |
 | logo                  | String                                                    | 产品 logo                                                                                                                                                                                                                         | Authing 控制台中的配置 |
 | contentCss            | String                                                    | **自定义 CSS 样式**，如果指定了，会在 DOM 的 head 中插入一个 节点。如 body {background:#6699 !important;}                                                                                                                         | -                      |
