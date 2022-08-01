@@ -2,19 +2,17 @@
   <img width="250" src="https://files.authing.co/authing-console/authing-logo-new-20210924.svg" />
 </div>
 
-<h1 align="center">Guard</h1>
-
-English | [简体中文](./README-zh_CN.md) |
-
-The Guard helps developers shield the details of the underlying authentication and tedious UI development. It enables enterprises and developers to quickly launch a secure, customizable UI unified login form.
-
 <div align="center">
   <a href="javascript:;"><img src="https://img.shields.io/badge/test-passing-brightgreen" /></a>
   <a href="https://forum.authing.cn/" target="_blank"><img src="https://img.shields.io/badge/chat-forum-blue" /></a>
   <a href="https://docs.authing.cn/v2/reference/ui-components/" target="_blank"><img src="https://img.shields.io/badge/docs-passing-brightgreen" /></a>
-  <a href="https://github.com/Authing/AuthingSSO" target="_blank"><img src="https://img.shields.io/badge/License-MIT-success" alt="License"></a>
+  <a href="javascript:;"><img src="https://img.shields.io/badge/License-MIT-success" alt="License"></a>
   <a href="javascript:;" target="_blank"><img src="https://img.shields.io/badge/node-%3E=12-green.svg" alt="Node"></a>
 </div>
+
+English | [简体中文](./README-zh_CN.md) |
+
+The Guard helps developers shield the details of the underlying authentication and tedious UI development. It enables enterprises and developers to quickly launch a secure, customizable UI unified login form.
 
 <br />
 
