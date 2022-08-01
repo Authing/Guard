@@ -2,19 +2,17 @@
   <img width="250" src="https://files.authing.co/authing-console/authing-logo-new-20210924.svg" />
 </div>
 
-<h1 align="center">Guard</h1>
-
-[English](./README.md) | 简体中文 |
-
-通用登录组件（Guard）帮助开发者屏蔽了很多底层认证的实现细节，同时也包括繁琐的 UI 开发。使得企业和开发者可以快速上线安全的、跨平台的统一登录表单。
-
 <div align="center">
   <a href="javascript:;"><img src="https://img.shields.io/badge/test-passing-brightgreen" /></a>
   <a href="https://forum.authing.cn/" target="_blank"><img src="https://img.shields.io/badge/chat-forum-blue" /></a>
   <a href="https://docs.authing.cn/v2/reference/ui-components/" target="_blank"><img src="https://img.shields.io/badge/docs-passing-brightgreen" /></a>
-  <a href="https://github.com/Authing/AuthingSSO" target="_blank"><img src="https://img.shields.io/badge/License-MIT-success" alt="License"></a>
+  <a href="javascript:;"><img src="https://img.shields.io/badge/License-MIT-success" alt="License"></a>
   <a href="javascript:;" target="_blank"><img src="https://img.shields.io/badge/node-%3E=12-green.svg" alt="Node"></a>
 </div>
+
+[English](./README.md) | 简体中文 |
+
+通用登录组件（Guard）帮助开发者屏蔽了很多底层认证的实现细节，同时也包括繁琐的 UI 开发。使得企业和开发者可以快速上线安全的、跨平台的统一登录表单。
 
 <br />
 
