@@ -251,7 +251,6 @@ guard.authClient.validateToken()
 |---- |----|----------|----|
 |appId|String|是|应用 ID|
 |appHost|String|否|应用完整域名，如 https://sample-app.authing.cn，不带最后的斜线 '/'|
-|appHost|String|否|应用完整域名，如 https://sample-app.authing.cn，不带最后的斜线 '/'|
 |tenantId|String|否|租户 ID|
 |lang| zh-CN / en-US |否|语言|
 |secret|String|否|应用密钥|
