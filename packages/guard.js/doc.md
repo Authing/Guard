@@ -42,19 +42,21 @@ Guard 是 Authing 提供的一种轻便的认证组件，你可以把它嵌入�
 
 ## 初始化 Guard
 
-|Key|Type|Default|Requires
-|-----|----|----|----|
-|appId|String|''|Y|
-|mode|normal / modal|normal|N|
-|defaultScene|GuardModuleType|login|N|
-|lang|zh-CN / en-US|zh-CN|N|
-|isSSO|Boolean|true|N|
-|host|String|''|N|
-|scope|String|''|N|
-|redirectUri|String|''|N|
-|state|String|''|N|
+|名称|类型|默认值|必传|描述|
+|-----|----|----|----|----|
+|appId|String| - |否| appId|
+|mode|normal / modal|normal| 否 |Guard 展示模式|
+|defaultScene|GuardModuleType|login| 否 |组件默认渲染界面|
+|lang|zh-CN / en-US|zh-CN| 否 |语言|
+|isSSO|Boolean|true|否|是否是单点登录|
+|host|String| - |否|私有部署时的 API 请求地址，可在 Console 控制台配置|
+|scope|String| - |否|OIDC scope|
+|redirectUri|String| - |否|回调地址，可在 Console 控制台配置|
+|state|String| - |否|OIDC 状态|
 
-使用以上参数实例化 Guard，您就可以体验 Guard 最基本的登录、注册等功能，如果想拥有 Guard 的完整能力，还可以传入参数： 
+使用以上参数实例化 Guard，您可以体验 Guard 最基本的登录、注册等功能。
+
+如果想拥有 Guard 的完整能力，还可以配置 config 和 authClientOptions（相同参数以上表格中的值优先级更高）： 
 
 - [config](#config)
 
