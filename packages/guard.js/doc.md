@@ -265,5 +265,3 @@ guard.authClient.validateToken()
 |publicKey|String|否|密码传输加密公钥|
 |privateKeys|PrivateKey[]|否|用于解密 Token 的私钥|
 |onError|(code: number, message: string, data?: any): void|否|错误回调函数|
-
-

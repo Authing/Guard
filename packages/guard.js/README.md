@@ -26,15 +26,15 @@ From npm:
 
 |Key|Type|Default|Requires
 |-----|----|----|----|
-|appId|String|''|Y|
+|appId|String| - |Y|
 |mode|normal / modal|normal|N|
 |defaultScene|GuardModuleType|login|N|
 |lang|zh-CN / en-US|zh-CN|N|
 |isSSO|Boolean|true|N|
-|host|String|''|N|
-|scope|String|''|N|
-|redirectUri|String|''|N|
-|state|String|''|N|
+|host|String| - |N|
+|scope|String| - |N|
+|redirectUri|String| - |N|
+|state|String| - |N|
 
 
 ``` javascript
