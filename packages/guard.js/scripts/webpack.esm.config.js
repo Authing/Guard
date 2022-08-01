@@ -38,7 +38,7 @@ module.exports = {
   plugins: [
     new NpmDtsPlugin({
       output: resolve('dist/guard.d.ts'),
-      entry: resolve('components/guard.tsx')
+      entry: resolve('components/index.tsx')
     }),
     new MiniCssExtractPlugin({
       filename: 'guard.css'
