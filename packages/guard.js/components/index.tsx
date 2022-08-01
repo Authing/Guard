@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+import { createRoot } from "react-dom/client";
+
 import {
   Guard as ReactAuthingGuard,
   GuardMode,
@@ -318,7 +320,9 @@ export class Guard {
       })
     }, {} as GuardEvents)
 
-    return ReactDOM.render(
+    const root = createRoot(Guard.getGuardContainer(this.el) as HTMLElement)
+
+    return root.render(
       <ReactAuthingGuard
         {...(evts as GuardEvents)}
         appId={this.appId}
@@ -326,9 +330,7 @@ export class Guard {
         config={this.config}
         visible={this.visible}
         authClient={this.authClient}
-      />,
-      Guard.getGuardContainer(this.el),
-      cb
+      />
     )
   }
 

@@ -16,8 +16,8 @@
   "author": "https://github.com/authing",
   "license": "ISC",
   "devDependencies": {
-    "@types/react": "^16.9.53",
-    "@types/react-dom": "^16.9.8",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
     "ali-oss": "^6.16.0",
@@ -36,8 +36,8 @@
     "@authing/react-ui-components": "^3.1.31",
     "authing-js-sdk": "^4.23.32",
     "axios": "^0.27.2",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0"
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   },
   "gitHead": "9af228deb3881c797c6c9b89ea7c9283e51bf417"
 }
