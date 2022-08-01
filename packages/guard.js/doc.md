@@ -14,15 +14,15 @@ Guard 是 Authing 提供的一种轻便的认证组件，你可以把它嵌入�
 - 填写`应用名称`和`认证地址`、选择`单页 Web 应用`
 - 点击创建
 
-![image](./1.png)
+<img src="./1.png" width="650" />
 
 第二步：在`认证配置`处填写`登录回调 URL`和`登出回调 URL`
 
-![image](./2.png)
+<img src="./2.png" width="650" />
 
 第三步：换取 token 身份验证方式选择 `none`
 
-![image](./3.png)
+<img src="./3.png" width="650" />
 
 第四步：保存当前配置。
 
@@ -126,7 +126,7 @@ guard.show()
 guard.hide()
 ```
 
-## 注册事件
+## 事件
 
 使用 Guard 提供的 `on` 方法可以方便的注册一些实用的事件
 
