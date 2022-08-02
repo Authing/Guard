@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
+import { Guard } from '@authing/guard'
 
-import { Guard } from '../../../components'
-
-export default function Login () {
+// import "@authing/guard/css"
+export default function Login() {
   const effects = async () => {
     const guard = new Guard({
       appId: '62e752f0d8c681db4ed3f743',
