@@ -26,15 +26,15 @@ From npm:
 
 |Key|Type|Default|Requires
 |-----|----|----|----|
-|appId|String|''|Y|
+|appId|String| - |Y|
 |mode|normal / modal|normal|N|
 |defaultScene|GuardModuleType|login|N|
 |lang|zh-CN / en-US|zh-CN|N|
 |isSSO|Boolean|true|N|
-|host|String|''|N|
-|scope|String|''|N|
-|redirectUri|String|''|N|
-|state|String|''|N|
+|host|String| - |N|
+|scope|String| - |N|
+|redirectUri|String| - |N|
+|state|String| - |N|
 
 
 ``` javascript
@@ -53,7 +53,29 @@ const guard = new Guard({
 })
 ```
 
-## APIs
+## Guard provides three login modes
+
+### Embed mode
+
+Render Guard component
+
+``` javascript
+guard.start('#root').then(userInfo => {
+  console.log(userInfo)
+})
+```
+
+### modal mode
+
+When the parameter 'mode' of Guard instantiation is' modal ', the modal mode is started, and the following API can be used to display and hide the guard.
+
+``` javascript
+guard.show()
+```
+
+``` javascript
+guard.hide()
+```
 
 ### Redirect mode
 
@@ -75,17 +97,7 @@ Logout
 guard.logout()
 ```
 
-### Embed mode
-
-Render Guard component
-
-``` javascript
-guard.start('#root').then(userInfo => {
-  console.log(userInfo)
-})
-```
-
-Regist events
+## Regist events
 
 ``` javascript
 guard.on('load', e => {
@@ -99,7 +111,7 @@ guard.on('login', userInfo => {
 // ......
 ```
 
-### Integrate authing js sdk instance
+## Integrate authing js sdk instance
 
 Guard integrated AuthenticationClient, so you can use `guard.authClient` to access all apis of AuthenticationClient, etc:
 

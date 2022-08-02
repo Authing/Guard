@@ -1,6 +1,6 @@
 {
-  "name": "guard.js",
-  "version": "5.0.0-alpha.2",
+  "name": "@authing/guard",
+  "version": "5.0.0-alpha.3",
   "description": "Guard for JS",
   "module": "dist/esm/guard.min.js",
   "types": "dist/guard.d.ts",
@@ -10,8 +10,8 @@
   "scripts": {
     "prepack": "npm ci",
     "build": "node scripts/build.js",
-    "lint": "eslint --ext .tsx components/**.tsx",
-    "lint:fix": "eslint --fix --ext .tsx components/**.tsx"
+    "lint": "eslint --ext .tsx,.ts components/**",
+    "lint:fix": "eslint --fix --ext .tsx,.ts components/**"
   },
   "author": "https://github.com/authing",
   "license": "ISC",

@@ -69,7 +69,7 @@ type Align = 'none' | 'left' | 'center' | 'right'
 
 export interface GuardOptions {
   appId: string
-  mode?: GuardMode
+  mode?: 'normal' | 'modal'
   defaultScene?: GuardModuleType
   tenantId?: string
   lang?: Lang
@@ -364,7 +364,7 @@ export class Guard {
     this.render()
   }
 
-  unmountComponent() {
+  unmount() {
     const node = Guard.getGuardContainer(this.el)
 
     if (node) {
