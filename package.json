@@ -1,5 +1,6 @@
 {
   "name": "root",
+  "private": true,
   "scripts": {
     "link": "lerna link",
     "publish:official": "lerna publish from-package --yes",
