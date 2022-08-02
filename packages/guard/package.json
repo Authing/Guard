@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard",
-  "version": "5.0.0-alpha.2",
+  "version": "5.0.0-alpha.3",
   "description": "Guard for JS",
   "module": "dist/esm/guard.min.js",
   "types": "dist/guard.d.ts",
