@@ -1,5 +1,5 @@
 {
-  "name": "react-guard",
+  "name": "@authing/react-guard",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,14 +13,20 @@
   "license": "ISC",
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.3.0",
-    "rollup": "^2.77.2",
-    "rollup-plugin-typescript2": "^0.32.1",
+    "@types/lodash": "^4.14.182",
+    "@types/react": "^17",
+    "@types/react-dom": "^17",
+    "postcss": "^8.4.14",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
-    "@types/react": "^18.0.15",
-    "@types/react-dom": "^16.9.16"
+    "rollup": "^2.77.2",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-typescript2": "^0.32.1"
   },
   "dependencies": {
-    "guard.js": "^5.0.0-alpha.2"
+    "@authing/guard": "^5.0.0-alpha.3",
+    "lodash": "^4.17.21",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   }
 }

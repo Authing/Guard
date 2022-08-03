@@ -1,8 +1,10 @@
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript2';
+import css from 'rollup-plugin-postcss';
 
 export default {
   input: './components/index.ts',
+  sourcemap: true,
   output: [
     {
       file: 'dist/guard.cjs.js',
@@ -22,5 +24,6 @@ export default {
     nodeResolve({
       browser: true,
     }),
+    css(),
   ],
 };

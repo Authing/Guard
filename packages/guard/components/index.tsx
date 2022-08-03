@@ -168,7 +168,7 @@ export class Guard {
    * @param el String
    * @returns Promise
    */
-  async start(el: string) {
+  async start(el?: string) {
     this.el = el
 
     this.render()
@@ -303,7 +303,7 @@ export class Guard {
     return this.authClient.refreshToken()
   }
 
-  private render(cb?: () => void) {
+  render(cb?: () => void) {
     const evts: GuardEvents = Object.entries(
       GuardEventsCamelToKebabMapping
     ).reduce((acc, [reactEvt, nativeEvt]) => {
@@ -365,7 +365,7 @@ export class Guard {
   }
 
   unmount() {
-    const node = Guard.getGuardContainer(this.el)
+    const node = Guard.getGuardContainer(this.config?.target)
 
     if (node) {
       ReactDOM.unmountComponentAtNode(node)

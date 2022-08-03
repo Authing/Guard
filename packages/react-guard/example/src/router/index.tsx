@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Callback from '../pages/Callback';
+import Jump from '../pages/Jump';
 
 export default function RouterComponent() {
   return (
@@ -15,6 +16,9 @@ export default function RouterComponent() {
         </Route>
         <Route exact path="/login">
           <Login />
+        </Route>
+        <Route exact path="/jump">
+          <Jump />
         </Route>
         <Route exact path="/callback">
           <Callback />

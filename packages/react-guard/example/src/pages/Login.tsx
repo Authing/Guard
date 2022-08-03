@@ -1,14 +1,11 @@
-import React from 'react';
-import { useGuard } from 'react-guard';
+import React, { useEffect, useState } from 'react';
+import { useAuthing } from '@authing/react-guard';
 
 export default function Login() {
-  const [guard] = useGuard({
-    appId: '62e22721c889dd44bad1dda2',
-    host: 'https://guard-test-2022.authing.cn',
-    redirectUri: 'http://localhost:3000/callback',
-  });
+  const guard = useAuthing();
 
-  guard.start('#root');
-
-  return <div>this is login Page</div>;
+  useEffect(() => {
+    guard && guard.start();
+  }, []);
+  return <div id="guard">this is login Page</div>;
 }
