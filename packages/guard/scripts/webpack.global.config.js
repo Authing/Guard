@@ -7,7 +7,7 @@ function resolve (dir, file = '') {
 
 module.exports = {
   mode: 'production',
-  devtool: 'cheap-source-map',
+  devtool: 'source-map',
   entry: resolve('components/index.tsx'),
   output: {
     filename: 'guard.min.js',

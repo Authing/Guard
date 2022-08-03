@@ -1,5 +1,4 @@
 const path = require('path')
-const NpmDtsPlugin = require('npm-dts-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 function resolve (dir, file = '') {
@@ -36,10 +35,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new NpmDtsPlugin({
-      output: resolve('dist/guard.d.ts'),
-      entry: resolve('components/index.tsx')
-    }),
     new MiniCssExtractPlugin({
       filename: 'guard.css'
     })
