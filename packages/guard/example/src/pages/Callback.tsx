@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
-import { Guard } from '../../../components'
+import { Guard } from '@authing/guard'
+import "@authing/guard/dist/guard.css"
 
-export default function Callback () {
+export default function Callback() {
   const history = useHistory()
 
   const handleCallback = async () => {
@@ -12,7 +13,7 @@ export default function Callback () {
       host: 'https://test0123456.authing.cn',
       redirectUri: 'http://localhost:3000/callback'
     })
-    
+
     await guard.handleRedirectCallback()
     history.push('/personal')
   }

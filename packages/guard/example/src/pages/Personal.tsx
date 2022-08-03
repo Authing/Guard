@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
+import { Guard } from '@authing/guard'
 
-import { Guard } from '../../../components'
-
-export default function Personal () {
+export default function Personal() {
   const [userInfo, setUserInfo] = useState('')
 
   const guard = new Guard({
@@ -10,7 +9,7 @@ export default function Personal () {
     host: 'https://test0123456.authing.cn',
     redirectUri: 'http://localhost:3000/callback'
   })
-  
+
   guard.trackSession().then(res => {
     console.log('trackSession res: ', res)
     setUserInfo(JSON.stringify(res, null, 2))
