@@ -15,8 +15,6 @@
     "@types/react-router-dom": "^5.3.3",
     "css-loader": "^2.1.1",
     "html-webpack-plugin": "^3.2.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "style-loader": "^0.23.1",
     "ts-loader": "^8.4.0",
     "webpack": "^4.30.0",
@@ -25,6 +23,8 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2"
   }

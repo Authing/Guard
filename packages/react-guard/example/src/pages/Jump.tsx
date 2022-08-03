@@ -1,10 +1,10 @@
-import React from 'react';
-import { useAuthing } from 'react-guard';
+import React from 'react'
+import { useAuthing } from 'react-guard'
 
 export default function Jump() {
-  const guard = useAuthing();
+  const guard = useAuthing()
 
-  const onLogin = () => guard && guard.startWithRedirect();
+  const onLogin = () => guard.startWithRedirect()
 
   return (
     <div>
@@ -12,5 +12,5 @@ export default function Jump() {
         <button onClick={onLogin}>登录</button>
       </div>
     </div>
-  );
+  )
 }

@@ -63,9 +63,9 @@ Guard 是 Authing 提供的一种轻便的认证组件，你可以把它嵌入�
 - [authClientOptions](#authClientOptions)
 
 ```javascript
-import { ReactGuard, useAuthing } from '@authing/react-guard';
+import { ReactGuard, useAuthing } from '@authing/react-guard'
 
-const root = createRoot(document.getElementById('root'));
+const root = createRoot(document.getElementById('root'))
 
 root.render(
   <ReactGuard
@@ -81,13 +81,34 @@ root.render(
     introspectionEndPointAuthMethod="none"
     // 挂载元素
     config={{
-      target: '#guard',
+      target: '#guard'
     }}
   >
     <App />
   </ReactGuard>
-);
+)
 ```
+
+## 获取 Guard 实例
+
+你可以在你的业务代码中使用 `useAuthing` 获取 `Guard` 实例从而进行任意操作。
+
+```js
+import React from 'react'
+import { useAuthing } from '@authing/react-guard'
+
+const Component = () => {
+  const guard = useAuthing()
+
+  useEffect(() => {
+    guard.start('#guard').then(userInfo => console.log(userInfo))
+  }, [])
+
+  return <div id="guard">Hello Guard !</div>
+}
+```
+
+> 使用 `useAuthing` 前，请务必使用 ReactGuard 包裹您的项目根组件。
 
 ## Guard 提供三种登录模式
 
@@ -96,46 +117,15 @@ root.render(
 使用 `start` 方法渲染 Guard 组件，登录完成之后可以自动获取到用户信息。
 
 ```javascript
-import React from 'react';
-import { useAuthing } from '@authing/react-guard';
-
-const Component = () => {
-  const guard = useAuthing();
-
-  useEffect(() => {
-    guard.start('#guard').then((userInfo) => console.log(userInfo));
-  }, []);
-
-  return <div id="guard">Hello Guard !</div>;
-};
+guard.start('#root').then(userInfo => {
+  console.log(userInfo)
+})
 ```
 
 使用 `unmount` 卸载 Guard 组件
 
 ```javascript
-import React from 'react';
-import { useAuthing } from '@authing/react-guard';
-
-const Component = () => {
-  const guard = useAuthing();
-
-  const unInstall = () => {
-    if (guard) {
-      guard.unmount();
-    }
-  };
-
-  useEffect(() => {
-    guard.start('#guard');
-  }, []);
-
-  return (
-    <div id="guard">
-      Hello Guard !
-    </div>
-    <button onClick={unInstall}>卸载 Guard</button>
-  );
-};
+guard.unmount()
 ```
 
 ### 窗口模式
@@ -143,29 +133,11 @@ const Component = () => {
 当 Guard 实例化时的参数 `mode` 为 `modal` 时，启动窗口模式，可使用以下 API 操作 Guard 窗口的展示和隐藏。
 
 ```javascript
-import React from 'react';
-import { useAuthing } from '@authing/react-guard';
-
-const Component = () => {
-  const guard = useAuthing();
-
-  const openGuard = () => {
-    if (guard) {
-      guard.show();
-    }
-  };
-
-  return (
-    <div id="guard">
-      Hello Guard !
-    </div>
-    <button onClick={openGuard}>打开弹窗</button>
-  );
-};
+guard.show()
 ```
 
 ```javascript
-guard.hide();
+guard.hide()
 ```
 
 ### 跳转模式
@@ -173,19 +145,19 @@ guard.hide();
 登录页调用 `startWithRedirect`，通过页面跳转获取 code
 
 ```javascript
-guard.startWithRedirect();
+guard.startWithRedirect()
 ```
 
 在回调页面执行 `handleRedirectCallback`， Guard 将自动为你处理包括 code 换 token 等各种繁琐的操作。
 
 ```javascript
-guard.handleRedirectCallback();
+guard.handleRedirectCallback()
 ```
 
 退出登录
 
 ```javascript
-guard.logout();
+guard.logout()
 ```
 
 ## 事件
@@ -194,8 +166,8 @@ guard.logout();
 
 ```javascript
 guard.on('event-name', () => {
-  console.log('........');
-});
+  console.log('........')
+})
 ```
 
 常用事件列表：
@@ -215,8 +187,8 @@ guard.on('event-name', () => {
 Guard 集成了 AuthenticationClient, 可使用 `guard.authClient` 调用 AuthenticationClient 的所有方法。
 
 ```javascript
-guard.authClient.registerByEmail();
-guard.authClient.validateToken();
+guard.authClient.registerByEmail()
+guard.authClient.validateToken()
 // ....
 ```
 

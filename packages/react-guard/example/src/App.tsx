@@ -1,7 +1,7 @@
-import React from 'react';
-import { ReactGuard } from '@authing/react-guard';
+import React from 'react'
+import { ReactGuard } from '@authing/react-guard'
 
-import RouterComponent from './router';
+import RouterComponent from './router'
 
 function App() {
   return (
@@ -10,12 +10,12 @@ function App() {
       host="https://test0123456.authing.cn"
       redirectUri="http://localhost:3000/callback"
       config={{
-        target: '#guard',
+        target: '#guard'
       }}
     >
       <RouterComponent></RouterComponent>
     </ReactGuard>
-  );
+  )
 }
 
-export default App;
+export default App
