@@ -24,7 +24,7 @@ export default function Login() {
       }, 2000)
     })
 
-    guard.on('login', (userInfo) => {
+    guard.on('login', userInfo => {
       console.log('userInfo: ', userInfo)
       // ....... 跳转
     })

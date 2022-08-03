@@ -1,7 +1,6 @@
 import React from 'react'
 import { Guard } from '@authing/guard'
 
-
 export default function Jump() {
   const guard = new Guard({
     appId: '62e752f0d8c681db4ed3f743',
@@ -11,7 +10,11 @@ export default function Jump() {
 
   const onLogin = () => guard.startWithRedirect()
 
-  return <div>
-    <div><button onClick={onLogin}>登录</button></div>
-  </div>
+  return (
+    <div>
+      <div>
+        <button onClick={onLogin}>登录</button>
+      </div>
+    </div>
+  )
 }
