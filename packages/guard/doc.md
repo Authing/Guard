@@ -44,7 +44,7 @@ Guard 是 Authing 提供的一种轻便的认证组件，你可以把它嵌入�
 
 |名称|类型|默认值|必传|描述|
 |-----|----|----|----|----|
-|appId|String| - |否| appId|
+|appId|String| - |是| appId|
 |mode|normal / modal|normal| 否 |Guard 组件展示模式|
 |defaultScene|GuardModuleType|login| 否 |组件默认渲染界面|
 |lang|zh-CN / en-US|zh-CN| 否 |语言|
