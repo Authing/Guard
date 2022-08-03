@@ -1,7 +1,7 @@
 {
-  "name": "@authing/guard",
+  "name": "@authing/guard-vue2",
   "version": "5.0.0-alpha.3",
-  "description": "Guard for JS",
+  "description": "Guard for Vue2",
   "module": "dist/esm/guard.min.js",
   "types": "dist/typings/index.d.ts",
   "files": [
@@ -10,14 +10,12 @@
   "scripts": {
     "prepack": "npm ci",
     "build": "node scripts/build.js",
-    "lint": "eslint --ext .tsx,.ts components/**",
-    "lint:fix": "eslint --fix --ext .tsx,.ts components/**"
+    "lint": "eslint --ext .ts components/**",
+    "lint:fix": "eslint --fix --ext .ts components/**"
   },
   "author": "https://github.com/authing",
   "license": "ISC",
   "devDependencies": {
-    "@types/react": "^16.9.53",
-    "@types/react-dom": "^16.9.8",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
     "ali-oss": "^6.16.0",
@@ -33,10 +31,8 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
-    "@authing/react-ui-components": "^3.1.31",
+    "@authing/guard": "^5.0.0-alpha.3",
     "authing-js-sdk": "^4.23.32",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0"
-  },
-  "gitHead": "9af228deb3881c797c6c9b89ea7c9283e51bf417"
+    "vue": "^2.6.10"
+  }
 }

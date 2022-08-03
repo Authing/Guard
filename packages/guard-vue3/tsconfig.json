@@ -4,8 +4,7 @@
     "outDir": "dist",
     "target": "es5",
     "lib": [
-      "dom",
-      "esnext"
+      "dom"
     ],
     "allowJs": false,
     "skipLibCheck": true,
@@ -20,11 +19,9 @@
     "declaration": true,
     "declarationDir": "./dist/typings",
     "noEmit": false,
-    "jsx": "react",
     "downlevelIteration": true
   },
   "include": [
-    "src/**/*.tsx",
     "src/**/*.ts"
   ],
   "exclude": [

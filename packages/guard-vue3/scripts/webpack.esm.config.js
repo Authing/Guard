@@ -7,7 +7,7 @@ function resolve (dir, file = '') {
 
 module.exports = {
   mode: 'production',
-  entry: resolve('src/index.tsx'),
+  entry: resolve('src/index.ts'),
   output: {
     filename: 'guard.min.js',
     path: resolve('dist/esm'),
@@ -17,6 +17,9 @@ module.exports = {
   },
   experiments: {
     outputModule: true
+  },
+  externals: {
+    'vue': 'vue'
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js']

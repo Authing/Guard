@@ -7,16 +7,15 @@ function resolve (dir, file = '') {
 
 module.exports = {
   mode: 'production',
-  entry: resolve('src/index.tsx'),
+  devtool: 'source-map',
+  entry: resolve('src/index.ts'),
   output: {
     filename: 'guard.min.js',
-    path: resolve('dist/esm'),
+    path: resolve('dist/global'),
     library: {
-      type: 'module'
+      name: 'GuardFactory',
+      type: 'global'
     }
-  },
-  experiments: {
-    outputModule: true
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js']
