@@ -11,6 +11,4 @@ const useGuard = (options: GuardOptions): Guard => {
   return instance.current
 }
 
-export {
-  useGuard
-}
+export { useGuard }
