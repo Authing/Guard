@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard-react",
-  "version": "1.0.0",
+  "version": "5.0.0-alpha.4",
   "description": "",
   "main": "dist/index.min.js",
   "module": "dist/index.esm.js",
@@ -14,7 +14,10 @@
   "buildOptions": {
     "name": "GuardFactory"
   },
-  "keywords": ["react", "authing"],
+  "keywords": [
+    "react",
+    "authing"
+  ],
   "files": [
     "dist"
   ],
@@ -39,6 +42,6 @@
     "signale": "^1.4.0"
   },
   "dependencies": {
-    "@authing/guard": "^5.0.0-alpha.3"
+    "@authing/guard": "^5.0.0-alpha.4"
   }
 }
