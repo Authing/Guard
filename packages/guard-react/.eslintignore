@@ -1,0 +1,6 @@
+dist/**/*
+scripts/**/*
+node_module/**/*
+example/**/*
+*.config.js
+.eslintrc.js

@@ -7,11 +7,16 @@
 </template>
 
 <script scoped setup>
+import { useRouter } from 'vue-router'
 import { useAuthing } from '../../../dist/esm/guard.min.js'
 
+const router = useRouter()
 const $authing = useAuthing()
 
 const message = 'This is home page ~~'
+const toLogin = () => router.push({
+  path: '/login'
+})
 
 $authing.guard.start('#home-container')
 

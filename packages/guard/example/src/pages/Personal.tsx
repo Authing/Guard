@@ -10,7 +10,7 @@ export default function Personal () {
     host: 'https://test0123456.authing.cn',
     redirectUri: 'http://localhost:3000/callback'
   })
-  
+
   guard.trackSession().then(res => {
     console.log('trackSession res: ', res)
     setUserInfo(JSON.stringify(res, null, 2))
