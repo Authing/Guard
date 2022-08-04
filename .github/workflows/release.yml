@@ -55,7 +55,6 @@ jobs:
       - name: build
         run: |
           npm run build:guard
-          lerna clean
           lerna link
           lerna run build
 
