@@ -44,6 +44,6 @@
     "signale": "^1.4.0"
   },
   "dependencies": {
-    "@authing/guard": "^5.0.0-alpha.5"
+    "@authing/guard": "^5.0.0-alpha.3"
   }
 }

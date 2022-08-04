@@ -34,6 +34,6 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
-    "@authing/guard": "^5.0.0-alpha.5"
+    "@authing/guard": "^5.0.0-alpha.3"
   }
 }
