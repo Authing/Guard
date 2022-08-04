@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard-react",
-  "version": "5.0.0-alpha.4",
+  "version": "5.0.0-alpha.3",
   "description": "",
   "main": "dist/index.min.js",
   "module": "dist/index.esm.js",

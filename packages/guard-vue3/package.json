@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard-vue3",
-  "version": "5.0.0-alpha.4",
+  "version": "5.0.0-alpha.3",
   "description": "Guard for Vue3",
   "module": "dist/esm/guard.min.js",
   "types": "dist/typings/index.d.ts",
