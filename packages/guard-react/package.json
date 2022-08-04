@@ -6,7 +6,7 @@
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "prepack": "npm ci",
+    "autoinstall": "npm ci",
     "build": "node ./scripts/build.js",
     "build:ts": "npx tsc -p ./tsconfig.json",
     "build:dev": "node ./scripts/dev.js --target=esm"
@@ -42,6 +42,6 @@
     "signale": "^1.4.0"
   },
   "dependencies": {
-    "@authing/guard": "^5.0.0-alpha.4"
+    "@authing/guard": "5.0.0-alpha.3"
   }
 }

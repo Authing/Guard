@@ -46,7 +46,7 @@ jobs:
           
       - name: install packages
         run: |
-          lerna run prepack
+          lerna run autoinstall
           lerna link
 
       #- name: lint codes

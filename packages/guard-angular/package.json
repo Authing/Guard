@@ -8,7 +8,7 @@
     "dist"
   ],
   "scripts": {
-    "prepack": "npm ci",
+    "autoinstall": "npm ci",
     "build": "node scripts/build.js",
     "lint": "eslint --ext .ts components/**",
     "lint:fix": "eslint --fix --ext .ts components/**"
@@ -32,6 +32,6 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
-    "@authing/guard": "^5.0.0-alpha.4"
+    "@authing/guard": "5.0.0-alpha.3"
   }
 }

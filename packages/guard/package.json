@@ -8,7 +8,7 @@
     "dist"
   ],
   "scripts": {
-    "prepack": "npm ci",
+    "autoinstall": "npm ci",
     "lint": "eslint --ext .tsx,.ts src/**",
     "lint:fix": "eslint --fix --ext .tsx,.ts src/**",
     "build": "node scripts/build.js",
