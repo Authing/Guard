@@ -8,7 +8,7 @@
 
 <script scoped setup>
 import { useRouter } from 'vue-router'
-import { useAuthing } from '../../../dist/esm/guard.min.js'
+import { useAuthing } from '@authing/guard-vue3'
 
 const router = useRouter()
 const $authing = useAuthing()

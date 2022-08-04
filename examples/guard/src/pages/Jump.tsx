@@ -1,5 +1,5 @@
 import React from 'react'
-import { Guard } from '../../../../packages/guard/src'
+import { Guard } from '@authing/guard'
 
 export default function Jump() {
   const guard = new Guard({

@@ -2,9 +2,9 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 
-import { AuthingPlugin } from '../../dist/esm/guard.min.js'
+import { AuthingPlugin } from '@authing/guard-vue2'
 
-import '../../dist/esm/guard.min.css'
+import '@authing/guard-vue2/dist/esm/guard.min.css'
 
 Vue.use(AuthingPlugin, {
   appId: '62e752f0d8c681db4ed3f743',

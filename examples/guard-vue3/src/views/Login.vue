@@ -15,7 +15,7 @@
 <script setup scoped>
 import { ref, onMounted } from 'vue'
 
-import { useAuthing } from '../../../dist/esm/guard.min.js'
+import { useAuthing } from '@authing/guard-vue3'
 
 const $authing = useAuthing()
 const userInfo = ref('')

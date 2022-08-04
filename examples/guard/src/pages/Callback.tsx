@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
-import { Guard } from '../../../../packages/guard/src'
+import { Guard } from '@authing/guard'
 
 export default function Callback() {
   const history = useHistory()

@@ -4,9 +4,9 @@ import router from './router'
 
 import './assets/main.css'
 
-import { createAuthing } from '../../dist/esm/guard.min.js'
+import { createAuthing } from '@authing/guard-vue3'
 
-import '../../dist/esm/guard.min.css'
+import '@authing/guard-vue3/dist/esm/guard.min.css'
 
 const app = createApp(App)
 
