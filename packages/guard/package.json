@@ -2,24 +2,17 @@
   "name": "@authing/guard",
   "version": "5.0.0-alpha.3",
   "description": "Guard for JS",
-  "main": "dist/guard.min.js",
   "module": "dist/esm/guard.min.js",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "browser": "./dist/guard.esm.js",
-      "default": "./dist/guard.min.js"
-    },
-    "./css": "./dist/guard.css"
-  },
+  "types": "dist/typings/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
     "prepack": "npm ci",
-    "lint": "eslint --ext .tsx,.ts components/**",
-    "lint:fix": "eslint --fix --ext .tsx,.ts components/**",
-    "build": "npx rollup  --config scripts/rollup.config.js ",
+    "lint": "eslint --ext .tsx,.ts src/**",
+    "lint:fix": "eslint --fix --ext .tsx,.ts src/**",
+    "build": "node scripts/build.js",
+    "build:rollup": "npx rollup  --config scripts/rollup.config.js ",
     "build:watch": "npx rollup  -w --config scripts/rollup.config.js "
   },
   "author": "https://github.com/authing",

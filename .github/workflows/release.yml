@@ -47,10 +47,11 @@ jobs:
       - name: install packages
         run: |
           lerna run prepack
+          lerna link
 
-      - name: lint codes
-        run: |
-          lerna run lint
+      #- name: lint codes
+      #  run: |
+      #    lerna run lint
 
       - name: build
         run: |

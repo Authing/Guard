@@ -32,7 +32,6 @@
   },
   "dependencies": {
     "@authing/guard": "^5.0.0-alpha.3",
-    "authing-js-sdk": "^4.23.32",
     "vue": "^2.6.10"
   }
 }

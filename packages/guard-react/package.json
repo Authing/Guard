@@ -1,11 +1,12 @@
 {
-  "name": "@authing/react-guard",
+  "name": "@authing/guard-react",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.min.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "prepack": "npm ci",
     "build": "node ./scripts/build.js",
     "build:ts": "npx tsc -p ./tsconfig.json",
     "build:dev": "node ./scripts/dev.js --target=esm"
