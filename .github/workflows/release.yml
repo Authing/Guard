@@ -61,16 +61,16 @@ jobs:
         run: |
           lerna version $VERSION --yes
           
-      - name: publish official
+      - name: release official
         if: ${{ github.ref_name == 'master' }}
         run: |
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
-          npm run publish:official
-          echo "publish:official successfully 🚀"
+          lerna run release:official
+          echo "release:official successfully 🚀"
           
-      - name: publish alpha
+      - name: release alpha
         if: ${{ github.ref_name != 'master' }}
         run: |
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
-          npm run publish:alpha
-          echo "publish:alpha successfully 🚀"
+          lerna run release:alpha
+          echo "release:alpha successfully 🚀"
