@@ -1,4 +1,4 @@
-import '@authing/guard/dist/esm/guard.css'
+import '@authing/guard/css'
 import React from 'react'
 import GuardContext from './context/GuardContext'
 import { GuardOptions } from '@authing/guard'

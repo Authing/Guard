@@ -2,7 +2,7 @@
   "name": "@authing/react-guard",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.min.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -11,9 +11,12 @@
     "build:dev": "node ./scripts/dev.js --target=esm"
   },
   "buildOptions": {
-    "name": "ReactGuard"
+    "name": "GuardFactory"
   },
-  "keywords": [],
+  "keywords": ["react", "authing"],
+  "files": [
+    "dist"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -35,7 +38,6 @@
     "signale": "^1.4.0"
   },
   "dependencies": {
-    "@authing/guard": "^5.0.0-alpha.3",
-    "lodash": "^4.17.21"
+    "@authing/guard": "^5.0.0-alpha.3"
   }
 }

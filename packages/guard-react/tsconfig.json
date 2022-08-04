@@ -21,7 +21,8 @@
     "declaration": true,
     "noEmit": false,
     "jsx": "react",
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "emitDeclarationOnly": true
   },
   "include": [
     "components/**/*.tsx",

@@ -1,5 +1,6 @@
 import React from 'react'
 import { ReactGuard } from '@authing/react-guard'
+import '@authing/react-guard/dist/index.esm.css'
 
 import RouterComponent from './router'
 

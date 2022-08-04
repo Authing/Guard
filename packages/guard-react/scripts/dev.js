@@ -31,7 +31,9 @@ function buildJs() {
     format: target,
     globalName: pkg.buildOptions?.name,
     platform: 'browser',
-    plugins: undefined,
+    plugins: [
+      // TODO:CSS 插件解决路径命名问题
+    ],
     define: {
       __VERSION__: `"${pkg.version}"`
     },
