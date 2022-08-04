@@ -3,8 +3,7 @@
   "private": true,
   "scripts": {
     "link": "lerna link",
-    "publish:official": "lerna publish from-git --yes",
-    "publish:alpha": "lerna publish from-git --canary --yes --pre-dist-tag alpha --preid alpha"
+    "build:guard": "cd packages/guard && npm run autoinstall && npm run build"
   },
   "workspaces": [
     "packages/*"

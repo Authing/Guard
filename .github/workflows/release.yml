@@ -47,7 +47,6 @@ jobs:
       - name: install packages
         run: |
           lerna run autoinstall
-          lerna link
 
       #- name: lint codes
       #  run: |
@@ -55,9 +54,12 @@ jobs:
 
       - name: build
         run: |
+          npm run build:guard
+          lerna clean
+          lerna link
           lerna run build
 
-      - name: release version
+      - name: update version
         run: |
           lerna version $VERSION --yes
           
