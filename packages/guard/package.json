@@ -18,7 +18,8 @@
     "prepack": "npm ci",
     "lint": "eslint --ext .tsx,.ts components/**",
     "lint:fix": "eslint --fix --ext .tsx,.ts components/**",
-    "build": "npx rollup  --config scripts/rollup.config.js ",
+    "build": "node scripts/build.js",
+    "build:rollup": "npx rollup  --config scripts/rollup.config.js ",
     "build:watch": "npx rollup  -w --config scripts/rollup.config.js "
   },
   "author": "https://github.com/authing",
