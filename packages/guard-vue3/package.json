@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard-vue3",
-  "version": "5.0.0-alpha.5",
+  "version": "5.0.0-alpha.6",
   "description": "Guard for Vue3",
   "module": "dist/esm/guard.min.js",
   "types": "dist/typings/index.d.ts",
@@ -50,7 +50,7 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
-    "@authing/guard": "^5.0.0-alpha.3",
+    "@authing/guard": "^5.0.0-alpha.6",
     "vue": "^3.2.37"
   }
 }
