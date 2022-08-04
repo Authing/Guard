@@ -9,7 +9,9 @@
     "autoinstall": "npm ci",
     "build": "node ./scripts/build.js",
     "build:ts": "npx tsc -p ./tsconfig.json",
-    "build:dev": "node ./scripts/dev.js --target=esm"
+    "build:dev": "node ./scripts/dev.js --target=esm",
+    "release:official": "npm publish --verbose --access public",
+    "release:alpha": "npm publish --verbose --tag=alpha --access public"
   },
   "buildOptions": {
     "name": "GuardFactory"
