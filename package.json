@@ -3,16 +3,13 @@
   "private": true,
   "scripts": {
     "link": "lerna link",
-    "publish:official": "lerna publish from-package --yes",
-    "publish:alpha": "lerna publish from-package --canary --yes --pre-dist-tag alpha --preid alpha"
+    "publish:official": "lerna publish from-git --yes",
+    "publish:alpha": "lerna publish from-git --canary --yes --pre-dist-tag alpha --preid alpha"
   },
   "workspaces": [
     "packages/*"
   ],
   "engines": {
     "node": ">=16.13.1"
-  },
-  "devDependencies": {
-    "minimist": "^1.2.6"
   }
 }
