@@ -16,8 +16,6 @@
     "release:official": "npm publish --verbose --access public",
     "release:alpha": "npm publish --verbose --tag=alpha --access public"
   },
-  "author": "https://github.com/authing",
-  "license": "ISC",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^22.0.1",
     "@rollup/plugin-json": "^4.1.0",
@@ -52,5 +50,11 @@
   "dependencies": {
     "@authing/guard": "^5.0.0-alpha.6",
     "vue": "^3.2.37"
+  },
+  "author": "https://github.com/authing",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   }
 }

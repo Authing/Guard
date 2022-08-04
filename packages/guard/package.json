@@ -11,10 +11,10 @@
     "autoinstall": "npm ci",
     "build": "node scripts/build.js",
     "lint": "eslint --ext .tsx,.ts components/**",
-    "lint:fix": "eslint --fix --ext .tsx,.ts components/**"
+    "lint:fix": "eslint --fix --ext .tsx,.ts components/**",
+    "release:official": "npm publish --verbose --access public",
+    "release:alpha": "npm publish --verbose --tag=alpha --access public"
   },
-  "author": "https://github.com/authing",
-  "license": "ISC",
   "devDependencies": {
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
@@ -38,6 +38,12 @@
     "authing-js-sdk": "^4.23.32",
     "react": "^16.14.0",
     "react-dom": "^16.14.0"
+  },
+  "author": "https://github.com/authing",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   },
   "gitHead": "0dcc113462942aaae8f479acbeaa7b71e89b6c84"
 }

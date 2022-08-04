@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { Guard } from '../../../src'
+import { Guard } from '@authing/guard'
 
 export default function Login () {
   const effects = async () => {

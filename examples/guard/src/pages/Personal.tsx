@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Guard } from '../../../src'
+import { Guard } from '../../../../packages/guard/src'
 
 export default function Personal () {
   const [userInfo, setUserInfo] = useState('')
