@@ -8,7 +8,7 @@ function resolve (dir, file = '') {
 module.exports = {
   mode: 'production',
   devtool: 'source-map',
-  entry: resolve('components/index.tsx'),
+  entry: resolve('src/index.tsx'),
   output: {
     filename: 'guard.min.js',
     path: resolve('dist/global'),
@@ -35,7 +35,7 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'guard.css'
+      filename: 'guard.min.css'
     })
   ]
 }

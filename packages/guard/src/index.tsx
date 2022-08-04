@@ -63,9 +63,9 @@ export type GuardEventListeners = {
   >[]
 }
 
-type CodeMethod = 'S256' | 'plain'
+export type CodeMethod = 'S256' | 'plain'
 
-type Align = 'none' | 'left' | 'center' | 'right'
+export type Align = 'none' | 'left' | 'center' | 'right'
 
 export interface GuardOptions {
   appId: string
