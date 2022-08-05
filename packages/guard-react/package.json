@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard-react",
-  "version": "5.0.0-alpha.9",
+  "version": "5.0.0-alpha.10",
   "description": "",
   "main": "dist/index.min.js",
   "module": "dist/index.esm.js",
@@ -42,7 +42,7 @@
     "signale": "^1.4.0"
   },
   "dependencies": {
-    "@authing/guard": "^5.0.0-alpha.9"
+    "@authing/guard": "^5.0.0-alpha.10"
   },
   "author": "https://github.com/authing",
   "license": "MIT",
