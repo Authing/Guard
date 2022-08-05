@@ -1,5 +1,4 @@
 const path = require('path')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 function resolve (dir, file = '') {
@@ -36,12 +35,6 @@ module.exports = function getWebpackConfig ({
     plugins: [
       new MiniCssExtractPlugin({
         filename: 'guard.min.css'
-      }),
-      new CopyWebpackPlugin({
-        patterns: [{
-          from: resolve('src'),
-          to: resolve('dist')
-        }]
       })
     ]
   }

@@ -24,7 +24,7 @@
             ],
             "styles": [
               "src/styles.css",
-              "node_modules/@authing/guard-angular/guard.min.css"
+              "node_modules/@authing/guard-angular/dist/guard.min.css"
             ],
             "scripts": []
           },
