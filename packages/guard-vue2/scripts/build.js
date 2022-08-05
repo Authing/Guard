@@ -15,12 +15,12 @@ readyGo()
 function readyGo () {
   webpack(webpackEsmBundlerConfig, (error) => {
     if (error) {
-      console.error('build guard.js esm bundler error: ', error)
+      console.error('build guard-vue2 esm bundler error: ', error)
     }
   })
   webpack(webpackGlobalConfig, (error) => {
     if (error) {
-      console.error('build guard.js global error: ', error)
+      console.error('build guard-vue2 global error: ', error)
     }
   })
 }

@@ -351,7 +351,7 @@ export class Guard {
     evt: T,
     handler: Exclude<GuardEventsKebabToCamelType[T], undefined>
   ) {
-    ; (this.eventListeners as any)[evt].push(handler as any)
+    ;(this.eventListeners as any)[evt].push(handler as any)
   }
 
   show() {

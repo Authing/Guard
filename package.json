@@ -3,16 +3,12 @@
   "private": true,
   "scripts": {
     "link": "lerna link",
-    "publish:official": "lerna publish from-package --yes",
-    "publish:alpha": "lerna publish from-package --canary --yes --pre-dist-tag alpha --preid alpha"
+    "build:guard": "cd packages/guard && npm run autoinstall && npm run build"
   },
   "workspaces": [
     "packages/*"
   ],
   "engines": {
     "node": ">=16.13.1"
-  },
-  "devDependencies": {
-    "minimist": "^1.2.6"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard-vue2",
-  "version": "5.0.0-alpha.3",
+  "version": "5.0.0-alpha.10",
   "description": "Guard for Vue2",
   "module": "dist/esm/guard.min.js",
   "types": "dist/typings/index.d.ts",
@@ -8,13 +8,13 @@
     "dist"
   ],
   "scripts": {
-    "prepack": "npm ci",
+    "autoinstall": "npm ci",
     "build": "node scripts/build.js",
     "lint": "eslint --ext .ts components/**",
-    "lint:fix": "eslint --fix --ext .ts components/**"
+    "lint:fix": "eslint --fix --ext .ts components/**",
+    "release:official": "npm publish --verbose --access public",
+    "release:alpha": "npm publish --verbose --tag=alpha --access public"
   },
-  "author": "https://github.com/authing",
-  "license": "ISC",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
@@ -31,8 +31,13 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
-    "@authing/guard": "^5.0.0-alpha.3",
-    "authing-js-sdk": "^4.23.32",
+    "@authing/guard": "^5.0.0-alpha.10",
     "vue": "^2.6.10"
+  },
+  "author": "https://github.com/authing",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   }
 }
