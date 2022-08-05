@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard-angular",
-  "version": "5.0.0-alpha.7",
+  "version": "5.0.0-alpha.8",
   "description": "Guard for Angular",
   "module": "dist/index.ts",
   "files": [
@@ -35,7 +35,7 @@
     "@angular/core": "^14.0.0"
   },
   "dependencies": {
-    "@authing/guard": "^5.0.0-alpha.7"
+    "@authing/guard": "^5.0.0-alpha.8"
   },
   "author": "https://github.com/authing",
   "license": "MIT",
