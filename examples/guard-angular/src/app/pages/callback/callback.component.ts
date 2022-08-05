@@ -1,7 +1,7 @@
 import { Component } from '@angular/core'
 import { Router } from '@angular/router'
 
-import { GuardService } from '@authing/guard-angular'
+import { GuardService } from '../../../guard-angular'
 
 @Component({
   selector: 'callback-container',
@@ -11,7 +11,7 @@ import { GuardService } from '@authing/guard-angular'
 export class CallbackComponent {
   constructor (
     private router: Router,
-    private authing: GuardService
+    private guard: GuardService
   ) {}
 
   ngOnInit () {
@@ -19,7 +19,7 @@ export class CallbackComponent {
   }
 
   async handleAuthingLoginCallback () {
-    await this.authing.client.handleRedirectCallback()
+    await this.guard.client.handleRedirectCallback()
     this.router.navigateByUrl('personal', {
       replaceUrl: true
     })

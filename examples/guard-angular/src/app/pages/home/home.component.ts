@@ -8,8 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class HomeComponent {
   constructor (
-    private router: Router,
-    private route: ActivatedRoute
+    private router: Router
   ) {}
   title = 'This is Home page'
 

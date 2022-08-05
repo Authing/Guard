@@ -1,6 +1,7 @@
 import { Component } from '@angular/core'
+import '@authing/guard-angular'
 
-import { GuardService } from '@authing/guard-angular'
+import { GuardService } from '../../../guard-angular'
 
 @Component({
   selector: 'login-container',
@@ -9,25 +10,26 @@ import { GuardService } from '@authing/guard-angular'
 })
 export class LoginComponent {
   constructor (
-    private authing: GuardService
+    private guard: GuardService
   ) {}
 
   userInfo = ''
 
   ngOnInit () {
     this.getCurrentUser()
+    this.guard.client.start('#guard-root')
   }
 
   onLogin () {
-    this.authing.client.startWithRedirect()
+    this.guard.client.startWithRedirect()
   }
 
   onLogout () {
-    this.authing.client.logout()
+    this.guard.client.logout()
   }
 
   async getCurrentUser () {
-    const _userInfo = await this.authing.client.authClient.getCurrentUser()
+    const _userInfo = await this.guard.client.authClient.getCurrentUser()
     this.userInfo = _userInfo && JSON.stringify(_userInfo, null, 2) || ''
   }
 }

@@ -1,8 +1,7 @@
 const path = require('path')
 const rm = require('rimraf')
 const webpack = require('webpack')
-const webpackEsmBundlerConfig = require('./webpack.esm.config')
-const webpackGlobalConfig = require('./webpack.global.config')
+const getWebpackConfig = require('./webpack.config')
 
 try {
   rm.sync(path.resolve(__dirname, '../', 'dist'))
@@ -13,14 +12,18 @@ try {
 readyGo()
 
 function readyGo () {
-  webpack(webpackEsmBundlerConfig, (error) => {
+  const outputFileName = 'guard.min.js'
+  const entryFileName = 'style.ts'
+
+  webpack(getWebpackConfig({
+    entryFileName,
+    outputFileName
+  }), (error) => {
     if (error) {
-      console.error('build guard.js esm bundler error: ', error)
+      return console.error('build guard.js esm bundler error: ', error)
     }
-  })
-  webpack(webpackGlobalConfig, (error) => {
-    if (error) {
-      console.error('build guard.js global error: ', error)
-    }
+
+    rm.sync(path.resolve(__dirname, `../dist/${outputFileName}`))
+    rm.sync(path.resolve(__dirname, `../dist/${entryFileName}`))
   })
 }

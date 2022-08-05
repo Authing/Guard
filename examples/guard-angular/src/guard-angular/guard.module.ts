@@ -6,6 +6,7 @@ import { GuardConfigService, GuardClientConfig } from './guard.config'
 
 import { GuardOptions } from '@authing/guard'
 
+
 @NgModule()
 export class GuardModule {
   static forRoot (config: GuardOptions): ModuleWithProviders<GuardModule> {
