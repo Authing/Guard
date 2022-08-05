@@ -23,15 +23,9 @@
       "esnext",
       "dom"
     ],
-    "jsx": "react",
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true
-  },
-  "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false,
-    "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react"
   },
   "include": [
     "src/**/*.ts",

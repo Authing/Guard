@@ -1,7 +1,7 @@
 import { Component } from '@angular/core'
 import { Router } from '@angular/router'
 
-import { GuardService } from '../../../guard-angular'
+import { GuardService } from '@authing/guard-angular'
 
 @Component({
   selector: 'callback-container',

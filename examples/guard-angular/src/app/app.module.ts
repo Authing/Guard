@@ -5,7 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from '../app/pages/login/login.component'
 
-import { GuardModule } from '../guard-angular'
+import { GuardModule } from '@authing/guard-angular'
+
+console.log('--------: ', GuardModule)
 
 @NgModule({
   declarations: [
