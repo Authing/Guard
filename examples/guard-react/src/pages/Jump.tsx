@@ -1,8 +1,8 @@
 import React from 'react'
-import { useAuthing } from '@authing/react-guard'
+import { useGuard } from '@authing/guard-react'
 
 export default function Jump() {
-  const guard = useAuthing()
+  const guard = useGuard()
 
   const onLogin = () => guard.startWithRedirect()
 

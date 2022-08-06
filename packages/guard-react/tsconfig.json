@@ -1,15 +1,14 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "target": "ESNext",
+    "outDir": "dist",
+    "target": "es5",
     "lib": [
-      "dom",
-      "esnext"
+      "dom"
     ],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "declarationDir": "./dist",
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -17,15 +16,17 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
     "declaration": true,
+    "declarationDir": "./dist/typings",
     "noEmit": false,
-    "jsx": "react",
     "downlevelIteration": true,
-    "emitDeclarationOnly": true
+    "jsx": "react"
   },
   "include": [
-    "components/**/*.tsx",
-    "components/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
   ]
 }
