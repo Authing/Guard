@@ -3,8 +3,8 @@ import { Guard } from '@authing/guard'
 
 export default function Jump() {
   const guard = new Guard({
-    appId: '62e752f0d8c681db4ed3f743',
-    host: 'https://test0123456.authing.cn',
+    appId: '62e8d32e4feac0ba0a75edf5',
+    host: 'https://ipehegkanbpgkdho-demo.authing.cn',
     redirectUri: 'http://localhost:3000/callback'
   })
 

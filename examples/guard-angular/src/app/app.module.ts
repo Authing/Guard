@@ -18,8 +18,8 @@ console.log('--------: ', GuardModule)
     BrowserModule,
     AppRoutingModule,
     GuardModule.forRoot({
-      appId: '62be97e30fa6ea1c1ced35c0',
-      host: 'https://spa-demo-2022.authing.cn',
+      appId: '62e22721c889dd44bad1dda2',
+      host: 'https://guard-test-2022.authing.cn',
       redirectUri: 'http://localhost:3000/callback'
     })
   ],
