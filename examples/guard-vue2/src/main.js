@@ -7,8 +7,8 @@ import { AuthingPlugin } from '@authing/guard-vue2'
 import '@authing/guard-vue2/dist/esm/guard.min.css'
 
 Vue.use(AuthingPlugin, {
-  appId: '62e752f0d8c681db4ed3f743',
-  host: 'https://test0123456.authing.cn',
+  appId: '62e22721c889dd44bad1dda2',
+  host: 'https://guard-test-2022.authing.cn',
   redirectUri: 'http://localhost:3000/callback'
 })
 

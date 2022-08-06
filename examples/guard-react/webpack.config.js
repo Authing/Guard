@@ -13,10 +13,6 @@ module.exports = {
     path: resolve('dist'),
   },
   resolve: {
-    // alias: {
-    //   // 防止 Node 模块查找机制中匹配不同版本的 react
-    //   react: path.resolve(__dirname, './node_modules/react'),
-    // },
     extensions: ['.ts', '.tsx', '.js'],
   },
   module: {
