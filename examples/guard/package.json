@@ -22,7 +22,7 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
-    "@authing/guard": "^5.0.0-alpha.11",
+    "@authing/guard": "^5.0.0-alpha.12",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router": "^5.1.2",

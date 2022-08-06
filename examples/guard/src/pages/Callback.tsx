@@ -13,6 +13,8 @@ export default function Callback() {
       redirectUri: 'http://localhost:3000/callback'
     })
 
+    console.log('guard: ', guard)
+
     await guard.handleRedirectCallback()
     history.push('/personal')
   }

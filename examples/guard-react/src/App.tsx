@@ -1,5 +1,7 @@
 import React from 'react'
+
 import { GuardProvider } from '@authing/guard-react'
+
 import '@authing/guard-react/dist/esm/guard.min.css'
 
 import RouterComponent from './router'

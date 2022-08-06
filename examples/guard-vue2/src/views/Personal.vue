@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     getUserInfo () {
-      this.$authing.guard.trackSession().then(res => {
+      this.$guard.trackSession().then(res => {
         this.userInfo = JSON.stringify(res || '', null, 2)
       })
     }

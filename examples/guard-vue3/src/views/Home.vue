@@ -8,17 +8,17 @@
 
 <script scoped setup>
 import { useRouter } from 'vue-router'
-import { useAuthing } from '@authing/guard-vue3'
+import { useGuard } from '@authing/guard-vue3'
 
 const router = useRouter()
-const $authing = useAuthing()
+const $guard = useGuard()
 
 const message = 'This is home page ~~'
 const toLogin = () => router.push({
   path: '/login'
 })
 
-$authing.guard.start('#home-container')
+$guard.start('#home-container')
 
 // Composition API
 // import { useRouter } from 'vue-router'

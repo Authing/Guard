@@ -12,7 +12,7 @@ export class GuardClientFactory {
 
     if (!options) {
       throw new Error(
-        'Configuration must be specified either through AuthModule.forRoot or through AuthClientConfig.set'
+        'Configuration must be specified either through GuardModule.forRoot or through GuardClientConfig.set'
       );
     }
 

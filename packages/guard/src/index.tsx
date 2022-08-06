@@ -69,14 +69,15 @@ export type Align = 'none' | 'left' | 'center' | 'right'
 
 export interface GuardOptions {
   appId: string
+  host: string // 私有化部署时的 IP 地址
+  redirectUri: string
+
   mode?: 'normal' | 'modal'
   defaultScene?: GuardModuleType
   tenantId?: string
   lang?: Lang
   isSSO?: boolean
-  host: string // 私有化部署时的 IP 地址
   scope?: string // OIDC scope
-  redirectUri: string
   state?: string // OIDC 状态
   config?: Partial<GuardLocalConfig> // 兼容之前的 config，新用户可不传
   authClientOptions?: AuthenticationClientOptions
@@ -84,24 +85,25 @@ export interface GuardOptions {
 }
 
 export class Guard {
-  private appId?: string
-  private tenantId?: string
-  private config?: Partial<GuardLocalConfig>
-  private visible?: boolean
-  private el?: string
-  public authClient: AuthenticationClient
-  private align?: Align
+  private appId: string = ''
+  private tenantId: string = ''
+  private config: Partial<GuardLocalConfig> = {}
+  private visible: boolean = false
+  private el: string = ''
+  private align: Align = 'none'
+
+  public authClient: AuthenticationClient = {} as AuthenticationClient
 
   constructor(options: GuardOptions) {
     const {
       appId,
-      mode = 'normal',
+      host,
       redirectUri,
+      mode = 'normal',
       isSSO,
       defaultScene,
       lang,
-      host,
-      tenantId,
+      tenantId = '',
       align = 'none',
       config,
       authClientOptions
@@ -168,8 +170,9 @@ export class Guard {
    * @param el String
    * @returns Promise
    */
-  async start(el?: string) {
+  async start(el: string) {
     this.el = el
+    this.config.target = el
 
     this.render()
 
@@ -342,7 +345,7 @@ export class Guard {
           authClient={this.authClient}
         />
       </div>,
-      Guard.getGuardContainer(this.config?.target),
+      Guard.getGuardContainer(this.el),
       cb
     )
   }

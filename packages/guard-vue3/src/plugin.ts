@@ -2,19 +2,17 @@ import { App } from 'vue'
 
 import { GuardOptions, Guard } from '@authing/guard'
 
-import { AuthingVueClient } from './interfaces'
-
 import { AUTHING_INJECTION_KEY, AUTHING_TOKEN } from './token'
 
-export class AuthingPlugin implements AuthingVueClient {
-  public guard: Guard
+export class GuardPlugin {
+  private guard: Guard
 
   constructor (options: GuardOptions) {
     this.guard = new Guard(options)
   }
 
   install (app: App) {
-    app.config.globalProperties[AUTHING_TOKEN] = this
-    app.provide(AUTHING_INJECTION_KEY, this)
+    app.config.globalProperties[AUTHING_TOKEN] = this.guard
+    app.provide(AUTHING_INJECTION_KEY, this.guard)
   }
 }

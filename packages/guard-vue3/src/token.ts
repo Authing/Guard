@@ -1,7 +1,7 @@
 import { InjectionKey } from 'vue'
 
-import { AuthingVueClient } from './interfaces'
+import { Guard } from '@authing/guard'
 
 export const AUTHING_TOKEN = '$authing'
 
-export const AUTHING_INJECTION_KEY: InjectionKey<AuthingVueClient> = Symbol(AUTHING_TOKEN)
+export const AUTHING_INJECTION_KEY: InjectionKey<Guard> = Symbol(AUTHING_TOKEN)

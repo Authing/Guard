@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     async handleAuthingLoginCallback () {
-      await this.$authing.guard.handleRedirectCallback()
+      await this.$guard.handleRedirectCallback()
       this.$router.replace({
         name: 'Personal'
       })
