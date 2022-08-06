@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import { useAuthing } from '@authing/react-guard'
+import { useGuard } from '@authing/guard-react'
 
 export default function Login() {
-  const guard = useAuthing()
+  const guard = useGuard()
 
   useEffect(() => {
     guard.start()

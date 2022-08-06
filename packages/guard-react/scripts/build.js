@@ -1,25 +1,26 @@
-const { resolve } = require('path')
-const { remove } = require('fs-extra')
-const execa = require('execa')
-const { feLog } = require('./tag')
-const signale = require('signale')
+const path = require('path')
+const rm = require('rimraf')
+const webpack = require('webpack')
+const webpackEsmBundlerConfig = require('./webpack.esm.config')
+const webpackGlobalConfig = require('./webpack.global.config')
 
-const env = 'production'
-const configFile = resolve(__dirname, '../rollup.config.js')
-
-const pkgDir = resolve(__dirname, '../')
-
-async function run() {
-  // clean
-  await remove(`${pkgDir}/dist`)
-  // Authing Tag
-  feLog()
-  // build
-  await execa('rollup', ['-c', [configFile]], {
-    stdio: 'inherit'
-  })
-  // done
-  signale.success(`${env} mode: build done.`)
+try {
+  rm.sync(path.resolve(__dirname, '../', 'dist'))
+} catch (e) {
+  console.error('\n\n build guard-react, failed to delete dist directory, please operate manually \n\n')
 }
 
-run()
+readyGo()
+
+function readyGo () {
+  webpack(webpackEsmBundlerConfig, (error) => {
+    if (error) {
+      console.error('build guard-react esm bundler error: ', error)
+    }
+  })
+  webpack(webpackGlobalConfig, (error) => {
+    if (error) {
+      console.error('build guard-react global error: ', error)
+    }
+  })
+}

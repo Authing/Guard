@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import { useAuthing } from '@authing/react-guard'
+import { useGuard, User } from '@authing/guard-react'
 
 export default function Personal() {
   const [userInfo, setUserInfo] = useState('')
 
-  const guard = useAuthing()
+  const guard = useGuard()
 
-  guard.trackSession().then(res => {
+  guard.trackSession().then((res: User | null) => {
     console.log('trackSession res: ', res)
     setUserInfo(JSON.stringify(res, null, 2))
   })

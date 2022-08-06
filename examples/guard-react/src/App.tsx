@@ -1,21 +1,21 @@
 import React from 'react'
-import { ReactGuard } from '@authing/react-guard'
-import '@authing/react-guard/dist/index.esm.css'
+import { GuardProvider } from '@authing/guard-react'
+import '@authing/guard-react/dist/esm/guard.min.css'
 
 import RouterComponent from './router'
 
 function App() {
   return (
-    <ReactGuard
+    <GuardProvider
       appId="62e752f0d8c681db4ed3f743"
       host="https://test0123456.authing.cn"
       redirectUri="http://localhost:3000/callback"
       config={{
-        target: '#guard'
+        target: '#root'
       }}
     >
       <RouterComponent></RouterComponent>
-    </ReactGuard>
+    </GuardProvider>
   )
 }
 

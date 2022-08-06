@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard-angular",
-  "version": "5.0.0-alpha.10",
+  "version": "5.0.0-alpha.11",
   "description": "Guard for Angular",
   "module": "dist/fesm2015/authing-guard-angular.mjs",
   "types": "dist/index.d.ts",
@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "autoinstall": "npm ci",
-    "build": "rm -rf dist && npm run build:ng && npm run build:assets",
+    "build": "npm run build:ng && npm run build:assets",
     "build:assets": "node scripts/build.js",
     "build:ng": "ng build guard-angular",
     "lint": "eslint --ext .ts components/**",
@@ -32,15 +32,13 @@
     "ng-packagr": "^14.1.0",
     "rimraf": "^2.6.2",
     "ts-loader": "^9.3.1",
-    "webpack": "^5.72.0",
-    "webpack-cli": "^4.9.2",
-    "webpack-merge": "^5.8.0"
+    "webpack": "^5.72.0"
   },
   "peerDependencies": {
     "@angular/core": "^14.0.0"
   },
   "dependencies": {
-    "@authing/guard": "^5.0.0-alpha.10"
+    "@authing/guard": "^5.0.0-alpha.11"
   },
   "author": "https://github.com/authing",
   "license": "MIT",
