@@ -10,7 +10,7 @@ import { ref, onMounted } from 'vue'
 
 import { useGuard } from '@authing/guard-vue3'
 
-const $guard = useAuthing()
+const $guard = useGuard()
 
 const userInfo = ref('')
 

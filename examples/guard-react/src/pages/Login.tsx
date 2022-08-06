@@ -5,7 +5,7 @@ export default function Login() {
   const guard = useGuard()
 
   useEffect(() => {
-    guard.start()
+    guard.start('#root')
   }, [])
   return <div id="guard">this is login Page</div>
 }

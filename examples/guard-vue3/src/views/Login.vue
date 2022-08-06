@@ -21,7 +21,7 @@ const $guard = useGuard()
 const userInfo = ref('')
 
 const getCurrentUser = async () => {
-  const _userInfo = await $authing.guard.trackSession()
+  const _userInfo = await $guard.trackSession()
   userInfo.value = _userInfo && JSON.stringify(_userInfo, null, 2) || ''
 }
 const onLogin = () => $guard.startWithRedirect()
