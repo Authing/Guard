@@ -24,13 +24,13 @@ export default {
   },
   methods: {
     onLogin () {
-      this.$authing.guard.startWithRedirect()
+      this.$guard.startWithRedirect()
     },
     onLogout () {
-      this.$authing.guard.logout()
+      this.$guard.logout()
     },
     async getCurrentUser () {
-      const _userInfo = await this.$authing.guard.trackSession()
+      const _userInfo = await this.$guard.trackSession()
       this.userInfo = _userInfo && JSON.stringify(_userInfo, null, 2) || ''
     }
   }

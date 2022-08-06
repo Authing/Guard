@@ -12,10 +12,6 @@ declare module 'vue/types/vue' {
   }
 }
 
-export function AuthingPlugin (Vue: VueConstructor, options: GuardOptions) {
-  const guard = new Guard(options)
-
-  Vue.prototype.$authing = {
-    guard
-  }
+export function GuardPlugin (Vue: VueConstructor, options: GuardOptions) {
+  Vue.prototype.$guard = new Guard(options)
 }

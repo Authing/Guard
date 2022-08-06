@@ -14,7 +14,7 @@ export default {
     }
   },
   mounted () {
-    console.log('this.$authing: ', this.$authing)
+    console.log('this.$guard: ', this.$guard)
   },
   methods: {
     toLogin () {
