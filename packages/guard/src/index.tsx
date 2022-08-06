@@ -32,6 +32,8 @@ import {
   AuthenticationClientOptions
 } from 'authing-js-sdk'
 
+import { ajax, AjaxRequest } from './ajax'
+
 export {
   GuardMode,
   GuardScenes,
@@ -74,9 +76,9 @@ export interface GuardOptions {
   tenantId?: string
   lang?: Lang
   isSSO?: boolean
-  host: string // 私有化部署时的 IP 地址
+  host?: string // 私有化部署时的 IP 地址
   scope?: string // OIDC scope
-  redirectUri: string
+  redirectUri?: string
   state?: string // OIDC 状态
   config?: Partial<GuardLocalConfig> // 兼容之前的 config，新用户可不传
   authClientOptions?: AuthenticationClientOptions
@@ -84,15 +86,20 @@ export interface GuardOptions {
 }
 
 export class Guard {
-  private appId?: string
-  private tenantId?: string
-  private config?: Partial<GuardLocalConfig>
-  private visible?: boolean
-  private el?: string
-  public authClient: AuthenticationClient
-  private align?: Align
+  private appId: string = ''
+  private tenantId: string = ''
+  private config: Partial<GuardLocalConfig> = {}
+  private visible: boolean = false
+  private el: string = ''
+  private align: Align = 'none'
+
+  public authClient: AuthenticationClient = {} as AuthenticationClient
 
   constructor(options: GuardOptions) {
+    this.init(options)
+  }
+
+  private async init (options: GuardOptions) {
     const {
       appId,
       mode = 'normal',
@@ -100,7 +107,7 @@ export class Guard {
       isSSO,
       defaultScene,
       lang,
-      host,
+      host = 'https://core.authing.cn',
       tenantId,
       align = 'none',
       config,
@@ -108,7 +115,7 @@ export class Guard {
     } = options
 
     this.appId = appId
-    this.tenantId = tenantId
+    this.tenantId = tenantId || ''
     this.align = align
 
     this.config = Object.assign({}, config || {}, {
@@ -122,15 +129,27 @@ export class Guard {
 
     this.visible = !!!(mode === GuardMode.Modal)
 
+    const publicConfigRes = await this.getPublicConfig()
+    const publicConfig = publicConfigRes.data
+
     const _authClientOptions = Object.assign({}, authClientOptions || {}, {
       appId,
       appHost: host,
-      redirectUri,
-      tokenEndPointAuthMethod: 'none',
-      introspectionEndPointAuthMethod: 'none'
+      redirectUri: redirectUri || publicConfig?.oidcConfig?.redirect_uris[0],
+      tokenEndPointAuthMethod: publicConfig?.oidcConfig?.token_endpoint_auth_method || 'none',
+      introspectionEndPointAuthMethod: publicConfig?.oidcConfig?.introspection_endpoint_auth_method || 'none'
     } as AuthenticationClientOptions)
 
     this.authClient = new AuthenticationClient(_authClientOptions)
+  }
+
+  private getPublicConfig () {
+    const options: AjaxRequest = {
+      method: 'get',
+      url: `${this.config.host}/api/v2/applications/${this.appId}/public-config`
+    }
+
+    return ajax(options)
   }
 
   static getGuardContainer(selector?: string | HTMLElement) {
@@ -168,8 +187,9 @@ export class Guard {
    * @param el String
    * @returns Promise
    */
-  async start(el?: string) {
+  async start(el: string) {
     this.el = el
+    this.config.target = el
 
     this.render()
 
@@ -342,7 +362,7 @@ export class Guard {
           authClient={this.authClient}
         />
       </div>,
-      Guard.getGuardContainer(this.config?.target),
+      Guard.getGuardContainer(this.el),
       cb
     )
   }
