@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "autoinstall": "npm ci",
-    "build": "rm -rf dist && npm run build:ng && npm run build:assets",
+    "build": "npm run build:ng && npm run build:assets",
     "build:assets": "node scripts/build.js",
     "build:ng": "ng build guard-angular",
     "lint": "eslint --ext .ts components/**",
@@ -32,9 +32,7 @@
     "ng-packagr": "^14.1.0",
     "rimraf": "^2.6.2",
     "ts-loader": "^9.3.1",
-    "webpack": "^5.72.0",
-    "webpack-cli": "^4.9.2",
-    "webpack-merge": "^5.8.0"
+    "webpack": "^5.72.0"
   },
   "peerDependencies": {
     "@angular/core": "^14.0.0"
