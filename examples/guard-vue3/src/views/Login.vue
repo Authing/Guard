@@ -15,17 +15,17 @@
 <script setup scoped>
 import { ref, onMounted } from 'vue'
 
-import { useAuthing } from '@authing/guard-vue3'
+import { useGuard } from '@authing/guard-vue3'
 
-const $authing = useAuthing()
+const $guard = useGuard()
 const userInfo = ref('')
 
 const getCurrentUser = async () => {
   const _userInfo = await $authing.guard.trackSession()
   userInfo.value = _userInfo && JSON.stringify(_userInfo, null, 2) || ''
 }
-const onLogin = () => $authing.guard.startWithRedirect()
-const onLogout = () => $authing.guard.logout()
+const onLogin = () => $guard.startWithRedirect()
+const onLogout = () => $guard.logout()
 
 onMounted(() => {
   getCurrentUser()

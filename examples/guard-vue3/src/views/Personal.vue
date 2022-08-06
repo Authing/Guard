@@ -8,16 +8,16 @@
 <script scoped setup>
 import { ref, onMounted } from 'vue'
 
-import { useAuthing } from '@authing/guard-vue3'
+import { useGuard } from '@authing/guard-vue3'
 
-const $authing = useAuthing()
+const $guard = useAuthing()
 
 const userInfo = ref('')
 
 const message = 'This is Personal page ~~'
 
 const getCurrentUser = async () => {
-  const _userInfo = await $authing.guard.trackSession()
+  const _userInfo = await $guard.trackSession()
   userInfo.value = _userInfo && JSON.stringify(_userInfo, null, 2) || ''
 }
 
