@@ -7,7 +7,7 @@ const webpackGlobalConfig = require('./webpack.global.config')
 try {
   rm.sync(path.resolve(__dirname, '../', 'dist'))
 } catch (e) {
-  console.error('\n\n Failed to delete dist directory, please operate manually \n\n')
+  console.error('\n\n build guard-vue2, failed to delete dist directory, please operate manually \n\n')
 }
 
 readyGo()

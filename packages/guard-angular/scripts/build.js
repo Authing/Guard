@@ -3,6 +3,12 @@ const rm = require('rimraf')
 const webpack = require('webpack')
 const getWebpackConfig = require('./webpack.config')
 
+try {
+  rm.sync(path.resolve(__dirname, '../', 'dist'))
+} catch (e) {
+  console.error('\n\n build guard-angular, failed to delete dist directory, please operate manually \n\n')
+}
+
 readyGo()
 
 function readyGo () {
