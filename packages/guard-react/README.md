@@ -4,7 +4,7 @@
 
 <br />
 
-React-Guard is a portable authentication component provided by authing. You can embed it in any application to handle complex user authentication processes in one stop.
+Guard is a portable authentication component provided by authing. You can embed it in any application to handle complex user authentication processes in one stop.
 
 Prepare your React project and follow the guide to connect authoring guard to your React project!
 
@@ -12,89 +12,86 @@ Prepare your React project and follow the guide to connect authoring guard to yo
 
 From CDN:
 
-```shell
+``` shell
 
 ```
 
 From npm:
 
-```shell
-
+``` shell
+npm insstall --save @authing/guard-react
 ```
 
 ## Initialize
 
-| Key          | Type            | Default | Requires |
-| ------------ | --------------- | ------- | -------- |
-| appId        | String          | -       | Y        |
-| mode         | normal / modal  | normal  | N        |
-| defaultScene | GuardModuleType | login   | N        |
-| lang         | zh-CN / en-US   | zh-CN   | N        |
-| isSSO        | Boolean         | true    | N        |
-| host         | String          | -       | N        |
-| scope        | String          | -       | N        |
-| redirectUri  | String          | -       | N        |
-| state        | String          | -       | N        |
+|Key|Type|Default|Requires
+|-----|----|----|----|
+|appId|String| - |Y|
+|mode|normal / modal|normal|N|
+|defaultScene|GuardModuleType|login|N|
+|lang|zh-CN / en-US|zh-CN|N|
+|isSSO|Boolean|true|N|
+|host|String| - |N|
+|scope|String| - |N|
+|redirectUri|String| - |N|
+|state|String| - |N|
 
-```javascript
-import { ReactGuard, useAuthing } from '@authing/react-guard'
 
-const root = createRoot(document.getElementById('root'))
+``` javascript
+// From CDN
+const guard = new GuardFactory.Guard({
+  appId: '62e22721c889dd44bad1dda2',
+  host: 'https://guard-test-2022.authing.cn',
+  redirectUri: 'http://localhost:3000/callback'
+})
 
-root.render(
-  <ReactGuard
-    // appId：控制台 -> 端点信息 -> App ID
-    appId="APP_ID"
-    // appHost：应用认证地址，控制台 -> 应用详情 -> 认证配置 -> 认证地址
-    appHost="https://spa-demo-2022.authing.cn"
-    // redirectUri：应用回调地址，在 Authing 完成认证后跳回的地址。控制台 -> 应用详情 -> 认证配置 -> 登录回调 URL
-    redirectUri="通过 Authing 登录成功后的跳转地址"
-    // 默认
-    tokenEndPointAuthMethod="none"
-    // 默认
-    introspectionEndPointAuthMethod="none"
-    config={{
-      target: '#guard'
-    }}
-  >
-    <App />
-  </ReactGuard>
-)
-```
+// From npm
+import { GuardProvider } from '@authing/guard-react'
 
-```javascript
-import React from 'react'
-import { useAuthing } from '@authing/react-guard'
+import '@authing/guard-react/dist/esm/guard.min.css'
 
-const Component = () => {
-  const guard = useAuthing()
-
-  useEffect(() => {
-    guard.start()
-  }, [])
-
-  return <div id="guard">Hello Guard !</div>
+function App() {
+  return (
+    <GuardProvider
+      appId="62e22721c889dd44bad1dda2"
+      host="https://guard-test-2022.authing.cn"
+      redirectUri="http://localhost:3000/callback"
+      config={{
+        target: '#root'
+      }}
+    >
+      <RouterComponent></RouterComponent>
+    </GuardProvider>
+  )
 }
 ```
 
-## Guard provides three login modes
+``` typescript
+// use Guard APIs in Components
+import { useGuard } from '@authing/guard-react'
+
+const guard = useGuard()
+```
+
+## Guard for React provides three login modes
 
 ### Embed mode
 
 Render Guard component
 
-```javascript
-import React from 'react'
-import { useAuthing } from '@authing/react-guard'
+``` javascript
+import React, { useEffect } from 'react'
 
-const Component = () => {
-  const guard = useAuthing()
+import { useGuard } from '@authing/guard-react'
+
+export default function Login() {
+  const guard = useGuard()
 
   useEffect(() => {
-    guard.start()
+    guard.start('#guard')
   }, [])
 
-  return <div id="guard">Hello Guard !</div>
+  return <div id="guard"></div>
 }
 ```
 
@@ -102,106 +99,46 @@ const Component = () => {
 
 When the parameter 'mode' of Guard instantiation is' modal ', the modal mode is started, and the following API can be used to display and hide the guard.
 
-```javascript
-import React from 'react'
-import { useAuthing } from '@authing/react-guard'
+``` javascript
 
-const Component = () => {
-  const guard = useAuthing()
+guard.show()
+```
 
-  useEffect(() => {
-    guard.show()
-  }, [])
-
-  return <div id="guard">Hello Guard !</div>
-}
+``` javascript
+guard.hide()
 ```
 
 ### Redirect mode
 
 Login by code, redirect to login page
 
-```javascript
-import React from 'react'
-import { useAuthing } from '@authing/react-guard'
-
-const Component = () => {
-  const guard = useAuthing()
-
-  useEffect(() => {
-    guard.startWithRedirect()
-  }, [])
-
-  return <div id="guard">Hello Guard !</div>
-}
+``` javascript
+guard.startWithRedirect()
 ```
 
 Auto handle redirect callback
 
-```javascript
-import React from 'react'
-import { useAuthing } from '@authing/react-guard'
-
-const Component = () => {
-  const guard = useAuthing()
-
-  useEffect(() => {
-    guard.handleRedirectCallback()
-  }, [])
-
-  return <div id="guard">Hello Guard !</div>
-}
+``` javascript
+guard.handleRedirectCallback()
 ```
 
 Logout
 
-```javascript
-import React from 'react'
-import { useAuthing } from '@authing/react-guard'
-
-const Component = () => {
-  const guard = useAuthing()
-
-  useEffect(() => {
-    guard.start()
-  }, [])
-
-  return (
-    <>
-      <div id="guard">Hello Guard !</div>
-      <button onClick={() => guard.logout()}>logout</button>
-    </>
-  )
-}
+``` javascript
+guard.logout()
 ```
 
 ## Regist events
 
-```javascript
-import React from 'react'
-import { useAuthing } from '@authing/react-guard'
+``` javascript
+guard.on('load', e => {
+  console.log(e)
+})
 
-const Component = () => {
-  const guard = useAuthing()
+guard.on('login', userInfo => {
+  console.log(userInfo)
+})
 
-  guard.on('load', e => {
-    console.log(e)
-  })
-
-  guard.on('login', userInfo => {
-    console.log(userInfo)
-  })
-
-  useEffect(() => {
-    guard.start()
-  }, [])
-
-  return (
-    <>
-      <div id="guard">Hello Guard !</div>
-    </>
-  )
-}
 // ......
 ```
 
@@ -209,13 +146,13 @@ const Component = () => {
 
 Guard integrated AuthenticationClient, so you can use `guard.authClient` to access all apis of AuthenticationClient, etc:
 
-```javascript
+``` javascript
 guard.authClient.registerByEmail()
 guard.authClient.validateToken()
 // ....
 ```
 
-Refer to [Authentication SDK](https://docs.authing.cn/v2/reference/sdk-for-node/authentication/)
+Refer to [Authentication SDK](https://docs.authing.cn/v2/reference/sdk-for-node/authentication/) 
 
 ## 📚 Documentation
 

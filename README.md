@@ -24,10 +24,11 @@ The Guard helps developers shield the details of the underlying authentication a
 
 |Project|Status|Description
 |-----|----|----|
-|guard-react|[![npm version](https://badge.fury.io/js/@authing%2Freact-ui-components.svg)](https://www.npmjs.com/package/@authing/react-ui-components)|Guard for react|
-|guard-vue|[![npm version](https://badge.fury.io/js/@authing%2Fvue-ui-components.svg)](https://www.npmjs.com/package/@authing/vue-ui-components)|Guard for Vue|
-|guard-angular|[![npm version](https://badge.fury.io/js/@authing%2Fng-ui-components.svg)](https://www.npmjs.com/package/@authing/ng-ui-components)|Guard for angular|
-|guard.js|[![npm version](https://badge.fury.io/js/@authing%2Fnative-js-ui-components.svg)](https://www.npmjs.com/package/@authing/native-js-ui-components)|Guard for JavaScript|
+|guard-react|[![npm version](https://badge.fury.io/js/@authing%2Fguard-react.svg)](https://www.npmjs.com/package/@authing/react-ui-components)|Guard for react|
+|guard-vue2|[![npm version](https://badge.fury.io/js/@authing%2Fguard-vue2.svg)](https://www.npmjs.com/package/@authing/vue-ui-components)|Guard for Vue2|
+|guard-vue3|[![npm version](https://badge.fury.io/js/@authing%2Fguard-vue3.svg)](https://www.npmjs.com/package/@authing/vue-ui-components)|Guard for Vue3|
+|guard-angular|[![npm version](https://badge.fury.io/js/@authing%2Fguard-angular.svg)](https://www.npmjs.com/package/@authing/ng-ui-components)|Guard for angular|
+|guard|[![npm version](https://badge.fury.io/js/@authing%2Fguard.svg)](https://www.npmjs.com/package/@authing/native-js-ui-components)|Guard for JavaScript|
 
 ## 🖥 Environment Support
 

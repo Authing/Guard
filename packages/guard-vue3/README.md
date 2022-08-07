@@ -6,7 +6,7 @@
 
 Guard is a portable authentication component provided by authing. You can embed it in any application to handle complex user authentication processes in one stop.
 
-Prepare your native JavaScript project and follow the guide to connect authoring guard to your native JavaScript project!
+Prepare your Vue3 project and follow the guide to connect authoring guard to your Vue3 project!
 
 ## Install
 
@@ -19,7 +19,7 @@ From CDN:
 From npm:
 
 ``` shell
-npm insstall --save @authing/guard
+npm insstall --save @authing/guard-vue3
 ```
 
 ## Initialize
@@ -46,22 +46,63 @@ const guard = new GuardFactory.Guard({
 })
 
 // From npm
-const guard = new Guard({
-  appId: '62e22721c889dd44bad1dda2',
-  host: 'https://guard-test-2022.authing.cn',
-  redirectUri: 'http://localhost:3000/callback'
-})
+import { createApp } from 'vue'
+
+import { GuardPlugin } from '@authing/guard-vue3'
+
+import '@authing/guard-vue3/dist/esm/guard.min.css'
+
+import App from './App.vue'
+
+const app = createApp(App)
+
+app.use(
+  createGuard({
+    appId: '62e22721c889dd44bad1dda2',
+    host: 'https://guard-test-2022.authing.cn',
+    redirectUri: 'http://localhost:3000/callback'
+  })
+)
 ```
 
-## Guard provides three login modes
+``` html
+// use Guard APIs in Components
+
+// Composition API
+<script scoped setup>
+import { useGuard } from '@authing/guard-vue3'
+
+const guard = useGuard()
+
+guard.start('#home-container')
+</script>
+
+
+// Options API
+<script scoped>
+export default {
+  mounted () {
+    this.$guard.start('#home-container')
+  }
+}
+</script>
+```
+
+## Guard for React provides three login modes
 
 ### Embed mode
 
 Render Guard component
 
 ``` javascript
-guard.start('#root').then(userInfo => {
-  console.log(userInfo)
+import { onMounted } from 'vue'
+
+import { useGuard } from '@authing/guard-vue3'
+
+const guard = useGuard()
+
+onMounted(() => {
+  guard.start('#home-container')
 })
 ```
 
@@ -70,6 +111,7 @@ guard.start('#root').then(userInfo => {
 When the parameter 'mode' of Guard instantiation is' modal ', the modal mode is started, and the following API can be used to display and hide the guard.
 
 ``` javascript
+
 guard.show()
 ```
 

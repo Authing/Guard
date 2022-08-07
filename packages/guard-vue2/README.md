@@ -6,7 +6,7 @@
 
 Guard is a portable authentication component provided by authing. You can embed it in any application to handle complex user authentication processes in one stop.
 
-Prepare your native JavaScript project and follow the guide to connect authoring guard to your native JavaScript project!
+Prepare your Vue2 project and follow the guide to connect authoring guard to your Vue2 project!
 
 ## Install
 
@@ -19,7 +19,7 @@ From CDN:
 From npm:
 
 ``` shell
-npm insstall --save @authing/guard
+npm insstall --save @authing/guard-vue2
 ```
 
 ## Initialize
@@ -46,21 +46,34 @@ const guard = new GuardFactory.Guard({
 })
 
 // From npm
-const guard = new Guard({
+import { GuardPlugin } from '@authing/guard-vue2'
+
+import '@authing/guard-vue2/dist/esm/guard.min.css'
+
+Vue.use(GuardPlugin, {
   appId: '62e22721c889dd44bad1dda2',
   host: 'https://guard-test-2022.authing.cn',
   redirectUri: 'http://localhost:3000/callback'
 })
 ```
 
-## Guard provides three login modes
+``` typescript
+// use Guard APIs in Components
+export default {
+  created () {
+    console.log('this.$guard: ', this.$guard)
+  }
+}
+```
+
+## Guard for React provides three login modes
 
 ### Embed mode
 
 Render Guard component
 
 ``` javascript
-guard.start('#root').then(userInfo => {
+this.$guard.start('#root').then(userInfo => {
   console.log(userInfo)
 })
 ```
@@ -70,11 +83,12 @@ guard.start('#root').then(userInfo => {
 When the parameter 'mode' of Guard instantiation is' modal ', the modal mode is started, and the following API can be used to display and hide the guard.
 
 ``` javascript
-guard.show()
+
+this.$guard.show()
 ```
 
 ``` javascript
-guard.hide()
+this.$guard.hide()
 ```
 
 ### Redirect mode
@@ -82,29 +96,29 @@ guard.hide()
 Login by code, redirect to login page
 
 ``` javascript
-guard.startWithRedirect()
+this.$guard.startWithRedirect()
 ```
 
 Auto handle redirect callback
 
 ``` javascript
-guard.handleRedirectCallback()
+this.$guard.handleRedirectCallback()
 ```
 
 Logout
 
 ``` javascript
-guard.logout()
+this.$guard.logout()
 ```
 
 ## Regist events
 
 ``` javascript
-guard.on('load', e => {
+this.$guard.on('load', e => {
   console.log(e)
 })
 
-guard.on('login', userInfo => {
+this.$guard.on('login', userInfo => {
   console.log(userInfo)
 })
 
@@ -116,8 +130,8 @@ guard.on('login', userInfo => {
 Guard integrated AuthenticationClient, so you can use `guard.authClient` to access all apis of AuthenticationClient, etc:
 
 ``` javascript
-guard.authClient.registerByEmail()
-guard.authClient.validateToken()
+this.$guard.authClient.registerByEmail()
+this.$guard.authClient.validateToken()
 // ....
 ```
 
