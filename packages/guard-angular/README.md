@@ -10,11 +10,11 @@ English | [简体中文](./README.zh_CN.md)
 
 Guard is a portable authentication component provided by authing. You can embed it in any application to handle complex user authentication processes in one stop.
 
-Prepare your Angular project and follow the guide to connect authoring guard to your Angular project!
+Prepare your Angular project and follow the guide to connect Guard to your Angular project!
 
 ## Install
 ``` shell
-npm insstall --save @authing/angular
+npm install --save @authing/angular
 ```
 
 ## Initialize

@@ -10,7 +10,7 @@ English | [简体中文](./README.zh_CN.md)
 
 Guard is a portable authentication component provided by authing. You can embed it in any application to handle complex user authentication processes in one stop.
 
-Prepare your native JavaScript project and follow the guide to connect authoring guard to your native JavaScript project!
+Prepare your native JavaScript project and follow the guide to connect Guard to your native JavaScript project!
 
 ## Install
 
@@ -23,7 +23,7 @@ From CDN:
 From npm:
 
 ``` shell
-npm insstall --save @authing/guard
+npm install --save @authing/guard
 ```
 
 ## Initialize

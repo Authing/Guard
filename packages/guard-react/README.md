@@ -10,7 +10,7 @@ English | [简体中文](./README.zh_CN.md)
 
 Guard is a portable authentication component provided by authing. You can embed it in any application to handle complex user authentication processes in one stop.
 
-Prepare your React project and follow the guide to connect authoring guard to your React project!
+Prepare your React project and follow the guide to connect Guard to your React project!
 
 ## Install
 
@@ -23,7 +23,7 @@ From CDN:
 From npm:
 
 ``` shell
-npm insstall --save @authing/guard-react
+npm install --save @authing/guard-react
 ```
 
 ## Initialize
