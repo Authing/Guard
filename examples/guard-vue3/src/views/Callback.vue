@@ -12,12 +12,12 @@ import { useGuard } from '@authing/guard-vue3'
 
 const router = useRouter()
 
-const $guard = useGuard()
+const guard = useGuard()
 
 const message = 'This is callback page ~'
 
 const handleAuthingLoginCallback = async () => {
-  await $guard.handleRedirectCallback()
+  await guard.handleRedirectCallback()
   router.replace({
     name: 'Personal'
   })

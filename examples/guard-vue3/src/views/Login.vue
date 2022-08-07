@@ -17,15 +17,15 @@ import { ref, onMounted } from 'vue'
 
 import { useGuard } from '@authing/guard-vue3'
 
-const $guard = useGuard()
+const guard = useGuard()
 const userInfo = ref('')
 
 const getCurrentUser = async () => {
-  const _userInfo = await $guard.trackSession()
+  const _userInfo = await guard.trackSession()
   userInfo.value = _userInfo && JSON.stringify(_userInfo, null, 2) || ''
 }
-const onLogin = () => $guard.startWithRedirect()
-const onLogout = () => $guard.logout()
+const onLogin = () => guard.startWithRedirect()
+const onLogout = () => guard.logout()
 
 onMounted(() => {
   getCurrentUser()
