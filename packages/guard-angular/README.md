@@ -27,6 +27,20 @@ npm insstall --save @authing/angular
 |redirectUri|String| - |N|
 |state|String| - |N|
 
+``` json
+// angular.json
+{
+  "projects": {
+    "architect": {
+      "build": {
+        "styles": [
+          "node_modules/@authing/guard-angular/dist/guard.min.css"
+        ]
+      }
+    }
+  }
+}
+```
 
 ``` javascript
 // app.module.ts

@@ -49,6 +49,21 @@ npm insstall --save @authing/guard-angular
 
 - [authClientOptions](#authClientOptions)
 
+``` json
+// angular.json
+{
+  "projects": {
+    "architect": {
+      "build": {
+        "styles": [
+          "node_modules/@authing/guard-angular/dist/guard.min.css"
+        ]
+      }
+    }
+  }
+}
+```
+
 ``` javascript
 // app.module.ts
 import { NgModule } from '@angular/core';
