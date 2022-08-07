@@ -4,31 +4,31 @@
 
 <br />
 
-English | [简体中文](./README.zh_CN.md)
+简体中文 | [English](./README.md)
 
 <br />
 
-Guard is a portable authentication component provided by authing. You can embed it in any application to handle complex user authentication processes in one stop.
+Guard 是 Authing 提供的一种轻便的认证组件，你可以把它嵌入在你任何的 SPA（Single Page Application）应用中，一站式处理复杂的用户认证流程。
 
-Prepare your native JavaScript project and follow the guide to connect authoring guard to your native JavaScript project!
+准备好你的 原生 JavaScript 项目，跟随引导将 Authing Guard 接入到你的 原生 JavaScript 项目中吧！
 
-## Install
+## 安装
 
-From CDN:
+使用 CDN:
 
 ``` shell
 
 ```
 
-From npm:
+使用 npm:
 
 ``` shell
 npm insstall --save @authing/guard
 ```
 
-## Initialize
+## 初始化
 
-|Key|Type|Default|Requires
+|字段|类型|默认是|必传
 |-----|----|----|----|
 |appId|String| - |Y|
 |mode|normal / modal|normal|N|
@@ -42,14 +42,14 @@ npm insstall --save @authing/guard
 
 
 ``` javascript
-// From CDN
+// 使用 CDN
 const guard = new GuardFactory.Guard({
   appId: '62e22721c889dd44bad1dda2',
   host: 'https://guard-test-2022.authing.cn',
   redirectUri: 'http://localhost:3000/callback'
 })
 
-// From npm
+// 使用 npm
 const guard = new Guard({
   appId: '62e22721c889dd44bad1dda2',
   host: 'https://guard-test-2022.authing.cn',
@@ -57,11 +57,11 @@ const guard = new Guard({
 })
 ```
 
-## Guard provides three login modes
+## Guard 提供三种登录模式
 
-### Embed mode
+### 嵌入模式
 
-Render Guard component
+渲染 Guard 组件
 
 ``` javascript
 guard.start('#root').then(userInfo => {
@@ -69,9 +69,9 @@ guard.start('#root').then(userInfo => {
 })
 ```
 
-### modal mode
+### 弹窗模式
 
-When the parameter 'mode' of Guard instantiation is' modal ', the modal mode is started, and the following API can be used to display and hide the guard.
+当 Guard 实例化的参数 `mode` 为 `modal` 时，将启动模态模式，下面的 API 可用于显示和隐藏 Guard。
 
 ``` javascript
 guard.show()
@@ -81,27 +81,27 @@ guard.show()
 guard.hide()
 ```
 
-### Redirect mode
+### 跳转模式
 
-Login by code, redirect to login page
+使用 code 码登录，跳转到登录页面
 
 ``` javascript
 guard.startWithRedirect()
 ```
 
-Auto handle redirect callback
+code 换 token，自动处理页面重定向
 
 ``` javascript
 guard.handleRedirectCallback()
 ```
 
-Logout
+登出
 
 ``` javascript
 guard.logout()
 ```
 
-## Regist events
+## 注册事件
 
 ``` javascript
 guard.on('load', e => {
@@ -115,9 +115,9 @@ guard.on('login', userInfo => {
 // ......
 ```
 
-## Integrate authing js sdk instance
+## 集成 Authing JS SDK
 
-Guard integrated AuthenticationClient, so you can use `guard.authClient` to access all apis of AuthenticationClient, etc:
+Guard 集成了 AuthenticationClient，所以你可以使用 `guard.authClient` 来访问 AuthenticationClient 的所有 api 等等:
 
 ``` javascript
 guard.authClient.registerByEmail()
@@ -125,8 +125,8 @@ guard.authClient.validateToken()
 // ....
 ```
 
-Refer to [Authentication SDK](https://docs.authing.cn/v2/reference/sdk-for-node/authentication/) 
+参考 [Authentication SDK](https://docs.authing.cn/v2/reference/sdk-for-node/authentication/) 
 
-## Documentation
+## 文档
 
-To check out live examples and docs, visit [docs](https://docs.authing.cn/v2/reference/guard/v2/)
+参考详细文档说明 [docs](https://docs.authing.cn/v2/reference/guard/v2/)
