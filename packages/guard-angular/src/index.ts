@@ -1,7 +1,4 @@
 import { GuardModule } from './guard.module'
 import { GuardService } from './guard.service'
 
-export {
-  GuardModule,
-  GuardService
-}
+export { GuardModule, GuardService }

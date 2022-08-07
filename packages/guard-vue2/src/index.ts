@@ -12,6 +12,6 @@ declare module 'vue/types/vue' {
   }
 }
 
-export function GuardPlugin (Vue: VueConstructor, options: GuardOptions) {
+export function GuardPlugin(Vue: VueConstructor, options: GuardOptions) {
   Vue.prototype.$guard = new Guard(options)
 }

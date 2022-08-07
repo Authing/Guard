@@ -10,8 +10,8 @@
   "scripts": {
     "autoinstall": "npm ci",
     "build": "node scripts/build.js",
-    "lint": "eslint --ext .tsx,.ts components/**",
-    "lint:fix": "eslint --fix --ext .tsx,.ts components/**",
+    "lint": "eslint --ext .tsx,.ts src/**",
+    "lint:fix": "eslint --fix --ext .tsx,.ts src/**",
     "release:official": "npm publish --verbose --access public",
     "release:alpha": "npm publish --verbose --tag=alpha --access public"
   },

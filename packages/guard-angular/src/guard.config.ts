@@ -2,7 +2,9 @@ import { Injectable, Optional, Inject, InjectionToken } from '@angular/core'
 
 import { GuardOptions } from '@authing/guard'
 
-export const GuardConfigService = new InjectionToken<GuardOptions>('guard.client')
+export const GuardConfigService = new InjectionToken<GuardOptions>(
+  'guard.client'
+)
 
 @Injectable({ providedIn: 'root' })
 export class GuardClientConfig {
