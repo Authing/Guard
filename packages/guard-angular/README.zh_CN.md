@@ -14,7 +14,7 @@ Guard 是 Authing 提供的一种轻便的认证组件，你可以把它嵌入�
 
 ## 安装
 ``` shell
-npm install --save @authing/angular
+npm install --save @authing/guard-angular
 ```
 
 ## 初始化
