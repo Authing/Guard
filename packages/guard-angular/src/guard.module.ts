@@ -8,7 +8,7 @@ import { GuardOptions } from '@authing/guard'
 
 @NgModule()
 export class GuardModule {
-  static forRoot (config: GuardOptions): ModuleWithProviders<GuardModule> {
+  static forRoot(config: GuardOptions): ModuleWithProviders<GuardModule> {
     return {
       ngModule: GuardModule,
       providers: [
@@ -21,7 +21,7 @@ export class GuardModule {
           provide: GuardClientService,
           useFactory: GuardClientFactory.createClient,
           deps: [GuardClientConfig]
-        },
+        }
       ]
     }
   }

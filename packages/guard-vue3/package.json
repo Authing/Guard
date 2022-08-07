@@ -11,8 +11,8 @@
     "autoinstall": "npm ci",
     "build": "node scripts/build.js",
     "build:rollup": "npx rollup  --config scripts/rollup.config.js",
-    "lint": "eslint --ext .ts components/**",
-    "lint:fix": "eslint --fix --ext .ts components/**",
+    "lint": "eslint --ext .ts src/**",
+    "lint:fix": "eslint --fix --ext .ts src/**",
     "release:official": "npm publish --verbose --access public",
     "release:alpha": "npm publish --verbose --tag=alpha --access public"
   },

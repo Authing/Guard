@@ -12,9 +12,7 @@ interface AjaxResponse {
   [prop: string]: any
 }
 
-export async function ajax(
-  options: AjaxRequest
-): Promise<AjaxResponse> {
+export async function ajax(options: AjaxRequest): Promise<AjaxResponse> {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest()
     const method = options.method.toUpperCase()

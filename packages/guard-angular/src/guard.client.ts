@@ -8,12 +8,12 @@ export const GuardClientService = new InjectionToken<Guard>('guard.client')
 
 export class GuardClientFactory {
   static createClient(configFactory: GuardClientConfig): Guard {
-    const options = configFactory.get();
+    const options = configFactory.get()
 
     if (!options) {
       throw new Error(
         'Configuration must be specified either through GuardModule.forRoot or through GuardClientConfig.set'
-      );
+      )
     }
 
     return new Guard(options)

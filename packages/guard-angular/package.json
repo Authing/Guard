@@ -12,8 +12,8 @@
     "build": "npm run build:ng && npm run build:assets",
     "build:assets": "node scripts/build.js",
     "build:ng": "ng build guard-angular",
-    "lint": "eslint --ext .ts components/**",
-    "lint:fix": "eslint --fix --ext .ts components/**",
+    "lint": "eslint --ext .ts src/**",
+    "lint:fix": "eslint --fix --ext .ts src/**",
     "release:official": "npm publish --verbose --access public",
     "release:alpha": "npm publish --verbose --tag=alpha --access public"
   },

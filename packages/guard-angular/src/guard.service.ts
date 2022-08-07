@@ -8,7 +8,5 @@ import { Guard } from '@authing/guard'
   providedIn: 'root'
 })
 export class GuardService {
-  constructor (
-    @Inject(GuardClientService) public client: Guard
-  ) {}
+  constructor(@Inject(GuardClientService) public client: Guard) {}
 }

@@ -85,11 +85,11 @@ export interface GuardOptions {
 }
 
 export class Guard {
-  private appId: string = ''
-  private tenantId: string = ''
+  private appId = ''
+  private tenantId = ''
   private config: Partial<GuardLocalConfig> = {}
-  private visible: boolean = false
-  private el: string = ''
+  private visible = false
+  private el = ''
   private align: Align = 'none'
 
   public authClient: AuthenticationClient = {} as AuthenticationClient
