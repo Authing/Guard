@@ -14,7 +14,7 @@ Prepare your Angular project and follow the guide to connect Guard to your Angul
 
 ## Install
 ``` shell
-npm install --save @authing/angular
+npm install --save @authing/guard-angular
 ```
 
 ## Initialize
