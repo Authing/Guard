@@ -20,18 +20,19 @@ export default {
     }
   },
   mounted () {
-    this.getCurrentUser()
+    // this.getCurrentUser()
   },
   methods: {
     onLogin () {
-      this.$guard.startWithRedirect()
+      // this.$guard.startWithRedirect()
+      this.$authing.loginWithRedirect()
     },
     onLogout () {
-      this.$guard.logout()
+      // this.$guard.logout()
     },
     async getCurrentUser () {
-      const _userInfo = await this.$guard.trackSession()
-      this.userInfo = _userInfo && JSON.stringify(_userInfo, null, 2) || ''
+      // const _userInfo = await this.$guard.trackSession()
+      // this.userInfo = _userInfo && JSON.stringify(_userInfo, null, 2) || ''
     }
   }
 }

@@ -9,18 +9,25 @@
 export default {
   data () {
     return {
-      message: 'This is callback page ~'
+      message: 'This is callback page ~',
+      loginState: ''
     }
   },
   mounted () {
-    this.handleAuthingLoginCallback()
+    if (this.$authing.isRedirectCallback()) {
+      console.log("redirect");
+      this.$authing.handleRedirectCallback().then((res) => {
+        this.loginState = res;
+        window.location.replace("/");
+      });
+    } else {
+      this.getLoginState();
+    }
   },
   methods: {
-    async handleAuthingLoginCallback () {
-      await this.$guard.handleRedirectCallback()
-      this.$router.replace({
-        name: 'Personal'
-      })
+    async getLoginState() {
+      const state = await this.$authing.getLoginState();
+      this.loginState = state;
     }
   }
 }

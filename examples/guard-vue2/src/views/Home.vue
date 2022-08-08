@@ -14,9 +14,9 @@ export default {
     }
   },
   mounted () {
-    console.log('this.$guard: ', this.$guard)
+    // console.log('this.$guard: ', this.$guard)
 
-    this.$guard.start('#home-container')
+    // this.$guard.start('#home-container')
   },
   methods: {
     toLogin () {
