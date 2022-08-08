@@ -2,6 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
+    "prepare": "husky install",
     "link": "lerna link",
     "build:guard": "cd packages/guard && npm run autoinstall && npm run build",
     "oss": "node scripts/oss.js",
@@ -19,6 +20,7 @@
     "ali-oss": "^6.16.0",
     "eslint": "^8.7.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^4.0.0"
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^8.0.1"
   }
 }
