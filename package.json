@@ -3,12 +3,20 @@
   "private": true,
   "scripts": {
     "link": "lerna link",
-    "build:guard": "cd packages/guard && npm run autoinstall && npm run build"
+    "build:guard": "cd packages/guard && npm run autoinstall && npm run build",
+    "lint": "eslint --ext .tsx,.ts packages/**/src/**",
+    "lint:fix": "eslint --fix --ext .tsx,.ts packages/**/src/**"
   },
   "workspaces": [
     "packages/*"
   ],
   "engines": {
     "node": ">=16.13.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.32.0",
+    "eslint": "^8.7.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0"
   }
 }
