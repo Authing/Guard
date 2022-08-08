@@ -49,7 +49,7 @@ jobs:
           lerna run autoinstall
 
       - name: lint codes
-       run: |
+        run: |
           npm run lint
 
       - name: build
