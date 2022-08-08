@@ -24,10 +24,11 @@
 
 |项目|状态|描述
 |-----|----|----|
-|guard-react|[![npm version](https://badge.fury.io/js/@authing%2Freact-ui-components.svg)](https://www.npmjs.com/package/@authing/react-ui-components)|Guard for react|
-|guard-vue|[![npm version](https://badge.fury.io/js/@authing%2Fvue-ui-components.svg)](https://www.npmjs.com/package/@authing/vue-ui-components)|Guard for Vue|
-|guard-angular|[![npm version](https://badge.fury.io/js/@authing%2Fng-ui-components.svg)](https://www.npmjs.com/package/@authing/ng-ui-components)|Guard for angular|
-|guard.js|[![npm version](https://badge.fury.io/js/@authing%2Fnative-js-ui-components.svg)](https://www.npmjs.com/package/@authing/native-js-ui-components)|Guard for JavaScript|
+|@authing/guard-react|[![npm version](https://badge.fury.io/js/@authing%2Fguard-react.svg)](https://www.npmjs.com/package/@authing/react-ui-components)|Guard 适用于 React|
+|@authig/guard-vue2|[![npm version](https://badge.fury.io/js/@authing%2Fguard-vue2.svg)](https://www.npmjs.com/package/@authing/vue-ui-components)|Guard 适用于 Vue2|
+|@authing/guard-vue3|[![npm version](https://badge.fury.io/js/@authing%2Fguard-vue3.svg)](https://www.npmjs.com/package/@authing/vue-ui-components)|Guard 适用于 Vue3|
+|@authing/guard-angular|[![npm version](https://badge.fury.io/js/@authing%2Fguard-angular.svg)](https://www.npmjs.com/package/@authing/ng-ui-components)|Guard for angular|
+|@authing/guard|[![npm version](https://badge.fury.io/js/@authing%2Fguard.svg)](https://www.npmjs.com/package/@authing/native-js-ui-components)|Guard 适用于原生 JavaScript|
 
 ## 🖥 环境支持
 

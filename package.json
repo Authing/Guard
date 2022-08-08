@@ -4,6 +4,7 @@
   "scripts": {
     "link": "lerna link",
     "build:guard": "cd packages/guard && npm run autoinstall && npm run build",
+    "oss": "node scripts/oss.js",
     "lint": "eslint --ext .tsx,.ts packages/**/src/**",
     "lint:fix": "eslint --fix --ext .tsx,.ts packages/**/src/**"
   },
@@ -15,6 +16,7 @@
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.32.0",
+    "ali-oss": "^6.16.0",
     "eslint": "^8.7.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0"
