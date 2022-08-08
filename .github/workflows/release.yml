@@ -75,3 +75,11 @@ jobs:
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
           lerna run release:alpha
           echo "release:alpha successfully 🚀"
+      
+      - name: upload oss
+        run: |
+          npm run oss accessKeyId=$OSS_KEY_ID accessKeySecret=$OSS_KEY_SECRET
+        env:
+          OSS_KEY_ID: ${{ secrets.OSS_KEY_ID }}
+          OSS_KEY_SECRET: ${{ secrets.OSS_KEY_SECRET }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
