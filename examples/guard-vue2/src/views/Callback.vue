@@ -18,7 +18,7 @@ export default {
       console.log("redirect");
       this.$authing.handleRedirectCallback().then((res) => {
         this.loginState = res;
-        window.location.replace("/");
+        // window.location.replace("/");
       });
     } else {
       this.getLoginState();

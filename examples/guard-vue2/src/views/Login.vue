@@ -16,23 +16,14 @@
 export default {
   data () {
     return {
-      userInfo: null
+      loginState: null,
+      userInfo: null,
+      
     }
-  },
-  mounted () {
-    // this.getCurrentUser()
   },
   methods: {
     onLogin () {
-      // this.$guard.startWithRedirect()
       this.$authing.loginWithRedirect()
-    },
-    onLogout () {
-      // this.$guard.logout()
-    },
-    async getCurrentUser () {
-      // const _userInfo = await this.$guard.trackSession()
-      // this.userInfo = _userInfo && JSON.stringify(_userInfo, null, 2) || ''
     }
   }
 }
