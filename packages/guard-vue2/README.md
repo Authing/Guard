@@ -70,7 +70,7 @@ export default {
 }
 ```
 
-## Guard for React provides three login modes
+## Guard for Vue2 provides three login modes
 
 ### Embed mode
 

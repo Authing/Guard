@@ -92,7 +92,7 @@ export default {
 </script>
 ```
 
-## Guard for React provides three login modes
+## Guard for Vue3 provides three login modes
 
 ### Embed mode
 
