@@ -10,7 +10,7 @@
   <a href="javascript:;" target="_blank"><img src="https://img.shields.io/badge/node-%3E=12-green.svg" alt="Node"></a>
 </div>
 
-[English](./README.md) | 简体中文 |
+[English](./README.md) | 简体中文
 
 通用登录组件（Guard）帮助开发者屏蔽了很多底层认证的实现细节，同时也包括繁琐的 UI 开发。使得企业和开发者可以快速上线安全的、跨平台的统一登录表单。
 
@@ -58,7 +58,7 @@
 Authing 支持 OAuth2、OIDC、SAML、LDAP 等多种协议，开发者可以配合统一用户池，最低五行代码轻松实现单点登录，实现登录定制化。
 
 <div align="center">
-  <img src="https://files.authing.co/authing-website/guard-framework-img-v2.png" width="650" />
+  <img src="https://authing-cdn-cn-prod.oss-cn-beijing.aliyuncs.com/authing-assets/init-guard-react.png" width="650" />
 </div>
 
 ## 👀 在线体验

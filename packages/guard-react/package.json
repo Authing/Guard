@@ -17,11 +17,7 @@
   },
   "devDependencies": {
     "@types/react": "^16.9.32",
-    "@typescript-eslint/eslint-plugin": "^5.10.1",
     "css-loader": "^6.7.1",
-    "eslint": "^8.7.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^4.0.0",
     "mini-css-extract-plugin": "^2.6.1",
     "rimraf": "^2.6.2",
     "ts-loader": "^9.3.1",

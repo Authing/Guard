@@ -48,9 +48,9 @@ jobs:
         run: |
           lerna run autoinstall
 
-      #- name: lint codes
-      #  run: |
-      #    lerna run lint
+      - name: lint codes
+       run: |
+          npm run lint
 
       - name: build
         run: |

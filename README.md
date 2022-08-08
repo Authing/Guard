@@ -10,7 +10,7 @@
   <a href="javascript:;" target="_blank"><img src="https://img.shields.io/badge/node-%3E=12-green.svg" alt="Node"></a>
 </div>
 
-English | [简体中文](./README-zh_CN.md) |
+English | [简体中文](./README-zh_CN.md)
 
 The Guard helps developers shield the details of the underlying authentication and tedious UI development. It enables enterprises and developers to quickly launch a secure, customizable UI unified login form.
 
@@ -59,7 +59,7 @@ Including login components such as React, Vue, Angular, JavaScript, etc.
 Authing supports many protocols such as OAuth2, OIDC, SAML, LDAP, etc. Developers can easily implement single sign-on with a minimum of five lines of code and realize login customization.
 
 <div align="center">
-  <img src="https://files.authing.co/authing-website/guard-framework-img-v2.png" width="650" />
+  <img src="https://authing-cdn-cn-prod.oss-cn-beijing.aliyuncs.com/authing-assets/init-guard-react.png" width="650" />
 </div>
 
 ## 👀 Online preview
