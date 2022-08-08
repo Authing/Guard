@@ -46,6 +46,7 @@ jobs:
           
       - name: install packages
         run: |
+          npm ci
           lerna run autoinstall
 
       - name: lint codes
