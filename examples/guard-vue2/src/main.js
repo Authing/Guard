@@ -15,8 +15,8 @@ import router from './router'
 import { Authing } from '@authing/browser'
 
 Vue.prototype.$authing = new Authing({
-  appId: '62e8d32e4feac0ba0a75edf5',
-  domain: 'https://ipehegkanbpgkdho-demo.authing.cn',
+  appId: '62ec92ca821dda139e3a9f6b',
+  domain: 'https://background.authing.cn',
   redirectUri: 'http://localhost:3000/callback'
 })
 
