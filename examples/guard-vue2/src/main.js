@@ -9,7 +9,7 @@ import '@authing/guard-vue2/dist/esm/guard.min.css'
 Vue.use(GuardPlugin, {
   appId: '62e22721c889dd44bad1dda2',
   host: 'https://guard-test-2022.authing.cn',
-  redirectUri: 'http://localhost:3000/callback'
+  // redirectUri: 'http://localhost:3000/callback'
 })
 
 new Vue({

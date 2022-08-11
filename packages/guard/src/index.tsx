@@ -32,6 +32,8 @@ import {
   AuthenticationClientOptions
 } from 'authing-js-sdk'
 
+import { ajax, AjaxRequest, AjaxResponse } from './ajax'
+
 export {
   GuardMode,
   GuardScenes,
@@ -69,9 +71,8 @@ export type Align = 'none' | 'left' | 'center' | 'right'
 
 export interface GuardOptions {
   appId: string
-  host: string // 私有化部署时的 IP 地址
-  redirectUri: string
-
+  host?: string
+  redirectUri?: string
   mode?: 'normal' | 'modal'
   defaultScene?: GuardModuleType
   tenantId?: string
@@ -85,54 +86,66 @@ export interface GuardOptions {
 }
 
 export class Guard {
-  private appId = ''
-  private tenantId = ''
-  private config: Partial<GuardLocalConfig> = {}
+  private options: GuardOptions
   private visible = false
-  private el = ''
-  private align: Align = 'none'
-
-  public authClient: AuthenticationClient = {} as AuthenticationClient
+  private then: () => Promise<any | never>
 
   constructor(options: GuardOptions) {
-    const {
-      appId,
-      host,
-      redirectUri,
-      mode = 'normal',
-      isSSO,
-      defaultScene,
-      lang,
-      tenantId = '',
-      align = 'none',
-      config,
-      authClientOptions
-    } = options
+    this.options = Object.assign(
+      {},
+      {
+        host: 'https://core.authing.cn',
+        mode: 'normal',
+        tanentId: '',
+        align: 'none',
+        config: Object.assign({}, options.config || {}, {
+          // 向后兼容
+          isSSO: options.isSSO,
+          defaultScenes: options.defaultScene,
+          lang: options.lang,
+          host: options.host,
+          mode: options.mode
+        })
+      },
+      options
+    )
 
-    this.appId = appId
-    this.tenantId = tenantId
-    this.align = align
+    const init = (async () => {
+      const publicConfigRes = await this.getPublicConfig()
+      return publicConfigRes.data
+    })()
+    this.then = init.then.bind(init)
 
-    this.config = Object.assign({}, config || {}, {
-      isSSO,
-      // 向后兼容
-      defaultScenes: defaultScene,
-      lang,
-      host,
-      mode
-    })
+    this.visible = !!!(options.mode === GuardMode.Modal)
+  }
 
-    this.visible = !!!(mode === GuardMode.Modal)
+  private getPublicConfig(): Promise<AjaxResponse> {
+    const _options: AjaxRequest = {
+      method: 'GET',
+      url: `${this.options.host}/api/v2/applications/${this.options.appId}/public-config`
+    }
+    return ajax(_options)
+  }
 
-    const _authClientOptions = Object.assign({}, authClientOptions || {}, {
-      appId,
-      appHost: host,
-      redirectUri,
-      tokenEndPointAuthMethod: 'none',
-      introspectionEndPointAuthMethod: 'none'
-    } as AuthenticationClientOptions)
+  async getAuthClient() {
+    const publicConfig = await this.then()
 
-    this.authClient = new AuthenticationClient(_authClientOptions)
+    const _authClientOptions = Object.assign(
+      {},
+      this.options.authClientOptions || {},
+      {
+        appId: this.options.appId,
+        appHost: this.options.host,
+        redirectUri:
+          this.options.redirectUri || publicConfig.oidcConfig.redirect_uris[0],
+        tokenEndPointAuthMethod:
+          publicConfig.oidcConfig.token_endpoint_auth_method || 'none',
+        introspectionEndPointAuthMethod:
+          publicConfig.oidcConfig.introspection_endpoint_auth_method || 'none'
+      } as AuthenticationClientOptions
+    )
+
+    return new AuthenticationClient(_authClientOptions)
   }
 
   static getGuardContainer(selector?: string | HTMLElement) {
@@ -171,8 +184,7 @@ export class Guard {
    * @returns Promise
    */
   async start(el: string) {
-    this.el = el
-    this.config.target = el
+    ;(this.options.config as Partial<GuardLocalConfig>).target = el
 
     this.render()
 
@@ -194,23 +206,25 @@ export class Guard {
    * @param {String} codeChallengeDigestMethod 'S256' | 'plain'
    * @param {String} codeChallengeMethod 'S256' | 'plain'
    */
-  startWithRedirect(
+  async startWithRedirect(
     codeChallengeDigestMethod: CodeMethod = 'S256',
     codeChallengeMethod: CodeMethod = 'S256'
   ) {
+    const authClient = await this.getAuthClient()
+
     // 生成一个 code_verifier
-    const codeChallenge = this.authClient.generateCodeChallenge()
+    const codeChallenge = authClient.generateCodeChallenge()
 
     localStorage.setItem('codeChallenge', codeChallenge)
 
     // 计算 code_verifier 的 SHA256 摘要
-    const codeChallengeDigest = this.authClient.getCodeChallengeDigest({
+    const codeChallengeDigest = authClient.getCodeChallengeDigest({
       codeChallenge,
       method: codeChallengeDigestMethod
     })
 
     // 构造 OIDC 授权码 + PKCE 模式登录 URL
-    const url = this.authClient.buildAuthorizeUrl({
+    const url = authClient.buildAuthorizeUrl({
       codeChallenge: codeChallengeDigest,
       codeChallengeMethod: codeChallengeMethod
     })
@@ -226,15 +240,17 @@ export class Guard {
       codeChallenge
     )
 
-    const userInfo = await this.authClient.getUserInfoByAccessToken(
-      access_token
-    )
+    const authClient = await this.getAuthClient()
+
+    const userInfo = await authClient.getUserInfoByAccessToken(access_token)
 
     this.setStorageCache(access_token, id_token, userInfo)
   }
 
   private async getAccessTokenByCode(code: string, codeChallenge: string) {
-    return await this.authClient.getAccessTokenByCode(code, {
+    const authClient = await this.getAuthClient()
+
+    return await authClient.getAccessTokenByCode(code, {
       codeVerifier: codeChallenge
     })
   }
@@ -280,17 +296,21 @@ export class Guard {
   /**
    * 获取当前用户信息
    */
-  trackSession() {
-    return this.authClient.getCurrentUser()
+  async trackSession() {
+    const authClient = await this.getAuthClient()
+
+    return authClient.getCurrentUser()
   }
 
-  logout() {
+  async logout() {
     const redirectUri = window.location.origin
     const idToken = localStorage.getItem('idToken')
     let logoutUrl = ''
 
+    const authClient = await this.getAuthClient()
+
     if (idToken) {
-      logoutUrl = this.authClient.buildLogoutUrl({
+      logoutUrl = authClient.buildLogoutUrl({
         expert: true,
         redirectUri,
         idToken
@@ -302,11 +322,13 @@ export class Guard {
     window.location.href = logoutUrl || redirectUri
   }
 
-  updateIdToken() {
-    return this.authClient.refreshToken()
+  async updateIdToken() {
+    const authClient = await this.getAuthClient()
+
+    return authClient.refreshToken()
   }
 
-  render(cb?: () => void) {
+  async render(cb?: () => void) {
     const evts: GuardEvents = Object.entries(
       GuardEventsCamelToKebabMapping
     ).reduce((acc, [reactEvt, nativeEvt]) => {
@@ -328,24 +350,26 @@ export class Guard {
       })
     }, {} as GuardEvents)
 
+    const authClient = await this.getAuthClient()
+
     return ReactDOM.render(
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
-          justifyContent: this.align
+          justifyContent: this.options.align
         }}
       >
         <ReactAuthingGuard
           {...(evts as GuardEvents)}
-          appId={this.appId}
-          tenantId={this.tenantId}
-          config={this.config}
+          appId={this.options.appId}
+          tenantId={this.options.tenantId}
+          config={this.options.config}
           visible={this.visible}
-          authClient={this.authClient}
+          authClient={authClient}
         />
       </div>,
-      Guard.getGuardContainer(this.el),
+      Guard.getGuardContainer(this.options.config?.target),
       cb
     )
   }
@@ -368,7 +392,7 @@ export class Guard {
   }
 
   unmount() {
-    const node = Guard.getGuardContainer(this.config?.target)
+    const node = Guard.getGuardContainer(this.options.config?.target)
 
     if (node) {
       ReactDOM.unmountComponentAtNode(node)

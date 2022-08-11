@@ -131,11 +131,14 @@ this.$guard.on('login', userInfo => {
 
 ## Integrate authing js sdk instance
 
-Guard integrated AuthenticationClient, so you can use `guard.authClient` to access all apis of AuthenticationClient, etc:
+Guard integrated AuthenticationClient, so you can access all apis of AuthenticationClient, etc:
 
 ``` javascript
-this.$guard.authClient.registerByEmail()
-this.$guard.authClient.validateToken()
+this.$guard.getAuthClient().then(authClient => {
+  authClient.registerByEmail()
+  authClient.validateToken()
+  // ...........
+})
 // ....
 ```
 
