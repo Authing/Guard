@@ -210,11 +210,14 @@ this.guard.client.on('event-name', () => {
 
 ## Guard 内置 Authing JS SDK
 
-Guard 集成了 AuthenticationClient, 可使用 `guard.authClient` 调用 AuthenticationClient 的所有方法。
+Guard 集成了 AuthenticationClient, 可调用 AuthenticationClient 的所有方法。
 
 ``` javascript
-this.guard.client.authClient.registerByEmail()
-this.guard.client.authClient.validateToken()
+this.guard.client.getAuthClient().then(authClient => {
+  authClient.registerByEmail()
+  authClient.validateToken()
+  // .......
+})
 // ....
 ```
 

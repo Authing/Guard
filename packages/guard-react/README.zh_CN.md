@@ -147,12 +147,14 @@ guard.on('login', userInfo => {
 
 ## 集成 Authing JS SDK
 
-Guard 集成了 AuthenticationClient，所以你可以使用 `guard.authClient` 来访问 AuthenticationClient 的所有 api 等等:
+Guard 集成了 AuthenticationClient，所以你可以访问 AuthenticationClient 的所有 api 等等:
 
 ``` javascript
-guard.authClient.registerByEmail()
-guard.authClient.validateToken()
-// ....
+guard.getAuthClient().then(authClient => {
+  authClient.registerByEmail()
+  authClient.validateToken()
+  // ........
+})
 ```
 
 参考 [Authentication SDK](https://docs.authing.cn/v2/reference/sdk-for-node/authentication/) 

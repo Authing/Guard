@@ -71,7 +71,7 @@ export type Align = 'none' | 'left' | 'center' | 'right'
 
 export interface GuardOptions {
   appId: string
-  host: string
+  host?: string
   redirectUri?: string
   mode?: 'normal' | 'modal'
   defaultScene?: GuardModuleType
@@ -94,7 +94,7 @@ export class Guard {
     this.options = Object.assign(
       {},
       {
-        host: '',
+        host: 'https://core.authing.cn',
         mode: 'normal',
         tanentId: '',
         align: 'none',
@@ -122,7 +122,7 @@ export class Guard {
   private getPublicConfig(): Promise<AjaxResponse> {
     const _options: AjaxRequest = {
       method: 'GET',
-      url: `https://core.authing.cn/api/v2/applications/${this.options.appId}/public-config`
+      url: `${this.options.host}/api/v2/applications/${this.options.appId}/public-config`
     }
     return ajax(_options)
   }
