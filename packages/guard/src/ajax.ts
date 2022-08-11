@@ -8,7 +8,7 @@ export interface AjaxRequest {
   data?: any // post
 }
 
-interface AjaxResponse {
+export interface AjaxResponse {
   [prop: string]: any
 }
 
