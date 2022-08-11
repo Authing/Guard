@@ -11,7 +11,7 @@ function App() {
     <GuardProvider
       appId="62e22721c889dd44bad1dda2"
       host="https://guard-test-2022.authing.cn"
-      redirectUri="http://localhost:3000/callback"
+      // redirectUri="http://localhost:3000/callback"
       align="center"
     >
       <RouterComponent></RouterComponent>

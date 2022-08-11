@@ -28,7 +28,8 @@ export class LoginComponent {
   }
 
   async getCurrentUser () {
-    const _userInfo = await this.guard.client.authClient.getCurrentUser()
+    const authClient = await this.guard.client.getAuthClient()
+    const _userInfo = await authClient.getCurrentUser()
     this.userInfo = _userInfo && JSON.stringify(_userInfo, null, 2) || ''
   }
 }
