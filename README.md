@@ -24,11 +24,11 @@ The Guard helps developers shield the details of the underlying authentication a
 
 |Project|Status|Description
 |-----|----|----|
-|@authing/guard-react|[![npm version](https://badge.fury.io/js/@authing%2Fguard-react.svg)](https://www.npmjs.com/package/@authing/guard-react)|[Guard for React](https://docs.authing.cn/v2/reference/guard/v3/spa.html)|
-|@authing/guard-vue2|[![npm version](https://badge.fury.io/js/@authing%2Fguard-vue2.svg)](https://www.npmjs.com/package/@authing/guard-vue2)|[Guard for Vue2](https://docs.authing.cn/v2/reference/guard/v3/spa.html)|
-|@authing/guard-vue3|[![npm version](https://badge.fury.io/js/@authing%2Fguard-vue3.svg)](https://www.npmjs.com/package/@authing/guard-vue3)|[Guard for Vue3](https://docs.authing.cn/v2/reference/guard/v3/spa.html)|
-|@authing/guard-angular|[![npm version](https://badge.fury.io/js/@authing%2Fguard-angular.svg)](https://www.npmjs.com/package/@authing/guard-angular)|[Guard for Angular](https://docs.authing.cn/v2/reference/guard/v3/spa.html)|
-|@authing/guard|[![npm version](https://badge.fury.io/js/@authing%2Fguard.svg)](https://www.npmjs.com/package/@authing/guard)|[Guard for JavaScript](https://docs.authing.cn/v2/reference/guard/v3/mpa.html)|
+|@authing/guard-react|[![npm version](https://badge.fury.io/js/@authing%2Fguard-react.svg)](https://www.npmjs.com/package/@authing/guard-react)|<a href="https://docs.authing.cn/v2/reference/guard/v3/spa.html" target="_blank">Guard for React</a>|
+|@authing/guard-vue2|[![npm version](https://badge.fury.io/js/@authing%2Fguard-vue2.svg)](https://www.npmjs.com/package/@authing/guard-vue2)|<a href="https://docs.authing.cn/v2/reference/guard/v3/spa.html" target="_blank">Guard for Vue2</a>|
+|@authing/guard-vue3|[![npm version](https://badge.fury.io/js/@authing%2Fguard-vue3.svg)](https://www.npmjs.com/package/@authing/guard-vue3)|<a href="https://docs.authing.cn/v2/reference/guard/v3/spa.html" target="_blank">Guard for Vue3</a>|
+|@authing/guard-angular|[![npm version](https://badge.fury.io/js/@authing%2Fguard-angular.svg)](https://www.npmjs.com/package/@authing/guard-angular)|<a href="https://docs.authing.cn/v2/reference/guard/v3/spa.html" target="_blank">Guard for Angular</a>|
+|@authing/guard|[![npm version](https://badge.fury.io/js/@authing%2Fguard.svg)](https://www.npmjs.com/package/@authing/guard)|<a href="https://docs.authing.cn/v2/reference/guard/v3/mpa.html" target="_blank">Guard for JavaScript</a>|
 
 ## 🖥 Environment Support
 
