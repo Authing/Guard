@@ -25,7 +25,7 @@
 |项目|状态|描述
 |-----|----|----|
 |@authing/guard-react|[![npm version](https://badge.fury.io/js/@authing%2Fguard-react.svg)](https://www.npmjs.com/package/@authing/guard-react)|Guard 适用于 React|
-|@authig/guard-vue2|[![npm version](https://badge.fury.io/js/@authing%2Fguard-vue2.svg)](https://www.npmjs.com/package/@authing/guard-vue2)|Guard 适用于 Vue2|
+|@authing/guard-vue2|[![npm version](https://badge.fury.io/js/@authing%2Fguard-vue2.svg)](https://www.npmjs.com/package/@authing/guard-vue2)|Guard 适用于 Vue2|
 |@authing/guard-vue3|[![npm version](https://badge.fury.io/js/@authing%2Fguard-vue3.svg)](https://www.npmjs.com/package/@authing/guard-vue3)|Guard 适用于 Vue3|
 |@authing/guard-angular|[![npm version](https://badge.fury.io/js/@authing%2Fguard-angular.svg)](https://www.npmjs.com/package/@authing/guard-angular)|Guard for Angular|
 |@authing/guard|[![npm version](https://badge.fury.io/js/@authing%2Fguard.svg)](https://www.npmjs.com/package/@authing/guard)|Guard 适用于原生 JavaScript|
