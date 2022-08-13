@@ -364,7 +364,8 @@ export class Guard {
     const authClient = await this.getAuthClient()
 
     if (this.options.config) {
-      this.options.config.host = this.options.host || `https://${publicConfig.requestHostname}`
+      this.options.config.host =
+        this.options.host || `https://${publicConfig.requestHostname}`
     }
 
     return ReactDOM.render(
