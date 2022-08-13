@@ -360,7 +360,13 @@ export class Guard {
       })
     }, {} as GuardEvents)
 
+    const publicConfig = await this.then()
     const authClient = await this.getAuthClient()
+
+    if (this.options.config) {
+      this.options.config.host =
+        this.options.host || `https://${publicConfig.requestHostname}`
+    }
 
     return ReactDOM.render(
       <div

@@ -9,7 +9,7 @@
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "@authing/guard-vue3": "^5.0.0-alpha.17",
+    "@authing/guard-vue3": "^5.0.0-alpha.18",
     "vue": "^3.2.37",
     "vue-router": "^4.1.2"
   },
