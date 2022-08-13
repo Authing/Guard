@@ -89,12 +89,13 @@ export class Guard {
   private options: GuardOptions
   private visible = false
   private then: () => Promise<any | never>
+  private publicConfig?: Record<string, any>
 
   constructor(options: GuardOptions) {
     this.options = Object.assign(
       {},
       {
-        host: 'https://core.authing.cn',
+        host: '',
         mode: 'normal',
         tanentId: '',
         align: 'none',
@@ -111,19 +112,28 @@ export class Guard {
     )
 
     const init = (async () => {
+      if (this.publicConfig) {
+        return this.publicConfig
+      }
+
       const publicConfigRes = await this.getPublicConfig()
-      return publicConfigRes.data
+
+      return (this.publicConfig = publicConfigRes.data)
     })()
+
     this.then = init.then.bind(init)
 
     this.visible = !!!(options.mode === GuardMode.Modal)
   }
 
   private getPublicConfig(): Promise<AjaxResponse> {
+    const host = `${this.options.host}` || 'https://core.authing.cn'
+
     const _options: AjaxRequest = {
       method: 'GET',
-      url: `${this.options.host}/api/v2/applications/${this.options.appId}/public-config`
+      url: `${host}/api/v2/applications/${this.options.appId}/public-config`
     }
+
     return ajax(_options)
   }
 
@@ -135,7 +145,7 @@ export class Guard {
       this.options.authClientOptions || {},
       {
         appId: this.options.appId,
-        appHost: this.options.host,
+        appHost: this.options.host || `https://${publicConfig.requestHostname}`,
         redirectUri:
           this.options.redirectUri || publicConfig.oidcConfig.redirect_uris[0],
         tokenEndPointAuthMethod:
