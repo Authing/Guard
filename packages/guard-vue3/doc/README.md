@@ -1,6 +1,6 @@
 # Guard
 
-Guard 3.x / 4.x 版本：
+当前使用文档适用于 Guard 5.0，如果您正在使用 Guard 3.x / 4.x，可参考：
 
 - [将 Guard 接入到 React 项目](https://docs.authing.cn/v2/reference/guard/v2/vue.html)
 

@@ -1,6 +1,6 @@
 # Guard
 
-Guard 3.x / 4.x 版本：
+当前使用文档适用于 Guard 5.0，如果您正在使用 Guard 3.x / 4.x，可参考：
 
 - [将 Guard 接入到 React 项目](https://docs.authing.cn/v2/reference/guard/v2/native-javascript.html)
 
@@ -49,7 +49,7 @@ npm insstall --save @authing/guard
 |名称|类型|默认值|必传|描述|
 |-----|----|----|----|----|
 |appId|String| - |是| appId|
-|host|String| - |是|私有部署时的 API 请求地址，可在 Console 控制台配置|
+|host|String| - |否|私有部署时的 API 请求地址，可在 Console 控制台配置|
 |mode|normal / modal|normal| 否 |Guard 组件展示模式|
 |defaultScene|GuardModuleType|login| 否 |组件默认渲染界面|
 |lang|zh-CN / en-US|zh-CN| 否 |语言|
