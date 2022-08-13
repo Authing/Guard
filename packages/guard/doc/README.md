@@ -1,6 +1,10 @@
 # Guard
 
-Guard 是 Authing 提供的一种轻便的认证组件，你可以把它嵌入在你任何的 SPA（Single Page Application）应用中，一站式处理复杂的用户认证流程。
+Guard 3.x / 4.x 版本：
+
+- [将 Guard 接入到 React 项目](https://docs.authing.cn/v2/reference/guard/v2/native-javascript.html)
+
+Guard 是 Authing 提供的一种轻便的认证组件，你可以把它嵌入在你任何的 MPA（Multiple Page Application）应用中，一站式处理复杂的用户认证流程。
 
 准备好你的 原生 JavaScript 项目，跟随引导将 Authing Guard 接入到你的 原生 JavaScript 项目中吧！
 
@@ -45,11 +49,11 @@ npm insstall --save @authing/guard
 |名称|类型|默认值|必传|描述|
 |-----|----|----|----|----|
 |appId|String| - |是| appId|
+|host|String| - |是|私有部署时的 API 请求地址，可在 Console 控制台配置|
 |mode|normal / modal|normal| 否 |Guard 组件展示模式|
 |defaultScene|GuardModuleType|login| 否 |组件默认渲染界面|
 |lang|zh-CN / en-US|zh-CN| 否 |语言|
 |isSSO|Boolean|true|否|是否是单点登录|
-|host|String| - |否|私有部署时的 API 请求地址，可在 Console 控制台配置|
 |scope|String| - |否|OIDC scope|
 |redirectUri|String| - |否|回调地址，可在 Console 控制台配置|
 |state|String| - |否|OIDC 状态|
@@ -71,6 +75,7 @@ const guard = new GuardFactory.Guard({
 })
 
 // 使用 NPM
+import { Guard } from '@authing/guard'
 const guard = new Guard({
   appId: '62e22721c889dd44bad1dda2',
   host: 'https://guard-test-2022.authing.cn',

@@ -1,5 +1,9 @@
 # Guard
 
+Guard 3.x / 4.x 版本：
+
+- [将 Guard 接入到 React 项目](https://docs.authing.cn/v2/reference/guard/v2/vue.html)
+
 Guard 是 Authing 提供的一种轻便的认证组件，你可以把它嵌入在你任何的 SPA（Single Page Application）应用中，一站式处理复杂的用户认证流程。
 
 准备好你的 Vue2 项目，跟随引导将 Authing Guard 接入到你的 Vue2 项目中吧！
@@ -40,7 +44,7 @@ npm install --save @authing/guard-vue2
 
 | 名称         | 类型            | 默认值 | 必传 | 描述                                               |
 | ------------ | --------------- | ------ | ---- | -------------------------------------------------- |
-| appId        | String          | -      | 否   | appId                                              |
+| appId        | String          | -      | 是   | appId                                              |
 | mode         | normal / modal  | normal | 否   | Guard 组件展示模式                                 |
 | defaultScene | GuardModuleType | login  | 否   | 组件默认渲染界面                                   |
 | lang         | zh-CN / en-US   | zh-CN  | 否   | 语言                                               |
@@ -79,7 +83,7 @@ Vue.use(GuardPlugin, {
 ```
 
 ``` typescript
-// React 组件中使用 Guard API，获取 Guard 实例
+// Vue2 组件中使用 Guard API，获取 Guard 实例
 export default {
   created () {
     console.log('this.$guard: ', this.$guard)
