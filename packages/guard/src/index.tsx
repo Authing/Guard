@@ -2,30 +2,16 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import {
-  Guard as ReactAuthingGuard,
+  GuardOptions,
   GuardMode,
-  GuardEvents,
-  GuardEventsKebabToCamelType,
   GuardEventsCamelToKebabMapping,
-  GuardModuleType,
-  Lang,
-  User,
-  UserConfig,
-  GuardScenes,
-  LoginMethods,
-  getAuthClient,
-  CommonMessage,
-  initAuthClient,
-  RegisterMethods,
-  GuardEventsHandler,
-  GuardEventsHandlerKebab,
-  GuardEventsCamelToKebabMap,
-  GuardConfig
-} from '@authing/react-ui-components'
-
-import '@authing/react-ui-components/lib/index.min.css'
-
-import { GuardLocalConfig } from '@authing/react-ui-components/components/Guard/config'
+  CodeMethod,
+  GuardLocalConfig,
+  GuardEventListeners,
+  GuardEvents,
+  ReactAuthingGuard,
+  GuardEventsKebabToCamelType
+} from './types'
 
 import {
   AuthenticationClient,
@@ -34,62 +20,18 @@ import {
 
 import { ajax, AjaxRequest, AjaxResponse } from './ajax'
 
-export {
-  GuardMode,
-  GuardScenes,
-  LoginMethods,
-  getAuthClient,
-  initAuthClient,
-  RegisterMethods,
-  GuardEventsCamelToKebabMap,
-  GuardEventsCamelToKebabMapping
-}
+export * from './types'
 
-export type {
-  GuardConfig,
-  GuardLocalConfig,
-  GuardEvents,
-  User,
-  UserConfig,
-  CommonMessage,
-  GuardEventsHandler,
-  AuthenticationClient,
-  GuardEventsHandlerKebab,
-  GuardEventsKebabToCamelType
-}
-
-export type GuardEventListeners = {
-  [key in keyof GuardEventsKebabToCamelType]: Exclude<
-    Required<GuardEventsKebabToCamelType>[key],
-    undefined
-  >[]
-}
-
-export type CodeMethod = 'S256' | 'plain'
-
-export type Align = 'none' | 'left' | 'center' | 'right'
-
-export interface GuardOptions {
-  appId: string
-  host?: string
-  redirectUri?: string
-  mode?: 'normal' | 'modal'
-  defaultScene?: GuardModuleType
-  tenantId?: string
-  lang?: Lang
-  isSSO?: boolean
-  scope?: string // OIDC scope
-  state?: string // OIDC 状态
-  config?: Partial<GuardLocalConfig> // 兼容之前的 config，新用户可不传
-  authClientOptions?: AuthenticationClientOptions
-  align?: Align
-}
+export { AuthenticationClient, AuthenticationClientOptions }
 
 export class Guard {
   private options: GuardOptions
+
   private visible = false
+
   private then: () => Promise<any | never>
-  private publicConfig?: Record<string, any>
+
+  private publicConfig?: Record<string, unknown>
 
   constructor(options: GuardOptions) {
     this.options = Object.assign(

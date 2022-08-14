@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useGuard, User } from '@authing/guard-react'
 
 export default function Personal() {
@@ -6,10 +6,12 @@ export default function Personal() {
 
   const guard = useGuard()
 
-  guard.trackSession().then((res: User | null) => {
-    console.log('trackSession res: ', res)
-    setUserInfo(JSON.stringify(res, null, 2))
-  })
+  useEffect(() => {
+    guard.trackSession().then((res: User | null) => {
+      console.log('trackSession res: ', res)
+      setUserInfo(JSON.stringify(res, null, 2))
+    })
+  }, [])
 
   const onLogout = () => guard.logout()
 

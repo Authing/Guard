@@ -5,10 +5,10 @@ import { Guard } from '@authing/guard'
 import { guardOptions } from '../config'
 
 export default function Login () {
-  const effects = async () => {
-    const guard = new Guard(guardOptions)
+  const guard = new Guard(guardOptions)
 
-    guard.start('#root').then(userInfo => {
+  const guardEffects = async () => {
+    guard.start('#guard-container').then(userInfo => {
       console.log('start userInfo: ', userInfo)
     })
 
@@ -29,8 +29,16 @@ export default function Login () {
   }
 
   useEffect(() => {
-    effects()
+    guardEffects()
   }, [])
 
-  return <div>this is login Page</div>
+  const onmountGuard = () => guard.unmount()
+
+  return <>
+    <div style={{ marginBottom: '100px' }}>
+      <button onClick={onmountGuard}>unmount Guard Component</button>
+    </div>
+    
+    <div id="guard-container"></div>
+  </>
 }

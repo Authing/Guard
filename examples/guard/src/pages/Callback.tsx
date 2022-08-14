@@ -5,13 +5,12 @@ import { Guard } from '@authing/guard'
 import { guardOptions } from '../config'
 
 export default function Callback() {
+  const guard = new Guard(guardOptions)
+
+  console.log('guard: ', guard)
+  
   const handleCallback = async () => {
-    const guard = new Guard(guardOptions)
-
-    console.log('guard: ', guard)
-
     await guard.handleRedirectCallback()
-
     // ******** 使用 replace ********
     window.location.replace('/personal')
   }
