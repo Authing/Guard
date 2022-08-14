@@ -33,6 +33,7 @@ npm install --save @authing/guard-vue3
 |appId|String| - |Y|
 |mode|normal / modal|normal|N|
 |defaultScene|GuardModuleType|login|N|
+|align|none / left / center / right | none | N | Guard default position|
 |lang|zh-CN / en-US|zh-CN|N|
 |isSSO|Boolean|true|N|
 |host|String| - |N|

@@ -32,15 +32,16 @@ npm install --save @authing/guard-react
 
 |字段|类型|默认值|必传
 |-----|----|----|----|
-|appId|String| - |Y|
-|mode|normal / modal|normal|N|
-|defaultScene|GuardModuleType|login|N|
-|lang|zh-CN / en-US|zh-CN|N|
-|isSSO|Boolean|true|N|
-|host|String| - |N|
-|scope|String| - |N|
-|redirectUri|String| - |N|
-|state|String| - |N|
+|appId|String| - |是|
+|mode|normal / modal|normal|否|
+|defaultScene|GuardModuleType|login|否|
+| align        |none / left / center / right | none | 否 |
+|lang|zh-CN / en-US|zh-CN|否|
+|isSSO|Boolean|true|否|
+|host|String| - |否|
+|scope|String| - |否|
+|redirectUri|String| - |否|
+|state|String| - |否|
 
 
 ``` javascript
