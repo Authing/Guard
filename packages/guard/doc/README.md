@@ -15,7 +15,7 @@ Guard 是 Authing 提供的一种轻便的认证组件，你可以把它嵌入�
 - 进入<a href="https://console.authing.cn/" target="blank">控制台</a>
 - 选择`应用`菜单
 - 点击右上角`创建自建应用`按钮
-- 填写`应用名称`和`认证地址`、选择`单页 Web 应用`
+- 填写`应用名称`和`认证地址`、选择`标准 Web 应用`
 - 点击创建
 
 <img src="./1.png" width="650" />
