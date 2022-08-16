@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack-dev-server --progress --color --config webpack.config.js"
   },
-  "author": "",
+  "author": "https://github.com/authing",
   "license": "ISC",
   "devDependencies": {
     "@types/react-dom": "^16.9.8",
@@ -23,7 +23,7 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
-    "@authing/guard": "^5.0.0-alpha.18",
+    "@authing/guard": "^5.0.0-alpha.19",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router": "^5.1.2",

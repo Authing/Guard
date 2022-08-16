@@ -8,8 +8,9 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit"
   },
+  "author": "https://github.com/authing",
   "dependencies": {
-    "@authing/guard-vue3": "^5.0.0-alpha.18",
+    "@authing/guard-vue3": "^5.0.0-alpha.19",
     "vue": "^3.2.37",
     "vue-router": "^4.1.2"
   },
