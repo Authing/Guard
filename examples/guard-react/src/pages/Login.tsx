@@ -26,8 +26,14 @@ export default function Login() {
     guard.changeLang(lang)
   }, [lang])
 
+  const changeContentCSS = () => guard.changeContentCSS('body {background: blue}')
+
+  const startRegister = () => guard.startRegister()
+
   return <div>
     <button onClick={changeLang}>changeLang</button>
+    <button onClick={changeContentCSS}>changeContentCSS</button>
+    <button onClick={startRegister}>startRegister</button>
     <div id="guard"></div>
   </div>
 }
