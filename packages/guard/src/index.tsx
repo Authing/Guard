@@ -19,7 +19,7 @@ import {
 } from 'authing-js-sdk'
 
 import { ajax, AjaxRequest, AjaxResponse } from './ajax'
-import { GuardModuleType } from '@authing/react-ui-components'
+import { GuardModuleType, Lang } from '@authing/react-ui-components'
 
 export * from './types'
 
@@ -54,8 +54,6 @@ export class Guard {
       },
       options
     )
-
-    console.log('this.options: ', this.options)
 
     const init = (async () => {
       if (this.publicConfig) {
@@ -187,6 +185,26 @@ export class Guard {
     if (status) {
       return user
     }
+  }
+
+  changeLang(lang: Lang) {
+    this.options.lang = lang
+
+    this.options.config = Object.assign({}, this.options.config, {
+      lang
+    })
+
+    this.unmount()
+    this.render()
+  }
+
+  changeContentCSS(contentCSS: string) {
+    this.options.config = Object.assign({}, this.options.config, {
+      contentCss: contentCSS
+    })
+
+    this.unmount()
+    this.render()
   }
 
   /**

@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
-import { useGuard } from '@authing/guard-react'
+import { useGuard, Lang } from '@authing/guard-react'
 
 export default function Login() {
   const guard = useGuard()
+
+  const [lang, setLang] = useState<Lang>('zh-CN')
 
   useEffect(() => {
     guard.start('#guard').then(userInfo => {
@@ -11,5 +13,21 @@ export default function Login() {
     })
   }, [])
 
-  return <div id="guard">this is login Page</div>
+  const changeLang = () => {
+    if (lang === 'zh-CN') {
+      setLang('en-US')
+    } else {
+      setLang('zh-CN')
+    }
+  }
+
+  useEffect(() => {
+    console.log(lang)
+    guard.changeLang(lang)
+  }, [lang])
+
+  return <div>
+    <button onClick={changeLang}>changeLang</button>
+    <div id="guard"></div>
+  </div>
 }
