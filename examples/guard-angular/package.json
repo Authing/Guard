@@ -9,6 +9,7 @@
     "test": "ng test"
   },
   "private": true,
+  "author": "https://github.com/authing",
   "dependencies": {
     "@angular/animations": "^14.0.0",
     "@angular/common": "^14.0.0",

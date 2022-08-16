@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "NODE_ENV=dev webpack-dev-server --progress --color --config webpack.config.js"
   },
-  "author": "",
+  "author": "https://github.com/authing",
   "license": "ISC",
   "devDependencies": {
     "@types/react": "^16.9.32",
