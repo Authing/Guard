@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Guard } from '@authing/guard'
 
@@ -34,9 +34,12 @@ export default function Login () {
 
   const onmountGuard = () => guard.unmount()
 
+  const startRegister = () => guard.startRegister()
+
   return <>
     <div style={{ marginBottom: '100px' }}>
       <button onClick={onmountGuard}>unmount Guard Component</button>
+      <button onClick={startRegister}>startRegister</button>
     </div>
     
     <div id="guard-container"></div>

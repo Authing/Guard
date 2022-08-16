@@ -1,11 +1,15 @@
 import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
+import { useGuard } from '@authing/guard-react'
+
 export default function Callback() {
   const history = useHistory()
+  const guard = useGuard()
 
   const handleCallback = async () => {
-    history.push('/personal')
+    await guard.handleRedirectCallback()
+    history.replace('/personal')
   }
 
   useEffect(() => {

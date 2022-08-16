@@ -19,6 +19,7 @@ import {
 } from 'authing-js-sdk'
 
 import { ajax, AjaxRequest, AjaxResponse } from './ajax'
+import { GuardModuleType } from '@authing/react-ui-components'
 
 export * from './types'
 
@@ -41,17 +42,20 @@ export class Guard {
         mode: 'normal',
         tanentId: '',
         align: 'none',
-        config: Object.assign({}, options.config || {}, {
+        config: {
+          ...options.config,
           // 向后兼容
-          isSSO: options.isSSO,
-          defaultScenes: options.defaultScene,
-          lang: options.lang,
-          host: options.host,
-          mode: options.mode
-        })
+          isSSO: options.isSSO || false,
+          defaultScenes: options.defaultScene || 'login',
+          lang: options.lang || 'zh-CN',
+          host: options.host || '',
+          mode: options.mode || 'normal'
+        }
       },
       options
     )
+
+    console.log('this.options: ', this.options)
 
     const init = (async () => {
       if (this.publicConfig) {
@@ -151,6 +155,38 @@ export class Guard {
         resolve(userInfo)
       })
     })
+  }
+
+  startRegister() {
+    this.options.defaultScene = GuardModuleType.REGISTER
+
+    this.options.config = Object.assign({}, this.options.config, {
+      defaultScenes: GuardModuleType.REGISTER
+    })
+
+    this.unmount()
+    this.render()
+  }
+
+  async checkLoginStatus() {
+    const authClient = await this.getAuthClient()
+    const user = await authClient.getCurrentUser()
+
+    if (!user) {
+      return
+    }
+
+    const token = user.token
+
+    if (!token) {
+      return
+    }
+
+    const { status } = await authClient.checkLoginStatus(token)
+
+    if (status) {
+      return user
+    }
   }
 
   /**

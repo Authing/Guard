@@ -38,6 +38,7 @@ export type {
   GuardLocalConfig,
   GuardEvents,
   User,
+  Lang,
   UserConfig,
   GuardEventsHandler,
   GuardEventsHandlerKebab,

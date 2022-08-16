@@ -6,7 +6,7 @@ export default function Login() {
   const guard = useGuard()
 
   useEffect(() => {
-    guard.start('#root').then(userInfo => {
+    guard.start('#guard').then(userInfo => {
       console.log('userInfo from guard.start: ', userInfo)
     })
   }, [])
