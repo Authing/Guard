@@ -16,11 +16,12 @@ Prepare your React project and follow the guide to connect Guard to your React p
 
 From CDN:
 
-``` shell
-
+``` html
+<link rel="stylesheet" src="https://cdn.authing.co/packages/guard-react/5.0.0/guard.min.css" />
+<script src="https://cdn.authing.co/packages/guard-react/5.0.0/guard.min.js"></script>
 ```
 
-From npm:
+From NPM:
 
 ``` shell
 npm install --save @authing/guard-react
@@ -161,4 +162,4 @@ Refer to [Authentication SDK](https://docs.authing.cn/v2/reference/sdk-for-node/
 
 ## 📚 Documentation
 
-To check out live examples and docs, visit [docs](https://docs.authing.cn/v2/reference/guard/v2/)
+To check out live examples and docs, visit [docs](https://docs.authing.cn/v2/reference/guard/v3/spa.html)

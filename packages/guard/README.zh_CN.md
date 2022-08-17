@@ -16,11 +16,12 @@ Guard 是 Authing 提供的一种轻便的认证组件，你可以把它嵌入�
 
 使用 CDN:
 
-``` shell
-
+``` html
+<link rel="stylesheet" src="https://cdn.authing.co/packages/guard/5.0.0/guard.min.css" />
+<script src="https://cdn.authing.co/packages/guard/5.0.0/guard.min.js"></script>
 ```
 
-使用 npm:
+使用 NPM:
 
 ``` shell
 npm install --save @authing/guard
@@ -133,4 +134,4 @@ guard.getAuthClient().then(authClient => {
 
 ## 文档
 
-参考详细文档说明 [docs](https://docs.authing.cn/v2/reference/guard/v2/)
+参考详细文档说明 [docs](https://docs.authing.cn/v2/reference/guard/v3/mpa.html)

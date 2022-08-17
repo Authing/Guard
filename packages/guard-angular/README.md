@@ -193,4 +193,4 @@ Refer to [Authentication SDK](https://docs.authing.cn/v2/reference/sdk-for-node/
 
 ## Documentation
 
-To check out live examples and docs, visit [docs](https://docs.authing.cn/v2/reference/guard/v2/)
+To check out live examples and docs, visit [docs](https://docs.authing.cn/v2/reference/guard/v3/spa.html)

@@ -193,4 +193,4 @@ this.guard.client.getAuthClient().then(authClient => {
 
 ## 文档
 
-参考详细文档说明 [docs](https://docs.authing.cn/v2/reference/guard/v2/)
+参考详细文档说明 [docs](https://docs.authing.cn/v2/reference/guard/v3/spa.html)
