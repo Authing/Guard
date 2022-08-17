@@ -10,7 +10,7 @@
   },
   "author": "https://github.com/authing",
   "dependencies": {
-    "@authing/guard-vue3": "^5.0.0-alpha.19",
+    "@authing/guard-vue3": "^5.0.0",
     "vue": "^3.2.37",
     "vue-router": "^4.1.2"
   },

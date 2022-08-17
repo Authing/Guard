@@ -48,7 +48,7 @@ module.exports = {
     }),
   ],
   devServer: {
-    host: '127.0.0.1',
+    host: 'localhost',
     inline: false, // 启用热更新
     port: 3000,
     progress: true,
