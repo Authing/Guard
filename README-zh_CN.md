@@ -59,7 +59,7 @@
 Authing 支持 OAuth2、OIDC、SAML、LDAP 等多种协议，开发者可以配合统一用户池，最低五行代码轻松实现单点登录，实现登录定制化。
 
 <div align="center">
-  <img src="https://authing-cdn-cn-prod.oss-cn-beijing.aliyuncs.com/authing-assets/init-guard-react.png" width="650" />
+  <img src="https://docs.authing.cn/authing-assets/init-guard-react.png" width="650" />
 </div>
 
 ## 👀 在线体验
@@ -76,7 +76,7 @@ Authing 支持 OAuth2、OIDC、SAML、LDAP 等多种协议，开发者可以配�
 
 ## 👍 更新日志
 
-详细发布记录可参考[更新日志](https://docs.authing.cn/v2/reference/guard/v2/guard-changelog.html).
+详细发布记录可参考[更新日志](https://docs.authing.cn/v2/reference/guard/guard-changelog.html).
 
 ## 🤝 开源共建
 
