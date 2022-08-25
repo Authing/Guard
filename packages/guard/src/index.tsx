@@ -309,11 +309,21 @@ export class Guard {
   }
 
   async logout() {
-    const redirectUri = window.location.origin
+    const publicConfig = await this.then()
+
+    let redirectUri = ''
+    try {
+      redirectUri = publicConfig.logoutRedirectUris[0]
+    } catch (e) {
+      redirectUri = window.location.origin
+    }
+
     const idToken = localStorage.getItem('idToken')
     let logoutUrl = ''
 
     const authClient = await this.getAuthClient()
+
+    authClient.logout()
 
     if (idToken) {
       logoutUrl = authClient.buildLogoutUrl({
