@@ -34,6 +34,11 @@ export default function Login () {
     guardEffects()
   }, [])
 
+  const checkLoginStatus = async () => {
+    const user = await guard.checkLoginStatus()
+    console.log('user: ', user)
+  }
+
   const onmountGuard = () => guard.unmount()
 
   const startRegister = () => guard.startRegister()
@@ -55,10 +60,7 @@ export default function Login () {
     console.log('userInfo: ', userInfo)
   }
 
-  const checkLoginStatus = async () => {
-    const user = await guard.checkLoginStatus()
-    console.log('user: ', user)
-  }
+  const onLogout = () => guard.logout()
 
   return <>
     <div style={{ marginBottom: '100px' }}>
@@ -67,6 +69,7 @@ export default function Login () {
       <button onClick={changeLang}>changeLang</button>
       <button onClick={getUserInfo}>getUserInfo</button>
       <button onClick={checkLoginStatus}>checkLoginStatus</button>
+      <button onClick={onLogout}>onLogout</button>
     </div>
     
     <div id="guard-container"></div>
