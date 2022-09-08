@@ -18,7 +18,6 @@ import {
   AuthenticationClientOptions
 } from 'authing-js-sdk'
 
-import { ajax, AjaxRequest, AjaxResponse } from './ajax'
 import { GuardModuleType, Lang } from '@authing/react-ui-components'
 
 export * from './types'
@@ -70,19 +69,34 @@ export class Guard {
     this.visible = !!!(options.mode === GuardMode.Modal)
   }
 
-  private getPublicConfig(): Promise<AjaxResponse> {
+  private async getPublicConfig(): Promise<{
+    [prop: string]: any
+  }> {
     const host = `${this.options.host}` || 'https://core.authing.cn'
 
-    const _options: AjaxRequest = {
+    const options: RequestInit = {
       method: 'GET',
-      url: `${host}/api/v2/applications/${this.options.appId}/public-config`
+      credentials: 'include'
     }
 
-    return ajax(_options)
+    const fetchRes = await fetch(
+      `${host}/api/v2/applications/${this.options.appId}/public-config`,
+      options
+    )
+
+    const publicConfig = await fetchRes.text()
+
+    return JSON.parse(publicConfig)
   }
 
   async getAuthClient() {
-    const publicConfig = await this.then()
+    let publicConfig = {} as any
+
+    try {
+      publicConfig = await this.then()
+    } catch (e) {
+      console.log('publicConfig error: ', e)
+    }
 
     const _authClientOptions = Object.assign(
       {},
