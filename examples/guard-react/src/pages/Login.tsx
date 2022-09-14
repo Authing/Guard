@@ -32,10 +32,13 @@ export default function Login() {
 
   const startRegister = () => guard.startRegister()
 
+  const showGuardModal = () => guard.show()
+
   return <div>
     <button onClick={changeLang}>changeLang</button>
     <button onClick={changeContentCSS}>changeContentCSS</button>
     <button onClick={startRegister}>startRegister</button>
+    <button onClick={showGuardModal}>show Guard Modal</button>
     <div id="guard"></div>
   </div>
 }
