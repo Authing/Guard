@@ -13,6 +13,9 @@ function App() {
       // host="https://guard-test-2022.authing.cn"
       // redirectUri="http://localhost:3000/callback"
       align="center"
+      config={{
+        mode: 'modal'
+      }}
     >
       <RouterComponent></RouterComponent>
     </GuardProvider>

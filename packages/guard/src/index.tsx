@@ -66,7 +66,7 @@ export class Guard {
 
     this.then = init.then.bind(init)
 
-    this.visible = !!!(options.mode === GuardMode.Modal)
+    this.visible = !!(options.mode === GuardMode.Modal)
   }
 
   private async getPublicConfig(): Promise<{

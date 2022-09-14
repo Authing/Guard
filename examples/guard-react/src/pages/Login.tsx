@@ -5,6 +5,8 @@ import { useGuard, Lang } from '@authing/guard-react'
 export default function Login() {
   const guard = useGuard()
 
+  console.log('guard: ', guard)
+
   const [lang, setLang] = useState<Lang>('zh-CN')
 
   useEffect(() => {

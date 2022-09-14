@@ -62,6 +62,8 @@ export default function Login () {
 
   const onLogout = () => guard.logout()
 
+  const showGuardModal = () => guard.show()
+
   return <>
     <div style={{ marginBottom: '100px' }}>
       <button onClick={onmountGuard}>unmount Guard Component</button>
@@ -70,6 +72,7 @@ export default function Login () {
       <button onClick={getUserInfo}>getUserInfo</button>
       <button onClick={checkLoginStatus}>checkLoginStatus</button>
       <button onClick={onLogout}>onLogout</button>
+      <button onClick={showGuardModal}>show Guard Modal</button>
     </div>
     
     <div id="guard-container"></div>
