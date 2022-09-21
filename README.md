@@ -91,33 +91,8 @@ Thank you to all the people who already contributed to Guard!
 <div>
   <a href="https://github.com/leinue"><img width="30px" src="https://avatars.githubusercontent.com/u/2469688?v=4" /></a>
   <a href="https://github.com/lixpng"><img width="30px" src="https://avatars.githubusercontent.com/u/19266401?v=4" /></a>
-  <a href="https://github.com/kelvinji2009"><img width="30px" src="https://avatars.githubusercontent.com/u/881201?v=4" /></a>
-  <a href="https://github.com/vexilligera"><img width="30px" src="https://avatars.githubusercontent.com/u/20215432?v=4" /></a>
-  <a href="https://github.com/gouyaming"><img width="30px" src="https://avatars.githubusercontent.com/u/24635178?v=4" /></a>
-  <a href="https://github.com/willin"><img width="30px" src="https://avatars.githubusercontent.com/u/1890238?v=4" /></a>
-  <a href="https://github.com/TingYinHelen"><img width="30px" src="https://avatars.githubusercontent.com/u/14006826?v=4" /></a>
-  <a href="https://github.com/Meeken1998"><img width="30px" src="https://avatars.githubusercontent.com/u/42825670?v=4" /></a>
   <a href="https://github.com/yelexin"><img width="30px" src="https://avatars.githubusercontent.com/u/27125445?v=4" /></a>
-  <a href="https://github.com/HowieWolf"><img width="30px" src="https://avatars.githubusercontent.com/u/14340114?v=4" /></a>
-  <a href="https://github.com/JackJin2014"><img width="30px" src="https://avatars.githubusercontent.com/u/1982447?v=4" /></a>
-  <a href="https://github.com/fuergaosi233"><img width="30px" src="https://avatars.githubusercontent.com/u/22197568?v=4" /></a>
-  <a href="https://github.com/clearloop"><img width="30px" src="https://avatars.githubusercontent.com/u/26088946?v=4" /></a>
   <a href="https://github.com/liaochangjiang"><img width="30px" src="https://avatars.githubusercontent.com/u/35447896?v=4" /></a>
-  <a href="https://github.com/andyzhaozhao"><img width="30px" src="https://avatars.githubusercontent.com/u/7730080?s=96&v=4" /></a>
-  <a href="https://github.com/authing-wangck"><img width="30px" src="https://avatars.githubusercontent.com/u/78251114?s=96&v=4" /></a>
-  <a href="https://github.com/chho93"><img width="30px" src="https://avatars.githubusercontent.com/u/56515268?s=96&v=4" /></a>
-  <a href="https://github.com/Donglyrun"><img width="30px" src="https://avatars.githubusercontent.com/u/17630579?s=120&v=4" /></a>
-  <a href="https://github.com/gouyaming"><img width="30px" src="https://avatars.githubusercontent.com/u/24635178?s=96&v=4" /></a>
-  <a href="https://github.com/lancemao"><img width="30px" src="https://avatars.githubusercontent.com/u/5020396?s=96&v=4" /></a>
-  <a href="https://github.com/limejuiceOwO"><img width="30px" src="https://avatars.githubusercontent.com/u/59465535?v=4" /></a>
-  <a href="https://github.com/luojielin"><img width="30px" src="https://avatars.githubusercontent.com/u/29780568?v=4" /></a>
-  <a href="https://github.com/Mereithhh"><img width="30px" src="https://avatars.githubusercontent.com/u/22872368?s=96&v=4" /></a>
-  <a href="https://github.com/qianfeiqianlan"><img width="30px" src="https://avatars.githubusercontent.com/u/12892568?s=96&v=4" /></a>
-  <a href="https://github.com/shangsinian"><img width="30px" src="https://avatars.githubusercontent.com/u/6363555?s=96&v=4" /></a>
-  <a href="https://github.com/stan071408"><img width="30px" src="https://avatars.githubusercontent.com/u/6972394?s=96&v=4" /></a>
-  <a href="https://github.com/wajiao"><img width="30px" src="https://avatars.githubusercontent.com/u/20143458?s=96&v=4" /></a>
-  <a href="https://github.com/wedreamer"><img width="30px" src="https://avatars.githubusercontent.com/u/43949542?s=96&v=4" /></a>
-  <a href="https://github.com/Xuancaosu"><img width="30px" src="https://avatars.githubusercontent.com/u/51688262?s=96&v=4" /></a>
   <a href="https://github.com/zhaoyiming0803"><img width="30px" src="https://avatars.githubusercontent.com/u/25874685?s=96&v=4" /></a>
 </div>
 
@@ -127,3 +102,7 @@ Thank you to all the people who already contributed to Guard!
 
 Copyright (c) 2019 Authing
 
+## 🔗 Links
+- [authing-js-sdk](https://github.com/Authing/authing-js-sdk)
+- [AuthingMove](https://github.com/authing/authingmove)
+- [authingmove-template](https://github.com/Authing/authingmove-template)
