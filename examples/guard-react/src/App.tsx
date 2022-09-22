@@ -14,7 +14,7 @@ function App() {
       // redirectUri="http://localhost:3000/callback"
       align="center"
       config={{
-        mode: 'modal'
+        isSSO: true
       }}
     >
       <RouterComponent></RouterComponent>
