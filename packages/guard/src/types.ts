@@ -14,7 +14,8 @@ import {
   GuardEventsHandler,
   GuardEventsHandlerKebab,
   GuardEventsCamelToKebabMap,
-  GuardConfig
+  GuardConfig,
+  GuardProps
 } from '@authing/react-ui-components'
 
 import '@authing/react-ui-components/lib/index.min.css'
@@ -56,7 +57,7 @@ export type CodeMethod = 'S256' | 'plain'
 
 export type Align = 'none' | 'left' | 'center' | 'right'
 
-export interface GuardOptions {
+export interface GuardOptions extends GuardProps {
   appId: string
   host?: string
   redirectUri?: string

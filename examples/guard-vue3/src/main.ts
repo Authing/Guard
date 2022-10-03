@@ -8,11 +8,14 @@ import { createGuard } from '@authing/guard-vue3'
 
 import '@authing/guard-vue3/dist/esm/guard.min.css'
 
+import * as facePlugin from 'face-api.js'
+
 const app = createApp(App)
 
 app.use(
   createGuard({
     appId: '62e22721c889dd44bad1dda2',
+    facePlugin: facePlugin,
     // host: 'https://guard-test-2022.authing.cn',
     // redirectUri: 'http://localhost:3000/callback'
   })
