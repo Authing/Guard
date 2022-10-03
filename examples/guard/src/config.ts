@@ -1,10 +1,13 @@
 import { GuardOptions, GuardMode } from '@authing/guard'
 
+import * as facePlugin from 'face-api.js'
+
 export const guardOptions: GuardOptions = {
-  appId: '62e7f0c91073aaba0db4d65b',
+  appId: '62e22721c889dd44bad1dda2',
   // host: 'https://ipehegkanbpgkdho-demo.authing.cn',
   align: 'center',
   config: {
-    mode: GuardMode.Modal
-  }
+    mode: GuardMode.Normal
+  },
+  facePlugin
 }

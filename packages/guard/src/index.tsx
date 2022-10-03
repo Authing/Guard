@@ -401,6 +401,8 @@ export class Guard {
           appId={this.options.appId}
           tenantId={this.options.tenantId}
           config={this.options.config}
+          facePlugin={this.options.facePlugin}
+          appendConfig={this.options.appendConfig}
           visible={this.visible}
           authClient={authClient}
         />

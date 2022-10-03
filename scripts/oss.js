@@ -29,10 +29,15 @@ const packages = fs.readdirSync('packages').filter(f => {
   return true
 })
 
+const ossPackages = ['guard']
+
 readyGo()
 
 function readyGo() {
   packages.forEach(package => {
+    if (!ossPackages.includes(package)) {
+      return
+    }
     getAndPutFile(`${process.cwd()}/packages/${package}/dist/global`, package)
   })
 }
