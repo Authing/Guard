@@ -7,7 +7,7 @@ import { LoginComponent } from '../app/pages/login/login.component'
 
 import { GuardModule } from '@authing/guard-angular'
 
-console.log('--------: ', GuardModule)
+import * as facePlugin from 'face-api.js'
 
 @NgModule({
   declarations: [
@@ -18,9 +18,8 @@ console.log('--------: ', GuardModule)
     BrowserModule,
     AppRoutingModule,
     GuardModule.forRoot({
-      appId: '62e22721c889dd44bad1dda2',
-      // host: 'https://guard-test-2022.authing.cn',
-      // redirectUri: 'http://localhost:3000/callback'
+      appId: '',
+      facePlugin
     })
   ],
   providers: [],

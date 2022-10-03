@@ -4,12 +4,10 @@ import { useEffect } from 'react'
 import { Guard } from '@authing/guard'
 import '@authing/guard/dist/esm/guard.min.css'
 
+import { guardOptions } from '../config'
+
 export default function Home() {
-  const guard = new Guard({
-    appId: '62e22721c889dd44bad1dda2',
-    host: 'https://guard-test-2022.authing.cn',
-    redirectUri: 'http://localhost:3001/callback'
-  })
+  const guard = new Guard(guardOptions)
 
   const guardEffects = async () => {
     guard.start('#guard-container').then(userInfo => {
