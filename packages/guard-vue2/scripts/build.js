@@ -1,8 +1,7 @@
 const path = require('path')
 const rm = require('rimraf')
 const webpack = require('webpack')
-const webpackEsmBundlerConfig = require('./webpack.esm.config')
-const webpackGlobalConfig = require('./webpack.global.config')
+const webpackConfig = require('./webpack.config')
 
 try {
   rm.sync(path.resolve(__dirname, '../', 'dist'))
@@ -13,14 +12,9 @@ try {
 readyGo()
 
 function readyGo () {
-  webpack(webpackEsmBundlerConfig, (error) => {
+  webpack(webpackConfig, (error) => {
     if (error) {
       console.error('build guard-vue2 esm bundler error: ', error)
-    }
-  })
-  webpack(webpackGlobalConfig, (error) => {
-    if (error) {
-      console.error('build guard-vue2 global error: ', error)
     }
   })
 }
