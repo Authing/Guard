@@ -18,7 +18,7 @@ import * as facePlugin from 'face-api.js'
     BrowserModule,
     AppRoutingModule,
     GuardModule.forRoot({
-      appId: '',
+      appId: 'Your Authing application ID',
       facePlugin
     })
   ],

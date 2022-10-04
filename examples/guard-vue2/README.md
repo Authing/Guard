@@ -1,24 +1,17 @@
-# example
+# guard-vue2
 
-## Project setup
-```
-npm install
+
+修改 `src/main.js` 中的配置：
+
+``` javascript
+Vue.use(GuardPlugin, {
+  appId: 'Your Authing application ID'
+})
 ```
 
-### Compiles and hot-reloads for development
-```
+运行以下命令：
+
+``` shell
+npm ci
 npm run dev
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
