@@ -10,7 +10,6 @@ import '@authing/guard-vue2/dist/esm/guard.min.css'
 
 Vue.use(GuardPlugin, {
   appId: 'Your Authing application ID',
-  align: 'center',
   // host: '',
   // redirectUri: '',
   facePlugin
