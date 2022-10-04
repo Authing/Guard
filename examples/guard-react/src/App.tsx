@@ -11,7 +11,7 @@ import RouterComponent from './router'
 export default function App() {
   return (
     <GuardProvider
-      appId=""
+      appId="Your Authing application ID"
       facePlugin={facePlugin}
     >
       <RouterComponent></RouterComponent>

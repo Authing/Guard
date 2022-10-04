@@ -14,10 +14,10 @@ const app = createApp(App)
 
 app.use(
   createGuard({
-    appId: '62e22721c889dd44bad1dda2',
+    appId: 'Your Authing application ID',
     facePlugin: facePlugin,
-    // host: 'https://guard-test-2022.authing.cn',
-    // redirectUri: 'http://localhost:3000/callback'
+    // host: '',
+    // redirectUri: ''
   })
 )
 
