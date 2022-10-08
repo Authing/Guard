@@ -7,42 +7,29 @@ import {
   GuardModuleType,
   Lang,
   User,
-  UserConfig,
-  GuardScenes,
   LoginMethods,
   RegisterMethods,
-  GuardEventsHandler,
-  GuardEventsHandlerKebab,
-  GuardEventsCamelToKebabMap,
-  GuardConfig,
-  GuardProps
+  GuardProps,
+  GuardLocalConfig
 } from '@authing/react-ui-components'
 
 import '@authing/react-ui-components/lib/index.min.css'
-
-import { GuardLocalConfig } from '@authing/react-ui-components/components/Guard/config'
 
 import { AuthenticationClientOptions } from 'authing-js-sdk'
 
 export {
   Guard as ReactAuthingGuard,
   GuardMode,
-  GuardScenes,
   LoginMethods,
   RegisterMethods,
-  GuardEventsCamelToKebabMap,
   GuardEventsCamelToKebabMapping
 }
 
 export type {
-  GuardConfig,
   GuardLocalConfig,
   GuardEvents,
   User,
   Lang,
-  UserConfig,
-  GuardEventsHandler,
-  GuardEventsHandlerKebab,
   GuardEventsKebabToCamelType
 }
 
