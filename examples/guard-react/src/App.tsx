@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { GuardProvider } from '@authing/guard-react'
+import { GuardProvider, GuardMode } from '@authing/guard-react'
 
 import '@authing/guard-react/dist/esm/guard.min.css'
 
@@ -11,7 +11,11 @@ import RouterComponent from './router'
 export default function App() {
   return (
     <GuardProvider
-      appId="Your Authing application ID"
+      appId="6322ef4c06b1a01036695b33"
+      isSSO={true}
+      config={{
+        
+      }}
       facePlugin={facePlugin}
     >
       <RouterComponent></RouterComponent>

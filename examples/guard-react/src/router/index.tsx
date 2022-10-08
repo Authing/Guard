@@ -3,7 +3,7 @@ import * as React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import Home from '../pages/Home'
-import Login from '../pages/Login'
+import Embed from '../pages/Embed'
 import Callback from '../pages/Callback'
 import Jump from '../pages/Jump'
 import Personal from '../pages/Personal'
@@ -16,7 +16,7 @@ export default function RouterComponent() {
           <Home />
         </Route>
         <Route exact path="/login">
-          <Login />
+          <Embed />
         </Route>
         <Route exact path="/jump">
           <Jump />

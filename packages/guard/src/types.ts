@@ -17,6 +17,8 @@ import '@authing/react-ui-components/lib/index.min.css'
 
 import { AuthenticationClientOptions } from 'authing-js-sdk'
 
+export * from '@authing/react-ui-components'
+
 export {
   Guard as ReactAuthingGuard,
   GuardMode,
