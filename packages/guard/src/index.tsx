@@ -2,27 +2,50 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import {
-  GuardOptions,
-  GuardMode,
-  GuardEventsCamelToKebabMapping,
-  CodeMethod,
-  GuardLocalConfig,
-  GuardEventListeners,
-  GuardEvents,
-  ReactAuthingGuard,
-  GuardEventsKebabToCamelType
-} from './types'
-
-import {
   AuthenticationClient,
   AuthenticationClientOptions
 } from 'authing-js-sdk'
 
-import { GuardModuleType, Lang } from '@authing/react-ui-components'
+import {
+  Guard as ReactAuthingGuard,
+  GuardMode,
+  GuardEvents,
+  GuardEventsKebabToCamelType,
+  GuardEventsCamelToKebabMapping,
+  GuardModuleType,
+  Lang,
+  GuardProps,
+  GuardLocalConfig
+} from '@authing/react-ui-components'
 
-export * from './types'
+export type GuardEventListeners = {
+  [key in keyof GuardEventsKebabToCamelType]: Exclude<
+    Required<GuardEventsKebabToCamelType>[key],
+    undefined
+  >[]
+}
 
-export { AuthenticationClient, AuthenticationClientOptions }
+export type CodeMethod = 'S256' | 'plain'
+
+export type Align = 'none' | 'left' | 'center' | 'right'
+
+export * from '@authing/react-ui-components'
+
+export interface GuardOptions extends GuardProps {
+  appId: string
+  host?: string
+  redirectUri?: string
+  mode?: 'normal' | 'modal'
+  defaultScene?: GuardModuleType
+  tenantId?: string
+  lang?: Lang
+  isSSO?: boolean
+  scope?: string // OIDC scope
+  state?: string // OIDC 状态
+  config?: Partial<GuardLocalConfig> // 兼容之前的 config，新用户可不传
+  authClientOptions?: AuthenticationClientOptions
+  align?: Align
+}
 
 export class Guard {
   private options: GuardOptions
