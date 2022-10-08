@@ -1,32 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 
-import { useGuard, Lang } from '@authing/guard-react'
+import { useGuard } from '@authing/guard-react'
 
 export default function Login() {
   const guard = useGuard()
 
-  console.log('guard: ', guard)
-
-  const [lang, setLang] = useState<Lang>('zh-CN')
+  console.log('guard instance: ', guard)
 
   useEffect(() => {
-    guard.start('#guard').then(userInfo => {
-      console.log('userInfo from guard.start: ', userInfo)
+    guard.start('#authing-guard-container').then(userInfo => {
+      console.log('userInfo: : ', userInfo)
     })
   }, [])
 
-  const changeLang = () => {
-    if (lang === 'zh-CN') {
-      setLang('en-US')
-    } else {
-      setLang('zh-CN')
-    }
+  const changeLang = (event: any) => {
+    console.log(event.target.value)
+    guard.changeLang(event.target.value)
   }
-
-  useEffect(() => {
-    console.log(lang)
-    guard.changeLang(lang)
-  }, [lang])
 
   const changeContentCSS = () => guard.changeContentCSS('body {background: blue}')
 
@@ -35,10 +25,15 @@ export default function Login() {
   const showGuardModal = () => guard.show()
 
   return <div>
-    <button onClick={changeLang}>changeLang</button>
-    <button onClick={changeContentCSS}>changeContentCSS</button>
-    <button onClick={startRegister}>startRegister</button>
-    <button onClick={showGuardModal}>show Guard Modal</button>
-    <div id="guard"></div>
+    <select onChange={changeLang}>
+      <option value="zh-CN">zh-CN</option>
+      <option value="zh-TW">zh-TW</option>
+      <option value="en-US">en-US</option>
+      <option value="ja-JP">ja-JP</option>
+    </select>
+    <button onClick={changeContentCSS}>change Content CSS</button>
+    <button onClick={startRegister}>Start Register</button>
+    <button onClick={showGuardModal}>Show Guard Modal</button>
+    <div id="authing-guard-container"></div>
   </div>
 }
