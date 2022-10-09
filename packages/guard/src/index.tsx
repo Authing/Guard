@@ -5,12 +5,12 @@ import {
   GuardOptions,
   GuardMode,
   GuardEventsCamelToKebabMapping,
-  CodeMethod,
   GuardLocalConfig,
   GuardEventListeners,
   GuardEvents,
   ReactAuthingGuard,
-  GuardEventsKebabToCamelType
+  GuardEventsKebabToCamelType,
+  StartWithRedirectOptions
 } from './types'
 
 import {
@@ -34,6 +34,10 @@ export class Guard {
   private publicConfig?: Record<string, unknown>
 
   constructor(options: GuardOptions) {
+    if (!options.appId) {
+      throw new Error('appId is required')
+    }
+
     this.options = Object.assign(
       {},
       {
@@ -223,13 +227,21 @@ export class Guard {
 
   /**
    * 启动跳转模式
-   * @param {String} codeChallengeDigestMethod 'S256' | 'plain'
-   * @param {String} codeChallengeMethod 'S256' | 'plain'
    */
-  async startWithRedirect(
-    codeChallengeDigestMethod: CodeMethod = 'S256',
-    codeChallengeMethod: CodeMethod = 'S256'
-  ) {
+  async startWithRedirect(options: StartWithRedirectOptions = {}) {
+    const getRandom = () => Math.random().toString().slice(2)
+
+    const {
+      codeChallengeDigestMethod = 'S256',
+      codeChallengeMethod = 'S256',
+      scope = 'openid profile email phone address',
+      redirectUri,
+      state = getRandom(),
+      nonce = getRandom(),
+      responseMode,
+      responseType
+    } = options
+
     const authClient = await this.getAuthClient()
 
     // 生成一个 code_verifier
@@ -246,7 +258,13 @@ export class Guard {
     // 构造 OIDC 授权码 + PKCE 模式登录 URL
     const url = authClient.buildAuthorizeUrl({
       codeChallenge: codeChallengeDigest,
-      codeChallengeMethod: codeChallengeMethod
+      codeChallengeMethod: codeChallengeMethod,
+      scope,
+      redirectUri,
+      state,
+      nonce,
+      responseMode,
+      responseType
     })
 
     window.location.href = url

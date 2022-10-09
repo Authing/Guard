@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <div>
       <div style={{ marginBottom: '20px' }} onClick={toEmbed}>
-        <button>嵌入模式</button>
+        <button>嵌入模式 - 普通形态</button>
       </div>
       <div>
         <button onClick={toJump}>跳转模式</button>

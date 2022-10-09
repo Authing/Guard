@@ -59,3 +59,21 @@ export interface GuardOptions extends GuardProps {
   authClientOptions?: AuthenticationClientOptions
   align?: Align
 }
+
+export interface StartWithRedirectOptions {
+  codeChallengeDigestMethod?: CodeMethod
+  codeChallengeMethod?: CodeMethod
+  scope?: string
+  redirectUri?: string
+  state?: string
+  responseType?:
+    | 'code'
+    | 'code id_token token'
+    | 'code id_token'
+    | 'code token'
+    | 'id_token token'
+    | 'id_token'
+    | 'none'
+  responseMode?: 'query' | 'fragment' | 'form_post'
+  nonce?: string
+}
