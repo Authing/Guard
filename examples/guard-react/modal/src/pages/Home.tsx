@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 export default function Home() {
   const history = useHistory()
 
-  const toEmbed = () => history.push('/login')
+  const toEmbed = () => history.push('/embed')
 
   return (
     <div>

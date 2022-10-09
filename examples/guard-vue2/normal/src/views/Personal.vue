@@ -1,6 +1,9 @@
 <template>
   <div class="personal-container">
     <div>{{ message }}</div>
+    <div>
+      <button @click="logout">Logout</button>
+    </div>
     <textarea id="" cols="100" rows="30" :value="userInfo"></textarea>
   </div>
 </template>
@@ -21,6 +24,9 @@ export default {
       this.$guard.trackSession().then(res => {
         this.userInfo = JSON.stringify(res || '', null, 2)
       })
+    },
+    logout () {
+      this.$guard.logout()
     }
   }
 }

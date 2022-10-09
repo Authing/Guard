@@ -13,7 +13,7 @@ export default function Login() {
       console.log('userInfo: : ', userInfo)
     })
 
-    const langCache = localStorage.getItem('_guard_i18nextLng') || ''
+    const langCache = localStorage.getItem('_guard_i18nextLng') || 'zh-CN'
     setLangCache(langCache)
   }, [])
 

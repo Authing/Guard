@@ -15,3 +15,5 @@ export function createGuard(options: GuardOptions) {
 export function useGuard(): Guard {
   return inject(AUTHING_INJECTION_KEY) as Guard
 }
+
+export * from '@authing/guard'

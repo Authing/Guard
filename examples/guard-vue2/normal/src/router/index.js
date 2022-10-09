@@ -14,9 +14,13 @@ const router = new Router({
     name: 'Home',
     component: () => import('../views/Home.vue')
   }, {
-    path: '/login',
-    name: 'Login',
-    component: () => import('../views/Login.vue')
+    path: '/embed',
+    name: 'Embed',
+    component: () => import('../views/Embed.vue')
+  }, {
+    path: '/jump',
+    name: 'Jump',
+    component: () => import('../views/Jump.vue')
   }, {
     path: '/callback',
     name: 'Callback',

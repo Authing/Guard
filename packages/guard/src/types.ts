@@ -77,3 +77,5 @@ export interface StartWithRedirectOptions {
   responseMode?: 'query' | 'fragment' | 'form_post'
   nonce?: string
 }
+
+export * from '@authing/react-ui-components'

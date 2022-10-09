@@ -14,10 +14,12 @@ const app = createApp(App)
 
 app.use(
   createGuard({
-    appId: 'Your Authing application ID',
-    facePlugin: facePlugin,
-    // host: '',
-    // redirectUri: ''
+    appId: '6322ef4c06b1a01036695b33',
+    isSSO: true,
+    config: {
+      socialConnections: ['github'],
+    },
+    facePlugin
   })
 )
 

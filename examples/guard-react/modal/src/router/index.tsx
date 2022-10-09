@@ -12,7 +12,7 @@ export default function RouterComponent() {
         <Route exact path="/">
           <Home />
         </Route>
-        <Route exact path="/login">
+        <Route exact path="/embed">
           <Embed />
         </Route>
       </Switch>

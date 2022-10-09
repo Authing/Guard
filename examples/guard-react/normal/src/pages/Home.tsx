@@ -13,7 +13,7 @@ export default function Home() {
         <button>嵌入模式 - 普通形态</button>
       </div>
       <div>
-        <button onClick={toJump}>跳转模式</button>
+        <button onClick={toJump}>托管模式</button>
       </div>
     </div>
   )

@@ -17,11 +17,19 @@ export default function Callback() {
       const loginStatus = await guard.checkLoginStatus()
 
       if (!loginStatus) {
+        guard.startWithRedirect({
+          scope: 'openid profile',
+          // 默认情况下，会使用你在 Authing 控制台中配置的第一个回调地址为此次认证使用的回调地址。
+          // 如果你配置了多个回调地址，也可以手动指定（此地址也需要加入到应用的「登录回调 URL」中）：
+          redirectUri: 'http://localhost:3000/callback'
+        })
         return
       }
 
       // 3. 获取到登录用户的用户信息
       const userInfo = await guard.trackSession()
+
+      console.log(userInfo)
 
       // 你也可以重定向到你的任意业务页面，比如重定向到用户的个人中心
       // 如果你希望实现登录后跳转到同一页面的效果，可以通过在调用 startWithRedirect 时传入的自定义 state 实现
@@ -33,10 +41,17 @@ export default function Callback() {
       // })
 
       // 示例二：获取自定义 state，进行特定操作
-      // const state = window.location.href.state
-      // const stateRelatedData = localStorage.get(`stateStorage:${state}`)
+      // const search = window.location.search
+      // 从 URL search 中解析 state
     } catch (e) {
-      // ......
+      // 登录失败，推荐再次跳转到登录页面
+      guard.startWithRedirect({
+        scope: 'openid profile',
+        // 默认情况下，会使用你在 Authing 控制台中配置的第一个回调地址为此次认证使用的回调地址。
+        // 如果你配置了多个回调地址，也可以手动指定（此地址也需要加入到应用的「登录回调 URL」中）：
+        redirectUri: 'http://localhost:3000/callback'
+      })
+      return
     }
     
     history.replace('/personal')
