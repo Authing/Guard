@@ -1,8 +1,12 @@
 <template>
-  <div class="home-container">
-    <div style="margin-bottom: 30px;">{{ message }}</div>
-    <button @click="toLogin">go to login page</button>
-    <button @click="changeContentCSS">changeContentCSS</button>
+  <div class="home-container">    
+    <div style="margin-bottom: 20px;">
+      <button @click="toEmbed">嵌入模式 - 普通形态</button>
+    </div>
+
+    <div style="margin-bottom: 20px;">
+      <button @click="toJump">托管模式</button>
+    </div>
     <div id="home-container"></div>
   </div>
 </template>
@@ -17,14 +21,12 @@ const router = useRouter()
 
 const guard = useGuard()
 
-// const message = 'This is home page ~~'
-const toLogin = () => router.push({
-  path: '/login'
+const toEmbed = () => router.push({
+  path: '/embed'
 })
 
-const changeContentCSS = () => guard.changeContentCSS('body { background: yellow }')
-
-onMounted(() => {
-  guard.start('#home-container')
+const toJump = () => router.push({
+  path: '/jump'
 })
+
 </script>

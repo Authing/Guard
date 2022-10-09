@@ -1,27 +1,28 @@
 <template>
   <div class="personal-container">
-    <div>{{ message }}</div>
-    <textarea cols="100" rows="30" :value="userInfo"></textarea>
+    <div>
+      <button @click="logout">Logout</button>
+    </div>
+    <textarea id="" cols="100" rows="30" :value="userInfo"></textarea>
   </div>
 </template>
 
 <script scoped setup>
 import { ref, onMounted } from 'vue'
-
 import { useGuard } from '@authing/guard-vue3'
+
+const userInfo = ref(null)
 
 const guard = useGuard()
 
-const userInfo = ref('')
-
-const message = 'This is Personal page ~~'
-
-const getCurrentUser = async () => {
+const getUserInfo = async () => {
   const _userInfo = await guard.trackSession()
-  userInfo.value = _userInfo && JSON.stringify(_userInfo, null, 2) || ''
+  userInfo.value = JSON.stringify(_userInfo || '', null, 2)
 }
 
+const logout = () => guard.logout()
+
 onMounted(() => {
-  getCurrentUser()
+  getUserInfo()
 })
 </script>
