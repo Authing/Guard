@@ -24,8 +24,10 @@ export * from './types'
 
 export { AuthenticationClient, AuthenticationClientOptions }
 
+const isDef = (value: unknown) => value !== undefined
+
 export class Guard {
-  private options: GuardOptions
+  public options: GuardOptions
 
   private visible = false
 
@@ -38,25 +40,33 @@ export class Guard {
       throw new Error('appId is required')
     }
 
-    this.options = Object.assign(
-      {},
-      {
-        host: '',
-        mode: 'normal',
-        tanentId: '',
-        align: 'none',
-        config: {
-          ...options.config,
-          // 向后兼容
-          isSSO: options.isSSO || false,
-          defaultScenes: options.defaultScene || 'login',
-          lang: options.lang,
-          host: options.host,
-          mode: options.mode || 'normal'
-        }
-      },
-      options
-    )
+    const config: Partial<GuardLocalConfig> = {
+      ...options.config
+    }
+
+    if (isDef(options.isSSO)) {
+      config.isSSO = options.isSSO
+    }
+
+    if (isDef(options.defaultScene)) {
+      config.defaultScenes = options.defaultScene
+    }
+
+    if (isDef(options.lang)) {
+      config.lang = options.lang
+    }
+
+    if (isDef(options.host)) {
+      config.host = options.host
+    }
+
+    if (isDef(options.mode)) {
+      config.mode = options.mode
+    }
+
+    options.config = config
+
+    this.options = options
 
     const init = (async () => {
       if (this.publicConfig) {

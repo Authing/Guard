@@ -6,6 +6,8 @@ import { guardOptions } from '../config'
 
 const guard = new Guard(guardOptions)
 
+console.log('guard: ', guard)
+
 export default function Login () {
   const [lang, setLang] = useState<Lang>('zh-CN')
   

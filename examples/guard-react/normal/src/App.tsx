@@ -13,9 +13,9 @@ export default function App() {
     <GuardProvider
       appId="6322ef4c06b1a01036695b33"
       isSSO={true}
-      config={{
-        socialConnections: ['github'],
-      }}
+      // config={{
+      //   socialConnections: [SocialConnectionProvider.GITHUB],
+      // }}
       facePlugin={facePlugin}
     >
       <RouterComponent></RouterComponent>

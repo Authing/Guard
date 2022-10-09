@@ -48,7 +48,7 @@ export interface GuardOptions extends GuardProps {
   appId: string
   host?: string
   redirectUri?: string
-  mode?: 'normal' | 'modal'
+  mode?: GuardMode
   defaultScene?: GuardModuleType
   tenantId?: string
   lang?: Lang
