@@ -40,7 +40,9 @@ export class Guard {
       throw new Error('appId is required')
     }
 
-    const config: Partial<GuardLocalConfig> = {
+    options.host = options.host || ''
+
+    const config = {
       ...options.config
     }
 
