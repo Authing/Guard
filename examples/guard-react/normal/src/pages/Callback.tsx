@@ -36,9 +36,7 @@ export default function Callback() {
       // 之后你在这些页面可以通过 trackSession 方法获取用户登录态和用户信息
 
       // 示例一：跳转到固定页面
-      // router.replace({
-      //   name: 'CustomPage'
-      // })
+      history.replace('/personal')
 
       // 示例二：获取自定义 state，进行特定操作
       // const search = window.location.search
@@ -51,10 +49,7 @@ export default function Callback() {
         // 如果你配置了多个回调地址，也可以手动指定（此地址也需要加入到应用的「登录回调 URL」中）：
         redirectUri: 'http://localhost:3000/callback'
       })
-      return
     }
-    
-    history.replace('/personal')
   }
 
   useEffect(() => {

@@ -1,0 +1,33 @@
+<div class="embed-container">
+  <div class="item">
+    <label>Change Lang: </label>
+    <select ng-model="langCache">
+      <option ngValue="zh-CN">zh-CN</option>
+      <option ngValue="zh-TW">zh-TW</option>
+      <option ngValue="en-US">en-US</option>
+      <option ngValue="ja-JP">ja-JP</option>
+    </select>
+  </div>
+
+  <div class="item">
+    <button (click)="changeContentCSS()">Change Content CSS</button>
+  </div>
+
+  <div class="item">
+    <button (click)="startRegister()">Start Register</button>
+  </div>
+
+  <div class="item">
+    <button (click)="logout()">Logout</button>
+  </div>
+
+  <div class="item">
+    <button (click)="getUserInfo()">Get User Info</button>
+  </div>
+
+  <div class="item">
+    <button (click)="refreshToken()">Refresh Token</button>
+  </div>
+
+  <div id="authing-guard-container"></div>
+</div>

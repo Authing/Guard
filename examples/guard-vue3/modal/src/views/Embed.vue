@@ -20,7 +20,7 @@ const showGuard = () => guard.show()
 
 onMounted(() => {
   guard.start('#authing-guard-container').then(userInfo => {
-    console.log('userInfo: : ', userInfo)
+    console.log('userInfo: ', userInfo)
   })
 
   setTimeout(() => {
