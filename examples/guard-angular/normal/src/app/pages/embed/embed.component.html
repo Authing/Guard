@@ -1,7 +1,8 @@
 <div class="embed-container">
   <div class="item">
     <label>Change Lang: </label>
-    <select ng-model="langCache">
+    {{ langCache }}
+    <select ng-model="langCache" (change)="changeLang($event)">
       <option ngValue="zh-CN">zh-CN</option>
       <option ngValue="zh-TW">zh-TW</option>
       <option ngValue="en-US">en-US</option>
@@ -9,25 +10,15 @@
     </select>
   </div>
 
-  <div class="item">
-    <button (click)="changeContentCSS()">Change Content CSS</button>
-  </div>
+  <button class="authing-button" (click)="changeContentCSS()">Change Content CSS</button>
 
-  <div class="item">
-    <button (click)="startRegister()">Start Register</button>
-  </div>
+  <button class="authing-button" (click)="startRegister()">Start Register</button>
 
-  <div class="item">
-    <button (click)="logout()">Logout</button>
-  </div>
+  <button class="authing-button" (click)="logout()">Logout</button>
 
-  <div class="item">
-    <button (click)="getUserInfo()">Get User Info</button>
-  </div>
+  <button class="authing-button" (click)="getUserInfo()">Get User Info</button>
 
-  <div class="item">
-    <button (click)="refreshToken()">Refresh Token</button>
-  </div>
+  <button class="authing-button" (click)="refreshToken()">Refresh Token</button>
 
   <div id="authing-guard-container"></div>
 </div>
