@@ -15,10 +15,22 @@ export default function Personal() {
 
   const onLogout = () => guard.logout()
 
+  const updateProfile = () => {
+    guard.getAuthClient().then(authenticationClient => {
+      // 获取到 AuthenticationClient 实例之后，可以调用其提供的所有方法
+      // 比如更新用户昵称
+      authenticationClient.updateProfile({
+        nickname: 'Nick'
+      })
+      // 更多 AuthenticationClient 的方法，请见 authing-js-sdk 文档介绍。
+    })
+  }
+
   return (
     <div>
       <div>
-        <button onClick={onLogout}>登出</button>
+        <button className='authing-button' onClick={onLogout}>登出</button>
+        <button className='authing-button' onClick={updateProfile}>Update Profile</button>
       </div>
       {userInfo && (
         <div>

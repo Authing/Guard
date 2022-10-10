@@ -14,7 +14,7 @@ export default function Jump() {
   return (
     <div>
       <div>
-        <button onClick={startWithRedirect}>Start With Redirect</button>
+        <button className='authing-button' onClick={startWithRedirect}>Start With Redirect</button>
       </div>
     </div>
   )

@@ -8,10 +8,12 @@ import * as facePlugin from 'face-api.js'
 
 import RouterComponent from './router'
 
+import './App.css'
+
 export default function App() {
   return (
     <GuardProvider
-      appId="6322ef4c06b1a01036695b33"
+      appId="63438f6f49cfbc1bbb37ece3"
       isSSO={true}
       // config={{
       //   socialConnections: [SocialConnectionProvider.GITHUB],
