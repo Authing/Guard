@@ -1,6 +1,6 @@
 <template>
   <div class="jump-container">
-    <button @click="startWithRedirect">Start With Redirect</button>
+    <button class="authing-button" @click="startWithRedirect">Start With Redirect</button>
   </div>
 </template>
 

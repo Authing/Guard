@@ -9,32 +9,22 @@
         <option value="ja-JP">ja-JP</option>
       </select>
     </div>
-    
-    <div class="item">
-      <button @click="changeContentCSS">Change Content CSS</button>
-    </div>
-    
-    <div class="item">
-      <button @click="startRegister">Start Register</button>
-    </div>
 
-    <div class="item">
-      <button @click="logout">Logout</button>
-    </div>
-    
-    <div class="item">
-      <button @click="getUserInfo">Get User Info</button>
-    </div>
-    
-    <div class="item">
-      <button @click="refreshToken">Refresh Token</button>
-    </div>
+    <button class="authing-button" @click="changeContentCSS">Change Content CSS</button>
+
+    <button class="authing-button" @click="startRegister">Start Register</button>
+
+    <button class="authing-button" @click="logout">Logout</button>
+
+    <button class="authing-button" @click="getUserInfo">Get User Info</button>
+
+    <button class="authing-button" @click="refreshToken">Refresh Token</button>
 
     <div id="authing-guard-container"></div>
   </div>
 </template>
 
-<script scoped>
+<script>
 export default {
   data () {
     return {
@@ -42,11 +32,15 @@ export default {
     }
   },
   mounted () {
+    // 使用 start 方法挂载 Guard 组件到你指定的 DOM 节点，登录成功后返回 userInfo
     this.$guard.start('#authing-guard-container').then(userInfo => {
       console.log(userInfo)
     })
 
-    this.langCache = localStorage.getItem('_guard_i18nextLng') || 'zh-CN'
+    this.$guard.on('load', ()=>{
+      // 缓存中获取 Guard 默认语言类型
+      this.langCache = localStorage.getItem('_guard_i18nextLng')
+    })
   },
   methods: {
     changeContentCSS () {
@@ -57,6 +51,7 @@ export default {
       this.$guard.startRegister()
     },
 
+    // 登出后的回调地址请在 Authing 控制台「应用详情」-「应用配置」-「登出回调 URL」中配置
     logout () {
       this.$guard.logout()
     },
@@ -83,5 +78,9 @@ export default {
 <style scoped>
   .embed-container .item {
     margin-bottom: 10px;
+  }
+  .authing-button {
+    margin-bottom: 10px;
+    margin-right: 10px;
   }
 </style>

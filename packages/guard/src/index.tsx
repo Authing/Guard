@@ -147,7 +147,11 @@ export class Guard {
     }
 
     if (typeof selector === 'string') {
-      return document.querySelector(selector)
+      const res =  document.querySelector(selector)
+      if (!res) {
+        console.warn(`Failed to start guard: target selector "${selector}" returned null.`)
+      }
+      return res
     }
 
     return selector

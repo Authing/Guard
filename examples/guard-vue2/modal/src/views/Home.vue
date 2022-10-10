@@ -1,10 +1,10 @@
 <template>
   <div class="home-container">
-    <button @click="toEmbed">内嵌模式 - 模态框形态</button>
+    <button class="authing-button" @click="toEmbed">内嵌模式 - 模态框形态</button>
   </div>
 </template>
 
-<script scoped>
+<script>
 export default {
   data () {
     return {}
