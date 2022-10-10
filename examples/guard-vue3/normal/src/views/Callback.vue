@@ -1,10 +1,9 @@
 <template>
   <div class="callback-container">
-    
   </div>
 </template>
 
-<script scoped setup>
+<script setup>
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
