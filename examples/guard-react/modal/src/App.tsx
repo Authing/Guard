@@ -8,6 +8,8 @@ import * as facePlugin from 'face-api.js'
 
 import RouterComponent from './router'
 
+import './App.css'
+
 export default function App() {
   return (
     <GuardProvider

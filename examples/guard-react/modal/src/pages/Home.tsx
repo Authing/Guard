@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div>
       <div style={{ marginBottom: '20px' }} onClick={toEmbed}>
-        <button>内嵌模式 - 模态框形态</button>
+        <button className='authing-button'>内嵌模式 - 模态框形态</button>
       </div>
     </div>
   )

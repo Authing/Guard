@@ -10,7 +10,7 @@ export default function Login() {
 
   useEffect(() => {
     guard.start('#authing-guard-container').then(userInfo => {
-      console.log('userInfo: : ', userInfo)
+      console.log('userInfo: ', userInfo)
     })
 
     const langCache = localStorage.getItem('_guard_i18nextLng') || 'zh-CN'
