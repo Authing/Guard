@@ -1,10 +1,10 @@
 <template>
   <div class="jump-container">
-    <button @click="startWithRedirect">Start With Redirect</button>
+    <button class="authing-button" @click="startWithRedirect">Start With Redirect</button>
   </div>
 </template>
 
-<script scoped setup>
+<script setup>
 import { useGuard } from '@authing/guard-vue3'
 
 const guard = useGuard()
