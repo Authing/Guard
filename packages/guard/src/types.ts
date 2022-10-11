@@ -1,37 +1,12 @@
 import {
-  Guard,
   GuardMode,
-  GuardEvents,
   GuardEventsKebabToCamelType,
-  GuardEventsCamelToKebabMapping,
   GuardModuleType,
   Lang,
-  User,
-  LoginMethods,
-  RegisterMethods,
   GuardProps,
-  GuardLocalConfig
-} from '@authing/react-ui-components'
-
-import '@authing/react-ui-components/lib/index.min.css'
-
-import { AuthenticationClientOptions } from 'authing-js-sdk'
-
-export {
-  Guard as ReactAuthingGuard,
-  GuardMode,
-  LoginMethods,
-  RegisterMethods,
-  GuardEventsCamelToKebabMapping
-}
-
-export type {
   GuardLocalConfig,
-  GuardEvents,
-  User,
-  Lang,
-  GuardEventsKebabToCamelType
-}
+  AuthenticationClientOptions
+} from '@authing/react-ui-components'
 
 export type GuardEventListeners = {
   [key in keyof GuardEventsKebabToCamelType]: Exclude<
@@ -79,3 +54,5 @@ export interface StartWithRedirectOptions {
 }
 
 export * from '@authing/react-ui-components'
+
+export * from 'authing-js-sdk'

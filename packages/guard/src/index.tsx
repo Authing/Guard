@@ -1,4 +1,5 @@
 import React from 'react'
+
 import ReactDOM from 'react-dom'
 
 import {
@@ -8,30 +9,21 @@ import {
   GuardLocalConfig,
   GuardEventListeners,
   GuardEvents,
-  ReactAuthingGuard,
+  Guard as ReactAuthingGuard,
   GuardEventsKebabToCamelType,
-  StartWithRedirectOptions
-} from './types'
-
-import {
+  StartWithRedirectOptions,
   AuthenticationClient,
   AuthenticationClientOptions,
   JwtTokenStatus,
   RefreshToken,
-  User
-} from 'authing-js-sdk'
+  User,
+  GuardModuleType,
+  Lang
+} from './types'
 
-import { GuardModuleType, Lang } from '@authing/react-ui-components'
+import '@authing/react-ui-components/lib/index.min.css'
 
 export * from './types'
-
-export {
-  AuthenticationClient,
-  AuthenticationClientOptions,
-  RefreshToken,
-  User,
-  JwtTokenStatus
-}
 
 const isDef = (value: unknown) => value !== undefined
 

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'
 
-import { GuardService, User } from '@authing/guard-angular'
+import { AuthenticationClient, GuardService, RefreshToken, User } from '@authing/guard-angular'
 
 @Component({
   selector: 'embed-container',
@@ -43,9 +43,9 @@ export class EmbedComponent {
   }
 
   async refreshToken() {
-    const authClient = await this.guard.client.getAuthClient()
-    const token = await authClient.refreshToken()
-    console.log('token: ', token)
+    const authClient: AuthenticationClient = await this.guard.client.getAuthClient()
+    const refreshedToken: RefreshToken = await authClient.refreshToken()
+    console.log('refreshedToken: ', refreshedToken)
   }
 
   changeLang(event: any) {

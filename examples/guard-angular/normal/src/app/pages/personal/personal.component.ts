@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'
-import { GuardService } from '@authing/guard-angular'
+import { AuthenticationClient, GuardService, User } from '@authing/guard-angular'
 
 @Component({
   selector: 'personal-container',
@@ -21,12 +21,12 @@ export class PersonalComponent {
   }
 
   async getUserInfo() {
-    const _userInfo = await this.guard.client.trackSession()
+    const _userInfo: User | null = await this.guard.client.trackSession()
     this.userInfo = JSON.stringify(_userInfo || '', null, 2)
   }
 
   updateProfile() {
-    this.guard.client.getAuthClient().then(authenticationClient => {
+    this.guard.client.getAuthClient().then((authenticationClient: AuthenticationClient) => {
       // 获取到 AuthenticationClient 实例之后，可以调用其提供的所有方法
       // 比如更新用户昵称
       authenticationClient.updateProfile({
