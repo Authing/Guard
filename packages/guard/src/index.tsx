@@ -15,14 +15,23 @@ import {
 
 import {
   AuthenticationClient,
-  AuthenticationClientOptions
+  AuthenticationClientOptions,
+  JwtTokenStatus,
+  RefreshToken,
+  User
 } from 'authing-js-sdk'
 
 import { GuardModuleType, Lang } from '@authing/react-ui-components'
 
 export * from './types'
 
-export { AuthenticationClient, AuthenticationClientOptions }
+export {
+  AuthenticationClient,
+  AuthenticationClientOptions,
+  RefreshToken,
+  User,
+  JwtTokenStatus
+}
 
 const isDef = (value: unknown) => value !== undefined
 
@@ -105,7 +114,7 @@ export class Guard {
     return JSON.parse(publicConfig)
   }
 
-  async getAuthClient() {
+  async getAuthClient(): Promise<AuthenticationClient> {
     let publicConfig = {} as any
 
     try {
@@ -173,7 +182,7 @@ export class Guard {
    * @param el String
    * @returns Promise
    */
-  async start(el: string) {
+  async start(el?: string): Promise<User> {
     ;(this.options.config as Partial<GuardLocalConfig>).target = el
 
     this.render()
@@ -202,7 +211,7 @@ export class Guard {
     this.render()
   }
 
-  async checkLoginStatus() {
+  async checkLoginStatus(): Promise<JwtTokenStatus | undefined> {
     const authClient = await this.getAuthClient()
     const user = await authClient.getCurrentUser()
 
@@ -216,10 +225,10 @@ export class Guard {
       return
     }
 
-    const { status } = await authClient.checkLoginStatus(token)
+    const loginStatus: JwtTokenStatus = await authClient.checkLoginStatus(token)
 
-    if (status) {
-      return user
+    if (loginStatus.status) {
+      return loginStatus
     }
   }
 
@@ -352,7 +361,7 @@ export class Guard {
   /**
    * 获取当前用户信息
    */
-  async trackSession() {
+  async trackSession(): Promise<User | null> {
     const authClient = await this.getAuthClient()
 
     return authClient.getCurrentUser()
@@ -371,13 +380,12 @@ export class Guard {
       redirectUri = origin
     } finally {
       if (!redirectUri) {
-        redirectUri = window.location.origin
+        redirectUri = origin
       }
     }
 
     const idToken = localStorage.getItem('idToken')
     let logoutUrl = ''
-
     const authClient = await this.getAuthClient()
 
     authClient.logout()
@@ -395,7 +403,7 @@ export class Guard {
     window.location.href = logoutUrl || redirectUri
   }
 
-  async updateIdToken() {
+  async updateIdToken(): Promise<RefreshToken> {
     const authClient = await this.getAuthClient()
 
     return authClient.refreshToken()

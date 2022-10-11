@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'
 
-import { GuardService } from '@authing/guard-angular'
+import { GuardService, User } from '@authing/guard-angular'
 
 @Component({
   selector: 'embed-container',
@@ -13,7 +13,7 @@ export class EmbedComponent {
   ) {}
 
   ngOnInit () {
-    this.guard.client.start('#authing-guard-container').then(userInfo => {
+    this.guard.client.start('#authing-guard-container').then((userInfo: User) => {
       console.log('userInfo: ', userInfo)
 
       setTimeout(() => {

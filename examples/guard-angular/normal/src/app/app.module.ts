@@ -14,6 +14,7 @@ import { GuardModule, SocialConnectionProvider } from '@authing/guard-angular'
     AppRoutingModule,
     GuardModule.forRoot({
       appId: '6322ef4c06b1a01036695b33',
+      isSSO: true,
       config: {
         socialConnections: [SocialConnectionProvider.GITHUB]
       }
