@@ -1,12 +1,35 @@
 import {
-  GuardMode,
   GuardEventsKebabToCamelType,
-  GuardModuleType,
   Lang,
   GuardProps,
   GuardLocalConfig,
-  AuthenticationClientOptions
+  AuthenticationClientOptions,
+  CodeAction,
+  ApiCode,
+  GuardModuleType,
+  LoginMethods,
+  OIDCConnectionMode,
+  SocialConnectionProvider,
+  Protocol,
+  RegisterMethods,
+  GuardMode,
+  InputMethod,
+  GuardPageSene,
+  EmailScene
 } from '@authing/react-ui-components'
+
+export type ICodeAction = `${CodeAction}`
+export type IApiCode = `${ApiCode}`
+export type IGuardModuleType = `${GuardModuleType}`
+export type ILoginMethods = `${LoginMethods}`
+export type IOIDCConnectionMode = `${OIDCConnectionMode}`
+export type ISocialConnectionProvider = `${SocialConnectionProvider}`
+export type IProtocol = `${Protocol}`
+export type IRegisterMethods = `${RegisterMethods}`
+export type IGuardMode = `${GuardMode}`
+export type IInputMethod = `${InputMethod}`
+export type IGuardPageSene = `${GuardPageSene}`
+export type IEmailScene = `${EmailScene}`
 
 export type GuardEventListeners = {
   [key in keyof GuardEventsKebabToCamelType]: Exclude<
@@ -23,8 +46,8 @@ export interface GuardOptions extends GuardProps {
   appId: string
   host?: string
   redirectUri?: string
-  mode?: GuardMode
-  defaultScene?: GuardModuleType
+  mode?: IGuardMode
+  defaultScene?: IGuardModuleType
   tenantId?: string
   lang?: Lang
   isSSO?: boolean
