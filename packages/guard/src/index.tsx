@@ -71,6 +71,21 @@ export class Guard {
 
     options.config = config
 
+    if (isDef(options.config.socialConnectionList)) {
+      // @ts-ignore
+      options.config.socialConnections = options.config.socialConnectionList
+    }
+
+    if (isDef(options.config.loginMethod)) {
+      // @ts-ignore
+      options.config.defaultLoginMethod = options.config.loginMethod
+    }
+
+    if (isDef(options.config.loginMethodList)) {
+      // @ts-ignore
+      options.config.loginMethods = options.config.loginMethodList
+    }
+
     this.options = options
 
     const init = (async () => {
