@@ -8,7 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@authing/guard-vue2": "^5.0.5-alpha.14",
+    "@authing/guard-vue2": "^5.0.5-alpha.16",
     "core-js": "^3.6.5",
     "face-api.js": "^0.22.2",
     "vue": "^2.6.11",

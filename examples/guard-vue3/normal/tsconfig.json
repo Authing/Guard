@@ -7,9 +7,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["vite/client"],
-    "isolatedModules": true,
-    "skipLibCheck": true
+    "types": ["vite/client"]
   },
 
   "references": [

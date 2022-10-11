@@ -5,10 +5,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Authing Guard Demo - Callback</title>
-  <script src="https://cdn.authing.co//packages/guard/5.0.5-alpha.12/guard.min.js"></script>
+  <script src="https://cdn.authing.co//packages/guard/5.0.5-alpha.16/guard.min.js"></script>
   <script src="https://cdn.authing.co/packages/face-api/face-api.min.js"></script>
   <script src="./config.js"></script>
-  <link rel="stylesheet" href="https://cdn.authing.co/packages/guard/5.0.5-alpha.12/guard.min.css">
+  <link rel="stylesheet" href="https://cdn.authing.co/packages/guard/5.0.5-alpha.16/guard.min.css">
 </head>
 <body>
 
@@ -22,8 +22,6 @@
         // 1. 触发 guard.handleRedirectCallback() 方法完成登录认证
         // 用户认证成功之后，我们会将用户的身份凭证存到浏览器的本地缓存中
         await guard.handleRedirectCallback()
-
-        console.log(12345)
 
         // 2. 处理完 handleRedirectCallback 之后，你需要先检查用户登录态是否正常
         const loginStatus = await guard.checkLoginStatus()

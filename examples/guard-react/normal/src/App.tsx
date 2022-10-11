@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { GuardMode, GuardProvider, SocialConnectionProvider } from '@authing/guard-react'
+import { GuardProvider } from '@authing/guard-react'
 
 import '@authing/guard-react/dist/esm/guard.min.css'
 
@@ -15,9 +15,8 @@ export default function App() {
     <GuardProvider
       appId="6322ef4c06b1a01036695b33"
       isSSO={true}
-      mode={GuardMode.Modal}
       config={{
-        socialConnections: [SocialConnectionProvider.GITHUB],
+        socialConnectionList: ['github']
       }}
       facePlugin={facePlugin}
     >

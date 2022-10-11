@@ -17,10 +17,9 @@ app.use(
   createGuard({
     appId: '6322ef4c06b1a01036695b33',
     isSSO: true,
-    mode: 'modal',
-    // config: {
-    //   socialConnections: [SocialConnectionProvider.GITHUB]
-    // },
+    config: {
+      socialConnectionList: ['github']
+    },
     facePlugin
   })
 )

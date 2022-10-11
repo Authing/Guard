@@ -3,11 +3,13 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useGuard } from '@authing/guard-vue3'
+
+import type { JwtTokenStatus, User } from '@authing/guard-vue3'
 
 const router = useRouter()
 
@@ -20,7 +22,7 @@ const handleAuthingLoginCallback = async () => {
     await guard.handleRedirectCallback()
 
     // 2. 处理完 handleRedirectCallback 之后，你需要先检查用户登录态是否正常
-    const loginStatus = await guard.checkLoginStatus()
+    const loginStatus: JwtTokenStatus | undefined = await guard.checkLoginStatus()
 
     if (!loginStatus) {
       guard.startWithRedirect({
@@ -33,7 +35,7 @@ const handleAuthingLoginCallback = async () => {
     }
 
     // 3. 获取到登录用户的用户信息
-    const userInfo = await guard.trackSession()
+    const userInfo: User | null = await guard.trackSession()
 
     console.log(userInfo)
 

@@ -5,7 +5,7 @@ import { BrowserModule } from '@angular/platform-browser'
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 
-import { GuardModule, SocialConnectionProvider } from '@authing/guard-angular'
+import { GuardModule } from '@authing/guard-angular'
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,7 +16,7 @@ import { GuardModule, SocialConnectionProvider } from '@authing/guard-angular'
       appId: '6322ef4c06b1a01036695b33',
       isSSO: true,
       config: {
-        socialConnections: [SocialConnectionProvider.GITHUB]
+        socialConnectionList: ['github']
       }
     })
   ],

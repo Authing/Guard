@@ -24,10 +24,12 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 
-import { useGuard } from '@authing/guard-vue3'
+import { useGuard  } from '@authing/guard-vue3'
+
+import type { User, RefreshToken, AuthenticationClient } from '@authing/guard-vue3'
 
 const langCache = ref('')
 
@@ -35,13 +37,13 @@ const guard = useGuard()
 
 onMounted(() => {
   // 使用 start 方法挂载 Guard 组件到你指定的 DOM 节点，登录成功后返回 userInfo
-  guard.start('#authing-guard-container').then(userInfo => {
+  guard.start('#authing-guard-container').then((userInfo: User) => {
     console.log("userInfo: ", userInfo)
   })
 
   guard.on('load', ()=>{
     // 缓存中获取 Guard 默认语言类型
-    langCache.value = localStorage.getItem('_guard_i18nextLng')
+    langCache.value = localStorage.getItem('_guard_i18nextLng') || ''
   })
 })
 
@@ -53,17 +55,17 @@ const startRegister = () => guard.startRegister()
 const logout = () => guard.logout()
 
 const getUserInfo = async () => {
-  const userInfo = await guard.trackSession()
+  const userInfo: User | null = await guard.trackSession()
   console.log('userInfo: ', userInfo)
 }
 
 const refreshToken = async () => {
-  const authClient = await guard.getAuthClient()
-  const token = await authClient.refreshToken()
-  console.log('token: ', token)
+  const authenticationClient: AuthenticationClient = await guard.getAuthClient()
+  const refreshedToken: RefreshToken = await authenticationClient.refreshToken()
+  console.log('refreshedToken: ', refreshedToken)
 }
 
-const changeLang = (event) => {
+const changeLang = (event: any) => {
   guard.changeLang(event.target.value)
   langCache.value = event.target.value
 }

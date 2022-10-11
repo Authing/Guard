@@ -1,8 +1,8 @@
 var guardOptions = {
-  appId: 'AUTHING_APP_ID',
+  appId: '6322ef4c06b1a01036695b33',
   isSSO: true,
   config: {
-    socialConnections: ['github']
+    socialConnectionList: ['github']
   },
   // 需在 html 中导入 <script src="https://cdn.authing.co/packages/face-api/face-api.min.js"></script>
   facePlugin: faceapi

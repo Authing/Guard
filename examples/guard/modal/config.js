@@ -1,4 +1,4 @@
 var guardOptions = {
-  appId: 'AUTHING_APP_ID',
+  appId: '6322ef4c06b1a01036695b33',
   mode: 'modal'
 }
