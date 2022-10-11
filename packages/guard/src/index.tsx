@@ -111,7 +111,7 @@ export class Guard {
     try {
       publicConfig = await this.then()
     } catch (e) {
-      console.log('publicConfig error: ', e)
+      console.error('publicConfig error: ', e)
     }
 
     const _authClientOptions = Object.assign(
@@ -147,9 +147,11 @@ export class Guard {
     }
 
     if (typeof selector === 'string') {
-      const res =  document.querySelector(selector)
+      const res = document.querySelector(selector)
       if (!res) {
-        console.warn(`Failed to start guard: target selector "${selector}" returned null.`)
+        console.warn(
+          `Failed to start guard: target selector "${selector}" returned null.`
+        )
       }
       return res
     }
@@ -360,10 +362,17 @@ export class Guard {
     const publicConfig = await this.then()
 
     let redirectUri = ''
+
+    const origin = window.location.origin
+
     try {
       redirectUri = publicConfig.logoutRedirectUris[0]
     } catch (e) {
-      redirectUri = window.location.origin
+      redirectUri = origin
+    } finally {
+      if (!redirectUri) {
+        redirectUri = window.location.origin
+      }
     }
 
     const idToken = localStorage.getItem('idToken')

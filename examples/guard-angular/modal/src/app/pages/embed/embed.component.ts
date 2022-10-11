@@ -15,11 +15,11 @@ export class EmbedComponent {
   ngOnInit () {
     this.guard.client.start('#authing-guard-container').then(userInfo => {
       console.log('userInfo: ', userInfo)
-    })
 
-    setTimeout(() => {
-      this.guard.client.hide()
-    }, 2000)
+      setTimeout(() => {
+        this.guard.client.hide()
+      }, 2000)
+    })
   }
 
   showGuard () {

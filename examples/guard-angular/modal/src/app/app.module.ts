@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EmbedComponent } from './pages/embed/embed.component'
 
-import { GuardModule } from '@authing/guard-angular'
+import { GuardMode, GuardModule } from '@authing/guard-angular'
 
 import * as facePlugin from 'face-api.js'
 
@@ -19,7 +19,7 @@ import * as facePlugin from 'face-api.js'
     AppRoutingModule,
     GuardModule.forRoot({
       appId: '6322ef4c06b1a01036695b33',
-      mode: 'modal',
+      mode: GuardMode.Modal,
       facePlugin
     })
   ],
