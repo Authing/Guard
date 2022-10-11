@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, ChangeDetectorRef } from '@angular/core'
 
 import { AuthenticationClient, GuardService, RefreshToken, User } from '@authing/guard-angular'
 
@@ -8,7 +8,10 @@ import { AuthenticationClient, GuardService, RefreshToken, User } from '@authing
   styleUrls: ['./embed.component.css']
 })
 export class EmbedComponent {
-  constructor(private guard: GuardService) {}
+  constructor(
+    private guard: GuardService,
+    private ref: ChangeDetectorRef
+  ) {}
 
   langCache = ''
 
@@ -21,6 +24,8 @@ export class EmbedComponent {
     this.guard.client.on('load', () => {
       // 缓存中获取 Guard 默认语言类型
       this.langCache = localStorage.getItem('_guard_i18nextLng') || 'zh-CN'
+      this.ref.markForCheck()
+      this.ref.detectChanges()
     })
   }
 

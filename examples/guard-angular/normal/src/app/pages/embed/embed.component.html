@@ -1,7 +1,6 @@
 <div class="embed-container">
   <div class="item">
     <label>Change Lang: </label>
-    {{ langCache }}
     <select ng-model="langCache" (change)="changeLang($event)">
       <option ngValue="zh-CN">zh-CN</option>
       <option ngValue="zh-TW">zh-TW</option>
