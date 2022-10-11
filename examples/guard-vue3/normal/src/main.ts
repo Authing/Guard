@@ -12,10 +12,15 @@ import * as facePlugin from 'face-api.js'
 
 const app = createApp(App)
 
+
 app.use(
   createGuard({
     appId: '6322ef4c06b1a01036695b33',
     isSSO: true,
+    mode: 'modal',
+    // config: {
+    //   socialConnections: [SocialConnectionProvider.GITHUB]
+    // },
     facePlugin
   })
 )
