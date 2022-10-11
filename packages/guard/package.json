@@ -24,7 +24,6 @@
   },
   "dependencies": {
     "@authing/react-ui-components": "^4.0.7-rc.3",
-    "authing-js-sdk": "^4.23.32",
     "axios": "^0.27.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0"

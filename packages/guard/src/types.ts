@@ -54,5 +54,3 @@ export interface StartWithRedirectOptions {
 }
 
 export * from '@authing/react-ui-components'
-
-export * from 'authing-js-sdk'
