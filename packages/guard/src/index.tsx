@@ -268,14 +268,13 @@ export class Guard {
     const getRandom = () => Math.random().toString().slice(2)
 
     const {
-      codeChallengeDigestMethod = 'S256',
       codeChallengeMethod = 'S256',
       scope = 'openid profile email phone address',
       redirectUri,
       state = getRandom(),
       nonce = getRandom(),
-      responseMode,
-      responseType
+      responseMode = 'query',
+      responseType = 'code'
     } = options
 
     const authClient = await this.getAuthClient()
@@ -288,13 +287,13 @@ export class Guard {
     // 计算 code_verifier 的 SHA256 摘要
     const codeChallengeDigest = authClient.getCodeChallengeDigest({
       codeChallenge,
-      method: codeChallengeDigestMethod
+      method: codeChallengeMethod
     })
 
     // 构造 OIDC 授权码 + PKCE 模式登录 URL
     const url = authClient.buildAuthorizeUrl({
       codeChallenge: codeChallengeDigest,
-      codeChallengeMethod: codeChallengeMethod,
+      codeChallengeMethod,
       scope,
       redirectUri,
       state,

@@ -38,7 +38,7 @@ export type GuardEventListeners = {
   >[]
 }
 
-export type CodeMethod = 'S256' | 'plain'
+export type CodeChallengeMethod = 'S256' | 'plain'
 
 export type Align = 'none' | 'left' | 'center' | 'right'
 
@@ -68,8 +68,7 @@ export interface GuardOptions extends GuardProps {
 }
 
 export interface StartWithRedirectOptions {
-  codeChallengeDigestMethod?: CodeMethod
-  codeChallengeMethod?: CodeMethod
+  codeChallengeMethod?: CodeChallengeMethod
   scope?: string
   redirectUri?: string
   state?: string
