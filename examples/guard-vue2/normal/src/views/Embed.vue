@@ -62,9 +62,9 @@ export default {
     },
 
     async refreshToken () {
-      const authClient = await this.$guard.getAuthClient()
-      const token = await authClient.refreshToken()
-      console.log('token: ', token)
+      const authenticationClient = await this.$guard.getAuthClient()
+      const refreshedToken = await authenticationClient.refreshToken()
+      console.log('refreshedToken: ', refreshedToken)
     },
 
     changeLang (event) {

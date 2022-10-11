@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { useGuard } from '@authing/guard-react'
+import { AuthenticationClient, RefreshToken, useGuard, User } from '@authing/guard-react'
 
 export default function Login() {
   const [langCache, setLangCache] = useState('')
@@ -10,7 +10,7 @@ export default function Login() {
 
   useEffect(() => {
     // 使用 start 方法挂载 Guard 组件到你指定的 DOM 节点，登录成功后返回 userInfo
-    guard.start('#authing-guard-container').then(userInfo => {
+    guard.start('#authing-guard-container').then((userInfo: User) => {
       console.log('userInfo: ', userInfo)
     })
 
@@ -34,14 +34,14 @@ export default function Login() {
   const logout = () => guard.logout()
 
   const getUserInfo = async () => {
-    const userInfo = await guard.trackSession()
+    const userInfo: User | null = await guard.trackSession()
     console.log('userInfo: ', userInfo)
   }
 
   const refreshToken = async () => {
-    const authClient = await guard.getAuthClient()
-    const token = await authClient.refreshToken()
-    console.log('token: ', token)
+    const authenticationClient: AuthenticationClient = await guard.getAuthClient()
+    const refreshedToken: RefreshToken = await authenticationClient.refreshToken()
+    console.log('refreshedToken: ', refreshedToken)
   }
 
   return <div>

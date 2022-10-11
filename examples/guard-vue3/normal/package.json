@@ -2,7 +2,7 @@
   "name": "example1",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --force",
     "build": "run-p type-check build-only",
     "preview": "vite preview --port 4173",
     "build-only": "vite build",
@@ -10,7 +10,7 @@
   },
   "author": "https://github.com/authing",
   "dependencies": {
-    "@authing/guard-vue3": "^5.0.5-alpha.12",
+    "@authing/guard-vue3": "^5.0.5-alpha.14",
     "face-api.js": "^0.22.2",
     "vue": "^3.2.37",
     "vue-router": "^4.1.2"

@@ -25,14 +25,17 @@ export class PersonalComponent {
     this.userInfo = JSON.stringify(_userInfo || '', null, 2)
   }
 
-  updateProfile() {
-    this.guard.client.getAuthClient().then((authenticationClient: AuthenticationClient) => {
-      // 获取到 AuthenticationClient 实例之后，可以调用其提供的所有方法
-      // 比如更新用户昵称
-      authenticationClient.updateProfile({
-        nickname: 'Nick'
-      })
-      // 更多 AuthenticationClient 的方法，请见 authing-js-sdk 文档介绍。
+  async updateProfile() {
+    const authenticationClient: AuthenticationClient = await this.guard.client.getAuthClient()
+
+    // 获取到 AuthenticationClient 实例之后，可以调用其提供的所有方法
+    // 比如更新用户昵称
+    const userProfile: User = await authenticationClient.updateProfile({
+      nickname: 'Nick'
     })
+
+    console.log('userProfile: ', userProfile)
+
+    // 更多 AuthenticationClient 的方法，请见 authing-js-sdk 文档介绍。
   }
 }

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
-import { useGuard } from '@authing/guard-react'
+import { JwtTokenStatus, useGuard, User } from '@authing/guard-react'
 
 export default function Callback() {
   const history = useHistory()
@@ -14,7 +14,7 @@ export default function Callback() {
       await guard.handleRedirectCallback()
 
       // 2. 处理完 handleRedirectCallback 之后，你需要先检查用户登录态是否正常
-      const loginStatus = await guard.checkLoginStatus()
+      const loginStatus: JwtTokenStatus | undefined  = await guard.checkLoginStatus()
 
       if (!loginStatus) {
         guard.startWithRedirect({
@@ -27,7 +27,7 @@ export default function Callback() {
       }
 
       // 3. 获取到登录用户的用户信息
-      const userInfo = await guard.trackSession()
+      const userInfo: User | null = await guard.trackSession()
 
       console.log(userInfo)
 

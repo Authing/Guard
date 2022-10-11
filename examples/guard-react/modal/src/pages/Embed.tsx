@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { useGuard } from '@authing/guard-react'
+import { useGuard, User } from '@authing/guard-react'
 
 export default function Login() {
   const guard = useGuard()
@@ -9,7 +9,7 @@ export default function Login() {
 
   useEffect(() => {
     // 挂载模态框，当用户完成登录之后，你可以获取到用户信息
-    guard.start('#authing-guard-container').then(userInfo => {
+    guard.start('#authing-guard-container').then((userInfo: User) => {
       console.log('userInfo: ', userInfo)
 
       setTimeout(() => {

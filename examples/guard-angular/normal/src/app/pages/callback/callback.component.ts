@@ -1,7 +1,7 @@
 import { Component } from '@angular/core'
 import { Router } from '@angular/router'
 
-import { GuardService } from '@authing/guard-angular'
+import { GuardService, JwtTokenStatus, User } from '@authing/guard-angular'
 
 @Component({
   selector: 'callback-container',
@@ -25,7 +25,7 @@ export class CallbackComponent {
       await this.guard.client.handleRedirectCallback()
 
       // 2. 处理完 handleRedirectCallback 之后，你需要先检查用户登录态是否正常
-      const loginStatus = await this.guard.client.checkLoginStatus()
+      const loginStatus: JwtTokenStatus | undefined = await this.guard.client.checkLoginStatus()
 
       if (!loginStatus) {
         this.guard.client.startWithRedirect({
@@ -38,7 +38,7 @@ export class CallbackComponent {
       }
 
       // 3. 获取到登录用户的用户信息
-      const userInfo = await this.guard.client.trackSession()
+      const userInfo: User | null = await this.guard.client.trackSession()
 
       console.log(userInfo)
 
