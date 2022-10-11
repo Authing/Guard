@@ -18,10 +18,6 @@ export class EmbedComponent {
       console.log(userInfo)
     })
 
-    this.guard.client.on('load', () => {
-      // 缓存中获取 Guard 默认语言类型
-      this.langCache = localStorage.getItem('_guard_i18nextLng') || 'zh-CN'
-    })
   }
 
   changeContentCSS() {
