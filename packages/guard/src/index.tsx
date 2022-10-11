@@ -52,7 +52,8 @@ export class Guard {
     }
 
     if (isDef(options.defaultScene)) {
-      config.defaultScenes = options.defaultScene as GuardModuleType
+      // @ts-ignore
+      config.defaultScenes = options.defaultScene
     }
 
     if (isDef(options.lang)) {
@@ -64,7 +65,8 @@ export class Guard {
     }
 
     if (isDef(options.mode)) {
-      config.mode = options.mode as GuardMode
+      // @ts-ignore
+      config.mode = options.mode
     }
 
     options.config = config
