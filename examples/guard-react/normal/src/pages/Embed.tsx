@@ -19,6 +19,10 @@ export default function Login() {
       const langCache = localStorage.getItem('_guard_i18nextLng') || 'zh-CN'
       setLangCache(langCache)
     })
+
+    guard.on('login', (userInfo: User) => {
+      console.log('userInfo in login: ', userInfo)
+    })
   }, [])
 
   const changeLang = (event: any) => {

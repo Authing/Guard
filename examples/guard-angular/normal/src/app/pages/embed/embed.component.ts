@@ -21,11 +21,16 @@ export class EmbedComponent {
       console.log(userInfo)
     })
 
-    this.guard.client.on('load', () => {
+    this.guard.client.on('load', (authClient: AuthenticationClient) => {
+      console.log('authClient: ', authClient)
       // 缓存中获取 Guard 默认语言类型
       this.langCache = localStorage.getItem('_guard_i18nextLng') || 'zh-CN'
       this.ref.markForCheck()
       this.ref.detectChanges()
+    })
+
+    this.guard.client.on('login', (userInfo: User) => {
+      console.log('userInfo in login: ', userInfo)
     })
   }
 

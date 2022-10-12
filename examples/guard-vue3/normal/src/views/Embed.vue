@@ -45,6 +45,10 @@ onMounted(() => {
     // 缓存中获取 Guard 默认语言类型
     langCache.value = localStorage.getItem('_guard_i18nextLng') || ''
   })
+
+  guard.on('login', (userInfo: User) => {
+    console.log('userInfo in login: ', userInfo)
+  })
 })
 
 const changeContentCSS = () => guard.changeContentCSS('body {background: blue}')

@@ -16,6 +16,9 @@ export default function App() {
       appId="6322ef4c06b1a01036695b33"
       mode="modal"
       facePlugin={facePlugin}
+      config={{
+        socialConnectionList: ['github']
+      }}
     >
       <RouterComponent></RouterComponent>
     </GuardProvider>

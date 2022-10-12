@@ -13,7 +13,7 @@ Vue.use(GuardPlugin, {
   isSSO: true,
   mode: 'modal',
   config: {
-    socialConnections: ['github'],
+    socialConnectionList: ['github'],
   },
   facePlugin
 })

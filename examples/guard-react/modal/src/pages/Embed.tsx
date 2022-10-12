@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 
 import { useGuard, User } from '@authing/guard-react'
 
-export default function Login() {
+export default function Embed() {
   const guard = useGuard()
 
   const showGuard = () => guard.show()

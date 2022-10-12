@@ -20,7 +20,10 @@ import * as facePlugin from 'face-api.js'
     GuardModule.forRoot({
       appId: '6322ef4c06b1a01036695b33',
       mode: 'modal',
-      facePlugin
+      facePlugin,
+      config: {
+        socialConnectionList: ['github']
+      }
     })
   ],
   providers: [],

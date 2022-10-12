@@ -17,7 +17,10 @@ app.use(
     appId: '6322ef4c06b1a01036695b33',
     isSSO: true,
     mode: 'modal',
-    facePlugin
+    facePlugin,
+    config: {
+      socialConnectionList: ['github']
+    }
   })
 )
 
