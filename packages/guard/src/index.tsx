@@ -43,7 +43,7 @@ export class Guard {
     }
 
     options.host = options.host || ''
-    options.align = options.align || 'middle'
+    options.align = options.align || 'center'
     options.justify = options.justify || 'center'
 
     const config = {

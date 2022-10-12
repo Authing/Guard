@@ -40,7 +40,7 @@ export type GuardEventListeners = {
 
 export type CodeChallengeMethod = 'S256' | 'plain'
 
-export type Align = 'top' | 'middle' | 'bottom'
+export type Align = 'top' | 'center' | 'bottom'
 
 export type Justify = 'start' | 'end' | 'center'
 
