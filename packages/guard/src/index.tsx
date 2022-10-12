@@ -153,10 +153,10 @@ export class Guard {
 
     const _authClientOptions = Object.assign(
       {},
-      this.options.authClientOptions || {},
       {
         appId: this.options.appId,
         appHost: this.options.host || `https://${publicConfig.requestHostname}`,
+        tenantId: this.options.tenantId,
         redirectUri:
           this.options.redirectUri || publicConfig.oidcConfig.redirect_uris[0],
         tokenEndPointAuthMethod:

@@ -70,7 +70,6 @@ export interface GuardOptions extends GuardProps {
   lang?: Lang
   isSSO?: boolean
   config?: Partial<IGuardConfig> // 兼容 4.0 的 config
-  authClientOptions?: AuthenticationClientOptions
 }
 
 export interface StartWithRedirectOptions {
