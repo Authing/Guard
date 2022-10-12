@@ -13,7 +13,6 @@ import {
   GuardEventsKebabToCamelType,
   StartWithRedirectOptions,
   AuthenticationClient,
-  AuthenticationClientOptions,
   JwtTokenStatus,
   RefreshToken,
   User,
@@ -163,7 +162,7 @@ export class Guard {
           publicConfig.oidcConfig.token_endpoint_auth_method || 'none',
         introspectionEndPointAuthMethod:
           publicConfig.oidcConfig.introspection_endpoint_auth_method || 'none'
-      } as AuthenticationClientOptions
+      }
     )
 
     return new AuthenticationClient(_authClientOptions)

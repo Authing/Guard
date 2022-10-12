@@ -3,7 +3,6 @@ import {
   Lang,
   GuardProps,
   GuardLocalConfig,
-  AuthenticationClientOptions,
   CodeAction,
   ApiCode,
   GuardModuleType,
