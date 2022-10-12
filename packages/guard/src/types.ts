@@ -42,12 +42,7 @@ export type CodeChallengeMethod = 'S256' | 'plain'
 
 export type Align = 'top' | 'middle' | 'bottom'
 
-export type Justify =
-  | 'start'
-  | 'end'
-  | 'center'
-  | 'space-around'
-  | 'space-between'
+export type Justify = 'start' | 'end' | 'center'
 
 export interface IGuardConfig extends GuardLocalConfig {
   // replace socialConnections
