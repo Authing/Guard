@@ -42,10 +42,6 @@ export class Guard {
       throw new Error('appId is required')
     }
 
-    options.host = options.host || ''
-    options.align = options.align || 'center'
-    options.justify = options.justify || 'center'
-
     const config = {
       ...options.config
     }
@@ -68,6 +64,8 @@ export class Guard {
   }
 
   private adaptOptions(options: GuardOptions, config: Partial<IGuardConfig>) {
+    options.host = options.host || ''
+
     if (isDef(options.isSSO)) {
       config.isSSO = options.isSSO
     }
@@ -475,19 +473,7 @@ export class Guard {
     }
 
     return ReactDOM.render(
-      <div
-        style={{
-          position: 'absolute',
-          zIndex: -1,
-          width: '100%',
-          height: '100%',
-          top: 0,
-          left: 0,
-          display: 'flex',
-          alignItems: this.options.align,
-          justifyContent: this.options.justify
-        }}
-      >
+      <div>
         <ReactAuthingGuard
           {...(evts as GuardEvents)}
           appId={this.options.appId}

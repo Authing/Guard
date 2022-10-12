@@ -40,10 +40,6 @@ export type GuardEventListeners = {
 
 export type CodeChallengeMethod = 'S256' | 'plain'
 
-export type Align = 'top' | 'center' | 'bottom'
-
-export type Justify = 'start' | 'end' | 'center'
-
 export interface IGuardConfig extends GuardLocalConfig {
   // replace socialConnections
   socialConnectionList?: ISocialConnectionProvider[]
@@ -75,8 +71,6 @@ export interface GuardOptions extends GuardProps {
   isSSO?: boolean
   config?: Partial<IGuardConfig> // 兼容 4.0 的 config
   authClientOptions?: AuthenticationClientOptions
-  align?: Align
-  justify?: Justify
 }
 
 export interface StartWithRedirectOptions {
