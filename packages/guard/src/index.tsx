@@ -352,7 +352,13 @@ export class Guard {
   private parseUrlQuery() {
     const query: Record<string, string> = {}
 
-    const queryString = window.location.search.split('?')[1]
+    let queryString = ''
+
+    try {
+      queryString = window.location.search.split('?')[1]
+    } catch (e) {
+      queryString = window.location.hash.split('#')[1]
+    }
 
     if (!queryString) {
       return query
