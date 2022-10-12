@@ -18,7 +18,8 @@ import {
   RefreshToken,
   User,
   GuardModuleType,
-  Lang
+  Lang,
+  IGuardConfig
 } from './types'
 
 import '@authing/react-ui-components/lib/index.min.css'
@@ -42,11 +43,30 @@ export class Guard {
     }
 
     options.host = options.host || ''
+    options.align = options.align || 'center'
 
     const config = {
       ...options.config
     }
 
+    this.options = this.adaptOptions(options, config)
+
+    const init = (async () => {
+      if (this.publicConfig) {
+        return this.publicConfig
+      }
+
+      const publicConfigRes = await this.getPublicConfig()
+
+      return (this.publicConfig = publicConfigRes.data)
+    })()
+
+    this.then = init.then.bind(init)
+
+    this.visible = !!(options.mode === GuardMode.Modal)
+  }
+
+  private adaptOptions(options: GuardOptions, config: Partial<IGuardConfig>) {
     if (isDef(options.isSSO)) {
       config.isSSO = options.isSSO
     }
@@ -86,21 +106,21 @@ export class Guard {
       options.config.loginMethods = options.config.loginMethodList
     }
 
-    this.options = options
+    if (isDef(options.config.registerMethodList)) {
+      // @ts-ignore
+      options.config.registerMethods = options.config.registerMethodList
+    }
 
-    const init = (async () => {
-      if (this.publicConfig) {
-        return this.publicConfig
-      }
+    if (isDef(options.config.registerMethod)) {
+      // @ts-ignore
+      options.config.defaultRegisterMethod = options.config.registerMethod
+    }
 
-      const publicConfigRes = await this.getPublicConfig()
+    if (isDef(options.config.contentCSS)) {
+      options.config.contentCss = options.config.contentCSS
+    }
 
-      return (this.publicConfig = publicConfigRes.data)
-    })()
-
-    this.then = init.then.bind(init)
-
-    this.visible = !!(options.mode === GuardMode.Modal)
+    return options
   }
 
   private async getPublicConfig(): Promise<{

@@ -21,11 +21,11 @@ import {
 export type ICodeAction = `${CodeAction}`
 export type IApiCode = `${ApiCode}`
 export type IGuardModuleType = `${GuardModuleType}`
-export type ILoginMethods = `${LoginMethods}`
+export type ILoginMethod = `${LoginMethods}`
 export type IOIDCConnectionMode = `${OIDCConnectionMode}`
 export type ISocialConnectionProvider = `${SocialConnectionProvider}`
 export type IProtocol = `${Protocol}`
-export type IRegisterMethods = `${RegisterMethods}`
+export type IRegisterMethod = `${RegisterMethods}`
 export type IGuardMode = `${GuardMode}`
 export type IInputMethod = `${InputMethod}`
 export type IGuardPageSene = `${GuardPageSene}`
@@ -47,10 +47,19 @@ export interface IGuardConfig extends GuardLocalConfig {
   socialConnectionList?: ISocialConnectionProvider[]
 
   // replace defaultLoginMethod
-  loginMethod?: ILoginMethods
+  loginMethod?: ILoginMethod
 
   // replace loginMethods
-  loginMethodList: ILoginMethods[]
+  loginMethodList: ILoginMethod[]
+
+  // replace defaultRegisterMethod
+  registerMethod?: IRegisterMethod
+
+  // replace registerMethods
+  registerMethodList?: IRegisterMethod[]
+
+  // replace contentCss
+  contentCSS?: string
 }
 
 export interface GuardOptions extends GuardProps {
@@ -62,7 +71,7 @@ export interface GuardOptions extends GuardProps {
   tenantId?: string
   lang?: Lang
   isSSO?: boolean
-  config?: Partial<IGuardConfig> // 兼容之前的 config，新用户可不传
+  config?: Partial<IGuardConfig> // 兼容 4.0 的 config
   authClientOptions?: AuthenticationClientOptions
   align?: Align
 }

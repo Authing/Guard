@@ -70,8 +70,8 @@
 
     async function refreshToken () {
       const authClient = await guard.getAuthClient()
-      const token = await authClient.refreshToken()
-      console.log(token)
+      const refreshedToken = await authClient.refreshToken()
+      console.log(refreshedToken)
     }
 
     async function updateProfile () {
