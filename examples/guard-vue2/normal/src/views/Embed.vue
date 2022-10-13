@@ -48,7 +48,13 @@ export default {
   },
   methods: {
     changeContentCSS () {
-      this.$guard.changeContentCSS('body {background: blue}')
+      this.$guard.changeContentCSS(`
+        #authing-guard-container {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      `)
     },
 
     startRegister () {
@@ -86,5 +92,11 @@ export default {
   .authing-button {
     margin-bottom: 10px;
     margin-right: 10px;
+  }
+
+  #authing-guard-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 </style>

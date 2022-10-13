@@ -9,3 +9,9 @@
   border: none;
   box-shadow: none;
 }
+
+#authing-guard-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

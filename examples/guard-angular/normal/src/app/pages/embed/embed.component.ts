@@ -35,7 +35,13 @@ export class EmbedComponent {
   }
 
   changeContentCSS() {
-    this.guard.client.changeContentCSS('body {background: blue}')
+    this.guard.client.changeContentCSS(`
+      #authing-guard-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    `)
   }
 
   startRegister() {

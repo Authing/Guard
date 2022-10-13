@@ -30,7 +30,13 @@ export default function Login() {
     setLangCache(event.target.value)
   }
 
-  const changeContentCSS = () => guard.changeContentCSS('body {background: blue}')
+  const changeContentCSS = () => guard.changeContentCSS(`
+    #authing-guard-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  `)
 
   const startRegister = () => guard.startRegister()
 

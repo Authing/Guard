@@ -51,7 +51,13 @@ onMounted(() => {
   })
 })
 
-const changeContentCSS = () => guard.changeContentCSS('body {background: blue}')
+const changeContentCSS = () => guard.changeContentCSS(`
+  #authing-guard-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`)
 
 const startRegister = () => guard.startRegister()
 
@@ -82,5 +88,11 @@ const changeLang = (event: any) => {
   .authing-button {
     margin-bottom: 10px;
     margin-right: 10px;
+  }
+
+  #authing-guard-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 </style>
