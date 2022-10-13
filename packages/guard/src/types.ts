@@ -14,7 +14,8 @@ import {
   GuardMode,
   InputMethod,
   GuardPageSene,
-  EmailScene
+  EmailScene,
+  SceneType
 } from '@authing/react-ui-components'
 
 export type ICodeAction = `${CodeAction}`
@@ -29,6 +30,7 @@ export type IGuardMode = `${GuardMode}`
 export type IInputMethod = `${InputMethod}`
 export type IGuardPageSene = `${GuardPageSene}`
 export type IEmailScene = `${EmailScene}`
+export type ISceneType = `${SceneType}`
 
 export type GuardEventListeners = {
   [key in keyof GuardEventsKebabToCamelType]: Exclude<
