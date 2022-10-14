@@ -16,7 +16,10 @@ import { GuardModule } from '@authing/guard-angular'
       appId: '6322ef4c06b1a01036695b33',
       isSSO: true,
       config: {
-        socialConnectionList: ['github']
+        socialConnectionList: ['github'],
+        langRange: ['zh-CN'],
+        disableRegister: true,
+        disableResetPwd: true
       }
     })
   ],

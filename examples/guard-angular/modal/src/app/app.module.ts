@@ -22,7 +22,9 @@ import * as facePlugin from 'face-api.js'
       mode: 'modal',
       facePlugin,
       config: {
-        socialConnectionList: ['github']
+        socialConnectionList: ['github'],
+        escCloseable: true,
+        loginMethodList: ['password']
       }
     })
   ],
