@@ -24,7 +24,8 @@ import * as facePlugin from 'face-api.js'
       config: {
         socialConnectionList: ['github'],
         escCloseable: true,
-        loginMethodList: ['password']
+        loginMethodList: ['password'],
+        langRange: ['zh-CN']
       }
     })
   ],
