@@ -59,8 +59,6 @@ export interface IGuardConfig extends GuardLocalConfig {
 
   // replace contentCss
   contentCSS?: string
-
-  langRange?: Lang[]
 }
 
 export interface GuardOptions extends GuardProps {
