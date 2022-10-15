@@ -70,7 +70,7 @@ export interface GuardOptions extends GuardProps {
   tenantId?: string
   lang?: Lang
   isSSO?: boolean
-  config?: Partial<IGuardConfig> // 兼容 4.0 的 config
+  config?: Partial<IGuardConfig> // 兼容 4.x 的 config
 }
 
 export interface StartWithRedirectOptions {
