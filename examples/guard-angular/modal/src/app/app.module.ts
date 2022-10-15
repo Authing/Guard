@@ -18,7 +18,7 @@ import * as facePlugin from 'face-api.js'
     BrowserModule,
     AppRoutingModule,
     GuardModule.forRoot({
-      appId: '6322ef4c06b1a01036695b33',
+      appId: 'AUTHING_APP_ID',
       mode: 'modal',
       facePlugin,
       config: {

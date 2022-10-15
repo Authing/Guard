@@ -15,10 +15,11 @@ const app = createApp(App)
 
 app.use(
   createGuard({
-    appId: '6322ef4c06b1a01036695b33',
+    appId: 'AUTHING_APP_ID',
     isSSO: true,
     config: {
-      socialConnectionList: ['github']
+      socialConnectionList: ['github'],
+      langRange: ['zh-CN']
     },
     facePlugin
   })

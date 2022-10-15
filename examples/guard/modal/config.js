@@ -1,7 +1,8 @@
 var guardOptions = {
-  appId: '6322ef4c06b1a01036695b33',
+  appId: 'AUTHING_APP_ID',
   mode: 'modal',
   config: {
-    socialConnectionList: ['github']
+    socialConnectionList: ['github'],
+    langRange: ['zh-CN']
   }
 }

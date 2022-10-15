@@ -13,7 +13,7 @@ import './App.css'
 export default function App() {
   return (
     <GuardProvider
-      appId="6322ef4c06b1a01036695b33"
+      appId="AUTHING_APP_ID"
       mode="modal"
       facePlugin={facePlugin}
       config={{
