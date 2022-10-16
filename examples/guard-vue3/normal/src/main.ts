@@ -19,7 +19,7 @@ app.use(
     isSSO: true,
     config: {
       socialConnectionList: ['github'],
-      langRange: ['zh-CN']
+      langRange: ['zh-CN', 'ja-JP']
     },
     facePlugin
   })
