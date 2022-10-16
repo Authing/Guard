@@ -14,7 +14,6 @@ import {
   StartWithRedirectOptions,
   AuthenticationClient,
   JwtTokenStatus,
-  RefreshToken,
   User,
   GuardModuleType,
   Lang,
@@ -147,7 +146,7 @@ export class Guard {
     try {
       publicConfig = await this.then()
     } catch (e) {
-      console.error('publicConfig error: ', e)
+      throw new Error(JSON.stringify(e))
     }
 
     const _authClientOptions = Object.assign(
@@ -433,12 +432,6 @@ export class Guard {
     localStorage.clear()
 
     window.location.href = logoutUrl || redirectUri
-  }
-
-  async updateIdToken(): Promise<RefreshToken> {
-    const authClient = await this.getAuthClient()
-
-    return authClient.refreshToken()
   }
 
   async render(cb?: () => void) {
