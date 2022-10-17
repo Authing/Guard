@@ -12,8 +12,8 @@ export default function Home() {
   const onLogin = () => guard.startWithRedirect()
 
   const checkLoginStatus = async () => {
-    const user = await guard.checkLoginStatus()
-    console.log('user: ', user)
+    const loginStatus = await guard.checkLoginStatus()
+    console.log('loginStatus: ', loginStatus)
   }
 
   return (

@@ -1,50 +1,36 @@
 import {
-  Guard,
-  GuardMode,
-  GuardEvents,
   GuardEventsKebabToCamelType,
-  GuardEventsCamelToKebabMapping,
-  GuardModuleType,
   Lang,
-  User,
-  UserConfig,
-  GuardScenes,
+  GuardProps,
+  GuardLocalConfig,
+  CodeAction,
+  ApiCode,
+  GuardModuleType,
   LoginMethods,
+  OIDCConnectionMode,
+  SocialConnectionProvider,
+  Protocol,
   RegisterMethods,
-  GuardEventsHandler,
-  GuardEventsHandlerKebab,
-  GuardEventsCamelToKebabMap,
-  GuardConfig,
-  GuardProps
+  GuardMode,
+  InputMethod,
+  GuardPageSene,
+  EmailScene,
+  SceneType
 } from '@authing/react-ui-components'
 
-import '@authing/react-ui-components/lib/index.min.css'
-
-import { GuardLocalConfig } from '@authing/react-ui-components/components/Guard/config'
-
-import { AuthenticationClientOptions } from 'authing-js-sdk'
-
-export {
-  Guard as ReactAuthingGuard,
-  GuardMode,
-  GuardScenes,
-  LoginMethods,
-  RegisterMethods,
-  GuardEventsCamelToKebabMap,
-  GuardEventsCamelToKebabMapping
-}
-
-export type {
-  GuardConfig,
-  GuardLocalConfig,
-  GuardEvents,
-  User,
-  Lang,
-  UserConfig,
-  GuardEventsHandler,
-  GuardEventsHandlerKebab,
-  GuardEventsKebabToCamelType
-}
+export type ICodeAction = `${CodeAction}`
+export type IApiCode = `${ApiCode}`
+export type IGuardModuleType = `${GuardModuleType}`
+export type ILoginMethod = `${LoginMethods}`
+export type IOIDCConnectionMode = `${OIDCConnectionMode}`
+export type ISocialConnectionProvider = `${SocialConnectionProvider}`
+export type IProtocol = `${Protocol}`
+export type IRegisterMethod = `${RegisterMethods}`
+export type IGuardMode = `${GuardMode}`
+export type IInputMethod = `${InputMethod}`
+export type IGuardPageSene = `${GuardPageSene}`
+export type IEmailScene = `${EmailScene}`
+export type ISceneType = `${SceneType}`
 
 export type GuardEventListeners = {
   [key in keyof GuardEventsKebabToCamelType]: Exclude<
@@ -53,22 +39,55 @@ export type GuardEventListeners = {
   >[]
 }
 
-export type CodeMethod = 'S256' | 'plain'
+export type CodeChallengeMethod = 'S256' | 'plain'
 
-export type Align = 'none' | 'left' | 'center' | 'right'
+export interface IGuardConfig extends GuardLocalConfig {
+  // replace socialConnections
+  socialConnectionList?: ISocialConnectionProvider[]
+
+  // replace defaultLoginMethod
+  loginMethod?: ILoginMethod
+
+  // replace loginMethods
+  loginMethodList: ILoginMethod[]
+
+  // replace defaultRegisterMethod
+  registerMethod?: IRegisterMethod
+
+  // replace registerMethods
+  registerMethodList?: IRegisterMethod[]
+
+  // replace contentCss
+  contentCSS?: string
+}
 
 export interface GuardOptions extends GuardProps {
   appId: string
   host?: string
   redirectUri?: string
-  mode?: 'normal' | 'modal'
-  defaultScene?: GuardModuleType
+  mode?: IGuardMode
+  defaultScene?: IGuardModuleType
   tenantId?: string
   lang?: Lang
   isSSO?: boolean
-  scope?: string // OIDC scope
-  state?: string // OIDC 状态
-  config?: Partial<GuardLocalConfig> // 兼容之前的 config，新用户可不传
-  authClientOptions?: AuthenticationClientOptions
-  align?: Align
+  config?: Partial<IGuardConfig> // 兼容 4.x 的 config
 }
+
+export interface StartWithRedirectOptions {
+  codeChallengeMethod?: CodeChallengeMethod
+  scope?: string
+  redirectUri?: string
+  state?: string
+  responseType?:
+    | 'code'
+    | 'code id_token token'
+    | 'code id_token'
+    | 'code token'
+    | 'id_token token'
+    | 'id_token'
+    | 'none'
+  responseMode?: 'query' | 'fragment' | 'form_post'
+  nonce?: string
+}
+
+export * from '@authing/react-ui-components'

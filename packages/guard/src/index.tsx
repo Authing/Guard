@@ -1,31 +1,33 @@
 import React from 'react'
+
 import ReactDOM from 'react-dom'
 
 import {
   GuardOptions,
   GuardMode,
   GuardEventsCamelToKebabMapping,
-  CodeMethod,
   GuardLocalConfig,
   GuardEventListeners,
   GuardEvents,
-  ReactAuthingGuard,
-  GuardEventsKebabToCamelType
+  Guard as ReactAuthingGuard,
+  GuardEventsKebabToCamelType,
+  StartWithRedirectOptions,
+  AuthenticationClient,
+  JwtTokenStatus,
+  User,
+  GuardModuleType,
+  Lang,
+  IGuardConfig
 } from './types'
 
-import {
-  AuthenticationClient,
-  AuthenticationClientOptions
-} from 'authing-js-sdk'
-
-import { GuardModuleType, Lang } from '@authing/react-ui-components'
+import '@authing/react-ui-components/lib/index.min.css'
 
 export * from './types'
 
-export { AuthenticationClient, AuthenticationClientOptions }
+const isDef = (value: unknown) => value !== undefined
 
 export class Guard {
-  private options: GuardOptions
+  public options: GuardOptions
 
   private visible = false
 
@@ -34,25 +36,15 @@ export class Guard {
   private publicConfig?: Record<string, unknown>
 
   constructor(options: GuardOptions) {
-    this.options = Object.assign(
-      {},
-      {
-        host: '',
-        mode: 'normal',
-        tanentId: '',
-        align: 'none',
-        config: {
-          ...options.config,
-          // 向后兼容
-          isSSO: options.isSSO || false,
-          defaultScenes: options.defaultScene || 'login',
-          lang: options.lang || 'zh-CN',
-          host: options.host || '',
-          mode: options.mode || 'normal'
-        }
-      },
-      options
-    )
+    if (!options.appId) {
+      throw new Error('appId is required')
+    }
+
+    const config = {
+      ...options.config
+    }
+
+    this.options = this.adaptOptions(options, config)
 
     const init = (async () => {
       if (this.publicConfig) {
@@ -67,6 +59,65 @@ export class Guard {
     this.then = init.then.bind(init)
 
     this.visible = !!(options.mode === GuardMode.Modal)
+  }
+
+  private adaptOptions(options: GuardOptions, config: Partial<IGuardConfig>) {
+    options.host = options.host || ''
+
+    if (isDef(options.isSSO)) {
+      config.isSSO = options.isSSO
+    }
+
+    if (isDef(options.defaultScene)) {
+      // @ts-ignore
+      config.defaultScenes = options.defaultScene
+    }
+
+    if (isDef(options.lang)) {
+      config.lang = options.lang
+    }
+
+    if (isDef(options.host)) {
+      config.host = options.host
+    }
+
+    if (isDef(options.mode)) {
+      // @ts-ignore
+      config.mode = options.mode
+    }
+
+    options.config = config
+
+    if (isDef(options.config.socialConnectionList)) {
+      // @ts-ignore
+      options.config.socialConnections = options.config.socialConnectionList
+    }
+
+    if (isDef(options.config.loginMethod)) {
+      // @ts-ignore
+      options.config.defaultLoginMethod = options.config.loginMethod
+    }
+
+    if (isDef(options.config.loginMethodList)) {
+      // @ts-ignore
+      options.config.loginMethods = options.config.loginMethodList
+    }
+
+    if (isDef(options.config.registerMethodList)) {
+      // @ts-ignore
+      options.config.registerMethods = options.config.registerMethodList
+    }
+
+    if (isDef(options.config.registerMethod)) {
+      // @ts-ignore
+      options.config.defaultRegisterMethod = options.config.registerMethod
+    }
+
+    if (isDef(options.config.contentCSS)) {
+      options.config.contentCss = options.config.contentCSS
+    }
+
+    return options
   }
 
   private async getPublicConfig(): Promise<{
@@ -89,28 +140,28 @@ export class Guard {
     return JSON.parse(publicConfig)
   }
 
-  async getAuthClient() {
+  async getAuthClient(): Promise<AuthenticationClient> {
     let publicConfig = {} as any
 
     try {
       publicConfig = await this.then()
     } catch (e) {
-      console.log('publicConfig error: ', e)
+      throw new Error(JSON.stringify(e))
     }
 
     const _authClientOptions = Object.assign(
       {},
-      this.options.authClientOptions || {},
       {
         appId: this.options.appId,
         appHost: this.options.host || `https://${publicConfig.requestHostname}`,
+        tenantId: this.options.tenantId,
         redirectUri:
           this.options.redirectUri || publicConfig.oidcConfig.redirect_uris[0],
         tokenEndPointAuthMethod:
           publicConfig.oidcConfig.token_endpoint_auth_method || 'none',
         introspectionEndPointAuthMethod:
           publicConfig.oidcConfig.introspection_endpoint_auth_method || 'none'
-      } as AuthenticationClientOptions
+      }
     )
 
     return new AuthenticationClient(_authClientOptions)
@@ -131,7 +182,13 @@ export class Guard {
     }
 
     if (typeof selector === 'string') {
-      return document.querySelector(selector)
+      const res = document.querySelector(selector)
+      if (!res) {
+        console.warn(
+          `Failed to start guard: target selector "${selector}" returned null.`
+        )
+      }
+      return res
     }
 
     return selector
@@ -151,7 +208,7 @@ export class Guard {
    * @param el String
    * @returns Promise
    */
-  async start(el: string) {
+  async start(el?: string): Promise<User> {
     ;(this.options.config as Partial<GuardLocalConfig>).target = el
 
     this.render()
@@ -180,7 +237,7 @@ export class Guard {
     this.render()
   }
 
-  async checkLoginStatus() {
+  async checkLoginStatus(): Promise<JwtTokenStatus | undefined> {
     const authClient = await this.getAuthClient()
     const user = await authClient.getCurrentUser()
 
@@ -194,10 +251,10 @@ export class Guard {
       return
     }
 
-    const { status } = await authClient.checkLoginStatus(token)
+    const loginStatus: JwtTokenStatus = await authClient.checkLoginStatus(token)
 
-    if (status) {
-      return user
+    if (loginStatus.status) {
+      return loginStatus
     }
   }
 
@@ -223,13 +280,20 @@ export class Guard {
 
   /**
    * 启动跳转模式
-   * @param {String} codeChallengeDigestMethod 'S256' | 'plain'
-   * @param {String} codeChallengeMethod 'S256' | 'plain'
    */
-  async startWithRedirect(
-    codeChallengeDigestMethod: CodeMethod = 'S256',
-    codeChallengeMethod: CodeMethod = 'S256'
-  ) {
+  async startWithRedirect(options: StartWithRedirectOptions = {}) {
+    const getRandom = () => Math.random().toString().slice(2)
+
+    const {
+      codeChallengeMethod = 'S256',
+      scope = 'openid profile email phone address',
+      redirectUri,
+      state = getRandom(),
+      nonce = getRandom(),
+      responseMode = 'query',
+      responseType = 'code'
+    } = options
+
     const authClient = await this.getAuthClient()
 
     // 生成一个 code_verifier
@@ -240,13 +304,19 @@ export class Guard {
     // 计算 code_verifier 的 SHA256 摘要
     const codeChallengeDigest = authClient.getCodeChallengeDigest({
       codeChallenge,
-      method: codeChallengeDigestMethod
+      method: codeChallengeMethod
     })
 
     // 构造 OIDC 授权码 + PKCE 模式登录 URL
     const url = authClient.buildAuthorizeUrl({
       codeChallenge: codeChallengeDigest,
-      codeChallengeMethod: codeChallengeMethod
+      codeChallengeMethod,
+      scope,
+      redirectUri,
+      state,
+      nonce,
+      responseMode,
+      responseType
     })
 
     window.location.href = url
@@ -299,7 +369,13 @@ export class Guard {
   private parseUrlQuery() {
     const query: Record<string, string> = {}
 
-    const queryString = window.location.search.split('?')[1]
+    let queryString = ''
+
+    try {
+      queryString = window.location.search.split('?')[1]
+    } catch (e) {
+      queryString = window.location.hash.split('#')[1]
+    }
 
     if (!queryString) {
       return query
@@ -316,7 +392,7 @@ export class Guard {
   /**
    * 获取当前用户信息
    */
-  async trackSession() {
+  async trackSession(): Promise<User | null> {
     const authClient = await this.getAuthClient()
 
     return authClient.getCurrentUser()
@@ -326,15 +402,21 @@ export class Guard {
     const publicConfig = await this.then()
 
     let redirectUri = ''
+
+    const origin = window.location.origin
+
     try {
       redirectUri = publicConfig.logoutRedirectUris[0]
     } catch (e) {
-      redirectUri = window.location.origin
+      redirectUri = origin
+    } finally {
+      if (!redirectUri) {
+        redirectUri = origin
+      }
     }
 
     const idToken = localStorage.getItem('idToken')
     let logoutUrl = ''
-
     const authClient = await this.getAuthClient()
 
     authClient.logout()
@@ -350,12 +432,6 @@ export class Guard {
     localStorage.clear()
 
     window.location.href = logoutUrl || redirectUri
-  }
-
-  async updateIdToken() {
-    const authClient = await this.getAuthClient()
-
-    return authClient.refreshToken()
   }
 
   async render(cb?: () => void) {
@@ -389,13 +465,7 @@ export class Guard {
     }
 
     return ReactDOM.render(
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: this.options.align
-        }}
-      >
+      <div>
         <ReactAuthingGuard
           {...(evts as GuardEvents)}
           appId={this.options.appId}

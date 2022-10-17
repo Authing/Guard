@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authing Guard Demo - Jump</title>
+  <script src="https://cdn.authing.co//packages/guard/5.0.5-alpha.30/guard.min.js"></script>
+  <script src="https://cdn.authing.co/packages/face-api/face-api.min.js"></script>
+  <script src="./config.js"></script>
+  <link rel="stylesheet" href="https://cdn.authing.co/packages/guard/5.0.5-alpha.30/guard.min.css">
+</head>
+<body>
+
+
+  <button onclick="startWithRedirect()">Start With Redirect</button>
+
+  <script>
+    const guard = new GuardFactory.Guard(guardOptions)
+
+    function startWithRedirect () {
+      guard.startWithRedirect({
+        // 默认情况下，会使用你在 Authing 控制台中配置的第一个回调地址为此次认证使用的回调地址。
+        // 如果你配置了多个回调地址，也可以手动指定（此地址也需要加入到应用的「登录回调 URL」中）：
+        redirectUri: callbackPageUrl,
+        state: 'some-random-string'
+      })
+    }
+  </script>
+</body>
+</html>
