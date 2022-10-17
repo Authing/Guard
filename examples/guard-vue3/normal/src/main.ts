@@ -16,6 +16,7 @@ const app = createApp(App)
 app.use(
   createGuard({
     appId: 'AUTHING_APP_ID',
+    // host: 'https://my-authing-app.example.com',
     isSSO: true,
     config: {
       socialConnectionList: ['github'],

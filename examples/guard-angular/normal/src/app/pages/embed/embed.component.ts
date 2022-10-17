@@ -16,6 +16,8 @@ export class EmbedComponent {
   langCache = ''
 
   ngOnInit() {
+    console.log('guard instance: ', this.guard.client)
+
     // 使用 start 方法挂载 Guard 组件到你指定的 DOM 节点，登录成功后返回 userInfo
     this.guard.client.start('#authing-guard-container').then((userInfo: User) => {
       console.log(userInfo)

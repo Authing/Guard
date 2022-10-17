@@ -14,6 +14,7 @@ export default function App() {
   return (
     <GuardProvider
       appId="AUTHING_APP_ID"
+      // host="https://my-authing-app.example.com"
       isSSO={true}
       config={{
         socialConnectionList: ['github'],

@@ -10,6 +10,7 @@ import '@authing/guard-vue2/dist/esm/guard.min.css'
 
 Vue.use(GuardPlugin, {
   appId: 'AUTHING_APP_ID',
+  // host: 'https://my-authing-app.example.com',
   isSSO: true,
   config: {
     socialConnectionList: ['github'],

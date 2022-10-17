@@ -16,6 +16,7 @@ import * as facePlugin from 'face-api.js'
     AppRoutingModule,
     GuardModule.forRoot({
       appId: 'AUTHING_APP_ID',
+      // host: 'https://my-authing-app.example.com',
       isSSO: true,
       config: {
         socialConnectionList: ['github'],
