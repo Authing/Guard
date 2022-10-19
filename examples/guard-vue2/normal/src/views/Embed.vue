@@ -94,9 +94,11 @@ export default {
     margin-right: 10px;
   }
 
-  #authing-guard-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  @media only screen and (min-width: 450px) {
+    #authing-guard-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 </style>
