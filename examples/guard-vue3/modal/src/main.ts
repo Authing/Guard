@@ -14,12 +14,13 @@ const app = createApp(App)
 
 app.use(
   createGuard({
-    appId: 'AUTHING_APP_ID',
+    appId: '633cff70bf717c9ba0d604a4',
     isSSO: true,
     mode: 'modal',
     facePlugin,
     config: {
-      socialConnectionList: ['github']
+      socialConnectionList: ['github'],
+      clickCloseable: false
     }
   })
 )
