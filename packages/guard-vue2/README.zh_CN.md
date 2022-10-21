@@ -16,15 +16,6 @@ Guard 是 Authing 提供的一种轻便的认证组件，你可以把它嵌入�
 
 ## 安装
 
-使用 CDN:
-
-``` html
-<link rel="stylesheet" src="https://cdn.authing.co/packages/guard-vue2/5.0.0/guard.min.css" />
-<script src="https://cdn.authing.co/packages/guard-vue2/5.0.0/guard.min.js"></script>
-```
-
-使用 NPM:
-
 ``` shell
 npm install --save @authing/guard-vue2
 ```

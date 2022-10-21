@@ -14,15 +14,6 @@ Prepare your Vue2 project and follow the guide to connect Guard to your Vue2 pro
 
 ## Install
 
-From CDN:
-
-``` html
-<link rel="stylesheet" src="https://cdn.authing.co/packages/guard-vue2/5.0.0/guard.min.css" />
-<script src="https://cdn.authing.co/packages/guard-vue2/5.0.0/guard.min.js"></script>
-```
-
-From NPM:
-
 ``` shell
 npm install --save @authing/guard-vue2
 ```

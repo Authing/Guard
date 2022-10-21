@@ -14,15 +14,6 @@ Prepare your React project and follow the guide to connect Guard to your React p
 
 ## Install
 
-From CDN:
-
-``` html
-<link rel="stylesheet" src="https://cdn.authing.co/packages/guard-react/5.0.0/guard.min.css" />
-<script src="https://cdn.authing.co/packages/guard-react/5.0.0/guard.min.js"></script>
-```
-
-From NPM:
-
 ``` shell
 npm install --save @authing/guard-react
 ```

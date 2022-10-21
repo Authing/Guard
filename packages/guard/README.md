@@ -17,8 +17,8 @@ Prepare your native JavaScript project and follow the guide to connect Guard to 
 From CDN:
 
 ``` html
-<link rel="stylesheet" src="https://cdn.authing.co/packages/guard/5.0.0/guard.min.css" />
-<script src="https://cdn.authing.co/packages/guard/5.0.0/guard.min.js"></script>
+<link rel="stylesheet" href="https://cdn.authing.co/packages/guard/5.0.6/guard.min.css" />
+<script src="https://cdn.authing.co/packages/guard/5.0.6/guard.min.js"></script>
 ```
 
 From NPM:
