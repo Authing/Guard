@@ -1,13 +1,10 @@
 {
-  "name": "@authing/guard",
+  "name": "@authing/guard-shim-react18",
   "version": "5.0.7",
   "description": "Guard shim for react18",
   "main": "src/index.tsx",
   "scripts": {
-    "autoinstall": "npm ci",
-    "build": "node scripts/build.js",
-    "release:official": "npm publish --verbose --access public",
-    "release:alpha": "npm publish --verbose --tag=alpha --access public"
+    "build": "echo 'No need to build @authing/guard-shim-react18'"
   },
   "devDependencies": {
     "@types/react": "^18.0.24",
