@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard-shim-react18",
-  "version": "5.0.8-alpha.1",
+  "version": "5.0.8-alpha.2",
   "description": "Guard shim for react18",
   "main": "src/index.tsx",
   "scripts": {
