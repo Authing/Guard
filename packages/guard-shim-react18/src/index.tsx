@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { createRoot } from 'react-dom/client'
+import { createRoot, Root } from 'react-dom/client'
 
 import {
   GuardOptions,
@@ -34,6 +34,8 @@ export class Guard {
   private then: () => Promise<any | never>
 
   private publicConfig?: Record<string, unknown>
+
+  private root?: Root
 
   constructor(options: GuardOptions) {
     if (!options.appId) {
@@ -470,7 +472,7 @@ export class Guard {
       return
     }
 
-    const root = createRoot(target)
+    const root = (this.root = createRoot(target))
 
     return root.render(
       <ReactAuthingGuard
@@ -506,8 +508,8 @@ export class Guard {
   unmount() {
     const node = Guard.getGuardContainer(this.options.config?.target)
 
-    if (node) {
-      ReactDOM.unmountComponentAtNode(node)
+    if (node && this.root) {
+      this.root.unmount()
     }
   }
 }

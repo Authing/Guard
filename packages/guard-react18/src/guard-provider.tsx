@@ -2,7 +2,7 @@ import React, { useState, ComponentProps, JSXElementConstructor } from 'react'
 
 import { GuardContext } from './guard-context'
 
-import { Guard, GuardOptions } from '@authing/guard'
+import { Guard, GuardOptions } from '@authing/guard-shim-react18'
 
 type Options = GuardOptions & ComponentProps<JSXElementConstructor<any>>
 

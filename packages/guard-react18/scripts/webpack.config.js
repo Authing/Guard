@@ -6,7 +6,7 @@ function resolve (dir, file = '') {
 }
 
 module.exports = {
-  mode: 'production',
+  mode: 'none',
   entry: resolve('src/index.tsx'),
   output: {
     filename: 'guard.min.js',
