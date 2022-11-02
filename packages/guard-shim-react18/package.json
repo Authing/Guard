@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard-shim-react18",
-  "version": "5.0.8-alpha.0",
+  "version": "5.0.8-alpha.1",
   "description": "Guard shim for react18",
   "main": "src/index.tsx",
   "scripts": {
@@ -21,9 +21,9 @@
     "webpack": "^5.72.0"
   },
   "peerDependencies": {
+    "axios": "^0.27.2",
     "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "axios": "^0.27.2"
+    "react-dom": "^18.0.0"
   },
   "dependencies": {
     "@authing/react18-components": "^4.1.0-alpha.0"
