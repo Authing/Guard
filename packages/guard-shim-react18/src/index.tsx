@@ -1,6 +1,6 @@
 import React from 'react'
 
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 
 import {
   GuardOptions,
@@ -20,7 +20,7 @@ import {
   IGuardConfig
 } from './types'
 
-import '@authing/react-ui-components/lib/index.min.css'
+import '@authing/react18-components/lib/index.min.css'
 
 export * from './types'
 
@@ -434,7 +434,7 @@ export class Guard {
     window.location.href = logoutUrl || redirectUri
   }
 
-  async render(cb?: () => void) {
+  async render() {
     const evts: GuardEvents = Object.entries(
       GuardEventsCamelToKebabMapping
     ).reduce((acc, [reactEvt, nativeEvt]) => {
@@ -464,21 +464,25 @@ export class Guard {
         this.options.host || `https://${publicConfig.requestHostname}`
     }
 
-    return ReactDOM.render(
-      <div>
-        <ReactAuthingGuard
-          {...(evts as GuardEvents)}
-          appId={this.options.appId}
-          tenantId={this.options.tenantId}
-          config={this.options.config}
-          facePlugin={this.options.facePlugin}
-          appendConfig={this.options.appendConfig}
-          visible={this.visible}
-          authClient={authClient}
-        />
-      </div>,
-      Guard.getGuardContainer(this.options.config?.target),
-      cb
+    const target = Guard.getGuardContainer(this.options.config?.target)
+
+    if (!target) {
+      return
+    }
+
+    const root = createRoot(target)
+
+    return root.render(
+      <ReactAuthingGuard
+        {...(evts as GuardEvents)}
+        appId={this.options.appId}
+        tenantId={this.options.tenantId}
+        config={this.options.config}
+        facePlugin={this.options.facePlugin}
+        appendConfig={this.options.appendConfig}
+        visible={this.visible}
+        authClient={authClient}
+      />
     )
   }
 

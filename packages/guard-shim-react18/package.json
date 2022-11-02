@@ -1,0 +1,34 @@
+{
+  "name": "@authing/guard",
+  "version": "5.0.7",
+  "description": "Guard shim for react18",
+  "main": "src/index.tsx",
+  "scripts": {
+    "autoinstall": "npm ci",
+    "build": "node scripts/build.js",
+    "release:official": "npm publish --verbose --access public",
+    "release:alpha": "npm publish --verbose --tag=alpha --access public"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.24",
+    "@types/react-dom": "^18.0.8",
+    "css-loader": "^6.7.1",
+    "mini-css-extract-plugin": "^2.6.1",
+    "rimraf": "^2.6.2",
+    "ts-loader": "^9.3.1",
+    "webpack": "^5.72.0"
+  },
+  "dependencies": {
+    "@authing/react18-components": "^4.1.0-alpha.0",
+    "axios": "^0.27.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "author": "https://github.com/authing",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "gitHead": "0dcc113462942aaae8f479acbeaa7b71e89b6c84"
+}
