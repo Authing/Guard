@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { GuardProvider } from '@authing/guard-react'
+import { GuardProvider } from '@authing/guard-react18'
 
 import '@authing/guard-react/dist/esm/guard.min.css'
 

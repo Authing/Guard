@@ -18,11 +18,8 @@ module.exports = {
   experiments: {
     outputModule: true
   },
-  externals: {
-    react: 'React'
-  },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js']
+    extensions: ['.ts', '.tsx', '.js']
   },
   module: {
     rules: [
