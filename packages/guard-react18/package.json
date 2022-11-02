@@ -3,7 +3,7 @@
   "version": "5.0.8-alpha.1",
   "description": "Guard for React18",
   "module": "dist/esm/guard.min.js",
-  "types": "dist/typings/index.d.ts",
+  "types": "dist/typings/guard-react18/src/index.d.ts",
   "files": [
     "dist"
   ],
