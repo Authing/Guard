@@ -1,14 +1,11 @@
 {
   "name": "@authing/guard-shim-react18",
-  "version": "5.0.7",
+  "version": "5.0.8-alpha.0",
   "description": "Guard shim for react18",
   "main": "src/index.tsx",
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "autoinstall": "npm ci",
-    "build": "node scripts/build.js",
+    "build": "echo 'No need to build for @authing/guard-shim-react18'",
     "lint": "eslint --ext .ts,.tsx src/**",
     "lint:fix": "eslint --fix --ext .ts,.tsx src/**",
     "release:official": "npm publish --verbose --access public",
