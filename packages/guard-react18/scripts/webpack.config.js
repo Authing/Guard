@@ -19,7 +19,7 @@ module.exports = {
     outputModule: true
   },
   externals: {
-    react: 'React'
+    react: 'react'
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js']
