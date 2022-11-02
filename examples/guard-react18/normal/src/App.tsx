@@ -4,7 +4,7 @@ import { GuardProvider } from '@authing/guard-react18'
 
 import '@authing/guard-react/dist/esm/guard.min.css'
 
-import * as facePlugin from 'face-api.js'
+// import * as facePlugin from 'face-api.js'
 
 import RouterComponent from './router'
 
@@ -13,14 +13,13 @@ import './App.css'
 export default function App() {
   return (
     <GuardProvider
-      appId="AUTHING_APP_ID"
+      appId="630ed3137dd6f2fd7001da24"
       // host="https://my-authing-app.example.com"
       isSSO={true}
       config={{
-        socialConnectionList: ['github'],
-        langRange: ['zh-CN']
+        socialConnectionList: ['github']
       }}
-      facePlugin={facePlugin}
+      // facePlugin={facePlugin}
     >
       <RouterComponent></RouterComponent>
     </GuardProvider>

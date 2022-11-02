@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AuthenticationClient, useGuard, User } from '@authing/guard-react'
+import { AuthenticationClient, useGuard, User } from '@authing/guard-react18'
 
 export default function Personal() {
   const [userInfo, setUserInfo] = useState('')

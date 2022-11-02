@@ -1,5 +1,5 @@
 import React from 'react'
-import { useGuard } from '@authing/guard-react'
+import { useGuard } from '@authing/guard-react18'
 
 export default function Jump() {
   const guard = useGuard()

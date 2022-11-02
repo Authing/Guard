@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { AuthenticationClient, RefreshToken, useGuard, User } from '@authing/guard-react'
+import { AuthenticationClient, RefreshToken, useGuard, User } from '@authing/guard-react18'
 
 export default function Login() {
   const [langCache, setLangCache] = useState('')

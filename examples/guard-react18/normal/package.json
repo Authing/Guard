@@ -10,8 +10,8 @@
   "license": "ISC",
   "devDependencies": {
     "@types/react": "^17.0.43",
-    "@types/react-dom": "^17.0.14",
-    "@types/react-router": "^5.1.18",
+    "@types/react-dom": "^18.0.6",
+    "@types/react-redux": "^7.1.7",
     "@types/react-router-dom": "^5.1.3",
     "css-loader": "^2.1.1",
     "html-webpack-plugin": "^3.2.0",
@@ -24,7 +24,7 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
-    "@authing/guard-react18": "^5.0.8-alpha.2",
+    "@authing/guard-react18": "^5.0.8-alpha.3",
     "face-api.js": "^0.22.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

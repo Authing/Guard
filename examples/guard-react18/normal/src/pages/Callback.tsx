@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
-import { JwtTokenStatus, useGuard, User } from '@authing/guard-react'
+import { JwtTokenStatus, useGuard, User } from '@authing/guard-react18'
 
 export default function Callback() {
   const history = useHistory()
