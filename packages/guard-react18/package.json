@@ -25,9 +25,11 @@
     "webpack": "^5.72.0"
   },
   "dependencies": {
-    "@authing/guard-shim-react18": "^5.0.8-alpha.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@authing/guard-shim-react18": "^5.0.8-alpha.0"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   },
   "author": "https://github.com/authing",
   "license": "MIT",
