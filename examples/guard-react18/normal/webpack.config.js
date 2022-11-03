@@ -60,4 +60,7 @@ module.exports = {
     open: true,
     openPage: '../',
   },
+  node: {
+    fs: 'empty'
+  }
 };
