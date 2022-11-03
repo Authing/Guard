@@ -10,46 +10,46 @@ import './App.css'
 
 import '@authing/guard-react18/dist/esm/guard.min.css'
 
-import { message, Dropdown, Button } from 'antd'
-import 'antd/dist/antd.css'
-import type { MenuProps } from 'antd';
+// import { message, Dropdown, Button } from 'antd'
+// import 'antd/dist/antd.css'
+// import type { MenuProps } from 'antd';
 
-const items: MenuProps['items'] = [
-  {
-    key: '1',
-    label: (
-      <div>1</div>
-    ),
-  },
-  {
-    key: '2',
-    label: (
-      <div>2</div>
-    ),
-  },
-  {
-    key: '3',
-    label: (
-      <div>3</div>
-    ),
-  },
-];
+// const items: MenuProps['items'] = [
+//   {
+//     key: '1',
+//     label: (
+//       <div>1</div>
+//     ),
+//   },
+//   {
+//     key: '2',
+//     label: (
+//       <div>2</div>
+//     ),
+//   },
+//   {
+//     key: '3',
+//     label: (
+//       <div>3</div>
+//     ),
+//   },
+// ];
 
 // message.success('登录成功...')
 
 export default function App() {
   return (
     <>
-      {/* <GuardProvider
+      <GuardProvider
         appId="630ed3137dd6f2fd7001da24"
         // host="https://my-authing-app.example.com"
         isSSO={true}
         facePlugin={facePlugin}
       >
         <RouterComponent></RouterComponent>
-      </GuardProvider> */}
+      </GuardProvider>
 
-      <RouterComponent></RouterComponent>
+      {/* <RouterComponent></RouterComponent> */}
 
       {/* <Dropdown menu={{ items }} placement="bottomRight">
         <Button>bottomRight</Button>

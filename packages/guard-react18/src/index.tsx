@@ -1,4 +1,4 @@
-import '@authing/guard/dist/esm/guard.min.css'
+import '@authing/guard-shim-react18/dist/esm/guard.min.css'
 
 export * from '@authing/guard-shim-react18'
 
