@@ -1,8 +1,8 @@
 import Head from 'next/head'
 
 import { useEffect } from 'react'
-import { Guard } from '@authing/guard'
-import '@authing/guard/dist/esm/guard.min.css'
+import { Guard } from '@authing/guard-react18'
+import '@authing/guard-react18/dist/esm/guard.min.css'
 
 import { guardOptions } from '../config'
 
@@ -10,7 +10,7 @@ export default function Login() {
   const guard = new Guard(guardOptions)
 
   const guardEffects = async () => {
-    guard.start('#guard-container').then(userInfo => {
+    guard.start('#authing-guard-container').then(userInfo => {
       console.log('start userInfo: ', userInfo)
     })
 
@@ -28,7 +28,12 @@ export default function Login() {
     guardEffects()
   }, [])
 
+  const logout = () => guard.logout()
+
   return (
-    <div id="guard-container"></div>
+    <div>
+      <button onClick={logout}>Logout</button>
+      <div id="authing-guard-container"></div>
+    </div>
   )
 }

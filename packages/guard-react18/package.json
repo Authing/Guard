@@ -1,7 +1,7 @@
 {
-  "name": "@authing/guard-vue2",
+  "name": "@authing/guard-react18",
   "version": "5.0.8-alpha.9",
-  "description": "Guard for Vue2",
+  "description": "Guard for React18",
   "module": "dist/esm/guard.min.js",
   "types": "dist/typings/index.d.ts",
   "files": [
@@ -10,12 +10,14 @@
   "scripts": {
     "autoinstall": "npm ci",
     "build": "node scripts/build.js",
-    "lint": "eslint --ext .ts src/**",
-    "lint:fix": "eslint --fix --ext .ts src/**",
+    "lint": "eslint --ext .ts,.tsx src/**",
+    "lint:fix": "eslint --fix --ext .ts,.tsx src/**",
     "release:official": "npm publish --verbose --access public",
     "release:alpha": "npm publish --verbose --tag=alpha --access public"
   },
   "devDependencies": {
+    "@types/react": "^18.0.24",
+    "@types/react-dom": "^18.0.8",
     "css-loader": "^6.7.1",
     "mini-css-extract-plugin": "^2.6.1",
     "rimraf": "^2.6.2",
@@ -23,8 +25,8 @@
     "webpack": "^5.72.0"
   },
   "dependencies": {
-    "@authing/guard": "^5.0.8-alpha.9",
-    "vue": "^2.6.10"
+    "@authing/guard-shim-react18": "^5.0.8-alpha.9",
+    "react": "^18.0.0"
   },
   "author": "https://github.com/authing",
   "license": "MIT",
