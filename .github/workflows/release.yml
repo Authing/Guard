@@ -46,6 +46,7 @@ jobs:
           
       - name: install packages
         run: |
+          npm install -g lerna@4.0.0
           npm ci
           lerna run autoinstall
 
