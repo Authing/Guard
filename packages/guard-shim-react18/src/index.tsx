@@ -20,7 +20,7 @@ import {
   IGuardConfig
 } from './types'
 
-import '@authing/react18-components/lib/index.min.css'
+import '@authing/react18-ui-components/lib/index.min.css'
 
 export * from './types'
 

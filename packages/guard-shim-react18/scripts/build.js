@@ -12,7 +12,7 @@ try {
 readyGo()
 
 function readyGo () {
-  webpack(webpackEsmBundlerConfig, (error) => {
+  webpack(webpackEsmBundlerConfig, (error, stats) => {
     if (error) {
       console.error('build guard-shim-react18 esm bundler error: ', error)
     }

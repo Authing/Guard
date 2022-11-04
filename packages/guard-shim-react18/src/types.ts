@@ -16,7 +16,7 @@ import {
   GuardPageSene,
   EmailScene,
   SceneType
-} from '@authing/react18-components'
+} from '@authing/react18-ui-components'
 
 export type ICodeAction = `${CodeAction}`
 export type IApiCode = `${ApiCode}`
@@ -90,4 +90,4 @@ export interface StartWithRedirectOptions {
   nonce?: string
 }
 
-export * from '@authing/react18-components'
+export * from '@authing/react18-ui-components'
