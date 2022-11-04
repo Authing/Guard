@@ -287,7 +287,6 @@ export class Guard {
     const {
       codeChallengeMethod = 'S256',
       scope = 'openid profile email phone address',
-      redirectUri,
       state = getRandom(),
       nonce = getRandom(),
       responseMode = 'query',
@@ -307,12 +306,21 @@ export class Guard {
       method: codeChallengeMethod
     })
 
+    let publicConfig = {} as any
+
+    try {
+      publicConfig = await this.then()
+    } catch (e) {
+      throw new Error(JSON.stringify(e))
+    }
+
     // 构造 OIDC 授权码 + PKCE 模式登录 URL
     const url = authClient.buildAuthorizeUrl({
       codeChallenge: codeChallengeDigest,
       codeChallengeMethod,
       scope,
-      redirectUri,
+      redirectUri:
+        this.options.redirectUri || publicConfig.oidcConfig.redirect_uris[0],
       state,
       nonce,
       responseMode,
