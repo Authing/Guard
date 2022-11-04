@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { AuthenticationClient, RefreshToken, useGuard, User } from '@authing/guard-react18'
 
-export default function Login() {
+export default function Embed() {
   const [langCache, setLangCache] = useState('')
   const guard = useGuard()
 

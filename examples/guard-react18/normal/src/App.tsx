@@ -41,7 +41,7 @@ export default function App() {
   return (
     <>
       <GuardProvider
-        appId="630ed3137dd6f2fd7001da24"
+        appId="AUTHING_APP_ID"
         // host="https://my-authing-app.example.com"
         isSSO={true}
         facePlugin={facePlugin}
