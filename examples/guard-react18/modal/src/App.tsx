@@ -14,7 +14,6 @@ export default function App() {
   return (
     <GuardProvider
       appId="AUTHING_APP_ID"
-      host="https://example.authing.cn"
       mode="modal"
       facePlugin={facePlugin}
       config={{

@@ -12,8 +12,6 @@ export class JumpComponent {
   ) {}
   
   startWithRedirect () {
-    this.guard.client.startWithRedirect({
-      redirectUri: 'http://localhost:3000/callback'
-    })
+    this.guard.client.startWithRedirect()
   }
 }

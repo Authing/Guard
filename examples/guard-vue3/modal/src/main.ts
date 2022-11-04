@@ -14,7 +14,7 @@ const app = createApp(App)
 
 app.use(
   createGuard({
-    appId: '633cff70bf717c9ba0d604a4',
+    appId: 'AUTHING_APP_ID',
     isSSO: true,
     mode: 'modal',
     facePlugin,
