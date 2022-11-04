@@ -15,18 +15,8 @@ Guard 是 Authing 提供的一种轻便的认证组件，你可以把它嵌入�
 <br />
 
 ## 安装
-
-使用 CDN:
-
-``` html
-<link rel="stylesheet" src="https://cdn.authing.co/packages/guard-react/5.0.0/guard.min.css" />
-<script src="https://cdn.authing.co/packages/guard-react/5.0.0/guard.min.js"></script>
-```
-
-使用 NPM:
-
 ``` shell
-npm install --save @authing/guard-react
+npm install --save @authing/guard-react18
 ```
 
 ## 初始化
@@ -54,9 +44,9 @@ const guard = new GuardFactory.Guard({
 })
 
 // 使用 npm
-import { GuardProvider } from '@authing/guard-react'
+import { GuardProvider } from '@authing/guard-react18'
 
-import '@authing/guard-react/dist/esm/guard.min.css'
+import '@authing/guard-react18/dist/esm/guard.min.css'
 
 function App() {
   return (
@@ -73,7 +63,7 @@ function App() {
 
 ``` typescript
 // 组件中使用 Guard 的 API
-import { useGuard } from '@authing/guard-react'
+import { useGuard } from '@authing/guard-react18'
 
 const guard = useGuard()
 ```
@@ -87,7 +77,7 @@ const guard = useGuard()
 ``` javascript
 import React, { useEffect } from 'react'
 
-import { useGuard } from '@authing/guard-react'
+import { useGuard } from '@authing/guard-react18'
 
 export default function Login() {
   const guard = useGuard()

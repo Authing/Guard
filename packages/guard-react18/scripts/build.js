@@ -6,7 +6,7 @@ const webpackConfig = require('./webpack.config')
 try {
   rm.sync(path.resolve(__dirname, '../', 'dist'))
 } catch (e) {
-  console.error('\n\n build guard-react, failed to delete dist directory, please operate manually \n\n')
+  console.error('\n\n build guard-react18, failed to delete dist directory, please operate manually \n\n')
 }
 
 readyGo()
@@ -14,7 +14,7 @@ readyGo()
 function readyGo () {
   webpack(webpackConfig, (error) => {
     if (error) {
-      console.error('build guard-react esm bundler error: ', error)
+      console.error('build guard-react18 esm bundler error: ', error)
     }
   })
 }

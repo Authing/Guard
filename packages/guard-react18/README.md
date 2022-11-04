@@ -15,7 +15,7 @@ Prepare your React project and follow the guide to connect Guard to your React p
 ## Install
 
 ``` shell
-npm install --save @authing/guard-react
+npm install --save @authing/guard-react18
 ```
 
 ## Initialize
@@ -43,9 +43,9 @@ const guard = new GuardFactory.Guard({
 })
 
 // From npm
-import { GuardProvider } from '@authing/guard-react'
+import { GuardProvider } from '@authing/guard-react18'
 
-import '@authing/guard-react/dist/esm/guard.min.css'
+import '@authing/guard-react18/dist/esm/guard.min.css'
 
 function App() {
   return (
@@ -62,7 +62,7 @@ function App() {
 
 ``` typescript
 // use Guard APIs in Components
-import { useGuard } from '@authing/guard-react'
+import { useGuard } from '@authing/guard-react18'
 
 const guard = useGuard()
 ```
@@ -76,7 +76,7 @@ Render Guard component
 ``` javascript
 import React, { useEffect } from 'react'
 
-import { useGuard } from '@authing/guard-react'
+import { useGuard } from '@authing/guard-react18'
 
 export default function Login() {
   const guard = useGuard()
