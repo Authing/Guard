@@ -6,7 +6,7 @@ import '@authing/guard/dist/esm/guard.min.css'
 
 import { guardOptions } from '../config'
 
-export default function Home() {
+export default function Jump() {
   const guard = new Guard(guardOptions)
 
   const onLogin = () => guard.startWithRedirect()

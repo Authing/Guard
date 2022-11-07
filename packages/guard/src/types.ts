@@ -76,7 +76,6 @@ export interface GuardOptions extends GuardProps {
 export interface StartWithRedirectOptions {
   codeChallengeMethod?: CodeChallengeMethod
   scope?: string
-  redirectUri?: string
   state?: string
   responseType?:
     | 'code'

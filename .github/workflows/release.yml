@@ -46,6 +46,7 @@ jobs:
           
       - name: install packages
         run: |
+          npm install -g lerna@4.0.0
           npm ci
           lerna run autoinstall
 
@@ -56,6 +57,7 @@ jobs:
       - name: build
         run: |
           npm run build:guard
+          npm run build:guard-shim-react18
           lerna link
           lerna run build
 

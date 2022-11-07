@@ -5,6 +5,7 @@
     "prepare": "husky install",
     "link": "lerna link",
     "build:guard": "cd packages/guard && npm run autoinstall && npm run build",
+    "build:guard-shim-react18": "cd packages/guard-shim-react18 && npm run autoinstall && npm run build",
     "oss": "node scripts/oss.js",
     "lint": "eslint --ext .tsx,.ts packages/**/src/**",
     "lint:fix": "eslint --fix --ext .tsx,.ts packages/**/src/**"
