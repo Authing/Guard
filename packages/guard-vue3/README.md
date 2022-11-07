@@ -23,15 +23,14 @@ npm install --save @authing/guard-vue3
 |Key|Type|Default|Requires
 |-----|----|----|----|
 |appId|String| - |Y|
+|host|String| - |N|
+|redirectUri|String| - |N|
 |mode|normal / modal|normal|N|
 |defaultScene|GuardModuleType|login|N|
-|align|none / left / center / right | none | N | Guard default position|
+|tenantId|String| - | N |
 |lang|zh-CN / en-US|zh-CN|N|
 |isSSO|Boolean|true|N|
-|host|String| - |N|
-|scope|String| - |N|
-|redirectUri|String| - |N|
-|state|String| - |N|
+|config|Partial<IGuardConfig>| - | N |
 
 
 ``` javascript

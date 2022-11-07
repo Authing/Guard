@@ -22,18 +22,17 @@ npm install --save @authing/guard-vue2
 
 ## 初始化
 
-|字段|类型|默认值|必传
+|字段|类型|默认是|必传
 |-----|----|----|----|
 |appId|String| - |是|
+|host|String| - |否|
+|redirectUri|String| - |否|
 |mode|normal / modal|normal|否|
 |defaultScene|GuardModuleType|login|否|
-| align        |none / left / center / right | none | 否 |
-|lang|zh-CN / en-US|zh-CN|否|
-|isSSO|Boolean|true|否|
-|host|String| - |否|
-|scope|String| - |否|
-|redirectUri|String| - |否|
-|state|String| - |否|
+|tenantId|String| - | 否 |
+|lang|zh-CN / en-US|zh-CN| 否 |
+|isSSO|Boolean|true| 否 |
+|config|Partial<IGuardConfig>| - | 否 |
 
 
 ``` javascript
