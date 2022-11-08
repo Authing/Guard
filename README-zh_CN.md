@@ -24,11 +24,12 @@
 
 |项目|状态|描述
 |-----|----|----|
-|@authing/guard-react|[![npm version](https://badge.fury.io/js/@authing%2Fguard-react.svg)](https://www.npmjs.com/package/@authing/guard-react)|<a href="https://docs.authing.cn/v2/reference/guard/v3/spa.html" target="_blank">Guard 适用于 React</a>|
-|@authing/guard-vue2|[![npm version](https://badge.fury.io/js/@authing%2Fguard-vue2.svg)](https://www.npmjs.com/package/@authing/guard-vue2)|<a href="https://docs.authing.cn/v2/reference/guard/v3/spa.html" target="_blank">Guard 适用于 Vue2</a>|
-|@authing/guard-vue3|[![npm version](https://badge.fury.io/js/@authing%2Fguard-vue3.svg)](https://www.npmjs.com/package/@authing/guard-vue3)|<a href="https://docs.authing.cn/v2/reference/guard/v3/spa.html" target="_blank">Guard 适用于 Vue3</a>|
-|@authing/guard-angular|[![npm version](https://badge.fury.io/js/@authing%2Fguard-angular.svg)](https://www.npmjs.com/package/@authing/guard-angular)|<a href="https://docs.authing.cn/v2/reference/guard/v3/spa.html" target="_blank">Guard 适用于 Angular</a>|
-|@authing/guard|[![npm version](https://badge.fury.io/js/@authing%2Fguard.svg)](https://www.npmjs.com/package/@authing/guard)|<a href="https://docs.authing.cn/v2/reference/guard/v3/mpa.html" target="_blank">Guard 适用于原生 JavaScript</a>|
+|@authing/guard-react|[![npm version](https://badge.fury.io/js/@authing%2Fguard-react.svg)](https://www.npmjs.com/package/@authing/guard-react)|<a href="https://docs.authing.cn/v2/reference/guard/v2/web.html" target="_blank">Guard 适用于 React</a>|
+|@authing/guard-react18|[![npm version](https://badge.fury.io/js/@authing%2Fguard-react18.svg)](https://www.npmjs.com/package/@authing/guard-react18)|<a href="https://docs.authing.cn/v2/reference/guard/v2/web.html" target="_blank">Guard 适用于 React18</a>|
+|@authing/guard-vue2|[![npm version](https://badge.fury.io/js/@authing%2Fguard-vue2.svg)](https://www.npmjs.com/package/@authing/guard-vue2)|<a href="https://docs.authing.cn/v2/reference/guard/v2/web.html" target="_blank">Guard 适用于 Vue2</a>|
+|@authing/guard-vue3|[![npm version](https://badge.fury.io/js/@authing%2Fguard-vue3.svg)](https://www.npmjs.com/package/@authing/guard-vue3)|<a href="https://docs.authing.cn/v2/reference/guard/v2/web.html" target="_blank">Guard 适用于 Vue3</a>|
+|@authing/guard-angular|[![npm version](https://badge.fury.io/js/@authing%2Fguard-angular.svg)](https://www.npmjs.com/package/@authing/guard-angular)|<a href="https://docs.authing.cn/v2/reference/guard/v2/web.html" target="_blank">Guard 适用于 Angular</a>|
+|@authing/guard|[![npm version](https://badge.fury.io/js/@authing%2Fguard.svg)](https://www.npmjs.com/package/@authing/guard)|<a href="https://docs.authing.cn/v2/reference/guard/v2/web.html" target="_blank">Guard 适用于原生 JavaScript</a>|
 
 ## 🖥 环境支持
 
