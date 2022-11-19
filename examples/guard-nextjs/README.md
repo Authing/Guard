@@ -1,7 +1,7 @@
 # guard-nextjs
 
 
-修改 `config.js` 中的配置后运行以下命令：
+Change configuration in `config.js` and run:
 
 ``` shell
 npm ci

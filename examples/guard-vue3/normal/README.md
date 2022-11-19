@@ -1,7 +1,7 @@
 # guard-vue3
 
 
-修改 `src/main.ts` 中的配置：
+Change configuration in `src/main.ts`:
 
 ``` typescript
 app.use(
@@ -13,7 +13,7 @@ app.use(
 )
 ```
 
-运行以下命令：
+Run:
 
 ``` shell
 npm ci
