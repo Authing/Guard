@@ -1,7 +1,7 @@
 # guard-vue2
 
 
-修改 `src/main.js` 中的配置：
+Change configuration in `src/main.js`:
 
 ``` javascript
 Vue.use(GuardPlugin, {
@@ -11,7 +11,7 @@ Vue.use(GuardPlugin, {
 })
 ```
 
-运行以下命令：
+Run:
 
 ``` shell
 npm ci

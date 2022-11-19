@@ -1,7 +1,7 @@
 # guard-react18
 
 
-修改 `src/App.tsx` 中的配置：
+Change configuration in `src/App.tsx`:
 
 ``` typescript
 <GuardProvider
@@ -13,7 +13,7 @@
 </GuardProvider>
 ```
 
-运行以下命令：
+Run:
 
 ``` shell
 npm ci

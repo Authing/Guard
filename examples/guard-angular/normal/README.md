@@ -1,6 +1,6 @@
 # guard-angular
 
-修改 `src/app/app.module.ts` 中的配置：
+Change configuration in `src/app/app.module.ts`:
 
 ``` typescript
 GuardModule.forRoot({
@@ -10,7 +10,7 @@ GuardModule.forRoot({
 })
 ```
 
-运行命令：
+Run:
 
 ``` shell
 npm ci
