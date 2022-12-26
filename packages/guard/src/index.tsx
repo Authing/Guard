@@ -514,4 +514,32 @@ export class Guard {
       ReactDOM.unmountComponentAtNode(node)
     }
   }
+
+  getCurrentView() {
+    return {
+      currentModule: window.$$guard.viewContext?.currentModule,
+      currentTab: window.$$guard.viewContext?.changeTab
+    }
+  }
+
+  async changeView(currentView: string) {
+    const [moduleName, tabName] = currentView.split(':')
+
+    if (
+      !window.$$guard.viewContext ||
+      !window.$$guard.viewContext.changeModule
+    ) {
+      return
+    }
+
+    await window.$$guard.viewContext.changeModule(moduleName)
+
+    if (tabName) {
+      await window.$$guard.viewContext.changeTab(tabName)
+    }
+  }
+
+  getAgreementsContext() {
+    return window.$$guard.agreementsContext
+  }
 }

@@ -6,6 +6,8 @@ export default function Login() {
   const [langCache, setLangCache] = useState('')
   const guard = useGuard()
 
+  // @ts-ignore
+  window.guard = guard
   console.log('guard instance: ', guard)
 
   useEffect(() => {
@@ -22,6 +24,11 @@ export default function Login() {
 
     guard.on('login', (userInfo: User) => {
       console.log('userInfo in login: ', userInfo)
+    })
+
+    // @ts-ignore
+    guard.on('change-view', (options) => {
+      console.log('change-view: ', options)
     })
   }, [])
 
@@ -54,6 +61,30 @@ export default function Login() {
     console.log('refreshedToken: ', refreshedToken)
   }
 
+  const changeViewToPassword = () => {
+    guard.changeView('login:password')
+  }
+
+  const changeViewToPhoneCode = () => {
+    guard.changeView('login:phone-code')
+  }
+
+  const changeViewToForgetPassword = () => {
+    guard.changeView('forgetPassword')
+  }
+
+  const changeViewToRegister_UserName = () => {
+    guard.changeView('register:username-password')
+  }
+
+  const changeViewToRegister_EmailPassword = () => {
+    guard.changeView('register:email-password')
+  }
+
+  const changeViewToAppQrcode = () => {
+    guard.changeView('login:app-qrcode')
+  }
+
   return <div>
     <select value={langCache} onChange={changeLang}>
       <option value="zh-CN">zh-CN</option>
@@ -71,6 +102,18 @@ export default function Login() {
     <button className='authing-button' onClick={getUserInfo}>Get User Info</button>
 
     <button className='authing-button' onClick={refreshToken}>Refresh Token</button>
+
+    <button className='authing-button' onClick={changeViewToPassword}>Change View to Password</button>
+
+    <button className='authing-button' onClick={changeViewToPhoneCode}>Change View to PhoneCode</button>
+
+    <button className='authing-button' onClick={changeViewToForgetPassword}>Change View to ForgetPassword</button>
+
+    <button className='authing-button' onClick={changeViewToAppQrcode}>Change View to AppQrcode</button>
+
+    <button className='authing-button' onClick={changeViewToRegister_UserName}>Change View To Register - UserName</button>
+
+    <button className='authing-button' onClick={changeViewToRegister_EmailPassword}>Change View To Register - EmailPassword</button>
 
     <div id="authing-guard-container"></div>
   </div>
