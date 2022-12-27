@@ -29,6 +29,15 @@ export default function Login() {
     // @ts-ignore
     guard.on('after-change-module', (options) => {
       console.log('after-change-module options: ', options)
+
+      const { currentModule, currentTab } = options
+
+      if (currentModule === 'login' && currentTab === 'password') {
+        guard.checkAllAgreements()
+        setTimeout(() => {
+          // (document.querySelector('.authing-ant-space-horizontal') as HTMLElement).style.display = 'none'
+        })
+      }
     })
   }, [])
 
@@ -85,6 +94,14 @@ export default function Login() {
     guard.changeView('login:app-qrcode')
   }
 
+  const checkAllAgreements = () => {
+    guard.checkAllAgreements()
+  }
+
+  const unCheckAllAgreements = () => {
+    guard.unCheckAllAgreements()
+  }
+
   return <div>
     <select value={langCache} onChange={changeLang}>
       <option value="zh-CN">zh-CN</option>
@@ -114,6 +131,10 @@ export default function Login() {
     <button className='authing-button' onClick={changeViewToRegister_UserName}>Change View To Register - UserName</button>
 
     <button className='authing-button' onClick={changeViewToRegister_EmailPassword}>Change View To Register - EmailPassword</button>
+
+    <button className="authing-button" onClick={checkAllAgreements}>Check All Agreements</button>
+
+    <button className="authing-button" onClick={unCheckAllAgreements}>Uncheck All Agreements</button>
 
     <div id="authing-guard-container"></div>
   </div>
