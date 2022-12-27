@@ -532,14 +532,28 @@ export class Guard {
       return
     }
 
-    await window.$$guard.viewContext.changeModule(moduleName)
+    await window.$$guard.viewContext?.changeModule(moduleName)
 
-    if (tabName) {
-      await window.$$guard.viewContext.changeTab(tabName)
+    if (!tabName) {
+      return
     }
+
+    requestIdleCallback(() => {
+      window.$$guard.viewContext?.changeTab(tabName)
+    })
   }
 
-  getAgreementsContext() {
+  private getAgreementsContext() {
     return window.$$guard.agreementsContext
+  }
+
+  checkAllAgreements() {
+    const agreementsContext = this.getAgreementsContext()
+    agreementsContext?.checkAllAgreements()
+  }
+
+  unCheckAllAgreements() {
+    const agreementsContext = this.getAgreementsContext()
+    agreementsContext?.noCheckAllAgreements()
   }
 }

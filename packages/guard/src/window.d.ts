@@ -13,7 +13,8 @@ declare interface Window {
     agreementsContext?: {
       agreements: Agreement[]
       checkedAgreements: Agreement[]
-      toggleItemCheck: (id: string | number) => void
+      checkAllAgreements: () => void
+      noCheckAllAgreements: () => void
     }
   }
 }
