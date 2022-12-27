@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 
-import { AuthenticationClient, RefreshToken, useGuard, User } from '@authing/guard-react'
+import { Agreement, AuthenticationClient, RefreshToken, useGuard, User } from '@authing/guard-react'
 
 export default function Login() {
   const [langCache, setLangCache] = useState('')
   const guard = useGuard()
+  const [agreementsContext, setAgreementsContext] = useState<{ agreements: Agreement[]; checkedAgreements: Agreement[]; toggleItemCheck: (id: string | number) => void}>()
 
   // @ts-ignore
   window.guard = guard
@@ -29,8 +30,16 @@ export default function Login() {
     // @ts-ignore
     guard.on('change-view', (options) => {
       console.log('change-view: ', options)
+      setAgreementsContext(guard.getAgreementsContext())
     })
   }, [])
+
+  useEffect(() => {
+    if (agreementsContext) {
+      agreementsContext.toggleItemCheck(1553)
+      // guard.changeView('login:password')
+    }
+  }, [agreementsContext])
 
   const changeLang = (event: any) => {
     guard.changeLang(event.target.value)
