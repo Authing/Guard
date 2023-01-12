@@ -524,7 +524,7 @@ export class Guard {
   getCurrentView() {
     return {
       currentModule: window.$$guard.viewContext?.currentModule,
-      currentTab: window.$$guard.viewContext?.changeTab
+      currentTab: window.$$guard.viewContext?.currentTab
     }
   }
 
