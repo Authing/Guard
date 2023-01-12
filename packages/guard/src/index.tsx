@@ -554,6 +554,6 @@ export class Guard {
 
   unCheckAllAgreements() {
     const agreementsContext = this.getAgreementsContext()
-    agreementsContext?.noCheckAllAgreements()
+    agreementsContext?.unCheckAllAgreements()
   }
 }
