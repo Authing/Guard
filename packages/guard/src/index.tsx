@@ -408,42 +408,43 @@ export class Guard {
   }
 
   async logout(params: LogoutParams = {}) {
+    const { redirectUri } = params
     const { logoutRedirectUris } = await this.then()
 
-    let redirectUri = ''
+    let logoutRedirectUri = ''
 
     const origin = window.location.origin
 
     try {
-      redirectUri =
-        params.url && logoutRedirectUris.indexOf(params.url) > -1
-          ? params.url
+      logoutRedirectUri =
+        redirectUri && logoutRedirectUris.indexOf(redirectUri) > -1
+          ? redirectUri
           : logoutRedirectUris[0]
     } catch (e) {
-      redirectUri = origin
+      logoutRedirectUri = origin
     } finally {
       if (!redirectUri) {
-        redirectUri = origin
+        logoutRedirectUri = origin
       }
     }
 
     const idToken = localStorage.getItem('idToken')
-    let logoutUrl = ''
+    let logoutUri = ''
     const authClient = await this.getAuthClient()
 
     authClient.logout()
 
     if (idToken) {
-      logoutUrl = authClient.buildLogoutUrl({
+      logoutUri = authClient.buildLogoutUrl({
         expert: true,
-        redirectUri,
+        redirectUri: logoutRedirectUri,
         idToken
       })
     }
 
     localStorage.clear()
 
-    window.location.href = logoutUrl || redirectUri
+    window.location.href = logoutUri || logoutRedirectUri
   }
 
   async render(cb?: () => void) {

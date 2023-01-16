@@ -90,7 +90,7 @@ export interface StartWithRedirectOptions {
 }
 
 export interface LogoutParams {
-  url?: string
+  redirectUri?: string
 }
 
 export * from '@authing/react-ui-components'
