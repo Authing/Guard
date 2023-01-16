@@ -17,7 +17,8 @@ import {
   User,
   GuardModuleType,
   Lang,
-  IGuardConfig
+  IGuardConfig,
+  LogoutParams
 } from './types'
 
 import '@authing/react-ui-components/lib/index.min.css'
@@ -406,15 +407,18 @@ export class Guard {
     return authClient.getCurrentUser()
   }
 
-  async logout() {
-    const publicConfig = await this.then()
+  async logout(params: LogoutParams) {
+    const { logoutRedirectUris } = await this.then()
 
     let redirectUri = ''
 
     const origin = window.location.origin
 
     try {
-      redirectUri = publicConfig.logoutRedirectUris[0]
+      redirectUri =
+        params.url && logoutRedirectUris.indexOf(params.url) > -1
+          ? params.url
+          : logoutRedirectUris[0]
     } catch (e) {
       redirectUri = origin
     } finally {

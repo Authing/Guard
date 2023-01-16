@@ -89,4 +89,8 @@ export interface StartWithRedirectOptions {
   nonce?: string
 }
 
+export interface LogoutParams {
+  url?: string
+}
+
 export * from '@authing/react18-ui-components'
