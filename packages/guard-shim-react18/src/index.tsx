@@ -422,10 +422,6 @@ export class Guard {
           : logoutRedirectUris[0]
     } catch (e) {
       logoutRedirectUri = origin
-    } finally {
-      if (!logoutRedirectUri) {
-        logoutRedirectUri = origin
-      }
     }
 
     let logoutUri = ''
