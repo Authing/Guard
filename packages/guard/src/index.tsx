@@ -17,7 +17,8 @@ import {
   User,
   GuardModuleType,
   Lang,
-  IGuardConfig
+  IGuardConfig,
+  LogoutParams
 } from './types'
 
 import '@authing/react-ui-components/lib/index.min.css'
@@ -406,40 +407,38 @@ export class Guard {
     return authClient.getCurrentUser()
   }
 
-  async logout() {
-    const publicConfig = await this.then()
-
-    let redirectUri = ''
-
+  async logout(params: LogoutParams = {}) {
+    let logoutRedirectUri = ''
+    const { redirectUri } = params
+    const { logoutRedirectUris } = await this.then()
     const origin = window.location.origin
 
     try {
-      redirectUri = publicConfig.logoutRedirectUris[0]
+      logoutRedirectUri =
+        redirectUri && logoutRedirectUris.indexOf(redirectUri) > -1
+          ? redirectUri
+          : logoutRedirectUris[0]
     } catch (e) {
-      redirectUri = origin
-    } finally {
-      if (!redirectUri) {
-        redirectUri = origin
-      }
+      logoutRedirectUri = origin
     }
 
+    let logoutUri = ''
     const idToken = localStorage.getItem('idToken')
-    let logoutUrl = ''
     const authClient = await this.getAuthClient()
 
     authClient.logout()
 
     if (idToken) {
-      logoutUrl = authClient.buildLogoutUrl({
+      logoutUri = authClient.buildLogoutUrl({
         expert: true,
-        redirectUri,
+        redirectUri: logoutRedirectUri,
         idToken
       })
     }
 
     localStorage.clear()
 
-    window.location.href = logoutUrl || redirectUri
+    window.location.href = logoutUri || logoutRedirectUri
   }
 
   async render(cb?: () => void) {
