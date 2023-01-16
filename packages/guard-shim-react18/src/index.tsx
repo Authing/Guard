@@ -409,7 +409,7 @@ export class Guard {
     return authClient.getCurrentUser()
   }
 
-  async logout(params: LogoutParams) {
+  async logout(params: LogoutParams = {}) {
     const { logoutRedirectUris } = await this.then()
 
     let redirectUri = ''
