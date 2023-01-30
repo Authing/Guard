@@ -8,7 +8,14 @@ export default function Embed() {
 
   console.log('guard instance: ', guard)
 
+  const trackSession = async () => {
+    const userInfo = await guard.trackSession()
+    console.log('userInfo by trackSession: ', userInfo)
+  }
+
   useEffect(() => {
+    trackSession()
+
     // 使用 start 方法挂载 Guard 组件到你指定的 DOM 节点，登录成功后返回 userInfo
     guard.start('#authing-guard-container').then((userInfo: User) => {
       console.log('userInfo: ', userInfo)
