@@ -417,7 +417,7 @@ export class Guard {
       logoutRedirectUri =
         redirectUri && logoutRedirectUris.indexOf(redirectUri) > -1
           ? redirectUri
-          : logoutRedirectUris[0]
+          : logoutRedirectUris[0] || origin
     } catch (e) {
       logoutRedirectUri = origin
     }
@@ -435,8 +435,6 @@ export class Guard {
         idToken
       })
     }
-
-    localStorage.clear()
 
     window.location.href = logoutUri || logoutRedirectUri
   }
