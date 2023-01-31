@@ -426,7 +426,7 @@ export class Guard {
     const idToken = localStorage.getItem('idToken')
     const authClient = await this.getAuthClient()
 
-    authClient.logout()
+    await authClient.logout()
 
     if (idToken) {
       logoutUri = authClient.buildLogoutUrl({
