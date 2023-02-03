@@ -417,7 +417,7 @@ export class Guard {
       logoutRedirectUri =
         redirectUri && logoutRedirectUris.indexOf(redirectUri) > -1
           ? redirectUri
-          : logoutRedirectUris[0]
+          : logoutRedirectUris[0] || origin
     } catch (e) {
       logoutRedirectUri = origin
     }
@@ -426,7 +426,7 @@ export class Guard {
     const idToken = localStorage.getItem('idToken')
     const authClient = await this.getAuthClient()
 
-    authClient.logout()
+    await authClient.logout()
 
     if (idToken) {
       logoutUri = authClient.buildLogoutUrl({
@@ -435,8 +435,6 @@ export class Guard {
         idToken
       })
     }
-
-    localStorage.clear()
 
     window.location.href = logoutUri || logoutRedirectUri
   }
@@ -512,5 +510,47 @@ export class Guard {
     if (node) {
       ReactDOM.unmountComponentAtNode(node)
     }
+  }
+
+  getCurrentView() {
+    return {
+      currentModule: window.$$guard.viewContext?.currentModule,
+      currentTab: window.$$guard.viewContext?.currentTab
+    }
+  }
+
+  async changeView(currentView: string) {
+    const [moduleName, tabName] = currentView.split(':')
+
+    if (
+      !window.$$guard.viewContext ||
+      !window.$$guard.viewContext.changeModule
+    ) {
+      return
+    }
+
+    await window.$$guard.viewContext?.changeModule(moduleName)
+
+    if (!tabName) {
+      return
+    }
+
+    requestIdleCallback(() => {
+      window.$$guard.viewContext?.changeTab(tabName)
+    })
+  }
+
+  private getAgreementsContext() {
+    return window.$$guard.agreementsContext
+  }
+
+  checkAllAgreements() {
+    const agreementsContext = this.getAgreementsContext()
+    agreementsContext?.checkAllAgreements()
+  }
+
+  unCheckAllAgreements() {
+    const agreementsContext = this.getAgreementsContext()
+    agreementsContext?.unCheckAllAgreements()
   }
 }

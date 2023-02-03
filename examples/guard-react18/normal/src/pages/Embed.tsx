@@ -8,7 +8,14 @@ export default function Embed() {
 
   console.log('guard instance: ', guard)
 
+  const trackSession = async () => {
+    const userInfo = await guard.trackSession()
+    console.log('userInfo by trackSession: ', userInfo)
+  }
+
   useEffect(() => {
+    trackSession()
+
     // 使用 start 方法挂载 Guard 组件到你指定的 DOM 节点，登录成功后返回 userInfo
     guard.start('#authing-guard-container').then((userInfo: User) => {
       console.log('userInfo: ', userInfo)
@@ -22,6 +29,12 @@ export default function Embed() {
 
     guard.on('login', (userInfo: User) => {
       console.log('userInfo in login: ', userInfo)
+    })
+
+    guard.on('after-change-module', (options) => {
+      console.log('after change module options: ', options)
+
+      console.log('guard.getCurrentView: ', guard.getCurrentView())
     })
   }, [])
 
@@ -54,6 +67,38 @@ export default function Embed() {
     console.log('refreshedToken: ', refreshedToken)
   }
 
+  const checkAllAgreements = () => {
+    guard.checkAllAgreements()
+  }
+
+  const unCheckAllAgreements = () => {
+    guard.unCheckAllAgreements()
+  }
+
+  const changeViewToForgetPassword = () => {
+    guard.changeView('forgetPassword')
+  }
+
+  const changeViewToPassword = () => {
+    guard.changeView('login:password')
+  }
+
+  const changeViewToPhoneCode = () => {
+    guard.changeView('login:phone-code')
+  }
+
+  const changeViewToRegister_UserName = () => {
+    guard.changeView('register:username-password')
+  }
+
+  const changeViewToRegister_EmailPassword = () => {
+    guard.changeView('register:email-password')
+  }
+
+  const changeViewToAppQrcode = () => {
+    guard.changeView('login:app-qrcode')
+  }
+
   return <div>
     <select value={langCache} onChange={changeLang}>
       <option value="zh-CN">zh-CN</option>
@@ -71,6 +116,22 @@ export default function Embed() {
     <button className='authing-button' onClick={getUserInfo}>Get User Info</button>
 
     <button className='authing-button' onClick={refreshToken}>Refresh Token</button>
+
+    <button className='authing-button' onClick={checkAllAgreements}>Check All Agreements</button>
+
+    <button className='authing-button' onClick={unCheckAllAgreements}>Uncheck All Agreements</button>
+
+    <button className='authing-button' onClick={changeViewToPassword}>Change View to Password</button>
+
+    <button className='authing-button' onClick={changeViewToPhoneCode}>Change View to PhoneCode</button>
+
+    <button className='authing-button' onClick={changeViewToForgetPassword}>Change View to ForgetPassword</button>
+
+    <button className='authing-button' onClick={changeViewToAppQrcode}>Change View to AppQrcode</button>
+
+    <button className='authing-button' onClick={changeViewToRegister_UserName}>Change View To Register - UserName</button>
+
+    <button className='authing-button' onClick={changeViewToRegister_EmailPassword}>Change View To Register - EmailPassword</button>
 
     <div id="authing-guard-container"></div>
   </div>
