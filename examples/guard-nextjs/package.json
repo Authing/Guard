@@ -6,7 +6,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@authing/guard": "^5.1.2",
     "@authing/guard-react": "^5.1.3-alpha.17",
     "face-api.js": "^0.22.2",
     "next": "latest",
