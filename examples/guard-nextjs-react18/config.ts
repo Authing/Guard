@@ -13,5 +13,4 @@ export const guardOptions: GuardOptions = {
   config: {
     socialConnectionList: ['github']
   }
-
 }
