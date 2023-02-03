@@ -210,11 +210,14 @@ export class Guard {
    * @returns Promise
    */
   async start(el?: string): Promise<User> {
-    ;(this.options.config as Partial<GuardLocalConfig>).target = el
+    ; (this.options.config as Partial<GuardLocalConfig>).target = el
 
     this.render()
 
     const userInfo = await this.trackSession()
+
+    console.log("trackSession userInfo 打印---------------", userInfo);
+
 
     if (userInfo) {
       return Promise.resolve(userInfo)
@@ -222,6 +225,7 @@ export class Guard {
 
     return new Promise(resolve => {
       this.on('login', userInfo => {
+        console.log("login 事件触发----------------");
         resolve(userInfo)
       })
     })
@@ -493,7 +497,7 @@ export class Guard {
     evt: T,
     handler: Exclude<GuardEventsKebabToCamelType[T], undefined>
   ) {
-    ;(this.eventListeners as any)[evt].push(handler as any)
+    ; (this.eventListeners as any)[evt].push(handler as any)
   }
 
   show() {
