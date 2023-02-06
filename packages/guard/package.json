@@ -23,7 +23,7 @@
     "webpack": "^5.72.0"
   },
   "dependencies": {
-    "@authing/react-ui-components": "^4.3.4-alpha.4",
+    "@authing/react-ui-components": "4.4.0-alpha.0",
     "axios": "^0.27.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0"
