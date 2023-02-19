@@ -44,10 +44,8 @@ export default function Embed() {
   }
 
   const changeContentCSS = () => guard.changeContentCSS(`
-    #authing-guard-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    body {
+      background-color: red;
     }
   `)
 
