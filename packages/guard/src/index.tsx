@@ -469,15 +469,15 @@ export class Guard {
         this.options.host || `https://${publicConfig.requestHostname}`
     }
 
+    const style = this.options.style || {
+      position: 'fixed',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)'
+    }
+
     return ReactDOM.render(
-      <div
-        style={{
-          position: 'fixed',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)'
-        }}
-      >
+      <div style={style}>
         <ReactAuthingGuard
           {...(evts as GuardEvents)}
           appId={this.options.appId}

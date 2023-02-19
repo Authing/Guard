@@ -479,15 +479,15 @@ export class Guard {
 
     const root = (this.root = createRoot(target))
 
+    const style = this.options.style || {
+      position: 'fixed',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)'
+    }
+
     return root.render(
-      <div
-        style={{
-          position: 'fixed',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)'
-        }}
-      >
+      <div style={style}>
         <ReactAuthingGuard
           {...(evts as GuardEvents)}
           appId={this.options.appId}
