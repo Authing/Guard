@@ -470,7 +470,14 @@ export class Guard {
     }
 
     return ReactDOM.render(
-      <div>
+      <div
+        style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)'
+        }}
+      >
         <ReactAuthingGuard
           {...(evts as GuardEvents)}
           appId={this.options.appId}

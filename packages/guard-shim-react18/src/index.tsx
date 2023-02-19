@@ -480,16 +480,25 @@ export class Guard {
     const root = (this.root = createRoot(target))
 
     return root.render(
-      <ReactAuthingGuard
-        {...(evts as GuardEvents)}
-        appId={this.options.appId}
-        tenantId={this.options.tenantId}
-        config={this.options.config}
-        facePlugin={this.options.facePlugin}
-        appendConfig={this.options.appendConfig}
-        visible={this.visible}
-        authClient={authClient}
-      />
+      <div
+        style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)'
+        }}
+      >
+        <ReactAuthingGuard
+          {...(evts as GuardEvents)}
+          appId={this.options.appId}
+          tenantId={this.options.tenantId}
+          config={this.options.config}
+          facePlugin={this.options.facePlugin}
+          appendConfig={this.options.appendConfig}
+          visible={this.visible}
+          authClient={authClient}
+        />
+      </div>
     )
   }
 
