@@ -17,6 +17,7 @@ import {
   EmailScene,
   SceneType
 } from '@authing/react18-ui-components'
+import { CSSProperties } from 'react'
 
 export type ICodeAction = `${CodeAction}`
 export type IApiCode = `${ApiCode}`
@@ -71,6 +72,7 @@ export interface GuardOptions extends GuardProps {
   lang?: Lang
   isSSO?: boolean
   config?: Partial<IGuardConfig> // 兼容 4.x 的 config
+  style?: CSSProperties
 }
 
 export interface StartWithRedirectOptions {

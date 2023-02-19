@@ -9,11 +9,3 @@
   border: none;
   box-shadow: none;
 }
-
-@media only screen and (min-width: 450px) {
-  #authing-guard-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-}
