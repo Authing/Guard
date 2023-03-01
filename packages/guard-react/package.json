@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard-react",
-  "version": "5.1.4-alpha.2",
+  "version": "5.1.4",
   "description": "Guard for React",
   "module": "dist/esm/guard.min.js",
   "types": "dist/typings/index.d.ts",
@@ -24,7 +24,7 @@
     "webpack": "^5.72.0"
   },
   "dependencies": {
-    "@authing/guard": "^5.1.4-alpha.2",
+    "@authing/guard": "^5.1.4",
     "react": "^16.13.1"
   },
   "author": "https://github.com/authing",
