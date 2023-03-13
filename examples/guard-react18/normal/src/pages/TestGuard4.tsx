@@ -20,8 +20,6 @@ import React from 'react'
 
 import { useGuard } from '@authing/guard-react18'
 
-import '@authing/guard-react18/dist/esm/guard.min.css'
-
 export default function TestGuard4 () {
   const guard = useGuard()
 
