@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "dev": "ng serve --port 3000",
+    "dev": "ng serve --port 3009",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -20,7 +20,9 @@
     "@angular/platform-browser-dynamic": "^14.0.0",
     "@angular/router": "^14.0.0",
     "@authing/guard-angular": "^5.0.8-alpha.12",
+    "@authing/ng-ui-components": "4.3.8",
     "face-api.js": "^0.22.2",
+    "html-react-parser": "^3.0.12",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
