@@ -93,6 +93,7 @@ export interface StartWithRedirectOptions {
 
 export interface LogoutParams {
   redirectUri?: string
+  isCurrent?: boolean
 }
 
 export * from '@authing/react-ui-components'
