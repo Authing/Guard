@@ -93,7 +93,7 @@ export interface StartWithRedirectOptions {
 
 export interface LogoutParams {
   redirectUri?: string
-  isCurrent?: boolean
+  quitCurrentDevice?: boolean
 }
 
 export * from '@authing/react-ui-components'
