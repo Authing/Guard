@@ -52,7 +52,9 @@ export default function Embed() {
   const startRegister = () => guard.startRegister()
 
   // 登出后的回调地址请在 Authing 控制台「应用详情」-「应用配置」-「登出回调 URL」中配置
-  const logout = () => guard.logout()
+  const logout = () => guard.logout({
+    quitCurrentDevice: true // 只退出当前设备用户，其他设备不影响登录状态
+  })
 
   const getUserInfo = async () => {
     const userInfo: User | null = await guard.trackSession()
