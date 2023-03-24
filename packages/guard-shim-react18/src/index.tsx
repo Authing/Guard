@@ -411,7 +411,7 @@ export class Guard {
 
   async logout(params: LogoutParams = {}) {
     let logoutRedirectUri = ''
-    const { redirectUri } = params
+    const { redirectUri, quitCurrentDevice } = params
     const { logoutRedirectUris } = await this.then()
     const origin = window.location.origin
 
@@ -428,7 +428,7 @@ export class Guard {
     const idToken = localStorage.getItem('idToken')
     const authClient = await this.getAuthClient()
 
-    await authClient.logout()
+    await (quitCurrentDevice ? authClient.logoutCurrent() : authClient.logout())
 
     if (idToken) {
       logoutUri = authClient.buildLogoutUrl({
