@@ -486,7 +486,7 @@ export class Guard {
         tenantId={this.options.tenantId}
         config={{
           ...this.options.config,
-          style: this.options.style
+          style: this.options.style ?? this.options.config?.style ?? {}
         }}
         facePlugin={this.options.facePlugin}
         appendConfig={this.options.appendConfig}
