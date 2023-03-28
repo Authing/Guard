@@ -104,6 +104,7 @@ Thank you to all the people who already contributed to Guard!
 Copyright (c) 2019 Authing
 
 ## 🔗 Links
+- [authing-mfa-component](https://github.com/Authing/authing-mfa-component)
 - [authing-js-sdk](https://github.com/Authing/authing-js-sdk)
 - [AuthingMove](https://github.com/authing/authingmove)
 - [authingmove-template](https://github.com/Authing/authingmove-template)

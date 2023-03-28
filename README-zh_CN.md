@@ -104,6 +104,7 @@ Authing 支持 OAuth2、OIDC、SAML、LDAP 等多种协议，开发者可以配�
 Copyright (c) 2019 Authing
 
 ## 🔗 友情链接
+- [authing-mfa-component](https://github.com/Authing/authing-mfa-component)
 - [authing-js-sdk](https://github.com/Authing/authing-js-sdk)
 - [AuthingMove](https://github.com/authing/authingmove)
 - [authingmove-template](https://github.com/Authing/authingmove-template)
