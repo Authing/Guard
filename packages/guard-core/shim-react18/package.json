@@ -1,0 +1,17 @@
+{
+  "name": "shim-react18",
+  "version": "1.0.0",
+  "description": "Shim of react18",
+  "main": "index.ts",
+  "module": "index.ts",
+  "devDependencies": {
+    "@types/react": "^18.0.24",
+    "@types/react-dom": "^18.0.8"
+  },
+  "dependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "author": "https://github.com/authing",
+  "license": "MIT"
+}

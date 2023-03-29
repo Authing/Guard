@@ -1,0 +1,13 @@
+{
+  "name": "shim-antd5",
+  "version": "1.0.0",
+  "description": "Shim of antd5",
+  "main": "index.ts",
+  "module": "index.ts",
+  "author": "https://github.com/authing",
+  "dependencies": {
+    "@ant-design/icons": "^5.0.1",
+    "antd": "^5.1.7"
+  },
+  "license": "MIT"
+}

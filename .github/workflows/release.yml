@@ -56,10 +56,10 @@ jobs:
 
       - name: build
         run: |
-          npm run build:guard
-          npm run build:guard-shim-react18
+          npm run build:core
+          npm run transfer-packages
           lerna link
-          lerna run build
+          lerna run build:lib
 
       - name: update version
         run: |
@@ -78,7 +78,7 @@ jobs:
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
           lerna run release:alpha
           echo "release:alpha successfully 🚀"
-      
+
       - name: upload oss
         run: |
           npm run oss accessKeyId=$OSS_KEY_ID accessKeySecret=$OSS_KEY_SECRET

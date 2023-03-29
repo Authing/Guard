@@ -1,6 +1,6 @@
 semi: false
 singleQuote: true
-printWidth: 80
+printWidth: 100
 trailingComma: 'none'
 arrowParens: 'avoid'
 tabWidth: 2

@@ -1,0 +1,19 @@
+{
+  "name": "@authing/guard-core",
+  "version": "6.0.0-alpha.0",
+  "description": "Authing Guard Component for core codes, only be used to internal",
+  "types": "dist/typings/src/index.d.ts",
+  "files": [
+    "package.json",
+    "package-lock.json"
+  ],
+  "scripts": {
+    "autoinstall": "npm ci && cd shim-antd4 && npm ci && cd ../shim-antd5 && npm ci && cd ../shim-react16 && npm ci && cd ../shim-react18 && npm ci",
+    "build": "node scripts/build.js",
+    "dev": "webpack-dev-server --config scripts/webpack.dev.config.js",
+    "release:official": "npm publish --verbose --access public",
+    "release:alpha": "npm publish --verbose --tag=alpha --access public"
+  },
+  "author": "https://github.com/authing",
+  "license": "MIT"
+}

@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: For reporting bugs or errors in the Authing Guard
+about: For reporting bugs or errors in the Authing Guard components
 title: 'Issue: Open an issue'
 labels: bug
 assignees: zhaoyiming0803

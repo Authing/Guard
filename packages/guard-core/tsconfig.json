@@ -17,10 +17,21 @@
     "resolveJsonModule": true,
     "noEmit": false,
     "jsx": "react",
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "declaration": true,
+    "declarationDir": "./dist/typings",
+    "paths": {
+      "shim-react": ["./shim-react16/"],
+      "shim-antd": ["./shim-antd4/"],
+      "shim-antd/es/*": ["./shim-antd4/node_modules/antd/es/*"],
+      "shim-antd/lib/*": ["./shim-antd4/node_modules/antd/lib/*"]
+    }
   },
   "include": [
-    "packages/*/src"
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.json",
+    "example.tsx"
   ],
   "exclude": [
     "node_modules/**"
