@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard",
-  "version": "5.1.7-alpha.1",
+  "version": "5.1.7-alpha.3",
   "description": "Guard for JS",
   "module": "dist/esm/guard.min.js",
   "types": "dist/typings/index.d.ts",
@@ -23,7 +23,7 @@
     "webpack": "^5.72.0"
   },
   "dependencies": {
-    "@authing/react-ui-components": "^4.3.10",
+    "@authing/react-ui-components": "^4.3.11",
     "axios": "^0.27.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0"

@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard-shim-react18",
-  "version": "5.1.7-alpha.1",
+  "version": "5.1.7-alpha.3",
   "description": "Guard shim for react18",
   "module": "dist/esm/guard.min.js",
   "types": "dist/typings/index.d.ts",
@@ -25,7 +25,7 @@
     "webpack": "^5.72.0"
   },
   "dependencies": {
-    "@authing/react18-ui-components": "^4.3.10",
+    "@authing/react18-ui-components": "^4.3.11",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },
