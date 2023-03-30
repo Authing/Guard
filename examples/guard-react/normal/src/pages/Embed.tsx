@@ -39,6 +39,10 @@ export default function Login() {
         })
       }
     })
+
+    guard.on('login-error', (error) => {
+      console.log('login error: ', error)
+    })
   }, [])
 
   const changeLang = (event: any) => {
