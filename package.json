@@ -24,8 +24,5 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^8.0.1"
-  },
-  "dependencies": {
-    "@authing/guard-react18": "file:packages/guard-react18"
   }
 }
