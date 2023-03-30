@@ -36,6 +36,10 @@ export default function Embed() {
 
       console.log('guard.getCurrentView: ', guard.getCurrentView())
     })
+
+    guard.on('login-error', error => {
+      console.log('login error: ', error)
+    })
   }, [])
 
   const changeLang = (event: any) => {
