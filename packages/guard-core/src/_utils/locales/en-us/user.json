@@ -1,0 +1,15 @@
+{
+  "inputCurrPwd": "Enter current password",
+  "inputNewPwd": "Enter a new Password",
+  "inputOldPwd": "Enter a old Password",
+  "mfaBind": "MFA Binding",
+  "modifyPwd": "Change Password",
+  "nextStep": "Next",
+  "numberSafteyCode": "Digital Security Code",
+  "error": "Error～",
+  "contactAdministrator": "Unknown error ~ please contact the administrator for processing",
+  "resetpasswordText1": "Enter your registered phone number/email, enter the verification code received, and we will reset your password.",
+  "modifyPwdText": "Your password has been used continuously for more than {{number}} months, which may be risky. Please reset your password.",
+  "modifyNoticePwdText": "Your password has been used continuously for more than {{number}} months, It will expire soon, in order not to affect your use, please set a new password",
+  "unlockTip": "If you encounter problems with unlocking, please click"
+}

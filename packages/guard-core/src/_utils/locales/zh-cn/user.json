@@ -1,0 +1,15 @@
+{
+  "numberSafteyCode": "数字安全码",
+  "mfaBind": "MFA 绑定",
+  "nextStep": "下一步",
+  "inputCurrPwd": "请输入当前密码",
+  "inputNewPwd": "请输入新密码",
+  "inputOldPwd": "请输入原登录密码",
+  "modifyPwd": "修改密码",
+  "modifyPwdText": "你的密码连续使用超过 {{number}} 个月，可能存在风险。请重新设置密码。",
+  "modifyNoticePwdText": "你的密码连续使用超过 {{number}} 个月，即将过期，为了不影响你的使用，请设置新密码",
+  "error": "错误信息",
+  "contactAdministrator": "未知的错误～ 请你联系管理员进行处理",
+  "resetpasswordText1": "输入你的注册电话/邮箱，输入收到的验证码，我们将为你进行密码重置。",
+  "unlockTip": "若解锁遇到问题，请点"
+}

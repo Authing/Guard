@@ -1,0 +1,52 @@
+.g2-select-account_wrapper {
+  padding: 0;
+  max-height: 364px;
+  overflow-y: auto;
+  .g2-select-account__li {
+    position: relative;
+    display: flex;
+    width: 100%;
+    padding: 0 16px;
+    padding-right: 40px;
+    box-sizing: border-box;
+    align-items: center;
+    height: 60px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    &:hover {
+      cursor: pointer;
+      background-color: #f7f8fa;
+      .g2-select-account__title {
+        color: #215ae5;
+      }
+    }
+    .g2-select-account__avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+    .g2-select-account__body {
+      flex: 1;
+      width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .g2-select-account__title {
+      width: 100%;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 24px;
+      color: #1d2129;
+      overflow: hidden;
+      word-break: keep-all;
+      text-overflow: ellipsis;
+    }
+    .g2-select-account__desc {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 22px;
+      color: #86909c;
+    }
+  }
+}

@@ -1,0 +1,182 @@
+.g2-qrcode-switch {
+  position: absolute;
+  display: flex;
+  right: 16px;
+
+  :global(.authing-ant-popover-inner-content) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(84, 89, 104, 0.1);
+    height: 26px;
+    margin-right: 4px;
+    font-size: 12px;
+    padding: 0 12px;
+    border-radius: 4px;
+    color: #545968;
+  }
+  .switch-img {
+    @media (any-hover: hover) {
+      // &:hover {
+      //   .imgae-mask {
+      //     border-width: 0;
+      //     right: 50px;
+      //     top: 50px;
+      //   }
+      // }
+    }
+    & + div {
+      z-index: 0;
+    }
+  }
+  .imgae-mask {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 50px 0 0 50px;
+    border-color: transparent transparent transparent #fff;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: 0.2s all;
+    cursor: pointer;
+  }
+  .qrcode-switch-image {
+    width: 50px;
+    height: 50px;
+    font-size: 50px;
+    color: #215ae5;
+    cursor: pointer;
+  }
+}
+
+div.g2-multiple-wrapper {
+  min-height: 360px;
+}
+
+.authing-g2-login-app-qrcode {
+  min-height: 288px;
+  // height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  div:last-of-type img {
+    width: 200px;
+    height: 200px;
+    margin-top: 0px !important; //覆盖行内样式
+  }
+  .__authing__heading-subtitle-style {
+    font-size: 14px;
+  }
+  .__authing-shadow-style {
+    width: 200px;
+    height: 200px;
+    margin-left: -100px;
+    line-height: 200px;
+  }
+  .__authing-shadow-style-position {
+    width: 200px;
+    height: 200px;
+    margin-left: -100px;
+  }
+}
+.long-switch-text {
+  left: -125px !important; //覆盖行内样式
+  top: 4px !important;
+  .authing-ant-popover-inner {
+    background: rgba(84, 89, 104, 0.1);
+    border-radius: 4px;
+    box-shadow: none;
+  }
+  .authing-ant-popover-inner-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 26px;
+    width: 120px;
+    white-space: nowrap;
+    margin-right: 4px;
+    font-size: 12px;
+    padding: 0 12px;
+    border-radius: 4px;
+    color: #545968;
+  }
+}
+.switch-text {
+  left: -80px !important; //覆盖行内样式
+  top: 4px !important;
+  .authing-ant-popover-inner {
+    background: rgba(84, 89, 104, 0.1);
+    border-radius: 4px;
+    box-shadow: none;
+  }
+  .authing-ant-popover-inner-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 26px;
+    width: 72px;
+    white-space: nowrap;
+    margin-right: 4px;
+    font-size: 12px;
+    padding: 0 12px;
+    border-radius: 4px;
+    color: #545968;
+  }
+}
+.authing-ant-popover-placement-leftTop
+  > .authing-ant-popover-content
+  > .authing-ant-popover-arrow {
+  border-color: rgba(84, 89, 104, 0.1);
+  border-width: 3px;
+  background: #fff;
+  width: 0px;
+  height: 0px;
+  right: 7px;
+  top: 10px;
+}
+.g2-view-message-info .authing-ant-message-notice-content {
+    background: #E8F2FF;
+}
+
+// 清楚 tabs 前后竖条阴影
+.g2-view-tabs {
+  .authing-ant-tabs > .authing-ant-tabs-nav .authing-ant-tabs-nav-wrap::before {
+    opacity: 0;
+  }
+  .authing-ant-tabs-top
+    > .authing-ant-tabs-nav
+    .authing-ant-tabs-nav-wrap.authing-ant-tabs-nav-wrap-ping-right::after {
+    opacity: 0;
+  }
+  .authing-ant-tabs-nav-more {
+    font-size: 16px;
+  }
+  .authing-ant-tabs-dropdown-open {
+    color: #215ae5;
+  }
+}
+.qrcode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  > span {
+    line-height: 48px;
+  }
+  &__again-scan {
+    cursor: pointer;
+    color: #215ae5;
+  }
+}
+
+.authing-header-tag.authing-ant-tag {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  padding: 2px 5px;
+  border-radius: 3px;
+  margin: 4px 4px 0 0;
+  border: none;
+  color: #153fbf;
+  background-color: #e8f2ff;
+}

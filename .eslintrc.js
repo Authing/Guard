@@ -32,13 +32,17 @@ module.exports = {
     // using interface to define function types is compliant, but `eslint/no-unused-vars` will prompt for unused parameters......
     // so set `args === none` here
     // and leave `no-unused-vars` to `@typescript-eslint/no-unused-vars`
-    "no-unused-vars": ["error", { "vars": "all", "args": "none", "ignoreRestSiblings": false }],
+    "no-unused-vars": 'off',
     "@typescript-eslint/no-unused-vars": ['error'],
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
-    '@typescript-eslint/no-empty-function': 'off'
+    '@typescript-eslint/no-empty-function': 'off',
+    'prefer-const': 'off',
+    '@typescript-eslint/ban-types': 'off',
+    'prettier/prettier': 'off',
+    '@typescript-eslint/no-unused-vars': 'off'
   }
 }

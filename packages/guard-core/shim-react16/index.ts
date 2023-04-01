@@ -1,4 +1,4 @@
-import React, { ReactElement, CSSProperties, ReactNode } from 'react'
+import React, { ReactElement, CSSProperties, ReactNode, ForwardRefRenderFunction } from 'react'
 
 import ReactDOM from 'react-dom'
 
@@ -40,5 +40,7 @@ export {
   CSSProperties,
   ReactNode,
   render,
-  unmount
+  unmount,
+  ReactElement,
+  ForwardRefRenderFunction
 }

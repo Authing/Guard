@@ -1,0 +1,62 @@
+*[class*='authing-'].authing-ant-btn-link.guard-button-link-like {
+  color: #215ae5;
+  padding: 0px;
+  height: auto;
+  cursor: pointer;
+  transition: all 0.3s;
+  &:hover {
+    color: #557fff;
+  }
+  &:active {
+    color: #254cd9;
+  }
+
+  &.guard-button-disabled {
+    cursor: not-allowed;
+  }
+}
+
+.authing-btn-icon {
+  position: absolute;
+  top: 50%;
+  right: 24px;
+  transform: translateY(-50%) rotate(0deg);
+}
+
+.authing-btn-arrow {
+  animation: .8s ease slideInOut infinite;
+  animation-delay: 0.2s;
+}
+
+.authing-btn-loading {
+  animation: 1.5s linear rotateIn infinite;
+}
+
+.authing-btn--icon {
+  padding-right: 50px !important;
+  background: #215ae5;
+}
+.authing-ant-btn-primary .authing-ant-btn-loading-icon {
+  display: none !important;
+}
+
+@keyframes slideInOut{
+  0% {
+    right: 24px;
+  }
+  50% {
+    right: 28px;
+  }
+  100% {
+    right: 24px;
+  }
+}
+
+@keyframes rotateIn{
+  0% {
+    transform: translateY(-50%) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}

@@ -1,4 +1,4 @@
-import React, { ReactNode, CSSProperties } from 'react'
+import React, { ReactNode, CSSProperties, ReactElement, ForwardRefRenderFunction } from 'react'
 
 import { createRoot, Root } from 'react-dom/client'
 
@@ -53,5 +53,7 @@ export {
   ReactNode,
   CSSProperties,
   render,
-  unmount
+  unmount,
+  ReactElement,
+  ForwardRefRenderFunction
 }

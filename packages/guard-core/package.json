@@ -15,5 +15,25 @@
     "release:alpha": "npm publish --verbose --tag=alpha --access public"
   },
   "author": "https://github.com/authing",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "authing-js-sdk": "^4.23.40",
+    "classnames": "^2.3.1",
+    "i18next": "^22.4.11",
+    "i18next-browser-languagedetector": "^7.0.1",
+    "moment": "^2.29.4",
+    "phone": "^3.1.12",
+    "qrcode.react": "^3.1.0",
+    "query-string": "^7.0.0",
+    "react-responsive": "^9.0.0-beta.5",
+    "react-use": "^17.3.1",
+    "ua-parser-js": "^1.0.2"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.175",
+    "@types/throttle-debounce": "^5.0.0",
+    "@types/ua-parser-js": "^0.7.36",
+    "throttle-debounce": "^5.0.0",
+    "url-loader": "^4.1.1"
+  }
 }
