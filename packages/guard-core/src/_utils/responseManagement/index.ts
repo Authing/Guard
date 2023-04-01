@@ -8,6 +8,8 @@ import { i18n } from '../locales'
 
 import { ApiCode, CodeAction } from './interface'
 
+export * from './interface'
+
 export const errorCodeInterceptor: (
   res: AuthingResponse<any>,
   callBack: (code: CodeAction, res: AuthingResponse) => AuthingGuardResponse

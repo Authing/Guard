@@ -12,7 +12,7 @@ const reactVersion = '18'
 
 module.exports = {
   mode: 'production',
-  entry: resolve('src/index.ts'),
+  entry: resolve('src/index.tsx'),
   output: {
     filename: 'index.min.js',
     path: resolve(`dist/esm-react${reactVersion}`),
