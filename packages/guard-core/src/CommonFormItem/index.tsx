@@ -42,7 +42,6 @@ export const Item = (props: ItemProps) => {
       ...child.props,
       fieldcontext: context
     })
-    console.log('returnChildNode: ', returnChildNode)
   }
 
   // const handleItemChange = (itemValue: string) => {

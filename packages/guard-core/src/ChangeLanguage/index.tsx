@@ -119,9 +119,9 @@ export const ChangeLanguage = (props: {
   return (
     <div className="g2-change-language-container">
       <Dropdown
-        overlay={lngMenu}
+        menu={lngMenu}
         trigger={['click']}
-        placement="bottomCenter"
+        placement="bottom"
         overlayClassName="authing-g2-change-language-menu"
         getPopupContainer={(node: any) => {
           if (node?.parentElement) {
