@@ -1,0 +1,17 @@
+{
+  "name": "@authing/guard-shim-react",
+  "version": "6.0.0-alpha.0",
+  "description": "Guard shim for react 16 / 17, only be used to internal",
+  "types": "dist/typings/src/index.d.ts",
+  "module": "dist/index.min.js",
+  "files": [
+    "dist",
+    "package.json"
+  ],
+  "scripts": {
+    "release:official": "npm publish --verbose --access public",
+    "release:alpha": "npm publish --verbose --tag=alpha --access public"
+  },
+  "author": "https://github.com/authing",
+  "license": "MIT"
+}
