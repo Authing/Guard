@@ -23,10 +23,6 @@ export default function App() {
       // redirectUri="YOUR_REDIRECT_URI"
 
       isSSO={true}
-      config={{
-        socialConnectionList: ['github'],
-        langRange: ['zh-CN']
-      }}
       facePlugin={facePlugin}
     >
       <RouterComponent></RouterComponent>

@@ -6,10 +6,10 @@ import * as facePlugin from 'face-api.js'
 
 import { GuardPlugin } from '@authing/guard-vue2'
 
-import '@authing/guard-vue2/dist/esm/guard.min.css'
+import '@authing/guard-vue2/dist/guard.min.css'
 
 Vue.use(GuardPlugin, {
-  appId: 'AUTHING_APP_ID',
+  appId: '630ed3137dd6f2fd7001da24',
   
   // 如果你使用的是私有化部署的 Authing 服务，需要传入自定义 host，如:
   // host: 'https://my-authing-app.example.com',
