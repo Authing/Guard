@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard-vue3",
-  "version": "6.0.0-alpha.0",
+  "version": "6.0.0-alpha.1",
   "description": "Authing Guard for Vue 3",
   "module": "dist/index.min.js",
   "types": "dist/typings/index.d.ts",
@@ -18,7 +18,7 @@
   "author": "https://github.com/authing",
   "license": "MIT",
   "dependencies": {
-    "@authing/guard": "^6.0.0-alpha.0",
+    "@authing/guard": "^6.0.0-alpha.1",
     "vue": "^3.2.37"
   }
 }
