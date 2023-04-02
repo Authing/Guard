@@ -10,7 +10,7 @@ import { CodeStatus } from '../../Qrcode/UiQrCode'
 
 import { QrCodeResponse } from '../../Qrcode/hooks/usePostQrCode'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { StoreInstance } from '../../Guard/core/hooks/useMultipleAccounts'
 
@@ -36,7 +36,7 @@ interface LoginWithWechatmpQrcodeProps {
 export const LoginWithWechatmpQrcode = (props: LoginWithWechatmpQrcodeProps) => {
   const { canLoop, qrCodeScanOptions } = props
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const { responseIntercept } = useGuardHttpClient()
 

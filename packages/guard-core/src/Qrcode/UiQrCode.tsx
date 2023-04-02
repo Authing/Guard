@@ -12,7 +12,7 @@ import { ShieldSpin } from '../ShieldSpin'
 
 import { CodeStatusDescriptions } from './WorkQrCode'
 
-import { i18n } from '../_utils'
+import { useTranslation } from 'react-i18next'
 
 const { useMemo } = React
 
@@ -86,7 +86,7 @@ const QrCode: React.FC<UiQrProps> = props => {
     onClickMaskEl,
     onMaskContent
   } = props
-  const { t } = i18n
+  const { t } = useTranslation()
   const [statusCls, statusComponent] = useStatus(status)
 
   const [baseUrl] = useImage(src, {

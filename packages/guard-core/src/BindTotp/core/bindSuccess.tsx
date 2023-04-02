@@ -2,7 +2,7 @@ import { Form, Checkbox, Typography } from 'shim-antd'
 
 import { React } from 'shim-react'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import SubmitButton from '../../SubmitButton'
 
@@ -25,7 +25,7 @@ export const BindSuccess: React.FC<BindSuccessProps> = ({ secret, onBind }) => {
 
   const [form] = Form.useForm()
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const isAuthFlow = useGuardIsAuthFlow()
 

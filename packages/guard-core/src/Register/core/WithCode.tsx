@@ -2,7 +2,7 @@ import { Form, message } from 'shim-antd'
 
 import { React } from 'shim-react'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import {
   fieldRequiredRule,
@@ -82,7 +82,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
   registeContext,
   methods = []
 }) => {
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const isPhoneChangeComplete = useIsChangeComplete('phone')
 

@@ -1,11 +1,11 @@
 import { React } from 'shim-react'
 
-import { i18n } from '../_utils/locales'
+import { useTranslation } from 'react-i18next'
 
 const { useState } = React
 
 export const usePasswordErrorText = () => {
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const [show, setPasswordErrorTextShow] = useState(false)
 

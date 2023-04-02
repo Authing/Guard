@@ -6,7 +6,7 @@ import { SceneType } from 'authing-js-sdk'
 
 import './style.less'
 
-import { i18n } from '../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { useGuardAuthClient } from '../Guard/authClient'
 
@@ -46,7 +46,7 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
     captchaCode,
     ...remainProps
   } = props
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const authClient = useGuardAuthClient()
 

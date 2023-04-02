@@ -2,7 +2,7 @@ import { FormItemProps } from 'shim-antd/lib/form'
 
 import { React } from 'shim-react'
 
-import { i18n } from '../../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { CommonFormItem } from '../../../CommonFormItem'
 
@@ -19,7 +19,7 @@ const { useMemo } = React
 export const FormItemAccount: React.FC<FormItemAccountProps> = props => {
   const { validPasswordLoginMethods, ...formItemPtops } = props
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const runderTemplate = useMemo(() => {
     if (validPasswordLoginMethods.length !== 1)

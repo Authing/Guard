@@ -2,7 +2,7 @@ import { message } from 'shim-antd'
 
 import { React } from 'shim-react'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { QrCode } from '../../Qrcode'
 
@@ -33,7 +33,7 @@ interface LoginWithWechatMiniQrcodeProps {
 export const LoginWithWechatMiniQrcode = (props: LoginWithWechatMiniQrcodeProps) => {
   const { canLoop, qrCodeScanOptions } = props
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const { responseIntercept } = useGuardHttpClient()
 

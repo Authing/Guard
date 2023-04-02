@@ -12,7 +12,7 @@ import { useGuardEvents, useGuardHttpClient } from '../../_utils/context'
 
 import { WorkQrCodeRef } from '../../Qrcode/WorkQrCode'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { StoreInstance } from '../../Guard/core/hooks/useMultipleAccounts'
 
@@ -41,7 +41,7 @@ export const LoginWithAppQrcode = (props: LoginWithAppQrcodeProps) => {
 
   const authClient = useGuardAuthClient()
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   if (!canLoop) {
     return null

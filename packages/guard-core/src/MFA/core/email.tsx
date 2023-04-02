@@ -4,7 +4,7 @@ import { Form } from 'shim-antd'
 
 import { React } from 'shim-react'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { VerifyCodeInput } from '../VerifyCodeInput'
 
@@ -40,7 +40,7 @@ interface BindMFAEmailProps {
 export const BindMFAEmail: React.FC<BindMFAEmailProps> = ({ onBind }) => {
   const submitButtonRef = useRef<any>(null)
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const [form] = Form.useForm()
 
@@ -120,7 +120,7 @@ export const VerifyMFAEmail: React.FC<VerifyMFAEmailProps> = ({
 
   const submitButtonRef = useRef<any>(null)
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const [form] = Form.useForm()
 

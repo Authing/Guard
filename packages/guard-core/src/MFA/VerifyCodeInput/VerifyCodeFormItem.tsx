@@ -4,7 +4,7 @@ import { FormItemProps } from 'shim-antd/lib/form'
 
 import { Form } from 'shim-antd'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import './style.less'
 
@@ -14,7 +14,7 @@ export interface VerifyCodeFormItemProps extends FormItemProps {
 }
 
 export const VerifyCodeFormItem: React.FC<VerifyCodeFormItemProps> = props => {
-  const { t } = i18n
+  const { t } = useTranslation()
   const { codeLength, ruleKeyword = t('common.captchaCode'), ...formItemProps } = props
   return (
     <Form.Item

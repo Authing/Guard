@@ -2,7 +2,7 @@ import { InputProps } from 'shim-antd/lib/input'
 
 import { React } from 'shim-react'
 
-import { i18n } from '../../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { CommonInput } from '../../../CommonInput'
 
@@ -16,7 +16,7 @@ export interface GraphicVerifyCodeProps extends InputProps {
 export const GraphicVerifyCode: React.FC<GraphicVerifyCodeProps> = props => {
   const { verifyCodeUrl, changeCode, ...inputProps } = props
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   return (
     <div className="g2-graphic-verify-code">

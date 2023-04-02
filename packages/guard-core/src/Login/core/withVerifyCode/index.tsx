@@ -2,7 +2,7 @@ import { React } from 'shim-react'
 
 import { Form } from 'shim-antd'
 
-import { i18n } from '../../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { fieldRequiredRule, getUserRegisterParams, isDisabled, validate } from '../../../_utils'
 
@@ -137,7 +137,7 @@ const LoginWithVerifyCode = (props: any) => {
   })
 
   const submitButtonRef = useRef<any>(null)
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const SendCode = useCallback(
     (props: any) => {

@@ -2,7 +2,7 @@ import { Form, message } from 'shim-antd'
 
 import { React } from 'shim-react'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { fieldRequiredRule, getDeviceName } from '../../_utils'
 
@@ -55,7 +55,7 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
   publicConfig,
   registeContext
 }) => {
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const isChangeComplete = useIsChangeComplete('phone')
 

@@ -1,6 +1,6 @@
 import { React } from 'shim-react'
 
-import { i18n } from '../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { ImagePro } from '../ImagePro'
 
@@ -13,7 +13,7 @@ import { useGuardAppId, useGuardFinallyConfig, useGuardModule } from '../_utils/
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
 
 export const GuardNeedHelpView = () => {
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const appId = useGuardAppId()
 

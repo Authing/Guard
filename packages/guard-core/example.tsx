@@ -1,5 +1,3 @@
-import { React } from 'shim-react'
-
 import { Guard } from './src'
 
 const guard = new Guard({
@@ -8,4 +6,8 @@ const guard = new Guard({
 
 guard.start('#root').then(userInfo => {
   console.log('user info in start: ', userInfo)
+})
+
+guard.on('lang-change', res => {
+  console.log('on lang change: ', res)
 })

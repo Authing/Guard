@@ -2,7 +2,7 @@ import { Popover } from 'shim-antd'
 
 import { React } from 'shim-react'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { IconFont } from '../../IconFont'
 
@@ -60,7 +60,7 @@ export interface SelectOptions {
 const SelectPanel: React.FC<SelectPanelProps> = props => {
   const { lists, handleDel, onClick } = props
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const { isPhoneMedia } = useMediaSize()
 

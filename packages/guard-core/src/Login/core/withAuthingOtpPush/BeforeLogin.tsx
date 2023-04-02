@@ -12,7 +12,7 @@ import { OnPushSuccessProps, OnLoginProps } from './types'
 
 import { AuthingGuardResponse } from '../../../_utils/http'
 
-import { i18n } from '../../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import {
   useGuardDefaultLanguage,
@@ -53,7 +53,7 @@ export function BeforeLogin(props: BeforeLoginProps) {
 
   const { isPhoneMedia } = useMediaSize()
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const config = useGuardFinallyConfig()
 

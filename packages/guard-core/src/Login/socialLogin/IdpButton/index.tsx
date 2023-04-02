@@ -4,6 +4,8 @@ import qs from 'qs'
 
 import { React } from 'shim-react'
 
+import { useTranslation } from 'react-i18next'
+
 import { i18n } from '../../../_utils'
 
 import { getGuardWindow } from '../../../Guard/core/useAppendConfig'
@@ -47,7 +49,7 @@ export const IdpButton = (props: any) => {
   // shape icon 或者 button
   const { i, appId, appHost, isHost, noLoginMethods, isPhoneMedia } = props
 
-  const { t } = i18n
+  const { t } = useTranslation()
   const tenantId = useGuardTenantId()
 
   const renderBtn = useCallback(() => {

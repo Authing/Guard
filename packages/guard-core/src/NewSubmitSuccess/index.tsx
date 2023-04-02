@@ -1,6 +1,6 @@
 import { React } from 'shim-react'
 
-import { i18n } from '../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { GuardModuleType } from '..'
 
@@ -17,7 +17,7 @@ import { useGuardView } from '../Guard/core/hooks/useGuardView'
 const { useEffect, useRef, useState } = React
 
 export const GuardNewSubmitSuccessView: React.FC = () => {
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const initData = useGuardInitData<SubmitSuccessInitData>()
 

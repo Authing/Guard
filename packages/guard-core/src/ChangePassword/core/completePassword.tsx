@@ -8,7 +8,7 @@ import { InputPassword } from '../../InputPassword'
 
 import { useMediaSize } from '../../_utils/hooks'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import SubmitButton from '../../SubmitButton'
 
@@ -36,7 +36,7 @@ import { CommonFormItem } from '../../CommonFormItem'
 const { useRef, useCallback } = React
 
 export const CompletePassword: React.FC = () => {
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const events = useGuardEvents()
 

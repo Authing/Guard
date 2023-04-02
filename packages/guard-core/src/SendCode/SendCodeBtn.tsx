@@ -4,6 +4,8 @@ import { React } from 'shim-react'
 
 import { i18n } from '../_utils'
 
+import { useTranslation } from 'react-i18next'
+
 import './style.less'
 
 import { ButtonProps } from 'shim-antd/lib/button'
@@ -56,7 +58,7 @@ const useSentCounter = (effect: any) => {
 }
 
 export const SendCodeBtn: React.FC<SendCodeProps> = props => {
-  const { t } = i18n
+  const { t } = useTranslation()
   const { sendDesc = t('login.clickSent'), beforeSend, btnRef, setSent, ...buttonProps } = props
   const { enabled, send, countDown } = useSentCounter(setSent)
   const [loading, setLoading] = useState(false)

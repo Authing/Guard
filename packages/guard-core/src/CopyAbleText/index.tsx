@@ -6,7 +6,7 @@ import { copyToClipboard, getClassnames } from '../_utils'
 
 import './style.less'
 
-import { i18n } from '../_utils'
+import { useTranslation } from 'react-i18next'
 
 const { useCallback, useEffect, useRef, useState } = React
 
@@ -15,7 +15,7 @@ export interface CopyTextProps extends React.HTMLAttributes<HTMLDivElement> {}
 export const CopyAbleText = (props: CopyTextProps) => {
   const { children, className } = props
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const divRef = useRef<HTMLDivElement>(null)
 

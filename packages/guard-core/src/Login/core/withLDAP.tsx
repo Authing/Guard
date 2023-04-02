@@ -1,6 +1,6 @@
 import { React } from 'shim-react'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { Form, Input, message } from 'shim-antd'
 
@@ -74,7 +74,7 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
   const [validated, setValidated] = useState(false)
   // let client = useGuardAuthClient()
   const { post } = useGuardHttpClient()
-  const { t } = i18n
+  const { t } = useTranslation()
   const submitButtonRef = useRef<any>(null)
 
   const [showCaptcha, setShowCaptcha] = useState(false)

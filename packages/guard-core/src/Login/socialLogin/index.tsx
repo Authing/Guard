@@ -4,9 +4,9 @@ import { Lang } from 'authing-js-sdk/build/main/types'
 
 import { React } from 'shim-react'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
-import { isSpecialBrowser, popupCenter } from '../../_utils'
+import { isSpecialBrowser, popupCenter, i18n } from '../../_utils'
 
 import querystring from 'query-string'
 
@@ -69,7 +69,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
 
   const userPoolId = publicConfig?.userPoolId
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const { isPhoneMedia } = useMediaSize()
 

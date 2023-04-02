@@ -1,6 +1,6 @@
 import { React } from 'shim-react'
 
-import { i18n } from '../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { GuardModuleType } from '../Guard'
 
@@ -15,7 +15,7 @@ import { useGuardView } from '../Guard/core/hooks/useGuardView'
 const { useRef } = React
 
 export const GuardUnlockView: React.FC = () => {
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const config = useGuardFinallyConfig()
 

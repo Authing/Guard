@@ -2,7 +2,7 @@ import { React } from 'shim-react'
 
 import { Drawer } from 'shim-antd'
 
-import { i18n } from '../../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { PushLoginGuideSelector } from './PushLoginGuideSelector'
 
@@ -23,7 +23,7 @@ const { useMemo, useState } = React
 export function PushLoginGudeModal(props: PushLoginGudeModalProps) {
   const { visible, onClose } = props
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const howBindClient = t('login.howBindClient')
 

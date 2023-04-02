@@ -2,7 +2,7 @@ import { Tabs } from 'shim-antd'
 
 import { React, ReactNode } from 'shim-react'
 
-import { i18n } from '../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { ImagePro } from '../ImagePro'
 
@@ -24,7 +24,7 @@ const { useMemo } = React
 export const GuardDownloadATView: React.FC = () => {
   useGuardView()
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const publicConfig = useGuardPublicConfig()
 

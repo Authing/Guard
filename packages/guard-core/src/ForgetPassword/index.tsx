@@ -1,6 +1,6 @@
 import { React } from 'shim-react'
 
-import { i18n } from '../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { Form, message } from 'shim-antd'
 
@@ -46,7 +46,7 @@ import { useGuardView } from '../Guard/core/hooks/useGuardView'
 const { useRef, useState } = React
 
 export const GuardForgetPassword: React.FC = () => {
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const events = useGuardEvents()
 

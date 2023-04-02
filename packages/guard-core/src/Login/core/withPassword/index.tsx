@@ -2,7 +2,7 @@ import { React } from 'shim-react'
 
 import { Form } from 'shim-antd'
 
-import { i18n } from '../../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { useGuardHttp } from '../../../_utils/guardHttp'
 
@@ -119,7 +119,7 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
   const { isPhoneMedia } = useMediaSize()
   const [validated, setValidated] = useState(false)
 
-  const { t } = i18n
+  const { t, i18n } = useTranslation()
   const { post } = useGuardHttp()
   const client = useGuardAuthClient()
 

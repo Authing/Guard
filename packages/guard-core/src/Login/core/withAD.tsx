@@ -6,6 +6,8 @@ import { React } from 'shim-react'
 
 import { i18n } from '../../_utils'
 
+import { useTranslation } from 'react-i18next'
+
 import { BackFillMultipleState, StoreInstance } from '../../Guard/core/hooks/useMultipleAccounts'
 
 import { useGuardAuthClient } from '../../Guard/authClient'
@@ -90,7 +92,7 @@ export const LoginWithAD = (props: LoginWithADProps) => {
 
   const { responseIntercept } = useGuardHttpClient()
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const { isPhoneMedia } = useMediaSize()
 

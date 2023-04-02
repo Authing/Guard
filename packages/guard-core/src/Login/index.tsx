@@ -2,6 +2,8 @@ import { React } from 'shim-react'
 
 import { i18n, fallbackLng } from '../_utils'
 
+import { useTranslation } from 'react-i18next'
+
 import { message, Tabs, Tag, Tooltip, Space } from 'shim-antd'
 
 import intersection from 'lodash/intersection'
@@ -145,7 +147,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
 
   const agreementEnabled = config?.agreementEnabled
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const [loginWay, setLoginWay] = useState(specifyDefaultLoginMethod || defaultMethod)
 

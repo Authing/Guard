@@ -2,7 +2,7 @@ import { message } from 'shim-antd'
 
 import { React, ReactNode } from 'shim-react'
 
-import { i18n } from '../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { GuardModuleType } from '../Guard/module'
 
@@ -56,7 +56,7 @@ export const GuardChangePassword: React.FC<{
 }
 
 export const GuardFirstLoginPasswordResetView: React.FC = () => {
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const { changeModule } = useGuardModule()
 
@@ -82,7 +82,7 @@ export const GuardFirstLoginPasswordResetView: React.FC = () => {
 }
 
 export const GuardPasswordNotSafeResetView: React.FC = () => {
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const { changeModule } = useGuardModule()
 
@@ -108,7 +108,7 @@ export const GuardPasswordNotSafeResetView: React.FC = () => {
 }
 
 export const GuardForcedPasswordResetView: React.FC = () => {
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const { changeModule } = useGuardModule()
 
@@ -136,7 +136,7 @@ export const GuardForcedPasswordResetView: React.FC = () => {
 }
 
 export const GuardNoticePasswordResetView: React.FC = () => {
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const { changeModule } = useGuardModule()
 
@@ -167,7 +167,7 @@ export const GuardNoticePasswordResetView: React.FC = () => {
 }
 
 export const GuardRegisterCompletePasswordView: React.FC = () => {
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const config = useGuardFinallyConfig()
 

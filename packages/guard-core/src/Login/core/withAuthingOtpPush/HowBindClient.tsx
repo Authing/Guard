@@ -2,7 +2,7 @@ import { React } from 'shim-react'
 
 import { Spin } from 'shim-antd'
 
-import { i18n } from '../../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { LazyloadImage } from '../../../LazyloadImage'
 
@@ -13,7 +13,7 @@ import { QRCodeSVG } from 'qrcode.react'
 const { useMemo } = React
 
 export function HowBindClient() {
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const config = useGuardFinallyConfig()
 

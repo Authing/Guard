@@ -2,12 +2,12 @@ import { React } from 'shim-react'
 
 import { Spin } from 'shim-antd'
 
-import { i18n } from '../../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { LazyloadImage } from '../../../LazyloadImage'
 
 export function HowGetAppLoginUrl() {
-  const { t } = i18n
+  const { t } = useTranslation()
 
   return (
     <>

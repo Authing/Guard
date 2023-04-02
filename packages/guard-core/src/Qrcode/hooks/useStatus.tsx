@@ -1,6 +1,6 @@
 import { React } from 'shim-react'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { IconFont } from '../../IconFont'
 
@@ -15,7 +15,7 @@ const { useMemo } = React
 const useStatus = (status: CodeStatus) => {
   const classes = `${prefix}-qrcode--${status}`
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   /**
    * 不同状态的中间组件

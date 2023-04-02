@@ -1,16 +1,16 @@
 import { React } from 'shim-react'
 
-import { Dropdown, Menu } from 'shim-antd'
+import { Dropdown, MenuProps } from 'shim-antd'
 
-import { i18n } from '../_utils'
+import { fallbackLng } from '../_utils'
+
+import { useTranslation } from 'react-i18next'
 
 import { IconFont } from '../IconFont'
 
 import { Lang } from '../Type'
 
 import { useGuardPageConfig } from '../_utils/context'
-
-import { fallbackLng } from '../_utils/locales'
 
 import './style.less'
 
@@ -44,15 +44,9 @@ export const ChangeLanguage = (props: {
 
   const { onLangChange } = props
 
-  const guardPageConfig = useGuardPageConfig()
+  const { i18n } = useTranslation()
 
-  const onChangeLng = useCallback(
-    (lng: Lang) => {
-      i18n.changeLanguage(lng)
-      onLangChange?.(lng)
-    },
-    [i18n, onLangChange]
-  )
+  const guardPageConfig = useGuardPageConfig()
 
   const showChangeLng = useMemo(() => {
     return guardPageConfig.global?.showChangeLanguage
@@ -74,65 +68,47 @@ export const ChangeLanguage = (props: {
     )
   }, [currentLng])
 
-  const lngMenu = useMemo(() => {
-    let menuItem: {
-      key: string
-      label: string
-    }[] = []
-
-    menuItem = Object.keys(LngTextMapping)
+  const items = useMemo(() => {
+    return Object.keys(LngTextMapping)
       .filter(lng => langRange.includes(lng as Lang))
-      .map(lng => ({
-        key: lng,
-        label: LngTextMapping[lng as Lang].label
-      }))
-
-    return (
-      // @ts-ignore
-      <Menu>
-        {menuItem.map(({ key, label }) => {
-          const isCurrent = key === currentLng
-          return (
-            // @ts-ignore
-            <Menu.Item
-              key={key}
-              className={isCurrent ? 'select' : ''}
-              onClick={() => {
-                if (currentLng !== key) {
-                  onChangeLng(key as Lang)
-                }
-              }}
-            >
-              <span>{label}</span>
-              {isCurrent && <IconFont type="authing-check-fill" />}
-            </Menu.Item>
-          )
-        })}
-      </Menu>
-    )
-  }, [currentLng, langRange, onChangeLng])
+      .map(lng => {
+        return {
+          key: lng,
+          label: LngTextMapping[lng as Lang].label
+        }
+      })
+  }, [langRange])
 
   if (!showChangeLng || langRange.length === 0) {
     return null
   }
 
+  const handleMenuClick: MenuProps['onClick'] = (e: any) => {
+    if (currentLng !== e.key) {
+      i18n.changeLanguage(e.key)
+      onLangChange?.(e.key)
+    }
+  }
+
+  const menuProps = {
+    items,
+    onClick: handleMenuClick
+  }
+
   return (
     <div className="g2-change-language-container">
       <Dropdown
-        menu={lngMenu}
+        menu={menuProps}
         trigger={['click']}
         placement="bottom"
         overlayClassName="authing-g2-change-language-menu"
-        getPopupContainer={(node: any) => {
-          if (node?.parentElement) {
-            return node.parentElement
-          }
-          return node
-        }}
       >
         <span className="g2-change-language-text">
           {currentLngText}
-          <IconFont type="authing-arrow-down-s-fill" className="down-fill-svg" />
+          <IconFont
+            type="authing-arrow-down-s-fill"
+            className="down-fill-svg"
+          />
         </span>
       </Dropdown>
     </div>

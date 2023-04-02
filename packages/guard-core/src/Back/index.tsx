@@ -1,6 +1,6 @@
 import { React } from 'shim-react'
 
-import { i18n } from '../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { GuardModuleType } from '..'
 
@@ -23,7 +23,7 @@ export const BackLogin: React.FC<BackProps> = props => {
 
   const config = useGuardFinallyConfig()
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const onBack = useCallback(() => changeModule?.(GuardModuleType.LOGIN), [changeModule])
 

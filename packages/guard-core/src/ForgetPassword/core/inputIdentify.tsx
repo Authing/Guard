@@ -2,7 +2,7 @@ import { InputProps } from 'shim-antd'
 
 import { React } from 'shim-react'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { CommonInput } from '../../CommonInput'
 
@@ -23,7 +23,7 @@ export const InputIdentify: React.FC<InputIdentifyProps> = props => {
 
   const publicConfig = useGuardPublicConfig()
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const verifyCodeMethodsText = useMemo<
     Record<

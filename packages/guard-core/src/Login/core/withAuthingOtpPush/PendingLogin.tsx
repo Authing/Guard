@@ -6,7 +6,7 @@ import './styles.less'
 
 import { IconFont } from '../../../IconFont'
 
-import { i18n } from '../../../_utils'
+import { useTranslation } from 'react-i18next'
 
 interface PendingLoginProps {
   onCancelLogin: () => void
@@ -17,7 +17,7 @@ export function PendingLogin(props: PendingLoginProps) {
     props.onCancelLogin()
   }
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   return (
     <>

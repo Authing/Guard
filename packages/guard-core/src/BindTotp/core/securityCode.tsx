@@ -2,7 +2,7 @@ import { Form } from 'shim-antd'
 
 import { React } from 'shim-react'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { useAsyncFn } from 'react-use'
 
@@ -40,7 +40,7 @@ export const SecurityCode: React.FC<SecurityCodeProps> = ({
   const [form] = Form.useForm()
   const submitButtonRef = useRef<any>(null)
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const { post } = useGuardHttp()
 

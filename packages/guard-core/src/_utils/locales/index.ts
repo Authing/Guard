@@ -2,6 +2,8 @@ import { React } from 'shim-react'
 
 import i18n, { InitOptions, Resource } from 'i18next'
 
+import { initReactI18next } from 'react-i18next'
+
 import LanguageDetector from 'i18next-browser-languagedetector'
 
 import * as enUsTrans from './en-us'
@@ -108,7 +110,7 @@ export const initGuardI18n = async (
   }
 
   // 开始初始化了嗷~
-  await i18n.use(LanguageDetector).init(i18nOptions)
+  await i18n.use(LanguageDetector).use(initReactI18next).init(i18nOptions)
   // 告知外部i18n初始化完成
   callback(true)
 }

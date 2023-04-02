@@ -1,6 +1,6 @@
 import { React } from 'shim-react'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { useGuardHttp } from '../../_utils/guardHttp'
 
@@ -45,7 +45,7 @@ export const MFAFace = (props: any) => {
 
   const { postForm } = useGuardHttp()
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const [faceState, setFaceState] = useState('ready') // ready, identifying, retry
 

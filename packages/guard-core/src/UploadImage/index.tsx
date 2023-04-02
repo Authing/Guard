@@ -4,7 +4,7 @@ import { UploadChangeParam } from 'shim-antd/lib/upload'
 
 import { React } from 'shim-react'
 
-import { i18n } from '../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { useGuardFinallyConfig } from '../_utils/context'
 
@@ -15,7 +15,7 @@ export const UploadImage: React.FC<{
   onChange?: (value: string) => void
 }> = ({ value, onChange }) => {
   const [uploading, setUploading] = useState(false)
-  const { t } = i18n
+  const { t } = useTranslation()
   const { host } = useGuardFinallyConfig()
 
   const onStatusChange = (info: UploadChangeParam) => {

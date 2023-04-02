@@ -1,6 +1,6 @@
 import { React } from 'shim-react'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { Form, message } from 'shim-antd'
 
@@ -36,7 +36,7 @@ interface RotateResetProps {
 const { useRef } = React
 
 export const RotateReset = (props: RotateResetProps) => {
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const { onReset, onFinishCallBack } = props
 

@@ -2,7 +2,7 @@ import { Form } from 'shim-antd'
 
 import { React } from 'shim-react'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { User } from 'authing-js-sdk'
 
@@ -26,7 +26,7 @@ export interface UseCodeProps {
 const { useRef } = React
 
 export const UseCode: React.FC<UseCodeProps> = ({ mfaToken, onSubmit }) => {
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const isAuthFlow = useGuardIsAuthFlow()
 

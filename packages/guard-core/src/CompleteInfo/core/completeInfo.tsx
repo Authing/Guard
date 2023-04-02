@@ -4,6 +4,8 @@ import { Form, Input, Select, DatePicker, message } from 'shim-antd'
 
 import { i18n } from '../../_utils'
 
+import { useTranslation } from 'react-i18next'
+
 import { useAsyncFn } from 'react-use'
 
 import {
@@ -77,7 +79,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
 
   const { get, post } = useGuardHttp()
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const [form] = Form.useForm()
 

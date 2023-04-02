@@ -1,6 +1,6 @@
 import { React } from 'shim-react'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { Form, message } from 'shim-antd'
 
@@ -31,7 +31,7 @@ interface PasswordNotSafeResetProps {
 const { useRef } = React
 
 export const PasswordNotSafeReset: React.FC<PasswordNotSafeResetProps> = ({ onReset }) => {
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const initData = useGuardInitData<{ token: string }>()
 

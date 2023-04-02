@@ -2,7 +2,7 @@ import { Checkbox, Form, Typography } from 'shim-antd'
 
 import { React } from 'shim-react'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import SubmitButton from '../../SubmitButton'
 
@@ -20,7 +20,7 @@ export const SaveCode: React.FC<{
 }> = props => {
   const { secret, onBind } = props
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const [form] = Form.useForm()
 

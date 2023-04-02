@@ -16,6 +16,8 @@ import { getI18nLabel, getLoginTypePipe, getSortTabs, transformMethod } from '..
 
 import { fallbackLng, i18n } from '../_utils/locales'
 
+import { useTranslation } from 'react-i18next'
+
 import {
   useGuardDefaultLanguage,
   useGuardEvents,
@@ -39,7 +41,7 @@ export const GuardRegisterView: React.FC = () => {
 
   const { changeModule } = useGuardModule()
 
-  const { t } = i18n
+  const { t } = useTranslation()
   const agreementEnabled = config?.agreementEnabled
   const { langRange } = config
   const authClient = useGuardAuthClient()

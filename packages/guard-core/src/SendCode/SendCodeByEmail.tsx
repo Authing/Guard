@@ -4,7 +4,7 @@ import { React } from 'shim-react'
 
 import './style.less'
 
-import { i18n } from '../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { validate } from '../_utils'
 
@@ -31,7 +31,7 @@ export interface SendCodeByEmailProps extends InputProps {
 
 export const SendCodeByEmail: React.FC<SendCodeByEmailProps> = props => {
   const { scene, data, form, onSendCodeBefore, fieldName, ...remainProps } = props
-  const { t } = i18n
+  const { t } = useTranslation()
   const events = useGuardEvents()
   const authClient = useGuardAuthClient()
   const { post } = getGuardHttp()

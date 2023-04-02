@@ -1,6 +1,6 @@
 import { React } from 'shim-react'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { Form, Input, message, Modal, Progress, Select, Upload } from 'shim-antd'
 
@@ -27,7 +27,7 @@ interface describeQuestionsProps {
 }
 
 export const DescribeQuestions = (props: describeQuestionsProps) => {
-  const { t } = i18n
+  const { t } = useTranslation()
   const initData = useGuardInitData<{ identify: string }>()
   // 不清楚为什么放出去之后，i18n 的结果全是 undefeated
   const typeProblemMap: any = {

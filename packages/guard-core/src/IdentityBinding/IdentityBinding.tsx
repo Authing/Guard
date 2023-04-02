@@ -25,6 +25,8 @@ import {
 
 import { fallbackLng, i18n } from '../_utils'
 
+import { useTranslation } from 'react-i18next'
+
 import { IdentityBindingBusinessAction, useIdentityBindingBusinessRequest } from './businessRequest'
 
 import { GuardIdentityBindingInitData } from './interface'
@@ -46,7 +48,7 @@ export const GuardIdentityBindingView: React.FC<{
 
   useGuardView()
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const events = useGuardEvents()
 

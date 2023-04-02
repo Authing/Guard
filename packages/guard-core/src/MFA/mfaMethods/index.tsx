@@ -2,6 +2,8 @@ import { React } from 'shim-react'
 
 import { i18n } from '../../_utils'
 
+import { useTranslation } from 'react-i18next'
+
 import { IconFont } from '../../IconFont'
 
 import { GuardMFAInitData, MFAType } from '../interface'
@@ -48,7 +50,7 @@ const methodTitleMapping: Record<
 
 export const MFAMethods: React.FC<MFAMethodsProps> = ({ method, onChangeMethod }) => {
   const [currentMethod, setCurrentMethod] = useState(method)
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const { applicationMfa } = useGuardInitData<GuardMFAInitData>()
 

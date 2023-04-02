@@ -7,7 +7,7 @@
   "author": "https://github.com/authing",
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
-    "antd": "^4.24.7"
+    "antd": "^4.24.8"
   },
   "license": "MIT"
 }

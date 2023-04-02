@@ -4,7 +4,7 @@ import { SceneType } from 'authing-js-sdk'
 
 import { React } from 'shim-react'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { VerifyCodeInput } from '../VerifyCodeInput'
 
@@ -50,7 +50,7 @@ export const BindMFASms: React.FC<BindMFASmsProps> = ({
   isInternationSms
 }) => {
   const submitButtonRef = useRef<any>(null)
-  const { t } = i18n
+  const { t } = useTranslation()
   const [form] = Form.useForm()
 
   const onFinish = async ({ phone }: any) => {
@@ -165,7 +165,7 @@ export const VerifyMFASms: React.FC<VerifyMFASmsProps> = ({
 
   const submitButtonRef = useRef<any>(null)
 
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const [form] = Form.useForm()
 

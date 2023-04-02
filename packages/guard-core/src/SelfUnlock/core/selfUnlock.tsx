@@ -1,6 +1,6 @@
 import { React } from 'shim-react'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { Form } from 'shim-antd'
 
@@ -39,7 +39,7 @@ export enum InputMethodMap {
   phone = 'phone-code'
 }
 export const SelfUnlock = ({ identifyRef }: { identifyRef?: React.MutableRefObject<string> }) => {
-  const { t } = i18n
+  const { t } = useTranslation()
   const [form] = Form.useForm()
   const [identify, setIdentify] = useState('')
   const [codeMethod, setCodeMethod] = useState<'phone' | 'email'>('phone')

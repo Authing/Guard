@@ -4,7 +4,7 @@ import { fieldRequiredRule, VALIDATE_PATTERN } from '../_utils'
 
 import { useGuardHttp } from '../_utils/guardHttp'
 
-import { i18n } from '../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { ValidatorFormItemMetaProps, ValidatorFormItemProps } from '.'
 
@@ -33,7 +33,7 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
   } = props
   const publicConfig = useGuardPublicConfig()
   const { get } = useGuardHttp()
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const checkInternationalSms = useMemo(() => {
     return publicConfig.internationalSmsConfig?.enabled && method === 'phone' && isCheckPattern

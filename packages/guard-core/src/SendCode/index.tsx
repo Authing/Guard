@@ -8,6 +8,8 @@ import './style.less'
 
 import { i18n } from '../_utils'
 
+import { useTranslation } from 'react-i18next'
+
 import { InputProps } from 'shim-antd/lib/input'
 
 import { InputNumber } from '../InputNumber'
@@ -27,7 +29,7 @@ export const SendCode: React.FC<SendPhoneCodeProps> = ({
   maxLength,
   ...inputProps
 }) => {
-  const { t } = i18n
+  const { t } = useTranslation()
   return (
     <>
       <Row justify="space-between" align="middle">

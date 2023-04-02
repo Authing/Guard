@@ -2,7 +2,7 @@ import { Form } from 'shim-antd'
 
 import { React } from 'shim-react'
 
-import { i18n } from '../../_utils'
+import { useTranslation } from 'react-i18next'
 
 import { useAsyncFn } from 'react-use'
 
@@ -32,7 +32,7 @@ export interface BindMFATotpProps {
 }
 
 export const BindMFATotp: React.FC<BindMFATotpProps> = ({ changeModule, initData }) => {
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const next = () => changeModule(GuardModuleType.BIND_TOTP, initData)
   return (
@@ -69,7 +69,7 @@ export const VerifyMFATotp: React.FC<VerifyMFATotpProps> = ({
   mfaLogin,
   changeModule
 }) => {
-  const { t } = i18n
+  const { t } = useTranslation()
 
   const [form] = Form.useForm()
 
