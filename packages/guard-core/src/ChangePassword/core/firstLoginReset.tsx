@@ -145,7 +145,7 @@ export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({ onReset }) => 
         <Form.Item className="authing-g2-sumbit-form submit-form">
           <SubmitButton
             className="forget-password"
-            text={t('common.confirm')}
+            text={t('common.confirm') as string}
             ref={submitButtonRef}
           />
         </Form.Item>

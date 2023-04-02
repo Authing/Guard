@@ -102,7 +102,7 @@ export const UseCode: React.FC<UseCodeProps> = ({ mfaToken, onSubmit }) => {
           rules={[
             {
               required: true,
-              message: t('login.inputRecoverCode')
+              message: t('login.inputRecoverCode') as string
             }
           ]}
         >
@@ -111,12 +111,12 @@ export const UseCode: React.FC<UseCodeProps> = ({ mfaToken, onSubmit }) => {
             className="authing-g2-input"
             autoComplete="off"
             size="large"
-            placeholder={t('login.inputRecoverCode')}
+            placeholder={t('login.inputRecoverCode') as string}
           />
         </CustomFormItem.CustomName>
 
         <Form.Item className="authing-g2-sumbit-form submit-form">
-          <SubmitButton text={t('common.sure')} ref={submitButtonRef} />
+          <SubmitButton text={t('common.sure') as string} ref={submitButtonRef} />
         </Form.Item>
       </Form>
     </>

@@ -348,7 +348,7 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
           />
         )}
         <Form.Item className="authing-g2-sumbit-form">
-          <SubmitButton text={t('common.register')} ref={submitButtonRef} />
+          <SubmitButton text={t('common.register') as string} ref={submitButtonRef} />
         </Form.Item>
       </Form>
     </div>

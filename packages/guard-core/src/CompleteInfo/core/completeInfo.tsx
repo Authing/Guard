@@ -247,7 +247,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
             key="internal-username:asdf"
             size="large"
             maxLength={11}
-            placeholder={t('login.inputUsername')}
+            placeholder={t('login.inputUsername') as string}
           />
         </CustomFormItem.UserName>
       ),
@@ -282,7 +282,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
               size="large"
               placeholder={t('common.inputFourVerifyCode', {
                 length: verifyCodeLength
-              })}
+              }) as string}
               scene={SceneType.SCENE_TYPE_COMPLETE_PHONE}
               maxLength={verifyCodeLength}
               fieldName="phone"
@@ -307,7 +307,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
               className="authing-g2-input"
               autoComplete="email"
               size="large"
-              placeholder={t('login.inputEmail')}
+              placeholder={t('login.inputEmail') as string}
             />
           </CustomFormItem.Email>
           <Form.Item
@@ -323,7 +323,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
               size="large"
               placeholder={t('common.inputFourVerifyCode', {
                 length: verifyCodeLength
-              })}
+              }) as string}
               maxLength={verifyCodeLength}
               data={''}
               scene={EmailScene.INFORMATION_COMPLETION_VERIFY_CODE}
@@ -570,7 +570,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
 
       <Form.Item className="authing-g2-sumbit-form">
         <SubmitButton
-          text={t('common.problem.form.submit')}
+          text={t('common.problem.form.submit') as string}
           ref={submitButtonRef}
           className="password g2-completeInfo-submit"
         />

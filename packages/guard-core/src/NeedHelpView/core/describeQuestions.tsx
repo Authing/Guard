@@ -182,7 +182,7 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
             className="authing-g2-input"
             autoComplete="off"
             size="large"
-            placeholder={t('login.inputPhoneOrEmail')}
+            placeholder={t('login.inputPhoneOrEmail') as string}
             prefix={<IconFont type="authing-a-user-line1" style={{ color: '#878A95' }} />}
           />
         </Form.Item>
@@ -296,7 +296,7 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
         <Form.Item className="authing-g2-sumbit-form submit-form">
           <SubmitButton
             className="forget-password"
-            text={t('common.problem.form.submit')}
+            text={t('common.problem.form.submit') as string}
             ref={submitButtonRef}
           />
         </Form.Item>

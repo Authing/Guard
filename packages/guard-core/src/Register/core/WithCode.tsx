@@ -750,7 +750,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             <GraphicVerifyCode
               className="authing-g2-input"
               size="large"
-              placeholder={t('login.inputCaptchaCode')}
+              placeholder={t('login.inputCaptchaCode') as string}
               verifyCodeUrl={verifyCodeUrl}
               changeCode={() => setVerifyCodeUrl(getCaptchaUrl(config.host!))}
               onChange={(e: any) => {
@@ -783,7 +783,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             //   !!agreements.find((item) => item.required && !acceptedAgreements)
             // }
             disabled={btnDisabled}
-            text={t('common.register')}
+            text={t('common.register') as string}
             ref={submitButtonRef}
           />
         </Form.Item>

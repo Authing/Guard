@@ -151,7 +151,7 @@ export const SecurityCode: React.FC<SecurityCodeProps> = ({
 
         <SubmitButton
           disabled={btnDisabled}
-          text={t('user.nextStep')}
+          text={t('user.nextStep') as string}
           ref={submitButtonRef}
           className="g2-mfa-submit-button-new"
         />

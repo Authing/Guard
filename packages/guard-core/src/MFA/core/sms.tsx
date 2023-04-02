@@ -129,7 +129,7 @@ export const BindMFASms: React.FC<BindMFASmsProps> = ({
         </CustomFormItem.Phone>
         <SubmitButton
           disabled={btnDisabled}
-          text={t('common.sure')}
+          text={t('common.sure') as string}
           ref={submitButtonRef}
           className="g2-mfa-submit-button-new"
         />
@@ -262,7 +262,7 @@ export const VerifyMFASms: React.FC<VerifyMFASmsProps> = ({
 
         <SubmitButton
           disabled={btnDisabled}
-          text={t('common.sure')}
+          text={t('common.sure') as string}
           ref={submitButtonRef}
           className="g2-mfa-submit-button-new"
         />

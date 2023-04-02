@@ -214,7 +214,7 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
             className="authing-g2-input"
             autoComplete="off"
             size="large"
-            placeholder={t('login.inputLdapUsername')}
+            placeholder={t('login.inputLdapUsername') as string}
           />
         </CommonFormItem>
         <CommonFormItem
@@ -235,12 +235,12 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
             validateTrigger={['onBlur', 'onChange']}
             className="authing-g2-input-form"
             name="captchaCode"
-            rules={[{ required: true, message: t('login.inputCaptchaCode') }]}
+            rules={[{ required: true, message: t('login.inputCaptchaCode') as string }]}
           >
             <Input
               className="authing-g2-input add-after"
               size="large"
-              placeholder={t('login.inputCaptchaCode')}
+              placeholder={t('login.inputCaptchaCode') as string}
               addonAfter={
                 <img
                   className="g2-captcha-code-image"
@@ -266,7 +266,7 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
             //   !!agreements.find((item) => item.required && !acceptedAgreements)
             // }
             disabled={btnDisabled}
-            text={t('common.login')}
+            text={t('common.login') as string}
             className="password"
             ref={submitButtonRef}
           />

@@ -278,8 +278,8 @@ export const LoginWithAD = (props: LoginWithADProps) => {
                 autoFocus={!isPhoneMedia}
                 placeholder={
                   publicConfig?.mergeAdAndAccountPasswordLogin
-                    ? t('common.jobNumber')
-                    : t('login.inputAdUsername')
+                    ? t('common.jobNumber') as string
+                    : t('login.inputAdUsername') as string
                 }
               />
             </CommonFormItem>
@@ -312,7 +312,7 @@ export const LoginWithAD = (props: LoginWithADProps) => {
                 <GraphicVerifyCode
                   className="authing-g2-input"
                   size="large"
-                  placeholder={t('login.inputCaptchaCode')}
+                  placeholder={t('login.inputCaptchaCode') as string}
                   verifyCodeUrl={verifyCodeUrl}
                   changeCode={() => setVerifyCodeUrl(getCaptchaUrl(host))}
                 />
@@ -333,7 +333,7 @@ export const LoginWithAD = (props: LoginWithADProps) => {
                 //   )
                 // }
                 disabled={btnDisabled}
-                text={t('common.login')}
+                text={t('common.login') as string}
                 className="password"
                 ref={submitButtonRef}
               />

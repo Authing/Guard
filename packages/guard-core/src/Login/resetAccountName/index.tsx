@@ -70,11 +70,11 @@ export const ResetAccountName: React.FC = () => {
             className="authing-g2-input"
             size="large"
             prefix={<IconFont type="authing-a-user-line1" style={{ color: '#878A95' }} />}
-            placeholder={i18n.t('login.inputUsername')}
+            placeholder={i18n.t('login.inputUsername') as string}
           />
         </CustomFormItem.UserName>
         <Form.Item className="authing-g2-sumbit-form">
-          <SubmitButton text={i18n.t('common.sure')} className="password" ref={submitButtonRef} />
+          <SubmitButton text={i18n.t('common.sure') as string} className="password" ref={submitButtonRef} />
         </Form.Item>
       </Form>
     </div>

@@ -297,7 +297,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
           <SubmitButton
             disabled={btnDisabled}
             className="validater-account-btn"
-            text={t('login.resetPassword.nextStep')}
+            text={t('login.resetPassword.nextStep') as string}
             ref={submitButtonRef}
           />
         </Form.Item>

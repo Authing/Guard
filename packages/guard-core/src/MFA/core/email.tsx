@@ -85,13 +85,13 @@ export const BindMFAEmail: React.FC<BindMFAEmailProps> = ({ onBind }) => {
             name="email"
             autoComplete="off"
             size="large"
-            placeholder={t('login.inputEmail')}
+            placeholder={t('login.inputEmail') as string}
           />
         </CustomFormItem.Email>
 
         <SubmitButton
           disabled={btnDisabled}
-          text={t('common.sure')}
+          text={t('common.sure') as string}
           ref={submitButtonRef}
           className="g2-mfa-submit-button-new"
         />
@@ -223,7 +223,7 @@ export const VerifyMFAEmail: React.FC<VerifyMFAEmailProps> = ({
 
         <SubmitButton
           disabled={btnDisabled}
-          text={t('common.sure')}
+          text={t('common.sure') as string}
           ref={submitButtonRef}
           className="g2-mfa-submit-button-new"
         />

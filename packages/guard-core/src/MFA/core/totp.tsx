@@ -50,7 +50,7 @@ export const BindMFATotp: React.FC<BindMFATotpProps> = ({ changeModule, initData
         <IconFont type="authing-otp" style={{ width: 247, height: 131 }} />
       </div>
       <SubmitButton
-        text={t('common.sure')}
+        text={t('common.sure') as string}
         onClick={next}
         className="g2-mfa-submit-button-new bind-totp"
       />
@@ -131,7 +131,7 @@ export const VerifyMFATotp: React.FC<VerifyMFATotpProps> = ({
 
         <SubmitButton
           disabled={btnDisabled}
-          text={t('common.sure')}
+          text={t('common.sure') as string}
           ref={submitButtonRef}
           className="g2-mfa-submit-button-new"
         />

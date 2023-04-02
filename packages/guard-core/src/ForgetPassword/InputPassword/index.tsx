@@ -1,17 +1,17 @@
 import { Input } from 'shim-antd'
 
-import { PasswordProps } from 'shim-antd/lib/input'
+import { PasswordProps, InputProps } from 'shim-antd/lib/input'
 
 import { React } from 'shim-react'
 
 import { IconFont } from '../../IconFont'
 
-export const InputPasswordForget = React.forwardRef<React.RefObject<typeof Input>, PasswordProps>(
+export const InputPasswordForget = React.forwardRef<React.RefObject<InputProps>, PasswordProps>(
   (props, ref) => {
     return (
       <Input.Password
         autoComplete="off"
-        ref={ref}
+        ref={ref as any}
         {...props}
         iconRender={(visible: boolean) => (
           <span style={{ display: 'flex', height: '100%', alignItems: 'center' }}>

@@ -87,7 +87,7 @@ export const BindSuccess: React.FC<BindSuccessProps> = ({ secret, onBind }) => {
         </Form.Item>
 
         <SubmitButton
-          text={t('common.bindSuccess')}
+          text={t('common.bindSuccess') as string}
           ref={submitButtonRef}
           className="g2-mfa-submit-button-new"
         />

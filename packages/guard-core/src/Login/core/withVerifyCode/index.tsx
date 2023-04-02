@@ -535,7 +535,7 @@ const LoginWithVerifyCode = (props: any) => {
             <GraphicVerifyCode
               className="authing-g2-input"
               size="large"
-              placeholder={t('login.inputCaptchaCode')}
+              placeholder={t('login.inputCaptchaCode') as string}
               verifyCodeUrl={verifyCodeUrl}
               changeCode={() => setVerifyCodeUrl(getCaptchaUrl(config.host!))}
             />

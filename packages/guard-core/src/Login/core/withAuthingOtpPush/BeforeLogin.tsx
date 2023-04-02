@@ -188,7 +188,7 @@ export function BeforeLogin(props: BeforeLoginProps) {
         <Form.Item className="authing-g2-sumbit-form">
           <SubmitButton
             disabled={btnDisabled}
-            text={t('login.loginText')}
+            text={t('login.loginText') as string}
             htmlType="submit"
             ref={submitButtonRef}
           />

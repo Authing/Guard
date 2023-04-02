@@ -28,7 +28,7 @@ export const VerifyCodeFormItem: React.FC<VerifyCodeFormItemProps> = props => {
           validateTrigger: ['onChange'],
           message: t('common.isMissing', {
             name: ruleKeyword
-          }),
+          }) as string,
           required: true
         },
         {
@@ -36,7 +36,7 @@ export const VerifyCodeFormItem: React.FC<VerifyCodeFormItemProps> = props => {
           validateTrigger: [''],
           message: t('common.fullCaptchaCode', {
             name: ruleKeyword
-          }),
+          }) as string,
           min: codeLength
         }
       ]}

@@ -112,7 +112,7 @@ export const fieldRequiredRule = (
         fieldRequiredRuleMessage ||
         i18n.t('common.isMissing', {
           name: fieldRequiredRule
-        }),
+        }) as string,
       whitespace: true
     }
   ]

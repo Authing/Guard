@@ -225,7 +225,7 @@ export const GuardForgetPassword: React.FC = () => {
             <InputPasswordForget
               className="authing-g2-input"
               size="large"
-              placeholder={t('login.resetPassword.inputNewPwd')}
+              placeholder={t('login.resetPassword.inputNewPwd') as string}
               prefix={
                 <IconFont
                   type="authing-a-lock-line1"
@@ -241,7 +241,7 @@ export const GuardForgetPassword: React.FC = () => {
             rules={[
               {
                 required: true,
-                message: t('login.resetPassword.pleaseInputPassword')
+                message: t('login.resetPassword.pleaseInputPassword') as string
               },
               ({ getFieldValue }) => ({
                 validator: (_, value) => {
@@ -261,7 +261,7 @@ export const GuardForgetPassword: React.FC = () => {
             <InputPasswordForget
               className="authing-g2-input"
               size="large"
-              placeholder={t('login.resetPassword.confirmNewPwd')}
+              placeholder={t('login.resetPassword.confirmNewPwd') as string}
               // prefix={
               //   <IconFont
               //     type="authing-a-lock-line1"
@@ -276,7 +276,7 @@ export const GuardForgetPassword: React.FC = () => {
             <SubmitButton
               disabled={btnDisabled}
               className="reset-password-button"
-              text={t('login.resetPassword.reset')}
+              text={t('login.resetPassword.reset') as string}
               ref={submitBtnRef}
             />
           </Form.Item>

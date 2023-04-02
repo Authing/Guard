@@ -279,7 +279,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
           autoFocus={!isPhoneMedia}
           placeholder={t('login.inputAccount', {
             text: label
-          })}
+          }) as string}
           className="authing-g2-input"
           autoComplete="off"
           size="large"
@@ -337,7 +337,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
           >
             <CommonInput
               autoFocus={!isPhoneMedia}
-              placeholder={t('login.inputEmail')}
+              placeholder={t('login.inputEmail') as string}
               className="authing-g2-input"
               autoComplete="off"
               size="large"
@@ -396,7 +396,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
             //   !!agreements.find((item) => item.required && !acceptedAgreements)
             // }
             disabled={btnDisabled}
-            text={t('common.register')}
+            text={t('common.register') as string}
             ref={submitButtonRef}
           />
         </Form.Item>

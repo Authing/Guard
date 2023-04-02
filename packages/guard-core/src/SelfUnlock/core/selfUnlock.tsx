@@ -239,7 +239,7 @@ export const SelfUnlock = ({ identifyRef }: { identifyRef?: React.MutableRefObje
         <Form.Item className="authing-g2-sumbit-form submit-form">
           <SubmitButton
             className="forget-password"
-            text={t('common.unlock')}
+            text={t('common.unlock') as string}
             ref={submitButtonRef}
           />
         </Form.Item>

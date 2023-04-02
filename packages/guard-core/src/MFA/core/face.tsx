@@ -305,7 +305,7 @@ export const MFAFace = (props: any) => {
                 message.error(t('login.mediaDevicesSupport'))
               }
             }}
-            text={t('common.faceText3')}
+            text={t('common.faceText3') as string}
             className="g2-mfa-submit-button-new"
           />
         </>

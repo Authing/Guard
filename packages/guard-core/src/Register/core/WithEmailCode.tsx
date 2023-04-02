@@ -257,7 +257,7 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
             className="authing-g2-input"
             autoComplete="off"
             size="large"
-            placeholder={t('login.inputEmail')}
+            placeholder={t('login.inputEmail') as string}
             prefix={<IconFont type="authing-a-user-line1" style={{ color: '#878A95' }} />}
           />
         </CustomFormItem.Email>
@@ -275,7 +275,7 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
             size="large"
             placeholder={t('common.inputFourVerifyCode', {
               length: verifyCodeLength
-            })}
+            }) as string}
             prefix={<IconFont type="authing-a-shield-check-line1" style={{ color: '#878A95' }} />}
             scene={EmailScene.REGISTER_VERIFY_CODE}
             maxLength={verifyCodeLength}
@@ -294,7 +294,7 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
           />
         )}
         <Form.Item className="authing-g2-sumbit-form">
-          <SubmitButton text={t('common.register')} ref={submitButtonRef} />
+          <SubmitButton text={t('common.register') as string} ref={submitButtonRef} />
         </Form.Item>
       </Form>
     </div>
