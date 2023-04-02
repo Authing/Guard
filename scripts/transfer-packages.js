@@ -23,6 +23,9 @@ function copyFiles (version) {
 
   rm.sync(resolve(`packages/${dirName}/dist`))
 
+  console.log('test path1: ', fs.existsSync(resolve(`packages/guard-core/example.tsx`)))
+  console.log('test path2: ', fs.existsSync(resolve(`packages/guard-core/dist/esm-react${version}/index.min.js`)))
+
   // copy js
   fs.copySync(
     resolve(`packages/guard-core/dist/esm-react${version}/index.min.js`),
