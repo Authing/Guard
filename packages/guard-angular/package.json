@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard-angular",
-  "version": "6.0.0-alpha.2",
+  "version": "6.0.0-alpha.3",
   "description": "Authing Guard for Angular",
   "module": "dist/fesm2015/authing-guard-angular.mjs",
   "types": "dist/index.d.ts",
@@ -26,6 +26,6 @@
     "@angular/core": "^14.0.0"
   },
   "dependencies": {
-    "@authing/guard": "^6.0.0-alpha.2"
+    "@authing/guard": "^6.0.0-alpha.3"
   }
 }
