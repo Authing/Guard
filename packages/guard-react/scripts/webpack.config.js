@@ -10,7 +10,7 @@ module.exports = {
   mode: 'production',
   entry: resolve('src/index.tsx'),
   output: {
-    filename: 'index.min.js',
+    filename: 'guard.min.js',
     path: resolve(`dist`),
     library: {
       type: 'module'
@@ -44,7 +44,7 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'index.min.css'
+      filename: 'guard.min.css'
     }),
     new CssMinimizerPlugin(),
   ]

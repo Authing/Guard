@@ -1,1 +1,1 @@
-import '@authing/guard/dist/index.min.css'
+import '@authing/guard/dist/guard.min.css'

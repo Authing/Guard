@@ -2,7 +2,7 @@ import { VueConstructor } from 'vue'
 
 import { GuardOptions, Guard } from '@authing/guard'
 
-import '@authing/guard/dist/index.min.css'
+import '@authing/guard/dist/guard.min.css'
 
 declare module 'vue/types/vue' {
   interface VueConstructor {

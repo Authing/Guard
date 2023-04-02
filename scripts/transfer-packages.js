@@ -25,14 +25,14 @@ function copyFiles (version) {
 
   // copy js
   fs.copySync(
-    resolve(`packages/guard-core/dist/esm-react${version}/index.min.js`),
-    resolve(`packages/${dirName}/dist/index.min.js`)
+    resolve(`packages/guard-core/dist/esm-react${version}/guard.min.js`),
+    resolve(`packages/${dirName}/dist/guard.min.js`)
   )
 
   // copy css
   fs.copySync(
-    resolve(`packages/guard-core/dist/esm-react${version}/index.min.css`),
-    resolve(`packages/${dirName}/dist/index.min.css`)
+    resolve(`packages/guard-core/dist/esm-react${version}/guard.min.css`),
+    resolve(`packages/${dirName}/dist/guard.min.css`)
   )
 
   // copy typings
