@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 
-import { Guard } from '@authing/guard'
+import { Guard } from '@authing/guard-react'
 
 import { guardOptions } from '../config'
 
 import Head from 'next/head'
 
-import '@authing/guard/dist/esm/guard.min.css'
+import '@authing/guard-react/dist/guard.min.css'
 
 export default function Personal () {
   const [userInfo, setUserInfo] = useState('')
