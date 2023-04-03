@@ -34,7 +34,7 @@ module.exports = function getWebpackConfig ({
     },
     plugins: [
       new MiniCssExtractPlugin({
-        filename: 'index.min.css'
+        filename: 'guard.min.css'
       })
     ]
   }
