@@ -13,6 +13,16 @@
   <% } %>
 </head>
 <body>
+  <script>
+    // https://github.com/ant-design/ant-design/issues?q=ResizeObserver+loop+limit+exceeded
+    // https://github.com/ant-design/ant-design/blob/a51439cbbabef454e35218864fddf0da96e4801e/site/theme/template/Layout/index.jsx#L45
+    window.addEventListener('error', function onError(e) {
+      if (e.message === 'ResizeObserver loop limit exceeded') {
+        e.stopPropagation()
+        e.stopImmediatePropagation()
+      }
+    })
+  </script>
   <div class="root" id="root"></div>
 </body>
 </html>
