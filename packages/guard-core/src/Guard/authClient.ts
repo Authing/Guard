@@ -6,13 +6,15 @@ import { React } from 'shim-react'
 
 import { useGlobalAuthClient } from '../AuthClientProvider/AuthClientProvider'
 
-import version from '../version'
+import { getVersion } from '../_utils/getVersion'
 
 import { GuardLocalConfig } from './config'
 
 let authClient: AuthenticationClient
 
 const { useEffect, useMemo, useState } = React
+
+const version = getVersion()
 
 const checkAuthClientProps = (
   client: AuthenticationClient,

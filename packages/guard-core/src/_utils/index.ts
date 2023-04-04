@@ -29,50 +29,6 @@ import { LngTextMapping } from '../ChangeLanguage'
 
 import { Lang } from '../Type'
 
-export * from './popupCenter'
-
-export * from './clipboard'
-
-export * from './locales'
-
-export * from './config'
-
-export * from './facePlugin'
-
-export * from './hooks'
-
-export * from './logger'
-
-export * from './responseManagement'
-
-export * from './appendConfig'
-
-export * from './clipboard'
-
-export * from './context'
-
-export * from './corsVerification'
-
-export * from './countryList'
-
-export * from './errorFace'
-
-export * from './flowHandleStorage'
-
-export * from './getCaptchaUrl'
-
-export * from './GuardErrorCode'
-
-export * from './guardHttp'
-
-export * from './initAppId'
-
-export * from './popupCenter'
-
-export * from './tenant'
-
-export * from './useErrorText'
-
 export const VALIDATE_PATTERN = {
   // https://emailregex.com/
   // eslint-disable-next-line no-control-regex
@@ -949,3 +905,49 @@ export const isDisabled = (values: Record<string, any>) => {
   }
   return disabled
 }
+
+export * from './popupCenter'
+
+export * from './clipboard'
+
+export * from './locales'
+
+export * from './config'
+
+export * from './facePlugin'
+
+export * from './hooks'
+
+export * from './logger'
+
+export * from './responseManagement'
+
+export * from './appendConfig'
+
+export * from './clipboard'
+
+export * from './context'
+
+export * from './corsVerification'
+
+export * from './countryList'
+
+export * from './errorFace'
+
+export * from './flowHandleStorage'
+
+export * from './getCaptchaUrl'
+
+export * from './GuardErrorCode'
+
+export * from './guardHttp'
+
+export * from './initAppId'
+
+export * from './popupCenter'
+
+export * from './tenant'
+
+export * from './useErrorText'
+
+export * from './getVersion'

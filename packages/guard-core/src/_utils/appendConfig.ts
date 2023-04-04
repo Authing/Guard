@@ -1,4 +1,4 @@
-import { GuardAppendConfig } from '..'
+import { GuardAppendConfig } from '../Type'
 
 let appendConfigMapping: GuardAppendConfig
 

@@ -1,4 +1,4 @@
-import version from '../version'
+import { getVersion } from '../_utils/getVersion'
 
 import { getFlowHandle } from './flowHandleStorage'
 
@@ -9,6 +9,8 @@ import { errorCodeInterceptor } from './responseManagement'
 import { CodeAction } from './responseManagement/interface'
 
 let httpClient: GuardHttp
+
+const version = getVersion()
 
 enum InterceptorName {
   ERROR_CODE = 'errorCode'

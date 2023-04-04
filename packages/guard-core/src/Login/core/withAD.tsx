@@ -20,7 +20,7 @@ import SubmitButton from '../../SubmitButton'
 
 import { Agreement } from '../../Type/application'
 
-import version from '../../version/version'
+import { getVersion } from '../../_utils'
 
 import { fieldRequiredRule, isDisabled } from '../../_utils'
 
@@ -157,6 +157,8 @@ export const LoginWithAD = (props: LoginWithADProps) => {
     // todo
     try {
       const api = `${host}/api/v2/ad/verify-user`
+
+      const version = getVersion()
 
       const fetchRes = await fetch(api, {
         method: 'POST',

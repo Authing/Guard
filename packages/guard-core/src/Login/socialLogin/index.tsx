@@ -24,7 +24,7 @@ import { usePostMessage } from './postMessage'
 
 import { CodeAction } from '../../_utils/responseManagement/interface'
 
-import version from '../../version/version'
+import { getVersion } from '../../_utils'
 
 import { GuardLocalConfig } from '../../Guard'
 
@@ -121,6 +121,8 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
 
   const socialLoginButtons = socialConnectionObjs.map((item: any) => {
     const iconType = `authing-${item.provider.replace(/:/g, '-')}`
+
+    const version = getVersion()
 
     const query: Record<string, any> = {
       from_guard: '1',

@@ -16,7 +16,7 @@ import { IconFont } from '../../../IconFont'
 
 import { Protocol } from '../../../Type/application'
 
-import version from '../../../version/version'
+import { getVersion } from '../../../_utils'
 
 import { isSpecialBrowser, popupCenter } from '../../../_utils'
 
@@ -51,6 +51,8 @@ export const IdpButton = (props: any) => {
 
   const { t } = useTranslation()
   const tenantId = useGuardTenantId()
+
+  const version = getVersion()
 
   const renderBtn = useCallback(() => {
     const query: Record<string, any> = {

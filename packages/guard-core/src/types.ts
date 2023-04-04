@@ -22,8 +22,6 @@ export * from './_utils'
 
 export * from './AuthClientProvider'
 
-export * from './version'
-
 export * from './Guard/core/hooks/useGuardView'
 
 export * from './Guard'
