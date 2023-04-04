@@ -252,7 +252,7 @@ export const RenderModule: React.FC<{
           className="authing-g2-render-module-modal"
           closeIcon={<IconFont type="authing-close-line" className="g2-modal-close" />}
           closable={defaultMergedConfig.clickCloseable ?? true}
-          visible={visible}
+          open={visible}
           onCancel={guardProps?.onClose}
           keyboard={defaultMergedConfig.escCloseable}
           maskClosable={false} // 点击蒙层，是否允许关闭

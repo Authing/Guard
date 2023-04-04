@@ -303,7 +303,7 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
       </Form>
 
       <Modal
-        visible={previewVisible}
+        open={previewVisible}
         title={null}
         footer={null}
         onCancel={() => setPreviewVisible(false)}
