@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const webpack = require('webpack')
+const TerserPlugin = require('terser-webpack-plugin')
 
 function resolve(dir, file = '') {
   return path.resolve(__dirname, '../', dir, file)
@@ -73,6 +74,20 @@ module.exports = {
         use: ['url-loader']
       }
     ]
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin({
+      parallel: true,
+      terserOptions: {
+        compress: {
+          drop_console: true
+        },
+        format: {
+          comments: false
+        }
+      }
+    })]
   },
   plugins: [
     new HtmlWebpackPlugin({

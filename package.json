@@ -33,6 +33,7 @@
     "less-loader": "^11.1.0",
     "mini-css-extract-plugin": "^2.7.3",
     "rimraf": "^2.6.2",
+    "terser-webpack-plugin": "^5.3.7",
     "ts-loader": "^9.4.2",
     "webpack": "^5.76.2",
     "webpack-cli": "^5.0.1",
