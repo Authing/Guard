@@ -788,7 +788,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                 ></Popover> */}
               </div>
             )}
-            <div className="g2-view-header">
+            {LoginMethods.AppQr !== loginWay && <div className="g2-view-header">
               <img src={config?.logo} alt="" className="icon" />
               <div className="title">
                 {isMultipleAccount ? t('login.selectLoginAccount') : config?.title}
@@ -812,7 +812,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                   {it.name}
                 </Tag>
               ))}
-            </div>
+            </div>}
             {isMultipleAccount ? (
               <MultipleAccounts
                 multipleInstance={multipleInstance}
@@ -891,7 +891,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                   </div>
                 )}
                 {renderQrcodeWay && (
-                  <div className={`g2-view-tabs ${qrcodeNone} ${hiddenTab && 'hidden'}`}>
+                  <div className={`g2-view-tabs ${qrcodeNone} ${hiddenTab && 'hidden'}`} style={{ marginTop: '54px' }}>
                     <Tabs
                       centered
                       destroyInactiveTabPane={true}

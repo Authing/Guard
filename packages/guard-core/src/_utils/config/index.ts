@@ -1,6 +1,6 @@
 import { React } from 'shim-react'
 
-import { assembledRequestHost as utilAssembledRequestHost, transformSortMethod } from '..'
+import { assembledRequestHost as utilAssembledRequestHost, transformSortMethod } from '../compute'
 
 import { GuardLocalConfig } from '../../Guard/config'
 

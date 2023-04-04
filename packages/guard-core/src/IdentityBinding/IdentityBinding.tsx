@@ -2,7 +2,7 @@ import { Tabs } from 'shim-antd'
 
 import { React } from 'shim-react'
 
-import { GuardModuleType } from '..'
+import { GuardModuleType } from '../Guard/module'
 
 import { BackCustom, BackLogin } from '../Back'
 

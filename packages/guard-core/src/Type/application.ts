@@ -1,4 +1,4 @@
-import { Lang } from '..'
+import { Lang } from '../Type'
 
 import { PasswordStrength } from '../_utils'
 

@@ -1,6 +1,6 @@
 import { message } from 'shim-antd'
 
-import { getHundreds } from '..'
+import { getHundreds } from '../compute'
 
 import { AuthingGuardResponse, AuthingResponse } from '../http'
 

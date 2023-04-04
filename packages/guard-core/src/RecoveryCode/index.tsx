@@ -1,6 +1,6 @@
 import { React } from 'shim-react'
 
-import { GuardModuleType } from '..'
+import { GuardModuleType } from '../Guard/module'
 
 import { User } from 'authing-js-sdk'
 

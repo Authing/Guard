@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 import { useAsyncFn } from 'react-use'
 
-import { GuardModuleType } from '..'
+import { GuardModuleType } from '../Guard/module'
 
 import { BackLogin } from '../Back'
 

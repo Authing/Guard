@@ -2,7 +2,7 @@ import { React } from 'shim-react'
 
 import { useTranslation } from 'react-i18next'
 
-import { GuardModuleType } from '..'
+import { GuardModuleType } from '../Guard/module'
 
 import { ImagePro } from '../ImagePro'
 

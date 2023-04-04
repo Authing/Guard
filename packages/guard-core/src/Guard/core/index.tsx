@@ -1,6 +1,6 @@
 import { React } from 'shim-react'
 
-import { GuardProps } from '..'
+import { GuardProps } from '../Guard'
 
 import { ModuleState } from '../GuardModule/stateMachine'
 

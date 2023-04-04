@@ -21,13 +21,13 @@ import { message } from 'shim-antd'
 
 import { faceErrorMessage } from '../../_utils/errorFace'
 
-import { MFABackStateContext } from '..'
-
 import { useGuardButtonState, useGuardPublicConfig } from '../../_utils/context'
 
 import { MfaBusinessAction, useMfaBusinessRequest } from '../businessRequest'
 
 import { getFacePlugin } from '../../_utils/facePlugin'
+
+import { MFABackStateContext } from '../context'
 
 const { useCallback, useContext, useEffect, useRef, useState } = React
 

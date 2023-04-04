@@ -35,16 +35,9 @@ import { ChangeLanguage } from '../ChangeLanguage'
 
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
 
-interface MFABackStateContextType {
-  setMfaBackState: React.Dispatch<React.SetStateAction<string>>
-  mfaBackState: string
-}
+import { MFABackStateContext } from './context'
 
 const { useMemo, useState } = React
-
-export const MFABackStateContext = React.createContext<MFABackStateContextType | undefined>(
-  undefined
-)
 
 const ComponentsMapping: Record<MFAType, (props: any) => React.ReactNode> = {
   [MFAType.EMAIL]: ({ config, initData, mfaLogin }) => (

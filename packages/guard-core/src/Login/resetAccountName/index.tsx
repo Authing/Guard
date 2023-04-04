@@ -1,6 +1,8 @@
-import { Form, Input, message } from 'shim-antd'
+import { Form, message } from 'shim-antd'
 
 import { React } from 'shim-react'
+
+import { CommonInput } from '../../CommonInput'
 
 import { useGuardAuthClient } from '../../Guard/authClient'
 
@@ -66,10 +68,9 @@ export const ResetAccountName: React.FC = () => {
         form={form}
       >
         <CustomFormItem.UserName>
-          <Input
+          <CommonInput
             className="authing-g2-input"
             size="large"
-            prefix={<IconFont type="authing-a-user-line1" style={{ color: '#878A95' }} />}
             placeholder={i18n.t('login.inputUsername') as string}
           />
         </CustomFormItem.UserName>

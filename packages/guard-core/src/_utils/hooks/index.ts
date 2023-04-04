@@ -12,7 +12,7 @@ import {
   isSpecialBrowser,
   isWeChatBrowser,
   isWeWorkBuiltInBrowser
-} from '..'
+} from '../compute'
 
 import { GuardLocalConfig } from '../../Guard'
 

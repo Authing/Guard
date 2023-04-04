@@ -1,4 +1,4 @@
-import { IG2Config, IG2Events, IG2FCProps, IG2FCViewProps } from '..'
+import { IG2Config, IG2Events, IG2FCProps, IG2FCViewProps } from '../Type'
 
 import { AuthenticationClient, User } from 'authing-js-sdk'
 

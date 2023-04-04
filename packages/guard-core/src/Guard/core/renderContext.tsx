@@ -1,4 +1,4 @@
-import { GuardProps } from '..'
+import { GuardProps } from '../Guard'
 
 import { React, ReactNode } from 'shim-react'
 

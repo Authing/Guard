@@ -1,6 +1,10 @@
 import { React, ReactNode } from 'shim-react'
 
-import { GuardEvents, GuardLocalConfig, GuardModuleType, GuardPageConfig, Lang } from '..'
+import { GuardPageConfig, Lang } from '../Type'
+
+import {  GuardModuleType } from '../Guard/module'
+
+import { GuardEvents, GuardLocalConfig } from '../Guard'
 
 import { BackFillMultipleState, StoreInstance } from '../Guard/core/hooks/useMultipleAccounts'
 

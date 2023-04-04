@@ -1,6 +1,8 @@
 import { React } from 'shim-react'
 
-import { GuardModuleType, IG2FCProps } from '..'
+import { IG2FCProps } from '../Type'
+
+import { GuardModuleType } from '../Guard/module'
 
 import { GuardCore } from '../Guard/core'
 

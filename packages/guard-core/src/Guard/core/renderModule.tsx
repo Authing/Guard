@@ -2,7 +2,9 @@ import { ConfigProvider, message, Modal } from 'shim-antd'
 
 import { React } from 'shim-react'
 
-import { GuardModuleType, GuardProps } from '..'
+import { GuardProps } from '../Guard'
+
+import { GuardModuleType } from '../module'
 
 import { GuardBindTotpView } from '../../BindTotp'
 
