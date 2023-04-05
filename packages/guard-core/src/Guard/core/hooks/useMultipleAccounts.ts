@@ -11,7 +11,7 @@
 
 import { React } from 'shim-react'
 
-import { cloneDeep } from 'lodash'
+import cloneDeep from 'lodash/cloneDeep'
 
 import { SelectOptions } from '../../../Login/multipleAccounts/panel'
 

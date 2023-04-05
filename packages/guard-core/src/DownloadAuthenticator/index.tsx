@@ -57,7 +57,6 @@ export const GuardDownloadATView: React.FC = () => {
             key={index}
           >
             <div className="g2-mfa-download-at-tab">
-              <span className="g2-mfa-totp-download-subtitle">{t('common.downloadTotpAppDocs')}</span>
               <div className="g2-mfa-totp-download-qrcode">
                 <div className="g2-mfa-totp-download-qrcode-item">
                   <ImagePro
@@ -96,8 +95,9 @@ export const GuardDownloadATView: React.FC = () => {
   return (
     <div className="g2-view-container g2-download-authenticator">
       {renderBack}
+      <div className="g2-mfa-totp-download-subtitle">{t('common.downloadTotpAppDocs')}</div>
       <div className="g2-view-tabs g2-mfa-totp-download-tabs">
-        <Tabs>{renderTab}</Tabs>
+        <Tabs centered={true}>{renderTab}</Tabs>
       </div>
     </div>
   )

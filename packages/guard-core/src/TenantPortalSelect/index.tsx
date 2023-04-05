@@ -1,6 +1,6 @@
 import './styles.less'
 
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 
 import { React } from 'shim-react'
 

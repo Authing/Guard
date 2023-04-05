@@ -890,7 +890,10 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                     </Space>
                   </div>
                 )}
-                {renderQrcodeWay && (
+                {
+                  // 目前所有的扫码登录方式，标识都是 app-qrcode，后期如果单独区分的话，这块需要修改判断条件
+                }
+                {renderQrcodeWay && loginWay === LoginMethods.AppQr && (
                   <div className={`g2-view-tabs ${qrcodeNone} ${hiddenTab && 'hidden'}`} style={{ marginTop: '54px' }}>
                     <Tabs
                       centered

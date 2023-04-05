@@ -2,8 +2,6 @@ import { React } from 'shim-react'
 
 import { useTranslation } from 'react-i18next'
 
-import { ImagePro } from '../ImagePro'
-
 import { DescribeQuestions } from './core/describeQuestions'
 
 import { GuardModuleType } from '../Guard/module'
@@ -30,8 +28,6 @@ export const GuardNeedHelpView = () => {
   return (
     <div className="g2-view-container g2-need-help">
       <div className="g2-view-header">
-        <ImagePro src={config.logo!} size={48} borderRadius={4} alt="" className="icon" />
-
         <div className="title">{t('common.problem.title')}</div>
       </div>
       <div className="g2-view-tabs">

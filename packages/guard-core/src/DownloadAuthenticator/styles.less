@@ -23,22 +23,34 @@
   }
 }
 
+.g2-mfa-totp-download-qrcode {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.g2-download-authenticator {
+  padding-bottom: 30px !important;
+  box-sizing: border-box !important;
+}
+
+.g2-mfa-totp-download-subtitle {
+  text-align: center;
+  font-size: 18px;
+  color: #1D2129;
+}
+
 .g2-mfa-download-at-tab {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 15px;
 
-  .g2-mfa-totp-download-subtitle {
-    color: #545968;
-  }
-
   .g2-mfa-totp-download-qrcode-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    margin-top: 35px;
 
     .g2-mfa-totp-download-image {
       width: 130px;
@@ -52,7 +64,8 @@
 
     .g2-mfa-totp-download-qrcode-text {
       margin-top: 8px;
-      color: #545968;
+      font-size: 12px;
+      color: #86909C;
     }
   }
 }

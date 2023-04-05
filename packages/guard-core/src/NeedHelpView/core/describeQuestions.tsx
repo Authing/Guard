@@ -213,7 +213,7 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
             ))}
           </Select>
         </Form.Item>
-        <div className="authing-g2-input-form">
+        <div className="authing-g2-input-form" style={{ color: '#86909C' }}>
           {textMap?.map((item: any, index: any) => (
             <div key={index}>{item}</div>
           ))}
@@ -298,6 +298,7 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
             className="forget-password"
             text={t('common.problem.form.submit') as string}
             ref={submitButtonRef}
+            style={{ width: '100%' }}
           />
         </Form.Item>
       </Form>
