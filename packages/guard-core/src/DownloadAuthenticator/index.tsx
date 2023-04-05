@@ -55,29 +55,30 @@ export const GuardDownloadATView: React.FC = () => {
           <Tabs.TabPane
             tab={downloadConfig[value].title}
             key={index}
-            className="g2-mfa-download-at-tab"
           >
-            <span className="g2-mfa-totp-download-subtitle">{t('common.downloadTotpAppDocs')}</span>
-            <div className="g2-mfa-totp-download-qrcode">
-              <div className="g2-mfa-totp-download-qrcode-item">
-                <ImagePro
-                  width={120}
-                  height={120}
-                  className="g2-mfa-totp-download-image"
-                  src={downloadConfig[value].google}
-                  alt="Google Authenticator"
-                />
-                <span className="g2-mfa-totp-download-qrcode-text">Google Authenticator</span>
-              </div>
-              <div className="g2-mfa-totp-download-qrcode-item">
-                <ImagePro
-                  width={120}
-                  height={120}
-                  className="g2-mfa-totp-download-image"
-                  src={downloadConfig[value].microsoft}
-                  alt="Microsoft Authenticator"
-                />
-                <span className="g2-mfa-totp-download-qrcode-text">Microsoft Authenticator</span>
+            <div className="g2-mfa-download-at-tab">
+              <span className="g2-mfa-totp-download-subtitle">{t('common.downloadTotpAppDocs')}</span>
+              <div className="g2-mfa-totp-download-qrcode">
+                <div className="g2-mfa-totp-download-qrcode-item">
+                  <ImagePro
+                    width={120}
+                    height={120}
+                    className="g2-mfa-totp-download-image"
+                    src={downloadConfig[value].google}
+                    alt="Google Authenticator"
+                  />
+                  <span className="g2-mfa-totp-download-qrcode-text">Google Authenticator</span>
+                </div>
+                <div className="g2-mfa-totp-download-qrcode-item">
+                  <ImagePro
+                    width={120}
+                    height={120}
+                    className="g2-mfa-totp-download-image"
+                    src={downloadConfig[value].microsoft}
+                    alt="Microsoft Authenticator"
+                  />
+                  <span className="g2-mfa-totp-download-qrcode-text">Microsoft Authenticator</span>
+                </div>
               </div>
             </div>
           </Tabs.TabPane>
@@ -96,7 +97,7 @@ export const GuardDownloadATView: React.FC = () => {
     <div className="g2-view-container g2-download-authenticator">
       {renderBack}
       <div className="g2-view-tabs g2-mfa-totp-download-tabs">
-        <Tabs defaultActiveKey={DownloadType.IOS}>{renderTab}</Tabs>
+        <Tabs>{renderTab}</Tabs>
       </div>
     </div>
   )
