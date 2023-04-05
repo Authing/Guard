@@ -1,8 +1,13 @@
 const path = require('path')
+
 const rm = require('rimraf')
+
 const webpack = require('webpack')
+
 const webpackReact16ESMConfig = require('./webpack.prod.config.react16.esm')
+
 const webpackReact18ESMConfig = require('./webpack.prod.config.react18.esm')
+
 const webpackGlobalConfig = require('./webpack.prod.config.react16.global')
 
 try {

@@ -35,10 +35,6 @@ module.exports = function webpackConfigFn ({
         'shim-antd': resolve(`shim-${reactVersion === '18' ? 'antd5' : 'antd4'}`)
       }
     },
-    externals: {
-      React: 'react',
-      ReactDOM: 'react-dom'
-    },
     module: {
       rules: [
         {
