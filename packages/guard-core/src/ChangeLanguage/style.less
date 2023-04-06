@@ -1,4 +1,8 @@
 .g2-change-language-container {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   justify-content: center;
   user-select: none;
@@ -18,8 +22,16 @@
 .g2-change-language-text {
   display: flex;
   align-items: center;
-  color: #86909c;
   cursor: pointer;
+
+  &.normal {
+    color: #4E5969;
+  }
+
+  &.modal {
+    color: #fff;
+    filter: opacity(0.5);
+  }
 
   .lng-svg {
     font-size: 16px;

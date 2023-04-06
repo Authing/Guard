@@ -164,7 +164,6 @@ export const RotateReset = (props: RotateResetProps) => {
             className="authing-g2-input"
             size="large"
             placeholder={t('login.inputPwdAgain')}
-            prefix={<IconFont type="authing-a-lock-line1" style={{ color: '#878A95' }} />}
           />
         </CustomFormItem.Password>
         {getPassWordUnsafeText()}

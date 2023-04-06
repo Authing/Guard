@@ -8,9 +8,9 @@ import { useTranslation } from 'react-i18next'
 
 import { IconFont } from '../IconFont'
 
-import { Lang } from '../Type'
+import { GuardMode, Lang } from '../Type'
 
-import { useGuardPageConfig } from '../_utils/context'
+import { useGuardFinallyConfig, useGuardPageConfig } from '../_utils/context'
 
 import './style.less'
 
@@ -95,6 +95,12 @@ export const ChangeLanguage = (props: {
     onClick: handleMenuClick
   }
 
+  const config = useGuardFinallyConfig()
+
+  const languageTextClassName = useMemo(() => {
+    return `g2-change-language-text ${config.mode}`
+  }, [config])
+
   return (
     <div className="g2-change-language-container">
       <Dropdown
@@ -103,7 +109,7 @@ export const ChangeLanguage = (props: {
         placement="bottom"
         overlayClassName="authing-g2-change-language-menu"
       >
-        <span className="g2-change-language-text">
+        <span className={languageTextClassName}>
           {currentLngText}
           <IconFont
             type="authing-arrow-down-s-fill"
