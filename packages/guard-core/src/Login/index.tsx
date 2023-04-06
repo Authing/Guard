@@ -631,6 +631,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
     }
   }, [PasswordTab, CodeTab, LdapTab, ADTab, AuthingOtpPushTab])
 
+  const [hiddenNormalTabs, setHiddenNormalTabs] = useState(false)
   const GeneralLoginComponent = useMemo(() => {
     const total = ms?.filter(tabName =>
       [
@@ -643,6 +644,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
     )
 
     if (total) {
+      total.length > 1 ? setHiddenNormalTabs(false) : setHiddenNormalTabs(true)
+
       return getSortTabs(total, config.defaultLoginMethod ?? '').map(
         tabName =>
           tabMap[
@@ -759,13 +762,13 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                       }
                     }}
                   >
-                    <div className="imgae-mask" />
+                    {/* <div className="imgae-mask" /> */}
                     <IconFont
-                      type="authing-a-erweima22"
+                      type="authing-qr-code-fill"
                       className={`qrcode-switch-image ${inputNone}`}
                     />
                     <IconFont
-                      type="authing-diannao"
+                      type="authing-computer-line"
                       className={`qrcode-switch-image ${qrcodeNone}`}
                     />
                   </div>
@@ -822,9 +825,9 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
             ) : (
               <>
                 {renderInputWay && (
-                  <div className={inputNone}>
+                  <div className={inputNone }>
                     {!isResetPage ? (
-                      <div className={'g2-view-tabs'}>
+                      <div className={`g2-view-tabs ${hiddenNormalTabs && 'hidden'}`}>
                         <Tabs
                           destroyInactiveTabPane={true}
                           onChange={(k: any) => {
@@ -881,7 +884,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                         <GuardButton
                           type="link"
                           onClick={() => {
-                            changeModule?.(GuardModuleType.LOGIN)
+                            changeModule?.(GuardModuleType.ANY_QUESTIONS)
                           }}
                         >
                           {t('common.feedback')}
