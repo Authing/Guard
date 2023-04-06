@@ -61,7 +61,7 @@ export const GuardButton: React.FC<GuardButtonProps> = props => {
     } else {
       setChildren(<>{props.children}</>)
     }
-  }, [isHover, props.loading])
+  }, [isHover, props.loading, props.children])
 
   return (
     <Button
