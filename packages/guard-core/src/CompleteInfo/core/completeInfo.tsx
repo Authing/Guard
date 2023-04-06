@@ -40,6 +40,8 @@ import { InputInternationPhone } from '../../Login/core/withVerifyCode/InputInte
 import { EmailScene } from '../../Type'
 
 import { UploadImage } from '../../UploadImage'
+import { CommonFormItem } from '../../CommonFormItem'
+import { CommonInput } from '../../CommonInput'
 
 const { useCallback, useEffect, useMemo, useRef, useState } = React
 
@@ -267,7 +269,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
           >
             <PhoneAccount />
           </CustomFormItem.Phone>
-          <Form.Item
+          <CommonFormItem
             validateTrigger={['onBlur', 'onChange']}
             className="authing-g2-input-form"
             name="phoneCode"
@@ -289,7 +291,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
               form={form}
               onSendCodeBefore={() => form.validateFields(['phone'])}
             />
-          </Form.Item>
+          </CommonFormItem>
         </>
       ),
       email: (props: { required?: boolean; label?: string }) => (
@@ -303,14 +305,14 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
             key="internal email:email13"
             validateFirst={true}
           >
-            <Input
+            <CommonInput
               className="authing-g2-input"
               autoComplete="email"
               size="large"
               placeholder={t('login.inputEmail') as string}
             />
           </CustomFormItem.Email>
-          <Form.Item
+          <CommonFormItem
             validateTrigger={['onBlur', 'onChange']}
             className="authing-g2-input-form"
             name="emailCode"
@@ -331,7 +333,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
               form={form}
               onSendCodeBefore={() => form.validateFields(['email'])}
             />
-          </Form.Item>
+          </CommonFormItem>
         </>
       )
     }),

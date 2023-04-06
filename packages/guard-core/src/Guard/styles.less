@@ -163,7 +163,9 @@
     }
 
     &.hidden {
-      .authing-ant-tabs-nav-wrap {
+
+      .authing-ant-tabs-nav-wrap,
+      .authing-ant-tabs-nav {
         display: none;
       }
 
@@ -1250,30 +1252,8 @@ input {
   border-radius: 8px !important;
 }
 
-.authing-g2-input-form-new {
+.authing-g2-input-form {
   position: relative;
-
-  .authing-ant-form-item-label {
-    position: absolute;
-    left: 24px;
-    top: 16px;
-    z-index: 9;
-    font-size: 16px;
-    pointer-events: none;
-    transition: top .15s cubic-bezier(.4, 0, .2, 1), font-size .15s cubic-bezier(.4, 0, .2, 1);
-
-    &>label {
-      height: 1em;
-      font-size: inherit;
-      color: #86909C;
-      font-weight: 400;
-      cursor: text;
-
-      &::before {
-        display: none !important;
-      }
-    }
-  }
 
   .authing-ant-form-item-control-input-content {
     border-radius: 8px;
@@ -1327,6 +1307,14 @@ input {
     position: absolute;
   }
 
+  .authing-ant-select-selector {
+    border: none !important;
+
+    &:hover {
+      border: none !important;
+    }
+  }
+
   // .authing-ant-form-item-explain-error {
   //   position: absolute !important;
   //   top: 8px !important;
@@ -1337,6 +1325,25 @@ input {
   // }
 
 
+}
+
+.authing-internal-content {
+  .authing-ant-select-selector {
+    padding: 12px 0 12px 24px !important;
+
+  }
+
+  .authing-ant-select-arrow {
+    top: 50% !important;
+  }
+}
+
+.authing-single-line {
+
+  input,
+  .authing-g2-input {
+    padding: 18px 24px !important;
+  }
 }
 
 
