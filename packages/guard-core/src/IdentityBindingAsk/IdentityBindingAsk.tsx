@@ -57,7 +57,8 @@ export const GuardIdentityBindingAskView: React.FC = () => {
   const onCreateError = (code: any, data: any, message?: string) => {
     events?.onCreateError?.({
       code,
-      data
+      data,
+      message
     })
     events?.onLoginError?.({
       code,
