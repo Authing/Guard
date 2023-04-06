@@ -54,20 +54,21 @@ export const GuardIdentityBindingAskView: React.FC = () => {
     events?.onCreate?.(data, authClient)
   }
 
-  const onCreateError = (code: any, data: any) => {
+  const onCreateError = (code: any, data: any, message?: string) => {
     events?.onCreateError?.({
       code,
       data
     })
     events?.onLoginError?.({
       code,
-      data
+      data,
+      message
     })
   }
 
   const [createLoading, createAccount] = useAsyncFn(async () => {
     spinChange(true)
-    const { code, onGuardHandling, data, isFlowEnd } = await authFlow(
+    const { code, onGuardHandling, data, isFlowEnd, message } = await authFlow(
       IdentityBindingAction.CreateUser
     )
 
@@ -76,7 +77,7 @@ export const GuardIdentityBindingAskView: React.FC = () => {
     if (isFlowEnd) {
       onCreate(data)
     } else {
-      onCreateError(code, data)
+      onCreateError(code, data, message)
 
       onGuardHandling?.()
     }
