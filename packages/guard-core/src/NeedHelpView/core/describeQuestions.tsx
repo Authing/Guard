@@ -183,7 +183,7 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
             autoComplete="off"
             size="large"
             placeholder={t('login.inputPhoneOrEmail') as string}
-            prefix={<IconFont type="authing-a-user-line1" style={{ color: '#878A95' }} />}
+            // prefix={<IconFont type="authing-a-user-line1" style={{ color: '#878A95' }} />}
           />
         </Form.Item>
         <Form.Item
