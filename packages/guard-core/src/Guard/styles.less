@@ -1250,11 +1250,42 @@ input {
   padding: 12px 11px !important;
   background-color: #fff !important;
   border-radius: 8px !important;
+  border: 1px solid #fff !important;
+
+  &:hover,
+  &:focus {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
+  }
 }
 
 .authing-g2-input-form {
   position: relative;
 
+  .authing-ant-input-group-addon {
+    position: absolute;
+  }
+
+  .authing-ant-select-selector {
+    border: none !important;
+
+    &:hover {
+      border: none !important;
+    }
+  }
+
+  // .authing-ant-form-item-explain-error {
+  //   position: absolute !important;
+  //   top: 8px !important;
+  //   left: 24px !important;
+  //   font-size: 12px !important;
+  //   background: #ffffff;
+  //   z-index: 99;
+  // }
+
+
+}
+
+.authing-g2-input-form-new {
   .authing-ant-form-item-control-input-content {
     border-radius: 8px;
     overflow: hidden;
@@ -1302,29 +1333,6 @@ input {
       }
     }
   }
-
-  .authing-ant-input-group-addon {
-    position: absolute;
-  }
-
-  .authing-ant-select-selector {
-    border: none !important;
-
-    &:hover {
-      border: none !important;
-    }
-  }
-
-  // .authing-ant-form-item-explain-error {
-  //   position: absolute !important;
-  //   top: 8px !important;
-  //   left: 24px !important;
-  //   font-size: 12px !important;
-  //   background: #ffffff;
-  //   z-index: 99;
-  // }
-
-
 }
 
 .authing-internal-content {

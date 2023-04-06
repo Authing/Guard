@@ -4,9 +4,11 @@
   height: auto;
   cursor: pointer;
   transition: all 0.3s;
+
   &:hover {
     color: #557fff;
   }
+
   &:active {
     color: #254cd9;
   }
@@ -17,45 +19,55 @@
 }
 
 .authing-btn-icon {
-  position: absolute;
-  top: 50%;
-  right: 24px;
-  transform: translateY(-50%) rotate(0deg);
+  margin-left: 16px;
+  position: relative;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  overflow: hidden;
 }
 
 .authing-btn-arrow {
+  position: absolute;
+  left: -16px;
+  top: 50%;
+  transform: translateY(-50%);
   animation: .8s ease slideInOut infinite;
   animation-delay: 0.2s;
 }
 
 .authing-btn-loading {
+  left: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   animation: 1.5s linear rotateIn infinite;
 }
 
-.authing-btn--icon {
-  padding-right: 50px !important;
-  background: #215ae5;
-}
+// .authing-btn--icon {
+//   padding-right: 50px !important;
+//   background: #215ae5;
+// }
+
 .authing-ant-btn-primary .authing-ant-btn-loading-icon {
   display: none !important;
 }
 
-@keyframes slideInOut{
+@keyframes slideInOut {
   0% {
-    right: 24px;
+    left: -16px;
   }
-  50% {
-    right: 28px;
-  }
+
   100% {
-    right: 24px;
+    left: 0;
   }
 }
 
-@keyframes rotateIn{
+@keyframes rotateIn {
   0% {
     transform: translateY(-50%) rotate(0deg);
   }
+
   100% {
     transform: translateY(-50%) rotate(360deg);
   }

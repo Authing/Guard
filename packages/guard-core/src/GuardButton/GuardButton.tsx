@@ -35,9 +35,9 @@ export const GuardButton: React.FC<GuardButtonProps> = props => {
       className += ' guard-button-disabled'
     }
 
-    if ((isHover && type === 'primary') || props.loading) {
-      className += ' authing-btn--icon'
-    }
+    // if ((isHover && type === 'primary') || props.loading) {
+    //   className += ' authing-btn--icon'
+    // }
 
     return className
   }, [isLockButtonClick, props, type, isHover])
@@ -49,12 +49,16 @@ export const GuardButton: React.FC<GuardButtonProps> = props => {
         <>
           {props.children}
           {!props.loading ? (
-            <IconFont type="authing-arrow-guard" className="authing-btn-icon authing-btn-arrow" />
+            <div className='authing-btn-icon'>
+              <IconFont type="authing-arrow-guard" className="authing-btn-arrow" />
+            </div>
           ) : (
-            <IconFont
-              type="authing-loading-guard"
-              className="authing-btn-icon authing-btn-loading"
-            />
+            <div className='authing-btn-icon '>
+              <IconFont
+                type="authing-loading-guard"
+                className="authing-btn-loading"
+              />
+            </div>
           )}
         </>
       )
