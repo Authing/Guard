@@ -51,7 +51,7 @@ export const CommonInput = (props: InputProps & { fieldcontext?: any; ref?: any 
   }
 
   return (
-    <div className="authing-common-input">
+    <div className={`authing-common-input ${!props.placeholder && 'authing-single-line'}`}>
       <Input
         {...props}
         ref={props.ref}

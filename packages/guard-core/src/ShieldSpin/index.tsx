@@ -22,7 +22,7 @@ export const ShieldSpin = (props: IG2SpinProps) => {
       {publicConfig?.customLoading ? (
         <img src={publicConfig.customLoading} alt="" width={size} />
       ) : (
-        <embed src={loading} width={100} height={100} />
+        <embed src={loading} width={size} height={size} />
       )}
     </div>
   )

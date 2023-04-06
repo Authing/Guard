@@ -166,6 +166,7 @@ export const GuardRegisterView: React.FC = () => {
     changeTab: setActiveKey
   })
 
+  const [hiddenTabs, setHiddenTabs] = useState(false)
   const renderTab = useMemo(() => {
     const { registerMethods = [] } = config
 
@@ -177,6 +178,8 @@ export const GuardRegisterView: React.FC = () => {
         })
       )
     ]
+
+    filterRegisterMethods.length > 1 ? setHiddenTabs(false) : setHiddenTabs(true)
 
     return getSortTabs(filterRegisterMethods, defaultMethod).map(method => {
       const tab = tabMapping[method]
@@ -209,7 +212,7 @@ export const GuardRegisterView: React.FC = () => {
 
           <div className="title">{config?.title}</div>
         </div>
-        <div className="g2-view-tabs">
+        <div className={`g2-view-tabs ${hiddenTabs && 'hidden'}`}>
           <Tabs
             destroyInactiveTabPane={true}
             // defaultActiveKey={defaultMethod}

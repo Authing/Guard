@@ -1,5 +1,6 @@
 .g2-guard-full-width-space {
   width: 100%;
+
   &--scroll {
     position: relative;
     max-height: 268px;
@@ -31,6 +32,7 @@
 .no-login-methods {
   padding: 0px 38px;
 }
+
 .no-login-methods-desc {
   margin-top: 16px;
   color: #545968;
@@ -40,6 +42,7 @@
   font-size: 14px;
   line-height: 20px;
 }
+
 .authing-ant-btn.g2-guard-third-login-btn {
   display: flex;
   border: none;
@@ -52,12 +55,14 @@
   justify-content: center;
   align-items: center;
   box-shadow: none;
+
   span {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
   }
+
   // &:last-child {
   //   margin-bottom: 16px !important;
   // }
@@ -80,6 +85,7 @@
   cursor: pointer;
   user-select: none;
   box-shadow: none;
+
   .g2-icon {
     font-size: 16px;
     transition: color 0.3s ease-out;
@@ -111,7 +117,7 @@
   padding: 0 35px;
 }
 
-.authing-ant-avatar > img {
+.authing-ant-avatar>img {
   display: block;
   width: 100%;
   height: 100%;
@@ -123,6 +129,7 @@
     padding: 0px 8px;
     margin: auto 0;
   }
+
   .g2-social-login-list {
     padding: 0 8px;
   }
@@ -134,9 +141,11 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
     .g2-view-header {
       margin-bottom: 0px;
     }
+
     .g2-social-login {
       position: relative;
       margin: 32px 0px;
@@ -145,6 +154,7 @@
       flex-direction: column;
       justify-content: center;
     }
+
     .authing-ant-btn.g2-guard-third-login-btn {
       height: 48px;
     }
@@ -153,11 +163,13 @@
 
 .g2-social-login-box {
   padding: 0 32px;
+
   .g2-social-login-container {
     margin: 0 -8px;
     text-align: center;
     white-space: nowrap;
     overflow-x: auto;
+
     &::-webkit-scrollbar,
     &::-webkit-scrollbar-thumb,
     &::-webkit-scrollbar-track {
@@ -174,32 +186,31 @@
   progress {
     border-radius: 2px;
     overflow: hidden;
-    background-color: #E5E6EB; /* 进度条背景颜色 */
+    /* 进度条背景颜色 */
   }
 
   progress::-webkit-progress-value {
-    background-color: #C9CDD4; /* 进度条填充颜色（WebKit浏览器）*/
+    background-color: #C9CDD4;
+    /* 进度条填充颜色（WebKit浏览器）*/
+  }
+
+  progress::-webkit-progress-bar {
+    background-color: #E5E6EB;
+    /* 进度条填充颜色（WebKit浏览器）*/
   }
 
   progress::-moz-progress-bar {
-    background-color: #C9CDD4; /* 进度条填充颜色（Firefox浏览器）*/
-  }
-
-  /* 更改背景颜色和进度条颜色 */
-  progress {
-    border-radius: 2px;
-    overflow: hidden;
-    background: #E5E6EB;/* 进度条背景颜色 */
-  }
-
-  progress::-webkit-progress-value {
-    background: #C9CDD4; /* 进度条填充颜色（WebKit浏览器）*/
+    background-color: #C9CDD4;
+    /* 进度条填充颜色（Firefox浏览器）*/
   }
 
   progress::-moz-progress-bar {
-    background: #C9CDD4; /* 进度条填充颜色（Firefox浏览器）*/
+    background-color: #E5E6EB;
+    /* 进度条填充颜色（WebKit浏览器）*/
   }
 }
+
+
 
 
 .carousel-progress__bar[value] {

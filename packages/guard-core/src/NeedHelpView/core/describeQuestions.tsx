@@ -229,7 +229,7 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
             className="authing-g2-questions-textarea"
             maxLength={200}
             showCount
-            rows={4}
+            rows={2}
             style={{
               marginBottom: 10
             }}
