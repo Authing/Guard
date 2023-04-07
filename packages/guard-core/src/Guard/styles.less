@@ -69,10 +69,13 @@
     display: none;
   }
 
+  .g2-mfa-content {
+    margin: 0;
+  }
+
   .g2-mfa-content,
   .g2-mfa-method {
-    margin-top: 16px;
-    margin-bottom: 8px;
+    margin: 14px 0 8px 0;
     padding: 0 20px;
 
     @media only screen and (max-width: 450px) {
@@ -222,7 +225,7 @@
     // width: calc(100% - 4px);
     border-radius: 4px;
     height: 56px;
-    margin: 0 2px;
+    margin: 0 2px 16px 2px;
 
     &.shaking {
       animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;

@@ -1,7 +1,7 @@
 import { Guard } from './src'
 
 const guard = new Guard({
-  appId: '64196bdaa5b19f2a6e4316d0'
+  appId: '630ed3137dd6f2fd7001da24'
 })
 
 guard.start('#root').then(userInfo => {
