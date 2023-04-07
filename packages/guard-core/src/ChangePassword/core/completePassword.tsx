@@ -32,8 +32,9 @@ import { usePasswordErrorText } from '../../_utils/useErrorText'
 import { ApiCode } from '../../_utils/responseManagement/interface'
 
 import { CommonFormItem } from '../../CommonFormItem'
+import { isDisabled } from '../../_utils'
 
-const { useRef, useCallback } = React
+const { useRef, useCallback, useState } = React
 
 export const CompletePassword: React.FC = () => {
   const { t } = useTranslation()
@@ -169,6 +170,13 @@ export const CompletePassword: React.FC = () => {
     ]
   )
 
+  const [btnDisabled, setDisabled] = useState(true)
+
+  const formValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
+    // 判断其他表单项是否填写
+    setDisabled(isDisabled(allValues))
+  }
+
   return (
     <div className="authing-g2-login-phone-code">
       <Form
@@ -178,6 +186,7 @@ export const CompletePassword: React.FC = () => {
         onFinishFailed={() => {
           submitButtonRef?.current?.onError()
         }}
+        onValuesChange={formValuesChange}
         autoComplete="off"
       >
         <CustomFormItem.Password className="authing-g2-input-form" name="password" required={true}>
@@ -218,6 +227,7 @@ export const CompletePassword: React.FC = () => {
         {getPassWordUnsafeText()}
         <Form.Item className="authing-g2-sumbit-form submit-form">
           <SubmitButton
+            disabled={btnDisabled}
             className="forget-password"
             text={t('common.confirm') as string}
             ref={submitButtonRef}

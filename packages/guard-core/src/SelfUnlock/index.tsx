@@ -12,6 +12,8 @@ import { useGuardFinallyConfig, useGuardModule } from '../_utils/context'
 
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
 
+import { BackCustom } from '../Back'
+
 const { useRef } = React
 
 export const GuardUnlockView: React.FC = () => {
@@ -27,6 +29,7 @@ export const GuardUnlockView: React.FC = () => {
 
   return (
     <div className="g2-view-container g2-forget-password">
+      <BackCustom onBack={() => changeModule?.(GuardModuleType.LOGIN)} />
       <div className="g2-view-header">
         <ImagePro src={config?.logo as string} size={48} borderRadius={4} alt="" className="icon" />
         <div className="title">{t('login.selfUnlock')}</div>
@@ -47,12 +50,6 @@ export const GuardUnlockView: React.FC = () => {
         >
           {t('common.feedback')}
         </span>
-        <div
-          className="link-like back-to-login"
-          onClick={() => changeModule?.(GuardModuleType.LOGIN)}
-        >
-          {t('common.backLoginPage')}
-        </div>
       </div>
       {/* <ChangeLanguage langRange={langRange} onLangChange={props.onLangChange} /> */}
     </div>

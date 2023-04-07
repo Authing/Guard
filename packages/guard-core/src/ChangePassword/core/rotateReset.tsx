@@ -10,7 +10,7 @@ import { useGuardAuthClient } from '../../Guard/authClient'
 
 import CustomFormItem from '../../ValidatorRules'
 
-import { fieldRequiredRule } from '../../_utils'
+import { fieldRequiredRule, isDisabled } from '../../_utils'
 
 import { InputPassword } from '../../InputPassword'
 
@@ -33,7 +33,7 @@ interface RotateResetProps {
   onFinishCallBack?: any
 }
 
-const { useRef } = React
+const { useRef, useState } = React
 
 export const RotateReset = (props: RotateResetProps) => {
   const { t } = useTranslation()
@@ -109,6 +109,13 @@ export const RotateReset = (props: RotateResetProps) => {
     }
   }
 
+  const [btnDisabled, setDisabled] = useState(true)
+
+  const formValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
+    // 判断其他表单项是否填写
+    setDisabled(isDisabled(allValues))
+  }
+
   return (
     <div className="authing-g2-login-phone-code">
       <Form
@@ -118,6 +125,7 @@ export const RotateReset = (props: RotateResetProps) => {
         onFinishFailed={() => {
           submitButtonRef?.current?.onError()
         }}
+        onValuesChange={formValuesChange}
         autoComplete="off"
       >
         <CommonFormItem
@@ -170,6 +178,7 @@ export const RotateReset = (props: RotateResetProps) => {
         {getPassWordUnsafeText()}
         <Form.Item className="authing-g2-sumbit-form submit-form">
           <SubmitButton
+            disabled={btnDisabled}
             className="forget-password"
             text={t('common.confirm') as string}
             ref={submitButtonRef}

@@ -23,12 +23,13 @@ import { useMediaSize } from '../../_utils/hooks'
 import { usePasswordErrorText } from '../../_utils/useErrorText'
 
 import { CommonFormItem } from '../../CommonFormItem'
+import { isDisabled } from '../../_utils'
 
 interface FirstLoginResetProps {
   onReset: any
 }
 
-const { useRef } = React
+const { useRef, useState } = React
 
 export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({ onReset }) => {
   const { t } = useTranslation()
@@ -89,6 +90,12 @@ export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({ onReset }) => 
     }
   }
 
+  const [btnDisabled, setDisabled] = useState(true)
+  const formValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
+    // 判断其他表单项是否填写
+    setDisabled(isDisabled(allValues))
+  }
+
   return (
     <div className="authing-g2-login-phone-code">
       <Form
@@ -98,6 +105,7 @@ export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({ onReset }) => 
         onFinishFailed={() => {
           submitButtonRef?.current?.onError()
         }}
+        onValuesChange={formValuesChange}
         autoComplete="off"
       >
         <CustomFormItem.Password className="authing-g2-input-form" name="password" required={true}>
@@ -144,6 +152,7 @@ export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({ onReset }) => 
         {getPassWordUnsafeText()}
         <Form.Item className="authing-g2-sumbit-form submit-form">
           <SubmitButton
+            disabled={btnDisabled}
             className="forget-password"
             text={t('common.confirm') as string}
             ref={submitButtonRef}
