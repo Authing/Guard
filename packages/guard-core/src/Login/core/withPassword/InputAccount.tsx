@@ -8,6 +8,7 @@ import { InputNumber } from '../../../InputNumber'
 
 export interface InputAccountProps extends InputProps {
   passwordLoginMethods: string[]
+  name: string
   // placeholder: string
 }
 

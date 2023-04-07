@@ -31,6 +31,7 @@ export interface SendCodeByPhoneProps extends InputProps {
   isInternationSms?: boolean //是否是国际短信
   codeFieldName?: string
   captchaCode?: string
+  name: string
 }
 
 export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {

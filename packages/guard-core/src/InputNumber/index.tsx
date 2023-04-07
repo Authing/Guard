@@ -1,10 +1,14 @@
+import { Input } from 'shim-antd'
 import { InputProps } from 'shim-antd/lib/input'
 
 import { React } from 'shim-react'
 
 import { CommonInput } from '../CommonInput'
 
-export interface InputNumberProps extends InputProps {}
+export interface InputNumberProps extends InputProps {
+  name: string
+  showType?: 'normal' | 'new' // 新版为输入后文字上移样式
+}
 
 const { useEffect, useState } = React
 
@@ -12,7 +16,7 @@ const isPhone = (propsValue?: string | number | readonly string[]) =>
   /^[0-9]*$/.test(String(propsValue))
 
 export const InputNumber = React.forwardRef<any, InputNumberProps>((props, ref) => {
-  const { onChange, value: propsValue, ...inputProps } = props
+  const { onChange, value: propsValue, showType = 'new', ...inputProps } = props
   const [value, setValue] = useState<InputNumberProps['value']>(
     isPhone(propsValue) ? propsValue : ''
   )
@@ -27,21 +31,38 @@ export const InputNumber = React.forwardRef<any, InputNumberProps>((props, ref) 
   }, [propsValue])
 
   return (
-    <CommonInput
-      autoComplete="off"
-      {...inputProps}
-      ref={ref}
-      value={value}
-      type="tel"
-      pattern="[0-9]*"
-      onChange={(e: any) => {
-        const v = e.target.value
-        if (!/^[0-9]*$/.test(v)) {
-          return
-        }
+    <>{
+      showType === 'new' ?  <CommonInput
+        autoComplete="off"
+        {...inputProps}
+        ref={ref}
+        value={value}
+        type="tel"
+        pattern="[0-9]*"
+        onChange={(e: any) => {
+          const v = e.target.value
+          if (!/^[0-9]*$/.test(v)) {
+            return
+          }
 
-        valueChange(e)
-      }}
-    />
+          valueChange(e)
+        }}
+      /> : <Input
+        autoComplete="off"
+        {...inputProps}
+        ref={ref}
+        value={value}
+        type="tel"
+        pattern="[0-9]*"
+        onChange={(e: any) => {
+          const v = e.target.value
+          if (!/^[0-9]*$/.test(v)) {
+            return
+          }
+
+          valueChange(e)
+        }}
+      />
+    }</>
   )
 })

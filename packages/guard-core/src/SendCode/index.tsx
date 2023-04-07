@@ -18,6 +18,7 @@ export interface SendPhoneCodeProps extends InputProps {
   form?: any
   beforeSend?: any // 点击的时候先做这个
   autoSubmit?: boolean //验证码输入完毕是否自动提交
+  name: string
 }
 
 export const SendCode: React.FC<SendPhoneCodeProps> = ({

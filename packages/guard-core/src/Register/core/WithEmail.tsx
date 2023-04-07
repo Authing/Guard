@@ -275,6 +275,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
         required={true}
       >
         <CommonInput
+          name="account"
           maxLength={50}
           autoFocus={!isPhoneMedia}
           placeholder={t('login.inputAccount', {
@@ -336,6 +337,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
             required={true}
           >
             <CommonInput
+              name="email"
               autoFocus={!isPhoneMedia}
               placeholder={t('login.inputEmail') as string}
               className="authing-g2-input"
@@ -352,6 +354,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
           validateFirst={true}
         >
           <InputPassword
+            name="password"
             className="authing-g2-input"
             size="large"
             placeholder={t('login.inputPwd')}
@@ -377,6 +380,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
           validateFirst={true}
         >
           <InputPassword
+            name="new-password"
             className="authing-g2-input"
             size="large"
             placeholder={t('common.passwordAgain')}

@@ -11,6 +11,7 @@ import { ImagePro2 } from '../../../ImagePro'
 export interface GraphicVerifyCodeProps extends InputProps {
   verifyCodeUrl: string
   changeCode: () => void
+  name: string
 }
 
 export const GraphicVerifyCode: React.FC<GraphicVerifyCodeProps> = props => {

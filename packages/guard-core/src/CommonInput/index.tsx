@@ -6,7 +6,7 @@ import './styles.less'
 
 const { useEffect, useState } = React
 
-export const CommonInput = (props: InputProps & { fieldcontext?: any; ref?: any }) => {
+export const CommonInput = (props: InputProps & { fieldcontext?: any; ref?: any } & {name: string}) => {
   const { onFocus, onBlur, fieldcontext, onChange } = props
   const [value, setValue] = useState('')
 

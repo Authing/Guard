@@ -161,6 +161,7 @@ export const RotateReset = (props: RotateResetProps) => {
           ]}
         >
           <InputPassword
+            name="password2"
             className="authing-g2-input"
             size="large"
             placeholder={t('login.inputPwdAgain')}

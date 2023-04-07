@@ -164,7 +164,10 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
       ),
       image: () => <UploadImage />,
       number: props => (
-        <InputNumber key={props.key} style={{ width: '100%' }} className="authing-g2-input" />
+        <InputNumber
+          key={props.key} name={props.key} style={{ width: '100%' }}
+          showType="normal"
+          className="authing-g2-input" />
       ),
       date: props => (
         <MomentPicker
@@ -267,7 +270,9 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
             checkRepeat={true}
             areaCode={areaCode}
           >
-            <PhoneAccount />
+            <PhoneAccount
+              name="phone"
+            />
           </CustomFormItem.Phone>
           <CommonFormItem
             validateTrigger={['onBlur', 'onChange']}
@@ -277,6 +282,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
             rules={props.required ? fieldRequiredRule(t('common.captchaCode')) : undefined}
           >
             <SendCodeByPhone
+              name="phoneCode"
               isInternationSms={isInternationSms}
               areaCode={areaCode}
               className="authing-g2-input g2-send-code-input"
@@ -306,6 +312,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
             validateFirst={true}
           >
             <CommonInput
+              name="email"
               className="authing-g2-input"
               autoComplete="email"
               size="large"
@@ -320,6 +327,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
             rules={props.required ? fieldRequiredRule(t('common.captchaCode')) : undefined}
           >
             <SendCodeByEmail
+              name="emailCode"
               className="authing-g2-input g2-send-code-input"
               autoComplete="one-time-code"
               size="large"

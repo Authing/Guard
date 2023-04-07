@@ -16,6 +16,7 @@ const { useMemo } = React
 
 export interface InputIdentifyProps extends InputProps {
   methods: VerifyLoginMethods[]
+  name: string
 }
 
 export const InputIdentify: React.FC<InputIdentifyProps> = props => {

@@ -270,6 +270,7 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
           validateFirst={true}
         >
           <SendCodeByEmail
+            name="code"
             className="authing-g2-input g2-send-code-input"
             autoComplete="off"
             size="large"

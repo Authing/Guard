@@ -30,6 +30,8 @@ import { CommonFormItem } from '../../CommonFormItem'
 
 import { CommonInput } from '../../CommonInput'
 
+import { GraphicVerifyCode } from './withPassword/GraphicVerifyCode'
+
 interface LoginWithLDAPProps {
   // configs
   publicKey: string
@@ -231,27 +233,22 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
           />
         </CommonFormItem>
         {showCaptcha && (
-          <Form.Item
-            validateTrigger={['onBlur', 'onChange']}
+          <CommonFormItem
             className="authing-g2-input-form"
+            validateTrigger={['onBlur', 'onChange']}
             name="captchaCode"
-            rules={[{ required: true, message: t('login.inputCaptchaCode') as string }]}
+            rules={fieldRequiredRule(t('common.captchaCode'))}
           >
-            <Input
-              className="authing-g2-input add-after"
+            <GraphicVerifyCode
+              name='captchaCode'
+              className="authing-g2-input"
               size="large"
               placeholder={t('login.inputCaptchaCode') as string}
-              addonAfter={
-                <img
-                  className="g2-captcha-code-image"
-                  src={verifyCodeUrl}
-                  alt={t('login.captchaCode') as string}
-                  style={{ height: '2em', cursor: 'pointer' }}
-                  onClick={() => setVerifyCodeUrl(getCaptchaUrl())}
-                />
-              }
+              verifyCodeUrl={verifyCodeUrl}
+              changeCode={() => setVerifyCodeUrl(getCaptchaUrl())}
             />
-          </Form.Item>
+          </CommonFormItem>
+
         )}
         {Boolean(agreements?.length) && (
           <Agreements

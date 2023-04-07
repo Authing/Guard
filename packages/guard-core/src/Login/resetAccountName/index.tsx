@@ -69,6 +69,7 @@ export const ResetAccountName: React.FC = () => {
       >
         <CustomFormItem.UserName>
           <CommonInput
+            name='username'
             className="authing-g2-input"
             size="large"
             placeholder={i18n.t('login.inputUsername') as string}

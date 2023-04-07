@@ -9,6 +9,7 @@ import { VirtualDropdown } from './VirtualDropdown'
 export interface InputInternationPhoneProps extends InputProps {
   areaCode: string
   onAreaCodeChange: (areaCode: string) => void
+  name: string
 }
 
 const { useEffect, useState } = React

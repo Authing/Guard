@@ -39,6 +39,7 @@ import { usePasswordErrorText } from '../_utils/useErrorText'
 import { ApiCode } from '../_utils/responseManagement/interface'
 
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
+import { BackCustom } from '../Back'
 
 // import './styles.less'
 // let passwordTimer: any = null
@@ -164,6 +165,7 @@ export const GuardForgetPassword: React.FC = () => {
 
   return controlShow ? (
     <div className="g2-view-container g2-forget-password g2-password-reset-step1">
+      {needBack && <BackCustom onBack={goBack} />}
       <div className="g2-view-header">
         <ImagePro src={config?.logo as string} size={48} borderRadius={4} alt="" className="icon" />
         <div className="title">{t('login.resetPwd')}</div>
@@ -180,13 +182,13 @@ export const GuardForgetPassword: React.FC = () => {
           setResetToken={setResetToken}
         />
       </div>
-      {needBack && (
+      {/* {needBack && (
         <div className="g2-tips-line">
           <div className="link-like back-to-login" onClick={goBack}>
             {t('login.resetPassword.back')}
           </div>
         </div>
-      )}
+      )} */}
       {/* <ChangeLanguage langRange={langRange} onLangChange={props.onLangChange} /> */}
     </div>
   ) : (

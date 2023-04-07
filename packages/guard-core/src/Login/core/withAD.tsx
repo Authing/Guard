@@ -305,20 +305,21 @@ export const LoginWithAD = (props: LoginWithADProps) => {
             </CommonFormItem>
             {/* 图形验证码 */}
             {showCaptcha && (
-              <Form.Item
+              <CommonFormItem
                 className="authing-g2-input-form"
                 validateTrigger={['onBlur', 'onChange']}
                 name="captchaCode"
                 rules={fieldRequiredRule(t('common.captchaCode'))}
               >
                 <GraphicVerifyCode
+                  name='captchaCode'
                   className="authing-g2-input"
                   size="large"
                   placeholder={t('login.inputCaptchaCode') as string}
                   verifyCodeUrl={verifyCodeUrl}
                   changeCode={() => setVerifyCodeUrl(getCaptchaUrl(host))}
                 />
-              </Form.Item>
+              </CommonFormItem>
             )}
             {Boolean(agreements?.length) && (
               <Agreements
