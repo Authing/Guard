@@ -4,7 +4,7 @@ import { AUTHING_INJECTION_KEY } from './token'
 
 import { GuardOptions, Guard } from '@authing/guard'
 
-import '@authing/guard/dist/guard.min.css'
+import '@authing/guard/dist/esm/guard.min.css'
 
 import { GuardPlugin } from './plugin'
 
