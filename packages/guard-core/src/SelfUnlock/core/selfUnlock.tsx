@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 import { Form } from 'shim-antd'
 
-import { fieldRequiredRule, validate, getPasswordIdentify } from '../../_utils'
+import { fieldRequiredRule, validate, getPasswordIdentify, isDisabled } from '../../_utils'
 
 import SubmitButton from '../../SubmitButton'
 
@@ -143,7 +143,7 @@ export const SelfUnlock = ({ identifyRef }: { identifyRef?: React.MutableRefObje
               placeholder={t('common.inputFourVerifyCode', {
                 length: verifyCodeLength
               })}
-              prefix={<IconFont type="authing-a-shield-check-line1" style={{ color: '#878A95' }} />}
+              // prefix={<IconFont type="authing-a-shield-check-line1" style={{ color: '#878A95' }} />}
               scene={SceneType.SCENE_TYPE_RESET}
               maxLength={verifyCodeLength}
               data={identify}
@@ -161,7 +161,7 @@ export const SelfUnlock = ({ identifyRef }: { identifyRef?: React.MutableRefObje
               placeholder={t('common.inputFourVerifyCode', {
                 length: verifyCodeLength
               })}
-              prefix={<IconFont type="authing-a-shield-check-line1" style={{ color: '#878A95' }} />}
+              // prefix={<IconFont type="authing-a-shield-check-line1" style={{ color: '#878A95' }} />}
               scene={EmailScene.SELF_UNLOCKING_VERIFY_CODE}
               maxLength={verifyCodeLength}
               data={identify}
@@ -177,6 +177,13 @@ export const SelfUnlock = ({ identifyRef }: { identifyRef?: React.MutableRefObje
     [codeMethod, form, identify, isInternationSms, t, verifyCodeLength]
   )
 
+  const [btnDisabled, setDisabled] = useState(true)
+  const formValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
+    // 判断其他表单项是否填写
+    setDisabled(isDisabled(allValues))
+  }
+
+
   return (
     <div className="authing-g2-login-phone-code">
       <Form
@@ -186,6 +193,7 @@ export const SelfUnlock = ({ identifyRef }: { identifyRef?: React.MutableRefObje
         onFinishFailed={() => {
           submitButtonRef?.current?.onError()
         }}
+        onValuesChange={formValuesChange}
         autoComplete="off"
       >
         <FormItemIdentify
@@ -211,7 +219,7 @@ export const SelfUnlock = ({ identifyRef }: { identifyRef?: React.MutableRefObje
                 setCodeMethod('phone')
               }
             }}
-            prefix={<IconFont type="authing-a-user-line1" style={{ color: '#878A95' }} />}
+            // prefix={<IconFont type="authing-a-user-line1" style={{ color: '#878A95' }} />}
           />
         </FormItemIdentify>
 
@@ -237,12 +245,13 @@ export const SelfUnlock = ({ identifyRef }: { identifyRef?: React.MutableRefObje
               className="authing-g2-input"
               size="large"
               placeholder={t('user.inputOldPwd')}
-              prefix={<IconFont type="authing-a-lock-line1" style={{ color: '#878A95' }} />}
+              // prefix={<IconFont type="authing-a-lock-line1" style={{ color: '#878A95' }} />}
             />
           </CommonFormItem>
         )}
         <Form.Item className="authing-g2-sumbit-form submit-form">
           <SubmitButton
+            disabled={btnDisabled}
             className="forget-password"
             text={t('common.unlock') as string}
             ref={submitButtonRef}

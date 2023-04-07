@@ -143,6 +143,9 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
     setPreviewVisible(true)
   }
 
+  // const [btnDisabled, setDisabled] = useState(true)
+
+
   return (
     <div className="authing-g2-describe-questions authing-g2-form-required-item-icon-after">
       <Form
