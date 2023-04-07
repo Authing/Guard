@@ -15,7 +15,7 @@ export const useGuardIconfont = (cdnBase?: string, setError?: any) => {
     if (!cdnBase) return
 
     try {
-      const res = await Axios(`${cdnBase}/svg-string/guard-1`)
+      const res = await Axios(`${cdnBase}/svg-string/guard`)
 
       const body = res.data
 

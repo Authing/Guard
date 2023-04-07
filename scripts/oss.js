@@ -44,7 +44,7 @@ function getAndPutFile(dir) {
 async function put(fullPath, ossPath) {
   try {
     const { version } = require(`${process.cwd()}/lerna.json`)
-    await client.put(`packages/authing-guard/${version}/${ossPath}`, fullPath)
+    await client.put(`packages/guard/${version}/${ossPath}`, fullPath)
   } catch (e) {
     throw new Error(`put oss error(${fullPath}): ` + JSON.stringify(e))
   }
