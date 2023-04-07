@@ -6,7 +6,7 @@ import './assets/main.css'
 
 import { createGuard } from '@authing/guard-vue3'
 
-import '@authing/guard-vue3/dist/guard.min.css'
+import '@authing/guard-vue3/dist/esm/guard.min.css'
 
 import * as facePlugin from 'face-api.js'
 
