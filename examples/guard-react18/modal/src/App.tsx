@@ -2,7 +2,7 @@ import React from 'react'
 
 import { GuardProvider } from '@authing/guard-react18'
 
-import '@authing/guard-react18/dist/guard.min.css'
+import '@authing/guard-react18/dist/esm/guard.min.css'
 
 import * as facePlugin from 'face-api.js'
 

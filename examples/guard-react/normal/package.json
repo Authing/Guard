@@ -24,7 +24,7 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
-    "@authing/guard-react": "^6.0.0-alpha.2",
+    "@authing/guard-react": "^6.0.0-alpha.5",
     "face-api.js": "^0.22.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

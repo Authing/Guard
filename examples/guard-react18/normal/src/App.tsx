@@ -8,7 +8,7 @@ import * as facePlugin from 'face-api.js'
 
 import './App.css'
 
-import '@authing/guard-react18/dist/guard.min.css'
+import '@authing/guard-react18/dist/esm/guard.min.css'
 
 export default function App() {
   return (
