@@ -11,7 +11,7 @@ module.exports = {
   entry: resolve('src/index.tsx'),
   output: {
     filename: 'guard.min.js',
-    path: resolve(`dist`),
+    path: resolve(`dist/esm`),
     library: {
       type: 'module'
     }
