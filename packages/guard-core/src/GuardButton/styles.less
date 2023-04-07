@@ -29,11 +29,10 @@
 
 .authing-btn-arrow {
   position: absolute;
-  left: -16px;
+  left: 0;
   top: 50%;
   transform: translateY(-50%);
-  animation: .8s ease slideInOut infinite;
-  animation-delay: 0.2s;
+  animation: 0.7s ease-out slideInOut infinite;
 }
 
 .authing-btn-loading {
@@ -44,22 +43,17 @@
   animation: 1.5s linear rotateIn infinite;
 }
 
-// .authing-btn--icon {
-//   padding-right: 50px !important;
-//   background: #215ae5;
-// }
-
 .authing-ant-btn-primary .authing-ant-btn-loading-icon {
   display: none !important;
 }
 
 @keyframes slideInOut {
   0% {
-    left: -16px;
+    left: 0;
   }
 
   100% {
-    left: 0;
+    left: 16px;
   }
 }
 

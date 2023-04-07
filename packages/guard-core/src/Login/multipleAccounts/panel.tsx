@@ -120,7 +120,7 @@ const SelectPanel: React.FC<SelectPanelProps> = props => {
                       }}
                       type="authing-indeterminate-circle-line"
                     />
-                    {t('common.del')}
+                    <span>{t('common.del')}</span>
                   </div>
                 }
               >

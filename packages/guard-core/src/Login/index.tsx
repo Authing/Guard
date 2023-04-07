@@ -67,6 +67,7 @@ import { useLoginMultiple } from './hooks/useLoginMultiple'
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
 
 import { LoginWithAuthingOtpPush } from './core/withAuthingOtpPush/index'
+import { BackLogin } from '../Back'
 
 const { useEffect, useLayoutEffect, useState, useRef, useMemo, useCallback } = React
 
@@ -718,6 +719,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
 
   return (
     <div className="g2-view-container g2-view-login">
+      <BackLogin isRender={isResetPage} />
+
       <div className="g2-view-container-inner">
         {isNoMethod ? (
           <>
@@ -856,16 +859,6 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                             {t('login.forgetPwd')}
                           </GuardButton>
                         </div>
-                      )}
-                      {isResetPage && (
-                        <GuardButton
-                          type="link"
-                          onClick={() => {
-                            changeModule?.(GuardModuleType.LOGIN)
-                          }}
-                        >
-                          {t('common.backLoginPage')}
-                        </GuardButton>
                       )}
 
                       {!disableRegister && (
