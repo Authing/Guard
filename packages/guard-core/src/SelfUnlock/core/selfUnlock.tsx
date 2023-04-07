@@ -31,6 +31,7 @@ import { useGuardHttp } from '../../_utils/guardHttp'
 import { useGuardAuthClient } from '../../Guard/authClient'
 
 import { useGuardEvents, useGuardInitData, useGuardPublicConfig } from '../../_utils/context'
+import { CommonFormItem } from '../../CommonFormItem'
 
 const { useCallback, useEffect, useRef, useState } = React
 
@@ -194,6 +195,7 @@ export const SelfUnlock = ({ identifyRef }: { identifyRef?: React.MutableRefObje
           currentMethod={InputMethodMap[codeMethod]}
         >
           <InputIdentify
+            name="identify"
             methods={['email-code', 'phone-code']}
             className="authing-g2-input"
             autoComplete="off"
@@ -213,28 +215,31 @@ export const SelfUnlock = ({ identifyRef }: { identifyRef?: React.MutableRefObje
           />
         </FormItemIdentify>
 
-        <Form.Item
+        <CommonFormItem
           validateTrigger={['onBlur', 'onChange']}
           className="authing-g2-input-form"
           name="code"
           rules={[...fieldRequiredRule(t('common.captchaCode'))]}
         >
-          <SendCode />
-        </Form.Item>
+          <SendCode
+            name="code"
+          />
+        </CommonFormItem>
         {selfUnlockStrategy === 'password-captcha' && (
-          <Form.Item
+          <CommonFormItem
             validateTrigger={['onBlur', 'onChange']}
             className="authing-g2-input-form"
             name="password"
             rules={[...fieldRequiredRule(t('common.password'))]}
           >
             <InputPassword
+              name="password"
               className="authing-g2-input"
               size="large"
               placeholder={t('user.inputOldPwd')}
               prefix={<IconFont type="authing-a-lock-line1" style={{ color: '#878A95' }} />}
             />
-          </Form.Item>
+          </CommonFormItem>
         )}
         <Form.Item className="authing-g2-sumbit-form submit-form">
           <SubmitButton

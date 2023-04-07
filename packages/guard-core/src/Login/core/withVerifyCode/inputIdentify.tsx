@@ -10,6 +10,7 @@ import { VerifyLoginMethods } from '../../../Type/application'
 
 export interface InputIdentifyProps extends InputProps {
   methods: VerifyLoginMethods[]
+  name: string
 }
 
 const { useMemo } = React

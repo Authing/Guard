@@ -27,6 +27,7 @@ export interface SendCodeByEmailProps extends InputProps {
   fieldName?: string
   autoSubmit?: boolean //验证码输入完毕是否自动提交
   scene: EmailScene
+  name: string
 }
 
 export const SendCodeByEmail: React.FC<SendCodeByEmailProps> = props => {

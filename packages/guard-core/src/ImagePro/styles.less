@@ -9,9 +9,11 @@
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -21,17 +23,21 @@
   border-radius: 4px;
   display: inline-block;
   user-select: none;
+
   &.loaded {
     background: none;
+
     .imagePro {
       opacity: 1;
     }
   }
+
   &.unload {
     .imagePro {
       opacity: 0;
     }
   }
+
   .g2-base-imagepro-loading,
   .g2-base-imagepro-mask {
     position: absolute !important;
@@ -52,6 +58,7 @@
     border-radius: 4px;
     display: none;
     border: none;
+
     span {
       overflow: hidden;
       text-overflow: ellipsis;
@@ -59,7 +66,12 @@
       display: -webkit-box;
       -webkit-box-orient: vertical;
     }
+
+    .authing-btn-icon {
+      margin-left: 0;
+    }
   }
+
   &:hover {
     .g2-base-imagepro-mask-show {
       display: flex;
@@ -70,9 +82,11 @@
     display: flex;
   }
 }
+
 .g2-base-imagepro-container2 {
   position: relative;
 }
+
 .g2-base-imagepro {
   // 先屏蔽这个动画，怪怪的
   // transition: 0.2s all;

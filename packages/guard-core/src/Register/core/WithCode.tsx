@@ -748,6 +748,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             rules={fieldRequiredRule(t('common.captchaCode'))}
           >
             <GraphicVerifyCode
+              name="captchaCode"
               className="authing-g2-input"
               size="large"
               placeholder={t('login.inputCaptchaCode') as string}
