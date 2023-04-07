@@ -13,7 +13,7 @@ module.exports = merge({}, webpackBaseConfigFn({
     filename: 'guard.min.js',
     path: resolve('dist/global'),
     library: {
-      name: 'AuthingGuardFactory',
+      name: 'GuardFactory',
       type: 'global'
     }
   }
