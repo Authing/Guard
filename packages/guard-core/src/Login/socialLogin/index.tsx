@@ -333,7 +333,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
         <div
           style={{
             flex: 1,
-            minHeight: 16
+            minHeight: 24
           }}
         />
       )}
