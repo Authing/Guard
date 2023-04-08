@@ -214,12 +214,14 @@ export const VerifyMFAEmail: React.FC<VerifyMFAEmailProps> = ({
           <VerifyCodeInput length={codeLength} onFinish={onFinish} />
         </VerifyCodeFormItem>
 
-        <SendCodeBtn
-          btnRef={sendCodeRef}
-          setSent={setSent}
-          beforeSend={() => sendVerifyCode()}
-          type="link"
-        />
+        <div className="authing-g2-send-code-btn-new">
+          <SendCodeBtn
+            btnRef={sendCodeRef}
+            setSent={setSent}
+            beforeSend={() => sendVerifyCode()}
+            type="link"
+          />
+        </div>
 
         <SubmitButton
           disabled={btnDisabled}

@@ -16,7 +16,6 @@
 
   .g2-view-container {
     box-shadow: none !important;
-    height: 100%;
   }
 }
 
@@ -70,10 +69,14 @@
   }
 
   .g2-mfa-content {
-    margin: 0;
+    padding: 0 20px;
+
+    @media only screen and (max-width: 450px) {
+      padding-left: 8px;
+      padding-right: 8px;
+    }
   }
 
-  .g2-mfa-content,
   .g2-mfa-method {
     margin: 14px 0 8px 0;
     padding: 0 20px;
@@ -332,6 +335,10 @@
       display: none;
     }
   }
+}
+
+.authing-ant-form-item {
+  margin-bottom: 16px;
 }
 
 .authing-g2-input-form {
@@ -1356,5 +1363,18 @@ input {
   input,
   .authing-g2-input {
     padding: 18px 24px !important;
+  }
+}
+
+.authing-ant-picker {
+  height: 54px;
+  border-radius: 8px;
+}
+
+.normal-mode-full-screen {
+  height: 100%;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 0;
   }
 }

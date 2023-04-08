@@ -77,7 +77,7 @@ export function PushLoginGudeModal(props: PushLoginGudeModalProps) {
       placement="right"
       onClose={onClose}
       open={visible}
-      width={isPhoneMedia ? '375' : '640'}
+      width={isPhoneMedia ? 375 : 640}
       closeIcon={<IconFont type="authing-close-line" />}
     >
       {componentMap[selector]}

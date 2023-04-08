@@ -2,7 +2,7 @@ import { React } from 'shim-react'
 
 import { Form, Input, Select, DatePicker, message } from 'shim-antd'
 
-import { i18n } from '../../_utils'
+import { i18n, isDisabled } from '../../_utils'
 
 import { useTranslation } from 'react-i18next'
 
@@ -567,6 +567,12 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
     [areaCode]
   )
 
+  const [btnDisabled, setDisabled] = useState<boolean>(true)
+
+  const onValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
+    setDisabled(isDisabled(allValues))
+  }
+
   return (
     <Form
       layout="vertical"
@@ -574,12 +580,14 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
       onFinish={onFinish}
       onSubmitCapture={() => submitButtonRef.current.onSpin(true)}
       onFinishFailed={() => submitButtonRef.current.onError()}
+      onValuesChange={onValuesChange}
       className="authing-g2-completeInfo-form authing-g2-form-required-item-icon-after"
     >
       {formFieldsV2}
 
       <Form.Item className="authing-g2-sumbit-form">
         <SubmitButton
+          disabled={btnDisabled}
           text={t('common.problem.form.submit') as string}
           ref={submitButtonRef}
           className="password g2-completeInfo-submit"

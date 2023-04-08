@@ -253,12 +253,14 @@ export const VerifyMFASms: React.FC<VerifyMFASmsProps> = ({
           <VerifyCodeInput length={codeLength} onFinish={onFinish} />
         </VerifyCodeFormItem>
 
-        <SendCodeBtn
-          btnRef={sendCodeRef}
-          beforeSend={() => sendVerifyCode()}
-          type="link"
-          setSent={setSent}
-        />
+        <div className="authing-g2-send-code-btn-new">
+          <SendCodeBtn
+            btnRef={sendCodeRef}
+            beforeSend={() => sendVerifyCode()}
+            type="link"
+            setSent={setSent}
+          />
+        </div>
 
         <SubmitButton
           disabled={btnDisabled}
