@@ -729,10 +729,10 @@ export const getSortTabs = (tabs: string[], tab?: string) => {
   return tabs
 }
 
-export const isDisabled = (values: Record<string, any>) => {
+export const isDisabled = (values: Record<string, any>, requireNames?: string[]) => {
   let disabled = false
-  for (const [, value] of Object.entries(values)) {
-    if (value === undefined || value === '') {
+  for (const [key, value] of Object.entries(values)) {
+    if ((!requireNames || requireNames.includes(key)) && (value === undefined || value === '')) {
       disabled = true
       break
     }

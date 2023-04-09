@@ -17,6 +17,8 @@ import { fieldRequiredRule, validate } from '../../_utils'
 import { IconFont } from '../../IconFont'
 
 import { useGuardInitData } from '../../_utils/context'
+import { CommonFormItem } from '../../CommonFormItem'
+import { CommonInput } from '../../CommonInput'
 
 const { useRef, useState } = React
 
@@ -143,7 +145,11 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
     setPreviewVisible(true)
   }
 
-  // const [btnDisabled, setDisabled] = useState(true)
+  const [btnDisabled, setDisabled] = useState(true)
+  const formValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
+    // 判断其他表单项是否填写
+    setDisabled(!allValues['identify'])
+  }
 
 
   return (
@@ -157,8 +163,9 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
           submitButtonRef?.current?.onError()
         }}
         autoComplete="off"
+        onValuesChange={formValuesChange}
       >
-        <Form.Item
+        <CommonFormItem
           validateTrigger={['onBlur', 'onChange']}
           className="authing-g2-input-form"
           name="identify"
@@ -181,14 +188,15 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
             }
           ]}
         >
-          <Input
+          <CommonInput
+            name='identify'
             className="authing-g2-input"
             autoComplete="off"
             size="large"
             placeholder={t('login.inputPhoneOrEmail') as string}
             // prefix={<IconFont type="authing-a-user-line1" style={{ color: '#878A95' }} />}
           />
-        </Form.Item>
+        </CommonFormItem>
         <Form.Item
           validateTrigger={['onBlur', 'onChange']}
           className="authing-g2-input-form "
@@ -298,6 +306,7 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
 
         <Form.Item className="authing-g2-sumbit-form submit-form">
           <SubmitButton
+            disabled={btnDisabled}
             className="forget-password"
             text={t('common.problem.form.submit') as string}
             ref={submitButtonRef}

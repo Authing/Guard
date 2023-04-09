@@ -567,10 +567,23 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
     [areaCode]
   )
 
+  const [requiredNames, setRequiredNames] = useState<string[]>([])
+
+  useEffect(()=>{
+    let names: string[] = []
+    metaData.forEach(item => {
+      if (item.required) {
+        names.push(item.name)
+      }
+    })
+    setRequiredNames(names)
+  }, [metaData])
+
   const [btnDisabled, setDisabled] = useState<boolean>(true)
 
   const onValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
-    setDisabled(isDisabled(allValues))
+    setDisabled(isDisabled(allValues, requiredNames))
+
   }
 
   return (
