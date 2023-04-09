@@ -75,7 +75,7 @@ import { GuardNewSubmitSuccessView } from '../../NewSubmitSuccess'
 
 const PREFIX_CLS = 'authing-ant'
 
-const { useEffect, useMemo, useLayoutEffect } = React
+const { useEffect, useMemo } = React
 
 message.config({
   prefixCls: `${PREFIX_CLS}-message`
@@ -246,37 +246,6 @@ export const RenderModule: React.FC<{
   const renderGuardContent = useMemo(() => {
     return <GuardButtonProvider>{renderModule}</GuardButtonProvider>
   }, [GuardButtonProvider, renderModule])
-
-  const { currentModule } = useGuardModule()
-  
-  useLayoutEffect(() => {
-    if (defaultMergedConfig.mode !== GuardMode.Normal) {
-      return
-    }
-
-    let timer: null | NodeJS.Timeout = setTimeout(() => {
-      const normalBox = document.querySelector('.authing-g2-render-module-normal') as HTMLElement
-    
-      if (!normalBox) {
-        return
-      }
-      
-      const windowHeight = document.documentElement.offsetHeight
-      
-      if (normalBox.offsetHeight > windowHeight) {
-        normalBox.classList.add('normal-mode-full-screen')
-      } else {
-        normalBox.classList.remove('normal-mode-full-screen')
-      }
-    }, 50)
-
-    return () => {
-      if (timer) {
-        clearTimeout(timer)
-        timer = null
-      }
-    }
-  }, [currentModule, defaultMergedConfig.mode])
 
   return (
     <ConfigProvider prefixCls={PREFIX_CLS}>

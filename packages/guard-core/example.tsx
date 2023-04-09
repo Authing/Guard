@@ -23,3 +23,7 @@ guard.on('login', res => {
 guard.on('login-error', res => {
   console.log('on login error: ', res)
 })
+
+guard.on('after-change-module', res => {
+  console.log('on after change module: ', res)
+})
