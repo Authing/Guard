@@ -20,6 +20,7 @@ export function PushLoginGuideSelector(props: PushLoginGuideSelectorProps) {
       options={options}
       dropdownMatchSelectWidth={false}
       showArrow={true}
+      className="authing-ant-select-selector-new-box"
     />
   )
 }
