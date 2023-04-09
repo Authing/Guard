@@ -45,7 +45,7 @@ import {
   useGuardModule
 } from '../../_utils/context'
 
-import { GuardMode } from '../..'
+import { GuardMode } from '../../Type'
 
 import { IconFont } from '../../IconFont'
 
@@ -254,18 +254,27 @@ export const RenderModule: React.FC<{
       return
     }
 
-    const normalBox = document.querySelector('.authing-g2-render-module-normal') as HTMLElement
+    let timer: null | NodeJS.Timeout = setTimeout(() => {
+      const normalBox = document.querySelector('.authing-g2-render-module-normal') as HTMLElement
     
-    if (!normalBox) {
-      return
-    }
-    
-    const windowHeight = document.documentElement.offsetHeight
-    
-    if (normalBox.offsetHeight > windowHeight) {
-      normalBox.classList.add('normal-mode-full-screen')
-    } else {
-      normalBox.classList.remove('normal-mode-full-screen')
+      if (!normalBox) {
+        return
+      }
+      
+      const windowHeight = document.documentElement.offsetHeight
+      
+      if (normalBox.offsetHeight > windowHeight) {
+        normalBox.classList.add('normal-mode-full-screen')
+      } else {
+        normalBox.classList.remove('normal-mode-full-screen')
+      }
+    }, 50)
+
+    return () => {
+      if (timer) {
+        clearTimeout(timer)
+        timer = null
+      }
     }
   }, [currentModule, defaultMergedConfig.mode])
 

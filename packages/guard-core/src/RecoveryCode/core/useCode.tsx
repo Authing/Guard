@@ -18,12 +18,14 @@ import { CommonInput } from '../../CommonInput'
 
 import CustomFormItem from '../../ValidatorRules'
 
+import { isDisabled } from '../../_utils'
+
 export interface UseCodeProps {
   mfaToken: string
   onSubmit: (recoveryCode: string, user?: User) => void
 }
 
-const { useRef } = React
+const { useRef, useState } = React
 
 export const UseCode: React.FC<UseCodeProps> = ({ mfaToken, onSubmit }) => {
   const { t } = useTranslation()
@@ -85,6 +87,13 @@ export const UseCode: React.FC<UseCodeProps> = ({ mfaToken, onSubmit }) => {
     }
   }
 
+  const [btnDisabled, setDisabled] = useState(true)
+
+  const onValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
+    // 判断其他表单项是否填写
+    setDisabled(isDisabled(allValues))
+  }
+
   return (
     <>
       <p className="authing-g2-mfa-title">{t('common.useRecoverCode')}</p>
@@ -93,6 +102,7 @@ export const UseCode: React.FC<UseCodeProps> = ({ mfaToken, onSubmit }) => {
         form={form}
         onFinish={onFinish}
         onFinishFailed={() => submitButtonRef.current.onError()}
+        onValuesChange={onValuesChange}
       >
         <CustomFormItem.CustomName
           validateTrigger={['onBlur', 'onChange']}
@@ -116,7 +126,7 @@ export const UseCode: React.FC<UseCodeProps> = ({ mfaToken, onSubmit }) => {
         </CustomFormItem.CustomName>
 
         <Form.Item className="authing-g2-sumbit-form submit-form">
-          <SubmitButton text={t('common.sure') as string} ref={submitButtonRef} />
+          <SubmitButton text={t('common.sure') as string} disabled={btnDisabled} ref={submitButtonRef} />
         </Form.Item>
       </Form>
     </>

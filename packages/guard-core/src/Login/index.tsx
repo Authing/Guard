@@ -717,6 +717,10 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
     defaultMethod
   ])
 
+  const isScanModule = useMemo(() => {
+    return [LoginMethods.WechatMpQrcode, LoginMethods.WxMinQr, LoginMethods.AppQr].includes(loginWay)
+  }, [LoginMethods, loginWay])
+
   return (
     <div className="g2-view-container g2-view-login">
       <BackLogin isRender={isResetPage} />
@@ -794,7 +798,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                 ></Popover> */}
               </div>
             )}
-            {LoginMethods.AppQr !== loginWay && <div className="g2-view-header">
+            {!isScanModule && <div className="g2-view-header">
               <img src={config?.logo} alt="" className="icon" />
               <div className="title">
                 {isMultipleAccount ? t('login.selectLoginAccount') : config?.title}
@@ -886,10 +890,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                     </Space>
                   </div>
                 )}
-                {
-                  // 目前所有的扫码登录方式，标识都是 app-qrcode，后期如果单独区分的话，这块需要修改判断条件
-                }
-                {renderQrcodeWay && loginWay === LoginMethods.AppQr && (
+                {renderQrcodeWay && isScanModule && (
                   <div className={`g2-view-tabs ${qrcodeNone} ${hiddenTab && 'hidden'}`} style={{ marginTop: '54px' }}>
                     <Tabs
                       centered

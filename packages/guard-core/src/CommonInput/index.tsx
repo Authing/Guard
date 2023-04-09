@@ -12,7 +12,6 @@ export const CommonInput = (props: InputProps & { fieldcontext?: any; ref?: any 
 
   const onItemFocus = (e: any) => {
     onFocus?.(e)
-    console.log('focus--------', fieldcontext)
     fieldcontext?.setStatus?.('focus')
   }
 
