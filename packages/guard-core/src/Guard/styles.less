@@ -40,7 +40,7 @@
 
 // 侵入 core 的样式代码，guard view 皮肤
 .g2-view-container {
-  font-family: sans-serif;
+  font-family: PingFang SC;
   box-shadow: 0px 16px 40px rgba(0, 0, 0, 0.08);
   background: #EBEEF4;
   display: flex;
@@ -891,7 +891,6 @@
     margin-top: 4px;
     color: #ff4d4f;
     font-size: 14px;
-    font-family: SimSun, sans-serif;
     line-height: 1;
     content: '*';
   }
@@ -1182,18 +1181,11 @@ input {
 }
 
 .g2-view-container-submit-success {
-  display: flex;
-  flex-direction: column;
-  // align-items: flex-start;
-  width: 456px;
+  padding: 50px 16px;
 
   @media only screen and (max-width: 450px) {
     width: 100%;
   }
-
-  min-height: 464px;
-  background: #FFFFFF;
-  padding: 80px 16px;
 
   .g2-questions-send-success-pageWrap {
     display: flex;
@@ -1210,43 +1202,31 @@ input {
     font-family: 'PingFang SC';
     font-style: normal;
     font-weight: 500;
-    font-size: 16px;
-    line-height: 26px;
+    font-size: 24px;
+    line-height: 34px;
     text-align: center;
     color: #1D2129;
   }
 
   .success-page-message {
+    margin-top: 4px;
+    font-family: 'PingFang SC';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    text-align: center;
+    color: #86909C;
+    margin-bottom: 24px;
+  }
+
+  .success-page-timer-tip {
+    margin-top: 16px;
     font-family: 'PingFang SC';
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
     line-height: 22px;
-    text-align: center;
-    color: #86909C;
-    margin-bottom: 40px;
-  }
-
-  *[class*="authing-"].authing-g2-submit-button {
-    padding: 10px 147px;
-    width: 100%;
-    height: 44px;
-
-    @media only screen and (max-width: 450px) {
-      height: 48px;
-    }
-
-    background: #215AE5;
-    border-radius: 4px;
-    margin-bottom: 16px;
-  }
-
-  .success-page-timer-tip {
-    font-family: 'PingFang SC';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 20px;
     color: #86909C;
   }
 }
@@ -1374,6 +1354,7 @@ input {
 .normal-mode-full-screen {
   height: 100%;
   overflow-y: scroll;
+
   &::-webkit-scrollbar {
     width: 0;
   }

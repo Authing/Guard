@@ -66,8 +66,8 @@ export const GuardNewSubmitSuccessView: React.FC = () => {
           className="plate-submit-success"
           src={`${cdnBase}/questions-send-ok.png`}
           alt=""
-          width={157}
-          height={120}
+          width={205}
+          height={156}
         />
         <div className="success-page-title ">{title}</div>
         <div className="success-page-message">{message}</div>
