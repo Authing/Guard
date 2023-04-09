@@ -21,7 +21,7 @@ import { message } from 'shim-antd'
 
 import { faceErrorMessage } from '../../_utils/errorFace'
 
-import { useGuardButtonState, useGuardPublicConfig } from '../../_utils/context'
+import { useGuardPublicConfig } from '../../_utils/context'
 
 import { MfaBusinessAction, useMfaBusinessRequest } from '../businessRequest'
 
@@ -52,8 +52,6 @@ export const MFAFace = (props: any) => {
   const [percent, setPercent] = useState(0) // 识别进度（相似性）
 
   const mfaBusinessRequest = useMfaBusinessRequest()
-
-  const { spinChange } = useGuardButtonState()
 
   const verifyRequest = mfaBusinessRequest[MfaBusinessAction.VerifyFace]
 
@@ -120,7 +118,6 @@ export const MFAFace = (props: any) => {
 
   // 上传文件
   const uploadImage = async (blob: Blob) => {
-    spinChange(true)
     const formData = new FormData()
     formData.append('folder', 'photos')
     formData.append('file', blob, 'personal.jpeg')
@@ -128,8 +125,6 @@ export const MFAFace = (props: any) => {
     const url = '/api/v2/upload?folder=photos&private=true'
     const result = await postForm<any>(url, formData)
     const key = result.data?.key
-
-    spinChange(false)
 
     return key
   }
@@ -179,11 +174,7 @@ export const MFAFace = (props: any) => {
       mfaToken: props.initData.mfaToken
     }
 
-    spinChange(true)
-
     const result = await verifyRequest(requestData)
-
-    spinChange(false)
 
     const { isFlowEnd, onGuardHandling, data, code } = result
 

@@ -17,7 +17,6 @@ import { IconFont } from '../IconFont'
 import { IdentityBindingAction } from '../IdentityBinding/businessRequest'
 
 import {
-  useGuardButtonState,
   useGuardEvents,
   useGuardInitData,
   useGuardModule
@@ -46,8 +45,6 @@ export const GuardIdentityBindingAskView: React.FC = () => {
 
   const events = useGuardEvents()
 
-  const { spinChange } = useGuardButtonState()
-
   const onCreate = (data: any) => {
     events?.onLogin?.(data, authClient)
 
@@ -68,12 +65,9 @@ export const GuardIdentityBindingAskView: React.FC = () => {
   }
 
   const [createLoading, createAccount] = useAsyncFn(async () => {
-    spinChange(true)
     const { code, onGuardHandling, data, isFlowEnd, message } = await authFlow(
       IdentityBindingAction.CreateUser
     )
-
-    spinChange(false)
 
     if (isFlowEnd) {
       onCreate(data)
