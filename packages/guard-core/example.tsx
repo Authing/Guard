@@ -22,6 +22,10 @@ guard.start('#root').then(userInfo => {
   console.log('user info in start: ', userInfo)
 })
 
+guard.on('load', () => {
+  console.log('on load')
+})
+
 guard.on('lang-change', res => {
   console.log('on lang change: ', res)
 })

@@ -830,7 +830,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                 changeModule={changeModule}
               />
             ) : (
-              <>
+              <div className="animation-box">
                 {renderInputWay && (
                   <div className={inputNone }>
                     {!isResetPage ? (
@@ -905,7 +905,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                     </Tabs>
                   </div>
                 )}
-              </>
+              </div>
             )}
             <div className="g2-social-login">
               <SocialLogin

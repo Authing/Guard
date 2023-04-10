@@ -27,19 +27,16 @@ export function LazyloadImage(props: LazyloadImageProps) {
     }
   })
 
-  return (
-    <>
-      {(loadStatus && (
-        <img
-          src={src}
-          width={width}
-          height={height}
-          className={className}
-          style={style}
-          alt={alt}
-        />
-      )) ||
-        placeholder}
-    </>
-  )
+  if (loadStatus) {
+    return <img
+      src={src}
+      width={width}
+      height={height}
+      className={className}
+      style={style}
+      alt={alt}
+    />
+  }
+
+  return <>{placeholder}</>
 }

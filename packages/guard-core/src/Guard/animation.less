@@ -1,0 +1,96 @@
+// 当前文件及文件中的 class 只用于动画
+
+.g2-view-container {
+  height: 0;
+	animation: containerAnimation 1s ease-in-out forwards;
+}
+
+@keyframes containerAnimation {
+  99% {
+    height: 600px;
+  }
+  100% {
+    height: auto;
+    padding: 20px 16px 24px 16px;
+  }
+}
+
+.g2-init-setting-loading {
+  opacity: 0;
+	animation: logoAnimation 1s ease-in 1s forwards;
+}
+
+
+@keyframes logoAnimation {
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.g2-view-header,
+.animation-box,
+.g2-social-login{
+  opacity: 0;
+  transform:  translateY(10px);
+}
+
+.g2-view-header {
+  animation: viewHeaderAnimation 0.5s ease-in 1.5s forwards;
+}
+
+@keyframes viewHeaderAnimation {
+  100% {
+    opacity: 1;
+    transform:  translateY(0);
+  }
+}
+
+.animation-box {
+  animation: animationBoxAnimation 0.5s ease-in 1.8s forwards;
+}
+
+@keyframes animationBoxAnimation {
+  100% {
+    opacity: 1;
+    transform:  translateY(0);
+  }
+}
+
+.g2-social-login {
+  animation: animationBoxAnimation 0.5s ease-in 2.1s forwards;
+}
+
+@keyframes socialLoginAnimation {
+  100% {
+    opacity: 1;
+    transform:  translateY(0);
+  }
+}
+
+.g2-change-language-container,
+.g2-qrcode-switch {
+  opacity: 0;
+}
+
+.g2-change-language-container {
+  animation: changeLanguageAnimation 0.5s ease-in 2.4s forwards;
+}
+
+@keyframes changeLanguageAnimation {
+  100% {
+    opacity: 1;
+  }
+}
+
+.g2-qrcode-switch {
+  animation: qrcodeSwitchAnimation 0.5s ease-in 2.4s forwards;
+}
+
+@keyframes qrcodeSwitchAnimation {
+  100% {
+    opacity: 1;
+  }
+}
