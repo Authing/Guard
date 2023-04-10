@@ -37,13 +37,15 @@
 
 .authing-btn-arrow {
   position: absolute;
-  left: 0;
+  left: -16px;
   top: 50%;
   transform: translateY(-50%);
-  animation: 0.7s ease-out slideInOut infinite;
+  animation: 0.8s ease-in slideInOut infinite;
+  opacity: 1;
 }
 
 .authing-btn-loading {
+  margin-top: 2px;
   left: 0;
   position: absolute;
   top: 50%;
@@ -57,11 +59,18 @@
 
 @keyframes slideInOut {
   0% {
+    left: -16px;
+    opacity: 1;
+  }
+
+  80% {
     left: 0;
+    opacity: 1;
   }
 
   100% {
-    left: 16px;
+    left: 0;
+    opacity: 0;
   }
 }
 

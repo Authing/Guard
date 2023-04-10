@@ -10,6 +10,8 @@ import './style.less'
 
 import { ButtonProps } from 'shim-antd/lib/button'
 
+import { IconFont } from '../IconFont'
+
 const TIME = 60
 
 const { useState, useRef, useEffect, useMemo } = React
@@ -86,13 +88,18 @@ export const SendCodeBtn: React.FC<SendCodeProps> = props => {
       className={`${buttonProps.type ?? 'authing-g2-send-code-btn g2-loading-btn-center'} ${
         i18n.language === 'ja-JP' ? 'send-code-btn-jp' : ''
       }`}
-      disabled={disabled}
+      disabled={loading || disabled}
       loading={loading}
       onClick={onClick}
       ref={btnRef}
       type="link"
     >
-      {loading === true && <span></span>}
+      {loading === true && <div className='authing-btn-icon '>
+        <IconFont
+          type="authing-loading-guard"
+          className="authing-btn-loading"
+        />
+      </div>}
       {loading === false && (
         <span>
           {enabled
