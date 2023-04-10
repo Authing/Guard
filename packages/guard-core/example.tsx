@@ -2,8 +2,18 @@ import { Guard } from './src'
 
 import * as facePlugin from 'face-api.js'
 
+const decodedUrl = decodeURIComponent(window.location.href)
+const queryString = decodedUrl.split('?')[1]
+const params: Record<string, any> = {}
+if (queryString) {
+  queryString.split('&').forEach(item => {
+    const [key, value] = item.split('=')
+    params[key] = value
+  })
+}
+
 const guard = new Guard({
-  appId: '64196bdaa5b19f2a6e4316d0',
+  appId: params.appId || '64196bdaa5b19f2a6e4316d0',
   // mode: 'modal',
   facePlugin
 })
