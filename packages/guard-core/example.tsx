@@ -14,7 +14,7 @@ if (queryString) {
 
 const guard = new Guard({
   appId: params.appId || '64196bdaa5b19f2a6e4316d0',
-  // mode: 'modal',
+  mode: params.mode || 'normal',
   facePlugin
 })
 
