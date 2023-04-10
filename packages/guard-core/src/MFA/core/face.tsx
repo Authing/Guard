@@ -70,6 +70,8 @@ export const MFAFace = (props: any) => {
   const { offset, dashStyle } = useDashoffset(percent)
 
   const _FACE_SCORE = publicConfig?.mfa?.faceScore ?? FACE_SCORE
+
+  const [btnDisabled, setBtnDisabled] = useState(false)
   // 预加载数据
   useEffect(() => {
     // 载入 cdn
@@ -118,6 +120,7 @@ export const MFAFace = (props: any) => {
 
   // 上传文件
   const uploadImage = async (blob: Blob) => {
+    setBtnDisabled(true)
     const formData = new FormData()
     formData.append('folder', 'photos')
     formData.append('file', blob, 'personal.jpeg')
@@ -125,6 +128,8 @@ export const MFAFace = (props: any) => {
     const url = '/api/v2/upload?folder=photos&private=true'
     const result = await postForm<any>(url, formData)
     const key = result.data?.key
+
+    setBtnDisabled(false)
 
     return key
   }
@@ -174,7 +179,11 @@ export const MFAFace = (props: any) => {
       mfaToken: props.initData.mfaToken
     }
 
+    setBtnDisabled(true)
+
     const result = await verifyRequest(requestData)
+
+    setBtnDisabled(false)
 
     const { isFlowEnd, onGuardHandling, data, code } = result
 
@@ -285,6 +294,7 @@ export const MFAFace = (props: any) => {
           />
 
           <SubmitButton
+            disabled={btnDisabled}
             onClick={() => {
               // 设置状态之前 校验是否支持面容 （api 和 设备）
               // TODO 之后添加人脸识别插件支持 减小包体积
