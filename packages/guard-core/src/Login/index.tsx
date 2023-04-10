@@ -721,6 +721,52 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
     return [LoginMethods.WechatMpQrcode, LoginMethods.WxMinQr, LoginMethods.AppQr].includes(loginWay)
   }, [LoginMethods, loginWay])
 
+  const tipComponent = useMemo(() => {
+    if ((!disableResetPwd && !isResetPage) || !disableRegister || (errorNumber >= 2 || accountLock)) {
+      return (
+        <Space className={'g2-tips-line'} align="center" size={24}>
+          {!disableResetPwd && !isResetPage && (
+            <div>
+              <GuardButton
+                type="link"
+                className="link-like forget-password-link"
+                onClick={() => changeModule?.(GuardModuleType.FORGET_PWD, {})}
+              >
+                {t('login.forgetPwd')}
+              </GuardButton>
+            </div>
+          )}
+
+          {!disableRegister && (
+            <span className="go-to-register">
+              {/* <span className="gray">{t('common.noAccYet')}</span> */}
+              <GuardButton
+                type="link"
+                className="link-like register-link"
+                onClick={() => changeModule?.(GuardModuleType.REGISTER, {})}
+              >
+                {t('common.registerImmediate')}
+              </GuardButton>
+            </span>
+          )}
+          {(errorNumber >= 2 || accountLock) && (
+            <GuardButton
+              type="link"
+              onClick={() => {
+                changeModule?.(GuardModuleType.ANY_QUESTIONS)
+              }}
+            >
+              {t('common.feedback')}
+            </GuardButton>
+          )}
+        </Space>
+      )
+    }
+
+    return null
+
+  }, [])
+
   return (
     <div className="g2-view-container g2-view-login">
       <BackLogin isRender={isResetPage} />
@@ -843,6 +889,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                             events?.onLoginTabChange?.(k)
                           }}
                           activeKey={loginWay}
+                          moreIcon={<IconFont type='authing-more-fill1' className='authing-tabs-more' />}
                           centered
                         >
                           {GeneralLoginComponent}
@@ -851,43 +898,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                     ) : (
                       <ResetAccountName />
                     )}
-
-                    <Space className={'g2-tips-line'} align="center" size={24}>
-                      {!disableResetPwd && !isResetPage && (
-                        <div>
-                          <GuardButton
-                            type="link"
-                            className="link-like forget-password-link"
-                            onClick={() => changeModule?.(GuardModuleType.FORGET_PWD, {})}
-                          >
-                            {t('login.forgetPwd')}
-                          </GuardButton>
-                        </div>
-                      )}
-
-                      {!disableRegister && (
-                        <span className="go-to-register">
-                          {/* <span className="gray">{t('common.noAccYet')}</span> */}
-                          <GuardButton
-                            type="link"
-                            className="link-like register-link"
-                            onClick={() => changeModule?.(GuardModuleType.REGISTER, {})}
-                          >
-                            {t('common.registerImmediate')}
-                          </GuardButton>
-                        </span>
-                      )}
-                      {(errorNumber >= 2 || accountLock) && (
-                        <GuardButton
-                          type="link"
-                          onClick={() => {
-                            changeModule?.(GuardModuleType.ANY_QUESTIONS)
-                          }}
-                        >
-                          {t('common.feedback')}
-                        </GuardButton>
-                      )}
-                    </Space>
+                    {tipComponent}
                   </div>
                 )}
                 {renderQrcodeWay && isScanModule && (
@@ -896,6 +907,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                       centered
                       destroyInactiveTabPane={true}
                       defaultActiveKey={defaultQrCodeWay}
+                      moreIcon={<IconFont type='authing-more-fill1' className='authing-tabs-more' />}
                       onChange={(k: any) => {
                         message.destroy()
                         events?.onLoginTabChange?.(k)

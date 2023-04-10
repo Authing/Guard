@@ -41,18 +41,19 @@
 // 侵入 core 的样式代码，guard view 皮肤
 .g2-view-container {
   font-family: PingFang SC;
-  box-shadow: 0px 16px 40px rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.08);
   background: #EBEEF4;
   display: flex;
   flex-direction: column;
   width: 416px;
+  line-height: 1;
 
   @media only screen and (max-width: 450px) {
     width: 100%;
   }
 
   box-sizing: border-box;
-  padding: 20px 16px 24px 16px;
+  padding: 20px 16px 48px;
   border-radius: 16px;
   position: relative;
 
@@ -133,7 +134,7 @@
       width: 56px;
       height: 56px;
       border-radius: 8px;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       filter: drop-shadow(0px 16px 32px rgba(11, 42, 153, 0.32));
     }
 
@@ -141,6 +142,7 @@
       color: #1D2129;
       font-weight: 500;
       font-size: 24px;
+      line-height: 34px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -163,9 +165,21 @@
       padding-right: 8px;
     }
 
+    .authing-ant-tabs-nav::before {
+      display: none;
+    }
+
     .authing-ant-tabs-nav-wrap {
       height: 32px;
-      border-radius: 16px;
+
+      // border-radius: 16px;
+      // &::before {
+      //   display: none;
+      // }
+    }
+
+    .authing-tabs-more {
+      font-size: 12px;
     }
 
     &.hidden {
@@ -185,9 +199,6 @@
         }
       }
 
-      .authing-ant-tabs-nav::before {
-        display: none;
-      }
     }
 
     .authing-ant-tabs-tab {
@@ -337,6 +348,10 @@
   }
 }
 
+.authing-ant-form {
+  line-height: 1;
+}
+
 .authing-ant-form-item {
   margin-bottom: 16px;
 }
@@ -435,7 +450,8 @@
 }
 
 .authing-g2-sumbit-form {
-  margin-top: 26px;
+  margin-top: 24px;
+  margin-bottom: 0;
   text-align: center;
 }
 
@@ -472,6 +488,8 @@
 }
 
 .authing-agreements-item {
+  // margin-bottom: 26px;
+
   .authing-ant-checkbox-inner {
     width: 14px;
     height: 14px;
@@ -652,10 +670,11 @@
 }
 
 .g2-tips-line {
+  margin-top: 16px;
   user-select: none;
   display: flex !important;
   font-size: 14px;
-  padding: 0 38px;
+  // padding: 0 38px;
   justify-content: center;
   color: #86909C;
 
@@ -664,7 +683,7 @@
     padding-right: 8px;
   }
 
-  height: 22px;
+  // height: 22px;
 
   .link-like {
     color: #215ae5;
@@ -898,11 +917,12 @@
 
 .authing-ant-tabs {
   overflow: visible;
+  line-height: 1;
 }
 
-.authing-ant-tabs {
-  overflow: visible;
-}
+// .authing-ant-tabs {
+//   overflow: visible;
+// }
 
 .authing-ant-tabs-tab.authing-ant-tabs-tab-active .authing-ant-tabs-tab-btn {
   font-weight: 400;
@@ -1295,10 +1315,8 @@ input {
   }
 
   .authing-ant-input-suffix {
-    position: absolute;
-    top: 50%;
-    right: 24px;
-    transform: translateY(-50%);
+    margin-left: 16px;
+    transform: translateY(-10px);
   }
 
   .authing-g2-input {
