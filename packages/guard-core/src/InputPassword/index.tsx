@@ -11,8 +11,6 @@ export const InputPassword = (props: any) => {
       autoComplete="off"
       {...props}
       iconRender={(visible: boolean) => {
-        console.log('visible: ', visible)
-
         return (
           <span style={{ display: 'flex', height: '100%', alignItems: 'center' }}>
             {visible ? (

@@ -37,6 +37,8 @@ import { useGuardView } from '../Guard/core/hooks/useGuardView'
 
 import { MFABackStateContext } from './context'
 
+import { useTranslation } from 'react-i18next'
+
 const { useMemo, useState } = React
 
 const ComponentsMapping: Record<MFAType, (props: any) => React.ReactNode> = {
@@ -73,6 +75,9 @@ export const GuardMFAView: React.FC = () => {
 
   useGuardView()
 
+  // 仅用于触发组件更新
+  useTranslation()
+
   const events = useGuardEvents()
 
   const [currentMethod, setCurrentMethod] = useState(
@@ -80,7 +85,9 @@ export const GuardMFAView: React.FC = () => {
   )
 
   const [mfaBackState, setMfaBackState] = useState<string>('login')
+
   const [showMethods, setShowMethods] = useState(true)
+
   const client = useGuardAuthClient()
 
   const __codePaser = (code: number, msg?: string) => {

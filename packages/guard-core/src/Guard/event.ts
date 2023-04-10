@@ -2,7 +2,7 @@ import { message } from 'shim-antd'
 
 import { User } from 'authing-js-sdk'
 
-import { GuardModuleType } from '.'
+import { GuardModuleType } from '../Guard'
 
 import { CompleteInfoEvents } from '../CompleteInfo/interface'
 
@@ -87,6 +87,26 @@ export const guardEventsFilter = (
     const [user] = props
     multipleInstance?.setUserInfo(user)
     oldEvents && oldEvents(...props)
+  })
+
+
+  wrapperEvents<'onAfterChangeModule'>('onAfterChangeModule', events, (oldEvents, ...props) => {
+    // 先执行外部注册的事件回调
+    oldEvents && oldEvents(...props)
+    
+    const normalBox = document.querySelector('.authing-g2-render-module-normal') as HTMLElement
+    
+    if (!normalBox) {
+      return
+    }
+    
+    const windowHeight = document.documentElement.offsetHeight
+    
+    if (normalBox.offsetHeight > windowHeight) {
+      normalBox.classList.add('normal-mode-full-screen')
+    } else {
+      normalBox.classList.remove('normal-mode-full-screen')
+    }
   })
 
   return guardEventsHijacking(events, openEventsMapping)

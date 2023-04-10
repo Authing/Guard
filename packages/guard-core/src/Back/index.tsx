@@ -47,7 +47,7 @@ export const BackLogin: React.FC<BackProps> = props => {
   }, [isRender, config.defaultScenes, onBack, t])
 
   return (
-    <div className="g2-view-back" style={{ display: 'inherit' }}>
+    <div className={`g2-view-back ${config.mode === 'modal' && 'modal'}`} style={{ display: 'inherit' }}>
       {renderBack}
     </div>
   )
@@ -66,6 +66,8 @@ export const BackCustom: React.FC<
 
   const { onBack = () => changeModule?.(GuardModuleType.LOGIN), isRender = true, children } = props
 
+  const { mode } = useGuardFinallyConfig()
+
   const renderBack = useMemo(() => {
     if (!isRender) return null
 
@@ -78,7 +80,7 @@ export const BackCustom: React.FC<
   }, [children, isRender, onBack])
 
   return (
-    <div className="g2-view-back" style={{ display: 'inherit' }}>
+    <div className={`g2-view-back ${mode === 'modal' && 'modal'}`} style={{ display: 'inherit' }}>
       {renderBack}
     </div>
   )

@@ -1,7 +1,11 @@
 import { Guard } from './src'
 
+import * as facePlugin from 'face-api.js'
+
 const guard = new Guard({
-  appId: '64196bdaa5b19f2a6e4316d0'
+  appId: '64196bdaa5b19f2a6e4316d0',
+  // mode: 'modal',
+  facePlugin
 })
 
 guard.start('#root').then(userInfo => {
@@ -18,4 +22,8 @@ guard.on('login', res => {
 
 guard.on('login-error', res => {
   console.log('on login error: ', res)
+})
+
+guard.on('after-change-module', res => {
+  console.log('on after change module: ', res)
 })
