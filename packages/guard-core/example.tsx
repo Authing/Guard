@@ -3,8 +3,7 @@ import { Guard } from './src'
 import * as facePlugin from 'face-api.js'
 
 const guard = new Guard({
-  appId: '64196bdaa5b19f2a6e4316d0',
-  // mode: 'modal',
+  appId: '630ed3137dd6f2fd7001da24',
   facePlugin
 })
 

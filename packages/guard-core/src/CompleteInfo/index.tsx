@@ -21,7 +21,6 @@ import { IconFont } from '../IconFont'
 import { useGuardAuthClient } from '../Guard/authClient'
 
 import {
-  useGuardButtonState,
   useGuardEvents,
   useGuardFinallyConfig,
   useGuardHttpClient,
@@ -51,17 +50,13 @@ export const GuardCompleteInfo: React.FC<{
 
   const { t } = useTranslation()
 
-  const { spinChange } = useGuardButtonState()
-
   const [skipLoading, setSkipLoading] = useState(false)
 
   const onSkip = async () => {
-    spinChange(true)
     setSkipLoading(true)
 
     await businessRequest(CompleteInfoAuthFlowAction.Skip)
     setSkipLoading(false)
-    spinChange(false)
   }
 
   return (

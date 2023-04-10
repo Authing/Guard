@@ -4,8 +4,6 @@ import { useShaking } from '../_utils/hooks'
 
 import { GuardButton } from '../GuardButton'
 
-import { useGuardButtonState } from '../_utils/context'
-
 import { ButtonProps } from 'shim-antd/lib/button'
 
 const { forwardRef, useState, useImperativeHandle, useEffect } = React
@@ -17,7 +15,6 @@ interface SubmitButtonProps extends ButtonProps {
   disabled?: boolean
 }
 const SubmitButton = (props: SubmitButtonProps, ref: any) => {
-  const { spinChange, spin: buttonSpin } = useGuardButtonState()
   const [spin, setSpin] = useState(false) // spin 状态需要手动设置关闭
   const [shaking, setShaking] = useState(false) // 抖动状态会自动关闭
   const { MountShaking, UnMountShaking } = useShaking() // 协议和 form input 抖动的挂载和卸载
@@ -40,11 +37,9 @@ const SubmitButton = (props: SubmitButtonProps, ref: any) => {
       setSpin(false)
       MountShaking()
       setShaking(true)
-      spinChange(false)
     },
     onSpin: (sp: boolean) => {
       setSpin(sp)
-      spinChange(sp)
     }
   }))
 
@@ -58,7 +53,7 @@ const SubmitButton = (props: SubmitButtonProps, ref: any) => {
       type={props?.type ?? 'primary'}
       htmlType={props?.htmlType ?? 'submit'}
       loading={spin}
-      disabled={buttonSpin ? true : props?.disabled ?? spin}
+      disabled={props?.disabled ?? spin}
       onClick={props.onClick ? props.onClick : () => {}}
       className={`authing-g2-submit-button ${propsCls} ${shakingCls}`}
     >

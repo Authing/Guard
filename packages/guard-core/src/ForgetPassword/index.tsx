@@ -21,8 +21,6 @@ import {
 
 import { InputPasswordForget } from './InputPassword/index'
 
-import { IconFont } from '../IconFont'
-
 import SubmitButton from '../SubmitButton'
 
 import { getGuardHttp } from '../_utils/guardHttp'
@@ -228,12 +226,6 @@ export const GuardForgetPassword: React.FC = () => {
               className="authing-g2-input"
               size="large"
               placeholder={t('login.resetPassword.inputNewPwd') as string}
-              prefix={
-                <IconFont
-                  type="authing-a-lock-line1"
-                  style={{ color: '#878A95', marginBottom: 2 }}
-                />
-              }
             />
           </Form.Item>
           <Form.Item
