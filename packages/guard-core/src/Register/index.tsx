@@ -31,6 +31,7 @@ import { GuardLoginInitData } from '../Login/interface'
 import { RegisterMethods, RegisterSortMethods, TabFieldsI18nItem } from '../Type/application'
 
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
+import { IconFont } from '../IconFont'
 
 const { useEffect, useMemo, useState } = React
 
@@ -221,6 +222,7 @@ export const GuardRegisterView: React.FC = () => {
               setActiveKey(activeKey)
               events?.onRegisterTabChange?.(activeKey as RegisterMethods)
             }}
+            moreIcon={<IconFont type='authing-more-fill1' className='authing-tabs-more' />}
             centered
           >
             {renderTab}

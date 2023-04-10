@@ -1,6 +1,6 @@
 import { React } from 'shim-react'
 
-import { Form, message } from 'shim-antd'
+import { Form, message, Space } from 'shim-antd'
 
 import { IconFont } from '../../../IconFont'
 
@@ -31,6 +31,8 @@ import { PushLoginGudeModal } from './PushLoginGuideModal'
 import { CommonFormItem } from '../../../CommonFormItem'
 
 import { CommonInput } from '../../../CommonInput'
+
+import { GuardButton } from '../../../GuardButton'
 
 const { useMemo, useRef, useState } = React
 
@@ -194,9 +196,15 @@ export function BeforeLogin(props: BeforeLoginProps) {
           />
         </Form.Item>
       </Form>
-      <div className="how-use-push-login" onClick={openModal}>
-        {t('login.howUsePushLogin')}?
-      </div>
+      <Space className="g2-tips-line">
+        <GuardButton
+          type="link"
+          className="link-like"
+          onClick={openModal}
+        >
+          {t('login.howUsePushLogin')}?
+        </GuardButton>
+      </Space>
       <PushLoginGudeModal visible={visible} onClose={onCloseModal} />
     </div>
   )

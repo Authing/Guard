@@ -125,7 +125,7 @@ const SelectPanel: React.FC<SelectPanelProps> = props => {
                 }
               >
                 <div className="g2-multiple__icon">
-                  <IconFont type="authing-more-fill"></IconFont>
+                  <IconFont type="authing-more-fill1"></IconFont>
                 </div>
               </Popover>
             </span>

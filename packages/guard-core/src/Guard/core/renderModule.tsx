@@ -102,10 +102,6 @@ export const RenderModule: React.FC<{
 
   const { GuardButtonProvider } = useGuardButtonContext()
 
-  const loadingComponent = useMemo(() => {
-    return defaultMergedConfig.loadingComponent
-  }, [defaultMergedConfig])
-
   const ComponentsMapping: Record<GuardModuleType, (key: string) => React.ReactNode> = {
     // Error
     [GuardModuleType.ERROR]: (key: string) => <GuardErrorView key={key} />,
@@ -232,12 +228,10 @@ export const RenderModule: React.FC<{
         )
       }
       return ComponentsMapping[moduleName](new Date().toString())
-    } else if (loadingComponent) {
-      return loadingComponent
     }
 
     return null
-  }, [ComponentsMapping, contextLoaded, loadingComponent, moduleName])
+  }, [ComponentsMapping, contextLoaded, moduleName])
 
   const visible = useMemo(() => {
     return guardProps.visible
