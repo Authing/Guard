@@ -431,7 +431,7 @@ export const RenderContext: React.FC<{
             initData: {
               error
             }
-          }
+          },
         }}
       >
         {children}

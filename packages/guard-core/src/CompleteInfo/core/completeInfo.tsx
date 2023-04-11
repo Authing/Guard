@@ -589,8 +589,11 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
 
   const onValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
     setDisabled(isDisabled(allValues, requiredNames))
-
   }
+
+  useEffect(() => {
+    setDisabled(isDisabled({}, requiredNames))
+  }, [])
 
   return (
     <Form
