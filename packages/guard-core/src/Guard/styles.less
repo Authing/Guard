@@ -1,10 +1,17 @@
 @import "./animation.less";
 
-.authing-g2-render-module-normal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -52%);
+@media only screen and (min-width: 451px) {
+  .authing-g2-render-module-normal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -52%);
+  }
+
+  .authing-g2-completeInfo-form-content {
+    max-height: calc(100vh - 436px);
+    overflow-y: auto;
+  }
 }
 
 @media only screen and (max-width: 450px) {

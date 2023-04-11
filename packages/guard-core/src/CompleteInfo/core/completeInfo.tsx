@@ -605,7 +605,9 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
       onValuesChange={onValuesChange}
       className="authing-g2-completeInfo-form authing-g2-form-required-item-icon-after"
     >
-      {formFieldsV2}
+      <div className='authing-g2-completeInfo-form-content'>
+        {formFieldsV2}
+      </div>
 
       <Form.Item className="authing-g2-sumbit-form">
         <SubmitButton
