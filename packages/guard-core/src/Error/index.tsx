@@ -33,8 +33,8 @@ export const GuardErrorView: React.FC<ErrorProps> = propsInitData => {
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <div
             style={{
-              width: 205,
-              height: 140,
+              width: 240,
+              height: 160,
               backgroundImage:
                 'url(https://authing-files.oss-cn-zhangjiakou.aliyuncs.com/authing-guard/authing_error.svg)',
               backgroundSize: 'contain'

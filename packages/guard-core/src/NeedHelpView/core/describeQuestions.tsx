@@ -187,6 +187,7 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
               }
             }
           ]}
+          style={{marginBottom: 24}}
         >
           <CommonInput
             name='identify'
@@ -203,12 +204,14 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
           label={t('common.problem.form.question')}
           name="questionPicker"
           initialValue={typeProblem}
+          style={{marginBottom: 24}}
         >
           <Select
             className="authing-g2-select"
             onChange={(value: number) => {
               setTypeProblem(value)
             }}
+            suffixIcon={<IconFont type='authing-arrow-down-s-line' className='authing-select-down-arrow' />}
           >
             {typeOperations?.map(({ value, label }) => (
               // @ts-ignore
@@ -235,6 +238,7 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
           className="authing-g2-input-form"
           name="description"
           label={t('common.problem.form.questionDescript')}
+          style={{marginBottom: 24}}
         >
           <Input.TextArea
             className="authing-g2-questions-textarea"
