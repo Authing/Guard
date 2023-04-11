@@ -42,6 +42,7 @@ import { EmailScene } from '../../Type'
 import { UploadImage } from '../../UploadImage'
 import { CommonFormItem } from '../../CommonFormItem'
 import { CommonInput } from '../../CommonInput'
+import { IconFont } from '../../IconFont'
 
 const { useCallback, useEffect, useMemo, useRef, useState } = React
 
@@ -147,6 +148,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
         <Select
           key={props.key}
           className="authing-g2-select"
+          suffixIcon={<IconFont type='authing-arrow-down-s-line' className='authing-select-down-arrow' />}
           options={[
             { label: i18n.t('common.man'), value: 'M' },
             { label: i18n.t('common.female'), value: 'F' }
@@ -158,6 +160,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
           key={props.key}
           className="authing-g2-select"
           options={countryList}
+          suffixIcon={<IconFont type='authing-arrow-down-s-line' className='authing-select-down-arrow' />}
           showSearch
           filterOption={filterOption}
         />
@@ -189,6 +192,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
         <Select
           key={props.key}
           className="authing-g2-select"
+          suffixIcon={<IconFont type='authing-arrow-down-s-line' className='authing-select-down-arrow' />}
           showSearch
           options={props.options}
           filterOption={filterOption}
@@ -198,6 +202,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
         <Select
           key={props.key}
           className="authing-g2-select"
+          suffixIcon={<IconFont type='authing-arrow-down-s-line' className='authing-select-down-arrow' />}
           showSearch
           options={props.options}
           filterOption={filterOption}
@@ -207,6 +212,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
         <Select
           key={props.key}
           className="authing-g2-select"
+          suffixIcon={<IconFont type='authing-arrow-down-s-line' className='authing-select-down-arrow' />}
           options={[
             { label: i18n.t('common.yes'), value: true as any },
             { label: i18n.t('common.no'), value: false as any }
@@ -443,7 +449,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
             key={metaData.name}
             name={metaData.name}
             label={label}
-            style={{ marginBottom: 8 }}
+            style={{ marginBottom: 16 }}
           >
             {children}
           </Form.Item>

@@ -138,7 +138,7 @@
   "feedback": "问题反馈",
   "loginProtocolTips": "请勾选登录协议",
   "registerProtocolTips": "请勾选注册协议",
-  "accountLock": "账号被锁定，请点击下方问号进行反馈",
+  "accountLock": "账号被锁定，请点击下方问题反馈",
   "corsErrorMessage": "当前域名不在允许访问的域名列表中。",
   "corsErrorMessage2": "如果有疑问可以<a href=\"https://docs.authing.cn/v2/guides/security/config-domain.html\">参考文档</a>",
   "totpGenerateCode": "为你生成一串新的恢复代码，请安全地记录这段密钥",

@@ -2,13 +2,14 @@
 
 .g2-view-container {
   height: 0;
-	animation: containerAnimation 1s ease-in-out forwards;
+  animation: containerAnimation 0.5s ease-in-out forwards;
 }
 
 @keyframes containerAnimation {
   99% {
     height: 600px;
   }
+
   100% {
     height: auto;
     padding: 20px 16px 48px;
@@ -17,7 +18,7 @@
 
 .g2-init-setting-loading {
   opacity: 0;
-	animation: logoAnimation 1s ease-in forwards;
+  animation: logoAnimation 1s ease-in forwards;
 }
 
 
@@ -25,6 +26,7 @@
   50% {
     opacity: 1;
   }
+
   100% {
     opacity: 0;
   }
@@ -32,9 +34,9 @@
 
 .g2-view-header,
 .animation-box,
-.g2-social-login{
+.g2-social-login {
   opacity: 0;
-  transform:  translateY(10px);
+  transform: translateY(10px);
 }
 
 .g2-view-header {
@@ -44,7 +46,7 @@
 @keyframes viewHeaderAnimation {
   100% {
     opacity: 1;
-    transform:  translateY(0);
+    transform: translateY(0);
   }
 }
 
@@ -55,7 +57,7 @@
 @keyframes animationBoxAnimation {
   100% {
     opacity: 1;
-    transform:  translateY(0);
+    transform: translateY(0);
   }
 }
 
@@ -66,7 +68,7 @@
 @keyframes socialLoginAnimation {
   100% {
     opacity: 1;
-    transform:  translateY(0);
+    transform: translateY(0);
   }
 }
 

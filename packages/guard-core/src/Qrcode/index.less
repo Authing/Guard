@@ -16,77 +16,90 @@
     justify-content: center;
     flex-direction: column;
     min-height: 194px;
+    margin-top: 32px;
+    margin-bottom: 24px;
+
     // BFC
     // margin-top: 16px;
     .@{namespace}__image-wrapper {
       position: relative;
     }
+
     each(@status, {
-      &--@{value}  when not (@value = ready) {
-          .@{namespace}__image-wrapper {
-            &:after {
-                border-radius: 8px;
-                content: '';
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                left: 0;
-                right: 0;
-              }
-            }
+      &--@{value} when not (@value =ready) {
+        .@{namespace}__image-wrapper {
+
+
+          &:after {
+            border-radius: 8px;
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+          }
         }
-        &--@{value}  when (@value = already),(@value = success),(@value = MFA) {
-          .@{namespace}__image-wrapper {
-            &:after {
-                background-color: rgba(255,255,255,0.95)
-              }
-            }
+      }
+
+      &--@{value} when (@value =already), (@value =success), (@value =MFA) {
+        .@{namespace}__image-wrapper {
+          &:after {
+            background-color: rgba(255, 255, 255, 0.95)
+          }
         }
-        &--@{value}  when (@value = error),(@value = expired),(@value = cancel) {
-          .@{namespace}__image-wrapper {
-            &:after {
-                cursor: pointer;
-                background-color: rgba(0,0,0,0.75)
-              }
-            }
+      }
+
+      &--@{value} when (@value =error), (@value =expired), (@value =cancel) {
+        .@{namespace}__image-wrapper {
+          &:after {
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.75)
+          }
         }
+      }
     });
-    // 文字遮罩
-    &__mask {
-      position: absolute;
-      z-index: 99;
-      left: 50%;
-      top: 50%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      transform: translate(-50%, -50%);
-    }
-  }
 
-  &__desc {
-    height: 20px;
-    color: #86909C;
+  // 文字遮罩
+  &__mask {
+    position: absolute;
+    z-index: 99;
+    left: 50%;
+    top: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
   }
+}
 
-  &__image-wrapper {
-    position: relative;
-    margin-bottom: 8px;
-  }
+&__desc {
+  // margin-bottom: 24px;
+  height: 14px;
+  color: #86909C;
+}
 
-  // 内部title
-  &-inner__title--already {
-    margin-top: 8px;
-    color: #282d3c;
-    .qr-code-title;
-  }
+&__image-wrapper {
+  position: relative;
+  margin-bottom: 16px;
+  box-shadow: 0px 8px 24px -4px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+}
 
-  &-inner__title--refer {
-    margin-top: 8px;
-    color: #fff;
-    white-space: nowrap;
-    .qr-code-title;
-  }
+// 内部title
+&-inner__title--already {
+  margin-top: 8px;
+  color: #282d3c;
+  .qr-code-title;
+}
+
+&-inner__title--refer {
+  margin-top: 8px;
+  color: #fff;
+  white-space: nowrap;
+  .qr-code-title;
+}
 }

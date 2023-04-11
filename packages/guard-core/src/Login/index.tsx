@@ -765,7 +765,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
 
     return null
 
-  }, [])
+  }, [disableResetPwd, isResetPage, disableRegister, errorNumber, accountLock])
 
   return (
     <div className="g2-view-container g2-view-login">
@@ -822,6 +822,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                     />
                     <IconFont
                       type="authing-computer-line"
+                      style={{width: 24, height: 24}}
                       className={`qrcode-switch-image ${qrcodeNone}`}
                     />
                   </div>
@@ -902,7 +903,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                   </div>
                 )}
                 {renderQrcodeWay && isScanModule && (
-                  <div className={`g2-view-tabs ${qrcodeNone} ${hiddenTab && 'hidden'}`} style={{ marginTop: '54px' }}>
+                  <div className={`g2-view-tabs ${qrcodeNone} ${hiddenTab && 'hidden'}`} >
                     <Tabs
                       centered
                       destroyInactiveTabPane={true}
