@@ -449,7 +449,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
             key={metaData.name}
             name={metaData.name}
             label={label}
-            style={{ marginBottom: 16 }}
+            style={{ marginBottom: 24 }}
           >
             {children}
           </Form.Item>

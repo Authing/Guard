@@ -4,7 +4,17 @@
   &--scroll {
     position: relative;
     max-height: 268px;
-    overflow: scroll;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(78, 89, 105, 0.2);
+      border-radius: 3px;
+    }
+
   }
 }
 
@@ -47,7 +57,7 @@
   display: flex;
   border: none;
   background-color: #f5f6f7;
-  border-radius: 4px;
+  border-radius: 8px;
   color: #282d3c;
   font-size: 14px;
   margin-bottom: 6px;
@@ -67,7 +77,8 @@
   //   margin-bottom: 16px !important;
   // }
   &:hover {
-    background-color: rgba(84, 89, 104, 0.2);
+    // background-color: rgba(84, 89, 104, 0.2);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
   }
 }
 
