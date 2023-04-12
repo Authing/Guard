@@ -93,8 +93,9 @@ export const SendCodeBtn: React.FC<SendCodeProps> = props => {
       onClick={onClick}
       ref={btnRef}
       type="link"
+      style={{padding: 0, height: 24}}
     >
-      {loading === true && <div className='authing-btn-icon '>
+      {loading === true && <div className='authing-btn-icon ' style={{margin: 0}}>
         <IconFont
           type="authing-loading-guard"
           className="authing-btn-loading"

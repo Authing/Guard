@@ -64,8 +64,8 @@ export const GuardSubmitSuccessView: React.FC = () => {
           className="plate"
           src={`${cdnBase}/questions-send-ok.png`}
           alt=""
-          width={191}
-          height={146}
+          width={240}
+          height={160}
         />
         <div className="title">{title}</div>
         <div className="message">{message}</div>

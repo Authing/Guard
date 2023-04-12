@@ -1,4 +1,4 @@
-import { Divider, Input } from 'shim-antd'
+import { Divider, Input, Space } from 'shim-antd'
 
 import { React } from 'shim-react'
 
@@ -19,7 +19,7 @@ interface VerifyCodeInputProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const VerifyCodeInput: React.FC<VerifyCodeInputProps> = ({
   length = 4,
-  size = '56px',
+  size = '52px',
   gutter = '1px',
   onEenter,
   showDivider,
@@ -137,66 +137,69 @@ export const VerifyCodeInput: React.FC<VerifyCodeInputProps> = ({
 
   return (
     <div ref={codeInputRef} className="authing-g2-code-input" {...rest}>
-      {new Array(length).fill(0).map((_, index) => {
-        return (
-          <Fragment key={index}>
-            <Input
-              onFocus={() => setFocusIndex(index)}
-              ref={(el: any) => (inputRef.current[index] = el)}
-              style={{
-                width: size,
-                minWidth: size,
-                minHeight: size,
-                height: size,
-                lineHeight: size,
-                marginLeft: index === 0 ? 0 : gutter
-              }}
-              className="authing-g2-code-input-item"
-              size="large"
-              autoFocus={index === 0}
-              onKeyDown={(evt: any) => handleKeyDown(evt, index)}
-              value={verifyCode[index]}
-              maxLength={2}
-              onChange={(evt: any) => {
-                evt.persist()
-                if (fromClipboard.current) {
-                  fromClipboard.current = false
-                  return false
-                }
-                // @ts-ignore
-                if (evt.nativeEvent.isComposing) {
-                  return
-                }
+      <Space size={1}>
+        {new Array(length).fill(0).map((_, index) => {
+          return (
+            <Fragment key={index}>
+              <Input
+                onFocus={() => setFocusIndex(index)}
+                ref={(el: any) => (inputRef.current[index] = el)}
+                style={{
+                  width: '100%',
+                  // minWidth: size,
+                  minHeight: size,
+                  height: size,
+                  lineHeight: size,
+                  fontSize: 24
+                  // marginLeft: index === 0 ? 0 : gutter
+                }}
+                className="authing-g2-code-input-item"
+                size="large"
+                autoFocus={index === 0}
+                onKeyDown={(evt: any) => handleKeyDown(evt, index)}
+                value={verifyCode[index]}
+                maxLength={2}
+                onChange={(evt: any) => {
+                  evt.persist()
+                  if (fromClipboard.current) {
+                    fromClipboard.current = false
+                    return false
+                  }
+                  // @ts-ignore
+                  if (evt.nativeEvent.isComposing) {
+                    return
+                  }
 
-                const nextValue = evt.target.value
-                /**
+                  const nextValue = evt.target.value
+                  /**
                  * https://github.com/devfolioco/react-otp-input/issues/322
                  * ios 下 otp 自动填充在chrome内核浏览器下会触发两次 并且第一次会直接塞otp复制的值(maxlength 限制无效) 如 1246 第二次则根据maxlength 截取塞 12
                  * 针对这种情况取第一次值隔离第二次调用
                  * safari 是单个input 塞对应的值
                  */
-                if (nextValue.length === length) {
-                  fromClipboard.current = true
-                  onChange(nextValue.split(''))
-                  setFocusIndex(length - 1)
-                  return
-                }
-                const preValue = verifyCode[index] || ''
-                const changeValue =
+                  if (nextValue.length === length) {
+                    fromClipboard.current = true
+                    onChange(nextValue.split(''))
+                    setFocusIndex(length - 1)
+                    return
+                  }
+                  const preValue = verifyCode[index] || ''
+                  const changeValue =
                   nextValue.split('').filter((item: any) => item !== preValue)[0] ||
                   nextValue.slice(-1)
 
-                handleChange(changeValue, index)
-              }}
-              pattern="[0-9]*"
-              type="tel"
-            />
-            {showDivider && index === Math.floor(length / 2 - 1) && (
-              <Divider className="authing-g2-code-input-divider" />
-            )}
-          </Fragment>
-        )
-      })}
+                  handleChange(changeValue, index)
+                }}
+                pattern="[0-9]*"
+                type="tel"
+              />
+              {showDivider && index === Math.floor(length / 2 - 1) && (
+                <Divider className="authing-g2-code-input-divider" />
+              )}
+            </Fragment>
+          )
+        })}
+      </Space>
     </div>
   )
 }

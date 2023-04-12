@@ -79,7 +79,7 @@
   }
 
   .g2-mfa-content {
-    padding: 0 20px;
+    padding: 0 32px;
 
     @media only screen and (max-width: 450px) {
       padding-left: 8px;
@@ -88,8 +88,8 @@
   }
 
   .g2-mfa-method {
-    margin: 14px 0 8px 0;
-    padding: 0 20px;
+    margin: 24px 0 0 0;
+    padding: 0 32px;
 
     @media only screen and (max-width: 450px) {
       padding-left: 8px;
@@ -806,11 +806,12 @@
 }
 
 .g2-questions-send-success-page {
+  margin-top: 28px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 480px;
+  // min-height: 480px;
 
   .plate {
     margin-bottom: 14px;
@@ -819,14 +820,14 @@
   .title {
     color: #1D2129;
     font-weight: 500;
-    font-size: 16px;
-    margin-bottom: 10px;
+    font-size: 24px;
+    margin-bottom: 8px;
   }
 
   .message {
-    font-size: 14px;
+    font-size: 16px;
     color: #86909C;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     text-align: center;
   }
 
@@ -1225,7 +1226,7 @@ input {
   }
 
   .g2-questions-send-success-page {
-    min-height: 488px;
+    // min-height: 488px;
 
     .plate {
       margin-bottom: 16px;
@@ -1235,6 +1236,10 @@ input {
 
 .g2-submit-success {
   padding: 0;
+
+  .message {
+    line-height: 22px;
+  }
 }
 
 .authing-ant-btn-loading-icon span {
