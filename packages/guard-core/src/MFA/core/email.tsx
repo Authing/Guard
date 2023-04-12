@@ -210,7 +210,7 @@ export const VerifyMFAEmail: React.FC<VerifyMFAEmailProps> = ({
         onFinishFailed={() => submitButtonRef.current?.onError()}
         onValuesChange={onValuesChange}
       >
-        <VerifyCodeFormItem codeLength={codeLength} ruleKeyword={t('common.captchaCode') as string}>
+        <VerifyCodeFormItem codeLength={codeLength} ruleKeyword={t('common.captchaCode') as string} style={{marginBottom: 16}}>
           <VerifyCodeInput length={codeLength} onFinish={onFinish} />
         </VerifyCodeFormItem>
 

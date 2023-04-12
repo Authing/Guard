@@ -1,6 +1,6 @@
 .authing-g2-mfa-title {
   color: #1D2129;
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 600;
   text-align: center;
   margin-bottom: 8px;
@@ -8,11 +8,12 @@
 }
 
 .authing-g2-mfa-tips {
-  font-size: 14px;
+  font-size: 16px;
   color: #86909C;
   text-align: center;
   margin-bottom: 24px;
-  min-height: 23px;
+  min-height: 22px;
+  line-height: 22px;
 }
 
 .g2-mfa-content {
@@ -41,6 +42,7 @@
 
   .g2-mfa-totp-verify-input {
     text-align: center;
+
     .authing-code-input-item {
       &:not(:first-child) {
         margin-left: 14px;
@@ -59,6 +61,7 @@
     display: block;
     margin-bottom: 24px;
   }
+
   .g2-mfa-face-identifying {
     display: flex;
     justify-content: center;
@@ -70,6 +73,7 @@
       border-radius: 50%;
       vertical-align: middle;
     }
+
     .mesh {
       z-index: 100;
       cursor: pointer;
@@ -82,6 +86,7 @@
       cursor: pointer;
       background: rgba(0, 0, 0, 0.4);
     }
+
     .ring {
       width: 240px;
       height: 240px;
@@ -90,10 +95,12 @@
     }
   }
 }
+
 .svg-circle-bg {
   stroke-width: 4;
   // stroke: rgba(255, 161, 39, 1);
 }
+
 .svg-circle-running {
   stroke-width: 4;
   transition: all 0.2s linear;

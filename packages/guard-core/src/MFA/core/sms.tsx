@@ -249,7 +249,7 @@ export const VerifyMFASms: React.FC<VerifyMFASmsProps> = ({
         onFinishFailed={() => submitButtonRef.current.onError()}
         onValuesChange={onValuesChange}
       >
-        <VerifyCodeFormItem codeLength={codeLength} ruleKeyword={t('common.captchaCode') as string}>
+        <VerifyCodeFormItem codeLength={codeLength} ruleKeyword={t('common.captchaCode') as string} style={{marginBottom: 16}}>
           <VerifyCodeInput length={codeLength} onFinish={onFinish} />
         </VerifyCodeFormItem>
 
