@@ -14,20 +14,6 @@
   }
 }
 
-@media only screen and (max-width: 450px) {
-  .authing-g2-render-module {
-    width: 100%;
-  }
-
-  .authing-g2-render-module-modal {
-    width: 100%;
-  }
-
-  .g2-view-container {
-    box-shadow: none !important;
-  }
-}
-
 // 🤢 这部分完全是因为user-portal dom结构很难做到针对使用guard页面做样式优化
 .authing-guard-layout {
   padding: 24px 0;
@@ -98,6 +84,7 @@
   }
 
   .no-login-methods-view {
+    margin-top: 24px;
     display: flex;
     flex: 1;
     flex-direction: column;
@@ -136,7 +123,7 @@
       flex-direction: column;
       align-items: center;
       // padding-top: 100px;
-      margin-bottom: 62px;
+      // margin-bottom: 62px;
     }
 
     .icon {
@@ -1438,5 +1425,44 @@ input {
 .authing-g2-describe-questions {
   .authing-g2-input-form {
     line-height: 22px;
+  }
+}
+
+.authing-ant-select-dropdown {
+  padding: 6px;
+  border: 1px solid #E5E6EB;
+  box-shadow: 0px 10px 20px -10px rgba(4, 24, 115, 0.1);
+  border-radius: 8px;
+
+  .authing-ant-select-item {
+    padding: 8px 10px;
+    border-radius: 4px;
+
+    &-option-selected,
+    &--option-active {
+      background: #F2F3F5;
+      color: #1D2129;
+      font-weight: 400;
+    }
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .authing-g2-render-module {
+    width: 100%;
+  }
+
+  .authing-g2-render-module-modal {
+    width: 100%;
+  }
+
+  .g2-view-container {
+    box-shadow: none !important;
+    min-height: 100vh;
+    // justify-content: center !important;
+
+    .g2-change-language-container {
+      bottom: 20px;
+    }
   }
 }

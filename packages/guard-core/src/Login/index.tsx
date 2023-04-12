@@ -348,7 +348,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
 
       if (containerDOM) {
         // @ts-ignore
-        containerDOM.style['min-height'] = isNoMethod ? '456px' : '280px'
+        containerDOM.style['min-height'] = '280px'
         containerDOM.classList.add('no-login-methods-view')
         return () => {
           // @ts-ignore
@@ -765,7 +765,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
 
     return null
 
-  }, [disableResetPwd, isResetPage, disableRegister, errorNumber, accountLock])
+  }, [disableResetPwd, isResetPage, disableRegister, errorNumber, accountLock, t])
 
   return (
     <div className="g2-view-container g2-view-login">
@@ -784,7 +784,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
               )}
             </div>
             <div className="no-login-methods-view">
-              <IconFont type="authing-bianzu" style={{ width: 178, height: 120 }} />
+              <IconFont type="authing-otp" style={{ width: 240, height: 160 }} />
               <span className="no-login-methods-desc">{t('login.noLoginMethodsDesc')}</span>
             </div>
           </>

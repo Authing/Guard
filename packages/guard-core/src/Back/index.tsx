@@ -29,16 +29,16 @@ export const BackLogin: React.FC<BackProps> = props => {
 
   const { isRender = true } = props
 
+  if (!isRender) return null
+
+  const whitelist = [GuardModuleType.LOGIN, GuardModuleType.REGISTER]
+
+  // 初始场景不是 登录 或者注册时候，不显示返回按钮
+  if (config.defaultScenes && !whitelist.includes(config.defaultScenes)) {
+    return null
+  }
+
   const renderBack = useMemo(() => {
-    if (!isRender) return null
-
-    const whitelist = [GuardModuleType.LOGIN, GuardModuleType.REGISTER]
-
-    // 初始场景不是 登录 或者注册时候，不显示返回按钮
-    if (config.defaultScenes && !whitelist.includes(config.defaultScenes)) {
-      return null
-    }
-
     return (
       <GuardButton type="link" onClick={onBack} className="g2-view-mfa-back-hover">
         <IconFont type="authing-arrow-left-line" style={{ fontSize: 24 }} />
@@ -69,8 +69,6 @@ export const BackCustom: React.FC<
   const { mode } = useGuardFinallyConfig()
 
   const renderBack = useMemo(() => {
-    if (!isRender) return null
-
     return (
       <GuardButton type="link" onClick={onBack} className="g2-view-mfa-back-hover">
         <IconFont type="authing-arrow-left-line" style={{ fontSize: 24 }} />
@@ -78,6 +76,8 @@ export const BackCustom: React.FC<
       </GuardButton>
     )
   }, [children, isRender, onBack])
+
+  if (!isRender) return null
 
   return (
     <div className={`g2-view-back ${mode === 'modal' && 'modal'}`} style={{ display: 'inherit' }}>
