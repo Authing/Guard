@@ -212,6 +212,7 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
               setTypeProblem(value)
             }}
             suffixIcon={<IconFont type='authing-arrow-down-s-line' className='authing-select-down-arrow' />}
+            menuItemSelectedIcon={<IconFont type='authing-check-fill' style={{fontSize: 16, color: '#4E5969'}} />}
           >
             {typeOperations?.map(({ value, label }) => (
               // @ts-ignore

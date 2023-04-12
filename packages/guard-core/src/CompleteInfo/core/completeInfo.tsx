@@ -153,6 +153,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
             { label: i18n.t('common.man'), value: 'M' },
             { label: i18n.t('common.female'), value: 'F' }
           ]}
+          menuItemSelectedIcon={<IconFont type='authing-check-fill' style={{fontSize: 16, color: '#4E5969'}} />}
         />
       ),
       country: props => (
@@ -163,6 +164,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
           suffixIcon={<IconFont type='authing-arrow-down-s-line' className='authing-select-down-arrow' />}
           showSearch
           filterOption={filterOption}
+          menuItemSelectedIcon={<IconFont type='authing-check-fill' style={{fontSize: 16, color: '#4E5969'}} />}
         />
       ),
       image: () => <UploadImage />,
@@ -196,6 +198,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
           showSearch
           options={props.options}
           filterOption={filterOption}
+          menuItemSelectedIcon={<IconFont type='authing-check-fill' style={{fontSize: 16, color: '#4E5969'}} />}
         />
       ),
       dropdown: (props: any) => (
@@ -206,6 +209,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
           showSearch
           options={props.options}
           filterOption={filterOption}
+          menuItemSelectedIcon={<IconFont type='authing-check-fill' style={{fontSize: 16, color: '#4E5969'}} />}
         />
       ),
       boolean: props => (
@@ -217,6 +221,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
             { label: i18n.t('common.yes'), value: true as any },
             { label: i18n.t('common.no'), value: false as any }
           ]}
+          menuItemSelectedIcon={<IconFont type='authing-check-fill' style={{fontSize: 16, color: '#4E5969'}} />}
         />
       ),
       string: props => (

@@ -81,6 +81,7 @@ export const VirtualDropdown: React.FC<VirtualDropdownProps> = props => {
           />
         </>
       }
+      menuItemSelectedIcon={<IconFont type='authing-check-fill' style={{fontSize: 16, color: '#4E5969'}} />}
     />
   )
 }
