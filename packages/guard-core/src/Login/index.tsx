@@ -845,7 +845,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                 ></Popover> */}
               </div>
             )}
-            {!isScanModule && <div className="g2-view-header">
+            {!isScanModule && !isResetPage && <div className="g2-view-header">
               <img src={config?.logo} alt="" className="icon" />
               <div className="title">
                 {isMultipleAccount ? t('login.selectLoginAccount') : config?.title}

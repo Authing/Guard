@@ -77,7 +77,7 @@ const SelectPanel: React.FC<SelectPanelProps> = props => {
         title: t('login.useOtherAccount'),
         element: (
           <div className="g2-multiple__icon--add-line">
-            <IconFont style={{ fontSize: 24, color: '#4E5969' }} type="authing-add-line"></IconFont>
+            <IconFont style={{ fontSize: 16, color: '#4E5969' }} type="authing-add-line"></IconFont>
           </div>
         )
       }
@@ -108,6 +108,7 @@ const SelectPanel: React.FC<SelectPanelProps> = props => {
           {operation && (
             <span className="g2-multiple__op" onClick={e => e.stopPropagation()}>
               <Popover
+                placement="bottomRight"
                 trigger={triggerWay}
                 overlayClassName="g2-multiple__op-wrapper"
                 getPopupContainer={(triggerNode: any) => triggerNode}
