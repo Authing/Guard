@@ -108,7 +108,7 @@ export const RenderModule: React.FC<{
     return defaultMergedConfig.loadingComponent
   }, [defaultMergedConfig])
 
-  console.log('loadingComponent: ', loadingComponent)
+  const { isPhoneMedia } = useMediaSize()
 
   const ComponentsMapping: Record<GuardModuleType, (key: string) => React.ReactNode> = {
     // Error
@@ -238,7 +238,7 @@ export const RenderModule: React.FC<{
       return ComponentsMapping[moduleName](new Date().toString())
     }
 
-    if (loadingComponent) {
+    if (loadingComponent && defaultMergedConfig.mode !== GuardMode.Modal) {
       return (<div className="authing-logo-loading">
         {loadingComponent}
       </div>)
@@ -254,8 +254,6 @@ export const RenderModule: React.FC<{
   const renderGuardContent = useMemo(() => {
     return <GuardButtonProvider>{renderModule}</GuardButtonProvider>
   }, [GuardButtonProvider, renderModule])
-
-  const { isPhoneMedia } = useMediaSize()
 
   return (
     <ConfigProvider prefixCls={PREFIX_CLS}>

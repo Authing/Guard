@@ -19,7 +19,7 @@ interface VerifyCodeInputProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const VerifyCodeInput: React.FC<VerifyCodeInputProps> = ({
   length = 4,
-  size = '52px',
+  size = '56px',
   gutter = '1px',
   onEenter,
   showDivider,
