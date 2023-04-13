@@ -65,11 +65,13 @@ export const GuardButton: React.FC<GuardButtonProps> = props => {
           props.onClick(e)
         }
       }}
-      onMouseEnter={() => {
+      onMouseEnter={(e) => {
         setHover(true)
+        props?.onMouseEnter?.(e)
       }}
-      onMouseLeave={() => {
+      onMouseLeave={(e) => {
         setHover(false)
+        props?.onMouseLeave?.(e)
       }}
     >
       {props.children}
