@@ -55,10 +55,6 @@
   border-radius: 16px;
   position: relative;
 
-  input:-webkit-autofill {
-    background-color: #ffffff;
-  }
-
   &.g2-view-register {
     justify-content: space-between;
   }
@@ -1501,4 +1497,10 @@ input {
       bottom: 20px;
     }
   }
+}
+
+.authing-ant-input:-webkit-autofill,
+.authing-ant-input:-webkit-autofill:hover,
+.authing-ant-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
 }
