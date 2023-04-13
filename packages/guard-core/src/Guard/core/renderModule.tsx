@@ -240,7 +240,9 @@ export const RenderModule: React.FC<{
 
     if (loadingComponent && defaultMergedConfig.mode !== GuardMode.Modal) {
       return (<div className="authing-logo-loading">
-        {loadingComponent}
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+          {loadingComponent}
+        </div>
       </div>)
     }
 
