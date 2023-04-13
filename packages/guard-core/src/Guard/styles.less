@@ -1,5 +1,32 @@
 @import "./animation.less";
 
+.authing-g2-render-module-normal-wrapper,
+.authing-g2-render-module-normal-wrapper-animation {
+  font-family: PingFang SC;
+  box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  width: 416px;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  border-radius: 16px;
+  position: relative;
+  background-color: #ebeef4;
+}
+
+.authing-g2-render-module-normal-wrapper.padding {
+  padding: 20px 16px 48px;
+}
+
+.authing-logo-loading {
+  position: absolute;
+  top: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 @media only screen and (min-width: 451px) {
   .authing-g2-render-module-normal {
     position: fixed;
@@ -36,23 +63,21 @@
 
 // 侵入 core 的样式代码，guard view 皮肤
 .g2-view-container {
-  font-family: PingFang SC;
-  box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.08);
-  background: #EBEEF4;
-  display: flex;
-  flex-direction: column;
-  width: 416px;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-
   @media only screen and (max-width: 450px) {
     width: 100%;
     border-radius: 0;
+    box-sizing: border-box;
+    border-radius: 16px;
+    position: relative;
+    font-family: PingFang SC;
+    box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.08);
+    background: #EBEEF4;
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    padding: 20px 16px 48px;
   }
-
-  box-sizing: border-box;
-  border-radius: 16px;
-  position: relative;
 
   input:-webkit-autofill {
     background-color: #ffffff;
@@ -751,14 +776,10 @@
 }
 
 .g2-init-setting-loading {
-  width: 456px;
-  background: #fff;
-
   @media only screen and (max-width: 450px) {
     width: 100%;
   }
 
-  min-height: 540px;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -93,7 +93,16 @@ export const guardEventsFilter = (
   wrapperEvents<'onAfterChangeModule'>('onAfterChangeModule', events, (oldEvents, ...props) => {
     // 先执行外部注册的事件回调
     oldEvents && oldEvents(...props)
+
+    const normalWrapper = document.querySelector('.authing-g2-render-module-normal-wrapper') as HTMLElement
     
+    if (normalWrapper) {
+      setTimeout(() => {
+        normalWrapper.classList.add('padding')
+        normalWrapper.classList.remove('authing-g2-render-module-normal-wrapper-animation')
+      }, 4000)
+    }
+
     const normalBox = document.querySelector('.authing-g2-render-module-normal') as HTMLElement
     
     if (!normalBox) {

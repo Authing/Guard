@@ -1,6 +1,6 @@
 // 当前文件及文件中的 class 只用于动画
 
-.g2-view-container {
+.authing-g2-render-module-normal-wrapper-animation{
   height: 0;
   animation: containerAnimation 0.5s ease-in-out forwards;
 }
@@ -16,30 +16,26 @@
   }
 }
 
-.g2-init-setting-loading {
+.authing-g2-render-module-normal-wrapper-animation .authing-logo-loading {
   opacity: 0;
-  animation: logoAnimation 1s ease-in forwards;
+  animation: logoAnimation 0s ease-in forwards;
 }
 
 
 @keyframes logoAnimation {
-  50% {
-    opacity: 1;
-  }
-
   100% {
-    opacity: 0;
+    opacity: 1;
   }
 }
 
-.g2-view-header,
-.animation-box,
-.g2-social-login {
+.authing-g2-render-module-normal-wrapper-animation .g2-view-header,
+.authing-g2-render-module-normal-wrapper-animation .animation-box,
+.authing-g2-render-module-normal-wrapper-animation .g2-social-login {
   opacity: 0;
   transform: translateY(10px);
 }
 
-.g2-view-header {
+.authing-g2-render-module-normal-wrapper-animation .g2-view-header {
   animation: viewHeaderAnimation 0.5s ease-in 0.5s forwards;
 }
 
@@ -50,7 +46,7 @@
   }
 }
 
-.animation-box {
+.authing-g2-render-module-normal-wrapper-animation .animation-box {
   animation: animationBoxAnimation 0.5s ease-in 0.8s forwards;
 }
 
@@ -61,7 +57,7 @@
   }
 }
 
-.g2-social-login {
+.authing-g2-render-module-normal-wrapper-animation .g2-social-login {
   animation: animationBoxAnimation 0.5s ease-in 1.1s forwards;
 }
 
@@ -72,12 +68,12 @@
   }
 }
 
-.g2-change-language-container,
-.g2-qrcode-switch {
+.authing-g2-render-module-normal-wrapper-animation .g2-change-language-container,
+.authing-g2-render-module-normal-wrapper-animation .g2-qrcode-switch {
   opacity: 0;
 }
 
-.g2-change-language-container {
+.authing-g2-render-module-normal-wrapper-animation .g2-change-language-container {
   animation: changeLanguageAnimation 0.5s ease-in 1.4s forwards;
 }
 
@@ -87,7 +83,7 @@
   }
 }
 
-.g2-qrcode-switch {
+.authing-g2-render-module-normal-wrapper-animation .g2-qrcode-switch {
   animation: qrcodeSwitchAnimation 0.5s ease-in 1.4s forwards;
 }
 

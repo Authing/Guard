@@ -73,6 +73,8 @@ import { GuardTenantPortalSelectView } from '../../TenantPortalSelect'
 
 import { GuardNewSubmitSuccessView } from '../../NewSubmitSuccess'
 
+import { useMediaSize } from '../../_utils'
+
 const PREFIX_CLS = 'authing-ant'
 
 const { useEffect, useMemo } = React
@@ -101,6 +103,12 @@ export const RenderModule: React.FC<{
   const { changeModule } = useGuardModule()
 
   const { GuardButtonProvider } = useGuardButtonContext()
+
+  const loadingComponent = useMemo(() => {
+    return defaultMergedConfig.loadingComponent
+  }, [defaultMergedConfig])
+
+  console.log('loadingComponent: ', loadingComponent)
 
   const ComponentsMapping: Record<GuardModuleType, (key: string) => React.ReactNode> = {
     // Error
@@ -230,8 +238,14 @@ export const RenderModule: React.FC<{
       return ComponentsMapping[moduleName](new Date().toString())
     }
 
+    if (loadingComponent) {
+      return (<div className="authing-logo-loading">
+        {loadingComponent}
+      </div>)
+    }
+
     return null
-  }, [ComponentsMapping, contextLoaded, moduleName])
+  }, [ComponentsMapping, contextLoaded, loadingComponent, moduleName])
 
   const visible = useMemo(() => {
     return guardProps.visible
@@ -240,6 +254,8 @@ export const RenderModule: React.FC<{
   const renderGuardContent = useMemo(() => {
     return <GuardButtonProvider>{renderModule}</GuardButtonProvider>
   }, [GuardButtonProvider, renderModule])
+
+  const { isPhoneMedia } = useMediaSize()
 
   return (
     <ConfigProvider prefixCls={PREFIX_CLS}>
@@ -263,7 +279,9 @@ export const RenderModule: React.FC<{
             defaultMergedConfig.__internalRequest__ ? '' : 'authing-g2-render-module-normal'
           }`}
         >
-          {renderGuardContent}
+          <div className={isPhoneMedia ? '' : 'authing-g2-render-module-normal-wrapper-animation authing-g2-render-module-normal-wrapper'}>
+            {renderGuardContent}
+          </div>
         </div>
       )}
     </ConfigProvider>
