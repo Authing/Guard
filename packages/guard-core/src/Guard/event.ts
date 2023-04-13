@@ -95,12 +95,10 @@ export const guardEventsFilter = (
     oldEvents && oldEvents(...props)
 
     const normalWrapper = document.querySelector('.authing-g2-render-module-normal-wrapper') as HTMLElement
-    const viewContainer = document.querySelector('.g2-view-container') as HTMLElement
     if (normalWrapper) {
       setTimeout(() => {
-        viewContainer.classList.add('shadow')
         normalWrapper.classList.remove('authing-g2-render-module-normal-wrapper-animation')
-      }, 4000)
+      }, 2000)
     }
 
     const normalBox = document.querySelector('.authing-g2-render-module-normal') as HTMLElement
