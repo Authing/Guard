@@ -5,7 +5,8 @@
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -52%) scale(0.85);
+    transform: translate(-50%, -50%);
+    margin-top: -20px; // 语言切换后视觉居中
   }
 
   .authing-g2-completeInfo-form-content {
@@ -52,6 +53,10 @@
   box-sizing: border-box;
   border-radius: 16px;
   position: relative;
+
+  input:-webkit-autofill {
+    background-color: #ffffff;
+  }
 
   &.g2-view-register {
     justify-content: space-between;
