@@ -31,30 +31,30 @@ export const GuardButton: React.FC<GuardButtonProps> = props => {
     return className
   }, [props, type, isHover])
 
-  const [children, setChildren] = useState(props.children)
-  useEffect(() => {
-    if ((isHover && type === 'primary') || props.loading) {
-      setChildren(
-        <>
-          {props.children}
-          {!props.loading ? (
-            <div className='authing-btn-icon'>
-              <IconFont type="authing-arrow-guard" className="authing-btn-arrow" />
-            </div>
-          ) : (
-            <div className='authing-btn-icon '>
-              <IconFont
-                type="authing-loading-guard"
-                className="authing-btn-loading"
-              />
-            </div>
-          )}
-        </>
-      )
-    } else {
-      setChildren(<>{props.children}</>)
-    }
-  }, [isHover, props.loading, props.children])
+  // const [children, setChildren] = useState(props.children)
+  // useEffect(() => {
+  //   if ((isHover && type === 'primary') || props.loading) {
+  //     setChildren(
+  //       <>
+  //         {props.children}
+  //         {!props.loading ? (
+  //           <div className='authing-btn-icon'>
+  //             <IconFont type="authing-arrow-guard" className="authing-btn-arrow" />
+  //           </div>
+  //         ) : (
+  //           <div className='authing-btn-icon '>
+  //             <IconFont
+  //               type="authing-loading-guard"
+  //               className="authing-btn-loading"
+  //             />
+  //           </div>
+  //         )}
+  //       </>
+  //     )
+  //   } else {
+  //     setChildren(<>{props.children}</>)
+  //   }
+  // }, [isHover, props.loading, props.children])
 
   return (
     <Button
@@ -72,7 +72,16 @@ export const GuardButton: React.FC<GuardButtonProps> = props => {
         setHover(false)
       }}
     >
-      {children}
+      {props.children}
+      <div className={`authing-btn-icon ${isHover && type === 'primary' && !props.loading && 'authing-btn-icon--hover'}`}>
+        <IconFont type="authing-arrow-guard" className="authing-btn-arrow" />
+      </div>
+      <div className={`authing-btn-icon ${props.loading && 'authing-btn-icon--loading'}`}>
+        <IconFont
+          type="authing-loading-guard"
+          className="authing-btn-loading"
+        />
+      </div>
     </Button>
   )
 }
