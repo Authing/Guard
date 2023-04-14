@@ -67,7 +67,10 @@ import { useLoginMultiple } from './hooks/useLoginMultiple'
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
 
 import { LoginWithAuthingOtpPush } from './core/withAuthingOtpPush/index'
+
 import { BackLogin } from '../Back'
+
+import { ImagePro } from '../ImagePro'
 
 const { useEffect, useLayoutEffect, useState, useRef, useMemo, useCallback } = React
 
@@ -846,7 +849,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
               </div>
             )}
             {!isScanModule && !isResetPage && <div className="g2-view-header">
-              <img src={config?.logo} alt="" className="icon" />
+              <ImagePro width={56} height={56} className="icon" src={config?.logo as string} />
               <div className="title">
                 {isMultipleAccount ? t('login.selectLoginAccount') : config?.title}
               </div>
