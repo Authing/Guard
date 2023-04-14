@@ -150,13 +150,13 @@ export const GuardBindTotpView: React.FC = () => {
   return (
     <>
       {bindInfo.loading ? (
-        <Spin />
+        <div className="g2-loading-container"><Spin /></div>
       ) : (
         <div className="g2-view-container g2-bind-totp">
           {renderBack}
           <div className="g2-mfa-content g2-mfa-bindTotp">
             {bindInfo.loading ? (
-              <ShieldSpin />
+              <div className="g2-loading-container"><ShieldSpin /></div>
             ) : (
               renderContent[bindTotpType]({
                 mfaToken: initData.mfaToken,
