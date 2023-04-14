@@ -176,7 +176,7 @@
   "del": "移除",
   "qrcode": "二维码",
   "registerCompletePasswordDesc": "为了保障账号安全，请设置你的密码。",
-  "mfaCertification": "通过多因素认证确认你的身份",
+  "mfaCertification": "多因素认证",
   "emailMfaCheck": "请输入电子邮箱验证码",
   "SmsMfaCheck": "请输入短信验证码",
   "faceCheck": "请保持摄像头已打开并无遮挡",

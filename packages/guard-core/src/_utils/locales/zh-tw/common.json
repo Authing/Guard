@@ -174,7 +174,7 @@
   "del": "移除",
   "qrcode": "二維碼",
   "registerCompletePasswordDesc": "為了保障賬號安全，請設置您的密碼。",
-  "mfaCertification": "通過多因素認證確認你的身份",
+  "mfaCertification": "多因素認證",
   "emailMfaCheck": "請輸入電子郵箱驗證碼",
   "SmsMfaCheck": "請輸入短信驗證碼",
   "faceCheck": "請保持攝像頭已打開並無遮擋",

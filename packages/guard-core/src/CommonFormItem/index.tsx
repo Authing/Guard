@@ -44,14 +44,7 @@ export const Item = (props: ItemProps) => {
     })
   }
 
-  // const handleItemChange = (itemValue: string) => {
-  //   console.log(`value:`, itemValue)
-  //   // 处理当前表单项的值
-  //   setCurrent(itemValue)
-  // }
-
   const status = useMemo<Status>(() => {
-    console.log('inputStatus: ', props.inputstatus)
     if (props.initialValue) {
       return 'focus'
     }

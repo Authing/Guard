@@ -173,11 +173,15 @@
 }
 
 .g2-social-login-box {
-  margin-bottom: -20px;
+  margin-bottom: -16px;
   padding: 0 32px;
 
+  &--progress {
+    margin-bottom: 0;
+  }
+
   .g2-social-login-container {
-    padding-bottom: 20px;
+    padding-bottom: 16px;
     margin: 0 -8px;
     text-align: center;
     white-space: nowrap;
@@ -197,6 +201,8 @@
 
   /* 更改进度条颜色 */
   progress {
+    position: absolute;
+    bottom: 0;
     border-radius: 2px;
     overflow: hidden;
     /* 进度条背景颜色 */

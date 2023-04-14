@@ -890,6 +890,15 @@
 
   @media only screen and (max-width: 450px) {
     width: 100%;
+
+    .g2-view-container {
+      min-height: auto;
+      border-radius: 8px;
+    }
+
+    .g2-change-language-text {
+      color: #4E5969 !important;
+    }
   }
 
   .authing-ant-modal-content {
@@ -912,8 +921,8 @@
   }
 
   .authing-ant-modal-close {
-    top: 20px;
-    right: -40px;
+    top: -40px;
+    right: 16px;
     border-radius: 4px;
     color: #E5E6EB;
     transition: 0.2s all;
@@ -1511,6 +1520,7 @@ input {
   .g2-view-container {
     box-shadow: none !important;
     min-height: 100vh;
+    border-radius: 0;
     // justify-content: center !important;
 
     .g2-change-language-container {

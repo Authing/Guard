@@ -329,7 +329,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
 
   return (
     <>
-      {!noLoginMethods && (
+      {!noLoginMethods && (idp || socialLogin ) && (
         <div
           style={{
             flex: 1,
@@ -349,19 +349,21 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
           {!publicConfig?.ssoPageComponentDisplay.socialLoginBtns || socialLogin}
         </Space>
       ) : (
-        <div className="g2-social-login-box">
-          <div className="g2-social-login-container">
-            {!publicConfig?.ssoPageComponentDisplay.idpBtns || idp}
-            {!publicConfig?.ssoPageComponentDisplay.socialLoginBtns || socialLogin}
+        <div className={`g2-social-login-box ${socialLoginButtons.length + idpButtons.length > 6 && 'g2-social-login-box--progress'}`}>
+          <div style={{position: 'relative'}}>
+            <div className="g2-social-login-container">
+              {!publicConfig?.ssoPageComponentDisplay.idpBtns || idp}
+              {!publicConfig?.ssoPageComponentDisplay.socialLoginBtns || socialLogin}
+            </div>
+            {socialLoginButtons.length + idpButtons.length > 6 && (
+              <progress
+                aria-hidden="true"
+                className="carousel-progress__bar"
+                max="100"
+                value={percentage}
+              ></progress>
+            )}
           </div>
-          {socialLoginButtons.length + idpButtons.length > 6 && (
-            <progress
-              aria-hidden="true"
-              className="carousel-progress__bar"
-              max="100"
-              value={percentage}
-            ></progress>
-          )}
         </div>
       )}
 

@@ -820,12 +820,11 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                   >
                     {/* <div className="imgae-mask" /> */}
                     <IconFont
-                      type="authing-qr-code-fill"
+                      type="authing-qr-6"
                       className={`qrcode-switch-image ${inputNone}`}
                     />
                     <IconFont
-                      type="authing-computer-line"
-                      style={{width: 24, height: 24}}
+                      type="authing-computer-6"
                       className={`qrcode-switch-image ${qrcodeNone}`}
                     />
                   </div>

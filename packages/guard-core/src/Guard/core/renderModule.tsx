@@ -269,6 +269,7 @@ export const RenderModule: React.FC<{
           keyboard={defaultMergedConfig.escCloseable}
           maskClosable={false} // 点击蒙层，是否允许关闭
           getContainer={defaultMergedConfig.target ?? false}
+          centered
         >
           <div className="authing-g2-render-module">{renderGuardContent}</div>
         </Modal>

@@ -176,7 +176,7 @@
   "del": "除去",
   "qrcode": "qrコード",
   "registerCompletePasswordDesc": "アカウントを安全に保つために、パスワードを設定してください。",
-  "mfaCertification": "多要素認証で本人確認",
+  "mfaCertification": "多要素認証",
   "emailMfaCheck": "メール認証コードを入力してください",
   "SmsMfaCheck": "SMS認証コードを入力してください",
   "faceCheck": "カメラの電源を入れ、遮るものがない状態にしてください",
