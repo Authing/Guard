@@ -6,7 +6,7 @@ import { Guard } from '@authing/guard-react18'
 
 import { guardOptions } from '../config'
 
-import '@authing/guard-react18/dist/guard.min.css'
+import '@authing/guard-react18/dist/esm/guard.min.css'
 
 export default function Personal () {
   const [userInfo, setUserInfo] = useState('')
