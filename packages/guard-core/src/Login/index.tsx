@@ -903,7 +903,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                   </div>
                 )}
                 {renderQrcodeWay && isScanModule && (
-                  <div className={`g2-view-tabs ${qrcodeNone} ${hiddenTab && 'hidden'}`} style={{ marginTop: 28 }}>
+                  <div className={`g2-view-tabs ${qrcodeNone} ${hiddenTab && 'hidden'}`} style={{ paddingTop: 28 }}>
                     <Tabs
                       centered
                       destroyInactiveTabPane={true}
