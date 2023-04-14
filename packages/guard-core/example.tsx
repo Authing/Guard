@@ -12,7 +12,8 @@ if (queryString) {
   })
 }
 
-const guard = new Guard({
+// @ts-ignore
+const guard = window.guardInstance = new Guard({
   appId: params.appId || '64196bdaa5b19f2a6e4316d0',
   mode: params.mode || 'normal',
   facePlugin

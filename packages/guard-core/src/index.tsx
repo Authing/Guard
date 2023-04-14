@@ -225,14 +225,7 @@ export class Guard {
   }
 
   startRegister() {
-    this.options.defaultScene = GuardModuleType.REGISTER
-
-    this.options.config = Object.assign({}, this.options.config, {
-      defaultScenes: GuardModuleType.REGISTER
-    })
-
-    this.unmount()
-    this._render()
+    this.changeView('register')
   }
 
   async checkLoginStatus(): Promise<JwtTokenStatus | undefined> {
