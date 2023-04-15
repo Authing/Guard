@@ -10,7 +10,6 @@ import {
   AuthenticationClient,
   JwtTokenStatus,
   User,
-  GuardModuleType,
   Lang,
   IGuardConfig,
   LogoutParams
