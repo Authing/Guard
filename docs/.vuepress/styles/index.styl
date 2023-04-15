@@ -1,0 +1,266 @@
+@require './plugin-container.styl'
+@require '~vuepress-plugin-tabs/dist/themes/default.styl'
+
+html, body
+  font-family -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  color #333
+  min-width 375px
+
+.tooltip {
+  display: block !important;
+  z-index: 10000;
+  font-size: 14px;
+
+  .tooltip-inner {
+    background: #272e3b;
+    color: white;
+    border-radius: 4.5px;
+    padding: 5px 10px 4px;
+  }
+
+  .tooltip-arrow {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    position: absolute;
+    margin: 5px;
+    border-color: #272e3b;
+  }
+
+  &[x-placement^='top'] {
+    margin-bottom: 5px;
+
+    .tooltip-arrow {
+      border-width: 5px 5px 0 5px;
+      border-left-color: transparent !important;
+      border-right-color: transparent !important;
+      border-bottom-color: transparent !important;
+      bottom: -5px;
+      left: calc(50% - 5px);
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  &[x-placement^='bottom'] {
+    margin-top: 5px;
+
+    .tooltip-arrow {
+      border-width: 0 5px 5px 5px;
+      border-left-color: transparent !important;
+      border-right-color: transparent !important;
+      border-top-color: transparent !important;
+      top: -5px;
+      left: calc(50% - 5px);
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  &[x-placement^='right'] {
+    margin-left: 5px;
+
+    .tooltip-arrow {
+      border-width: 5px 5px 5px 0;
+      border-left-color: transparent !important;
+      border-top-color: transparent !important;
+      border-bottom-color: transparent !important;
+      left: -5px;
+      top: calc(50% - 5px);
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
+  &[x-placement^='left'] {
+    margin-right: 5px;
+
+    .tooltip-arrow {
+      border-width: 5px 0 5px 5px;
+      border-top-color: transparent !important;
+      border-right-color: transparent !important;
+      border-bottom-color: transparent !important;
+      right: -5px;
+      top: calc(50% - 5px);
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
+  &[aria-hidden='true'] {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.15s, visibility 0.15s;
+  }
+
+  &[aria-hidden='false'] {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.15s;
+  }
+}
+
+.theme-default-content
+  font-size 16px
+  color #4e5969
+  blockquote, blockquote p
+    color #86909C
+  p, ul, ol
+    line-height 2
+  ul li
+    &::marker
+      // font-size .1em
+    &:not(:last-child)
+      margin-bottom 12px
+  h1
+    font-size: 32px
+  h2
+    font-size: 24px
+    border-bottom none
+  h3
+    font-size: 18px
+  h1, h2, h3, h4, h4, h6
+    color #1d2129
+  img
+    border: 1px solid #eee;
+    border-radius: 4px;
+  table
+    thead
+      th
+        text-align: left
+
+a
+  font-weight normal
+
+img
+  object-fit contain
+
+video
+  max-width 100%
+
+.strong
+  font-weight: 600
+
+.authing-icon
+  vertical-align: middle
+
+.layout-container
+  display flex
+  justify-content space-between
+  flex-wrap wrap
+.content-layout-container
+  max-width $mainContentWidthWithSideBar
+  box-sizing border-box
+  padding-left 24px
+  padding-right 24px
+  &.content-layout-container__without-sidebar
+    max-width $mainContentWidthWithoutSideBar
+.layout-col-8
+  box-sizing border-box
+  width 33.33%
+
+[data-css-tips]
+  position relative
+  &:hover
+    &::before
+      word-break keep-all
+      white-space nowrap
+      content attr(data-css-tips)
+      position absolute
+      padding 6px 8px
+      display block
+      color white
+      background-color rgba(0,0,0,0.75)
+      border-radius 4px
+      font-size 14px
+      left 50%
+      transform translate(-50%, calc(-100% - 8px))
+    &::after
+      content ''
+      display block
+      top: 0
+      transform translate(-3px, calc(-100% - 5px)) rotate(45deg)
+      border-width 3px
+      border-style solid
+      border-top-color transparent
+      border-left-color transparent
+      border-right-color rgba(0,0,0,0.75)
+      border-bottom-color rgba(0,0,0,0.75)
+      position absolute
+      left 50%
+  &.bottom-tips
+    &:hover
+      &::before
+        transform translate(-50%, calc(100% + 2px))
+      &::after
+        transform translate(-3px, calc(100% + 4px)) rotate(45deg)
+        border-top-color rgba(0,0,0,0.75)
+        border-left-color rgba(0,0,0,0.75)
+        border-right-color transparent
+        border-bottom-color transparent
+        top unset
+        bottom 0
+.top-center-vue-notification
+  margin-top 70px
+
+// 分页组件样式
+.VuePagination
+  .VuePagination__pagination-item-prev-chunk, .VuePagination__pagination-item-next-chunk, .VuePagination__count
+    display none
+  .pagination
+    margin 0
+    padding 0
+    display flex
+    list-style none
+    .page-item
+      height 22px
+      line-height 22px
+      min-width 22px
+      text-align center
+      border-radius 2px
+      cursor pointer
+      margin-right 12px
+      a
+        color rgba(0, 0, 0, 0.65)
+      &.active
+        background-color #215AE5
+        a
+          color #fff
+      &.disabled
+        a
+          color rgba(0, 0, 0, 0.25)
+// v-select 组件样式
+.vs__dropdown-toggle
+  border-color #dfe2e5
+
+// 普通截图兼容 xnip 截的图
+.md-img-padding
+  box-shadow 0 3px 20px #888888
+  border-radius 8px
+  margin-bottom: 10px
+
+.integration-detail-card .integration-detail-card-content .md-img-padding
+  transform scale(1)
+  box-shadow 0 3px 20px #888888
+  border-radius 8px
+
+.md-table-padding
+  display inline
+  float right
+
+.header-anchor
+  text-decoration: none !important
+.authing-last-updated+h2
+  padding-top: 3.1rem !important
+html
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+
+// tabs 样式
+.tabs-component-tab
+  margin-bottom: 0 !important;
+  a
+    &:hover
+      text-decoration: none !important;
+th, td
+  min-width: 50px
