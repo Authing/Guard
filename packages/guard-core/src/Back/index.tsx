@@ -41,7 +41,7 @@ export const BackLogin: React.FC<BackProps> = props => {
   const renderBack = useMemo(() => {
     return (
       <GuardButton type="link" onClick={onBack} className="g2-view-mfa-back-hover">
-        <IconFont type="authing-arrow-left-6" style={{ fontSize: 24 }} />
+        <IconFont type="authing-arrow-left-6" className="authing-arrow-left-6" />
       </GuardButton>
     )
   }, [isRender, config.defaultScenes, onBack, t])
@@ -71,7 +71,7 @@ export const BackCustom: React.FC<
   const renderBack = useMemo(() => {
     return (
       <GuardButton type="link" onClick={onBack} className="g2-view-mfa-back-hover">
-        <IconFont type="authing-arrow-left-6" style={{ fontSize: 24 }} />
+        <IconFont type="authing-arrow-left-6" className="authing-arrow-left-6" />
         <span>{children}</span>
       </GuardButton>
     )
