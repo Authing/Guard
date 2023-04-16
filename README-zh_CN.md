@@ -31,12 +31,6 @@
 |@authing/guard-angular|[![npm version](https://badge.fury.io/js/@authing%2Fguard-angular.svg)](https://www.npmjs.com/package/@authing/guard-angular)|<a href="https://docs.authing.cn/v2/reference/guard/v2/web.html" target="_blank">Guard 适用于 Angular</a>|
 |@authing/guard|[![npm version](https://badge.fury.io/js/@authing%2Fguard.svg)](https://www.npmjs.com/package/@authing/guard)|<a href="https://docs.authing.cn/v2/reference/guard/v2/web.html" target="_blank">Guard 适用于原生 JavaScript</a>|
 
-## 🖥 环境支持
-
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Safari |
-| --- | --- | --- | --- |
-| IE11, Edge | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
-
 ## ✨ 特性
 
 ### 🌈 拥有丰富的登录注册方式
@@ -63,9 +57,15 @@ Authing 支持 OAuth2、OIDC、SAML、LDAP 等多种协议，开发者可以配�
   <img src="https://docs.authing.cn/authing-assets/init-guard-react.png" width="650" />
 </div>
 
+## 🖥 环境支持
+
+| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br> Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Safari |
+| --- | --- | --- | --- |
+| last 2 versions | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
+
 ## 👀 在线体验
 
-点击查看 [sample-sso.authing.cn](https://sample-sso.authing.cn/login?app_id=5d70d0e991fdd597019df70d&protocol=oidc&finish_login_url=%2Finteraction%2Foidc%2Fd7223e6b-b796-4068-a3f2-298d527993c2%2Flogin&login_page_context=)
+[点击查看](https://cdn.authing.co/packages/guard/ui/index.html)
 
 ## 📚 文档
 
