@@ -66,9 +66,9 @@
           </template>
         </Sidebar>
       </template>
-      <template #breadcrumb>
+      <!-- <template #breadcrumb>
         <Breadcrumb :sidebars="sidebarItems" />
-      </template>
+      </template> -->
       <template #top>
         <slot name="page-top"></slot>
       </template>
@@ -88,9 +88,9 @@
           </template>
         </Sidebar>
       </template>
-      <template #breadcrumb>
+      <!-- <template #breadcrumb>
         <Breadcrumb :sidebars="sidebarItems" />
-      </template>
+      </template> -->
       <template #top>
         <slot name="page-top"></slot>
       </template>

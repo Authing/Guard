@@ -52,8 +52,8 @@ module.exports = {
   base: basePath,
   shouldPreload: () => false,
   shouldPrefetch: () => false,
-  title: "Guard",
-  description: "Authing 文档 | Guard",
+  title: "Web Guard",
+  description: "Authing 文档 | Web Guard",
   plugins,
   feedbackUrl: `https://open.feishu.cn/open-apis/bot/v2/hook/f5e7517d-07cb-4519-ab6c-577ad8653ca2`,
   markdown: {
@@ -77,7 +77,7 @@ module.exports = {
       lang: "zh-CN", // this will be set as the lang attribute on <html>
       title: "Authing 文档",
       description: "Authing 文档",
-      navbarTitle: "Guard",
+      navbarTitle: "Web Guard",
       relatedDocText: "相关文档",
       devDocText: "开发文档",
       apiDocText: "API 文档",
@@ -94,7 +94,7 @@ module.exports = {
       lang: "en-US",
       title: "Authing Docs",
       description: "Authing Docs",
-      navbarTitle: "Guard",
+      navbarTitle: "Web Guard",
       relatedDocText: "Related documents",
       devDocText: "Development documents",
       apiDocText: "API documents",
@@ -113,7 +113,7 @@ module.exports = {
     logo:
       "https://files.authing.co/authing-console/authing-logo-new-20210924.svg",
     officeSiteDomain: "authing.cn",
-    officeSiteUrl: "https://authing.cn",
+    officeSiteUrl: "https://docs.authing.cn",
     consoleDomain: "https://console.authing.cn",
     sampleAppDomain: "sample-sso.authing.cn",
     apiDomain: "https://core.authing.cn",
@@ -124,7 +124,7 @@ module.exports = {
     sidebarDepth: 0,
     locales: {
       "/": {
-        logoTooltip: "前往 Authing 官网",
+        logoTooltip: "前往 Authing 文档首页",
         selectText: "中文 / EN",
         label: "简体中文",
         editLinkText: "在 GitHub 上编辑此页",
@@ -136,15 +136,25 @@ module.exports = {
         company: "公司",
         sdkAccess: "SDK 接入",
         search: "搜索标题",
-        searchInDoc: "在文档中搜索",
+        searchInDoc: "输入关键字搜索",
         nav: [
           {
             text: '指南',
             link: '/guide/'
           },
           {
-            text: '论坛',
+            text: '在线体验',
+            link: 'https://cdn.authing.co/packages/guard/ui/index.html',
+            target: '_blank'
+          },
+          {
+            text: '社区',
             link: 'https://forum.authing.cn',
+            target: '_blank'
+          },
+          {
+            text: '博客',
+            link: 'https://www.authing.cn/blog',
             target: '_blank'
           },
           {
@@ -152,7 +162,7 @@ module.exports = {
             link: '/about/releases'
           },
           {
-            text: 'Github',
+            text: 'GitHub',
             link: 'https://github.com/authing/guard',
             target: '_blank'
           }

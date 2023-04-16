@@ -15,6 +15,6 @@ const config = cosmiconfigSync('config', {
 }).search()
 
 module.exports = {
-	basePath: '/',
+	basePath:  process.env.NODE_ENV === 'production' ? '/packages/guard/doc/' : '/',
 	config: config && config.config
 };

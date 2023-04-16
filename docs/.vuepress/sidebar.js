@@ -8,7 +8,7 @@ const zhCnNavBar = {
       collapsable: false,
       children: [
         {
-          title: '简介',
+          title: '介绍',
           path: '/guide/'
         },
         {
@@ -20,7 +20,7 @@ const zhCnNavBar = {
           path: '/guide/quick-start'
         },
         {
-          title: '配置',
+          title: '初始配置',
           path: '/guide/config'
         }
       ]

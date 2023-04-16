@@ -36,7 +36,7 @@
         <a
           class="link"
           target="_blank"
-          href="https://github.com/Authing/docs/issues/new?assignees=&labels=question&template=question.md"
+          href="https://github.com/Authing/Guard/issues/new?assignees=zhaoyiming0803&labels=bug&template=bug-report.md&title=Issue%3A+Open+an+issue"
         >{{feedbackConfig.editLink}}
         </a>
       </div>

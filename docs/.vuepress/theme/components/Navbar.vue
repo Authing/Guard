@@ -290,8 +290,12 @@ $navbar-horizontal-padding = 0
   margin-left: 1.5rem;
   margin-top: 5px;
   height: 24px;
-  padding: 0 10px;
+  padding: 0 5px 0 10px;
   box-sizing: border-box;
   border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  &:hover {
+    border: 1px solid #215ae5;
+  }
 }
 </style>

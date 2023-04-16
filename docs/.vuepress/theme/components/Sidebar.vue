@@ -144,7 +144,7 @@ export default {
       padding 0.5rem 0 0.5rem 1.5rem
 
   & > .sidebar-links
-    margin-top: 16px
+    margin-top: 0
     margin-left -8px
     overflow-y: scroll
     max-height 'calc(%s - %s - %s - 100px)' % (100vh $navbarHeight $headerContentGutter)
