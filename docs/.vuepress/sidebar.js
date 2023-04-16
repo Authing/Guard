@@ -22,6 +22,10 @@ const zhCnNavBar = {
         {
           title: '初始配置',
           path: '/guide/config'
+        },
+        {
+          title: '类型定义',
+          path: '/guide/types'
         }
       ]
     },
@@ -31,10 +35,10 @@ const zhCnNavBar = {
       children: [
         {
           title: '创建一个 Authing 应用',
-          path: '/guide/essentials/application'
+          path: 'https://docs.authing.cn/v2/guides/app-new/create-app/create-app.html'
         },
         {
-          title: '了解 Guard 展示模式',
+          title: '了解 Guard 使用模式',
           path: '/guide/essentials/mode'
         }
       ]
@@ -48,15 +52,15 @@ const zhCnNavBar = {
           path: '/guide/essentials/login'
         },
         {
-          title: '退出',
+          title: '登出',
           path: '/guide/essentials/logout'
         },
         {
-          title: '切换模块',
+          title: '模块切换',
           path: '/guide/essentials/change-module'
         },
         {
-          title: '注册事件',
+          title: '事件监听',
           path: '/guide/essentials/events'
         },
       ]
@@ -76,6 +80,10 @@ const zhCnNavBar = {
         {
           title: 'MFA 多因素认证',
           path: '/guide/essentials/mfa'
+        },
+        {
+          title: '私有化部署',
+          path: '/guide/essentials/privatization'
         }
       ]
     }

@@ -62,6 +62,8 @@ import IconFont from "@theme/components/IconFont/index.vue";
 import { getUserNavLinks, getLanguageNavLinks } from "@theme/util/navLinks";
 import SwitchLocale from "@theme/components/SwitchLocale.vue";
 
+import { version } from '../../../../lerna.json'
+
 export default {
   name: "Navbar",
 
@@ -77,14 +79,14 @@ export default {
   data() {
     return {
       linksWrapMaxWidth: null,
-      version: 'v6',
+      version,
       versionList: [{
-        text: 'v6'
+        text: version
       }, {
-        text: 'v5',
+        text: '5.x',
         link: 'https://docs.authing.cn/v2/reference/guard/v2/web.html'
       }, {
-        text: 'v4',
+        text: '4.x',
         link: 'https://docs.authing.cn/v2/reference/guard/v2/react.html'
       }]
     };
@@ -140,7 +142,7 @@ export default {
     getLanguageNavLinks,
     onChangeVersion (e) {
       const selectedVersion = this.versionList.find(version => version.text === e.target.value)
-      this.version = 'v6'
+      this.version = version
       if (selectedVersion && selectedVersion.link) {
         window.open(selectedVersion.link, true)
       }
