@@ -12,7 +12,7 @@ npm ci
 npm run dev
 ```
 
-open your browser:
+浏览器中打开以下 url:
 
 ``` shell
 http://localhost:8888/guide/
