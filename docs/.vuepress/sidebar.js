@@ -56,8 +56,8 @@ const zhCnNavBar = {
           path: '/guide/essentials/logout'
         },
         {
-          title: '模块切换',
-          path: '/guide/essentials/change-module'
+          title: '视图切换',
+          path: '/guide/essentials/change-view'
         },
         {
           title: '事件监听',
