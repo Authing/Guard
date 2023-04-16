@@ -5,10 +5,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Authing Guard Demo - Embed</title>
-  <script src="https://cdn.authing.co//packages/guard/5.0.6/guard.min.js"></script>
+  <script src="https://cdn.authing.co//packages/guard/6.0.0-alpha.7/guard.min.js"></script>
   <script src="https://cdn.authing.co/packages/face-api/face-api.min.js"></script>
   <script src="./config.js"></script>
-  <link rel="stylesheet" href="https://cdn.authing.co/packages/guard/5.0.6/guard.min.css">
+  <link rel="stylesheet" href="https://cdn.authing.co/packages/guard/6.0.0-alpha.7/guard.min.css" />
 </head>
 <body>
 
@@ -30,6 +30,18 @@
   <button onclick="refreshToken()">Refresh Token</button>
 
   <button onclick="updateProfile()">Update Profile</button>
+
+  <button onclick="changeViewToPassword()">Change View to Password</button>
+
+  <button onclick="changeViewToPhoneCode()">Change View to PhoneCode</button>
+
+  <button onclick="changeViewToForgetPassword()">Change View to ForgetPassword</button>
+
+  <button onclick="changeViewToAppQrcode()">Change View to AppQrcode</button>
+
+  <button onclick="changeViewToRegister_UserName()">Change View To Register - UserName</button>
+
+  <button onclick="changeViewToRegister_EmailPassword()">Change View To Register - EmailPassword</button>
 
   <div id="authing-guard-container"></div>
 
@@ -93,6 +105,30 @@
       console.log('userProfile: ', userProfile)
 
       // 更多 AuthenticationClient 的方法，请见 authing-js-sdk 文档介绍。
+    }
+
+    function changeViewToForgetPassword () {
+      guard.changeView('forgetPassword')
+    }
+
+    function changeViewToPassword() {
+      guard.changeView('login:password')
+    }
+
+    function changeViewToPhoneCode () {
+      guard.changeView('login:phone-code')
+    }
+
+    function changeViewToRegister_UserName() {
+      guard.changeView('register:username-password')
+    }
+
+    function changeViewToRegister_EmailPassword() {
+      guard.changeView('register:email-password')
+    }
+
+    function changeViewToAppQrcode () {
+      guard.changeView('login:app-qrcode')
     }
   </script>
 </body>

@@ -20,6 +20,18 @@
 
     <button class="authing-button" @click="refreshToken">Refresh Token</button>
 
+    <button class='authing-button' @click="changeViewToPassword">Change View to Password</button>
+
+    <button class='authing-button' @click="changeViewToPhoneCode">Change View to PhoneCode</button>
+
+    <button class='authing-button' @click="changeViewToForgetPassword">Change View to ForgetPassword</button>
+
+    <button class='authing-button' @click="changeViewToAppQrcode">Change View to AppQrcode</button>
+
+    <button class='authing-button' @click="changeViewToRegister_UserName">Change View To Register - UserName</button>
+
+    <button class='authing-button' @click="changeViewToRegister_EmailPassword">Change View To Register - EmailPassword</button>
+
     <div id="authing-guard-container"></div>
   </div>
 </template>
@@ -80,6 +92,30 @@ const refreshToken = async () => {
 const changeLang = (event: any) => {
   guard.changeLang(event.target.value)
   langCache.value = event.target.value
+}
+
+const changeViewToForgetPassword = () => {
+  guard.changeView('forgetPassword')
+}
+
+const changeViewToPassword = () => {
+  guard.changeView('login:password')
+}
+
+const changeViewToPhoneCode = () => {
+  guard.changeView('login:phone-code')
+}
+
+const changeViewToRegister_UserName = () => {
+  guard.changeView('register:username-password')
+}
+
+const changeViewToRegister_EmailPassword = () => {
+  guard.changeView('register:email-password')
+}
+
+const changeViewToAppQrcode = () => {
+  guard.changeView('login:app-qrcode')
 }
 </script>
 

@@ -20,6 +20,18 @@
 
     <button class="authing-button" @click="refreshToken">Refresh Token</button>
 
+    <button class='authing-button' @click="changeViewToPassword">Change View to Password</button>
+
+    <button class='authing-button' @click="changeViewToPhoneCode">Change View to PhoneCode</button>
+
+    <button class='authing-button' @click="changeViewToForgetPassword">Change View to ForgetPassword</button>
+
+    <button class='authing-button' @click="changeViewToAppQrcode">Change View to AppQrcode</button>
+
+    <button class='authing-button' @click="changeViewToRegister_UserName">Change View To Register - UserName</button>
+
+    <button class='authing-button' @click="changeViewToRegister_EmailPassword">Change View To Register - EmailPassword</button>
+
     <div id="authing-guard-container"></div>
   </div>
 </template>
@@ -82,6 +94,30 @@ export default {
     changeLang (event) {
       this.$guard.changeLang(event.target.value)
       this.langCache = event.target.value
+    },
+
+    changeViewToForgetPassword () {
+      this.$guard.changeView('forgetPassword')
+    },
+
+    changeViewToPassword() {
+      this.$guard.changeView('login:password')
+    },
+
+    changeViewToPhoneCode () {
+      this.$guard.changeView('login:phone-code')
+    },
+
+    changeViewToRegister_UserName() {
+      this.$guard.changeView('register:username-password')
+    },
+
+    changeViewToRegister_EmailPassword() {
+      this.$guard.changeView('register:email-password')
+    },
+
+    changeViewToAppQrcode () {
+      this.$guard.changeView('login:app-qrcode')
     }
   }
 }
