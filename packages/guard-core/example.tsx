@@ -42,3 +42,7 @@ guard.on('login-error', res => {
 guard.on('after-change-module', res => {
   console.log('on after change module: ', res)
 })
+
+guard.on('close', () => {
+  console.log('on modal close')
+})
