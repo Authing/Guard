@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "node --max_old_space_size=8192 ./node_modules/vuepress/cli.js dev -p 8888 --no-cache",
-    "build": "node --max_old_space_size=8192 ./node_modules/vuepress/cli.js build --max-concurrency=150 --no-cache"
+    "build": "rm -rf .vuepress/dist && node --max_old_space_size=8192 ./node_modules/vuepress/cli.js build --max-concurrency=150 --no-cache"
   },
   "devDependencies": {
     "@vuepress/plugin-google-analytics": "^1.8.3",
