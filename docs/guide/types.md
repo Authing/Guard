@@ -59,10 +59,10 @@ export enum GuardModuleType {
 Guard 所有 tab，可结合 `changeView` API 自由切换 Guard 界面。一般登录和注册界面下才有 tab。
 
 ``` ts
-export type IGuardTabType = 
-  | 'phone-code' 
+export type IGuardTabType =
+  | 'phone-code'
   | 'phone-password'
-  | 'password' 
+  | 'password'
   | 'email-password'
   | 'username-password'
   | 'authing-otp-push'
@@ -84,7 +84,7 @@ export interface IGuardConfig {
 
   // 自定义 Guard 展示 LOGO
   logo?: string
-  
+
   // mode = 'modal' 时，是否可关闭模态框
   clickCloseable?: boolean
 
@@ -105,7 +105,7 @@ export interface IGuardConfig {
   // 所有可用注册方式
   registerMethodList?: IRegisterMethod[]
 
-  // 自定义 CSS 样式，如果指定了，会在 DOM 的 head 中插入一个 <style type="text/css"></style> 节点。如 body {background:#6699 
+  // 自定义 CSS 样式，如果指定了，会在 DOM 的 head 中插入一个 <style type="text/css"></style> 节点。如 body {background:#6699
   contentCSS?: string
 }
 ```
@@ -198,7 +198,7 @@ interface NomalLoginParams {
 
 ```typescript
 interface VerifyCodeLoginParams {
-  type: "email-code" /**邮箱验证码登录 */ 
+  type: "email-code" /**邮箱验证码登录 */
     | "phone-code" /**手机验证码登录 */;
   data: {
     identity: string; // 账号
@@ -212,7 +212,7 @@ interface VerifyCodeLoginParams {
 
 ```typescript
 interface ScanLoginParams {
-  type: "app-qrcode" /**APP 扫码登录登录 */ 
+  type: "app-qrcode" /**APP 扫码登录登录 */
     | "wechat-miniprogram-qrcode" /**微信小程序扫码登录 */
     | "wechatmp-qrcode" /**微信公众号扫码登录登录 */;
   data: User; // 用户信息
@@ -341,7 +341,7 @@ interface NomalLoginParams {
 
 ```typescript
 interface VerifyCodeLoginParams {
-  type: "email-code" /**邮箱验证码登录 */ 
+  type: "email-code" /**邮箱验证码登录 */
     | "phone-code" /**手机验证码登录 */;
   data: {
     identity: string; // 账号
@@ -365,6 +365,7 @@ export interface IChangeViewOptions {
 export interface LogoutParams {
   // 退出后的重定向地址，默认使用控制台 -> 应用 -> 自建应用 -> 应用配置 -> 认证配置 -> 登出回调 URL 中的第一个
   redirectUri?: string
+  // 只退出当前设备，不影响其他设备登录状态
   quitCurrentDevice?: boolean
 }
 ```

@@ -1,6 +1,6 @@
 # 初始化 Guard 的配置参数
 
-使用 Guard 时，默认必须传入 `appId`，其他参数都是可选配置。使用这些可选配置可以体验更强大、更灵活的 Guard。
+使用 Guard 时，必须传入 `appId`，其他参数都是可选配置项。通过使用这些可选配置，你可以体验到更强大、更灵活的 Guard 功能。
 
 :::: tabs :options="{ useUrlFragment: false }"
 ::: tab JavaScript
@@ -106,7 +106,7 @@ export interface GuardOptions {
   mode?: IGuardMode
 
   // MFA 人脸识别插件，具体参考：**待补充 MFA 人脸识别文档地址**
-  facePlugin?: any 
+  facePlugin?: any
 
   // Guard 所有模块
   defaultScene?: IGuardModuleType
