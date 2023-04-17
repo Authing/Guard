@@ -131,6 +131,6 @@ export type IGuardTabType =
   | 'ldap'
 
 export interface IChangeViewOptions {
-  module: string
-  tab?: string
+  module: IGuardModuleType
+  tab?: IGuardTabType
 }
