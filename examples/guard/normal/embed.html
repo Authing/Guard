@@ -5,10 +5,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Authing Guard Demo - Embed</title>
-  <script src="https://cdn.authing.co//packages/guard/6.0.0-alpha.7/guard.min.js"></script>
+  <script src="https://cdn.authing.co//packages/guard/6.0.0-alpha.8/guard.min.js"></script>
   <script src="https://cdn.authing.co/packages/face-api/face-api.min.js"></script>
   <script src="./config.js"></script>
-  <link rel="stylesheet" href="https://cdn.authing.co/packages/guard/6.0.0-alpha.7/guard.min.css" />
+  <link rel="stylesheet" href="https://cdn.authing.co/packages/guard/6.0.0-alpha.8/guard.min.css" />
 </head>
 <body>
 
@@ -108,15 +108,23 @@
     }
 
     function changeViewToForgetPassword () {
-      guard.changeView('forgetPassword')
+      guard.changeView({
+        module: 'forgetPassword'
+      })
     }
 
     function changeViewToPassword() {
-      guard.changeView('login:password')
+      guard.changeView({
+        module: 'login',
+        tab: 'password'
+      })
     }
 
     function changeViewToPhoneCode () {
-      guard.changeView('login:phone-code')
+      guard.changeView({
+        module: 'login',
+        tab: 'phone-code'
+      })
     }
 
     function changeViewToRegister_UserName() {
@@ -124,11 +132,17 @@
     }
 
     function changeViewToRegister_EmailPassword() {
-      guard.changeView('register:email-password')
+      guard.changeView({
+        module: 'register',
+        tab: 'email-password'
+      })
     }
 
     function changeViewToAppQrcode () {
-      guard.changeView('login:app-qrcode')
+      guard.changeView({
+        module: 'login',
+        tab: 'app-qrcode'
+      })
     }
   </script>
 </body>

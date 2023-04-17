@@ -74,15 +74,23 @@ export class EmbedComponent {
   }
 
   changeViewToForgetPassword () {
-    this.guard.client.changeView('forgetPassword')
+    this.guard.client.changeView({
+      module: 'forgetPassword'
+    })
   }
 
   changeViewToPassword() {
-    this.guard.client.changeView('login:password')
+    this.guard.client.changeView({
+      module: 'login',
+      tab: 'password'
+    })
   }
 
   changeViewToPhoneCode () {
-    this.guard.client.changeView('login:phone-code')
+    this.guard.client.changeView({
+      module: 'login',
+      tab: 'phone-code'
+    })
   }
 
   changeViewToRegister_UserName() {
@@ -90,10 +98,16 @@ export class EmbedComponent {
   }
 
   changeViewToRegister_EmailPassword() {
-    this.guard.client.changeView('register:email-password')
+    this.guard.client.changeView({
+      module: 'register',
+      tab: 'email-password'
+    })
   }
 
   changeViewToAppQrcode () {
-    this.guard.client.changeView('login:app-qrcode')
+    this.guard.client.changeView({
+      module: 'login',
+      tab: 'app-qrcode'
+    })
   }
 }
