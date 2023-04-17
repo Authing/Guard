@@ -121,7 +121,7 @@ export interface LogoutParams {
 }
 
 export type IGuardTabType = 
-  |'phone-code' 
+  | 'phone-code' 
   | 'phone-password'
   | 'password' 
   | 'email-password'
@@ -129,6 +129,7 @@ export type IGuardTabType =
   | 'authing-otp-push'
   | 'ad'
   | 'ldap'
+  | 'app-qrcode'
 
 export interface IChangeViewOptions {
   module: IGuardModuleType
