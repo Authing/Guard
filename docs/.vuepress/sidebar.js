@@ -40,6 +40,10 @@ const zhCnNavBar = {
         {
           title: '了解 Guard 使用模式',
           path: '/guide/essentials/mode'
+        },
+        {
+          title: '控制台配置与本地配置',
+          path: '/guide/essentials/console-local-relationship'
         }
       ]
     },
@@ -56,6 +60,10 @@ const zhCnNavBar = {
           path: '/guide/essentials/logout'
         },
         {
+          title: '获取用户信息',
+          path: '/guide/essentials/trackSession'
+        },
+        {
           title: '视图切换',
           path: '/guide/essentials/change-view'
         },
@@ -63,12 +71,28 @@ const zhCnNavBar = {
           title: '事件监听',
           path: '/guide/essentials/events'
         },
+        {
+          title: '切换语言',
+          path: '/guide/essentials/change-language'
+        },
+        {
+          title: '自定义样式',
+          path: '/guide/essentials/change-content-css'
+        },
+        {
+          title: '刷新 Token',
+          path: '/guide/essentials/refresh-token'
+        }
       ]
     },
     {
       title: '高级功能',
       collapsable: false,
       children: [
+        {
+          title: '使用 JS SDK',
+          path: '/guide/essentials/js-sdk'
+        },
         {
           title: 'SSO 单点登录',
           path: '/guide/essentials/sso'
@@ -80,6 +104,10 @@ const zhCnNavBar = {
         {
           title: 'MFA 多因素认证',
           path: '/guide/essentials/mfa'
+        },
+        {
+          title: '配置安全域',
+          path: '/guide/essentials/safe-domain'
         },
         {
           title: '私有化部署',

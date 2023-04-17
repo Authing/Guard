@@ -18,7 +18,7 @@ Guard 所有 module，可结合 `changeView` API 自由切换 Guard 界面。
 
 ``` ts
 // **************************************
-// 枚举转字符串字面量，以兼容所有构建工具及编译场景
+// 枚举转字符串字面量，以兼容所有构建工具及编译场景，相当于：
 // export type IGuardModuleType = 'error' | 'login' | 'register' | 'mfa' | ......
 // 下同
 // **************************************
@@ -348,5 +348,23 @@ interface VerifyCodeLoginParams {
     code: string; // 验证码
     phoneCountryCode?: string; // 开启国际化短信后携带的区号信息
   };
+}
+```
+
+## IChangeViewOptions
+```ts
+export interface IChangeViewOptions {
+  module: IGuardModuleType
+  tab?: IGuardTabType
+}
+```
+
+## LogoutParams
+
+``` ts
+export interface LogoutParams {
+  // 退出后的重定向地址，默认使用控制台 -> 应用 -> 自建应用 -> 应用配置 -> 认证配置 -> 登出回调 URL 中的第一个
+  redirectUri?: string
+  quitCurrentDevice?: boolean
 }
 ```

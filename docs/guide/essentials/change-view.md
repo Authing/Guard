@@ -3,20 +3,32 @@
 某些场景下你可以使用 Guard 提供的 `changeView` API 自由、灵活的切换界面。
 
 ```ts
-guard.changeView(currentView)
+class Guard {
+  changeView(currentView: string | IChangeViewOptions): void
+}
 ```
 
-参数 `currentView` 格式为 `module:tab` 或 `module`，即切换视图到某个模块对应的某个 tab，有的界面只有 module 没有 tab。
+::: hint-info
+<strong>注意：</strong>
+
+当 changeView 的入参 currentView 为 `string` 类型时，其格式为 `module:tab` 或 `module`，即切换视图到某个模块对应的某个 `tab`，有的界面只有 `module` 没有 `tab`。
+
+我们推荐使用 `IChangeViewOptions` 类型，Guard 6.0.0 以上同时支持 `string` 和 `IChangeViewOptions` 类型，5.x 版本仅支持 `string` 类型。
+
+以下代码示例同时展示 `string` 与 `IChangeViewOptions` 的使用方式。相关类型参考：
 
 <!-- 锚点要小写，否则无法定位 -->
-- module 类型参考 [IGuardModuleType](../types.html#iguardmoduletype)
-- tab 类型参考 [IGuardTabType](../types.html#iguardtabtype)
+- [IChangeViewOptions](../types.html#ichangeviewoptions)
+- [IGuardModuleType](../types.html#iguardmoduletype)
+- [IGuardTabType](../types.html#iguardtabtype)
+:::
+
 
 :::: tabs :options="{ useUrlFragment: false }"
 
 ::: tab React
 ```tsx
-// React 16/17
+// React 16 / 17
 // 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/pages/Embed.tsx
 import { useGuard } from "@authing/guard-react";
 
@@ -30,7 +42,10 @@ export default function Logout() {
   const guard = useGuard();
 
   const changeViewToPassword = () => {
-    guard.changeView('login:password')
+    guard.changeView({
+      module: 'login',
+      tab: 'password'
+    })
   }
 
   const changeViewToPhoneCode = () => {
@@ -42,7 +57,10 @@ export default function Logout() {
   }
 
   const changeViewToRegister_UserName = () => {
-    guard.changeView('register:username-password')
+    guard.changeView({
+      module: 'register',
+      tab: 'username-password'
+    })
   }
 
   const changeViewToRegister_EmailPassword = () => {
@@ -91,7 +109,10 @@ export default {
     },
 
     changeViewToRegister_UserName() {
-      this.$guard.changeView('register:username-password')
+      this.$guard.changeView({
+        module: 'register',
+        tab: 'username-password'
+      })
     },
 
     changeViewToRegister_EmailPassword() {
@@ -128,7 +149,10 @@ const changeViewToPhoneCode = () => {
 }
 
 const changeViewToRegister_UserName = () => {
-  guard.changeView('register:username-password')
+  guard.changeView({
+    module: 'register',
+    tab: 'username-password'
+  })
 }
 
 const changeViewToRegister_EmailPassword = () => {
@@ -158,7 +182,9 @@ export class LoginComponent {
   constructor(private guard: GuardService) {}
 
   changeViewToForgetPassword () {
-    this.guard.client.changeView('forgetPassword')
+    this.guard.client.changeView({
+      module: 'forgetPassword'
+    })
   }
 
   changeViewToPassword() {
@@ -170,7 +196,10 @@ export class LoginComponent {
   }
 
   changeViewToRegister_UserName() {
-    this.guard.client.changeView('register:username-password')
+    this.guard.client.changeView({
+      module: 'register',
+      tab: 'username-password'
+    })
   }
 
   changeViewToRegister_EmailPassword() {
@@ -207,7 +236,10 @@ function changeViewToPassword() {
 }
 
 function changeViewToPhoneCode () {
-  guard.changeView('login:phone-code')
+  guard.changeView({
+    module: 'login',
+    tab: 'phone-code'
+  })
 }
 
 function changeViewToRegister_UserName() {

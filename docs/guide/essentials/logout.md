@@ -1,5 +1,11 @@
 # 退出登录
 
+``` ts
+class Guard {
+  async logout(params: LogoutParams = {}): void
+}
+```
+
 ::: hint-info
 根据你的具体使用场景，退出登录分为 **单应用登出** 和 **SSO 单点登出** 两种。
 :::
@@ -11,7 +17,7 @@
 ::: tab React
 
 ```tsx
-// React 16/17
+// React 16 / 17
 // 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/pages/Embed.tsx
 import { useGuard } from "@authing/guard-react";
 
@@ -129,7 +135,7 @@ function Logout() {
 ```tsx
 // App.tsx
 
-// React 16/17
+// React 16 / 17
 // 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/App.tsx
 import { GuardProvider } from "@authing/guard-react";
 import "@authing/guard-react/dist/esm/guard.min.css";
@@ -162,7 +168,7 @@ function App() {
 ```
 
 ```tsx
-// React 16/17
+// React 16 / 17
 // 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/pages/Embed.tsx
 import { useGuard } from "@authing/guard-react";
 

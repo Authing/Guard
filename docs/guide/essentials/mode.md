@@ -73,7 +73,7 @@ export default function Jump() {
 ``` tsx
 // Callback.tsx
 
-// React 16/17
+// React 16 / 17
 // 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/pages/Callback.tsx
 import { JwtTokenStatus, useGuard, User } from '@authing/guard-react';
 
@@ -138,7 +138,7 @@ export default function Callback() {
 ``` tsx
 // Personal.tsx
 
-// React 16/17
+// React 16 / 17
 // 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/pages/Personal.tsx
 import { useGuard, User } from '@authing/guard-react';
 
@@ -606,7 +606,7 @@ async function handleAuthingLoginCallback () {
 ::: tab React
 
 ```tsx
-// React 16/17
+// React 16 / 17
 // 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/pages/Embed.tsx
 import { useGuard, User } from "@authing/guard-react";
 
@@ -760,7 +760,7 @@ guard.start("#authing-guard-container").then((userInfo) => {
 ```tsx
 // App.tsx
 
-// React 16/17
+// React 16 / 17
 // 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/modal/src/App.tsx
 import { GuardProvider } from "@authing/guard-react";
 import "@authing/guard-react/dist/esm/guard.min.css";
@@ -794,7 +794,7 @@ function App() {
 ```tsx
 // Embed.tsx
 
-// React 16/17
+// React 16 / 17
 // 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/modal/src/pages/Embed.tsx
 import { useGuard, User } from "@authing/guard-react";
 

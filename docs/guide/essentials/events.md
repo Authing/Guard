@@ -7,7 +7,7 @@
 ::: tab React
 
 ```tsx
-// React 16/17
+// React 16 / 17
 // 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/pages/Embed.tsx
 import { useGuard, User } from "@authing/guard-react";
 

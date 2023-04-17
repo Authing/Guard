@@ -1,7 +1,7 @@
 # 安装
 
 ::: hint-info
-你可以选择 CDN 或 NPM 方式安装并使用 Guard，无论使用哪一种安装方式，你都需要用到 Authing 应用的 <strong>APP ID</strong>，请先前往 Authing 控制台 [创建一个应用](./essentials/application.md) 并获取 APP ID。关于 APP ID 所在位置，请参阅 <a href="https://docs.authing.cn/v2/guides/app-new/create-app/app-configuration.html" target="_blank">应用配置</a>。
+你可以选择 CDN 或 NPM 方式安装并使用 Guard，无论使用哪一种安装方式，你都需要用到 Authing 应用的 <strong>APP ID</strong>，请先前往 Authing 控制台 <a href="https://docs.authing.cn/v2/guides/app-new/create-app/create-app.html" target="_blank">创建一个应用</a> 并获取 APP ID。关于 APP ID 所在位置，请参阅 <a href="https://docs.authing.cn/v2/guides/app-new/create-app/app-configuration.html" target="_blank">应用配置</a>。
 :::
 
 ## CDN 引入
@@ -111,4 +111,4 @@ yarn add @authing/guard-angular
 :::
 ::::
 
-如果您使用了 NPM 安装，并使用 webpack 作为构建工具，请继续阅读 [快速开始](./quick-start.md) 章节。
+如果你使用了 NPM 安装，并使用 webpack 作为构建工具，请继续阅读 [快速开始](./quick-start.md) 章节。
