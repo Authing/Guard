@@ -64,11 +64,11 @@ const zhCnNavBar = {
           path: '/guide/essentials/trackSession'
         },
         {
-          title: '视图切换',
+          title: '切换视图',
           path: '/guide/essentials/change-view'
         },
         {
-          title: '事件监听',
+          title: '事件',
           path: '/guide/essentials/events'
         },
         {
