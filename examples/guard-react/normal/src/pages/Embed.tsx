@@ -75,11 +75,17 @@ export default function Login() {
   }
 
   const changeViewToPassword = () => {
-    guard.changeView('login:password')
+    guard.changeView({
+      module: 'login',
+      tab: 'password'
+    })
   }
 
   const changeViewToPhoneCode = () => {
-    guard.changeView('login:phone-code')
+    guard.changeView({
+      module: 'login',
+      tab: 'phone-code'
+    })
   }
 
   const changeViewToForgetPassword = () => {

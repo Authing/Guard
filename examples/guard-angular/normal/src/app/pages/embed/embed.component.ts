@@ -105,9 +105,6 @@ export class EmbedComponent {
   }
 
   changeViewToAppQrcode () {
-    this.guard.client.changeView({
-      module: 'login',
-      tab: 'app-qrcode'
-    })
+    this.guard.client.changeView('login:app-qrcode')
   }
 }

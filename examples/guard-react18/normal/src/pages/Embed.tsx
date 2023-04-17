@@ -80,11 +80,16 @@ export default function Embed() {
   }
 
   const changeViewToForgetPassword = () => {
-    guard.changeView('forgetPassword')
+    guard.changeView({
+      module: 'forgetPassword'
+    })
   }
 
   const changeViewToPassword = () => {
-    guard.changeView('login:password')
+    guard.changeView({
+      module: 'login',
+      tab: 'password'
+    })
   }
 
   const changeViewToPhoneCode = () => {
@@ -96,7 +101,10 @@ export default function Embed() {
   }
 
   const changeViewToRegister_EmailPassword = () => {
-    guard.changeView('register:email-password')
+    guard.changeView({
+      module: 'register',
+      tab: 'email-password'
+    })
   }
 
   const changeViewToAppQrcode = () => {

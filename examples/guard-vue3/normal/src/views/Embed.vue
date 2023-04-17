@@ -95,7 +95,9 @@ const changeLang = (event: any) => {
 }
 
 const changeViewToForgetPassword = () => {
-  guard.changeView('forgetPassword')
+  guard.changeView({
+    module: 'forgetPassword'
+  })
 }
 
 const changeViewToPassword = () => {
@@ -107,7 +109,10 @@ const changeViewToPhoneCode = () => {
 }
 
 const changeViewToRegister_UserName = () => {
-  guard.changeView('register:username-password')
+  guard.changeView({
+    module: 'register',
+    tab: 'username-password'
+  })
 }
 
 const changeViewToRegister_EmailPassword = () => {

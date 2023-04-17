@@ -97,7 +97,9 @@ export default {
     },
 
     changeViewToForgetPassword () {
-      this.$guard.changeView('forgetPassword')
+      this.$guard.changeView({
+        module: 'forgetPassword'
+      })
     },
 
     changeViewToPassword() {
@@ -105,7 +107,10 @@ export default {
     },
 
     changeViewToPhoneCode () {
-      this.$guard.changeView('login:phone-code')
+      this.$guard.changeView({
+        module: 'login',
+        tab: 'phone-code'
+      })
     },
 
     changeViewToRegister_UserName() {
