@@ -46,3 +46,14 @@ guard.on('after-change-module', res => {
 guard.on('close', () => {
   console.log('on modal close')
 })
+
+// setTimeout(() => {
+//   guard.changeView('login:password')
+// }, 5000)
+
+// setTimeout(() => {
+//   guard.changeView({
+//     module: 'login',
+//     tab: 'phone-code'
+//   })
+// }, 6000)

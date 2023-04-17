@@ -12,7 +12,8 @@ import {
   User,
   Lang,
   IGuardConfig,
-  LogoutParams
+  LogoutParams,
+  IChangeViewOptions
 } from './types'
 
 import { Guard as GuardComponent } from './Guard'
@@ -508,8 +509,18 @@ export class Guard {
     }
   }
 
-  async changeView(currentView: string) {
-    const [moduleName, tabName] = currentView.split(':')
+  async changeView(currentView: string | IChangeViewOptions) {
+    let moduleName = ''
+    let tabName: undefined | string = ''
+
+    if (typeof currentView === 'string') {
+      const arr = currentView.split(':')
+      moduleName = arr[0]
+      tabName = arr[1]
+    } else {
+      moduleName = currentView.module
+      tabName = currentView.tab
+    }
 
     if (
       !window.$$guard.viewContext ||

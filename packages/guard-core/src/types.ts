@@ -129,3 +129,8 @@ export type IGuardTabType =
   | 'authing-otp-push'
   | 'ad'
   | 'ldap'
+
+export interface IChangeViewOptions {
+  module: string
+  tab?: string
+}
