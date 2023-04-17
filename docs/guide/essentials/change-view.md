@@ -1,6 +1,6 @@
 # 使用 Guard API 自由切换视图
 
-某些场景下你可以使用 Guard 提供的 `changeView` API 自由、灵活的切换界面。
+`changeView` API 可以帮你自由、灵活的切换 Guard 视图界面。
 
 ```ts
 class Guard {
