@@ -751,7 +751,7 @@ guard.start("#authing-guard-container").then((userInfo) => {
 
 初始化时，你需要将初始化参数的 `mode` 设置成 `modal`。
 
-你可以通过 `guard` 实例 `start` 方法对 **模态框** 进行渲染，同时可以通过 `show` 和 `hide` 控制 **模态框** 的显示和隐藏：
+你可以通过 `guard` 实例 `start` 方法对『模态框』进行渲染，同时可以通过 `show` 和 `hide` 控制『模态框』的显示和隐藏：
 
 :::: tabs :options="{ useUrlFragment: false }"
 
