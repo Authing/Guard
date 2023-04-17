@@ -72,4 +72,28 @@ export class EmbedComponent {
     this.langCache = event?.target?.value
     this.guard.client.changeLang(event?.target?.value)
   }
+
+  changeViewToForgetPassword () {
+    this.guard.client.changeView('forgetPassword')
+  }
+
+  changeViewToPassword() {
+    this.guard.client.changeView('login:password')
+  }
+
+  changeViewToPhoneCode () {
+    this.guard.client.changeView('login:phone-code')
+  }
+
+  changeViewToRegister_UserName() {
+    this.guard.client.changeView('register:username-password')
+  }
+
+  changeViewToRegister_EmailPassword() {
+    this.guard.client.changeView('register:email-password')
+  }
+
+  changeViewToAppQrcode () {
+    this.guard.client.changeView('login:app-qrcode')
+  }
 }

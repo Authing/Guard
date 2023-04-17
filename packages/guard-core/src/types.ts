@@ -9,8 +9,11 @@ import {
   InputMethod,
   GuardPageSene,
   EmailScene,
-  SceneType
+  SceneType,
+  PasswordLoginMethods
 } from './Type'
+
+import { LoginWay } from './Guard/core/hooks/useMultipleAccounts'
 
 import { CodeAction, ApiCode } from './_utils/responseManagement/interface'
 
@@ -116,3 +119,13 @@ export interface LogoutParams {
   redirectUri?: string
   quitCurrentDevice?: boolean
 }
+
+export type IGuardTabType = 
+  |'phone-code' 
+  | 'phone-password'
+  | 'password' 
+  | 'email-password'
+  | 'username-password'
+  | 'authing-otp-push'
+  | 'ad'
+  | 'ldap'
