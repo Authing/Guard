@@ -1,6 +1,6 @@
 import { React } from 'shim-react'
 
-import { i18n, fallbackLng } from '../_utils'
+import { i18n, fallbackLng, isMobile } from '../_utils'
 
 import { useTranslation } from 'react-i18next'
 
@@ -770,6 +770,30 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
 
   }, [disableResetPwd, isResetPage, disableRegister, errorNumber, accountLock, t])
 
+  const SwitchLoginComponent = useMemo(() => {
+    return <div
+      className="switch-img"
+      onClick={() => {
+        message.destroy()
+        if (inputWays.includes(loginWay)) {
+          setLoginWay(firstQRcodeWay)
+        } else if (qrcodeWays.includes(loginWay)) {
+          setLoginWay(firstInputWay)
+        }
+      }}
+    >
+      {/* <div className="imgae-mask" /> */}
+      <IconFont
+        type="authing-qr-6"
+        className={`qrcode-switch-image ${inputNone}`}
+      />
+      <IconFont
+        type="authing-computer-6"
+        className={`qrcode-switch-image ${qrcodeNone}`}
+      />
+    </div>
+  }, [inputWays, loginWay, firstQRcodeWay, qrcodeNone, inputNone, firstInputWay, qrcodeWays])
+
   return (
     <div className="g2-view-container g2-view-login">
       <BackLogin isRender={isResetPage} />
@@ -797,7 +821,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
             {!isMultipleAccount && renderInputWay && renderQrcodeWay && (
               <div className="g2-qrcode-switch">
                 {/* <div className="switch-text">{switchText}</div> */}
-                <Tooltip
+                {isMobile() ? SwitchLoginComponent : <Tooltip
                   placement="left"
                   title={switchText}
                   getPopupContainer={(node: any) => {
@@ -807,28 +831,9 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                     return document.body
                   }}
                 >
-                  <div
-                    className="switch-img"
-                    onClick={() => {
-                      message.destroy()
-                      if (inputWays.includes(loginWay)) {
-                        setLoginWay(firstQRcodeWay)
-                      } else if (qrcodeWays.includes(loginWay)) {
-                        setLoginWay(firstInputWay)
-                      }
-                    }}
-                  >
-                    {/* <div className="imgae-mask" /> */}
-                    <IconFont
-                      type="authing-qr-6"
-                      className={`qrcode-switch-image ${inputNone}`}
-                    />
-                    <IconFont
-                      type="authing-computer-6"
-                      className={`qrcode-switch-image ${qrcodeNone}`}
-                    />
-                  </div>
-                </Tooltip>
+                  {SwitchLoginComponent}
+                </Tooltip>}
+
                 {/* <Popover
                   placement="leftTop"
                   visible={true}
