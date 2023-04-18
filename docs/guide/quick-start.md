@@ -161,7 +161,11 @@ import { GuardModule } from '@authing/guard-angular'
 export class AppModule {}
 ```
 :::
+
 ::: tab JavaScript
+::: hint-info
+所有 API 均可通过实例化 `Guard` 调用，后续不再赘述。
+:::
 ``` js
 import { Guard } from '@authing/guard'
 

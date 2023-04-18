@@ -12,41 +12,10 @@ const head = [
     "link",
     {
       rel: "icon",
-      type: "image/png",
-      sizes: "32x32",
       href: "https://authing.cn/favicon.ico"
     }
-  ],
-  [
-    "script",
-    {},
-    `!function(){var e=window.Cohere=window.Cohere||[];if(e.invoked)console.error("Tried to load Cohere twice");else{e.invoked=!0,e.snippet="0.2",e.methods=["init","identify","stop","showCode","getSessionUrl","makeCall","addCallStatusListener","removeCallStatusListener","widget","addSessionUrlListener","removeSessionUrlListener",],e.methods.forEach(function(o){e[o]=function(){var t=Array.prototype.slice.call(arguments);t.unshift(o),e.push(t)}});var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src="https://static.cohere.so/main.js",o.crossOrigin="anonymous";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(o,t)}}();`
-  ],
-  [
-    "script",
-    {},
-    `if(window.location.hostname === "docs.authing.cn"){window.Cohere.init("PUkf845sOZgDd59V6aTJCsuJ");}`
   ]
 ];
-
-if (gaEnabled) {
-  head.push([
-    "script",
-    {
-      async: true,
-      src: `https://www.googletagmanager.com/gtag/js?id=${gTrackingId}`
-    }
-  ]);
-  head.push([
-    "script",
-    {},
-    `window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', '${gTrackingId}');`
-  ]);
-}
 
 module.exports = {
   base: basePath,
@@ -75,8 +44,8 @@ module.exports = {
     // As a special case, the default locale can use '/' as its path.
     "/": {
       lang: "zh-CN", // this will be set as the lang attribute on <html>
-      title: "Authing 文档",
-      description: "Authing 文档",
+      title: "Authing Guard 文档",
+      description: "Authing Guard 文档",
       navbarTitle: "Web Guard",
       relatedDocText: "相关文档",
       devDocText: "开发文档",

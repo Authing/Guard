@@ -105,7 +105,7 @@ export interface GuardOptions {
   // Guard 展示形态：普通形态 / 模态框形态
   mode?: IGuardMode
 
-  // MFA 人脸识别插件，具体参考：**待补充 MFA 人脸识别文档地址**
+  // MFA 人脸识别插件，具体参考本文档：『高级功能』-> 『MFA 多因素认证』
   facePlugin?: any
 
   // Guard 所有模块

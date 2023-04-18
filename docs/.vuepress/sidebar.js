@@ -82,6 +82,10 @@ const zhCnNavBar = {
         {
           title: '刷新 Token',
           path: '/guide/essentials/refresh-token'
+        },
+        {
+          title: '操作登录注册协议',
+          path: '/guide/essentials/agreemetns'
         }
       ]
     },

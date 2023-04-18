@@ -1,9 +1,4 @@
 # 常用 TS 类型定义及相关数据结构
-
-::: hint-info
-以下列举了常用的配置及相关数据结构，完整类型定义可参考：**待补充 GitHub guard-core/src/types.ts 地址**
-:::
-
 ## IGuardMode
 
 Guard 展示形态：普通形态 / 模态框形态
@@ -59,15 +54,16 @@ export enum GuardModuleType {
 Guard 所有 tab，可结合 `changeView` API 自由切换 Guard 界面。一般登录和注册界面下才有 tab。
 
 ``` ts
-export type IGuardTabType =
-  | 'phone-code'
+export type IGuardTabType = 
+  | 'phone-code' 
   | 'phone-password'
-  | 'password'
+  | 'password' 
   | 'email-password'
   | 'username-password'
   | 'authing-otp-push'
   | 'ad'
   | 'ldap'
+  | 'app-qrcode'
 ```
 ## Lang
 
@@ -367,5 +363,49 @@ export interface LogoutParams {
   redirectUri?: string
   // 只退出当前设备，不影响其他设备登录状态
   quitCurrentDevice?: boolean
+}
+```
+
+## Guard
+```ts
+class Guard {
+  async getAuthClient(): Promise<AuthenticationClient>
+
+  /**
+   * 启动嵌入模式
+   * @param el String
+   * @returns Promise
+   */
+  async start(el?: string): Promise<User>
+
+  changeLang(lang: Lang): void
+
+  changeContentCSS(contentCSS: string): void
+
+  /**
+   * 启动跳转模式
+   */
+  async startWithRedirect(options: StartWithRedirectOptions = {}): void
+
+  async handleRedirectCallback(): void
+
+  /**
+   * 获取当前用户信息
+   */
+  async trackSession(): Promise<User | null>
+
+  async logout(params: LogoutParams = {}): void
+
+  show(): void
+
+  hide(): void
+
+  unmount(): void
+
+  async changeView(currentView: string | IChangeViewOptions): void
+
+  checkAllAgreements(): void
+
+  unCheckAllAgreements(): void
 }
 ```
