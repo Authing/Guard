@@ -161,7 +161,7 @@ export const IdpButton = (props: any) => {
           block
           size="large"
           className="g2-guard-third-login-btn"
-          icon={<Avatar size={20} src={i.logo} style={{ marginRight: 8 }} />}
+          icon={<Avatar size={32} src={i.logo} style={{ marginRight: 8 }} />}
           onClick={() => {
             if (query.redirected) {
               window.location.replace(initUrl)
@@ -185,7 +185,7 @@ export const IdpButton = (props: any) => {
             }
           }}
           key={i.identifier}
-          icon={<Avatar size={16} src={i.logo} />}
+          icon={<Avatar size={32} src={i.logo} />}
         ></GuardButton>
       ) : (
         <Tooltip
@@ -203,7 +203,7 @@ export const IdpButton = (props: any) => {
                 popupCenter(initUrl)
               }
             }}
-            icon={<Avatar size={16} src={i.logo} />}
+            icon={<Avatar size={32} src={i.logo} />}
           ></GuardButton>
         </Tooltip>
       )
