@@ -330,6 +330,7 @@
     .authing-ant-tooltip {
       margin-left: 12px;
       left: -100px !important;
+
       @media only screen and (max-width: 450px) {
         display: none;
       }
@@ -350,6 +351,15 @@
     padding: 8px 12px;
     line-height: 22px;
     background-color: #272E3B;
+  }
+
+  .authing-ant-tooltip-arrow-content:before {
+    background: #272E3B;
+    clip-path: inset(34% 34%) !important;
+  }
+
+  .authing-ant-tooltip-arrow-content {
+    box-shadow: none;
   }
 }
 
@@ -1561,6 +1571,6 @@ input {
 }
 
 *[class*="authing-"].authing-arrow-left-6 {
-  font-size: 26px;
+  font-size: 32px;
   color: #4E5969 !important;
 }
