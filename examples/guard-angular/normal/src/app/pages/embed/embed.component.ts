@@ -107,4 +107,12 @@ export class EmbedComponent {
   changeViewToAppQrcode () {
     this.guard.client.changeView('login:app-qrcode')
   }
+
+  checkAllAgreements() {
+    this.guard.client.checkAllAgreements()
+  }
+
+  unCheckAllAgreements() {
+    this.guard.client.unCheckAllAgreements()
+  }
 }

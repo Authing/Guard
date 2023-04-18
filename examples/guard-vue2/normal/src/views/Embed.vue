@@ -32,6 +32,10 @@
 
     <button class='authing-button' @click="changeViewToRegister_EmailPassword">Change View To Register - EmailPassword</button>
 
+    <button class='authing-button' @click="checkAllAgreements">Check All Agreements</button>
+
+    <button class='authing-button' @click="unCheckAllAgreements">UnCheck All Agreements</button>
+
     <div id="authing-guard-container"></div>
   </div>
 </template>
@@ -123,6 +127,14 @@ export default {
 
     changeViewToAppQrcode () {
       this.$guard.changeView('login:app-qrcode')
+    },
+
+    checkAllAgreements () {
+      this.$guard.checkAllAgreements()
+    },
+
+    unCheckAllAgreements () {
+      this.$guard.unCheckAllAgreements()
     }
   }
 }
