@@ -55,7 +55,6 @@ function App() {
 :::
 
 ::: tab Vue2
-
 ```javascript
 // 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue2/normal/src/main.js
 // main.js
@@ -76,11 +75,9 @@ Vue.use(GuardPlugin, {
   // redirectUri: "YOUR_REDIRECT_URI"
 });
 ```
-
 :::
 
 ::: tab Vue3
-
 ```typescript
 // 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue3/normal/src/main.ts
 // main.ts
@@ -107,11 +104,9 @@ app.use(
   })
 );
 ```
-
 :::
 
 ::: tab Angular
-
 ```json
 // angular.json
 // 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-angular/normal/angular.json
@@ -177,6 +172,4 @@ guard.start('#authing-guard-container').then(userInfo => {
   console.log('userInfo in start: ', userInfo)
 })
 ```
-:::
-
 ::::
