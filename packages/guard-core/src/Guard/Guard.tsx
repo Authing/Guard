@@ -32,7 +32,7 @@ const propsAreEqual = (pre: GuardProps, current: GuardProps) => {
 
 const { memo, useEffect, useRef, useState } = React
 
-export const Guard = memo((props: GuardProps) => {
+export const GuardComponent = memo((props: GuardProps) => {
   const { config } = props
 
   const ref = useRef<HTMLDivElement>(null)

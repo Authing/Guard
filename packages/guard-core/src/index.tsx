@@ -16,7 +16,7 @@ import {
   IChangeViewOptions
 } from './types'
 
-import { Guard as GuardComponent } from './Guard'
+import { GuardComponent } from './Guard'
 
 import { React, render, unmount } from 'shim-react'
 
