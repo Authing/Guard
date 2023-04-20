@@ -150,7 +150,8 @@ export const VerifyCodeInput: React.FC<VerifyCodeInputProps> = ({
                   minHeight: size,
                   height: size,
                   lineHeight: size,
-                  fontSize: 24
+                  fontSize: 24,
+                  fontWeight: 500,
                   // marginLeft: index === 0 ? 0 : gutter
                 }}
                 className="authing-g2-code-input-item"
