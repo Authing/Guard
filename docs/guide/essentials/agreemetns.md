@@ -1,4 +1,4 @@
-## 选中 / 取消选中登录注册协议
+# 选中 / 取消选中登录注册协议
 
 ```ts
 class Guard {
@@ -129,3 +129,7 @@ const unCheckAllAgreements = () => {
 ```
 :::
 ::::
+
+::: hint-info
+你可能感兴趣：[登录注册协议](https://docs.authing.cn/v2/guides/customize/global-guard/#%E7%99%BB%E5%BD%95%E6%B3%A8%E5%86%8C%E5%8D%8F%E8%AE%AE)
+:::

@@ -9,3 +9,7 @@
 配置之后，只有在你安全域配置白名单中的域，才能调用相关 API，从而正常使用 Authing Guard 功能。
 
 ![guard-console-safity-domain](./images/guard-console-safity-domain.png)
+
+::: hint-info
+你可能感兴趣：[配置 Web 安全域](https://docs.authing.cn/v2/guides/security/config-domain.html)
+:::
