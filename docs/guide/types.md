@@ -9,7 +9,7 @@ export type IGuardMode = 'normal' | 'modal'
 
 ## IGuardModuleType
 
-Guard 所有 module，可结合 `changeView` API 自由切换 Guard 界面。
+Guard 所有 module，可结合 [changeView](./essentials/change-view.md) 自由切换 Guard 界面。
 
 ``` ts
 // **************************************
