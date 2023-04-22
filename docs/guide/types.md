@@ -86,6 +86,7 @@ export interface IGuardConfig {
 
   // 多语言范围
   langRange: Lang[]
+
   // 社会化身份源
   socialConnectionList?: ISocialConnectionProvider[]
 
