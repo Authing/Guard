@@ -1,6 +1,6 @@
 # 初始化 Guard 的配置参数
 
-使用 Guard 时，必须传入 `appId`，其他参数都是可选配置项。通过使用这些可选配置，你可以体验到更强大、更灵活的 Guard 功能。
+使用 Guard 时，除 `appId` 必传之外，其他参数都是可选配置项。通过使用这些可选配置，你可以体验更强大、更灵活的 Guard 功能。
 
 :::: tabs :options="{ useUrlFragment: false }"
 ::: tab JavaScript
@@ -53,7 +53,9 @@ Vue.use(GuardPlugin, guardOptions)
 
 ```typescript
 // TypeScript
-import { createGuard, GuardOptions } from '@authing/guard-vue3'
+import { createGuard } from '@authing/guard-vue3'
+
+import type { GuardOptions } from '@authing/guard-vue3'
 
 const guardOptions: GuardOptions = {
   appId: 'AUTHING_APP_ID'
