@@ -9,7 +9,7 @@ export type IGuardMode = 'normal' | 'modal'
 
 ## IGuardModuleType
 
-Guard 所有 module，可结合 `changeView` API 自由切换 Guard 界面。
+Guard 所有 module，可结合 [changeView](./essentials/change-view.md) 自由切换 Guard 界面。
 
 ``` ts
 // **************************************
@@ -51,7 +51,7 @@ export enum GuardModuleType {
 
 ## IGuardTabType
 
-Guard 所有 tab，可结合 `changeView` API 自由切换 Guard 界面。一般登录和注册界面下才有 tab。
+Guard 所有 tab，可结合 [changeView](./essentials/change-view.md) 自由切换 Guard 界面。通常只有登录和注册界面下才有 tab。
 
 ``` ts
 export type IGuardTabType = 
@@ -86,6 +86,7 @@ export interface IGuardConfig {
 
   // 多语言范围
   langRange: Lang[]
+
   // 社会化身份源
   socialConnectionList?: ISocialConnectionProvider[]
 

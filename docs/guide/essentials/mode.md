@@ -292,7 +292,9 @@ const startWithRedirect = () => {
 </template>
 <script lang="ts" setup>
 import { onMounted } from 'vue'
+
 import { useRouter } from 'vue-router'
+
 import { useGuard } from '@authing/guard-vue3'
 
 import type { JwtTokenStatus, User } from '@authing/guard-vue3'
@@ -350,7 +352,9 @@ onMounted(() => {
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
+
 import { useGuard } from '@authing/guard-vue3'
+
 import type { User } from '@authing/guard-vue3'
 
 const userInfo = ref<string>('')
