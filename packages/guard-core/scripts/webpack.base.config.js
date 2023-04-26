@@ -6,8 +6,6 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
 const webpack = require('webpack')
 
-const TerserPlugin = require('terser-webpack-plugin')
-
 const { resolve } = require('./utils')
 
 module.exports = function webpackConfigFn ({
@@ -72,20 +70,6 @@ module.exports = function webpackConfigFn ({
           use: ['url-loader']
         }
       ]
-    },
-    optimization: {
-      minimize: true,
-      minimizer: [new TerserPlugin({
-        parallel: true,
-        terserOptions: {
-          compress: {
-            drop_console: true
-          },
-          format: {
-            comments: false
-          }
-        }
-      })]
     },
     plugins: [
       new HtmlWebpackPlugin({
