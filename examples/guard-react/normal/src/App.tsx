@@ -13,7 +13,7 @@ import './App.css'
 export default function App() {
   return (
     <GuardProvider
-      appId="AUTHING_APP_ID"
+      appId="64196bdaa5b19f2a6e4316d0"
       
       // 如果你使用的是私有化部署的 Authing 服务，需要传入自定义 host，如:
       // host="https://my-authing-app.example.com"
