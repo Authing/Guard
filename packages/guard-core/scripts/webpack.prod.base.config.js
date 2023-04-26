@@ -10,7 +10,7 @@ module.exports = {
           drop_console: true
         },
         format: {
-          comments: false
+          comments: true
         }
       }
     })]
