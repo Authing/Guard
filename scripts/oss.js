@@ -1,5 +1,7 @@
 const OSS = require('ali-oss')
+
 const path = require('path')
+
 const fs = require('fs')
 
 const map = process.argv.slice(2).reduce((map, arg) => {

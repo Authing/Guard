@@ -1,6 +1,9 @@
 const path = require('path')
+
 const rm = require('rimraf')
+
 const webpack = require('webpack')
+
 const getWebpackConfig = require('./webpack.config')
 
 readyGo()

@@ -1,5 +1,7 @@
 const path = require('path')
+
 const fs = require('fs-extra')
+
 const rm = require('rimraf')
 
 const resolve = (dir, file = '') =>{

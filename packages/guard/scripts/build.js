@@ -1,6 +1,9 @@
 const path = require('path')
+
 const rm = require('rimraf')
+
 const webpack = require('webpack')
+
 const webpackConfig = require('./webpack.config')
 
 try {
