@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "vue-cli-service serve --host=localhost --port=3000",
+    "dev": "vue-cli-service serve --host=localhost --port=3003",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@authing/guard-vue2": "^6.0.0-alpha.9",
+    "@authing/guard-vue2": "^6.0.0-alpha.12",
     "core-js": "^3.6.5",
     "face-api.js": "^0.22.2",
     "vue": "^2.6.11",

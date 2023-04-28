@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "dev": "ng serve --port 3000",
+    "dev": "ng serve --port 3003",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
