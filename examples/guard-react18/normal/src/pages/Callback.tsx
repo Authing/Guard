@@ -17,10 +17,7 @@ export default function Callback() {
       const loginStatus: JwtTokenStatus | undefined  = await guard.checkLoginStatus()
 
       if (!loginStatus) {
-        guard.startWithRedirect({
-          scope: 'openid profile'
-        })
-        return
+        return console.error('Guard is not get login status')
       }
 
       // 3. 获取到登录用户的用户信息
@@ -40,9 +37,7 @@ export default function Callback() {
       // 从 URL search 中解析 state
     } catch (e) {
       // 登录失败，推荐再次跳转到登录页面
-      guard.startWithRedirect({
-        scope: 'openid profile'
-      })
+      console.error('Guard handleAuthingLoginCallback error: ', e)
     }
   }
 
