@@ -1,5 +1,5 @@
 import packages from '../../package.json'
 
-export function getVersion () {
+export function getVersion() {
   return packages.version
 }

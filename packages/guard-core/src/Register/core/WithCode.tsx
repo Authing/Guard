@@ -26,7 +26,11 @@ import { parsePhone, useMediaSize } from '../../_utils/hooks'
 
 import { useIsChangeComplete } from '../utils'
 
-import { useGuardFinallyConfig, useGuardModule, useIsForeignUserpool } from '../../_utils/context'
+import {
+  useGuardFinallyConfig,
+  useGuardModule,
+  useIsForeignUserpool
+} from '../../_utils/context'
 
 import { GuardModuleType } from '../../Guard'
 
@@ -120,7 +124,8 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
   // 是否仅开启国际化短信
   const [isOnlyInternationSms, setInternationSms] = useState(false)
   // 是否开启了国际化短信功能
-  const isInternationSms = publicConfig?.internationalSmsConfig?.enabled || false
+  const isInternationSms =
+    publicConfig?.internationalSmsConfig?.enabled || false
 
   const isForeignUserpool = useIsForeignUserpool()
   const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
@@ -229,7 +234,8 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
           phoneCountryCode: isInternationSms ? phoneCountryCode : undefined,
           // password: undefined, // TODO: 手机号验证码不需要密码
           profile: {
-            browser: typeof navigator !== 'undefined' ? navigator.userAgent : null,
+            browser:
+              typeof navigator !== 'undefined' ? navigator.userAgent : null,
             device: getDeviceName()
           },
           forceLogin: false,
@@ -408,7 +414,8 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
           email,
           code,
           profile: {
-            browser: typeof navigator !== 'undefined' ? navigator.userAgent : null,
+            browser:
+              typeof navigator !== 'undefined' ? navigator.userAgent : null,
             device: getDeviceName()
           },
           context: JSON.stringify(context),
@@ -630,7 +637,8 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
           areaCode={areaCode}
           onAreaCodeChange={(value: string) => {
             setAreaCode(value)
-            form.getFieldValue(['identify']) && form.validateFields(['identify'])
+            form.getFieldValue(['identify']) &&
+              form.validateFields(['identify'])
           }}
         />
       )
@@ -676,7 +684,10 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
 
   const [btnDisabled, setDisabled] = useState(true)
 
-  const formValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
+  const formValuesChange = (
+    _: Record<string, any>,
+    allValues: Record<string, any>
+  ) => {
     // 判断其他表单项是否填写
     setDisabled(isDisabled(allValues))
   }
@@ -695,7 +706,9 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
         <FormItemIdentify
           name="identify"
           className={
-            isOnlyInternationSms ? 'authing-g2-input-form remove-padding' : 'authing-g2-input-form'
+            isOnlyInternationSms
+              ? 'authing-g2-input-form remove-padding'
+              : 'authing-g2-input-form'
           }
           methods={methods}
           currentMethod={currentMethod}

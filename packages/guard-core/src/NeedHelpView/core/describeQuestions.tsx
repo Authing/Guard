@@ -2,7 +2,15 @@ import { React } from 'shim-react'
 
 import { useTranslation } from 'react-i18next'
 
-import { Form, Input, message, Modal, Progress, Select, Upload } from 'shim-antd'
+import {
+  Form,
+  Input,
+  message,
+  Modal,
+  Progress,
+  Select,
+  Upload
+} from 'shim-antd'
 
 import SubmitButton from '../../SubmitButton'
 
@@ -146,11 +154,13 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
   }
 
   const [btnDisabled, setDisabled] = useState(true)
-  const formValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
+  const formValuesChange = (
+    _: Record<string, any>,
+    allValues: Record<string, any>
+  ) => {
     // 判断其他表单项是否填写
     setDisabled(!allValues['identify'])
   }
-
 
   return (
     <div className="authing-g2-describe-questions authing-g2-form-required-item-icon-after">
@@ -187,10 +197,10 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
               }
             }
           ]}
-          style={{marginBottom: 24}}
+          style={{ marginBottom: 24 }}
         >
           <CommonInput
-            name='identify'
+            name="identify"
             className="authing-g2-input"
             autoComplete="off"
             size="large"
@@ -204,15 +214,25 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
           label={t('common.problem.form.question')}
           name="questionPicker"
           initialValue={typeProblem}
-          style={{marginBottom: 24}}
+          style={{ marginBottom: 24 }}
         >
           <Select
             className="authing-g2-select"
             onChange={(value: number) => {
               setTypeProblem(value)
             }}
-            suffixIcon={<IconFont type='authing-arrow-down-s-line' className='authing-select-down-arrow' />}
-            menuItemSelectedIcon={<IconFont type='authing-check-fill' style={{fontSize: 16, color: '#4E5969'}} />}
+            suffixIcon={
+              <IconFont
+                type="authing-arrow-down-s-line"
+                className="authing-select-down-arrow"
+              />
+            }
+            menuItemSelectedIcon={
+              <IconFont
+                type="authing-check-fill"
+                style={{ fontSize: 16, color: '#4E5969' }}
+              />
+            }
           >
             {typeOperations?.map(({ value, label }) => (
               // @ts-ignore
@@ -220,7 +240,9 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
                 key={value}
                 value={value}
                 className={`authing-g2-question-option ${
-                  typeProblem === value ? 'authing-g2-question-option-active' : ''
+                  typeProblem === value
+                    ? 'authing-g2-question-option-active'
+                    : ''
                 }`}
               >
                 {label}
@@ -239,7 +261,7 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
           className="authing-g2-input-form"
           name="description"
           label={t('common.problem.form.questionDescript')}
-          style={{marginBottom: 24}}
+          style={{ marginBottom: 24 }}
         >
           <Input.TextArea
             className="authing-g2-questions-textarea"
@@ -253,7 +275,9 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
         </Form.Item>
 
         <div className="authing-g2-input-form">
-          <div className="label-title">{t('common.problem.form.questionClip')}</div>
+          <div className="label-title">
+            {t('common.problem.form.questionClip')}
+          </div>
           <div className="g2-questions">
             <Upload
               action={`${props.host}/api/v2/upload?folder=photos`}
@@ -271,7 +295,9 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
                 setUploadUrl(imgUrl)
               }}
               beforeUpload={(file: any) => {
-                if (['image/png', 'image/jpeg', 'image/jpg'].includes(file.type)) {
+                if (
+                  ['image/png', 'image/jpeg', 'image/jpg'].includes(file.type)
+                ) {
                   return true
                 }
                 return Promise.reject(file)

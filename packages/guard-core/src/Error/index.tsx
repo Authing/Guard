@@ -42,7 +42,10 @@ export const GuardErrorView: React.FC<ErrorProps> = propsInitData => {
           />
         </div>
         <div className="g2-error-message">{i18n.t('user.error')}</div>
-        <span className="g2-error-message-text" dangerouslySetInnerHTML={{ __html: messages }} />
+        <span
+          className="g2-error-message-text"
+          dangerouslySetInnerHTML={{ __html: messages }}
+        />
       </div>
     </div>
   )

@@ -30,7 +30,9 @@ interface LoginWithWechatMiniQrcodeProps {
   multipleInstance?: StoreInstance
 }
 
-export const LoginWithWechatMiniQrcode = (props: LoginWithWechatMiniQrcodeProps) => {
+export const LoginWithWechatMiniQrcode = (
+  props: LoginWithWechatMiniQrcodeProps
+) => {
   const { canLoop, qrCodeScanOptions } = props
 
   const { t } = useTranslation()
@@ -65,35 +67,39 @@ export const LoginWithWechatMiniQrcode = (props: LoginWithWechatMiniQrcodeProps)
    */
   const onStatusChange = async (status: CodeStatus, data: QrCodeResponse) => {
     switch (status) {
-    case 'success':
-      if (events?.onBeforeLogin) {
-        const isContinue = await events?.onBeforeLogin(
-          { type: LoginMethods.WxMinQr, data },
-          authClient
-        )
-        if (!isContinue) {
-          break
+      case 'success':
+        if (events?.onBeforeLogin) {
+          const isContinue = await events?.onBeforeLogin(
+            { type: LoginMethods.WxMinQr, data },
+            authClient
+          )
+          if (!isContinue) {
+            break
+          }
         }
-      }
 
-      props.multipleInstance &&
-          props.multipleInstance.setLoginWay('qrcode', LoginMethods.WxMinQr, props.id)
+        props.multipleInstance &&
+          props.multipleInstance.setLoginWay(
+            'qrcode',
+            LoginMethods.WxMinQr,
+            props.id
+          )
 
-      props.onLoginSuccess(data)
-      break
-    case 'error':
-      // 怎么模拟这里的 error
-      if (data.scannedResult) {
-        const { message: msg } = data.scannedResult
-        message.error(msg)
-      }
-      break
-    case 'MFA':
-      const { onGuardHandling } = responseIntercept(data.scannedResult!)
-      onGuardHandling?.()
-      break
-    default:
-      break
+        props.onLoginSuccess(data)
+        break
+      case 'error':
+        // 怎么模拟这里的 error
+        if (data.scannedResult) {
+          const { message: msg } = data.scannedResult
+          message.error(msg)
+        }
+        break
+      case 'MFA':
+        const { onGuardHandling } = responseIntercept(data.scannedResult!)
+        onGuardHandling?.()
+        break
+      default:
+        break
     }
   }
 

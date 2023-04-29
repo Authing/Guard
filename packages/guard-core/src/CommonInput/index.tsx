@@ -6,7 +6,9 @@ import './styles.less'
 
 const { useEffect, useState } = React
 
-export const CommonInput = (props: InputProps & { fieldcontext?: any; ref?: any } & {name: string}) => {
+export const CommonInput = (
+  props: InputProps & { fieldcontext?: any; ref?: any } & { name: string }
+) => {
   const { onFocus, onBlur, fieldcontext, onChange } = props
   const [value, setValue] = useState('')
 
@@ -50,7 +52,11 @@ export const CommonInput = (props: InputProps & { fieldcontext?: any; ref?: any 
   }
 
   return (
-    <div className={`authing-common-input ${!props.placeholder && 'authing-single-line'}`}>
+    <div
+      className={`authing-common-input ${
+        !props.placeholder && 'authing-single-line'
+      }`}
+    >
       <Input
         {...props}
         ref={props.ref}

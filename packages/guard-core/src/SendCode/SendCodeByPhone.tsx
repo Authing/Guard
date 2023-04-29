@@ -54,7 +54,11 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
   const events = useGuardEvents()
   const { post } = useGuardHttp()
 
-  const sendPhone = async (phone: string, countryCode?: string, captchaCode?: string) => {
+  const sendPhone = async (
+    phone: string,
+    countryCode?: string,
+    captchaCode?: string
+  ) => {
     try {
       // await authClient.sendSmsCode(phone, countryCode, scene)
       /**
@@ -115,16 +119,24 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
         beforeSend={() => {
           return onSendCodeBefore()
             .then(async () => {
-              const fieldValue = form ? form.getFieldValue(fieldName || 'phone') : data
+              const fieldValue = form
+                ? form.getFieldValue(fieldName || 'phone')
+                : data
               const { phoneNumber, countryCode } = parsePhone(
                 isInternationSms,
                 fieldValue,
                 areaCode
               )
 
-              const code = form ? form?.getFieldValue(codeFieldName || 'captchaCode') : captchaCode
+              const code = form
+                ? form?.getFieldValue(codeFieldName || 'captchaCode')
+                : captchaCode
 
-              const { status, error } = await sendPhone(phoneNumber, countryCode, code)
+              const { status, error } = await sendPhone(
+                phoneNumber,
+                countryCode,
+                code
+              )
               if (status) {
                 events?.onPhoneSend?.(authClient, scene)
               } else {

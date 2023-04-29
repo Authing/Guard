@@ -58,7 +58,8 @@ requestClient.get = async <T>(
     [requestClient.langHeader]: getCurrentLng()
   }
 
-  if (requestClient.tenantId !== '') headers[requestClient.tenantHeader] = requestClient.tenantId
+  if (requestClient.tenantId !== '')
+    headers[requestClient.tenantHeader] = requestClient.tenantId
   try {
     const CancelToken = Axios.CancelToken
     const source = CancelToken.source()
@@ -102,7 +103,8 @@ requestClient.post = async <T>(
     [requestClient.langHeader]: i18n.language
   }
 
-  if (requestClient.tenantId !== '') headers[requestClient.tenantHeader] = requestClient.tenantId
+  if (requestClient.tenantId !== '')
+    headers[requestClient.tenantHeader] = requestClient.tenantId
 
   try {
     const CancelToken = Axios.CancelToken

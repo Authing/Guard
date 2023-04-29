@@ -86,7 +86,8 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
 
   const verifyCodeLength = publicConfig?.verifyCodeLength ?? 4
 
-  const isInternationSms = publicConfig?.internationalSmsConfig?.enabled || false
+  const isInternationSms =
+    publicConfig?.internationalSmsConfig?.enabled || false
 
   const onFinish = useCallback(
     async (values: any) => {
@@ -128,7 +129,8 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
           code,
           password,
           profile: {
-            browser: typeof navigator !== 'undefined' ? navigator.userAgent : null,
+            browser:
+              typeof navigator !== 'undefined' ? navigator.userAgent : null,
             device: getDeviceName()
           },
           options
@@ -188,7 +190,8 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
             code,
             password,
             {
-              browser: typeof navigator !== 'undefined' ? navigator.userAgent : null,
+              browser:
+                typeof navigator !== 'undefined' ? navigator.userAgent : null,
               device: getDeviceName()
             },
             options
@@ -246,7 +249,12 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
             className="authing-g2-input"
             size="large"
             placeholder={t('login.inputPhone')}
-            prefix={<IconFont type="authing-a-user-line1" style={{ color: '#878A95' }} />}
+            prefix={
+              <IconFont
+                type="authing-a-user-line1"
+                style={{ color: '#878A95' }}
+              />
+            }
             maxLength={11}
           />
         )
@@ -271,7 +279,12 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
               length: verifyCodeLength
             })}
             areaCode={areaCode}
-            prefix={<IconFont type="authing-a-shield-check-line1" style={{ color: '#878A95' }} />}
+            prefix={
+              <IconFont
+                type="authing-a-shield-check-line1"
+                style={{ color: '#878A95' }}
+              />
+            }
             scene={SceneType.SCENE_TYPE_REGISTER}
             maxLength={verifyCodeLength}
             onSendCodeBefore={async () => {
@@ -293,7 +306,12 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
             })}
             maxLength={verifyCodeLength}
             scene={SceneType.SCENE_TYPE_REGISTER}
-            prefix={<IconFont type="authing-a-shield-check-line1" style={{ color: '#878A95' }} />}
+            prefix={
+              <IconFont
+                type="authing-a-shield-check-line1"
+                style={{ color: '#878A95' }}
+              />
+            }
             onSendCodeBefore={async () => {
               await form.validateFields(['phone'])
             }}
@@ -328,7 +346,10 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
           required={true}
           areaCode={areaCode}
         >
-          <PhoenAccount autoFocus={!isPhoneMedia} placeholder={t('login.inputPhone')} />
+          <PhoenAccount
+            autoFocus={!isPhoneMedia}
+            placeholder={t('login.inputPhone')}
+          />
         </CustomFormItem.Phone>
         <Form.Item
           key="code"
@@ -348,7 +369,10 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
           />
         )}
         <Form.Item className="authing-g2-sumbit-form">
-          <SubmitButton text={t('common.register') as string} ref={submitButtonRef} />
+          <SubmitButton
+            text={t('common.register') as string}
+            ref={submitButtonRef}
+          />
         </Form.Item>
       </Form>
     </div>

@@ -37,7 +37,9 @@ export interface GuardSelectProps<T = any> extends ListProps<any> {
 }
 
 /** 选择列表组件 兼容绝大多数选择场景 */
-export const GuardSelect = <D extends GuardSelectItem = any>(props: GuardSelectProps<D>) => {
+export const GuardSelect = <D extends GuardSelectItem = any>(
+  props: GuardSelectProps<D>
+) => {
   const { dataSource, onSelect, gap = 20, ...listProps } = props
 
   return (

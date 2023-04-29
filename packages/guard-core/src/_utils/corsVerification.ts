@@ -4,7 +4,11 @@ import { getGuardWindow } from '../Guard/core/useAppendConfig'
 
 import { i18n } from './locales'
 
-const isOriginMatched = (whitelist: string[], corsWhitelist: string[], origin: string) => {
+const isOriginMatched = (
+  whitelist: string[],
+  corsWhitelist: string[],
+  origin: string
+) => {
   const wildcard = require('wildcard')
 
   if (corsWhitelist.includes(origin)) {
@@ -33,14 +37,21 @@ const isOriginMatched = (whitelist: string[], corsWhitelist: string[], origin: s
   return false
 }
 
-export const corsVerification = (allowedOrigins: string[] = [], corsWhitelist: string[] = []) => {
+export const corsVerification = (
+  allowedOrigins: string[] = [],
+  corsWhitelist: string[] = []
+) => {
   const guardWindow = getGuardWindow()
 
   if (guardWindow && allowedOrigins.length > 0) {
     const origin = guardWindow.location.origin
     const allowed = isOriginMatched(allowedOrigins, corsWhitelist, origin)
     if (!allowed) {
-      throw new Error(`${i18n.t('common.corsErrorMessage')}${i18n.t('common.corsErrorMessage2')}`)
+      throw new Error(
+        `${i18n.t('common.corsErrorMessage')}${i18n.t(
+          'common.corsErrorMessage2'
+        )}`
+      )
     }
   }
 }

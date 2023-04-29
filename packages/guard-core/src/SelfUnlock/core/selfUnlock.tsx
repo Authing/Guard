@@ -4,7 +4,12 @@ import { useTranslation } from 'react-i18next'
 
 import { Form } from 'shim-antd'
 
-import { fieldRequiredRule, validate, getPasswordIdentify, isDisabled } from '../../_utils'
+import {
+  fieldRequiredRule,
+  validate,
+  getPasswordIdentify,
+  isDisabled
+} from '../../_utils'
 
 import SubmitButton from '../../SubmitButton'
 
@@ -30,7 +35,11 @@ import { useGuardHttp } from '../../_utils/guardHttp'
 
 import { useGuardAuthClient } from '../../Guard/authClient'
 
-import { useGuardEvents, useGuardInitData, useGuardPublicConfig } from '../../_utils/context'
+import {
+  useGuardEvents,
+  useGuardInitData,
+  useGuardPublicConfig
+} from '../../_utils/context'
 import { CommonFormItem } from '../../CommonFormItem'
 
 const { useCallback, useEffect, useRef, useState } = React
@@ -39,7 +48,11 @@ export enum InputMethodMap {
   email = 'email-code',
   phone = 'phone-code'
 }
-export const SelfUnlock = ({ identifyRef }: { identifyRef?: React.MutableRefObject<string> }) => {
+export const SelfUnlock = ({
+  identifyRef
+}: {
+  identifyRef?: React.MutableRefObject<string>
+}) => {
   const { t } = useTranslation()
   const [form] = Form.useForm()
   const [identify, setIdentify] = useState('')
@@ -96,16 +109,23 @@ export const SelfUnlock = ({ identifyRef }: { identifyRef?: React.MutableRefObje
 
     let password = values.password || ''
 
-    const encryptPassWord = await authClient.options?.encryptFunction?.(password, publicKey)
+    const encryptPassWord = await authClient.options?.encryptFunction?.(
+      password,
+      publicKey
+    )
     // 密码，经过加密后的, 仅“验证码”时不传 password 字段
-    password = selfUnlockStrategy === 'password-captcha' ? encryptPassWord : undefined
+    password =
+      selfUnlockStrategy === 'password-captcha' ? encryptPassWord : undefined
 
     if (codeMethod === 'email') {
-      const { isFlowEnd, data, onGuardHandling } = await authFlow('unlock-account-by-email', {
-        email: identify, // 用户输入的邮箱
-        code, // 验证码
-        password
-      })
+      const { isFlowEnd, data, onGuardHandling } = await authFlow(
+        'unlock-account-by-email',
+        {
+          email: identify, // 用户输入的邮箱
+          code, // 验证码
+          password
+        }
+      )
       submitButtonRef.current?.onSpin(false)
       if (isFlowEnd) {
         events?.onLogin?.(data, authClient!) // 登录成功
@@ -115,11 +135,14 @@ export const SelfUnlock = ({ identifyRef }: { identifyRef?: React.MutableRefObje
     }
     if (codeMethod === 'phone') {
       const { phoneNumber } = parsePhone(isInternationSms, identify)
-      const { isFlowEnd, data, onGuardHandling } = await authFlow('unlock-account-by-phone', {
-        phone: phoneNumber, // 用户输入的邮箱
-        code, // 验证码
-        password
-      })
+      const { isFlowEnd, data, onGuardHandling } = await authFlow(
+        'unlock-account-by-phone',
+        {
+          phone: phoneNumber, // 用户输入的邮箱
+          code, // 验证码
+          password
+        }
+      )
       submitButtonRef.current?.onSpin(false)
       if (isFlowEnd) {
         events?.onLogin?.(data, authClient!) // 登录成功
@@ -178,11 +201,13 @@ export const SelfUnlock = ({ identifyRef }: { identifyRef?: React.MutableRefObje
   )
 
   const [btnDisabled, setDisabled] = useState(true)
-  const formValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
+  const formValuesChange = (
+    _: Record<string, any>,
+    allValues: Record<string, any>
+  ) => {
     // 判断其他表单项是否填写
     setDisabled(isDisabled(allValues))
   }
-
 
   return (
     <div className="authing-g2-login-phone-code">
@@ -229,9 +254,7 @@ export const SelfUnlock = ({ identifyRef }: { identifyRef?: React.MutableRefObje
           name="code"
           rules={[...fieldRequiredRule(t('common.captchaCode'))]}
         >
-          <SendCode
-            name="code"
-          />
+          <SendCode name="code" />
         </CommonFormItem>
         {selfUnlockStrategy === 'password-captcha' && (
           <CommonFormItem

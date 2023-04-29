@@ -83,7 +83,9 @@ export const BindSuccess: React.FC<BindSuccessProps> = ({ secret, onBind }) => {
           ]}
           valuePropName="checked"
         >
-          <Checkbox className="g2-mfa-bindTotp-secretSave">{t('login.rememberedSecret')}</Checkbox>
+          <Checkbox className="g2-mfa-bindTotp-secretSave">
+            {t('login.rememberedSecret')}
+          </Checkbox>
         </Form.Item>
 
         <SubmitButton

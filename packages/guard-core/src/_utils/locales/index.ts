@@ -50,7 +50,9 @@ export const fallbackLng = (code = '') => {
   }
 
   if (code.startsWith('zh-')) {
-    if (['zh-tw', 'zh-hk', 'zh-mo', 'zh-hant'].includes(code.toLocaleLowerCase())) {
+    if (
+      ['zh-tw', 'zh-hk', 'zh-mo', 'zh-hant'].includes(code.toLocaleLowerCase())
+    ) {
       fallbacks.push('zh-TW')
     } else if (['zh-cn', 'zh-sg', 'zh-my'].includes(code.toLocaleLowerCase())) {
       fallbacks.push('zh-CN')

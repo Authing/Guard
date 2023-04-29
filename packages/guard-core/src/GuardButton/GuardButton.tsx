@@ -65,20 +65,31 @@ export const GuardButton: React.FC<GuardButtonProps> = props => {
           props.onClick(e)
         }
       }}
-      onMouseEnter={(e) => {
+      onMouseEnter={e => {
         setHover(true)
         props?.onMouseEnter?.(e)
       }}
-      onMouseLeave={(e) => {
+      onMouseLeave={e => {
         setHover(false)
         props?.onMouseLeave?.(e)
       }}
     >
       {props.children}
-      <div className={`authing-btn-icon ${isHover && type === 'primary' && !props.loading && 'authing-btn-icon--hover'}`}>
+      <div
+        className={`authing-btn-icon ${
+          isHover &&
+          type === 'primary' &&
+          !props.loading &&
+          'authing-btn-icon--hover'
+        }`}
+      >
         <IconFont type="authing-arrow-guard" className="authing-btn-arrow" />
       </div>
-      <div className={`authing-btn-icon ${props.loading && 'authing-btn-icon--loading'}`}>
+      <div
+        className={`authing-btn-icon ${
+          props.loading && 'authing-btn-icon--loading'
+        }`}
+      >
         <IconFont
           type="authing-loading-guard"
           className="authing-btn-loading"

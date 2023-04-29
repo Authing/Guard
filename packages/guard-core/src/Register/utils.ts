@@ -13,7 +13,10 @@ export const useIsChangeComplete = (currentMode: 'phone' | 'email') => {
     return false
   }
   // 排除掉已有的字段
-  if (!Boolean(omit(extendsFields, currentMode)) || extendsFields.length === 0) {
+  if (
+    !Boolean(omit(extendsFields, currentMode)) ||
+    extendsFields.length === 0
+  ) {
     // 为空就不补了～
     return false
   }

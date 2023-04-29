@@ -32,10 +32,12 @@ export const FormItemAccount: React.FC<FormItemAccountProps> = props => {
       )
 
     switch (validPasswordLoginMethods[0]) {
-    case 'phone-password':
-      return <CustomFormItem.Phone {...formItemPtops} isCheckPattern={false} />
-    case 'email-password':
-      return <CustomFormItem.Email {...formItemPtops} />
+      case 'phone-password':
+        return (
+          <CustomFormItem.Phone {...formItemPtops} isCheckPattern={false} />
+        )
+      case 'email-password':
+        return <CustomFormItem.Email {...formItemPtops} />
     }
 
     return <CustomFormItem.UserName {...formItemPtops} />

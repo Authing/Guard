@@ -30,7 +30,12 @@ import { EmailScene } from '../../Type'
 
 import { useMediaSize } from '../../_utils/hooks'
 
-import { Agreement, ApplicationConfig, LoginMethods, RegisterMethods } from '../../Type/application'
+import {
+  Agreement,
+  ApplicationConfig,
+  LoginMethods,
+  RegisterMethods
+} from '../../Type/application'
 
 // ! 废弃 🚒
 export interface RegisterWithEmailCodeProps {
@@ -127,7 +132,8 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
           email,
           code,
           profile: {
-            browser: typeof navigator !== 'undefined' ? navigator.userAgent : null,
+            browser:
+              typeof navigator !== 'undefined' ? navigator.userAgent : null,
             device: getDeviceName()
           },
           options: {
@@ -258,7 +264,12 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
             autoComplete="off"
             size="large"
             placeholder={t('login.inputEmail') as string}
-            prefix={<IconFont type="authing-a-user-line1" style={{ color: '#878A95' }} />}
+            prefix={
+              <IconFont
+                type="authing-a-user-line1"
+                style={{ color: '#878A95' }}
+              />
+            }
           />
         </CustomFormItem.Email>
         <Form.Item
@@ -274,10 +285,17 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
             className="authing-g2-input g2-send-code-input"
             autoComplete="off"
             size="large"
-            placeholder={t('common.inputFourVerifyCode', {
-              length: verifyCodeLength
-            }) as string}
-            prefix={<IconFont type="authing-a-shield-check-line1" style={{ color: '#878A95' }} />}
+            placeholder={
+              t('common.inputFourVerifyCode', {
+                length: verifyCodeLength
+              }) as string
+            }
+            prefix={
+              <IconFont
+                type="authing-a-shield-check-line1"
+                style={{ color: '#878A95' }}
+              />
+            }
             scene={EmailScene.REGISTER_VERIFY_CODE}
             maxLength={verifyCodeLength}
             fieldName={'email'}
@@ -295,7 +313,10 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
           />
         )}
         <Form.Item className="authing-g2-sumbit-form">
-          <SubmitButton text={t('common.register') as string} ref={submitButtonRef} />
+          <SubmitButton
+            text={t('common.register') as string}
+            ref={submitButtonRef}
+          />
         </Form.Item>
       </Form>
     </div>

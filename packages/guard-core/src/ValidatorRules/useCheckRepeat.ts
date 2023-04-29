@@ -3,7 +3,11 @@ import { React } from 'shim-react'
 const { useCallback, useState } = React
 
 export const useCheckRepeat = (
-  checkFn: (value: any, resolve: (value: unknown) => void, reject: (reason?: any) => void) => void
+  checkFn: (
+    value: any,
+    resolve: (value: unknown) => void,
+    reject: (reason?: any) => void
+  ) => void
 ) => {
   const [timer, setTimer] = useState<NodeJS.Timeout>()
 

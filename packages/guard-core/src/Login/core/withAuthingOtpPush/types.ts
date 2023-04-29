@@ -1,4 +1,7 @@
-import { BackFillMultipleState, StoreInstance } from '../../../Guard/core/hooks/useMultipleAccounts'
+import {
+  BackFillMultipleState,
+  StoreInstance
+} from '../../../Guard/core/hooks/useMultipleAccounts'
 
 import { Agreement } from '../../../Type'
 

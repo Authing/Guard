@@ -91,7 +91,12 @@ export const useQrCode = (options: QrCodeOptions, request: QrCodeRequest) => {
 
   const finallyConfig = useGuardFinallyConfig()
 
-  const { readyCheckedRequest, alreadyCheckedRequest, exchangeUserInfo, genCodeRequest } = request
+  const {
+    readyCheckedRequest,
+    alreadyCheckedRequest,
+    exchangeUserInfo,
+    genCodeRequest
+  } = request
 
   /**
    * 根据 Server 返回的状态码决定对应的二维码展示状态
@@ -99,14 +104,26 @@ export const useQrCode = (options: QrCodeOptions, request: QrCodeRequest) => {
    * @returns
    */
   const getStatusByRes = useCallback((res: QrCodeResponse) => {
-    const lists: CodeStatus[] = ['expired', 'ready', 'already', 'success', 'cancel', 'MFA', 'error']
+    const lists: CodeStatus[] = [
+      'expired',
+      'ready',
+      'already',
+      'success',
+      'cancel',
+      'MFA',
+      'error'
+    ]
     const index = res.status + 1
     return lists[index]
   }, [])
 
   // 根据响应
   const processReady = async () => {
-    if (state.status === 'ready' && readyCheckedRequest && !finallyConfig?._closeLoopCheckQrcode) {
+    if (
+      state.status === 'ready' &&
+      readyCheckedRequest &&
+      !finallyConfig?._closeLoopCheckQrcode
+    ) {
       sleepTime && (await sleep(sleepTime))
       // 再次发起请求
       uniteRequestHandler(readyCheckedRequest)
@@ -179,7 +196,9 @@ export const useQrCode = (options: QrCodeOptions, request: QrCodeRequest) => {
   /**
    * Server 接口返回才会进入：根据不同返回码进行流转
    */
-  const processFlowByResponse: (res: QrCodeResponse) => void = (res: QrCodeResponse) => {
+  const processFlowByResponse: (res: QrCodeResponse) => void = (
+    res: QrCodeResponse
+  ) => {
     if (destroy) {
       return
     }
@@ -225,36 +244,36 @@ export const useQrCode = (options: QrCodeOptions, request: QrCodeRequest) => {
   const processResponseFlow = (res: QrCodeResponse) => {
     // 未改变状态 进入处理流程
     switch (res.status) {
-    // 过期
-    case -1:
-      processExpired()
-      break
+      // 过期
+      case -1:
+        processExpired()
+        break
       // 未扫码状态
-    case 0:
-      processReady()
-      break
+      case 0:
+        processReady()
+        break
       // 已经扫码
-    case 1:
-      processAReady()
-      break
+      case 1:
+        processAReady()
+        break
       // 成功状态
-    case 2:
-      processSuccess()
-      break
+      case 2:
+        processSuccess()
+        break
       // 取消状态
-    case 3:
-      processCancel()
-      break
+      case 3:
+        processCancel()
+        break
       // mfa 状态
-    case 4:
-      processMFA()
-      break
+      case 4:
+        processMFA()
+        break
       // 未知错误
-    case 5:
-      processError()
-      break
-    default:
-      throw new Error(`不满足的Server Code:${res.status}`)
+      case 5:
+        processError()
+        break
+      default:
+        throw new Error(`不满足的Server Code:${res.status}`)
     }
   }
 

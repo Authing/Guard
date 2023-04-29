@@ -34,7 +34,11 @@ export const PasswordFormItem: React.FC<ExPasswordFormItemProps> = props => {
       validateFirst={true}
       name="password"
       rules={[
-        ...getPasswordValidate(passwordStrength, customPasswordStrength, fieldRequiredRuleMessage),
+        ...getPasswordValidate(
+          passwordStrength,
+          customPasswordStrength,
+          fieldRequiredRuleMessage
+        ),
         ...(rules ?? [])
       ]}
       {...fromItemProos}

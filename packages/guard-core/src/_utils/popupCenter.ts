@@ -17,21 +17,25 @@ export const popupCenter = (
 
   // Fixes dual-screen position                             Most browsers      Firefox
   const dualScreenLeft =
-    guardWindow.screenLeft !== undefined ? guardWindow.screenLeft : guardWindow.screenX
+    guardWindow.screenLeft !== undefined
+      ? guardWindow.screenLeft
+      : guardWindow.screenX
   const dualScreenTop =
-    guardWindow.screenTop !== undefined ? guardWindow.screenTop : guardWindow.screenY
+    guardWindow.screenTop !== undefined
+      ? guardWindow.screenTop
+      : guardWindow.screenY
 
   const width = guardWindow.innerWidth
     ? guardWindow.innerWidth
     : document.documentElement.clientWidth
-      ? document.documentElement.clientWidth
-      : guardWindow.screen.width
+    ? document.documentElement.clientWidth
+    : guardWindow.screen.width
 
   const height = guardWindow.innerHeight
     ? guardWindow.innerHeight
     : document.documentElement.clientHeight
-      ? document.documentElement.clientHeight
-      : guardWindow.screen.height
+    ? document.documentElement.clientHeight
+    : guardWindow.screen.height
 
   const systemZoom = width / guardWindow.screen.availWidth
   const left = (width - w) / 2 / systemZoom + dualScreenLeft

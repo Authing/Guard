@@ -36,7 +36,8 @@ export function isFaceDetectionModelLoaded() {
 
 export function dataURItoBlob(base64Data: any) {
   let byteString
-  if (base64Data.split(',')[0].indexOf('base64') >= 0) byteString = atob(base64Data.split(',')[1])
+  if (base64Data.split(',')[0].indexOf('base64') >= 0)
+    byteString = atob(base64Data.split(',')[1])
   else byteString = unescape(base64Data.split(',')[1])
   const mimeString = base64Data.split(',')[0].split(':')[1].split(';')[0]
   const ia = new Uint8Array(byteString.length)

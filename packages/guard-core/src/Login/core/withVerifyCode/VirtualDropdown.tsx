@@ -35,7 +35,9 @@ export const VirtualDropdown: React.FC<VirtualDropdownProps> = props => {
         <div className="select-option-item">
           <span>{info.phoneCountryCode}</span>
           <div className="country">
-            <Tooltip title={i18n.language === 'zh-CN' ? info.regions : info.regions_en}>
+            <Tooltip
+              title={i18n.language === 'zh-CN' ? info.regions : info.regions_en}
+            >
               {i18n.language === 'zh-CN' ? info.regions : info.regions_en}
             </Tooltip>
           </div>
@@ -81,7 +83,12 @@ export const VirtualDropdown: React.FC<VirtualDropdownProps> = props => {
           />
         </>
       }
-      menuItemSelectedIcon={<IconFont type='authing-check-fill' style={{fontSize: 16, color: '#4E5969'}} />}
+      menuItemSelectedIcon={
+        <IconFont
+          type="authing-check-fill"
+          style={{ fontSize: 16, color: '#4E5969' }}
+        />
+      }
     />
   )
 }

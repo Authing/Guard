@@ -5,6 +5,6 @@ interface MFABackStateContextType {
   mfaBackState: string
 }
 
-export const MFABackStateContext = React.createContext<MFABackStateContextType | undefined>(
-  undefined
-)
+export const MFABackStateContext = React.createContext<
+  MFABackStateContextType | undefined
+>(undefined)

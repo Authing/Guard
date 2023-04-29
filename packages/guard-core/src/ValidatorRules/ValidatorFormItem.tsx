@@ -36,7 +36,11 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
   const { t } = useTranslation()
 
   const checkInternationalSms = useMemo(() => {
-    return publicConfig.internationalSmsConfig?.enabled && method === 'phone' && isCheckPattern
+    return (
+      publicConfig.internationalSmsConfig?.enabled &&
+      method === 'phone' &&
+      isCheckPattern
+    )
   }, [isCheckPattern, method, publicConfig.internationalSmsConfig?.enabled])
 
   const phoneRegex = useGuardPhoneRegex()
@@ -79,7 +83,13 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
       formatErrorMessage: t('common.customNameFormatError'),
       pattern: VALIDATE_PATTERN.username
     }
-  }, [isCheckPattern, method, publicConfig.internationalSmsConfig?.enabled, t, phoneRegex])
+  }, [
+    isCheckPattern,
+    method,
+    publicConfig.internationalSmsConfig?.enabled,
+    t,
+    phoneRegex
+  ])
 
   const checkRepeatRet = (
     value: any,
@@ -92,10 +102,14 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
       type: method
     }).then(({ data }) => {
       if (checkExist) {
-        Boolean(data) ? resolve(true) : reject(methodContent.checkExistErrorMessage)
+        Boolean(data)
+          ? resolve(true)
+          : reject(methodContent.checkExistErrorMessage)
       }
       if (checkRepeat) {
-        Boolean(data) ? reject(methodContent.checkRepeatErrorMessage) : resolve(true)
+        Boolean(data)
+          ? reject(methodContent.checkRepeatErrorMessage)
+          : resolve(true)
       }
     })
   }
@@ -107,7 +121,8 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
       return {
         validateTrigger: 'onBlur',
         validator: async (_, value) => {
-          if (!value || phone(value, { country: areaCode }).isValid) return Promise.resolve()
+          if (!value || phone(value, { country: areaCode }).isValid)
+            return Promise.resolve()
           return Promise.reject(t('common.internationPhoneMessage'))
         }
       }
@@ -118,7 +133,13 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
       pattern: methodContent.pattern,
       message: methodContent.formatErrorMessage
     }
-  }, [areaCode, checkInternationalSms, methodContent.formatErrorMessage, methodContent.pattern, t])
+  }, [
+    areaCode,
+    checkInternationalSms,
+    methodContent.formatErrorMessage,
+    methodContent.pattern,
+    t
+  ])
 
   const rules = useMemo<Rule[]>(() => {
     // 如果不是必填就不校验
@@ -139,7 +160,14 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
     }
 
     return rules
-  }, [required, methodContent.field, formatRules, checkRepeat, checkExist, checkRepeatFn])
+  }, [
+    required,
+    methodContent.field,
+    formatRules,
+    checkRepeat,
+    checkExist,
+    checkRepeatFn
+  ])
   return (
     <CommonFormItem
       validateFirst={true}
@@ -161,6 +189,6 @@ export const UserNameFormItem: React.FC<ValidatorFormItemProps> = props => (
   <ValidatorFormItem required method="username" {...props} />
 )
 
-export const CustomNameFormItem: React.FC<ValidatorFormItemProps & { method: string }> = props => (
-  <ValidatorFormItem required {...props} />
-)
+export const CustomNameFormItem: React.FC<
+  ValidatorFormItemProps & { method: string }
+> = props => <ValidatorFormItem required {...props} />

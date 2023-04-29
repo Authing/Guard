@@ -22,7 +22,10 @@ import { useMediaSize } from '../../_utils/hooks'
 
 import { Agreement, LoginMethods } from '../../Type/application'
 
-import { BackFillMultipleState, StoreInstance } from '../../Guard/core/hooks/useMultipleAccounts'
+import {
+  BackFillMultipleState,
+  StoreInstance
+} from '../../Guard/core/hooks/useMultipleAccounts'
 
 import { useLoginMultipleBackFill } from '../hooks/useLoginMultiple'
 
@@ -57,7 +60,13 @@ interface LoginWithLDAPProps {
 const { useRef, useState } = React
 
 export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
-  const { agreements, onLoginSuccess, onLoginFailed, multipleInstance, backfillData } = props
+  const {
+    agreements,
+    onLoginSuccess,
+    onLoginFailed,
+    multipleInstance,
+    backfillData
+  } = props
 
   const [form] = Form.useForm()
 
@@ -86,7 +95,10 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
 
   const [btnDisabled, setDisabled] = useState(true)
 
-  const formValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
+  const formValuesChange = (
+    _: Record<string, any>,
+    allValues: Record<string, any>
+  ) => {
     // 判断其他表单项是否填写
     setDisabled(isDisabled(allValues))
   }
@@ -130,7 +142,9 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
 
       submitButtonRef.current.onSpin(false)
       // 更新本次登录方式
-      data && multipleInstance && multipleInstance.setLoginWayByLDAPData(username, data)
+      data &&
+        multipleInstance &&
+        multipleInstance.setLoginWayByLDAPData(username, data)
 
       if (code === 200) {
         onLoginSuccess(data)
@@ -141,7 +155,8 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
         }
         const handMode = onGuardHandling?.()
         // 向上层抛出错误
-        handMode === CodeAction.RENDER_MESSAGE && onLoginFailed(code, data, tips)
+        handMode === CodeAction.RENDER_MESSAGE &&
+          onLoginFailed(code, data, tips)
       }
     } catch (error: any) {
       submitButtonRef.current?.onSpin(false)
@@ -240,7 +255,7 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
             rules={fieldRequiredRule(t('common.captchaCode'))}
           >
             <GraphicVerifyCode
-              name='captchaCode'
+              name="captchaCode"
               className="authing-g2-input"
               size="large"
               placeholder={t('login.inputCaptchaCode') as string}
@@ -248,7 +263,6 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
               changeCode={() => setVerifyCodeUrl(getCaptchaUrl())}
             />
           </CommonFormItem>
-
         )}
         {Boolean(agreements?.length) && (
           <Agreements

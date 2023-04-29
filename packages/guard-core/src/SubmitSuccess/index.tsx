@@ -8,7 +8,11 @@ import { ImagePro } from '../ImagePro'
 
 import SubmitButton from '../SubmitButton'
 
-import { useGuardInitData, useGuardModule, useGuardPublicConfig } from '../_utils/context'
+import {
+  useGuardInitData,
+  useGuardModule,
+  useGuardPublicConfig
+} from '../_utils/context'
 
 import { SubmitSuccessInitData } from './interface'
 

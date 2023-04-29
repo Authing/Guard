@@ -19,7 +19,11 @@ import { GuardSelect } from '../GuardSelect'
 
 import { IconFont } from '../IconFont'
 
-import { TenantPortalDataItem, TenantPortalDataType, TenantPortalSelectType } from './interface'
+import {
+  TenantPortalDataItem,
+  TenantPortalDataType,
+  TenantPortalSelectType
+} from './interface'
 
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
 
@@ -27,7 +31,8 @@ const { useCallback, useMemo } = React
 
 export const GuardTenantPortalSelectView = () => {
   const { moduleName } = useGuardCurrentModule()
-  const { list, title, description, logo } = useGuardInitData<TenantPortalDataType>()
+  const { list, title, description, logo } =
+    useGuardInitData<TenantPortalDataType>()
   const events = useGuardEvents()
   const authClient = useGuardAuthClient()
   const http = useGuardHttpClient()
@@ -46,7 +51,9 @@ export const GuardTenantPortalSelectView = () => {
       if (item?.host) {
         http.setBaseUrl(item?.host)
       }
-      const { isFlowEnd, onGuardHandling, data } = await http.authFlow(moduleName)
+      const { isFlowEnd, onGuardHandling, data } = await http.authFlow(
+        moduleName
+      )
       if (isFlowEnd) {
         setTimeout(() => events?.onLogin?.(data, authClient)) // 让选择事件先行，登录成功宏任务异步，方便异步并发
       } else {
@@ -76,7 +83,9 @@ export const GuardTenantPortalSelectView = () => {
     <div className="g2-view-container">
       <div className="g2-view-container-inner">
         <GuardFace title={title} description={description} avatar={logo} />
-        {!!dataSource?.length && <GuardSelect dataSource={dataSource} onSelect={handleSelect} />}
+        {!!dataSource?.length && (
+          <GuardSelect dataSource={dataSource} onSelect={handleSelect} />
+        )}
       </div>
     </div>
   )

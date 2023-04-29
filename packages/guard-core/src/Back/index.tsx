@@ -25,7 +25,10 @@ export const BackLogin: React.FC<BackProps> = props => {
 
   const { t } = useTranslation()
 
-  const onBack = useCallback(() => changeModule?.(GuardModuleType.LOGIN), [changeModule])
+  const onBack = useCallback(
+    () => changeModule?.(GuardModuleType.LOGIN),
+    [changeModule]
+  )
 
   const { isRender = true } = props
 
@@ -40,14 +43,24 @@ export const BackLogin: React.FC<BackProps> = props => {
 
   const renderBack = useMemo(() => {
     return (
-      <GuardButton type="link" onClick={onBack} className="g2-view-mfa-back-hover">
-        <IconFont type="authing-arrow-left-6" className="authing-arrow-left-6" />
+      <GuardButton
+        type="link"
+        onClick={onBack}
+        className="g2-view-mfa-back-hover"
+      >
+        <IconFont
+          type="authing-arrow-left-6"
+          className="authing-arrow-left-6"
+        />
       </GuardButton>
     )
   }, [isRender, config.defaultScenes, onBack, t])
 
   return (
-    <div className={`g2-view-back ${config.mode === 'modal' && 'modal'}`} style={{ display: 'inherit' }}>
+    <div
+      className={`g2-view-back ${config.mode === 'modal' && 'modal'}`}
+      style={{ display: 'inherit' }}
+    >
       {renderBack}
     </div>
   )
@@ -64,14 +77,25 @@ export const BackCustom: React.FC<
 > = props => {
   const { changeModule } = useGuardModule()
 
-  const { onBack = () => changeModule?.(GuardModuleType.LOGIN), isRender = true, children } = props
+  const {
+    onBack = () => changeModule?.(GuardModuleType.LOGIN),
+    isRender = true,
+    children
+  } = props
 
   const { mode } = useGuardFinallyConfig()
 
   const renderBack = useMemo(() => {
     return (
-      <GuardButton type="link" onClick={onBack} className="g2-view-mfa-back-hover">
-        <IconFont type="authing-arrow-left-6" className="authing-arrow-left-6" />
+      <GuardButton
+        type="link"
+        onClick={onBack}
+        className="g2-view-mfa-back-hover"
+      >
+        <IconFont
+          type="authing-arrow-left-6"
+          className="authing-arrow-left-6"
+        />
         <span>{children}</span>
       </GuardButton>
     )
@@ -80,7 +104,10 @@ export const BackCustom: React.FC<
   if (!isRender) return null
 
   return (
-    <div className={`g2-view-back ${mode === 'modal' && 'modal'}`} style={{ display: 'inherit' }}>
+    <div
+      className={`g2-view-back ${mode === 'modal' && 'modal'}`}
+      style={{ display: 'inherit' }}
+    >
       {renderBack}
     </div>
   )

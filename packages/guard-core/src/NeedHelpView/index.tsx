@@ -6,7 +6,11 @@ import { DescribeQuestions } from './core/describeQuestions'
 
 import { GuardModuleType } from '../Guard/module'
 
-import { useGuardAppId, useGuardFinallyConfig, useGuardModule } from '../_utils/context'
+import {
+  useGuardAppId,
+  useGuardFinallyConfig,
+  useGuardModule
+} from '../_utils/context'
 
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
 
@@ -31,12 +35,19 @@ export const GuardNeedHelpView = () => {
         <div className="title">{t('common.problem.title')}</div>
       </div>
       <div className="g2-view-tabs">
-        <DescribeQuestions appId={appId} host={config.host} onSuccess={onSuccess} />
+        <DescribeQuestions
+          appId={appId}
+          host={config.host}
+          onSuccess={onSuccess}
+        />
       </div>
       <div className="g2-tips-line ">
         <div className="back-to-login">
           <span className="gray">{t('common.noQuestions')}</span>
-          <span className="link-like" onClick={() => changeModule?.(GuardModuleType.LOGIN)}>
+          <span
+            className="link-like"
+            onClick={() => changeModule?.(GuardModuleType.LOGIN)}
+          >
             {t('common.goToLogin')}
           </span>
         </div>

@@ -12,7 +12,11 @@ import CustomFormItem from '../../ValidatorRules'
 
 import { InputPassword } from '../../InputPassword'
 
-import { useGuardInitData, useGuardIsAuthFlow, useGuardPublicConfig } from '../../_utils/context'
+import {
+  useGuardInitData,
+  useGuardIsAuthFlow,
+  useGuardPublicConfig
+} from '../../_utils/context'
 
 import { authFlow, ChangePasswordBusinessAction } from '../businessRequest'
 
@@ -31,7 +35,9 @@ interface FirstLoginResetProps {
 
 const { useRef, useState } = React
 
-export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({ onReset }) => {
+export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({
+  onReset
+}) => {
   const { t } = useTranslation()
 
   const initData = useGuardInitData<{ token: string }>()
@@ -49,7 +55,8 @@ export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({ onReset }) => 
   const { isPhoneMedia } = useMediaSize()
 
   const submitButtonRef = useRef<any>(null)
-  const { getPassWordUnsafeText, setPasswordErrorTextShow } = usePasswordErrorText()
+  const { getPassWordUnsafeText, setPasswordErrorTextShow } =
+    usePasswordErrorText()
   const onFinish = async (values: any) => {
     const newPassword = values.password
     submitButtonRef.current?.onSpin(true)
@@ -91,7 +98,10 @@ export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({ onReset }) => 
   }
 
   const [btnDisabled, setDisabled] = useState(true)
-  const formValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
+  const formValuesChange = (
+    _: Record<string, any>,
+    allValues: Record<string, any>
+  ) => {
     // 判断其他表单项是否填写
     setDisabled(isDisabled(allValues))
   }
@@ -108,7 +118,11 @@ export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({ onReset }) => 
         onValuesChange={formValuesChange}
         autoComplete="off"
       >
-        <CustomFormItem.Password className="authing-g2-input-form" name="password" required={true}>
+        <CustomFormItem.Password
+          className="authing-g2-input-form"
+          name="password"
+          required={true}
+        >
           <InputPassword
             name="password"
             autoFocus={!isPhoneMedia}

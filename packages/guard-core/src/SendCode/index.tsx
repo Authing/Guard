@@ -34,7 +34,10 @@ export const SendCode: React.FC<SendPhoneCodeProps> = ({
   return (
     <>
       <Row justify="space-between" align="middle">
-        <Col span={/ja/.test(i18n.language) ? 8 : 16} className="g2-send-code-input-col">
+        <Col
+          span={/ja/.test(i18n.language) ? 8 : 16}
+          className="g2-send-code-input-col"
+        >
           <InputNumber
             value={value}
             onChange={(e: any) => {
@@ -49,7 +52,10 @@ export const SendCode: React.FC<SendPhoneCodeProps> = ({
           />
         </Col>
         <Col span={/ja/.test(i18n.language) ? 16 : 8}>
-          <SendCodeBtn beforeSend={beforeSend} sendDesc={t('common.sendVerifyCode') as string} />
+          <SendCodeBtn
+            beforeSend={beforeSend}
+            sendDesc={t('common.sendVerifyCode') as string}
+          />
         </Col>
       </Row>
     </>

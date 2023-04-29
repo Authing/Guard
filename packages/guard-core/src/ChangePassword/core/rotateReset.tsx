@@ -16,7 +16,11 @@ import { InputPassword } from '../../InputPassword'
 
 import { IconFont } from '../../IconFont'
 
-import { useGuardInitData, useGuardIsAuthFlow, useGuardPublicConfig } from '../../_utils/context'
+import {
+  useGuardInitData,
+  useGuardIsAuthFlow,
+  useGuardPublicConfig
+} from '../../_utils/context'
 
 import { authFlow, ChangePasswordBusinessAction } from '../businessRequest'
 
@@ -56,7 +60,8 @@ export const RotateReset = (props: RotateResetProps) => {
 
   const initData = useGuardInitData<{ token: string }>()
 
-  const { getPassWordUnsafeText, setPasswordErrorTextShow } = usePasswordErrorText()
+  const { getPassWordUnsafeText, setPasswordErrorTextShow } =
+    usePasswordErrorText()
 
   const onFinish = async (values: any) => {
     if (onFinishCallBack instanceof Function) {
@@ -111,7 +116,10 @@ export const RotateReset = (props: RotateResetProps) => {
 
   const [btnDisabled, setDisabled] = useState(true)
 
-  const formValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
+  const formValuesChange = (
+    _: Record<string, any>,
+    allValues: Record<string, any>
+  ) => {
     // 判断其他表单项是否填写
     setDisabled(isDisabled(allValues))
   }
@@ -142,7 +150,10 @@ export const RotateReset = (props: RotateResetProps) => {
             placeholder={t('user.inputCurrPwd')}
           />
         </CommonFormItem>
-        <CustomFormItem.Password className="authing-g2-input-form" name="password">
+        <CustomFormItem.Password
+          className="authing-g2-input-form"
+          name="password"
+        >
           <InputPassword
             name="password"
             className="authing-g2-input"

@@ -33,12 +33,19 @@ export const completeFieldsFilter = (user: User, field: ExtendsField) => {
     return true
   }
   // 如果基础字段里面已经有了，不再要求补全
-  if (user[name as keyof User] !== undefined && user[name as keyof User] !== null) {
+  if (
+    user[name as keyof User] !== undefined &&
+    user[name as keyof User] !== null
+  ) {
     return false
   }
   // 如果扩展信息又了，不再要求补全
   const customData = user.customData
-  if (customData && customData[name] !== undefined && customData[name] !== null) {
+  if (
+    customData &&
+    customData[name] !== undefined &&
+    customData[name] !== null
+  ) {
     return false
   }
   return true
@@ -56,7 +63,9 @@ export const extendsFieldsToMetaData = (
 ): CompleteInfoMetaData[] =>
   extendsFields.map(item => {
     return {
-      type: item.inputType as CompleteInfoBaseControls | CompleteInfoExtendsControls,
+      type: item.inputType as
+        | CompleteInfoBaseControls
+        | CompleteInfoExtendsControls,
       label: item.label,
       name: item.name,
       required: item.required,

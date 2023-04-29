@@ -31,7 +31,10 @@ export interface BindMFATotpProps {
   changeModule: any
 }
 
-export const BindMFATotp: React.FC<BindMFATotpProps> = ({ changeModule, initData }) => {
+export const BindMFATotp: React.FC<BindMFATotpProps> = ({
+  changeModule,
+  initData
+}) => {
   const { t } = useTranslation()
 
   const next = () => changeModule(GuardModuleType.BIND_TOTP, initData)
@@ -91,7 +94,9 @@ export const VerifyMFATotp: React.FC<VerifyMFATotpProps> = ({
       mfaToken
     }
 
-    const { isFlowEnd, data, onGuardHandling } = await businessRequest(requestData)
+    const { isFlowEnd, data, onGuardHandling } = await businessRequest(
+      requestData
+    )
 
     submitButtonRef.current?.onSpin(false)
 
@@ -126,7 +131,12 @@ export const VerifyMFATotp: React.FC<VerifyMFATotpProps> = ({
         onValuesChange={onValuesChange}
       >
         <VerifyCodeFormItem codeLength={6}>
-          <VerifyCodeInput length={6} showDivider={false} gutter={'1px'} onFinish={onFinish} />
+          <VerifyCodeInput
+            length={6}
+            showDivider={false}
+            gutter={'1px'}
+            onFinish={onFinish}
+          />
         </VerifyCodeFormItem>
 
         <SubmitButton
@@ -160,7 +170,11 @@ export interface MFATotpProps {
   mfaLogin: any
 }
 
-export const MFATotp: React.FC<MFATotpProps> = ({ changeModule, initData, mfaLogin }) => {
+export const MFATotp: React.FC<MFATotpProps> = ({
+  changeModule,
+  initData,
+  mfaLogin
+}) => {
   return (
     <>
       {initData.totpMfaEnabled ? (

@@ -15,7 +15,9 @@ export const GenerateSvg = (guardDocument: Document, svgString: string) => {
 
     const body = guardDocument.body
 
-    body.firstChild ? body.insertBefore(tempSVG, body.firstChild) : body.appendChild(tempSVG)
+    body.firstChild
+      ? body.insertBefore(tempSVG, body.firstChild)
+      : body.appendChild(tempSVG)
   }
 
   const readyState = guardDocument.readyState

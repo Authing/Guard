@@ -1,6 +1,9 @@
 import { React } from 'shim-react'
 
-import { assembledRequestHost as utilAssembledRequestHost, transformSortMethod } from '../compute'
+import {
+  assembledRequestHost as utilAssembledRequestHost,
+  transformSortMethod
+} from '../compute'
 
 import { GuardLocalConfig } from '../../Guard/config'
 
@@ -14,7 +17,11 @@ import { Logger } from '../logger'
 
 import { GuardPageConfig } from '../../Type'
 
-import { ApplicationConfig, LoginMethods, RegisterMethods } from '../../Type/application'
+import {
+  ApplicationConfig,
+  LoginMethods,
+  RegisterMethods
+} from '../../Type/application'
 
 const { useCallback, useEffect, useMemo, useState } = React
 
@@ -42,7 +49,9 @@ const requestPublicConfig = async (
   const { get } = httpClient
 
   try {
-    res = await get<ApplicationConfig>(`/api/v2/applications/${appId}/public-config`)
+    res = await get<ApplicationConfig>(
+      `/api/v2/applications/${appId}/public-config`
+    )
   } catch (error) {
     Logger.error('Please check your config or network')
     throw new Error('Please check your config or network')
@@ -71,7 +80,9 @@ const requestGuardPageConfig = async (
   const { get } = httpClient
 
   try {
-    res = await get<GuardPageConfig>(`/api/v2/applications/${appId}/components-public-config/guard`)
+    res = await get<GuardPageConfig>(
+      `/api/v2/applications/${appId}/components-public-config/guard`
+    )
   } catch (error) {
     Logger.error('Please check your config or network')
     throw new Error('Please check your config or network')
@@ -108,38 +119,51 @@ const mergedPublicConfig = (
   publicConfig: ApplicationConfig
 ): GuardLocalConfig => {
   const autoRegister =
-    config.autoRegister ?? publicConfig.ssoPageComponentDisplay.autoRegisterThenLoginHintInfo
+    config.autoRegister ??
+    publicConfig.ssoPageComponentDisplay.autoRegisterThenLoginHintInfo
 
-  const registerMethods = publicConfig.passwordTabConfig.validRegisterMethods?.concat(
-    publicConfig.verifyCodeTabConfig?.validRegisterMethods?.map(item =>
-      transformSortMethod(item)
-    ) || []
-  )
+  const registerMethods =
+    publicConfig.passwordTabConfig.validRegisterMethods?.concat(
+      publicConfig.verifyCodeTabConfig?.validRegisterMethods?.map(item =>
+        transformSortMethod(item)
+      ) || []
+    )
 
   const mergedPublicConfig: GuardLocalConfig = {
     ...config,
     title: config.title ?? publicConfig.name,
     logo: !!config.logo ? config.logo : publicConfig.logo,
-    loginMethods: config?.loginMethods ?? (publicConfig.loginTabs?.list as LoginMethods[]) ?? [],
+    loginMethods:
+      config?.loginMethods ??
+      (publicConfig.loginTabs?.list as LoginMethods[]) ??
+      [],
     passwordLoginMethods:
-      config?.passwordLoginMethods ?? publicConfig.passwordTabConfig.validLoginMethods ?? [],
+      config?.passwordLoginMethods ??
+      publicConfig.passwordTabConfig.validLoginMethods ??
+      [],
     // 默认登录方式
     defaultLoginMethod:
-      config.defaultLoginMethod ?? (publicConfig.loginTabs.default as LoginMethods),
+      config.defaultLoginMethod ??
+      (publicConfig.loginTabs.default as LoginMethods),
     // 禁止重制密码
     disableResetPwd: !!(
-      config.disableResetPwd ?? !publicConfig.ssoPageComponentDisplay?.forgetPasswordBtn
+      config.disableResetPwd ??
+      !publicConfig.ssoPageComponentDisplay?.forgetPasswordBtn
     ),
     // 是否自动注册
     autoRegister,
     registerMethods:
       config.registerMethods ??
-      (autoRegister ? registerMethods : (publicConfig.registerTabs?.list as RegisterMethods[])),
+      (autoRegister
+        ? registerMethods
+        : (publicConfig.registerTabs?.list as RegisterMethods[])),
     defaultRegisterMethod:
-      config.defaultRegisterMethod ?? (publicConfig.registerTabs.default as RegisterMethods),
+      config.defaultRegisterMethod ??
+      (publicConfig.registerTabs.default as RegisterMethods),
     // 禁止注册
     disableRegister: !!(
-      config.disableRegister ?? !publicConfig.ssoPageComponentDisplay.registerBtn
+      config.disableRegister ??
+      !publicConfig.ssoPageComponentDisplay.registerBtn
     ),
     // publicKey
     publicKey: config.publicKey ?? publicConfig.publicKey,
@@ -153,10 +177,16 @@ const mergedPublicConfig = (
 }
 
 // host 拼接
-const assembledRequestHost = (config: GuardLocalConfig, publicConfig: ApplicationConfig) => {
+const assembledRequestHost = (
+  config: GuardLocalConfig,
+  publicConfig: ApplicationConfig
+) => {
   const host = config?.__internalRequest__
     ? config?.host
-    : utilAssembledRequestHost(publicConfig.requestHostname, config?.host as string)
+    : utilAssembledRequestHost(
+        publicConfig.requestHostname,
+        config?.host as string
+      )
 
   return host
 }

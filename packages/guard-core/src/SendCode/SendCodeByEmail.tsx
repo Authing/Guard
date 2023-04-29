@@ -31,7 +31,8 @@ export interface SendCodeByEmailProps extends InputProps {
 }
 
 export const SendCodeByEmail: React.FC<SendCodeByEmailProps> = props => {
-  const { scene, data, form, onSendCodeBefore, fieldName, ...remainProps } = props
+  const { scene, data, form, onSendCodeBefore, fieldName, ...remainProps } =
+    props
   const { t } = useTranslation()
   const events = useGuardEvents()
   const authClient = useGuardAuthClient()

@@ -1,6 +1,12 @@
 import { AuthenticationClient, CommonMessage, User } from 'authing-js-sdk'
 
-import { getDefaultG2Config, IG2Config, IG2Events, IG2FCProps, IAuthingFunc } from '../Type'
+import {
+  getDefaultG2Config,
+  IG2Config,
+  IG2Events,
+  IG2FCProps,
+  IAuthingFunc
+} from '../Type'
 
 export interface CompleteInfoConfig extends IG2Config {}
 
@@ -108,12 +114,16 @@ export interface CompleteInfoInitData {
 
 export interface RegisterCompleteInfoInitData {
   content: any
-  businessRequestName: 'registerByEmail' | 'registerByPhoneCode' | 'registerByEmailCode'
+  businessRequestName:
+    | 'registerByEmail'
+    | 'registerByPhoneCode'
+    | 'registerByEmailCode'
   onRegisterFailed: IAuthingFunc
   onRegisterSuccess: IAuthingFunc
 }
 
-export interface RegisterCompletePasswordInitData extends RegisterCompleteInfoInitData {
+export interface RegisterCompletePasswordInitData
+  extends RegisterCompleteInfoInitData {
   isChangeComplete: boolean
 }
 export interface CompleteInfoRequest {

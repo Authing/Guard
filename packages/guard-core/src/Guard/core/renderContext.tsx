@@ -12,11 +12,19 @@ import { getDefaultGuardLocalConfig } from '../config'
 
 import { GuardModuleType } from '../module'
 
-import { GuardStateMachine, initGuardStateMachine, ModuleState } from '../GuardModule/stateMachine'
+import {
+  GuardStateMachine,
+  initGuardStateMachine,
+  ModuleState
+} from '../GuardModule/stateMachine'
 
 import { SessionData, trackSession } from '../sso'
 
-import { getPublicConfig, useMergeDefaultConfig, useFetchConsoleConfig } from '../../_utils/config'
+import {
+  getPublicConfig,
+  useMergeDefaultConfig,
+  useFetchConsoleConfig
+} from '../../_utils/config'
 
 import { GuardHttp, initGuardHttp } from '../../_utils/guardHttp'
 
@@ -80,7 +88,8 @@ export const RenderContext: React.FC<{
   useInitGuardAppendConfig(setForceUpdate, appId, guardProps.appendConfig)
 
   // 状态机
-  const [guardStateMachine, setGuardStateMachine] = useState<GuardStateMachine>()
+  const [guardStateMachine, setGuardStateMachine] =
+    useState<GuardStateMachine>()
 
   const { Provider } = useGuardXContext()
 
@@ -124,7 +133,10 @@ export const RenderContext: React.FC<{
   )
 
   // 合并默认值
-  const defaultMergedConfig = useMergeDefaultConfig(getDefaultGuardLocalConfig(), config)
+  const defaultMergedConfig = useMergeDefaultConfig(
+    getDefaultGuardLocalConfig(),
+    config
+  )
 
   // HttpClient
   useEffect(() => {
@@ -211,7 +223,8 @@ export const RenderContext: React.FC<{
       const { defaultLanguage } = guardPageConfig.global
       initGuardI18n(
         {
-          defaultLanguage: (defaultMergedConfig?.lang as Lang) ?? defaultLanguage
+          defaultLanguage:
+            (defaultMergedConfig?.lang as Lang) ?? defaultLanguage
         },
         setI18nInit
       )
@@ -346,7 +359,9 @@ export const RenderContext: React.FC<{
   ])
 
   const phoneRegex = useMemo(() => {
-    const str = publicConfig?.regexRules?.find(item => item.key === 'phone')?.userpoolLevel ?? ''
+    const str =
+      publicConfig?.regexRules?.find(item => item.key === 'phone')
+        ?.userpoolLevel ?? ''
     if (str) {
       try {
         const regex = regexFromString(str)
@@ -431,7 +446,7 @@ export const RenderContext: React.FC<{
             initData: {
               error
             }
-          },
+          }
         }}
       >
         {children}
@@ -445,7 +460,13 @@ export const RenderContext: React.FC<{
     if (contextLoaded || Boolean(defaultMergedConfig)) return renderContext
 
     return null
-  }, [contextLoaded, defaultMergedConfig, error, renderContext, RenderErrorContext])
+  }, [
+    contextLoaded,
+    defaultMergedConfig,
+    error,
+    renderContext,
+    RenderErrorContext
+  ])
 
   return render
 }

@@ -40,7 +40,10 @@ export class MultipleTenant {
 }
 
 /** 初始化多租户实例 */
-export const useMultipleTenant = (tenantId: string, publicConfig: ApplicationConfig) => {
+export const useMultipleTenant = (
+  tenantId: string,
+  publicConfig: ApplicationConfig
+) => {
   const tenantInstance = useMemo(() => {
     if (!publicConfig) return
     return new MultipleTenant(tenantId, publicConfig)

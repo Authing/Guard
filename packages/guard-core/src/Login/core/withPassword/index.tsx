@@ -52,7 +52,10 @@ import {
   RegisterMethods
 } from '../../../Type/application'
 
-import { BackFillMultipleState, StoreInstance } from '../../../Guard/core/hooks/useMultipleAccounts'
+import {
+  BackFillMultipleState,
+  StoreInstance
+} from '../../../Guard/core/hooks/useMultipleAccounts'
 
 import { useLoginMultipleBackFill } from '../../hooks/useLoginMultiple'
 
@@ -130,7 +133,9 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
 
   const submitButtonRef = useRef<any>(null)
 
-  const [showCaptcha, setShowCaptcha] = useState(robotVerify === 'always_enable')
+  const [showCaptcha, setShowCaptcha] = useState(
+    robotVerify === 'always_enable'
+  )
   const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
   const [remainCount, setRemainCount] = useState(0)
   const [accountLock, setAccountLock] = useState(false)
@@ -157,7 +162,9 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
         account: account,
         password: await encrypt!(password, props.publicKey),
         captchaCode,
-        customData: config?.isHost ? getUserRegisterParams(['login_page_context']) : undefined,
+        customData: config?.isHost
+          ? getUserRegisterParams(['login_page_context'])
+          : undefined,
         autoRegister: props.autoRegister,
         withCustomData: false
       }
@@ -165,7 +172,13 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
 
       return res
     },
-    [config?.isHost, encrypt, post, props, publicConfig?.mergeAdAndAccountPasswordLogin]
+    [
+      config?.isHost,
+      encrypt,
+      post,
+      props,
+      publicConfig?.mergeAdAndAccountPasswordLogin
+    ]
   )
 
   const onFinish = async (values: any) => {
@@ -207,7 +220,9 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
     const { code, apiCode, message: msg, data, onGuardHandling } = res
     submitButtonRef?.current?.onSpin(false)
     // 更新本次登录方式
-    data && multipleInstance && multipleInstance.setLoginWayByHttpData(account, data)
+    data &&
+      multipleInstance &&
+      multipleInstance.setLoginWayByHttpData(account, data)
 
     if (code === 200) {
       onLoginSuccess(data, msg)
@@ -229,7 +244,10 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
         }
       }
 
-      if (apiCode === ErrorCode.ACCOUNT_LOCK || apiCode === ErrorCode.MULTIPLE_ERROR_LOCK) {
+      if (
+        apiCode === ErrorCode.ACCOUNT_LOCK ||
+        apiCode === ErrorCode.MULTIPLE_ERROR_LOCK
+      ) {
         // 账号锁定
         setAccountLock(true)
       }
@@ -273,7 +291,10 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
   // 非空校验
   const [btnDisabled, setDisabled] = useState(true)
 
-  const formValuesChange = (changedValues: Record<string, any>, allValues: Record<string, any>) => {
+  const formValuesChange = (
+    changedValues: Record<string, any>,
+    allValues: Record<string, any>
+  ) => {
     if (changedValues?.account && saveIdentify) {
       saveIdentify(LoginMethods.Password, changedValues?.account)
     }
@@ -300,9 +321,20 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
     }
     // 登录注册分页
     return t('login.inputAccount', {
-      text: getSortLabels([...passwordLoginMethods], i18nFields, defaultLanguageConfig)
+      text: getSortLabels(
+        [...passwordLoginMethods],
+        i18nFields,
+        defaultLanguageConfig
+      )
     })
-  }, [config?.autoRegister, i18n, i18nFields, defaultLanguageConfig, passwordLoginMethods, t])
+  }, [
+    config?.autoRegister,
+    i18n,
+    i18nFields,
+    defaultLanguageConfig,
+    passwordLoginMethods,
+    t
+  ])
 
   return (
     <div className="authing-g2-login-password">
@@ -317,9 +349,13 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
         <FormItemAccount
           name="account"
           className="authing-g2-input-form"
-          validPasswordLoginMethods={publicConfig?.passwordTabConfig?.validLoginMethods || []}
+          validPasswordLoginMethods={
+            publicConfig?.passwordTabConfig?.validLoginMethods || []
+          }
           initialValue={
-            specifyDefaultLoginMethod === LoginMethods.Password ? _firstItemInitialValue : ''
+            specifyDefaultLoginMethod === LoginMethods.Password
+              ? _firstItemInitialValue
+              : ''
           }
           // TODO
           // 开启国际化手机号场景且只有手机号情况下 不应再根据区号去验证手机号
@@ -356,7 +392,7 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
             rules={fieldRequiredRule(t('common.captchaCode'))}
           >
             <GraphicVerifyCode
-              name='captchaCode'
+              name="captchaCode"
               className="authing-g2-input"
               size="large"
               placeholder={t('login.inputCaptchaCode') as string}

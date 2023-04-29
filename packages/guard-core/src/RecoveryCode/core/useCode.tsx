@@ -89,7 +89,10 @@ export const UseCode: React.FC<UseCodeProps> = ({ mfaToken, onSubmit }) => {
 
   const [btnDisabled, setDisabled] = useState(true)
 
-  const onValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
+  const onValuesChange = (
+    _: Record<string, any>,
+    allValues: Record<string, any>
+  ) => {
     // 判断其他表单项是否填写
     setDisabled(isDisabled(allValues))
   }
@@ -126,7 +129,11 @@ export const UseCode: React.FC<UseCodeProps> = ({ mfaToken, onSubmit }) => {
         </CustomFormItem.CustomName>
 
         <Form.Item className="authing-g2-sumbit-form submit-form">
-          <SubmitButton text={t('common.sure') as string} disabled={btnDisabled} ref={submitButtonRef} />
+          <SubmitButton
+            text={t('common.sure') as string}
+            disabled={btnDisabled}
+            ref={submitButtonRef}
+          />
         </Form.Item>
       </Form>
     </>

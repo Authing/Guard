@@ -2,7 +2,10 @@ import { React } from 'shim-react'
 
 import { SelectPanel } from './panel'
 
-import { LoginWay, StoreInstance } from '../../Guard/core/hooks/useMultipleAccounts'
+import {
+  LoginWay,
+  StoreInstance
+} from '../../Guard/core/hooks/useMultipleAccounts'
 
 import { GuardModuleType } from '../../Guard'
 
@@ -64,7 +67,13 @@ const MultipleAccountsFC: React.FC<MultipleAccountsProps> = props => {
     referMultipleState?.('login', data)
   }
 
-  return <SelectPanel lists={lists} onClick={changeState} handleDel={handleDelAccount} />
+  return (
+    <SelectPanel
+      lists={lists}
+      onClick={changeState}
+      handleDel={handleDelAccount}
+    />
+  )
 }
 
 const MultipleAccounts = React.memo(MultipleAccountsFC)

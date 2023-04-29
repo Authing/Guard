@@ -13,7 +13,8 @@ export interface TenantPortalListType {
   userName?: string
 }
 
-export interface TenantPortalSelectType extends Omit<TenantPortalListType, 'userName'> {}
+export interface TenantPortalSelectType
+  extends Omit<TenantPortalListType, 'userName'> {}
 
 /** 租户门户选择状态机返回数据类型 */
 export interface TenantPortalDataType {

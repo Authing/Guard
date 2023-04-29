@@ -12,7 +12,12 @@ import { RegisterWithEmail } from './core/WithEmail'
 
 import { RegisterWithCode } from './core/WithCode'
 
-import { getI18nLabel, getLoginTypePipe, getSortTabs, transformMethod } from '../_utils'
+import {
+  getI18nLabel,
+  getLoginTypePipe,
+  getSortTabs,
+  transformMethod
+} from '../_utils'
 
 import { fallbackLng, i18n } from '../_utils/locales'
 
@@ -28,7 +33,11 @@ import {
 
 import { GuardLoginInitData } from '../Login/interface'
 
-import { RegisterMethods, RegisterSortMethods, TabFieldsI18nItem } from '../Type/application'
+import {
+  RegisterMethods,
+  RegisterSortMethods,
+  TabFieldsI18nItem
+} from '../Type/application'
 
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
 import { IconFont } from '../IconFont'
@@ -73,12 +82,17 @@ export const GuardRegisterView: React.FC = () => {
           account: string
         } //以何种方式注册成功
       ) => {
-        const initData = getLoginTypePipe(publicConfig, registerInfo.registerFrom)
+        const initData = getLoginTypePipe(
+          publicConfig,
+          registerInfo.registerFrom
+        )
         const loginInitData: GuardLoginInitData = {}
         if (initData) {
-          loginInitData.specifyDefaultLoginMethod = initData.specifyDefaultLoginMethod
+          loginInitData.specifyDefaultLoginMethod =
+            initData.specifyDefaultLoginMethod
 
-          initData?.lockMethod && (loginInitData._lockMethod = initData.lockMethod)
+          initData?.lockMethod &&
+            (loginInitData._lockMethod = initData.lockMethod)
 
           loginInitData._firstItemInitialValue = registerInfo.account
         }
@@ -99,10 +113,11 @@ export const GuardRegisterView: React.FC = () => {
       //availableAt 0或者null-注册时，1-登录时，2-注册和登录时
       agreements: agreementEnabled
         ? config?.agreements?.filter(
-          agree =>
-            fallbackLng(i18n.language).find(lng => lng.includes(agree.lang)) &&
-              agree?.availableAt !== 1
-        ) ?? []
+            agree =>
+              fallbackLng(i18n.language).find(lng =>
+                lng.includes(agree.lang)
+              ) && agree?.availableAt !== 1
+          ) ?? []
         : [],
       publicConfig: publicConfig,
       methods: verifyRegisterMethods
@@ -116,7 +131,10 @@ export const GuardRegisterView: React.FC = () => {
     ]
   )
 
-  const tabMapping: Record<string, { component: React.ReactNode; name: string }> = useMemo(() => {
+  const tabMapping: Record<
+    string,
+    { component: React.ReactNode; name: string }
+  > = useMemo(() => {
     let verifyCodeLogin = ''
     if (verifyRegisterMethods.length > 1) {
       verifyCodeLogin = t('common.verifyCodeRegister')
@@ -153,7 +171,10 @@ export const GuardRegisterView: React.FC = () => {
   const [activeKey, setActiveKey] = useState<string>('')
 
   const defaultMethod = useMemo(() => {
-    return config.defaultRegisterMethod && transformMethod(config.defaultRegisterMethod)
+    return (
+      config.defaultRegisterMethod &&
+      transformMethod(config.defaultRegisterMethod)
+    )
   }, [config.defaultRegisterMethod])
 
   useEffect(() => {
@@ -180,15 +201,24 @@ export const GuardRegisterView: React.FC = () => {
       )
     ]
 
-    filterRegisterMethods.length > 1 ? setHiddenTabs(false) : setHiddenTabs(true)
+    filterRegisterMethods.length > 1
+      ? setHiddenTabs(false)
+      : setHiddenTabs(true)
 
     return getSortTabs(filterRegisterMethods, defaultMethod).map(method => {
       const tab = tabMapping[method]
       const name = getI18nLabel(method, i18nFields, defaultLanguageConfig)
       return (
-        <Tabs.TabPane tab={tab?.name || t('common.registerTab', { text: name })} key={method}>
+        <Tabs.TabPane
+          tab={tab?.name || t('common.registerTab', { text: name })}
+          key={method}
+        >
           {tab?.component || (
-            <RegisterWithEmail label={name} method={method} {...registerContextProps} />
+            <RegisterWithEmail
+              label={name}
+              method={method}
+              {...registerContextProps}
+            />
           )}
         </Tabs.TabPane>
       )
@@ -222,7 +252,12 @@ export const GuardRegisterView: React.FC = () => {
               setActiveKey(activeKey)
               events?.onRegisterTabChange?.(activeKey as RegisterMethods)
             }}
-            moreIcon={<IconFont type='authing-more-fill1' className='authing-tabs-more' />}
+            moreIcon={
+              <IconFont
+                type="authing-more-fill1"
+                className="authing-tabs-more"
+              />
+            }
             centered
           >
             {renderTab}
@@ -231,13 +266,19 @@ export const GuardRegisterView: React.FC = () => {
         <div className="g2-tips-line">
           <span className="back-to-login">
             {/* <span className="gray">{t('common.alreadyHasAcc')}</span> */}
-            <span className="link-like" onClick={() => changeModule?.(GuardModuleType.LOGIN, {})}>
+            <span
+              className="link-like"
+              onClick={() => changeModule?.(GuardModuleType.LOGIN, {})}
+            >
               {t('common.backLoginPage')}
             </span>
           </span>
         </div>
       </div>
-      <ChangeLanguage langRange={langRange} onLangChange={events?.onLangChange} />
+      <ChangeLanguage
+        langRange={langRange}
+        onLangChange={events?.onLangChange}
+      />
     </div>
   )
 }

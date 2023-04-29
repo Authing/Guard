@@ -52,10 +52,7 @@ export const GuardDownloadATView: React.FC = () => {
     () =>
       (Object.keys(downloadConfig) as DownloadType[]).map<ReactNode>(
         (value: DownloadType, index: number) => (
-          <Tabs.TabPane
-            tab={downloadConfig[value].title}
-            key={index}
-          >
+          <Tabs.TabPane tab={downloadConfig[value].title} key={index}>
             <div className="g2-mfa-download-at-tab">
               <div className="g2-mfa-totp-download-qrcode">
                 <div className="g2-mfa-totp-download-qrcode-item">
@@ -66,7 +63,9 @@ export const GuardDownloadATView: React.FC = () => {
                     src={downloadConfig[value].google}
                     alt="Google Authenticator"
                   />
-                  <span className="g2-mfa-totp-download-qrcode-text">Google Authenticator</span>
+                  <span className="g2-mfa-totp-download-qrcode-text">
+                    Google Authenticator
+                  </span>
                 </div>
                 <div className="g2-mfa-totp-download-qrcode-item">
                   <ImagePro
@@ -76,7 +75,9 @@ export const GuardDownloadATView: React.FC = () => {
                     src={downloadConfig[value].microsoft}
                     alt="Microsoft Authenticator"
                   />
-                  <span className="g2-mfa-totp-download-qrcode-text">Microsoft Authenticator</span>
+                  <span className="g2-mfa-totp-download-qrcode-text">
+                    Microsoft Authenticator
+                  </span>
                 </div>
               </div>
             </div>
@@ -95,7 +96,9 @@ export const GuardDownloadATView: React.FC = () => {
   return (
     <div className="g2-view-container g2-download-authenticator">
       {renderBack}
-      <div className="g2-mfa-totp-download-subtitle">{t('common.downloadTotpAppDocs')}</div>
+      <div className="g2-mfa-totp-download-subtitle">
+        {t('common.downloadTotpAppDocs')}
+      </div>
       <div className="g2-view-tabs g2-mfa-totp-download-tabs">
         <Tabs centered={true}>{renderTab}</Tabs>
       </div>

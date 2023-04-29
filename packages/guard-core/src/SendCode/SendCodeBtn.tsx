@@ -61,7 +61,13 @@ const useSentCounter = (effect: any) => {
 
 export const SendCodeBtn: React.FC<SendCodeProps> = props => {
   const { t } = useTranslation()
-  const { sendDesc = t('login.clickSent'), beforeSend, btnRef, setSent, ...buttonProps } = props
+  const {
+    sendDesc = t('login.clickSent'),
+    beforeSend,
+    btnRef,
+    setSent,
+    ...buttonProps
+  } = props
   const { enabled, send, countDown } = useSentCounter(setSent)
   const [loading, setLoading] = useState(false)
   const disabled = useMemo(() => {
@@ -85,29 +91,34 @@ export const SendCodeBtn: React.FC<SendCodeProps> = props => {
   return (
     <Button
       {...buttonProps}
-      className={`${buttonProps.type ?? 'authing-g2-send-code-btn g2-loading-btn-center'} ${
-        i18n.language === 'ja-JP' ? 'send-code-btn-jp' : ''
-      }`}
+      className={`${
+        buttonProps.type ?? 'authing-g2-send-code-btn g2-loading-btn-center'
+      } ${i18n.language === 'ja-JP' ? 'send-code-btn-jp' : ''}`}
       disabled={loading || disabled}
       loading={loading}
       onClick={onClick}
       ref={btnRef}
       type="link"
-      style={{padding: 0, height: 24}}
+      style={{ padding: 0, height: 24 }}
     >
-      {loading === true && <div className={'authing-btn-icon authing-btn-icon--loading'} style={{margin: 0}}>
-        <IconFont
-          type="authing-loading-guard"
-          className="authing-btn-loading"
-        />
-      </div>}
+      {loading === true && (
+        <div
+          className={'authing-btn-icon authing-btn-icon--loading'}
+          style={{ margin: 0 }}
+        >
+          <IconFont
+            type="authing-loading-guard"
+            className="authing-btn-loading"
+          />
+        </div>
+      )}
       {loading === false && (
         <span>
           {enabled
             ? sendDesc
             : t('common.retryAfterTime', {
-              time: countDown
-            })}
+                time: countDown
+              })}
         </span>
       )}
     </Button>

@@ -5,7 +5,10 @@ export enum BindTotpBusinessAction {
   ConfirmTotpRecoveryCode = 'confirm-totp-recovery-code'
 }
 
-export const authFlow = async (action: BindTotpBusinessAction, content: any) => {
+export const authFlow = async (
+  action: BindTotpBusinessAction,
+  content: any
+) => {
   const { authFlow } = getGuardHttp()
 
   const res = await authFlow(action, { ...content })

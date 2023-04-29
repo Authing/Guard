@@ -12,7 +12,11 @@ import CustomFormItem from '../../ValidatorRules'
 
 import { InputPassword } from '../../InputPassword'
 
-import { useGuardInitData, useGuardIsAuthFlow, useGuardPublicConfig } from '../../_utils/context'
+import {
+  useGuardInitData,
+  useGuardIsAuthFlow,
+  useGuardPublicConfig
+} from '../../_utils/context'
 
 import { authFlow, ChangePasswordBusinessAction } from '../businessRequest'
 
@@ -31,7 +35,9 @@ interface PasswordNotSafeResetProps {
 
 const { useRef, useState } = React
 
-export const PasswordNotSafeReset: React.FC<PasswordNotSafeResetProps> = ({ onReset }) => {
+export const PasswordNotSafeReset: React.FC<PasswordNotSafeResetProps> = ({
+  onReset
+}) => {
   const { t } = useTranslation()
 
   const initData = useGuardInitData<{ token: string }>()
@@ -50,7 +56,8 @@ export const PasswordNotSafeReset: React.FC<PasswordNotSafeResetProps> = ({ onRe
 
   const submitButtonRef = useRef<any>(null)
 
-  const { getPassWordUnsafeText, setPasswordErrorTextShow } = usePasswordErrorText()
+  const { getPassWordUnsafeText, setPasswordErrorTextShow } =
+    usePasswordErrorText()
   const onFinish = async (values: any) => {
     const newPassword = values.password
     submitButtonRef.current?.onSpin(true)
@@ -61,9 +68,12 @@ export const PasswordNotSafeReset: React.FC<PasswordNotSafeResetProps> = ({ onRe
         apiCode,
         onGuardHandling,
         message: msg
-      } = await authFlow(ChangePasswordBusinessAction.ResetPasswordStrengthDetection, {
-        password: await encrypt!(newPassword, publicKey)
-      })
+      } = await authFlow(
+        ChangePasswordBusinessAction.ResetPasswordStrengthDetection,
+        {
+          password: await encrypt!(newPassword, publicKey)
+        }
+      )
       submitButtonRef.current?.onSpin(false)
 
       if (apiCode === ApiCode.ABORT_FLOW) {
@@ -93,7 +103,10 @@ export const PasswordNotSafeReset: React.FC<PasswordNotSafeResetProps> = ({ onRe
 
   const [btnDisabled, setDisabled] = useState(true)
 
-  const formValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
+  const formValuesChange = (
+    _: Record<string, any>,
+    allValues: Record<string, any>
+  ) => {
     // 判断其他表单项是否填写
     setDisabled(isDisabled(allValues))
   }
@@ -110,7 +123,11 @@ export const PasswordNotSafeReset: React.FC<PasswordNotSafeResetProps> = ({ onRe
         onValuesChange={formValuesChange}
         autoComplete="off"
       >
-        <CustomFormItem.Password className="authing-g2-input-form" name="password" required={true}>
+        <CustomFormItem.Password
+          className="authing-g2-input-form"
+          name="password"
+          required={true}
+        >
           <InputPassword
             name="password"
             autoFocus={!isPhoneMedia}

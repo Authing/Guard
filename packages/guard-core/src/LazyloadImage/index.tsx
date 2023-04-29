@@ -28,14 +28,16 @@ export function LazyloadImage(props: LazyloadImageProps) {
   })
 
   if (loadStatus) {
-    return <img
-      src={src}
-      width={width}
-      height={height}
-      className={className}
-      style={style}
-      alt={alt}
-    />
+    return (
+      <img
+        src={src}
+        width={width}
+        height={height}
+        className={className}
+        style={style}
+        alt={alt}
+      />
+    )
   }
 
   return <>{placeholder}</>

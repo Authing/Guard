@@ -19,7 +19,9 @@ export const InputAccount: React.FC<InputAccountProps> = props => {
 
   const runderInput = useMemo(() => {
     if (methods.length === 1 && methods[0] === 'phone-password')
-      return <InputNumber maxLength={20} placeholder={placeholder} {...inputProps} />
+      return (
+        <InputNumber maxLength={20} placeholder={placeholder} {...inputProps} />
+      )
 
     return <CommonInput {...inputProps} placeholder={placeholder} />
   }, [inputProps, methods, placeholder])

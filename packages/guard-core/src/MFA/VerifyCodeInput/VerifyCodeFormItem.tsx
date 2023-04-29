@@ -15,7 +15,11 @@ export interface VerifyCodeFormItemProps extends FormItemProps {
 
 export const VerifyCodeFormItem: React.FC<VerifyCodeFormItemProps> = props => {
   const { t } = useTranslation()
-  const { codeLength, ruleKeyword = t('common.captchaCode'), ...formItemProps } = props
+  const {
+    codeLength,
+    ruleKeyword = t('common.captchaCode'),
+    ...formItemProps
+  } = props
   return (
     <Form.Item
       validateTrigger={['onChange']}

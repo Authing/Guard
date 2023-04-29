@@ -12,7 +12,12 @@ import { HowUsePushLogin } from './HowUsePushLogin'
 
 import { HowGetAppLoginUrl } from './HowGetAppLoginUrl'
 
-import { PushLoginGudeModalProps, Selector, SelectorOption, SelectorOptions } from './types'
+import {
+  PushLoginGudeModalProps,
+  Selector,
+  SelectorOption,
+  SelectorOptions
+} from './types'
 
 import { useMediaSize } from '../../../_utils/hooks'
 
@@ -53,7 +58,9 @@ export function PushLoginGudeModal(props: PushLoginGudeModalProps) {
   }, [howUsePushLogin, howBindClient, howGetAppLoginUrl])
 
   const onSelectorChange = (value: Selector) => {
-    const selector = selectorOptions.find((option: SelectorOption) => option.value === value)
+    const selector = selectorOptions.find(
+      (option: SelectorOption) => option.value === value
+    )
     if (selector) {
       setSelector(selector.value)
     }

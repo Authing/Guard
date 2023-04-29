@@ -27,7 +27,8 @@ export class GuardHttp {
     'x-authing-request-from': `Guard@${version}`
   }
 
-  private responseInterceptorMap: Map<InterceptorName, ResponseInterceptor> = new Map()
+  private responseInterceptorMap: Map<InterceptorName, ResponseInterceptor> =
+    new Map()
 
   constructor(baseUrl?: string) {
     if (!baseUrl) return

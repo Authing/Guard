@@ -17,7 +17,12 @@ import { LoginWay } from './Guard/core/hooks/useMultipleAccounts'
 
 import { CodeAction, ApiCode } from './_utils/responseManagement/interface'
 
-import { GuardEventsKebabToCamelType, GuardProps, GuardLocalConfig, GuardModuleType } from './Guard'
+import {
+  GuardEventsKebabToCamelType,
+  GuardProps,
+  GuardLocalConfig,
+  GuardModuleType
+} from './Guard'
 
 import { CSSProperties } from 'shim-react'
 
@@ -120,10 +125,10 @@ export interface LogoutParams {
   quitCurrentDevice?: boolean
 }
 
-export type IGuardTabType = 
-  | 'phone-code' 
+export type IGuardTabType =
+  | 'phone-code'
   | 'phone-password'
-  | 'password' 
+  | 'password'
   | 'email-password'
   | 'username-password'
   | 'authing-otp-push'

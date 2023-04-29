@@ -1,10 +1,20 @@
-import { getDefaultG2Config, IG2Config, IG2Events, IG2FCProps, IG2FCViewProps } from '../Type'
+import {
+  getDefaultG2Config,
+  IG2Config,
+  IG2Events,
+  IG2FCProps,
+  IG2FCViewProps
+} from '../Type'
 
 import { AuthenticationClient, User } from 'authing-js-sdk'
 
 import { QrCodeAuthenticationClient } from 'authing-js-sdk/build/main/lib/authentication/QrCodeAuthenticationClient'
 
-import { Agreement, LoginMethods, SocialConnectionProvider } from '../Type/application'
+import {
+  Agreement,
+  LoginMethods,
+  SocialConnectionProvider
+} from '../Type/application'
 
 export interface LoginConfig extends IG2Config {
   autoRegister?: boolean

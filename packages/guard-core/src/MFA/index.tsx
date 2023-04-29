@@ -54,7 +54,12 @@ const ComponentsMapping: Record<MFAType, (props: any) => React.ReactNode> = {
     <MFASms config={config} initData={initData} mfaLogin={mfaLogin} />
   ),
   [MFAType.TOTP]: ({ initData, config, changeModule, mfaLogin }) => (
-    <MFATotp changeModule={changeModule} config={config} initData={initData} mfaLogin={mfaLogin} />
+    <MFATotp
+      changeModule={changeModule}
+      config={config}
+      initData={initData}
+      mfaLogin={mfaLogin}
+    />
   ),
   [MFAType.FACE]: ({ config, initData, mfaLogin, setShowMethods }) => (
     <MFAFace
@@ -81,7 +86,8 @@ export const GuardMFAView: React.FC = () => {
   const events = useGuardEvents()
 
   const [currentMethod, setCurrentMethod] = useState(
-    initData.current ?? initData.applicationMfa?.sort((a, b) => a.sort - b.sort)[0].mfaPolicy
+    initData.current ??
+      initData.applicationMfa?.sort((a, b) => a.sort - b.sort)[0].mfaPolicy
   )
 
   const [mfaBackState, setMfaBackState] = useState<string>('login')
@@ -145,9 +151,12 @@ export const GuardMFAView: React.FC = () => {
         <BackCustom
           onBack={() => {
             setCurrentMethod(
-              initData.applicationMfa.find(item => item.mfaPolicy === MFAType.FACE)
+              initData.applicationMfa.find(
+                item => item.mfaPolicy === MFAType.FACE
+              )
                 ? MFAType.FACE
-                : initData.applicationMfa?.sort((a, b) => a.sort - b.sort)[0].mfaPolicy
+                : initData.applicationMfa?.sort((a, b) => a.sort - b.sort)[0]
+                    .mfaPolicy
             )
             setShowMethods(true)
             setMfaBackState('login')
@@ -183,7 +192,10 @@ export const GuardMFAView: React.FC = () => {
             }}
           />
         )}
-        <ChangeLanguage langRange={config?.langRange} onLangChange={events?.onLangChange} />
+        <ChangeLanguage
+          langRange={config?.langRange}
+          onLangChange={events?.onLangChange}
+        />
       </div>
     </MFABackStateContext.Provider>
   )

@@ -54,7 +54,9 @@ export const Agreements: React.FC<AgreementsProps> = ({
   /** 是否可以注册 */
   const isAccept = useMemo(() => {
     /** 所有必须勾选的都勾了就可以通过 */
-    return agreements.filter(item => item.required).every(item => acceptList.includes(item.id))
+    return agreements
+      .filter(item => item.required)
+      .every(item => acceptList.includes(item.id))
   }, [acceptList, agreements])
 
   useEffect(() => {
@@ -62,7 +64,12 @@ export const Agreements: React.FC<AgreementsProps> = ({
   }, [isAccept, onChange])
 
   return (
-    <div className={getClassnames(['authing-agreements', showError && 'authing-agreements-error'])}>
+    <div
+      className={getClassnames([
+        'authing-agreements',
+        showError && 'authing-agreements-error'
+      ])}
+    >
       {agreements.map(item => {
         return (
           <div
@@ -70,7 +77,9 @@ export const Agreements: React.FC<AgreementsProps> = ({
             style={{ ...style }}
             className={getClassnames([
               'authing-agreements-item',
-              item.required && !acceptList.includes(item.id) && 'authing-agreements-item-invalid'
+              item.required &&
+                !acceptList.includes(item.id) &&
+                'authing-agreements-item-invalid'
             ])}
             onClick={(e: any) => {
               e.persist()

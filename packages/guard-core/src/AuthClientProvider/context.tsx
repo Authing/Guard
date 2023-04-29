@@ -6,4 +6,6 @@ export interface AuthClientContextProps {
   client: AuthenticationClient
 }
 
-export const AuthClientContext = React.createContext<AuthClientContextProps | undefined>(undefined)
+export const AuthClientContext = React.createContext<
+  AuthClientContextProps | undefined
+>(undefined)

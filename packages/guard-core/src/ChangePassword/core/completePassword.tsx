@@ -47,8 +47,13 @@ export const CompletePassword: React.FC = () => {
 
   const { post } = getGuardHttp()
 
-  const { businessRequestName, content, isChangeComplete, onRegisterSuccess, onRegisterFailed } =
-    useGuardInitData<RegisterCompletePasswordInitData>()
+  const {
+    businessRequestName,
+    content,
+    isChangeComplete,
+    onRegisterSuccess,
+    onRegisterFailed
+  } = useGuardInitData<RegisterCompletePasswordInitData>()
 
   const submitButtonRef = useRef<any>(null)
 
@@ -61,7 +66,8 @@ export const CompletePassword: React.FC = () => {
 
   const encrypt = client.options.encryptFunction
 
-  const { getPassWordUnsafeText, setPasswordErrorTextShow } = usePasswordErrorText()
+  const { getPassWordUnsafeText, setPasswordErrorTextShow } =
+    usePasswordErrorText()
 
   const onFinish = useCallback(
     async (values: any) => {
@@ -86,14 +92,12 @@ export const CompletePassword: React.FC = () => {
         // 直接注册
         try {
           if (businessRequestName === 'registerByEmailCode') {
-            const { statusCode, apiCode, data, onGuardHandling, message } = await post(
-              '/api/v2/register-email-code',
-              {
+            const { statusCode, apiCode, data, onGuardHandling, message } =
+              await post('/api/v2/register-email-code', {
                 ...content,
                 password,
                 postUserInfoPipeline: false
-              }
-            )
+              })
             submitButtonRef.current.onSpin(false)
             if (statusCode === 200) {
               onRegisterSuccess(data)
@@ -113,14 +117,12 @@ export const CompletePassword: React.FC = () => {
             }
           } else if (businessRequestName === 'registerByPhoneCode') {
             // TODO: 修改 Rustful
-            const { data, statusCode, apiCode, onGuardHandling, message } = await post(
-              '/api/v2/register-phone-code',
-              {
+            const { data, statusCode, apiCode, onGuardHandling, message } =
+              await post('/api/v2/register-phone-code', {
                 ...content,
                 password,
                 postUserInfoPipeline: false
-              }
-            )
+              })
             if (statusCode === 200) {
               submitButtonRef.current?.onSpin(false)
               onRegisterSuccess(data)
@@ -172,7 +174,10 @@ export const CompletePassword: React.FC = () => {
 
   const [btnDisabled, setDisabled] = useState(true)
 
-  const formValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
+  const formValuesChange = (
+    _: Record<string, any>,
+    allValues: Record<string, any>
+  ) => {
     // 判断其他表单项是否填写
     setDisabled(isDisabled(allValues))
   }
@@ -189,7 +194,11 @@ export const CompletePassword: React.FC = () => {
         onValuesChange={formValuesChange}
         autoComplete="off"
       >
-        <CustomFormItem.Password className="authing-g2-input-form" name="password" required={true}>
+        <CustomFormItem.Password
+          className="authing-g2-input-form"
+          name="password"
+          required={true}
+        >
           <InputPassword
             name="password"
             autoFocus={!isPhoneMedia}

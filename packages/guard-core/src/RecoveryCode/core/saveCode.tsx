@@ -86,10 +86,15 @@ export const SaveCode: React.FC<{
           ]}
           valuePropName="checked"
         >
-          <Checkbox className="g2-mfa-bindTotp-secretSave">{t('login.rememberedSecret')}</Checkbox>
+          <Checkbox className="g2-mfa-bindTotp-secretSave">
+            {t('login.rememberedSecret')}
+          </Checkbox>
         </Form.Item>
 
-        <SubmitButton text={t('common.confirm') as string} ref={submitButtonRef} />
+        <SubmitButton
+          text={t('common.confirm') as string}
+          ref={submitButtonRef}
+        />
       </Form>
     </>
   )

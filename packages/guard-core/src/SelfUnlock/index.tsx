@@ -31,7 +31,13 @@ export const GuardUnlockView: React.FC = () => {
     <div className="g2-view-container g2-forget-password">
       <BackCustom onBack={() => changeModule?.(GuardModuleType.LOGIN)} />
       <div className="g2-view-header">
-        <ImagePro src={config?.logo as string} size={48} borderRadius={4} alt="" className="icon" />
+        <ImagePro
+          src={config?.logo as string}
+          size={48}
+          borderRadius={4}
+          alt=""
+          className="icon"
+        />
         <div className="title">{t('login.selfUnlock')}</div>
         <div className="title-explain">{t('login.selfUnlockText')}</div>
       </div>

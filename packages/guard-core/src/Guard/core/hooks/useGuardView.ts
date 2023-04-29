@@ -1,6 +1,10 @@
 import { React } from 'shim-react'
 
-import { useGuardEvents, useGuardModule, useGuardMultipleInstance } from '../../../_utils/context'
+import {
+  useGuardEvents,
+  useGuardModule,
+  useGuardMultipleInstance
+} from '../../../_utils/context'
 
 interface Options {
   changeTab?: React.Dispatch<any>

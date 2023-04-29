@@ -51,7 +51,13 @@ interface BeforeLoginProps {
 }
 
 export function BeforeLogin(props: BeforeLoginProps) {
-  const { onPushSuccess, signinByPush, pushLoginStatus, setAccount, agreements } = props
+  const {
+    onPushSuccess,
+    signinByPush,
+    pushLoginStatus,
+    setAccount,
+    agreements
+  } = props
 
   const { isPhoneMedia } = useMediaSize()
 
@@ -73,7 +79,10 @@ export function BeforeLogin(props: BeforeLoginProps) {
 
   const [btnDisabled, setDisabled] = useState(true)
 
-  const formValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
+  const formValuesChange = (
+    _: Record<string, any>,
+    allValues: Record<string, any>
+  ) => {
     // 判断其他表单项是否填写
     setDisabled(isDisabled(allValues))
   }
@@ -133,7 +142,8 @@ export function BeforeLogin(props: BeforeLoginProps) {
   }
 
   const placeholder = useMemo(() => {
-    const methods = publicConfig.authingOtpPushTabConfig?.validLoginMethods || []
+    const methods =
+      publicConfig.authingOtpPushTabConfig?.validLoginMethods || []
 
     // 登录注册合并
     if (config?.autoRegister) {
@@ -197,11 +207,7 @@ export function BeforeLogin(props: BeforeLoginProps) {
         </Form.Item>
       </Form>
       <Space className="g2-tips-line">
-        <GuardButton
-          type="link"
-          className="link-like"
-          onClick={openModal}
-        >
+        <GuardButton type="link" className="link-like" onClick={openModal}>
           {t('login.howUsePushLogin')}?
         </GuardButton>
       </Space>

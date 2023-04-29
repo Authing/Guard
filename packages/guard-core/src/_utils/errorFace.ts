@@ -13,17 +13,17 @@ export interface FaceErrorMessage extends DOMException {
 export const faceErrorMessage = (error: FaceErrorMessage) => {
   let message = ''
   switch (error.name) {
-  case FaceErrorName.NotAllowedError:
-    message = 'login.AuthorizationCamera'
-    break
-  case FaceErrorName.SecurityError:
-    message = 'login.checkPreferences'
-    break
-  case FaceErrorName.OverconstrainedError:
-    message = 'login.requireError'
-    break
-  default:
-    message = 'login.hardwareSupport'
+    case FaceErrorName.NotAllowedError:
+      message = 'login.AuthorizationCamera'
+      break
+    case FaceErrorName.SecurityError:
+      message = 'login.checkPreferences'
+      break
+    case FaceErrorName.OverconstrainedError:
+      message = 'login.requireError'
+      break
+    default:
+      message = 'login.hardwareSupport'
   }
   return message
 }

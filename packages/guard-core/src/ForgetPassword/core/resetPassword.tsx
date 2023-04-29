@@ -68,7 +68,8 @@ export const ResetPassword = (props: ResetPasswordProps) => {
 
   // 是否开启了国际化短信功能
 
-  const isInternationSms = props.publicConfig.internationalSmsConfig?.enabled || false
+  const isInternationSms =
+    props.publicConfig.internationalSmsConfig?.enabled || false
 
   // const {
   //   // getPassWordUnsafeText,
@@ -217,7 +218,10 @@ export const ResetPassword = (props: ResetPasswordProps) => {
 
   const [btnDisabled, setDisabled] = useState(true)
 
-  const formValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
+  const formValuesChange = (
+    _: Record<string, any>,
+    allValues: Record<string, any>
+  ) => {
     // 判断其他表单项是否填写
     setDisabled(isDisabled(allValues))
   }

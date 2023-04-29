@@ -72,7 +72,9 @@ export const IdpButton = (props: any) => {
         const guardWindow = getGuardWindow()
         if (guardWindow) {
           // 如果 isHost 是 true，则从 url 获取 finish_login_url 作为 social.authorize 方法的 targetUrl 参数
-          query.redirect_url = qs.parse(guardWindow.location.search)?.['finish_login_url']
+          query.redirect_url = qs.parse(guardWindow.location.search)?.[
+            'finish_login_url'
+          ]
         }
       }
     }
@@ -86,11 +88,15 @@ export const IdpButton = (props: any) => {
           message.error(
             t('login.socialConnectionMessage', {
               provider:
-                i.displayName ?? (i18n.language === 'zh-CN' ? i.name : i.name_en) ?? i.provider
+                i.displayName ??
+                (i18n.language === 'zh-CN' ? i.name : i.name_en) ??
+                i.provider
             })
           )
         } else if (i.action === SocialConnectionEvent.Auth) {
-          const initUrl = `${appHost}/connections/social/${i.identifier}?${qs.stringify(query)}`
+          const initUrl = `${appHost}/connections/social/${
+            i.identifier
+          }?${qs.stringify(query)}`
           if (query.redirected) {
             window.location.replace(initUrl)
           } else {
@@ -105,7 +111,12 @@ export const IdpButton = (props: any) => {
           block
           size="large"
           className="g2-guard-third-login-btn"
-          icon={<IconFont type={`${iconType}-fill`} style={{ fontSize: 20, marginRight: 8 }} />}
+          icon={
+            <IconFont
+              type={`${iconType}-fill`}
+              style={{ fontSize: 20, marginRight: 8 }}
+            />
+          }
           onClick={onLogin}
         >
           {t('login.loginBy', {

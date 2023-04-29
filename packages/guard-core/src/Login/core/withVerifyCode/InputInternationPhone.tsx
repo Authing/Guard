@@ -14,7 +14,9 @@ export interface InputInternationPhoneProps extends InputProps {
 
 const { useEffect, useState } = React
 
-export const InputInternationPhone: React.FC<InputInternationPhoneProps> = props => {
+export const InputInternationPhone: React.FC<
+  InputInternationPhoneProps
+> = props => {
   const {
     areaCode,
     onAreaCodeChange,
@@ -24,7 +26,9 @@ export const InputInternationPhone: React.FC<InputInternationPhoneProps> = props
     ...inputProps
   } = props
 
-  const [value, setValue] = useState(/^[^a-zA-Z]*$/.test(String(formValue)) ? formValue : '')
+  const [value, setValue] = useState(
+    /^[^a-zA-Z]*$/.test(String(formValue)) ? formValue : ''
+  )
 
   // 当formValue变化时候
   useEffect(() => {

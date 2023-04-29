@@ -65,33 +65,34 @@ export const LoginWithAppQrcode = (props: LoginWithAppQrcodeProps) => {
    */
   const onStatusChange = async (status: CodeStatus, data: QrCodeResponse) => {
     switch (status) {
-    case 'success':
-      if (events?.onBeforeLogin) {
-        const isContinue = await events?.onBeforeLogin(
-          { type: LoginMethods.AppQr, data },
-          authClient
-        )
-        if (!isContinue) {
-          break
+      case 'success':
+        if (events?.onBeforeLogin) {
+          const isContinue = await events?.onBeforeLogin(
+            { type: LoginMethods.AppQr, data },
+            authClient
+          )
+          if (!isContinue) {
+            break
+          }
         }
-      }
-      props.multipleInstance && props.multipleInstance.setLoginWay('qrcode', LoginMethods.AppQr)
-      props.onLoginSuccess(data)
-      break
-    case 'error':
-      if (data.scannedResult) {
-        const { message: msg } = data.scannedResult
-        message.error(msg)
-      }
-      break
-    case 'MFA':
-      if (data.scannedResult) {
-        const { onGuardHandling } = responseIntercept(data.scannedResult)
-        onGuardHandling?.()
-      }
-      break
-    default:
-      break
+        props.multipleInstance &&
+          props.multipleInstance.setLoginWay('qrcode', LoginMethods.AppQr)
+        props.onLoginSuccess(data)
+        break
+      case 'error':
+        if (data.scannedResult) {
+          const { message: msg } = data.scannedResult
+          message.error(msg)
+        }
+        break
+      case 'MFA':
+        if (data.scannedResult) {
+          const { onGuardHandling } = responseIntercept(data.scannedResult)
+          onGuardHandling?.()
+        }
+        break
+      default:
+        break
     }
   }
 

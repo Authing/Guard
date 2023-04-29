@@ -2,11 +2,14 @@ import { React, ReactNode } from 'shim-react'
 
 import { GuardPageConfig, Lang } from '../Type'
 
-import {  GuardModuleType } from '../Guard/module'
+import { GuardModuleType } from '../Guard/module'
 
 import { GuardEvents, GuardLocalConfig } from '../Guard'
 
-import { BackFillMultipleState, StoreInstance } from '../Guard/core/hooks/useMultipleAccounts'
+import {
+  BackFillMultipleState,
+  StoreInstance
+} from '../Guard/core/hooks/useMultipleAccounts'
 
 import { ModuleState } from '../Guard/GuardModule/stateMachine'
 
@@ -195,7 +198,9 @@ const GuardButtonContext = React.createContext<IGuardContextProvider>({
 export const useGuardButtonContext = () => {
   const Provider = GuardButtonContext.Provider
 
-  const GuardButtonProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const GuardButtonProvider: React.FC<{ children: ReactNode }> = ({
+    children
+  }) => {
     const [spin, setSpin] = React.useState(false)
 
     return (
@@ -223,7 +228,8 @@ export const useGuardPublicConfig = () => useContext(GuardXContext).publicConfig
 
 export const useGuardHttpClient = () => useContext(GuardXContext).httpClient
 
-export const useGuardDefaultMergedConfig = () => useContext(GuardXContext).defaultMergedConfig
+export const useGuardDefaultMergedConfig = () =>
+  useContext(GuardXContext).defaultMergedConfig
 
 export const useGuardAppId = () => useContext(GuardXContext).appId
 
@@ -234,7 +240,8 @@ export function useGuardInitData<T>(): T {
   return initData as T
 }
 
-export const useGuardCurrentModule = () => useContext(GuardXContext).currentModule
+export const useGuardCurrentModule = () =>
+  useContext(GuardXContext).currentModule
 
 export const useGuardEvents = () => useContext(GuardXContext).events
 
@@ -248,35 +255,43 @@ export const useGuardModule = () => {
   }
 }
 
-export const useGuardFinallyConfig = () => useContext(GuardXContext).finallyConfig
+export const useGuardFinallyConfig = () =>
+  useContext(GuardXContext).finallyConfig
 
-export const useGuardContextLoaded = () => useContext(GuardXContext).contextLoaded
+export const useGuardContextLoaded = () =>
+  useContext(GuardXContext).contextLoaded
 
 export const useGuardIsAuthFlow = () => useContext(GuardXContext).isAuthFlow
 
-export const useGuardPageConfig = () => useContext(GuardXContext).guardPageConfig
+export const useGuardPageConfig = () =>
+  useContext(GuardXContext).guardPageConfig
 
 /**
  * 多账号登录 store 实例
  */
-export const useGuardMultipleInstance = () => useContext(GuardXContext).multipleInstance
+export const useGuardMultipleInstance = () =>
+  useContext(GuardXContext).multipleInstance
 
 // 手机号正则
 export const useGuardPhoneRegex = () => useContext(GuardXContext).phoneRegex
 /**
  * 默认语言
  */
-export const useGuardDefaultLanguage = () => useContext(GuardXContext).defaultLanguageConfig
+export const useGuardDefaultLanguage = () =>
+  useContext(GuardXContext).defaultLanguageConfig
 
 /** 用来操作和获取租户相关的内容 */
-export const useGuardTenantProvider = () => useContext(GuardXContext).tenantInstance
+export const useGuardTenantProvider = () =>
+  useContext(GuardXContext).tenantInstance
 
 /** 当前人机验证策略 */
 export const useRobotVerify = () => {
-  const { customSecurityEnabled, appRobotVerify, userpoolRobotVerify } = useGuardPublicConfig()
+  const { customSecurityEnabled, appRobotVerify, userpoolRobotVerify } =
+    useGuardPublicConfig()
 
   return customSecurityEnabled ? appRobotVerify : userpoolRobotVerify
 }
 
 /** 当前用户池是否是国外用户池 */
-export const useIsForeignUserpool = () => useContext(GuardXContext).isForeignUserpool
+export const useIsForeignUserpool = () =>
+  useContext(GuardXContext).isForeignUserpool

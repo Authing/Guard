@@ -2,7 +2,10 @@ import { FormInstance } from 'shim-antd/lib/form'
 
 import { React } from 'shim-react'
 
-import { BackFillMultipleState, LoginWay } from '../../Guard/core/hooks/useMultipleAccounts'
+import {
+  BackFillMultipleState,
+  LoginWay
+} from '../../Guard/core/hooks/useMultipleAccounts'
 
 import { useGuardMultipleInstance } from '../../_utils/context'
 
@@ -38,8 +41,8 @@ function useLoginMultipleBackFill(options: {
     const prefix = isOnlyInternationSms
       ? ''
       : backfillData?.phoneCountryCode
-        ? backfillData?.phoneCountryCode + ' '
-        : ''
+      ? backfillData?.phoneCountryCode + ' '
+      : ''
 
     const content = backfillData?.account || ''
 

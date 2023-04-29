@@ -8,7 +8,8 @@ import { i18n } from '../_utils/locales'
 
 import './styles.less'
 
-export interface ImageProProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+export interface ImageProProps
+  extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string
   className?: string
   alt?: string
@@ -119,7 +120,9 @@ export const ImagePro2 = (props: ImageProProps) => {
       />
       {loaded && (
         <div className="g2-base-imagepro-mask" ref={maskRef}>
-          <span style={{ marginRight: 4 }}>{i18n.t('login.verifyCodeTip')}</span>
+          <span style={{ marginRight: 4 }}>
+            {i18n.t('login.verifyCodeTip')}
+          </span>
           <svg
             width="16"
             height="16"
@@ -142,7 +145,10 @@ export const ImagePro2 = (props: ImageProProps) => {
         </div>
       )}
       {!loaded && (
-        <GuardButton className="g2-base-imagepro-mask g2-base-imagepro-loading" loading />
+        <GuardButton
+          className="g2-base-imagepro-mask g2-base-imagepro-loading"
+          loading
+        />
       )}
     </div>
   )

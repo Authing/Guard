@@ -8,7 +8,11 @@ import { GuardModuleType } from '../Guard/module'
 
 import { ImagePro } from '../ImagePro'
 
-import { useGuardFinallyConfig, useGuardInitData, useGuardModule } from '../_utils/context'
+import {
+  useGuardFinallyConfig,
+  useGuardInitData,
+  useGuardModule
+} from '../_utils/context'
 
 import { CompletePassword } from './core/completePassword'
 
@@ -46,7 +50,12 @@ export const GuardChangePassword: React.FC<{
   return (
     <div className="g2-view-container g2-change-password">
       <div className="g2-view-header">
-        <ImagePro src={config?.logo as string} size={48} borderRadius={4} className="icon" />
+        <ImagePro
+          src={config?.logo as string}
+          size={48}
+          borderRadius={4}
+          className="icon"
+        />
         <div className="title">{typeContent.title}</div>
         <div className="title-explain">{typeContent.explain}</div>
       </div>
@@ -152,7 +161,12 @@ export const GuardNoticePasswordResetView: React.FC = () => {
     }, 500)
   }
 
-  const coreForm = <RotateReset onReset={onReset} onFinishCallBack={initData.onFinishCallBack} />
+  const coreForm = (
+    <RotateReset
+      onReset={onReset}
+      onFinishCallBack={initData.onFinishCallBack}
+    />
+  )
 
   return (
     <GuardChangePassword

@@ -26,7 +26,10 @@ export const CopyAbleText = (props: CopyTextProps) => {
   const startTimer = useCallback(() => {
     setCopied(true)
     clearTimeout(timer.current)
-    timer.current = setTimeout(() => setCopied(false), 3000) as unknown as number
+    timer.current = setTimeout(
+      () => setCopied(false),
+      3000
+    ) as unknown as number
   }, [timer])
 
   useEffect(() => {
@@ -39,7 +42,10 @@ export const CopyAbleText = (props: CopyTextProps) => {
   }
 
   return (
-    <div className={getClassnames(['authing-copy-text', className])} ref={divRef}>
+    <div
+      className={getClassnames(['authing-copy-text', className])}
+      ref={divRef}
+    >
       {children}
       {copied ? (
         <CheckOutlined

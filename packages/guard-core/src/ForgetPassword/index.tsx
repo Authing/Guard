@@ -62,7 +62,8 @@ export const GuardForgetPassword: React.FC = () => {
   const [policyStrength, setPolicyStrength] = useState(0)
   const [customPasswordStrength, setCustomPasswordStrength] = useState({})
   const [phoneOrEmailText, setPhoneOrEmailText] = useState('')
-  const { getPassWordUnsafeText, setPasswordErrorTextShow } = usePasswordErrorText()
+  const { getPassWordUnsafeText, setPasswordErrorTextShow } =
+    usePasswordErrorText()
 
   // 忘记密码的 token，在第二步重置密码时传给后端
   const [resetToken, setResetToken] = useState('')
@@ -156,7 +157,10 @@ export const GuardForgetPassword: React.FC = () => {
 
   const [btnDisabled, setDisabled] = useState(true)
 
-  const formValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
+  const formValuesChange = (
+    _: Record<string, any>,
+    allValues: Record<string, any>
+  ) => {
     // 判断其他表单项是否填写
     setDisabled(isDisabled(allValues))
   }
@@ -165,9 +169,17 @@ export const GuardForgetPassword: React.FC = () => {
     <div className="g2-view-container g2-forget-password g2-password-reset-step1">
       {needBack && <BackCustom onBack={goBack} />}
       <div className="g2-view-header">
-        <ImagePro src={config?.logo as string} size={48} borderRadius={4} alt="" className="icon" />
+        <ImagePro
+          src={config?.logo as string}
+          size={48}
+          borderRadius={4}
+          alt=""
+          className="icon"
+        />
         <div className="title">{t('login.resetPwd')}</div>
-        <div className="title-explain">{t('login.resetPassword.resetPasswordText1')}</div>
+        <div className="title-explain">
+          {t('login.resetPassword.resetPasswordText1')}
+        </div>
       </div>
       <div className="g2-view-tabs">
         <ResetPassword
@@ -192,7 +204,13 @@ export const GuardForgetPassword: React.FC = () => {
   ) : (
     <div className="g2-view-container g2-forget-password g2-password-reset-step2">
       <div className="g2-view-header">
-        <ImagePro src={config?.logo as string} size={48} borderRadius={4} alt="" className="icon" />
+        <ImagePro
+          src={config?.logo as string}
+          size={48}
+          borderRadius={4}
+          alt=""
+          className="icon"
+        />
         <div className="title">{t('login.resetPwd')}</div>
         <div className="title-explain">
           {t('login.resetPassword.resetPasswordText2', {
@@ -246,7 +264,9 @@ export const GuardForgetPassword: React.FC = () => {
                   if (password === value) {
                     return Promise.resolve()
                   } else {
-                    return Promise.reject(t('login.resetPassword.checkPasswordDiff'))
+                    return Promise.reject(
+                      t('login.resetPassword.checkPasswordDiff')
+                    )
                   }
                 }
               })
@@ -277,7 +297,10 @@ export const GuardForgetPassword: React.FC = () => {
         </Form>
       </div>
       <div className="g2-tips-line">
-        <div className="link-like back-to-login" onClick={() => setControlShow(true)}>
+        <div
+          className="link-like back-to-login"
+          onClick={() => setControlShow(true)}
+        >
           {t('login.resetPassword.back')}
         </div>
       </div>

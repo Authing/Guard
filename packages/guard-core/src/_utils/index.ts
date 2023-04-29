@@ -64,9 +64,9 @@ export const fieldRequiredRule = (
       validateTrigger: ['onChange'],
       message:
         fieldRequiredRuleMessage ||
-        i18n.t('common.isMissing', {
+        (i18n.t('common.isMissing', {
           name: fieldRequiredRule
-        }) as string,
+        }) as string),
       whitespace: true
     }
   ]
@@ -110,7 +110,10 @@ const insertedRecord: Record<STYLE_RECORD_KEY, any> = {
   appConfig: null,
   userConfig: null
 }
-export const insertStyles = (styles: string | any, recordKey?: STYLE_RECORD_KEY) => {
+export const insertStyles = (
+  styles: string | any,
+  recordKey?: STYLE_RECORD_KEY
+) => {
   const guardWindow = getGuardWindow()
 
   if (!guardWindow) return
@@ -178,7 +181,10 @@ export function isObject(item: any) {
  * @param target
  * @param ...sources
  */
-export function deepMerge<T extends object = any>(target: T, ...sources: any[]): T {
+export function deepMerge<T extends object = any>(
+  target: T,
+  ...sources: any[]
+): T {
   if (!sources.length) return target
   const source = sources.shift()
 
@@ -216,8 +222,6 @@ export const getUserRegisterParams = (params?: string[]) => {
     .filter(item => item.value)
     .filter(item => (params ? params.includes(item.key) : true))
 }
-
-
 
 export enum PasswordStrength {
   NoCheck,
@@ -264,7 +268,9 @@ const SYMBOL_TYPE_PATTERNS = [
 ]
 
 export const getSymbolTypeLength = (pwd: string) => {
-  return SYMBOL_TYPE_PATTERNS.map(pattern => pattern.test(pwd)).filter(item => item).length
+  return SYMBOL_TYPE_PATTERNS.map(pattern => pattern.test(pwd)).filter(
+    item => item
+  ).length
 }
 
 export const getPasswordValidate = (
@@ -325,7 +331,9 @@ export const getPasswordValidate = (
         validator(r, v) {
           if (v && (v.length < 6 || getSymbolTypeLength(v) < 2)) {
             return Promise.reject(
-              PASSWORD_STRENGTH_TEXT_MAP[PasswordStrength.Middle].validateMessage()
+              PASSWORD_STRENGTH_TEXT_MAP[
+                PasswordStrength.Middle
+              ].validateMessage()
             )
           }
           return Promise.resolve()
@@ -339,7 +347,9 @@ export const getPasswordValidate = (
         validator(r, v) {
           if (v && (v.length < 6 || getSymbolTypeLength(v) < 3)) {
             return Promise.reject(
-              PASSWORD_STRENGTH_TEXT_MAP[PasswordStrength.High].validateMessage()
+              PASSWORD_STRENGTH_TEXT_MAP[
+                PasswordStrength.High
+              ].validateMessage()
             )
           }
           return Promise.resolve(true)
@@ -365,7 +375,9 @@ export const getPasswordValidateRules = (
   customValidateTrigger?: string,
   fieldRequiredRuleMessage?: string
 ): Rule[] => {
-  const required = [...fieldRequiredRule(i18n.t('common.password'), fieldRequiredRuleMessage)]
+  const required = [
+    ...fieldRequiredRule(i18n.t('common.password'), fieldRequiredRuleMessage)
+  ]
   const getCustomPassword = () => {
     if (i18n.language === 'zh-CN' && customPasswordStrength?.zhMessageOpen) {
       return customPasswordStrength?.zhMessage
@@ -407,7 +419,9 @@ export const getPasswordValidateRules = (
         validator(r, v) {
           if (v && (v.length < 6 || getSymbolTypeLength(v) < 2)) {
             return Promise.reject(
-              PASSWORD_STRENGTH_TEXT_MAP[PasswordStrength.Middle].validateMessage()
+              PASSWORD_STRENGTH_TEXT_MAP[
+                PasswordStrength.Middle
+              ].validateMessage()
             )
           }
           return Promise.resolve()
@@ -421,7 +435,9 @@ export const getPasswordValidateRules = (
         validator(r, v) {
           if (v && (v.length < 6 || getSymbolTypeLength(v) < 3)) {
             return Promise.reject(
-              PASSWORD_STRENGTH_TEXT_MAP[PasswordStrength.High].validateMessage()
+              PASSWORD_STRENGTH_TEXT_MAP[
+                PasswordStrength.High
+              ].validateMessage()
             )
           }
           return Promise.resolve(true)
@@ -441,7 +457,8 @@ export const getPasswordValidateRules = (
   return validateMap[strength]
 }
 
-export const sleep = (delay: number) => new Promise(resolve => setTimeout(resolve, delay))
+export const sleep = (delay: number) =>
+  new Promise(resolve => setTimeout(resolve, delay))
 
 export const shoudGoToComplete = (
   user: User,
@@ -483,7 +500,12 @@ export const shoudGoToComplete = (
   }
   // 对比字段
   const allFieldsToComp = config?.extendsFields
-  if (needGo && contextType === 'register' && allFieldsToComp && allFieldsToComp.length > 0) {
+  if (
+    needGo &&
+    contextType === 'register' &&
+    allFieldsToComp &&
+    allFieldsToComp.length > 0
+  ) {
     if (
       user.email &&
       allFieldsToComp?.length === 1 &&
@@ -512,7 +534,12 @@ export const shoudGoToComplete = (
 
     return true
   }
-  if (needGo && contextType === 'login' && allFieldsToComp && allFieldsToComp.length > 0) {
+  if (
+    needGo &&
+    contextType === 'login' &&
+    allFieldsToComp &&
+    allFieldsToComp.length > 0
+  ) {
     // console.log('判断补全')
     // TODO 自动注册登录
     needGo = false
@@ -548,14 +575,14 @@ export const shoudGoToComplete = (
 
 export const transformMethod = (method: RegisterMethods | string) => {
   switch (method) {
-  case RegisterMethods.Phone:
-  case RegisterMethods.EmailCode:
-  case RegisterSortMethods.EmailCode:
-    return RegisterSortMethods.Phone
-  case RegisterMethods.Email:
-    return RegisterSortMethods.Email
-  default:
-    return method
+    case RegisterMethods.Phone:
+    case RegisterMethods.EmailCode:
+    case RegisterSortMethods.EmailCode:
+      return RegisterSortMethods.Phone
+    case RegisterMethods.Email:
+      return RegisterSortMethods.Email
+    default:
+      return method
   }
 }
 
@@ -572,7 +599,9 @@ export const phoneDesensitization = (phone: string) => {
 export const GuardPropsFilter = (pre: GuardProps, current: GuardProps) => {
   const preAttribute = Object.keys(pre).filter(name => name.startsWith('on'))
 
-  const currentAttribute = Object.keys(current).filter(name => name.startsWith('on'))
+  const currentAttribute = Object.keys(current).filter(name =>
+    name.startsWith('on')
+  )
 
   return isEqual(omit(pre, preAttribute), omit(current, currentAttribute))
 }
@@ -603,11 +632,16 @@ export const getLoginTypePipe = (
   registerMethod: RegisterMethods
 ) => {
   const loginTabs = publicConfig?.loginTabs.list // 支持的登录方式
-  const verifyCodeTabMethods = publicConfig?.verifyCodeTabConfig?.enabledLoginMethods ?? [] // 支持的验证码登录方式
-  const passwordTabMethods = publicConfig?.passwordTabConfig?.enabledLoginMethods ?? [] // 支持的密码登录方式
+  const verifyCodeTabMethods =
+    publicConfig?.verifyCodeTabConfig?.enabledLoginMethods ?? [] // 支持的验证码登录方式
+  const passwordTabMethods =
+    publicConfig?.passwordTabConfig?.enabledLoginMethods ?? [] // 支持的密码登录方式
   // 通过手机验证码注册成功
   if (registerMethod === RegisterMethods.Phone) {
-    if (loginTabs.includes(LoginMethods.PhoneCode) && verifyCodeTabMethods.includes('phone-code')) {
+    if (
+      loginTabs.includes(LoginMethods.PhoneCode) &&
+      verifyCodeTabMethods.includes('phone-code')
+    ) {
       // situation 1  手机号验证码登录
       return {
         specifyDefaultLoginMethod: LoginMethods.PhoneCode,
@@ -625,7 +659,10 @@ export const getLoginTypePipe = (
   }
   // 通过邮箱验证码注册成功
   if (registerMethod === RegisterMethods.EmailCode) {
-    if (loginTabs.includes(LoginMethods.PhoneCode) && verifyCodeTabMethods.includes('email-code')) {
+    if (
+      loginTabs.includes(LoginMethods.PhoneCode) &&
+      verifyCodeTabMethods.includes('email-code')
+    ) {
       // situation 1  邮箱验证码登录
       return {
         specifyDefaultLoginMethod: LoginMethods.PhoneCode,
@@ -666,7 +703,9 @@ export const getLoginTypePipe = (
 
 // 对用户输入的数据进行校验判断是否是手机号或者邮箱
 export const getPasswordIdentify = (identity: string): string => {
-  return validate('phone', identity) || validate('email', identity) ? identity : ''
+  return validate('phone', identity) || validate('email', identity)
+    ? identity
+    : ''
 }
 
 export const getCurrentLng = () => {
@@ -694,7 +733,9 @@ export const getI18nLabel = (
   if (i18nFields.get(key)) {
     return (
       (i18nFields.get(key) as TabFieldsI18nItem)?.i18n?.[lang] ??
-      (i18nFields.get(key) as TabFieldsI18nItem)?.i18n?.[defaultLanguageConfig] ??
+      (i18nFields.get(key) as TabFieldsI18nItem)?.i18n?.[
+        defaultLanguageConfig
+      ] ??
       (i18nFields.get(key) as TabFieldsI18nItem).label
     )
   }
@@ -729,10 +770,16 @@ export const getSortTabs = (tabs: string[], tab?: string) => {
   return tabs
 }
 
-export const isDisabled = (values: Record<string, any>, requireNames?: string[]) => {
+export const isDisabled = (
+  values: Record<string, any>,
+  requireNames?: string[]
+) => {
   let disabled = false
   for (const [key, value] of Object.entries(values)) {
-    if ((!requireNames || requireNames.includes(key)) && (value === undefined || value === '')) {
+    if (
+      (!requireNames || requireNames.includes(key)) &&
+      (value === undefined || value === '')
+    ) {
       disabled = true
       break
     }

@@ -92,7 +92,8 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
       } else {
         const handMode = onGuardHandling?.()
         // 向上层抛出错误
-        handMode === CodeAction.RENDER_MESSAGE && onLoginFailed(code, data, evt?.data?.message)
+        handMode === CodeAction.RENDER_MESSAGE &&
+          onLoginFailed(code, data, evt?.data?.message)
       }
     }
 
@@ -143,7 +144,9 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
         const guardWindow = getGuardWindow()
         if (guardWindow) {
           // 如果 isHost 是 true，则从 url 获取 finish_login_url 作为 social.authorize 方法的 targetUrl 参数
-          query.redirect_url = querystring.parse(guardWindow.location.search)?.['finish_login_url']
+          query.redirect_url = querystring.parse(guardWindow.location.search)?.[
+            'finish_login_url'
+          ]
         }
       }
     }
@@ -179,7 +182,12 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
           block
           size="large"
           className="g2-guard-third-login-btn"
-          icon={<IconFont type={`${iconType}-fill`} style={{ fontSize: 20, marginRight: 8 }} />}
+          icon={
+            <IconFont
+              type={`${iconType}-fill`}
+              style={{ fontSize: 20, marginRight: 8 }}
+            />
+          }
           onClick={onLogin}
           style={{
             marginBottom: 8
@@ -217,7 +225,12 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
           block
           size="large"
           className="g2-guard-third-login-btn"
-          icon={<IconFont type={`${iconType}-fill`} style={{ fontSize: 20, marginRight: 8 }} />}
+          icon={
+            <IconFont
+              type={`${iconType}-fill`}
+              style={{ fontSize: 20, marginRight: 8 }}
+            />
+          }
           onClick={onLogin}
         >
           {item.displayName ??
@@ -235,7 +248,11 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
         <Tooltip
           overlayStyle={{ fontFamily: 'sans-serif' }}
           key={item.id}
-          title={item.displayName || item.tooltip?.[i18n.language as Lang] || item.name}
+          title={
+            item.displayName ||
+            item.tooltip?.[i18n.language as Lang] ||
+            item.name
+          }
           trigger={['hover', 'click', 'contextMenu']}
         >
           <GuardButton
@@ -283,18 +300,22 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
       const scrollHeight = dom.scrollHeight
       const height = (dom as HTMLElement).offsetHeight
       if (scrollTop === 0) {
-        ;(document.querySelector('.g2-social-login-line--top') as HTMLElement).style.display =
-          'none'
+        ;(
+          document.querySelector('.g2-social-login-line--top') as HTMLElement
+        ).style.display = 'none'
       } else {
-        ;(document.querySelector('.g2-social-login-line--top') as HTMLElement).style.display =
-          'block'
-        ;(document.querySelector('.g2-social-login-line--bottom') as HTMLElement).style.display =
-          'block'
+        ;(
+          document.querySelector('.g2-social-login-line--top') as HTMLElement
+        ).style.display = 'block'
+        ;(
+          document.querySelector('.g2-social-login-line--bottom') as HTMLElement
+        ).style.display = 'block'
       }
 
       if (scrollTop + height === scrollHeight) {
-        ;(document.querySelector('.g2-social-login-line--bottom') as HTMLElement).style.display =
-          'none'
+        ;(
+          document.querySelector('.g2-social-login-line--bottom') as HTMLElement
+        ).style.display = 'none'
       }
     }
   }
@@ -304,7 +325,8 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
     const scrollLeft = e?.target?.scrollLeft || 0
     const containerWidth =
       e?.target?.offsetWidth ||
-      (document.querySelector('.g2-social-login-container') as HTMLElement)?.offsetWidth ||
+      (document.querySelector('.g2-social-login-container') as HTMLElement)
+        ?.offsetWidth ||
       0
 
     setPercentage(((scrollLeft + containerWidth) / clientWidth) * 100)
@@ -329,7 +351,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
 
   return (
     <>
-      {!noLoginMethods && (idp || socialLogin ) && (
+      {!noLoginMethods && (idp || socialLogin) && (
         <div
           style={{
             flex: 1,
@@ -346,14 +368,21 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
           }`}
         >
           {!publicConfig?.ssoPageComponentDisplay.idpBtns || idp}
-          {!publicConfig?.ssoPageComponentDisplay.socialLoginBtns || socialLogin}
+          {!publicConfig?.ssoPageComponentDisplay.socialLoginBtns ||
+            socialLogin}
         </Space>
       ) : (
-        <div className={`g2-social-login-box ${socialLoginButtons.length + idpButtons.length > 6 && 'g2-social-login-box--progress'}`}>
-          <div style={{position: 'relative'}}>
+        <div
+          className={`g2-social-login-box ${
+            socialLoginButtons.length + idpButtons.length > 6 &&
+            'g2-social-login-box--progress'
+          }`}
+        >
+          <div style={{ position: 'relative' }}>
             <div className="g2-social-login-container">
               {!publicConfig?.ssoPageComponentDisplay.idpBtns || idp}
-              {!publicConfig?.ssoPageComponentDisplay.socialLoginBtns || socialLogin}
+              {!publicConfig?.ssoPageComponentDisplay.socialLoginBtns ||
+                socialLogin}
             </div>
             {socialLoginButtons.length + idpButtons.length > 6 && (
               <progress

@@ -12,7 +12,9 @@ export const InputPassword = (props: any) => {
       {...props}
       iconRender={(visible: boolean) => {
         return (
-          <span style={{ display: 'flex', height: '100%', alignItems: 'center' }}>
+          <span
+            style={{ display: 'flex', height: '100%', alignItems: 'center' }}
+          >
             {visible ? (
               <IconFont type="authing-a-eye-line1" />
             ) : (

@@ -3,7 +3,10 @@ import { RegisterSortMethods, RegisterMethods } from '../Type'
 import UAParser from 'ua-parser-js'
 
 // 拼接请求链接
-export const assembledRequestHost = (requestHostname: string, configHost: string) => {
+export const assembledRequestHost = (
+  requestHostname: string,
+  configHost: string
+) => {
   const identifier = requestHostname.split('.')[0]
 
   const hostUrl = new URL(configHost)
@@ -14,7 +17,9 @@ export const assembledRequestHost = (requestHostname: string, configHost: string
   // 看看是否有端口号
   const port = hostUrl.port
 
-  return `${hostUrl.protocol}//${identifier}.${splitHost.join('.')}${port && `:${port}`}`
+  return `${hostUrl.protocol}//${identifier}.${splitHost.join('.')}${
+    port && `:${port}`
+  }`
 }
 
 export const getHundreds = (num: number) => {
@@ -23,14 +28,14 @@ export const getHundreds = (num: number) => {
 
 export const transformSortMethod = (method: RegisterSortMethods | string) => {
   switch (method) {
-  case RegisterSortMethods.Email:
-    return RegisterMethods.Email
-  case RegisterSortMethods.EmailCode:
-    return RegisterMethods.EmailCode
-  case RegisterSortMethods.Phone:
-    return RegisterMethods.Phone
-  default:
-    return method
+    case RegisterSortMethods.Email:
+      return RegisterMethods.Email
+    case RegisterSortMethods.EmailCode:
+      return RegisterMethods.EmailCode
+    case RegisterSortMethods.Phone:
+      return RegisterMethods.Phone
+    default:
+      return method
   }
 }
 
@@ -39,7 +44,10 @@ export const isWeChatBrowser = () => {
   if (typeof navigator === 'undefined') {
     return null
   }
-  return /MicroMessenger/i.test(navigator?.userAgent) && !/wxwork/i.test(navigator.userAgent)
+  return (
+    /MicroMessenger/i.test(navigator?.userAgent) &&
+    !/wxwork/i.test(navigator.userAgent)
+  )
 }
 
 export const isLarkBrowser = () => {
@@ -86,7 +94,10 @@ export const isWeWorkBuiltInBrowser = () => {
   if (typeof navigator === 'undefined') {
     return null
   }
-  return /MicroMessenger/i.test(navigator.userAgent) && /wxwork/i.test(navigator.userAgent)
+  return (
+    /MicroMessenger/i.test(navigator.userAgent) &&
+    /wxwork/i.test(navigator.userAgent)
+  )
 }
 // 特殊浏览器 后续可能会增加
 
@@ -144,7 +155,14 @@ export const isSpecialBrowser = () => {
   // 2. 利用 ua-parser-js 进一步判断，筛选出很可能不是特殊浏览器的 UA
   // 由于一些特殊浏览器也可能会被误判为非特殊，所以需要首先经过第 1 步筛选
   const parser = UAParser()
-  const nonSpecialBrowsers = ['Chrome', 'Firefox', 'Safari', 'Opera', 'IE', 'Edge']
+  const nonSpecialBrowsers = [
+    'Chrome',
+    'Firefox',
+    'Safari',
+    'Opera',
+    'IE',
+    'Edge'
+  ]
   if (nonSpecialBrowsers.includes(parser.browser.name ?? '')) {
     return false
   }

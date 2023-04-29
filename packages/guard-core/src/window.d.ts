@@ -1,7 +1,10 @@
 declare interface Window {
   $$guard: {
     viewContext?: {
-      changeModule?: (moduleName: GuardModuleType, initData?: any) => Promise<void>
+      changeModule?: (
+        moduleName: GuardModuleType,
+        initData?: any
+      ) => Promise<void>
       changeTab?: Dispatch<any>
       currentModule?: string
       currentTab?: string

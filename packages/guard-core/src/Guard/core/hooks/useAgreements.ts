@@ -12,7 +12,12 @@ interface Options {
 const { useEffect } = React
 
 export function useAgreements(options: Options) {
-  const { agreements, checkedAgreements, checkAllAgreements, unCheckAllAgreements } = options
+  const {
+    agreements,
+    checkedAgreements,
+    checkAllAgreements,
+    unCheckAllAgreements
+  } = options
 
   const agreementsContext = {
     agreements,

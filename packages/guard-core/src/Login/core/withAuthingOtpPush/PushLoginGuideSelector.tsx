@@ -22,7 +22,12 @@ export function PushLoginGuideSelector(props: PushLoginGuideSelectorProps) {
       dropdownMatchSelectWidth={false}
       showArrow={true}
       className="authing-ant-select-selector-new-box"
-      menuItemSelectedIcon={<IconFont type='authing-check-fill' style={{fontSize: 16, color: '#4E5969'}} />}
+      menuItemSelectedIcon={
+        <IconFont
+          type="authing-check-fill"
+          style={{ fontSize: 16, color: '#4E5969' }}
+        />
+      }
     />
   )
 }

@@ -23,7 +23,9 @@ export interface GuardFaceProps {
 export const GuardFace = (props: GuardFaceProps) => {
   const { avatar, title, description, tags } = props
   const avatarProps: AvatarProps =
-    typeof avatar === 'string' ? { shape: 'square', size: 48, src: avatar } : avatar
+    typeof avatar === 'string'
+      ? { shape: 'square', size: 48, src: avatar }
+      : avatar
   return (
     <div className="g2-view-header">
       <Avatar className="g2-view-avatar icon" {...avatarProps} />

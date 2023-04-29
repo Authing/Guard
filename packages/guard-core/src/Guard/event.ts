@@ -37,7 +37,10 @@ export interface GuardEvents
     IdentityBindingEvents,
     IdentityBindingAskEvents,
     TenantPortalEvents {
-  onBeforeChangeModule?: (key: GuardModuleType, initData?: any) => boolean | Promise<boolean>
+  onBeforeChangeModule?: (
+    key: GuardModuleType,
+    initData?: any
+  ) => boolean | Promise<boolean>
   onAfterChangeModule?: (options: OnAfterChangeModuleOptions) => void
 }
 
@@ -89,32 +92,41 @@ export const guardEventsFilter = (
     oldEvents && oldEvents(...props)
   })
 
+  wrapperEvents<'onAfterChangeModule'>(
+    'onAfterChangeModule',
+    events,
+    (oldEvents, ...props) => {
+      // 先执行外部注册的事件回调
+      oldEvents && oldEvents(...props)
 
-  wrapperEvents<'onAfterChangeModule'>('onAfterChangeModule', events, (oldEvents, ...props) => {
-    // 先执行外部注册的事件回调
-    oldEvents && oldEvents(...props)
+      const normalWrapper = document.querySelector(
+        '.authing-g2-render-module-normal-wrapper'
+      ) as HTMLElement
+      if (normalWrapper) {
+        setTimeout(() => {
+          normalWrapper.classList.remove(
+            'authing-g2-render-module-normal-wrapper-animation'
+          )
+        }, 2000)
+      }
 
-    const normalWrapper = document.querySelector('.authing-g2-render-module-normal-wrapper') as HTMLElement
-    if (normalWrapper) {
-      setTimeout(() => {
-        normalWrapper.classList.remove('authing-g2-render-module-normal-wrapper-animation')
-      }, 2000)
-    }
+      const normalBox = document.querySelector(
+        '.authing-g2-render-module-normal'
+      ) as HTMLElement
 
-    const normalBox = document.querySelector('.authing-g2-render-module-normal') as HTMLElement
-    
-    if (!normalBox) {
-      return
+      if (!normalBox) {
+        return
+      }
+
+      const windowHeight = document.documentElement.offsetHeight
+
+      if (normalBox.offsetHeight > windowHeight) {
+        normalBox.classList.add('normal-mode-full-screen')
+      } else {
+        normalBox.classList.remove('normal-mode-full-screen')
+      }
     }
-    
-    const windowHeight = document.documentElement.offsetHeight
-    
-    if (normalBox.offsetHeight > windowHeight) {
-      normalBox.classList.add('normal-mode-full-screen')
-    } else {
-      normalBox.classList.remove('normal-mode-full-screen')
-    }
-  })
+  )
 
   return guardEventsHijacking(events, openEventsMapping)
 }

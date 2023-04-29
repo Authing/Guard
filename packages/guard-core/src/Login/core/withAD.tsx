@@ -8,7 +8,10 @@ import { i18n } from '../../_utils'
 
 import { useTranslation } from 'react-i18next'
 
-import { BackFillMultipleState, StoreInstance } from '../../Guard/core/hooks/useMultipleAccounts'
+import {
+  BackFillMultipleState,
+  StoreInstance
+} from '../../Guard/core/hooks/useMultipleAccounts'
 
 import { useGuardAuthClient } from '../../Guard/authClient'
 
@@ -81,7 +84,9 @@ export const LoginWithAD = (props: LoginWithADProps) => {
 
   const robotVerify = useRobotVerify()
 
-  const [showCaptcha, setShowCaptcha] = useState(robotVerify === 'always_enable')
+  const [showCaptcha, setShowCaptcha] = useState(
+    robotVerify === 'always_enable'
+  )
   const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
 
   const publicConfig = useGuardPublicConfig()
@@ -111,7 +116,10 @@ export const LoginWithAD = (props: LoginWithADProps) => {
 
   const [btnDisabled, setDisabled] = useState(true)
 
-  const formValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
+  const formValuesChange = (
+    _: Record<string, any>,
+    allValues: Record<string, any>
+  ) => {
     // 判断其他表单项是否填写
     setDisabled(isDisabled(allValues))
   }
@@ -180,7 +188,13 @@ export const LoginWithAD = (props: LoginWithADProps) => {
 
       const res = await fetchRes.json()
 
-      const { code, apiCode, data, onGuardHandling, message: tips } = responseIntercept(res)
+      const {
+        code,
+        apiCode,
+        data,
+        onGuardHandling,
+        message: tips
+      } = responseIntercept(res)
 
       // // 更新本次登录方式
       // data && multipleInstance && multipleInstance.setLoginWay('input', 'ad')
@@ -198,7 +212,8 @@ export const LoginWithAD = (props: LoginWithADProps) => {
 
         const handMode = onGuardHandling?.()
         // 向上层抛出错误
-        handMode === CodeAction.RENDER_MESSAGE && onLoginFailed(code, data, tips)
+        handMode === CodeAction.RENDER_MESSAGE &&
+          onLoginFailed(code, data, tips)
       }
     } catch (error: any) {
       submitButtonRef.current?.onSpin(false)
@@ -280,8 +295,8 @@ export const LoginWithAD = (props: LoginWithADProps) => {
                 autoFocus={!isPhoneMedia}
                 placeholder={
                   publicConfig?.mergeAdAndAccountPasswordLogin
-                    ? t('common.jobNumber') as string
-                    : t('login.inputAdUsername') as string
+                    ? (t('common.jobNumber') as string)
+                    : (t('login.inputAdUsername') as string)
                 }
               />
             </CommonFormItem>
@@ -312,7 +327,7 @@ export const LoginWithAD = (props: LoginWithADProps) => {
                 rules={fieldRequiredRule(t('common.captchaCode'))}
               >
                 <GraphicVerifyCode
-                  name='captchaCode'
+                  name="captchaCode"
                   className="authing-g2-input"
                   size="large"
                   placeholder={t('login.inputCaptchaCode') as string}

@@ -172,7 +172,9 @@ export const VerifyMFAEmail: React.FC<VerifyMFAEmailProps> = ({
       code: mfaCode.join('')
     }
 
-    const { isFlowEnd, data, onGuardHandling } = await businessRequest(requestData)
+    const { isFlowEnd, data, onGuardHandling } = await businessRequest(
+      requestData
+    )
 
     submitButtonRef.current?.onSpin(false)
 
@@ -210,7 +212,11 @@ export const VerifyMFAEmail: React.FC<VerifyMFAEmailProps> = ({
         onFinishFailed={() => submitButtonRef.current?.onError()}
         onValuesChange={onValuesChange}
       >
-        <VerifyCodeFormItem codeLength={codeLength} ruleKeyword={t('common.captchaCode') as string} style={{marginBottom: 16}}>
+        <VerifyCodeFormItem
+          codeLength={codeLength}
+          ruleKeyword={t('common.captchaCode') as string}
+          style={{ marginBottom: 16 }}
+        >
           <VerifyCodeInput length={codeLength} onFinish={onFinish} />
         </VerifyCodeFormItem>
 

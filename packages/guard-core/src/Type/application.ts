@@ -207,7 +207,10 @@ export interface Agreement {
   availableAt?: number
 }
 
-export type PasswordLoginMethods = 'username-password' | 'email-password' | 'phone-password'
+export type PasswordLoginMethods =
+  | 'username-password'
+  | 'email-password'
+  | 'phone-password'
 
 export type VerifyLoginMethods = 'email-code' | 'phone-code'
 

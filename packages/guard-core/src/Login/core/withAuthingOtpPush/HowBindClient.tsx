@@ -6,7 +6,11 @@ import { useTranslation } from 'react-i18next'
 
 import { LazyloadImage } from '../../../LazyloadImage'
 
-import { useGuardAppId, useGuardFinallyConfig, useGuardPublicConfig } from '../../../_utils/context'
+import {
+  useGuardAppId,
+  useGuardFinallyConfig,
+  useGuardPublicConfig
+} from '../../../_utils/context'
 
 import { QRCodeSVG } from 'qrcode.react'
 

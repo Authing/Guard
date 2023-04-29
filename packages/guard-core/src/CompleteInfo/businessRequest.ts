@@ -9,7 +9,10 @@ export enum CompleteInfoAuthFlowAction {
   Skip = 'skip-completion'
 }
 
-export const authFlow = async (action: CompleteInfoAuthFlowAction, data?: CompleteInfoRequest) => {
+export const authFlow = async (
+  action: CompleteInfoAuthFlowAction,
+  data?: CompleteInfoRequest
+) => {
   const { authFlow } = getGuardHttp()
 
   const res = await authFlow(action, data)
@@ -109,6 +112,10 @@ export const registerRequest = async (
   if (action === CompleteInfoAuthFlowAction.Skip) {
     return await registerSkipMethod(registerFnName, registerContent)
   } else if (action === CompleteInfoAuthFlowAction.Complete) {
-    return await registerMethod(registerFnName, registerContent, registerProfile)
+    return await registerMethod(
+      registerFnName,
+      registerContent,
+      registerProfile
+    )
   }
 }

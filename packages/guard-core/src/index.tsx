@@ -460,20 +460,24 @@ export class Guard {
     }
 
     render({
-      container: Guard.getGuardContainer(this.options.config?.target) as Element,
-      element: <GuardComponent
-        {...(evts as GuardEvents)}
-        appId={this.options.appId}
-        tenantId={this.options.tenantId}
-        config={{
-          ...this.options.config,
-          style: this.options.style ?? this.options.config?.style ?? {}
-        }}
-        facePlugin={this.options.facePlugin}
-        appendConfig={this.options.appendConfig}
-        visible={this.visible}
-        authClient={authClient}
-      />
+      container: Guard.getGuardContainer(
+        this.options.config?.target
+      ) as Element,
+      element: (
+        <GuardComponent
+          {...(evts as GuardEvents)}
+          appId={this.options.appId}
+          tenantId={this.options.tenantId}
+          config={{
+            ...this.options.config,
+            style: this.options.style ?? this.options.config?.style ?? {}
+          }}
+          facePlugin={this.options.facePlugin}
+          appendConfig={this.options.appendConfig}
+          visible={this.visible}
+          authClient={authClient}
+        />
+      )
     })
   }
 
@@ -554,4 +558,3 @@ export class Guard {
     agreementsContext?.unCheckAllAgreements()
   }
 }
-

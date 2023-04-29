@@ -24,7 +24,11 @@ import { InputNumber } from '../../InputNumber'
 
 import { useIsChangeComplete } from '../utils'
 
-import { useGuardFinallyConfig, useGuardHttpClient, useGuardModule } from '../../_utils/context'
+import {
+  useGuardFinallyConfig,
+  useGuardHttpClient,
+  useGuardModule
+} from '../../_utils/context'
 
 import { GuardModuleType } from '../../Guard'
 
@@ -34,7 +38,11 @@ import { ApiCode } from '../../_utils/responseManagement/interface'
 
 import { usePasswordErrorText } from '../../_utils/useErrorText'
 
-import { Agreement, ApplicationConfig, IAuthingFunc } from '../../Type/application'
+import {
+  Agreement,
+  ApplicationConfig,
+  IAuthingFunc
+} from '../../Type/application'
 
 import { InputInternationPhone } from '../../Login/core/withVerifyCode/InputInternationPhone'
 
@@ -81,9 +89,11 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
   const [areaCode, setAreaCode] = useState(
     publicConfig?.internationalSmsConfig?.defaultISOType || 'CN'
   )
-  const isInternationSms = publicConfig?.internationalSmsConfig?.enabled || false
+  const isInternationSms =
+    publicConfig?.internationalSmsConfig?.enabled || false
 
-  const { getPassWordUnsafeText, setPasswordErrorTextShow } = usePasswordErrorText()
+  const { getPassWordUnsafeText, setPasswordErrorTextShow } =
+    usePasswordErrorText()
   const [, onFinish] = useAsyncFn(
     async (values: any) => {
       submitButtonRef.current?.onSpin(true)
@@ -134,7 +144,11 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
       let phoneCountryCode
 
       if (method === 'phone-password') {
-        const { phoneNumber, countryCode } = parsePhone(isInternationSms, account, areaCode)
+        const { phoneNumber, countryCode } = parsePhone(
+          isInternationSms,
+          account,
+          areaCode
+        )
         account = phoneNumber
         phoneCountryCode = countryCode
       }
@@ -146,7 +160,8 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
         password: encryptPassword,
         phoneCountryCode,
         profile: {
-          browser: typeof navigator !== 'undefined' ? navigator.userAgent : null,
+          browser:
+            typeof navigator !== 'undefined' ? navigator.userAgent : null,
           device: getDeviceName()
         },
         forceLogin: false,
@@ -259,7 +274,10 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
           required={true}
           areaCode={areaCode}
         >
-          <PhoneAccount autoFocus={!isPhoneMedia} placeholder={t('login.inputPhone')} />
+          <PhoneAccount
+            autoFocus={!isPhoneMedia}
+            placeholder={t('login.inputPhone')}
+          />
         </CustomFormItem.Phone>
       )
     }
@@ -278,9 +296,11 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
           name="account"
           maxLength={50}
           autoFocus={!isPhoneMedia}
-          placeholder={t('login.inputAccount', {
-            text: label
-          }) as string}
+          placeholder={
+            t('login.inputAccount', {
+              text: label
+            }) as string
+          }
           className="authing-g2-input"
           autoComplete="off"
           size="large"
@@ -300,7 +320,10 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
 
   const [btnDisabled, setDisabled] = useState(true)
 
-  const formValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
+  const formValuesChange = (
+    _: Record<string, any>,
+    allValues: Record<string, any>
+  ) => {
     // 判断其他表单项是否填写
     setDisabled(isDisabled(allValues))
   }

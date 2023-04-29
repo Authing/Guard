@@ -40,7 +40,11 @@ const checkAuthClientProps = (
   return true
 }
 
-export const initGuardAuthClient = (config: GuardLocalConfig, appId: string, tenantId?: string) => {
+export const initGuardAuthClient = (
+  config: GuardLocalConfig,
+  appId: string,
+  tenantId?: string
+) => {
   const host = config.host
   const lang = config.lang
 

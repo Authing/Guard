@@ -67,7 +67,10 @@ export const VerifyCodeInput: React.FC<VerifyCodeInputProps> = ({
       }
 
       // 验证码填写完成后 直接触发 onFinish
-      if (codes.filter(code => Boolean(code)).length >= length && index >= length - 1) {
+      if (
+        codes.filter(code => Boolean(code)).length >= length &&
+        index >= length - 1
+      ) {
         onFinish?.(codes)
       }
     },
@@ -77,33 +80,33 @@ export const VerifyCodeInput: React.FC<VerifyCodeInputProps> = ({
   const handleKeyDown = (evt: any, index: number) => {
     const currentVal = verifyCode[index]
     switch (evt.key) {
-    case 'Backspace':
-      if (!currentVal && inputRef.current[index - 1]) {
-        handleChange('', index - 1)
-        inputRef.current[index - 1].focus()
-      }
-      break
+      case 'Backspace':
+        if (!currentVal && inputRef.current[index - 1]) {
+          handleChange('', index - 1)
+          inputRef.current[index - 1].focus()
+        }
+        break
 
-    case 'Enter':
-      onEenter?.()
-      break
+      case 'Enter':
+        onEenter?.()
+        break
 
-    case 'Left':
-    case 'ArrowLeft':
-      evt.preventDefault()
-      if (inputRef.current[index - 1]) {
-        inputRef.current[index - 1].focus()
-      }
-      break
-    case 'Right':
-    case 'ArrowRight':
-      evt.preventDefault()
-      if (inputRef.current[index + 1]) {
-        inputRef.current[index + 1].focus()
-      }
-      break
-    default:
-      break
+      case 'Left':
+      case 'ArrowLeft':
+        evt.preventDefault()
+        if (inputRef.current[index - 1]) {
+          inputRef.current[index - 1].focus()
+        }
+        break
+      case 'Right':
+      case 'ArrowRight':
+        evt.preventDefault()
+        if (inputRef.current[index + 1]) {
+          inputRef.current[index + 1].focus()
+        }
+        break
+      default:
+        break
     }
   }
 
@@ -151,7 +154,7 @@ export const VerifyCodeInput: React.FC<VerifyCodeInputProps> = ({
                   height: size,
                   lineHeight: size,
                   fontSize: 24,
-                  fontWeight: 500,
+                  fontWeight: 500
                   // marginLeft: index === 0 ? 0 : gutter
                 }}
                 className="authing-g2-code-input-item"
@@ -173,11 +176,11 @@ export const VerifyCodeInput: React.FC<VerifyCodeInputProps> = ({
 
                   const nextValue = evt.target.value
                   /**
-                 * https://github.com/devfolioco/react-otp-input/issues/322
-                 * ios 下 otp 自动填充在chrome内核浏览器下会触发两次 并且第一次会直接塞otp复制的值(maxlength 限制无效) 如 1246 第二次则根据maxlength 截取塞 12
-                 * 针对这种情况取第一次值隔离第二次调用
-                 * safari 是单个input 塞对应的值
-                 */
+                   * https://github.com/devfolioco/react-otp-input/issues/322
+                   * ios 下 otp 自动填充在chrome内核浏览器下会触发两次 并且第一次会直接塞otp复制的值(maxlength 限制无效) 如 1246 第二次则根据maxlength 截取塞 12
+                   * 针对这种情况取第一次值隔离第二次调用
+                   * safari 是单个input 塞对应的值
+                   */
                   if (nextValue.length === length) {
                     fromClipboard.current = true
                     onChange(nextValue.split(''))
@@ -186,8 +189,10 @@ export const VerifyCodeInput: React.FC<VerifyCodeInputProps> = ({
                   }
                   const preValue = verifyCode[index] || ''
                   const changeValue =
-                  nextValue.split('').filter((item: any) => item !== preValue)[0] ||
-                  nextValue.slice(-1)
+                    nextValue
+                      .split('')
+                      .filter((item: any) => item !== preValue)[0] ||
+                    nextValue.slice(-1)
 
                   handleChange(changeValue, index)
                 }}

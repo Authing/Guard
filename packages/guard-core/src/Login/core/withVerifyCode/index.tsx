@@ -4,7 +4,12 @@ import { Form } from 'shim-antd'
 
 import { useTranslation } from 'react-i18next'
 
-import { fieldRequiredRule, getUserRegisterParams, isDisabled, validate } from '../../../_utils'
+import {
+  fieldRequiredRule,
+  getUserRegisterParams,
+  isDisabled,
+  validate
+} from '../../../_utils'
 
 import SubmitButton from '../../../SubmitButton'
 
@@ -40,7 +45,11 @@ import { CodeAction } from '../../../_utils/responseManagement/interface'
 
 import { GuardLoginInitData } from '../../interface'
 
-import { LoginMethods, RegisterMethods, VerifyLoginMethods } from '../../../Type/application'
+import {
+  LoginMethods,
+  RegisterMethods,
+  VerifyLoginMethods
+} from '../../../Type/application'
 
 import { useLoginMultipleBackFill } from '../../hooks/useLoginMultiple'
 
@@ -81,7 +90,8 @@ const LoginWithVerifyCode = (props: any) => {
   const { isPhoneMedia } = useMediaSize()
 
   // 是否开启了国际化短信功能
-  const isInternationSms = publicConfig?.internationalSmsConfig?.enabled || false
+  const isInternationSms =
+    publicConfig?.internationalSmsConfig?.enabled || false
 
   const acceptedAgreements = useRef(false)
 
@@ -272,7 +282,9 @@ const LoginWithVerifyCode = (props: any) => {
     const reqContent: any = {
       phone: values.phoneNumber,
       code: values.code,
-      customData: config?.isHost ? getUserRegisterParams(['login_page_context']) : undefined,
+      customData: config?.isHost
+        ? getUserRegisterParams(['login_page_context'])
+        : undefined,
       autoRegister: autoRegister,
       withCustomData: false
     }
@@ -304,7 +316,9 @@ const LoginWithVerifyCode = (props: any) => {
     const reqContent = {
       email: values.identify,
       code: values.code,
-      customData: config?.isHost ? getUserRegisterParams(['login_page_context']) : undefined,
+      customData: config?.isHost
+        ? getUserRegisterParams(['login_page_context'])
+        : undefined,
       autoRegister: autoRegister,
       withCustomData: false
     }
@@ -369,7 +383,8 @@ const LoginWithVerifyCode = (props: any) => {
       } else {
         const handMode = onGuardHandling?.()
         // 向上层抛出错误 执行绑定失败钩子
-        handMode === CodeAction.RENDER_MESSAGE && onLoginFailed(apiCode ?? code, data, tips)
+        handMode === CodeAction.RENDER_MESSAGE &&
+          onLoginFailed(apiCode ?? code, data, tips)
       }
       return
     }
@@ -382,9 +397,9 @@ const LoginWithVerifyCode = (props: any) => {
         undefined,
         isInternationSms
           ? {
-            phoneCountryCode,
-            areaCode
-          }
+              phoneCountryCode,
+              areaCode
+            }
           : undefined
       )
 
@@ -406,7 +421,13 @@ const LoginWithVerifyCode = (props: any) => {
       )?.length
       ? `${t('common.login')} / ${t('common.register')}`
       : t('common.login')
-  }, [autoRegister, submitButText, t, config.registerMethods, publicConfig.registerDisabled])
+  }, [
+    autoRegister,
+    submitButText,
+    t,
+    config.registerMethods,
+    publicConfig.registerDisabled
+  ])
   // 为了 refresh input
   const AreaCodePhoneAccount = useCallback(
     (props: any) => {
@@ -418,7 +439,8 @@ const LoginWithVerifyCode = (props: any) => {
           areaCode={areaCode}
           onAreaCodeChange={(value: string) => {
             setAreaCode(value)
-            form.getFieldValue(['identify']) && form.validateFields(['identify'])
+            form.getFieldValue(['identify']) &&
+              form.validateFields(['identify'])
           }}
         />
       )
@@ -428,7 +450,10 @@ const LoginWithVerifyCode = (props: any) => {
 
   const [btnDisabled, setDisabled] = useState(true)
 
-  const formValuesChange = (changedValues: Record<string, any>, allValues: Record<string, any>) => {
+  const formValuesChange = (
+    changedValues: Record<string, any>,
+    allValues: Record<string, any>
+  ) => {
     if (changedValues?.identify && saveIdentify) {
       saveIdentify(LoginMethods.PhoneCode, changedValues?.identify)
     }
@@ -483,11 +508,15 @@ const LoginWithVerifyCode = (props: any) => {
       >
         <FormItemIdentify
           initialValue={
-            specifyDefaultLoginMethod === LoginMethods.PhoneCode ? _firstItemInitialValue : ''
+            specifyDefaultLoginMethod === LoginMethods.PhoneCode
+              ? _firstItemInitialValue
+              : ''
           }
           name="identify"
           className={
-            isOnlyInternationSms ? 'authing-g2-input-form remove-padding' : 'authing-g2-input-form'
+            isOnlyInternationSms
+              ? 'authing-g2-input-form remove-padding'
+              : 'authing-g2-input-form'
           }
           methods={methods}
           checkExist={!autoRegister}

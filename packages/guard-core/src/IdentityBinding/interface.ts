@@ -20,7 +20,9 @@ export interface IdentityBindingEvents extends IG2Events {
   onLoginError?: (errorMessages: any) => void
 }
 
-export interface GuardIdentityBindingProps extends IG2FCProps, IdentityBindingEvents {
+export interface GuardIdentityBindingProps
+  extends IG2FCProps,
+    IdentityBindingEvents {
   config?: Partial<IdentityBindingConfig>
 }
 
@@ -29,7 +31,9 @@ export interface GuardIdentityBindingInitData {
   source?: GuardModuleType
 }
 
-export interface GuardIdentityBindingViewProps extends GuardIdentityBindingProps, IG2FCViewProps {
+export interface GuardIdentityBindingViewProps
+  extends GuardIdentityBindingProps,
+    IG2FCViewProps {
   config: IdentityBindingConfig
   initData: GuardIdentityBindingInitData
 }

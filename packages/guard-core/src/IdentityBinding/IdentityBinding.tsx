@@ -26,7 +26,10 @@ import { fallbackLng, i18n } from '../_utils'
 
 import { useTranslation } from 'react-i18next'
 
-import { IdentityBindingBusinessAction, useIdentityBindingBusinessRequest } from './businessRequest'
+import {
+  IdentityBindingBusinessAction,
+  useIdentityBindingBusinessRequest
+} from './businessRequest'
 
 import { GuardIdentityBindingInitData } from './interface'
 
@@ -55,16 +58,23 @@ export const GuardIdentityBindingView: React.FC<{
 
   const publicConfig = useGuardPublicConfig()
 
-  const isInternationSms = publicConfig?.internationalSmsConfig?.enabled || false
+  const isInternationSms =
+    publicConfig?.internationalSmsConfig?.enabled || false
 
   const authClient = useGuardAuthClient()
   const bindType = skipAsk ? 'register' : 'bind'
   const phoneCodeRequest =
-    useIdentityBindingBusinessRequest(bindType)[IdentityBindingBusinessAction.PhoneCode]
+    useIdentityBindingBusinessRequest(bindType)[
+      IdentityBindingBusinessAction.PhoneCode
+    ]
   const emailCodeRequest =
-    useIdentityBindingBusinessRequest(bindType)[IdentityBindingBusinessAction.EmailCode]
+    useIdentityBindingBusinessRequest(bindType)[
+      IdentityBindingBusinessAction.EmailCode
+    ]
   const PasswordRequest =
-    useIdentityBindingBusinessRequest(bindType)[IdentityBindingBusinessAction.Password]
+    useIdentityBindingBusinessRequest(bindType)[
+      IdentityBindingBusinessAction.Password
+    ]
 
   const bindMethodsMap = {
     'phone-code': async (data: any) => {
@@ -123,7 +133,9 @@ export const GuardIdentityBindingView: React.FC<{
   const onBind = async (loginInfo: any) => {
     const { type, data } = loginInfo
 
-    const res = await bindMethodsMap[type as 'phone-code' | 'email-code' | 'password']?.(data)
+    const res = await bindMethodsMap[
+      type as 'phone-code' | 'email-code' | 'password'
+    ]?.(data)
 
     const { isFlowEnd } = res
 
@@ -143,16 +155,21 @@ export const GuardIdentityBindingView: React.FC<{
     () =>
       agreementEnabled
         ? config?.agreements?.filter(
-          agree =>
-            fallbackLng(i18n.language).find(lng => lng.includes(agree.lang)) &&
-              !!agree?.availableAt
-        ) ?? []
+            agree =>
+              fallbackLng(i18n.language).find(lng =>
+                lng.includes(agree.lang)
+              ) && !!agree?.availableAt
+          ) ?? []
         : [],
     [agreementEnabled, config?.agreements, i18n.language]
   )
 
   const passwordLoginMethods = useMemo<PasswordLoginMethods[]>(() => {
-    const loginMethodsBase = ['username-password', 'email-password', 'phone-password']
+    const loginMethodsBase = [
+      'username-password',
+      'email-password',
+      'phone-password'
+    ]
 
     // @ts-ignore
     return initData.methods.filter(method =>
@@ -213,7 +230,11 @@ export const GuardIdentityBindingView: React.FC<{
 
   const renderBack = useMemo(() => {
     if (initData.source === GuardModuleType.IDENTITY_BINDING_ASK)
-      return <BackCustom onBack={() => backModule?.()}>{/* {t('common.back')} */}</BackCustom>
+      return (
+        <BackCustom onBack={() => backModule?.()}>
+          {/* {t('common.back')} */}
+        </BackCustom>
+      )
 
     return <BackLogin />
   }, [backModule, initData.source])
@@ -228,19 +249,24 @@ export const GuardIdentityBindingView: React.FC<{
         </div>
         <div className="g2-view-identity-binding-content-title">
           <span>
-            {skipAsk ? t('common.identityBindingSkipAskTitle') : t('common.identityBindingTitle')}
+            {skipAsk
+              ? t('common.identityBindingSkipAskTitle')
+              : t('common.identityBindingTitle')}
           </span>
         </div>
         <div className="g2-view-identity-binding-content-desc">
           <span>
-            {skipAsk ? t('common.identityBindingSkipAskDesc') : t('common.identityBindingDesc')}
+            {skipAsk
+              ? t('common.identityBindingSkipAskDesc')
+              : t('common.identityBindingDesc')}
           </span>
         </div>
         <div className="g2-view-identity-binding-content-login">
           <Tabs className="g2-view-tabs" centered>
             {methods
               .filter(method => {
-                if (method.key === 'password') return passwordLoginMethods.length !== 0
+                if (method.key === 'password')
+                  return passwordLoginMethods.length !== 0
 
                 if (method.key === 'code') return codeLoginMethods.length !== 0
 

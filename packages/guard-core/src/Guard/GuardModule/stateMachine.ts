@@ -23,7 +23,10 @@ export interface StateMachineLog {
   dataSource: ModuleState
 }
 
-export type ChangeModuleEvent = (nextModule: GuardModuleType, initData?: any) => void
+export type ChangeModuleEvent = (
+  nextModule: GuardModuleType,
+  initData?: any
+) => void
 
 let guardStateMachine: GuardStateMachine
 
@@ -72,7 +75,11 @@ export class GuardStateMachine {
     const prevModuleData = this.moduleStateHistory.slice(1, 2)[0]
 
     if (this.isUseHistoryHijack()) {
-      globalWindow?.history.pushState(nextModule, '', globalWindow?.location.href)
+      globalWindow?.history.pushState(
+        nextModule,
+        '',
+        globalWindow?.location.href
+      )
     }
 
     // 快照history
@@ -105,7 +112,10 @@ export class GuardStateMachine {
     // TODO 请求
   }
 
-  historyPush = (data: ModuleState, actionType: ActionType = ActionType.ChangeModule) => {
+  historyPush = (
+    data: ModuleState,
+    actionType: ActionType = ActionType.ChangeModule
+  ) => {
     this.moduleStateHistory.unshift(data)
 
     this.stateMachineLog[this.order++] = {

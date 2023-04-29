@@ -117,7 +117,9 @@ export const BindMFASms: React.FC<BindMFASmsProps> = ({
       >
         <CustomFormItem.Phone
           className={
-            isInternationSms ? 'authing-g2-input-form remove-padding' : 'authing-g2-input-form'
+            isInternationSms
+              ? 'authing-g2-input-form remove-padding'
+              : 'authing-g2-input-form'
           }
           name="phone"
           form={form}
@@ -171,7 +173,11 @@ export const VerifyMFASms: React.FC<VerifyMFASmsProps> = ({
 
   const [sent, setSent] = useState<boolean>(false)
 
-  const { phoneNumber, countryCode } = parsePhone(isInternationSms, phone, areaCode)
+  const { phoneNumber, countryCode } = parsePhone(
+    isInternationSms,
+    phone,
+    areaCode
+  )
 
   const businessRequest = useMfaBusinessRequest()[MfaBusinessAction.VerifySms]
 
@@ -186,7 +192,9 @@ export const VerifyMFASms: React.FC<VerifyMFASmsProps> = ({
       phoneCountryCode: phoneCountryCode ? phoneCountryCode : countryCode
     }
 
-    const { isFlowEnd, data, onGuardHandling } = await businessRequest(requestData)
+    const { isFlowEnd, data, onGuardHandling } = await businessRequest(
+      requestData
+    )
 
     submitButtonRef.current?.onSpin(false)
 
@@ -202,8 +210,12 @@ export const VerifyMFASms: React.FC<VerifyMFASmsProps> = ({
     () =>
       sent
         ? `${t('login.verifyCodeSended')} ${
-          isInternationSms ? (phoneCountryCode ? phoneCountryCode : countryCode) : ''
-        } ${phoneDesensitization(phone)}`
+            isInternationSms
+              ? phoneCountryCode
+                ? phoneCountryCode
+                : countryCode
+              : ''
+          } ${phoneDesensitization(phone)}`
         : t('common.SmsMfaCheck'),
     [countryCode, isInternationSms, phone, phoneCountryCode, sent, t]
   )
@@ -249,7 +261,11 @@ export const VerifyMFASms: React.FC<VerifyMFASmsProps> = ({
         onFinishFailed={() => submitButtonRef.current.onError()}
         onValuesChange={onValuesChange}
       >
-        <VerifyCodeFormItem codeLength={codeLength} ruleKeyword={t('common.captchaCode') as string} style={{marginBottom: 16}}>
+        <VerifyCodeFormItem
+          codeLength={codeLength}
+          ruleKeyword={t('common.captchaCode') as string}
+          style={{ marginBottom: 16 }}
+        >
           <VerifyCodeInput length={codeLength} onFinish={onFinish} />
         </VerifyCodeFormItem>
 
@@ -282,7 +298,11 @@ export const MFASms: React.FC<{
 }> = ({
   mfaLogin,
   config,
-  initData: { mfaPhone: userPhone, mfaToken, mfaPhoneCountryCode: phoneCountryCode }
+  initData: {
+    mfaPhone: userPhone,
+    mfaToken,
+    mfaPhoneCountryCode: phoneCountryCode
+  }
 }) => {
   const [phone, setPhone] = useState(userPhone)
 
@@ -295,7 +315,9 @@ export const MFASms: React.FC<{
     publicConfig?.internationalSmsConfig?.defaultISOType || 'CN'
   )
 
-  const isInternationSms = Boolean(publicConfig?.internationalSmsConfig?.enabled)
+  const isInternationSms = Boolean(
+    publicConfig?.internationalSmsConfig?.enabled
+  )
   // todo 后续改 不用 phone 作为判断模式
   return (
     <>

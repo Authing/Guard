@@ -1,4 +1,3 @@
-
 import { createContext } from 'react'
 
 import { Guard } from '@authing/guard-shim-react18'

@@ -60,7 +60,11 @@ import { GuardLoginInitData } from './interface'
 
 import { GuardButton } from '../GuardButton'
 
-import { LoginMethods, QrCodeItem, VerifyLoginMethods } from '../Type/application'
+import {
+  LoginMethods,
+  QrCodeItem,
+  VerifyLoginMethods
+} from '../Type/application'
 
 import { useLoginMultiple } from './hooks/useLoginMultiple'
 
@@ -72,7 +76,8 @@ import { BackLogin } from '../Back'
 
 import { ImagePro } from '../ImagePro'
 
-const { useEffect, useLayoutEffect, useState, useRef, useMemo, useCallback } = React
+const { useEffect, useLayoutEffect, useState, useRef, useMemo, useCallback } =
+  React
 
 const inputWays = [
   LoginMethods.Password,
@@ -81,7 +86,11 @@ const inputWays = [
   LoginMethods.LDAP,
   LoginMethods.AuthingOtpPush
 ]
-const qrcodeWays = [LoginMethods.AppQr, LoginMethods.WxMinQr, LoginMethods.WechatMpQrcode]
+const qrcodeWays = [
+  LoginMethods.AppQr,
+  LoginMethods.WxMinQr,
+  LoginMethods.WechatMpQrcode
+]
 
 const useMethods = (config: any) => {
   let dlm = config?.defaultLoginMethod
@@ -134,7 +143,9 @@ const computedTabName = (str: string) => {
   return str
 }
 
-export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPage = false }) => {
+export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
+  isResetPage = false
+}) => {
   const { specifyDefaultLoginMethod } = useGuardInitData<GuardLoginInitData>()
 
   const config = useGuardFinallyConfig()
@@ -153,15 +164,22 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
 
   const { t } = useTranslation()
 
-  const [loginWay, setLoginWay] = useState(specifyDefaultLoginMethod || defaultMethod)
+  const [loginWay, setLoginWay] = useState(
+    specifyDefaultLoginMethod || defaultMethod
+  )
 
   useGuardView({
     currentTab: loginWay,
     changeTab: setLoginWay
   })
 
-  const { defaultQrWay, backfillData, multipleInstance, isMultipleAccount, referMultipleState } =
-    useLoginMultiple(setLoginWay)
+  const {
+    defaultQrWay,
+    backfillData,
+    multipleInstance,
+    isMultipleAccount,
+    referMultipleState
+  } = useLoginMultiple(setLoginWay)
 
   const [canLoop, setCanLoop] = useState(false) // 允许轮询
 
@@ -211,7 +229,9 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
   })
 
   const hiddenTab = useMemo(() => {
-    const scanLogins = ms ? ms.filter(method => qrcodeWays.includes(method)) : [] //取到扫码登录类型
+    const scanLogins = ms
+      ? ms.filter(method => qrcodeWays.includes(method))
+      : [] //取到扫码登录类型
     if (scanLogins.length > 1) {
       // 如果有两个以上的code 类型
       return false
@@ -236,9 +256,14 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
     if (defaultQrWay) {
       return defaultQrWay
     }
-    if ([LoginMethods.WechatMpQrcode, LoginMethods.WxMinQr].includes(defaultMethod)) {
+    if (
+      [LoginMethods.WechatMpQrcode, LoginMethods.WxMinQr].includes(
+        defaultMethod
+      )
+    ) {
       const id = qrcodeTabsSettings?.[defaultMethod as LoginMethods]?.find(
-        (i: { id: string; title: string; isDefault?: boolean | undefined }) => i.isDefault
+        (i: { id: string; title: string; isDefault?: boolean | undefined }) =>
+          i.isDefault
       )?.id
       return defaultMethod + id
     } else {
@@ -318,24 +343,28 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
     () =>
       agreementEnabled
         ? config?.agreements?.filter(
-          agree =>
-            fallbackLng(i18n.language).find(lng => lng.includes(agree.lang)) &&
+            agree =>
+              fallbackLng(i18n.language).find(lng =>
+                lng.includes(agree.lang)
+              ) &&
               (config?.autoRegister || !!agree?.availableAt)
-        ) ?? []
+          ) ?? []
         : [],
     [agreementEnabled, config?.autoRegister, config?.agreements, i18n.language]
   )
 
   const verifyLoginMethods = useMemo<VerifyLoginMethods[]>(
-    () => publicConfig?.verifyCodeTabConfig?.enabledLoginMethods ?? ['phone-code'],
+    () =>
+      publicConfig?.verifyCodeTabConfig?.enabledLoginMethods ?? ['phone-code'],
 
     [publicConfig?.verifyCodeTabConfig?.enabledLoginMethods]
   )
 
-  const [socialConnectionObjs, enterpriseConnectionObjs, isNoMethod] = useMethod({
-    config,
-    publicConfig
-  })
+  const [socialConnectionObjs, enterpriseConnectionObjs, isNoMethod] =
+    useMethod({
+      config,
+      publicConfig
+    })
 
   const noLoginMethods = !config?.loginMethods?.length
 
@@ -347,7 +376,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
       // 无表单登录方式，且不是手机端
       const document = getGuardDocument()
       // pc 下
-      const containerDOM = document.getElementsByClassName('g2-view-container')?.[0]
+      const containerDOM =
+        document.getElementsByClassName('g2-view-container')?.[0]
 
       if (containerDOM) {
         // @ts-ignore
@@ -366,7 +396,9 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
     const document = getGuardDocument()
 
     const containerDOM = document.getElementsByClassName('g2-view-header')?.[0]
-    const innerContainer = document.querySelector('.g2-view-login>.g2-view-container-inner')
+    const innerContainer = document.querySelector(
+      '.g2-view-login>.g2-view-container-inner'
+    )
     if (isPhoneMedia && noLoginMethods) {
       if (containerDOM) {
         containerDOM.classList.add('g2-view-header-mobile')
@@ -390,7 +422,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
     verifyCode: verifyCodeI18n,
     ad: adI18n,
     ldap: ldapI18n
-  } = publicConfig?.ssoPageComponentDisplay?.loginMethodsI18nDisplaySettings || {}
+  } = publicConfig?.ssoPageComponentDisplay?.loginMethodsI18nDisplaySettings ||
+  {}
 
   const PasswordTab = useMemo(
     () =>
@@ -486,7 +519,9 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
         <Tabs.TabPane
           key={LoginMethods.LDAP}
           tab={computedTabName(
-            ldapI18n?.tab?.i18n?.[i18n.language] || ldapI18n?.tab?.default || t('login.ldapLogin')
+            ldapI18n?.tab?.i18n?.[i18n.language] ||
+              ldapI18n?.tab?.default ||
+              t('login.ldapLogin')
           )}
         >
           <LoginWithLDAP
@@ -525,7 +560,9 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
         <Tabs.TabPane
           key={LoginMethods.AD}
           tab={computedTabName(
-            adI18n?.tab?.i18n?.[i18n.language] || adI18n?.tab?.default || t('login.adLogin')
+            adI18n?.tab?.i18n?.[i18n.language] ||
+              adI18n?.tab?.default ||
+              t('login.adLogin')
           )}
         >
           <LoginWithAD
@@ -559,7 +596,10 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
   const WxMiniQrTab = useCallback(
     (item: QrCodeItem) => {
       return (
-        <Tabs.TabPane key={LoginMethods.WxMinQr + item.id} tab={item.title ?? t('login.scanLogin')}>
+        <Tabs.TabPane
+          key={LoginMethods.WxMinQr + item.id}
+          tab={item.title ?? t('login.scanLogin')}
+        >
           <LoginWithWechatMiniQrcode
             id={item.id}
             multipleInstance={multipleInstance}
@@ -612,7 +652,10 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
   const AuthingOtpPushTab = useMemo(() => {
     return (
       ms?.includes(LoginMethods.AuthingOtpPush) && (
-        <Tabs.TabPane key={LoginMethods.AuthingOtpPush} tab={t('login.authingOtpPushLogin')}>
+        <Tabs.TabPane
+          key={LoginMethods.AuthingOtpPush}
+          tab={t('login.authingOtpPushLogin')}
+        >
           <LoginWithAuthingOtpPush
             onLoginSuccess={onLoginSuccess}
             multipleInstance={multipleInstance}
@@ -692,7 +735,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
       })
     })
 
-    const loginMethodsSort = publicConfig.qrCodeSortConfig?.loginMethodsSort || []
+    const loginMethodsSort =
+      publicConfig.qrCodeSortConfig?.loginMethodsSort || []
 
     const sortWithType = (loginMethodsSort || []).map(key => {
       return {
@@ -701,7 +745,9 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
       }
     })
 
-    const position = sortWithType?.findIndex(item => item.type === defaultMethod)
+    const position = sortWithType?.findIndex(
+      item => item.type === defaultMethod
+    )
 
     if (position > 0) {
       const item = loginMethodsSort.splice(position, 1)
@@ -721,11 +767,20 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
   ])
 
   const isScanModule = useMemo(() => {
-    return [LoginMethods.WechatMpQrcode, LoginMethods.WxMinQr, LoginMethods.AppQr].includes(loginWay)
+    return [
+      LoginMethods.WechatMpQrcode,
+      LoginMethods.WxMinQr,
+      LoginMethods.AppQr
+    ].includes(loginWay)
   }, [LoginMethods, loginWay])
 
   const tipComponent = useMemo(() => {
-    if ((!disableResetPwd && !isResetPage) || !disableRegister || (errorNumber >= 2 || accountLock)) {
+    if (
+      (!disableResetPwd && !isResetPage) ||
+      !disableRegister ||
+      errorNumber >= 2 ||
+      accountLock
+    ) {
       return (
         <Space className={'g2-tips-line'} align="center" size={24}>
           {!disableResetPwd && !isResetPage && (
@@ -767,32 +822,48 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
     }
 
     return null
-
-  }, [disableResetPwd, isResetPage, disableRegister, errorNumber, accountLock, t])
+  }, [
+    disableResetPwd,
+    isResetPage,
+    disableRegister,
+    errorNumber,
+    accountLock,
+    t
+  ])
 
   const SwitchLoginComponent = useMemo(() => {
-    return <div
-      className="switch-img"
-      onClick={() => {
-        message.destroy()
-        if (inputWays.includes(loginWay)) {
-          setLoginWay(firstQRcodeWay)
-        } else if (qrcodeWays.includes(loginWay)) {
-          setLoginWay(firstInputWay)
-        }
-      }}
-    >
-      {/* <div className="imgae-mask" /> */}
-      <IconFont
-        type="authing-qr-6"
-        className={`qrcode-switch-image ${inputNone}`}
-      />
-      <IconFont
-        type="authing-computer-6"
-        className={`qrcode-switch-image ${qrcodeNone}`}
-      />
-    </div>
-  }, [inputWays, loginWay, firstQRcodeWay, qrcodeNone, inputNone, firstInputWay, qrcodeWays])
+    return (
+      <div
+        className="switch-img"
+        onClick={() => {
+          message.destroy()
+          if (inputWays.includes(loginWay)) {
+            setLoginWay(firstQRcodeWay)
+          } else if (qrcodeWays.includes(loginWay)) {
+            setLoginWay(firstInputWay)
+          }
+        }}
+      >
+        {/* <div className="imgae-mask" /> */}
+        <IconFont
+          type="authing-qr-6"
+          className={`qrcode-switch-image ${inputNone}`}
+        />
+        <IconFont
+          type="authing-computer-6"
+          className={`qrcode-switch-image ${qrcodeNone}`}
+        />
+      </div>
+    )
+  }, [
+    inputWays,
+    loginWay,
+    firstQRcodeWay,
+    qrcodeNone,
+    inputNone,
+    firstInputWay,
+    qrcodeWays
+  ])
 
   return (
     <div className="g2-view-container g2-view-login">
@@ -811,8 +882,13 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
               )}
             </div>
             <div className="no-login-methods-view">
-              <IconFont type="authing-otp" style={{ width: 240, height: 160 }} />
-              <span className="no-login-methods-desc">{t('login.noLoginMethodsDesc')}</span>
+              <IconFont
+                type="authing-otp"
+                style={{ width: 240, height: 160 }}
+              />
+              <span className="no-login-methods-desc">
+                {t('login.noLoginMethodsDesc')}
+              </span>
             </div>
           </>
         ) : (
@@ -821,18 +897,22 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
             {!isMultipleAccount && renderInputWay && renderQrcodeWay && (
               <div className="g2-qrcode-switch">
                 {/* <div className="switch-text">{switchText}</div> */}
-                {isMobile() ? SwitchLoginComponent : <Tooltip
-                  placement="left"
-                  title={switchText}
-                  getPopupContainer={(node: any) => {
-                    if (node) {
-                      return node.parentElement
-                    }
-                    return document.body
-                  }}
-                >
-                  {SwitchLoginComponent}
-                </Tooltip>}
+                {isMobile() ? (
+                  SwitchLoginComponent
+                ) : (
+                  <Tooltip
+                    placement="left"
+                    title={switchText}
+                    getPopupContainer={(node: any) => {
+                      if (node) {
+                        return node.parentElement
+                      }
+                      return document.body
+                    }}
+                  >
+                    {SwitchLoginComponent}
+                  </Tooltip>
+                )}
 
                 {/* <Popover
                   placement="leftTop"
@@ -852,31 +932,40 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                 ></Popover> */}
               </div>
             )}
-            {!isScanModule && !isResetPage && <div className="g2-view-header">
-              <ImagePro width={56} height={56} className="icon" src={config?.logo as string} />
-              <div className="title">
-                {isMultipleAccount ? t('login.selectLoginAccount') : config?.title}
-              </div>
-              {!!publicConfig?.welcomeMessage && (
-                <div className="title-description">
-                  {publicConfig?.welcomeMessage[i18n.language]}
+            {!isScanModule && !isResetPage && (
+              <div className="g2-view-header">
+                <ImagePro
+                  width={56}
+                  height={56}
+                  className="icon"
+                  src={config?.logo as string}
+                />
+                <div className="title">
+                  {isMultipleAccount
+                    ? t('login.selectLoginAccount')
+                    : config?.title}
                 </div>
-              )}
-              {/* 提供头部打标签的功能 */}
-              {tags?.map?.((it, i) => (
-                // @ts-ignore
-                <Tag
-                  className="authing-header-tag"
-                  style={{
-                    color: it?.color,
-                    backgroundColor: it?.backgroundColor
-                  }}
-                  key={i}
-                >
-                  {it.name}
-                </Tag>
-              ))}
-            </div>}
+                {!!publicConfig?.welcomeMessage && (
+                  <div className="title-description">
+                    {publicConfig?.welcomeMessage[i18n.language]}
+                  </div>
+                )}
+                {/* 提供头部打标签的功能 */}
+                {tags?.map?.((it, i) => (
+                  // @ts-ignore
+                  <Tag
+                    className="authing-header-tag"
+                    style={{
+                      color: it?.color,
+                      backgroundColor: it?.backgroundColor
+                    }}
+                    key={i}
+                  >
+                    {it.name}
+                  </Tag>
+                ))}
+              </div>
+            )}
             {isMultipleAccount ? (
               <MultipleAccounts
                 multipleInstance={multipleInstance}
@@ -886,9 +975,13 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
             ) : (
               <div className="animation-box">
                 {renderInputWay && (
-                  <div className={inputNone }>
+                  <div className={inputNone}>
                     {!isResetPage ? (
-                      <div className={`g2-view-tabs ${hiddenNormalTabs && 'hidden'}`}>
+                      <div
+                        className={`g2-view-tabs ${
+                          hiddenNormalTabs && 'hidden'
+                        }`}
+                      >
                         <Tabs
                           destroyInactiveTabPane={true}
                           onChange={(k: any) => {
@@ -897,7 +990,12 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                             events?.onLoginTabChange?.(k)
                           }}
                           activeKey={loginWay}
-                          moreIcon={<IconFont type='authing-more-fill1' className='authing-tabs-more' />}
+                          moreIcon={
+                            <IconFont
+                              type="authing-more-fill1"
+                              className="authing-tabs-more"
+                            />
+                          }
                           centered
                         >
                           {GeneralLoginComponent}
@@ -910,12 +1008,22 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
                   </div>
                 )}
                 {renderQrcodeWay && isScanModule && (
-                  <div className={`g2-view-tabs ${qrcodeNone} ${hiddenTab && 'hidden'}`} style={{ paddingTop: 28 }}>
+                  <div
+                    className={`g2-view-tabs ${qrcodeNone} ${
+                      hiddenTab && 'hidden'
+                    }`}
+                    style={{ paddingTop: 28 }}
+                  >
                     <Tabs
                       centered
                       destroyInactiveTabPane={true}
                       defaultActiveKey={defaultQrCodeWay}
-                      moreIcon={<IconFont type='authing-more-fill1' className='authing-tabs-more' />}
+                      moreIcon={
+                        <IconFont
+                          type="authing-more-fill1"
+                          className="authing-tabs-more"
+                        />
+                      }
                       onChange={(k: any) => {
                         message.destroy()
                         events?.onLoginTabChange?.(k)
@@ -942,7 +1050,10 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({ isResetPag
           </>
         )}
       </div>
-      <ChangeLanguage langRange={config?.langRange} onLangChange={events?.onLangChange} />
+      <ChangeLanguage
+        langRange={config?.langRange}
+        onLangChange={events?.onLangChange}
+      />
     </div>
   )
 }

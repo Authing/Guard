@@ -11,7 +11,9 @@ export interface IdentityBindingAskEvents extends IG2Events {
   onCreateError?: (errorMessages: any) => void
 }
 
-export interface GuardIdentityBindingAskProps extends IG2FCProps, IdentityBindingAskEvents {
+export interface GuardIdentityBindingAskProps
+  extends IG2FCProps,
+    IdentityBindingAskEvents {
   config?: Partial<IdentityBindingAskConfig>
   initData?: any
 }

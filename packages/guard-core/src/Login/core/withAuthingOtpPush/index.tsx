@@ -134,7 +134,13 @@ export function LoginWithAuthingOtpPush(props: LoginWithAuthingOtpPushProps) {
     return () => {
       clearTimer()
     }
-  }, [pushCodeId, checkPushCodeStatus, getUserInfo, onLoginSuccess, onCancelLogin])
+  }, [
+    pushCodeId,
+    checkPushCodeStatus,
+    getUserInfo,
+    onLoginSuccess,
+    onCancelLogin
+  ])
 
   const loginStatusMap = {
     before: (

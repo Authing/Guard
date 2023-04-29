@@ -41,18 +41,18 @@ export const VerifyCodeInput: React.FC<VerifyCodeInputProps> = ({
     const currentVal = verifyCode[index]
 
     switch (evt.keyCode) {
-    case 8:
-      if (!currentVal && inputRef.current[index - 1]) {
-        handleChange('', index - 1)
-        inputRef.current[index - 1].focus()
-      }
-      break
+      case 8:
+        if (!currentVal && inputRef.current[index - 1]) {
+          handleChange('', index - 1)
+          inputRef.current[index - 1].focus()
+        }
+        break
 
-    case 13:
-      onEnter?.()
-      break
-    default:
-      break
+      case 13:
+        onEnter?.()
+        break
+      default:
+        break
     }
   }
 

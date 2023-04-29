@@ -58,7 +58,9 @@ export const GuardComponent = memo((props: GuardProps) => {
 
   return (
     <div ref={ref}>
-      {guardWindowMount && <GuardCore guardProps={props} initState={initState} />}
+      {guardWindowMount && (
+        <GuardCore guardProps={props} initState={initState} />
+      )}
     </div>
   )
 }, propsAreEqual)

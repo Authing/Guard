@@ -59,11 +59,17 @@ export const GuardSelectAccountView = () => {
       const title = name || nickname || username || undefined
       const description = phone || email
       return (
-        <li className="g2-select-account__li" key={id} onClick={() => onClick(user)}>
+        <li
+          className="g2-select-account__li"
+          key={id}
+          onClick={() => onClick(user)}
+        >
           <img className="g2-select-account__avatar" alt="" src={photo || ''} />
           <div className="g2-select-account__body">
             {title && <span className="g2-select-account__title">{title}</span>}
-            <span className={title ? 'g2-multiple__desc' : 'g2-multiple__title'}>
+            <span
+              className={title ? 'g2-multiple__desc' : 'g2-multiple__title'}
+            >
               {description}
             </span>
           </div>

@@ -48,7 +48,10 @@ const methodTitleMapping: Record<
   }
 }
 
-export const MFAMethods: React.FC<MFAMethodsProps> = ({ method, onChangeMethod }) => {
+export const MFAMethods: React.FC<MFAMethodsProps> = ({
+  method,
+  onChangeMethod
+}) => {
   const [currentMethod, setCurrentMethod] = useState(method)
   const { t } = useTranslation()
 
@@ -57,7 +60,9 @@ export const MFAMethods: React.FC<MFAMethodsProps> = ({ method, onChangeMethod }
   const otherMethods = useMemo(
     () =>
       applicationMfa
-        .filter(item => Object.keys(methodTitleMapping).includes(item.mfaPolicy))
+        .filter(item =>
+          Object.keys(methodTitleMapping).includes(item.mfaPolicy)
+        )
         .filter(item => item.mfaPolicy !== currentMethod)
         .filter(item => {
           if (item.mfaPolicy === MFAType.FACE) {
@@ -90,7 +95,9 @@ export const MFAMethods: React.FC<MFAMethodsProps> = ({ method, onChangeMethod }
       {otherMethods.length !== 0 && (
         <>
           <div className="g2-mfa-method">
-            <div className="g2-mfa-method-title">{t('login.otherVerifyWay')}</div>
+            <div className="g2-mfa-method-title">
+              {t('login.otherVerifyWay')}
+            </div>
             {otherMethods}
           </div>
         </>

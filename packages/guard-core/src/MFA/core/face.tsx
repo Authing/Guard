@@ -82,7 +82,8 @@ export const MFAFace = (props: any) => {
     if (faceState !== 'identifying') {
       return // 不存在 video dom，不要去尝试了
     }
-    const devicesContext = navigator.mediaDevices.getUserMedia(devicesConstraints)
+    const devicesContext =
+      navigator.mediaDevices.getUserMedia(devicesConstraints)
     devicesContext
       .then(stream => {
         videoRef.current!.srcObject = stream
@@ -283,7 +284,9 @@ export const MFAFace = (props: any) => {
       {faceState === 'ready' || mfaBackContext?.mfaBackState === 'login' ? (
         <>
           <p className="authing-g2-mfa-tips">
-            {props.initData?.faceMfaEnabled ? t('common.faceCheck') : t('common.faceText2')}
+            {props.initData?.faceMfaEnabled
+              ? t('common.faceCheck')
+              : t('common.faceText2')}
           </p>
           <ImagePro
             className="g2-mfa-face-image"
@@ -300,7 +303,8 @@ export const MFAFace = (props: any) => {
               // TODO 之后添加人脸识别插件支持 减小包体积
               if (navigator.mediaDevices) {
                 setFaceState('identifying')
-                mfaBackContext?.setMfaBackState && mfaBackContext.setMfaBackState('check')
+                mfaBackContext?.setMfaBackState &&
+                  mfaBackContext.setMfaBackState('check')
                 autoShoot()
               } else {
                 message.error(t('login.mediaDevicesSupport'))
@@ -318,7 +322,9 @@ export const MFAFace = (props: any) => {
         className="g2-mfa-face-identifying"
         style={{
           display:
-            faceState !== 'ready' && mfaBackContext?.mfaBackState !== 'login' ? 'flex' : 'none'
+            faceState !== 'ready' && mfaBackContext?.mfaBackState !== 'login'
+              ? 'flex'
+              : 'none'
         }}
       >
         <video

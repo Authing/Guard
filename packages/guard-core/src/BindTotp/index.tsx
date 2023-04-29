@@ -63,7 +63,9 @@ export const GuardBindTotpView: React.FC = () => {
 
   const [user, setUser] = useState<User>()
 
-  const [bindTotpType, setBindTotpType] = useState<BindTotpType>(BindTotpType.SECURITY_CODE)
+  const [bindTotpType, setBindTotpType] = useState<BindTotpType>(
+    BindTotpType.SECURITY_CODE
+  )
 
   const authClient = useGuardAuthClient()
 
@@ -79,7 +81,11 @@ export const GuardBindTotpView: React.FC = () => {
     }
 
     try {
-      const { code, message: msg } = await get<any>('/api/v2/mfa/authenticator', query, config)
+      const { code, message: msg } = await get<any>(
+        '/api/v2/mfa/authenticator',
+        query,
+        config
+      )
       if (code === ErrorCode.LOGIN_INVALID) {
         message.error(msg)
         changeModule?.(GuardModuleType.LOGIN, {})
@@ -129,7 +135,9 @@ export const GuardBindTotpView: React.FC = () => {
     fetchBindInfo()
   }, [fetchBindInfo])
 
-  const renderContent = useMemo<Record<BindTotpType, (props: any) => React.ReactNode>>(() => {
+  const renderContent = useMemo<
+    Record<BindTotpType, (props: any) => React.ReactNode>
+  >(() => {
     return {
       [BindTotpType.SECURITY_CODE]: props => <SecurityCode {...props} />,
       [BindTotpType.BIND_SUCCESS]: props => <BindSuccess {...props} />
@@ -150,13 +158,17 @@ export const GuardBindTotpView: React.FC = () => {
   return (
     <>
       {bindInfo.loading ? (
-        <div className="g2-loading-container"><Spin /></div>
+        <div className="g2-loading-container">
+          <Spin />
+        </div>
       ) : (
         <div className="g2-view-container g2-bind-totp">
           {renderBack}
           <div className="g2-mfa-content g2-mfa-bindTotp">
             {bindInfo.loading ? (
-              <div className="g2-loading-container"><ShieldSpin /></div>
+              <div className="g2-loading-container">
+                <ShieldSpin />
+              </div>
             ) : (
               renderContent[bindTotpType]({
                 mfaToken: initData.mfaToken,

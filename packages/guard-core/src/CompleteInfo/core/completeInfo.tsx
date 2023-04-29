@@ -78,7 +78,9 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
 
   const isInternationSms = config?.internationalSmsConfig?.enabled || false
 
-  const [areaCode, setAreaCode] = useState(config?.internationalSmsConfig?.defaultISOType || 'CN')
+  const [areaCode, setAreaCode] = useState(
+    config?.internationalSmsConfig?.defaultISOType || 'CN'
+  )
 
   const { get, post } = useGuardHttp()
 
@@ -142,18 +144,31 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
     },
     [areaCode, form, isInternationSms, t]
   )
-  const baseControlMap: Record<string, (props?: any) => React.ReactNode | undefined> = useMemo(
+  const baseControlMap: Record<
+    string,
+    (props?: any) => React.ReactNode | undefined
+  > = useMemo(
     () => ({
       gender: props => (
         <Select
           key={props.key}
           className="authing-g2-select"
-          suffixIcon={<IconFont type='authing-arrow-down-s-line' className='authing-select-down-arrow' />}
+          suffixIcon={
+            <IconFont
+              type="authing-arrow-down-s-line"
+              className="authing-select-down-arrow"
+            />
+          }
           options={[
             { label: i18n.t('common.man'), value: 'M' },
             { label: i18n.t('common.female'), value: 'F' }
           ]}
-          menuItemSelectedIcon={<IconFont type='authing-check-fill' style={{fontSize: 16, color: '#4E5969'}} />}
+          menuItemSelectedIcon={
+            <IconFont
+              type="authing-check-fill"
+              style={{ fontSize: 16, color: '#4E5969' }}
+            />
+          }
         />
       ),
       country: props => (
@@ -161,18 +176,31 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
           key={props.key}
           className="authing-g2-select"
           options={countryList}
-          suffixIcon={<IconFont type='authing-arrow-down-s-line' className='authing-select-down-arrow' />}
+          suffixIcon={
+            <IconFont
+              type="authing-arrow-down-s-line"
+              className="authing-select-down-arrow"
+            />
+          }
           showSearch
           filterOption={filterOption}
-          menuItemSelectedIcon={<IconFont type='authing-check-fill' style={{fontSize: 16, color: '#4E5969'}} />}
+          menuItemSelectedIcon={
+            <IconFont
+              type="authing-check-fill"
+              style={{ fontSize: 16, color: '#4E5969' }}
+            />
+          }
         />
       ),
       image: () => <UploadImage />,
       number: props => (
         <InputNumber
-          key={props.key} name={props.key} style={{ width: '100%' }}
+          key={props.key}
+          name={props.key}
+          style={{ width: '100%' }}
           showType="normal"
-          className="authing-g2-input" />
+          className="authing-g2-input"
+        />
       ),
       date: props => (
         <MomentPicker
@@ -194,34 +222,64 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
         <Select
           key={props.key}
           className="authing-g2-select"
-          suffixIcon={<IconFont type='authing-arrow-down-s-line' className='authing-select-down-arrow' />}
+          suffixIcon={
+            <IconFont
+              type="authing-arrow-down-s-line"
+              className="authing-select-down-arrow"
+            />
+          }
           showSearch
           options={props.options}
           filterOption={filterOption}
-          menuItemSelectedIcon={<IconFont type='authing-check-fill' style={{fontSize: 16, color: '#4E5969'}} />}
+          menuItemSelectedIcon={
+            <IconFont
+              type="authing-check-fill"
+              style={{ fontSize: 16, color: '#4E5969' }}
+            />
+          }
         />
       ),
       dropdown: (props: any) => (
         <Select
           key={props.key}
           className="authing-g2-select"
-          suffixIcon={<IconFont type='authing-arrow-down-s-line' className='authing-select-down-arrow' />}
+          suffixIcon={
+            <IconFont
+              type="authing-arrow-down-s-line"
+              className="authing-select-down-arrow"
+            />
+          }
           showSearch
           options={props.options}
           filterOption={filterOption}
-          menuItemSelectedIcon={<IconFont type='authing-check-fill' style={{fontSize: 16, color: '#4E5969'}} />}
+          menuItemSelectedIcon={
+            <IconFont
+              type="authing-check-fill"
+              style={{ fontSize: 16, color: '#4E5969' }}
+            />
+          }
         />
       ),
       boolean: props => (
         <Select
           key={props.key}
           className="authing-g2-select"
-          suffixIcon={<IconFont type='authing-arrow-down-s-line' className='authing-select-down-arrow' />}
+          suffixIcon={
+            <IconFont
+              type="authing-arrow-down-s-line"
+              className="authing-select-down-arrow"
+            />
+          }
           options={[
             { label: i18n.t('common.yes'), value: true as any },
             { label: i18n.t('common.no'), value: false as any }
           ]}
-          menuItemSelectedIcon={<IconFont type='authing-check-fill' style={{fontSize: 16, color: '#4E5969'}} />}
+          menuItemSelectedIcon={
+            <IconFont
+              type="authing-check-fill"
+              style={{ fontSize: 16, color: '#4E5969' }}
+            />
+          }
         />
       ),
       string: props => (
@@ -245,7 +303,10 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
     }),
     [countryList]
   )
-  const internalControlMap: Record<string, (props: any) => React.ReactNode | undefined> = useMemo(
+  const internalControlMap: Record<
+    string,
+    (props: any) => React.ReactNode | undefined
+  > = useMemo(
     () => ({
       username: (props: any) => (
         <CustomFormItem.UserName
@@ -272,7 +333,9 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
           <CustomFormItem.Phone
             validateFirst={true}
             className={
-              isInternationSms ? 'authing-g2-input-form remove-padding' : 'authing-g2-input-form'
+              isInternationSms
+                ? 'authing-g2-input-form remove-padding'
+                : 'authing-g2-input-form'
             }
             name="phone"
             key="internal-phone:phone"
@@ -281,16 +344,18 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
             checkRepeat={true}
             areaCode={areaCode}
           >
-            <PhoneAccount
-              name="phone"
-            />
+            <PhoneAccount name="phone" />
           </CustomFormItem.Phone>
           <CommonFormItem
             validateTrigger={['onBlur', 'onChange']}
             className="authing-g2-input-form"
             name="phoneCode"
             key="internal-phone:code"
-            rules={props.required ? fieldRequiredRule(t('common.captchaCode')) : undefined}
+            rules={
+              props.required
+                ? fieldRequiredRule(t('common.captchaCode'))
+                : undefined
+            }
           >
             <SendCodeByPhone
               name="phoneCode"
@@ -299,9 +364,11 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
               className="authing-g2-input g2-send-code-input"
               autoComplete="one-time-code"
               size="large"
-              placeholder={t('common.inputFourVerifyCode', {
-                length: verifyCodeLength
-              }) as string}
+              placeholder={
+                t('common.inputFourVerifyCode', {
+                  length: verifyCodeLength
+                }) as string
+              }
               scene={SceneType.SCENE_TYPE_COMPLETE_PHONE}
               maxLength={verifyCodeLength}
               fieldName="phone"
@@ -335,16 +402,22 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
             className="authing-g2-input-form"
             name="emailCode"
             key="internal email:code1432"
-            rules={props.required ? fieldRequiredRule(t('common.captchaCode')) : undefined}
+            rules={
+              props.required
+                ? fieldRequiredRule(t('common.captchaCode'))
+                : undefined
+            }
           >
             <SendCodeByEmail
               name="emailCode"
               className="authing-g2-input g2-send-code-input"
               autoComplete="one-time-code"
               size="large"
-              placeholder={t('common.inputFourVerifyCode', {
-                length: verifyCodeLength
-              }) as string}
+              placeholder={
+                t('common.inputFourVerifyCode', {
+                  length: verifyCodeLength
+                }) as string
+              }
               maxLength={verifyCodeLength}
               data={''}
               scene={EmailScene.INFORMATION_COMPLETION_VERIFY_CODE}
@@ -475,7 +548,9 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
             })
           )
         }
-        return userFormItem(<Input type="text" className="authing-g2-input" autoComplete="off" />)
+        return userFormItem(
+          <Input type="text" className="authing-g2-input" autoComplete="off" />
+        )
       }
     },
     [baseControlMap, generateRules, getMetaDateLabel, internalControlMap]
@@ -506,7 +581,11 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
           // TODO 默认这里手机号与邮箱 都是有验证码的
           if (key === 'phone') {
             if (isInternationSms) {
-              const { countryCode } = parsePhone(isInternationSms, values[key], areaCode)
+              const { countryCode } = parsePhone(
+                isInternationSms,
+                values[key],
+                areaCode
+              )
               return {
                 ...baseData,
                 code: values.phoneCode,
@@ -524,9 +603,12 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
         // 对特殊字段提前进行 precheck 不然直接调用注册接口失败也会导致上一步验证码失效
         // 用户名 check
         if (fieldKeys.includes('username')) {
-          const { data: checkResult, code: checkCode } = await get('/api/v2/users/is-user-exists', {
-            username: values.username
-          })
+          const { data: checkResult, code: checkCode } = await get(
+            '/api/v2/users/is-user-exists',
+            {
+              username: values.username
+            }
+          )
           // checkResult 为 true 时 代表用户名已存在 直接报message 并且不调用注册接口
           if (checkCode === 200 && checkResult) {
             message.error(t('common.userNameIsExists'))
@@ -540,7 +622,11 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
             phoneCode: values.phoneCode
           }
           if (isInternationSms) {
-            const { countryCode } = parsePhone(isInternationSms, values.phone, areaCode)
+            const { countryCode } = parsePhone(
+              isInternationSms,
+              values.phone,
+              areaCode
+            )
             options.phoneCountryCode = countryCode
           }
           const {
@@ -580,7 +666,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
 
   const [requiredNames, setRequiredNames] = useState<string[]>([])
 
-  useEffect(()=>{
+  useEffect(() => {
     let names: string[] = []
     metaData.forEach(item => {
       if (item.required) {
@@ -592,7 +678,10 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
 
   const [btnDisabled, setDisabled] = useState<boolean>(true)
 
-  const onValuesChange = (_: Record<string, any>, allValues: Record<string, any>) => {
+  const onValuesChange = (
+    _: Record<string, any>,
+    allValues: Record<string, any>
+  ) => {
     setDisabled(isDisabled(allValues, requiredNames))
   }
 
@@ -610,9 +699,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
       onValuesChange={onValuesChange}
       className="authing-g2-completeInfo-form authing-g2-form-required-item-icon-after"
     >
-      <div className='authing-g2-completeInfo-form-content'>
-        {formFieldsV2}
-      </div>
+      <div className="authing-g2-completeInfo-form-content">{formFieldsV2}</div>
 
       <Form.Item className="authing-g2-sumbit-form">
         <SubmitButton

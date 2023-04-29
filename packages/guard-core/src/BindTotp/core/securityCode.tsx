@@ -146,7 +146,12 @@ export const SecurityCode: React.FC<SecurityCodeProps> = ({
           name="saftyCode"
           ruleKeyword={t('user.numberSafteyCode') as string}
         >
-          <VerifyCodeInput length={6} showDivider={false} gutter={'1px'} onFinish={bindTotp} />
+          <VerifyCodeInput
+            length={6}
+            showDivider={false}
+            gutter={'1px'}
+            onFinish={bindTotp}
+          />
         </VerifyCodeFormItem>
 
         <SubmitButton

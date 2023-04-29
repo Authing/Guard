@@ -56,7 +56,8 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
   const phoneRegex = useGuardPhoneRegex()
 
   const checkInternationalSms =
-    publicConfig.internationalSmsConfig?.enabled && currentMethod === 'phone-code'
+    publicConfig.internationalSmsConfig?.enabled &&
+    currentMethod === 'phone-code'
 
   const methodContent = useMemo(() => {
     if (currentMethod === 'email-code')
@@ -84,7 +85,11 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
   ) => {
     let checkValue = value
     if (currentMethod === 'phone-code' && checkInternationalSms) {
-      const { phoneNumber } = parsePhone(checkInternationalSms, checkValue, areaCode)
+      const { phoneNumber } = parsePhone(
+        checkInternationalSms,
+        checkValue,
+        areaCode
+      )
       checkValue = phoneNumber
     }
     get<boolean>('/api/v2/users/find', {
@@ -93,10 +98,14 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
       type: FindMethodConversion[currentMethod]
     }).then(({ data }) => {
       if (checkExist) {
-        Boolean(data) ? resolve(true) : reject(methodContent.checkExistErrorMessage)
+        Boolean(data)
+          ? resolve(true)
+          : reject(methodContent.checkExistErrorMessage)
       }
       if (checkRepeat) {
-        Boolean(data) ? reject(methodContent.checkRepeatErrorMessage) : resolve(true)
+        Boolean(data)
+          ? reject(methodContent.checkRepeatErrorMessage)
+          : resolve(true)
       }
     })
   }
@@ -108,7 +117,11 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
       return {
         validateTrigger: 'onBlur',
         validator: async (_, value) => {
-          if (!value || phone(value, { country: areaCode }).isValid || phone(value).isValid)
+          if (
+            !value ||
+            phone(value, { country: areaCode }).isValid ||
+            phone(value).isValid
+          )
             return Promise.resolve()
           return Promise.reject(t('common.i18nCheckErrorMessage'))
         }
@@ -120,7 +133,13 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
       pattern: methodContent.pattern,
       message: methodContent.formatErrorMessage
     }
-  }, [areaCode, checkInternationalSms, methodContent.formatErrorMessage, methodContent.pattern, t])
+  }, [
+    areaCode,
+    checkInternationalSms,
+    methodContent.formatErrorMessage,
+    methodContent.pattern,
+    t
+  ])
 
   const rules = useMemo<Rule[]>(() => {
     // 如果不是必填就不校验
@@ -160,25 +179,33 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
       )
 
     switch (currentMethod) {
-    case 'phone-code':
-      return (
-        <CustomFormItem.Phone
-          {...formItemProps}
-          areaCode={areaCode}
-          checkRepeat={checkRepeat}
-          checkExist={checkExist}
-        />
-      )
-    case 'email-code':
-      return (
-        <CustomFormItem.Email
-          {...formItemProps}
-          checkRepeat={checkRepeat}
-          checkExist={checkExist}
-        />
-      )
+      case 'phone-code':
+        return (
+          <CustomFormItem.Phone
+            {...formItemProps}
+            areaCode={areaCode}
+            checkRepeat={checkRepeat}
+            checkExist={checkExist}
+          />
+        )
+      case 'email-code':
+        return (
+          <CustomFormItem.Email
+            {...formItemProps}
+            checkRepeat={checkRepeat}
+            checkExist={checkExist}
+          />
+        )
     }
-  }, [areaCode, checkExist, checkRepeat, currentMethod, formItemProps, methods.length, rules])
+  }, [
+    areaCode,
+    checkExist,
+    checkRepeat,
+    currentMethod,
+    formItemProps,
+    methods.length,
+    rules
+  ])
 
   return <>{renderTemplate}</>
 }

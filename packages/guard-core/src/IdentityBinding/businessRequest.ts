@@ -63,7 +63,9 @@ export const Password = async (params: PasswordParams) => {
   })
 }
 
-export const useIdentityBindingBusinessRequest = (type: 'register' | 'bind' = 'bind') => {
+export const useIdentityBindingBusinessRequest = (
+  type: 'register' | 'bind' = 'bind'
+) => {
   const { authFlow } = useGuardHttp()
 
   const request = {

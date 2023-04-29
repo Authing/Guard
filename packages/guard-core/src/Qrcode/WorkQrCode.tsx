@@ -59,7 +59,10 @@ interface WorkQrCodeProps extends Omit<UiQrProps, 'description' | 'status'> {
 
 const { forwardRef, useCallback, useImperativeHandle, useMemo } = React
 
-const WorkQrCodeComponent: ForwardRefRenderFunction<any, WorkQrCodeProps> = (props, ref) => {
+const WorkQrCodeComponent: ForwardRefRenderFunction<any, WorkQrCodeProps> = (
+  props,
+  ref
+) => {
   const {
     scene,
     descriptions,
@@ -70,7 +73,8 @@ const WorkQrCodeComponent: ForwardRefRenderFunction<any, WorkQrCodeProps> = (pro
     ...rest
   } = props
 
-  const { context, customData, withCustomData, extIdpConnId } = qrCodeScanOptions
+  const { context, customData, withCustomData, extIdpConnId } =
+    qrCodeScanOptions
 
   const { get, post } = useGuardHttpClient()
 
@@ -169,13 +173,13 @@ const WorkQrCodeComponent: ForwardRefRenderFunction<any, WorkQrCodeProps> = (pro
    */
   const processDefaultMaskClick = (status: CodeStatus) => {
     switch (status) {
-    case 'cancel':
-    case 'expired':
-    case 'error':
-      referQrCode()
-      break
-    default:
-      break
+      case 'cancel':
+      case 'expired':
+      case 'error':
+        referQrCode()
+        break
+      default:
+        break
     }
   }
 

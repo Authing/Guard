@@ -16,7 +16,10 @@ import {
   GuardRegisterCompletePasswordView
 } from '../../ChangePassword'
 
-import { GuardLoginCompleteInfoView, GuardRegisterCompleteInfoView } from '../../CompleteInfo'
+import {
+  GuardLoginCompleteInfoView,
+  GuardRegisterCompleteInfoView
+} from '../../CompleteInfo'
 
 import { GuardDownloadATView } from '../../DownloadAuthenticator'
 
@@ -110,14 +113,21 @@ export const RenderModule: React.FC<{
 
   const { isPhoneMedia } = useMediaSize()
 
-  const ComponentsMapping: Record<GuardModuleType, (key: string) => React.ReactNode> = {
+  const ComponentsMapping: Record<
+    GuardModuleType,
+    (key: string) => React.ReactNode
+  > = {
     // Error
     [GuardModuleType.ERROR]: (key: string) => <GuardErrorView key={key} />,
     // Login
     [GuardModuleType.LOGIN]: (key: string) => <GuardLoginView key={key} />,
-    [GuardModuleType.RESET_ACCOUNT_NAME]: (key: string) => <GuardLoginView key={key} isResetPage />,
+    [GuardModuleType.RESET_ACCOUNT_NAME]: (key: string) => (
+      <GuardLoginView key={key} isResetPage />
+    ),
     // 身份源绑定
-    [GuardModuleType.IDENTITY_BINDING]: (key: string) => <GuardIdentityBindingView key={key} />,
+    [GuardModuleType.IDENTITY_BINDING]: (key: string) => (
+      <GuardIdentityBindingView key={key} />
+    ),
     // 身份源绑定 跳过询问页面
     [GuardModuleType.IDENTITY_BINDING_NO_ASK]: (key: string) => (
       <GuardIdentityBindingView key={key} skipAsk={true} />
@@ -129,11 +139,17 @@ export const RenderModule: React.FC<{
     // MFA
     [GuardModuleType.MFA]: (key: string) => <GuardMFAView key={key} />,
     // 注册
-    [GuardModuleType.REGISTER]: (key: string) => <GuardRegisterView key={key} />,
+    [GuardModuleType.REGISTER]: (key: string) => (
+      <GuardRegisterView key={key} />
+    ),
     // 下载 Authenticator
-    [GuardModuleType.DOWNLOAD_AT]: (key: string) => <GuardDownloadATView key={key} />,
+    [GuardModuleType.DOWNLOAD_AT]: (key: string) => (
+      <GuardDownloadATView key={key} />
+    ),
     // 忘记密码 -> 重置密码
-    [GuardModuleType.FORGET_PWD]: (key: string) => <GuardForgetPassword key={key} />,
+    [GuardModuleType.FORGET_PWD]: (key: string) => (
+      <GuardForgetPassword key={key} />
+    ),
     // 首次登录修改密码
     [GuardModuleType.FIRST_LOGIN_PASSWORD]: (key: string) => (
       <GuardFirstLoginPasswordResetView key={key} />
@@ -147,13 +163,21 @@ export const RenderModule: React.FC<{
       <GuardForcedPasswordResetView key={key} />
     ),
     // 绑定 TOTP
-    [GuardModuleType.BIND_TOTP]: (key: string) => <GuardBindTotpView key={key} />,
+    [GuardModuleType.BIND_TOTP]: (key: string) => (
+      <GuardBindTotpView key={key} />
+    ),
     // 问题反馈
-    [GuardModuleType.ANY_QUESTIONS]: (key: string) => <GuardNeedHelpView key={key} />,
+    [GuardModuleType.ANY_QUESTIONS]: (key: string) => (
+      <GuardNeedHelpView key={key} />
+    ),
     // MFA 恢复码
-    [GuardModuleType.RECOVERY_CODE]: (key: string) => <GuardRecoveryCodeView key={key} />,
+    [GuardModuleType.RECOVERY_CODE]: (key: string) => (
+      <GuardRecoveryCodeView key={key} />
+    ),
     // 提交成功
-    [GuardModuleType.SUBMIT_SUCCESS]: (key: string) => <GuardSubmitSuccessView key={key} />,
+    [GuardModuleType.SUBMIT_SUCCESS]: (key: string) => (
+      <GuardSubmitSuccessView key={key} />
+    ),
     // 注册信息补全
     [GuardModuleType.REGISTER_COMPLETE_INFO]: (key: string) => (
       <GuardRegisterCompleteInfoView key={key} />
@@ -167,11 +191,21 @@ export const RenderModule: React.FC<{
       <GuardRegisterCompletePasswordView key={key} />
     ),
     // 自助解锁
-    [GuardModuleType.SELF_UNLOCK]: (key: string) => <GuardUnlockView key={key} />,
-    [GuardModuleType.UNSAFE_PASSWORD_RESET]: key => <GuardPasswordNotSafeResetView key={key} />,
-    [GuardModuleType.FLOW_SELECT_ACCOUNT]: key => <GuardSelectAccountView key={key} />,
-    [GuardModuleType.TENANT_PORTAL]: key => <GuardTenantPortalSelectView key={key} />,
-    [GuardModuleType.New_SUBMIT_SUCCESS]: key => <GuardNewSubmitSuccessView key={key} />
+    [GuardModuleType.SELF_UNLOCK]: (key: string) => (
+      <GuardUnlockView key={key} />
+    ),
+    [GuardModuleType.UNSAFE_PASSWORD_RESET]: key => (
+      <GuardPasswordNotSafeResetView key={key} />
+    ),
+    [GuardModuleType.FLOW_SELECT_ACCOUNT]: key => (
+      <GuardSelectAccountView key={key} />
+    ),
+    [GuardModuleType.TENANT_PORTAL]: key => (
+      <GuardTenantPortalSelectView key={key} />
+    ),
+    [GuardModuleType.New_SUBMIT_SUCCESS]: key => (
+      <GuardNewSubmitSuccessView key={key} />
+    )
   }
 
   // 初始化 请求拦截器 （Error Code）
@@ -179,7 +213,10 @@ export const RenderModule: React.FC<{
     if (!httpClient || !changeModule) return
 
     // 错误码处理回调 切换 module 和 错误信息提示
-    const errorCodeCb = (code: CodeAction, res: AuthingResponse): AuthingGuardResponse => {
+    const errorCodeCb = (
+      code: CodeAction,
+      res: AuthingResponse
+    ): AuthingGuardResponse => {
       // 判断有没有 flowHandle
       res.flowHandle && updateFlowHandle(res.flowHandle)
 
@@ -231,7 +268,9 @@ export const RenderModule: React.FC<{
       if (!moduleName || !ComponentsMapping[moduleName]) {
         return (
           <GuardErrorView
-            error={new Error(`未知错误！moduleName 为 <b>${moduleName}</b> 无法识别`)}
+            error={
+              new Error(`未知错误！moduleName 为 <b>${moduleName}</b> 无法识别`)
+            }
           />
         )
       }
@@ -239,11 +278,20 @@ export const RenderModule: React.FC<{
     }
 
     if (loadingComponent && defaultMergedConfig.mode !== GuardMode.Modal) {
-      return (<div className="authing-logo-loading">
-        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-          {loadingComponent}
+      return (
+        <div className="authing-logo-loading">
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)'
+            }}
+          >
+            {loadingComponent}
+          </div>
         </div>
-      </div>)
+      )
     }
 
     return null
@@ -262,7 +310,9 @@ export const RenderModule: React.FC<{
       {defaultMergedConfig.mode === GuardMode.Modal ? (
         <Modal
           className="authing-g2-render-module-modal"
-          closeIcon={<IconFont type="authing-close-line" className="g2-modal-close" />}
+          closeIcon={
+            <IconFont type="authing-close-line" className="g2-modal-close" />
+          }
           closable={defaultMergedConfig.clickCloseable ?? true}
           open={visible}
           onCancel={guardProps?.onClose}
@@ -277,10 +327,18 @@ export const RenderModule: React.FC<{
         <div
           style={defaultMergedConfig.style}
           className={`authing-g2-render-module ${
-            defaultMergedConfig.__internalRequest__ ? '' : 'authing-g2-render-module-normal'
+            defaultMergedConfig.__internalRequest__
+              ? ''
+              : 'authing-g2-render-module-normal'
           }`}
         >
-          <div className={isPhoneMedia ? '' : 'authing-g2-render-module-normal-wrapper-animation authing-g2-render-module-normal-wrapper'}>
+          <div
+            className={
+              isPhoneMedia
+                ? ''
+                : 'authing-g2-render-module-normal-wrapper-animation authing-g2-render-module-normal-wrapper'
+            }
+          >
             {renderGuardContent}
           </div>
         </div>

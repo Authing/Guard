@@ -33,20 +33,20 @@ const reducer = (
   }
 ) => {
   switch (action.type) {
-  case 'changeStatus':
-    if (state.status === action.payload.status) {
-      return state
-    }
-    return { ...state, ...action.payload }
+    case 'changeStatus':
+      if (state.status === action.payload.status) {
+        return state
+      }
+      return { ...state, ...action.payload }
     // case 'changeDesc':
     //   if (state.description === action.payload.description) {
     //     return state
     //   }
     //   return { ...state, ...action.payload }
-  case 'change':
-    return { ...state, ...action.payload }
-  default:
-    return state
+    case 'change':
+      return { ...state, ...action.payload }
+    default:
+      return state
   }
 }
 

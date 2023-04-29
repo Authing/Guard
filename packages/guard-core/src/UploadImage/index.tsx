@@ -60,7 +60,11 @@ export const UploadImage: React.FC<{
       onChange={onStatusChange}
     >
       <Spin size="small" spinning={uploading}>
-        {value ? <img src={value} alt="" style={{ width: '100%' }} /> : uploadButton}
+        {value ? (
+          <img src={value} alt="" style={{ width: '100%' }} />
+        ) : (
+          uploadButton
+        )}
       </Spin>
     </Upload>
   )

@@ -59,7 +59,9 @@ export const ResetAccountName: React.FC = () => {
 
   return (
     <div className="g2-view-reset-username">
-      <div className="g2-view-reset-username__title">{i18n.t('common.resetAccount.title')}</div>
+      <div className="g2-view-reset-username__title">
+        {i18n.t('common.resetAccount.title')}
+      </div>
       <Form
         name="passworLogin"
         onFinish={onFinish}
@@ -69,14 +71,18 @@ export const ResetAccountName: React.FC = () => {
       >
         <CustomFormItem.UserName>
           <CommonInput
-            name='username'
+            name="username"
             className="authing-g2-input"
             size="large"
             placeholder={i18n.t('login.inputUsername') as string}
           />
         </CustomFormItem.UserName>
         <Form.Item className="authing-g2-sumbit-form">
-          <SubmitButton text={i18n.t('common.sure') as string} className="password" ref={submitButtonRef} />
+          <SubmitButton
+            text={i18n.t('common.sure') as string}
+            className="password"
+            ref={submitButtonRef}
+          />
         </Form.Item>
       </Form>
     </div>

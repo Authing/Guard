@@ -28,32 +28,57 @@ const useStatus = (status: CodeStatus) => {
       ready: null,
       already: (
         <>
-          <IconFont type="authing-checkbox-circle-fill" style={{ width: '40px', height: '40px' }} />
-          <span className={`${prefix}-inner__title--already`}>{t('login.scanSuccess')}</span>
+          <IconFont
+            type="authing-checkbox-circle-fill"
+            style={{ width: '40px', height: '40px' }}
+          />
+          <span className={`${prefix}-inner__title--already`}>
+            {t('login.scanSuccess')}
+          </span>
         </>
       ),
       cancel: (
         <>
-          <IconFont type="authing-refer-qr-code" style={{ width: '40px', height: '40px' }} />
-          <span className={`${prefix}-inner__title--refer`}>{t('login.qrcodeRefer')}</span>
+          <IconFont
+            type="authing-refer-qr-code"
+            style={{ width: '40px', height: '40px' }}
+          />
+          <span className={`${prefix}-inner__title--refer`}>
+            {t('login.qrcodeRefer')}
+          </span>
         </>
       ),
       expired: (
         <>
-          <IconFont type="authing-refer-qr-code" style={{ width: '40px', height: '40px' }} />
-          <span className={`${prefix}-inner__title--refer`}>{t('login.qrcodeRefer')}</span>
+          <IconFont
+            type="authing-refer-qr-code"
+            style={{ width: '40px', height: '40px' }}
+          />
+          <span className={`${prefix}-inner__title--refer`}>
+            {t('login.qrcodeRefer')}
+          </span>
         </>
       ),
       error: (
         <>
-          <IconFont type="authing-refer-qr-code" style={{ width: '40px', height: '40px' }} />
-          <span className={`${prefix}-inner__title--refer`}>{t('login.qrcodeNetWorkError')}</span>
+          <IconFont
+            type="authing-refer-qr-code"
+            style={{ width: '40px', height: '40px' }}
+          />
+          <span className={`${prefix}-inner__title--refer`}>
+            {t('login.qrcodeNetWorkError')}
+          </span>
         </>
       ),
       success: (
         <>
-          <IconFont type="authing-checkbox-circle-fill" style={{ width: '40px', height: '40px' }} />
-          <span className={`${prefix}-inner__title--already`}>{t('login.scanSuccess')}</span>
+          <IconFont
+            type="authing-checkbox-circle-fill"
+            style={{ width: '40px', height: '40px' }}
+          />
+          <span className={`${prefix}-inner__title--already`}>
+            {t('login.scanSuccess')}
+          </span>
         </>
       ),
       MFA: null

@@ -77,7 +77,10 @@ const SelectPanel: React.FC<SelectPanelProps> = props => {
         title: t('login.useOtherAccount'),
         element: (
           <div className="g2-multiple__icon--add-line">
-            <IconFont style={{ fontSize: 16, color: '#4E5969' }} type="authing-add-line"></IconFont>
+            <IconFont
+              style={{ fontSize: 16, color: '#4E5969' }}
+              type="authing-add-line"
+            ></IconFont>
           </div>
         )
       }
@@ -94,26 +97,45 @@ const SelectPanel: React.FC<SelectPanelProps> = props => {
 
   const renderLits = useMemo(() => {
     return finallyLists.map(option => {
-      const { photo, title, description, id, operation = true, element } = option as SelectOptions
+      const {
+        photo,
+        title,
+        description,
+        id,
+        operation = true,
+        element
+      } = option as SelectOptions
       return (
         <li className="g2-multiple__li" key={id} onClick={() => onClick(id)}>
-          {element ? element : <img className="g2-multiple__avatar" alt="" src={photo} />}
+          {element ? (
+            element
+          ) : (
+            <img className="g2-multiple__avatar" alt="" src={photo} />
+          )}
 
           <section className="g2-multiple__body">
             {title && <span className="g2-multiple__title">{title}</span>}
-            <span className={title ? 'g2-multiple__desc' : 'g2-multiple__title'}>
+            <span
+              className={title ? 'g2-multiple__desc' : 'g2-multiple__title'}
+            >
               {description}
             </span>
           </section>
           {operation && (
-            <span className="g2-multiple__op" onClick={e => e.stopPropagation()}>
+            <span
+              className="g2-multiple__op"
+              onClick={e => e.stopPropagation()}
+            >
               <Popover
                 placement="bottomRight"
                 trigger={triggerWay}
                 overlayClassName="g2-multiple__op-wrapper"
                 getPopupContainer={(triggerNode: any) => triggerNode}
                 content={
-                  <div className="g2-multiple__del" onClick={(e: React.MouseEvent) => onDel(e, id)}>
+                  <div
+                    className="g2-multiple__del"
+                    onClick={(e: React.MouseEvent) => onDel(e, id)}
+                  >
                     <IconFont
                       style={{
                         fontSize: 20,
