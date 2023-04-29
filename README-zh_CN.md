@@ -69,7 +69,7 @@ Authing 支持 OAuth2、OIDC、SAML、LDAP 等多种协议，开发者可以配�
 
 ## 📚 文档
 
-更多示例和使用说明可参考[官方文档](https://docs.authing.cn/v2/reference/guard/v2/)
+更多示例和使用说明可参考[官方文档](https://cdn.authing.co/packages/guard/doc/guide/install.html)
 
 ## ❓ 问题反馈
 
@@ -77,7 +77,7 @@ Authing 支持 OAuth2、OIDC、SAML、LDAP 等多种协议，开发者可以配�
 
 ## 👍 更新日志
 
-详细发布记录可参考[更新日志](https://docs.authing.cn/v2/reference/guard/guard-changelog.html).
+详细发布记录可参考[更新日志](https://github.com/Authing/Guard/releases).
 
 ## 🤝 开源共建
 

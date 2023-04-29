@@ -69,7 +69,7 @@ Authing supports many protocols such as OAuth2, OIDC, SAML, LDAP, etc. Developer
 
 ## 📚 Documentation
 
-To check out live examples and docs, visit [docs](https://docs.authing.cn/v2/reference/guard/v2/)
+To check out live examples and docs, visit [docs](https://cdn.authing.co/packages/guard/doc/guide/install.html)
 
 ## ❓ Questions
 
@@ -77,7 +77,7 @@ For questions and support please use the [official forum](https://forum.authing.
 
 ## 👍 Changelog
 
-Detailed changes for each release are documented in the [release notes](https://docs.authing.cn/v2/reference/guard/guard-changelog.html).
+Detailed changes for each release are documented in the [release notes](https://github.com/Authing/Guard/releases).
 
 ## 🤝 Contribution
 
