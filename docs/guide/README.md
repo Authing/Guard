@@ -56,3 +56,7 @@ Authing 支持 OAuth2、OIDC、SAML、LDAP 等多种协议，开发者可以配�
 - [AuthingMove](https://github.com/authing/authingmove)
 - [authingmove-template](https://github.com/Authing/authingmove-template)
 - [eslint-plugin-authing-nestjs](https://github.com/Authing/eslint-plugin-authing-nestjs)
+
+:::hint-info
+可关注 [GitHub](https://github.com/authing/) 了解 Authing 所有开源项目。
+:::
