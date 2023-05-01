@@ -17,6 +17,10 @@
 
 ## 使用托管模式
 
+::: hint-info:
+使用托管模式会涉及到路由跳转，Safari、Firefox 等浏览器默认开启『阻止跨站跟踪』，导致 Cookie 无法有效传输，推荐使用 Chrome 浏览器。我们接下来会解决这一问题。
+:::
+
 托管模式将跳转到 Authing 提供的托管登录页。由于此模式 Authing 默认使用 OIDC 标准协议认证，你需要进行以下额外配置：
 
 - 在 [Authing 控制台](https://console.authing.cn) 的 <strong>应用 -> 自建应用 -> 应用详情</strong> 中配置 <strong>登录回调 URL</strong>，回调地址为下述示例代码中 Callback 页面地址，此处以 `http://localhost:3000/callback` 为例：
