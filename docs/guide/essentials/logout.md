@@ -18,11 +18,11 @@ class Guard {
 
 ```tsx
 // React 16 / 17
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/pages/Embed.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react/normal/src/pages/Embed.tsx
 import { useGuard } from "@authing/guard-react";
 
 // React 18
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react18/normal/src/pages/Embed.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react18/normal/src/pages/Embed.tsx
 // import { useGuard } from "@authing/guard-react18";
 
 import React from "react";
@@ -46,7 +46,7 @@ export default function Logout() {
 ::: tab Vue2
 
 ```javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue2/normal/src/views/Embed.vue
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue2/normal/src/views/Embed.vue
 export default {
   methods: {
     // 登出后的回调地址请在 Authing 控制台应用 -> 自建应用 -> 应用详情 -> 应用配置 -> 登出回调 URL 中配置
@@ -62,7 +62,7 @@ export default {
 ::: tab Vue3
 
 ```typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue3/normal/src/views/Embed.vue
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue3/normal/src/views/Embed.vue
 import { useGuard } from "@authing/guard-vue3";
 
 const guard = useGuard();
@@ -76,7 +76,7 @@ const logout = () => guard.logout();
 ::: tab Angular
 
 ```typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-angular/normal/src/app/pages/embed/embed.component.ts
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-angular/normal/src/app/pages/embed/embed.component.ts
 import { Component } from "@angular/core";
 import { GuardService } from "@authing/guard-angular";
 
@@ -100,7 +100,7 @@ export class LoginComponent {
 ::: tab CDN
 
 ```javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard/normal/embed.html
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard/normal/embed.html
 const guard = new GuardFactory.Guard({
   appId: "AUTHING_APP_ID",
   // 如果你使用的是私有化部署的 Authing 服务，需要传入自定义 host，如:
@@ -136,12 +136,12 @@ function Logout() {
 // App.tsx
 
 // React 16 / 17
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/App.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react/normal/src/App.tsx
 import { GuardProvider } from "@authing/guard-react";
 import "@authing/guard-react/dist/esm/guard.min.css";
 
 // React 18
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react18/normal/src/App.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react18/normal/src/App.tsx
 // import { GuardProvider } from "@authing/guard-react18";
 // import "@authing/guard-react18/dist/esm/guard.min.css";
 
@@ -169,11 +169,11 @@ function App() {
 
 ```tsx
 // React 16 / 17
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/pages/Embed.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react/normal/src/pages/Embed.tsx
 import { useGuard } from "@authing/guard-react";
 
 // React 18
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react18/normal/src/pages/Embed.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react18/normal/src/pages/Embed.tsx
 // import { useGuard } from "@authing/guard-react18";
 
 import React from "react";
@@ -197,7 +197,7 @@ export default function Logout() {
 ::: tab Vue2
 
 ```javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue2/normal/src/main.js
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue2/normal/src/main.js
 // main.js
 import Vue from "vue";
 import { GuardPlugin } from "@authing/guard-vue2";
@@ -216,7 +216,7 @@ Vue.use(GuardPlugin, {
 ```
 
 ```javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue2/normal/src/views/Embed.vue
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue2/normal/src/views/Embed.vue
 export default {
   methods: {
     logout() {
@@ -232,7 +232,7 @@ export default {
 ::: tab Vue3
 
 ```typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue3/normal/src/main.ts
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue3/normal/src/main.ts
 // main.ts
 import { createApp } from "vue";
 import { createGuard } from "@authing/guard-vue3";
@@ -255,7 +255,7 @@ app.use(
 ```
 
 ```typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue3/normal/src/views/Embed.vue
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue3/normal/src/views/Embed.vue
 import { useGuard } from "@authing/guard-vue3";
 
 const guard = useGuard();
@@ -269,7 +269,7 @@ const logout = () => guard.logout();
 ::: tab Angular
 
 ```typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-angular/normal/src/app/app.module.ts
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-angular/normal/src/app/app.module.ts
 // app.module.ts
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
@@ -302,7 +302,7 @@ export class AppModule {}
 ```
 
 ```typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-angular/normal/src/app/pages/embed/embed.component.ts
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-angular/normal/src/app/pages/embed/embed.component.ts
 import { Component } from "@angular/core";
 import { GuardService } from "@authing/guard-angular";
 
@@ -325,7 +325,7 @@ export class LoginComponent {
 ::: tab CDN
 
 ```javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard/normal/embed.html
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard/normal/embed.html
 const guard = new GuardFactory.Guard({
   appId: "AUTHING_APP_ID",
   isSSO: true,

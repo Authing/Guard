@@ -18,11 +18,11 @@ class Guard {
 
 ```tsx
 // React 16 / 17
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/pages/Embed.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react/normal/src/pages/Embed.tsx
 import { useGuard, User } from "@authing/guard-react";
 
 // React 18
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react18/normal/src/pages/Embed.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react18/normal/src/pages/Embed.tsx
 // import { useGuard, User } from "@authing/guard-react18";
 
 import React, { useEffect } from "react";
@@ -63,7 +63,7 @@ export default function ChangeContentCSS() {
 ```vue
 <template>
   <div class="embed-container">
-    <!-- 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue2/normal/src/views/Embed.vue -->
+    <!-- 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue2/normal/src/views/Embed.vue -->
     <button class="authing-button" @click="changeContentCSS">
       Change Content CSS
     </button>
@@ -101,7 +101,7 @@ export default {
 ```vue
 <template>
   <div class="embed-container">
-    <!-- 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue3/normal/src/views/Embed.vue -->
+    <!-- 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue3/normal/src/views/Embed.vue -->
     <button @click="changeContentCSS">Change Content CSS</button>
     <div id="authing-guard-container"></div>
   </div>
@@ -136,7 +136,7 @@ const changeContentCSS = () =>
 ::: tab Angular
 
 ```typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-angular/normal/src/app/pages/embed/embed.component.ts
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-angular/normal/src/app/pages/embed/embed.component.ts
 import { Component } from "@angular/core";
 import { GuardService, User } from "@authing/guard-angular";
 
@@ -181,7 +181,7 @@ export class GetUserInfoComponent {
 ::: tab CDN
 
 ```javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard/normal/embed.html
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard/normal/embed.html
 function changeContentCSS() {
   guard.changeContentCSS(`
     #authing-guard-container {

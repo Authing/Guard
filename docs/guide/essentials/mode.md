@@ -712,7 +712,7 @@ export class LoginComponent {
 ::: tab CDN
 
 ```html
-<!-- https://github.com/Authing/Guard/blob/master/examples/guard/normal/embed.html -->
+<!-- https://github.com/Authing/Guard/tree/dev-v6/examples/guard/normal/embed.html -->
 <div id="authing-guard-container"></div>
 ```
 

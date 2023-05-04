@@ -6,7 +6,7 @@
 
 ```tsx
 // React 16 / 17
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/pages/Embed.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react/normal/src/pages/Embed.tsx
 import {
   AuthenticationClient,
   RefreshToken,
@@ -14,7 +14,7 @@ import {
 } from "@authing/guard-react";
 
 // React 18
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react18/normal/src/pages/Embed.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react18/normal/src/pages/Embed.tsx
 // import { AuthenticationClient, RefreshToken, useGuard, } from "@authing/guard-react18";
 
 export default function Login() {
@@ -41,7 +41,7 @@ export default function Login() {
 ::: tab Vue2
 
 ```javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue2/normal/src/views/Embed.vue
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue2/normal/src/views/Embed.vue
 export default {
   methods: {
     async refreshToken() {
@@ -59,7 +59,7 @@ export default {
 
 ```html
 <script lang="ts" setup>
-  // 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue3/normal/src/views/Embed.vue
+  // 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue3/normal/src/views/Embed.vue
   import { useGuard } from "@authing/guard-vue3";
 
   import type { RefreshToken, AuthenticationClient } from "@authing/guard-vue3";
@@ -79,7 +79,7 @@ export default {
 ::: tab Angular
 
 ```typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-angular/normal/src/app/pages/embed/embed.component.ts
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-angular/normal/src/app/pages/embed/embed.component.ts
 // Angular 组件中使用 Guard API
 import { Component } from "@angular/core";
 import {
@@ -111,7 +111,7 @@ export class HomeComponent {
 
 ::: tab CDN
 ```javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard/normal/embed.html
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard/normal/embed.html
 async function refreshToken() {
   const authenticationClient = await guard.getAuthClient();
   const refreshedToken = await authenticationClient.refreshToken();

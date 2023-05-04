@@ -27,12 +27,12 @@ npm install --save face-api.js
 // App.tsx
 
 // React 16/17
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/pages/Embed.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react/normal/src/pages/Embed.tsx
 import { GuardProvider } from '@authing/guard-react';
 import '@authing/guard-react/dist/esm/guard.min.css';
 
 // React 18
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react18/normal/src/pages/Embed.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react18/normal/src/pages/Embed.tsx
 // import { GuardProvider } from '@authing/guard-react18';
 // import '@authing/guard-react18/dist/esm/guard.min.css';
 
@@ -61,7 +61,7 @@ npm install --save face-api.js
 ```
 
 ```javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue2/normal/src/views/Embed.vue
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue2/normal/src/views/Embed.vue
 // main.js
 import * as facePlugin from 'face-api.js'
 
@@ -84,7 +84,7 @@ npm install --save face-api.js
 ```
 
 ``` typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue3/normal/src/views/Embed.vue
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue3/normal/src/views/Embed.vue
 // main.ts
 import { createApp } from 'vue'
 
@@ -113,7 +113,7 @@ npm install --save face-api.js
 ```
 
 ``` typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-angular/normal/src/app/pages/embed/embed.component.ts
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-angular/normal/src/app/pages/embed/embed.component.ts
 // app.module.ts
 import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'

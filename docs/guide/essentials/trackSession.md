@@ -12,11 +12,11 @@ class Guard {
 
 ```tsx
 // React 16 / 17
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/pages/Embed.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react/normal/src/pages/Embed.tsx
 import { useGuard, User } from "@authing/guard-react";
 
 // React 18
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react18/normal/src/pages/Embed.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react18/normal/src/pages/Embed.tsx
 // import { useGuard, User } from "@authing/guard-react18";
 
 import React from "react";
@@ -43,7 +43,7 @@ export default function GetUserInfo() {
 ::: tab Vue2
 
 ```javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue2/normal/src/views/Embed.vue
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue2/normal/src/views/Embed.vue
 export default {
   methods: {
     async getUserInfo() {
@@ -61,7 +61,7 @@ export default {
 
 ```html
 <script lang="ts" setup>
-  // 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue3/normal/src/views/Embed.vue
+  // 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue3/normal/src/views/Embed.vue
   import { useGuard } from "@authing/guard-vue3";
 
   import type { User } from "@authing/guard-vue3";
@@ -81,7 +81,7 @@ export default {
 ::: tab Angular
 
 ```typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-angular/normal/src/app/pages/embed/embed.component.ts
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-angular/normal/src/app/pages/embed/embed.component.ts
 import { Component } from "@angular/core";
 import { GuardService, User } from "@authing/guard-angular";
 
@@ -105,7 +105,7 @@ export class GetUserInfoComponent {
 
 ::: tab CDN
 ```javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard/normal/embed.html
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard/normal/embed.html
 async function getUserInfo() {
   // 获取用户信息
   const userInfo = await guard.trackSession();

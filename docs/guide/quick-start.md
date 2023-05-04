@@ -20,13 +20,13 @@
 // App.tsx
 
 // React 16 / 17
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/App.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react/normal/src/App.tsx
 import { GuardProvider } from '@authing/guard-react'
 
 import '@authing/guard-react/dist/esm/guard.min.css'
 
 // React 18
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react18/normal/src/App.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react18/normal/src/App.tsx
 // import { GuardProvider } from '@authing/guard-react18'
 // import '@authing/guard-react18/dist/esm/guard.min.css'
 
@@ -56,7 +56,7 @@ function App() {
 
 ::: tab Vue2
 ```javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue2/normal/src/main.js
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue2/normal/src/main.js
 // main.js
 import Vue from 'vue'
 
@@ -79,7 +79,7 @@ Vue.use(GuardPlugin, {
 
 ::: tab Vue3
 ```typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue3/normal/src/main.ts
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue3/normal/src/main.ts
 // main.ts
 import { createApp } from 'vue'
 
@@ -109,7 +109,7 @@ app.use(
 ::: tab Angular
 ```json
 // angular.json
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-angular/normal/angular.json
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-angular/normal/angular.json
 {
   "projects": {
     "architect": {
@@ -122,7 +122,7 @@ app.use(
 ```
 
 ```typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-angular/normal/src/app/app.module.ts
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-angular/normal/src/app/app.module.ts
 // app.module.ts
 import { NgModule } from '@angular/core'
 

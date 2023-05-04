@@ -19,12 +19,12 @@
 
 ```tsx
 // React 16 / 17
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/App.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react/normal/src/App.tsx
 import { GuardProvider } from "@authing/guard-react";
 import "@authing/guard-react/dist/esm/guard.min.css";
 
 // React 18
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react18/normal/src/App.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react18/normal/src/App.tsx
 // import { GuardProvider } from "@authing/guard-react18";
 // import "@authing/guard-react18/dist/esm/guard.min.css";
 
@@ -57,7 +57,7 @@ export default function App() {
 ::: tab Vue2
 
 ```javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue2/normal/src/main.js
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue2/normal/src/main.js
 import Vue from "vue";
 import { GuardPlugin } from "@authing/guard-vue2";
 import "@authing/guard-vue2/dist/esm/guard.min.css";
@@ -81,7 +81,7 @@ Vue.use(GuardPlugin, {
 ::: tab Vue3
 
 ```typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue3/normal/src/main.ts
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue3/normal/src/main.ts
 import { createApp } from "vue";
 import { createGuard } from "@authing/guard-vue3";
 import "@authing/guard-vue3/dist/esm/guard.min.css";
@@ -109,7 +109,7 @@ app.use(
 ::: tab Angular
 
 ```typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-angular/normal/src/app/app.module.ts
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-angular/normal/src/app/app.module.ts
 // app.module.ts
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
@@ -147,7 +147,7 @@ export class AppModule {}
 
 ::: tab CDN
 ```javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard/normal/embed.html
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard/normal/embed.html
 const guard = new GuardFactory.Guard({
   appId: "AUTHING_APP_ID",
   // 如果你使用的是私有化部署的 Authing 服务，需要传入自定义 host，如:

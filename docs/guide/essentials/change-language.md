@@ -23,11 +23,11 @@ Authing Guard 会持续新增对不同语言的支持，详情请参见 [Authing
 
 ```tsx
 // React 16 / 17
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/pages/Embed.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react/normal/src/pages/Embed.tsx
 import { useGuard, User } from "@authing/guard-react";
 
 // React 18
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react18/normal/src/pages/Embed.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react18/normal/src/pages/Embed.tsx
 // import { useGuard, User } from "@authing/guard-react18";
 
 import React, { useEffect, useState } from "react";
@@ -75,7 +75,7 @@ export default function ChangeLanguage() {
 ```vue
 <template>
   <div class="embed-container">
-    <!-- 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue2/normal/src/views/Embed.vue -->
+    <!-- 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue2/normal/src/views/Embed.vue -->
     <select v-model="langCache" @change="changeLang">
       <option value="zh-CN">zh-CN</option>
       <option value="zh-TW">zh-TW</option>
@@ -120,7 +120,7 @@ export default {
 ```vue
 <template>
   <div class="embed-container">
-    <!-- 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue3/normal/src/views/Embed.vue -->
+    <!-- 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue3/normal/src/views/Embed.vue -->
     <select v-model="langCache" @change="changeLang">
       <option value="zh-CN">zh-CN</option>
       <option value="zh-TW">zh-TW</option>
@@ -161,7 +161,7 @@ const changeLang = (event) => {
 ::: tab Angular
 
 ```typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-angular/normal/src/app/pages/embed/embed.component.ts
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-angular/normal/src/app/pages/embed/embed.component.ts
 import { Component } from "@angular/core";
 import { GuardService } from "@authing/guard-angular";
 
@@ -183,7 +183,7 @@ export class GetUserInfoComponent {
 ```
 
 ```html
-<!-- 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard/normal/embed.html -->
+<!-- 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard/normal/embed.html -->
 <div class="change-lang-container">
   <select ng-model="langCache" (change)="changeLang($event)">
     <option ngValue="zh-CN">zh-CN</option>
@@ -199,7 +199,7 @@ export class GetUserInfoComponent {
 
 ::: tab CDN
 ```html
-<!-- 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard/normal/embed.html -->
+<!-- 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard/normal/embed.html -->
 <select onchange="changeLang(event)">
   <option value="zh-CN">zh-CN</option>
   <option value="zh-TW">zh-TW</option>

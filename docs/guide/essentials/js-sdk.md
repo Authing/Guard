@@ -16,11 +16,11 @@ Authing Guard 集成了 [authing-js-sdk 的 AuthenticationClient](https://docs.a
 
 ```tsx
 // React 16 / 17
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/pages/Personal.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react/normal/src/pages/Personal.tsx
 import { useGuard, AuthenticationClient, User } from "@authing/guard-react";
 
 // React 18
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react18/normal/src/pages/Personal.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react18/normal/src/pages/Personal.tsx
 // import { useGuard, AuthenticationClient, User } from "@authing/guard-react18";
 
 import React, { useEffect } from "react";
@@ -60,7 +60,7 @@ export default function Personal() {
 ```vue
 <template>
   <div class="personal-container">
-    <!-- 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue2/normal/src/views/Personal.vue -->
+    <!-- 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue2/normal/src/views/Personal.vue -->
     <button class="authing-button" @click="updateProfile">
       Update Profile
     </button>
@@ -96,7 +96,7 @@ export default {
 ```vue
 <template>
   <div class="personal-container">
-    <!-- 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue3/normal/src/views/Personal.vue -->
+    <!-- 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue3/normal/src/views/Personal.vue -->
     <button @click="updateProfile">Update Profile</button>
   </div>
 </template>
@@ -130,7 +130,7 @@ const updateProfile = async () => {
 ::: tab Angular
 
 ```typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-angular/normal/src/app/pages/personal/personal.component.ts
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-angular/normal/src/app/pages/personal/personal.component.ts
 import { Component } from "@angular/core";
 import {
   AuthenticationClient,
@@ -167,7 +167,7 @@ export class PersonalComponent {
 
 ::: tab CDN
 ```javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard/normal/embed.html
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard/normal/embed.html
 async function updateProfile() {
   const authenticationClient = await guard.getAuthClient();
 
