@@ -20,6 +20,8 @@
 
     <button class="authing-button" @click="refreshToken">Refresh Token</button>
 
+    <button class="authing-button" @click="getAccessTokenByIdToken">Get Access Token By ID Token</button>
+
     <div id="authing-guard-container"></div>
   </div>
 </template>
@@ -35,10 +37,13 @@ const langCache = ref('')
 
 const guard = useGuard()
 
+const userInfo = ref<User | null>(null)
+
 onMounted(() => {
   // 使用 start 方法挂载 Guard 组件到你指定的 DOM 节点，登录成功后返回 userInfo
-  guard.start('#authing-guard-container').then((userInfo: User) => {
-    console.log("userInfo: ", userInfo)
+  guard.start('#authing-guard-container').then((user: User) => {
+    console.log("userInfo: ", user)
+    userInfo.value = user
   })
 
   guard.on('load', ()=>{
@@ -46,8 +51,9 @@ onMounted(() => {
     langCache.value = localStorage.getItem('_guard_i18nextLng') || ''
   })
 
-  guard.on('login', (userInfo: User) => {
-    console.log('userInfo in login: ', userInfo)
+  guard.on('login', (user: User) => {
+    console.log('userInfo in login: ', user)
+    userInfo.value = user
   })
 })
 
@@ -80,6 +86,15 @@ const refreshToken = async () => {
 const changeLang = (event: any) => {
   guard.changeLang(event.target.value)
   langCache.value = event.target.value
+}
+
+const getAccessTokenByIdToken = async () => {
+  const authenticationClient: AuthenticationClient = await guard.getAuthClient()
+  const res = await authenticationClient.getAccessTokenByIdToken({
+    redirectUri: 'https://www.baidu.com',
+    idToken: userInfo.value?.token as string
+  })
+  console.log('getAccessTokenByIdToken: ', res)
 }
 </script>
 

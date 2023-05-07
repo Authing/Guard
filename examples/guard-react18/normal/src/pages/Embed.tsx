@@ -8,6 +8,8 @@ export default function Embed() {
 
   console.log('guard instance: ', guard)
 
+  const [userInfo, setUserInfo] = useState<null | User>(null)
+
   const trackSession = async () => {
     const userInfo = await guard.trackSession()
     console.log('userInfo by trackSession: ', userInfo)
@@ -19,6 +21,7 @@ export default function Embed() {
     // 使用 start 方法挂载 Guard 组件到你指定的 DOM 节点，登录成功后返回 userInfo
     guard.start('#authing-guard-container').then((userInfo: User) => {
       console.log('userInfo: ', userInfo)
+      setUserInfo(userInfo)
     })
 
     guard.on('load', ()=>{
@@ -29,6 +32,7 @@ export default function Embed() {
 
     guard.on('login', (userInfo: User) => {
       console.log('userInfo in login: ', userInfo)
+      setUserInfo(userInfo)
     })
 
     guard.on('after-change-module', (options) => {
@@ -103,6 +107,15 @@ export default function Embed() {
     guard.changeView('login:app-qrcode')
   }
 
+  const getAccessTokenByIdToken = async () => {
+    const authenticationClient: AuthenticationClient = await guard.getAuthClient()
+    const res = await authenticationClient.getAccessTokenByIdToken({
+      redirectUri: 'https://www.baidu.com',
+      idToken: userInfo!.token as string
+    })
+    console.log('getAccessTokenByIdToken: ', res)
+  }
+
   return <div>
     <select value={langCache} onChange={changeLang}>
       <option value="zh-CN">zh-CN</option>
@@ -120,6 +133,8 @@ export default function Embed() {
     <button className='authing-button' onClick={getUserInfo}>Get User Info</button>
 
     <button className='authing-button' onClick={refreshToken}>Refresh Token</button>
+
+    <button className='authing-button' onClick={getAccessTokenByIdToken}>Get Access Token By ID Token</button>
 
     <button className='authing-button' onClick={checkAllAgreements}>Check All Agreements</button>
 

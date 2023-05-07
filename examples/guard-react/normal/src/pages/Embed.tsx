@@ -113,12 +113,11 @@ export default function Login() {
 
   const getAccessTokenByIdToken = async () => {
     const authenticationClient: AuthenticationClient = await guard.getAuthClient()
-    const refreshedToken: RefreshToken = await authenticationClient.getAccessTokenByIdToken({
-      grantType: 'http://authing.cn/oidc/grant_type/authing_token',
+    const res = await authenticationClient.getAccessTokenByIdToken({
       redirectUri: 'https://www.baidu.com',
       idToken: userInfo!.token as string
     })
-    console.log('getAccessTokenByIdToken: ', refreshedToken)
+    console.log('getAccessTokenByIdToken: ', res)
   }
 
   return <div>
