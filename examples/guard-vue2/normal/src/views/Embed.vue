@@ -20,6 +20,8 @@
 
     <button class="authing-button" @click="refreshToken">Refresh Token</button>
 
+    <button class='authing-button' @click="getAccessTokenByIdToken">Get Access Token By ID Token</button>
+
     <div id="authing-guard-container"></div>
   </div>
 </template>
@@ -28,13 +30,15 @@
 export default {
   data () {
     return {
-      langCache: ''
+      langCache: '',
+      userInfo: null
     }
   },
   mounted () {
     // 使用 start 方法挂载 Guard 组件到你指定的 DOM 节点，登录成功后返回 userInfo
     this.$guard.start('#authing-guard-container').then(userInfo => {
       console.log('userInfo in start: ', userInfo)
+      this.userInfo = userInfo
     })
 
     this.$guard.on('load', () => {
@@ -44,6 +48,7 @@ export default {
 
     this.$guard.on('login', (userInfo) => {
       console.log('userInfo in login: ', userInfo)
+      this.userInfo = userInfo
     })
   },
   methods: {
@@ -82,6 +87,15 @@ export default {
     changeLang (event) {
       this.$guard.changeLang(event.target.value)
       this.langCache = event.target.value
+    },
+
+    async getAccessTokenByIdToken () {
+      const authenticationClient = await this.$guard.getAuthClient()
+      const res = await authenticationClient.getAccessTokenByIdToken({
+        redirectUri: 'https://www.baidu.com',
+        idToken: this.userInfo.token
+      })
+      console.log('getAccessTokenByIdToken: ', res)
     }
   }
 }

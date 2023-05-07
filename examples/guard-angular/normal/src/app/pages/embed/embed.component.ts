@@ -15,12 +15,15 @@ export class EmbedComponent {
 
   langCache = ''
 
+  userInfo: null | User = null
+
   ngOnInit() {
     console.log('guard instance: ', this.guard.client)
 
     // 使用 start 方法挂载 Guard 组件到你指定的 DOM 节点，登录成功后返回 userInfo
     this.guard.client.start('#authing-guard-container').then((userInfo: User) => {
       console.log(userInfo)
+      this.userInfo = userInfo
     })
 
     this.guard.client.on('load', (authClient: AuthenticationClient) => {
@@ -33,6 +36,7 @@ export class EmbedComponent {
 
     this.guard.client.on('login', (userInfo: User) => {
       console.log('userInfo in login: ', userInfo)
+      this.userInfo = userInfo
     })
   }
 
@@ -71,5 +75,14 @@ export class EmbedComponent {
   changeLang(event: any) {
     this.langCache = event?.target?.value
     this.guard.client.changeLang(event?.target?.value)
+  }
+
+  async getAccessTokenByIdToken () {
+    const authenticationClient: AuthenticationClient = await this.guard.client.getAuthClient()
+    const res = await authenticationClient.getAccessTokenByIdToken({
+      redirectUri: 'https://www.baidu.com',
+      idToken: this.userInfo!.token as string
+    })
+    console.log('getAccessTokenByIdToken: ', res)
   }
 }
