@@ -114,7 +114,9 @@ export default function Login() {
   const getAccessTokenByIdToken = async () => {
     const authenticationClient: AuthenticationClient = await guard.getAuthClient()
     const res = await authenticationClient.getAccessTokenByIdToken({
-      redirectUri: 'https://www.baidu.com',
+      // 控制台 -> 自建应用 -> 应用配置 -> 认证配置 -> 登录回调 URL
+      redirectUri: 'YOUR_REDIRECT_URI',
+      // 登录成功后，从用户信息中获取到的 ID Toten
       idToken: userInfo!.token as string
     })
     console.log('getAccessTokenByIdToken: ', res)
