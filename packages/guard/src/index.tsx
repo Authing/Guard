@@ -252,10 +252,34 @@ export class Guard {
       return
     }
 
-    const loginStatus: JwtTokenStatus = await authClient.checkLoginStatus(token)
+    const host = `${this.options.host}` || 'https://core.authing.cn'
 
-    if (loginStatus.status) {
-      return loginStatus
+    const options: RequestInit = {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        token
+      })
+    }
+
+    try {
+      const fetchRes = await fetch(
+        `${host}/api/v2/users/login/check-status`,
+        options
+      )
+
+      const loginStatusText = await fetchRes.text()
+
+      const loginStatus: JwtTokenStatus = JSON.parse(loginStatusText)
+
+      if (loginStatus.code === 200 && loginStatus.status === true) {
+        return loginStatus
+      }
+    } catch (e) {
+      return
     }
   }
 
