@@ -5,7 +5,8 @@ import {
   IG2Config,
   IG2Events,
   IG2FCProps,
-  IAuthingFunc
+  IAuthingFunc,
+  Lang
 } from '../Type'
 
 export interface CompleteInfoConfig extends IG2Config {}
@@ -71,6 +72,9 @@ export interface CompleteInfoRule {
   type: FormValidateRule
   content: string
   errorMessage?: string
+  i18n?: {
+    errorMessage: Record<Lang, []>
+  }
 }
 
 export interface CompleteInfoSelectOption {

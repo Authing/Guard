@@ -11,6 +11,8 @@ import {
 
 import { ApplicationConfig } from '../Type/application'
 
+import { i18n } from '../_utils/locales'
+
 export const completeFieldsFilter = (user: User, field: ExtendsField) => {
   if (!user) {
     return true
@@ -72,7 +74,8 @@ export const extendsFieldsToMetaData = (
       validateRules: item.validateRules.map<CompleteInfoRule>(rule => ({
         type: rule.type,
         content: rule.content,
-        errorMessage: rule.error
+        errorMessage: rule.errorMessage,
+        i18n: rule.i18n
       })),
       options: selectOptions.find(option => option.key === item.name)?.options
     }
@@ -104,4 +107,17 @@ export const fieldValuesToRegisterProfile = (
   })
 
   return { registerProfile, udf }
+}
+
+/**
+ * @description 获取对应key的国际化value
+ * @param record :example {key:"",i18n:{key:{zh_CN:{enabled:true,value:""}}}
+ * @param key
+ */
+export const getI18nValue = (record: any, key: string) => {
+  const label = record?.[key]
+  const i18nObj = record?.i18n?.[key] || {}
+  const i18nLan = i18nObj?.[i18n.language]
+  const i18nName = i18nLan?.enabled && i18nLan?.value
+  return i18nName || label
 }

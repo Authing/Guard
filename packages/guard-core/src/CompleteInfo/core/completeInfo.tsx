@@ -40,8 +40,13 @@ import { InputInternationPhone } from '../../Login/core/withVerifyCode/InputInte
 import { EmailScene } from '../../Type'
 
 import { UploadImage } from '../../UploadImage'
+
+import { getI18nValue } from '../utils'
+
 import { CommonFormItem } from '../../CommonFormItem'
+
 import { CommonInput } from '../../CommonInput'
+
 import { IconFont } from '../../IconFont'
 
 const { useCallback, useEffect, useMemo, useRef, useState } = React
@@ -479,7 +484,10 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
           return formRules.push({
             type: 'number',
             validateTrigger: 'onBlur',
-            message: rule.errorMessage || '请填写数字'
+            message:
+              getI18nValue(rule, 'errorMessage') ||
+              rule.errorMessage ||
+              '请填写数字'
           })
         }
 
@@ -487,7 +495,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
           return formRules.push({
             validateTrigger: 'onBlur',
             pattern: new RegExp((rule.content as any).replaceAll('/', '')),
-            message: rule.errorMessage
+            message: getI18nValue(rule, 'errorMessage') || rule.errorMessage
           })
         }
       })
