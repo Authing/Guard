@@ -41,6 +41,8 @@ import { EmailScene } from '../../Type'
 
 import { UploadImage } from '../../UploadImage'
 
+import classnames from 'classnames'
+
 import { getI18nValue } from '../utils'
 
 import { CommonFormItem } from '../../CommonFormItem'
@@ -157,7 +159,8 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
       gender: props => (
         <Select
           key={props.key}
-          className="authing-g2-select"
+          className={classnames('authing-g2-select', 'authing-g2-input')}
+          dropdownClassName="authing-g2-dropdown"
           suffixIcon={
             <IconFont
               type="authing-arrow-down-s-line"
@@ -179,8 +182,8 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
       country: props => (
         <Select
           key={props.key}
-          className="authing-g2-select"
-          options={countryList}
+          className={classnames('authing-g2-select', 'authing-g2-input')}
+          dropdownClassName="authing-g2-dropdown"
           suffixIcon={
             <IconFont
               type="authing-arrow-down-s-line"
@@ -247,7 +250,8 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
       dropdown: (props: any) => (
         <Select
           key={props.key}
-          className="authing-g2-select"
+          className={classnames('authing-g2-select', 'authing-g2-input')}
+          dropdownClassName="authing-g2-dropdown"
           suffixIcon={
             <IconFont
               type="authing-arrow-down-s-line"
@@ -268,7 +272,8 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
       boolean: props => (
         <Select
           key={props.key}
-          className="authing-g2-select"
+          className={classnames('authing-g2-select', 'authing-g2-input')}
+          dropdownClassName="authing-g2-dropdown"
           suffixIcon={
             <IconFont
               type="authing-arrow-down-s-line"
@@ -303,6 +308,17 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
           size="large"
           className="authing-g2-input"
           autoComplete="off"
+        />
+      ),
+      textarea: props => (
+        <Input.TextArea
+          key={props.key}
+          className={classnames('authing-g2-textarea', 'authing-g2-input')}
+          maxLength={200}
+          rows={4}
+          style={{
+            marginBottom: 10
+          }}
         />
       )
     }),
@@ -468,10 +484,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
 
       if (required) {
         formRules.push({
-          type:
-            metaData.type === CompleteInfoExtendsControls.DATE_TIME
-              ? ('object' as const)
-              : undefined,
+          type: 'any',
           required: true,
           validateTrigger: 'onChange',
           message: t('login.noEmpty', { label: label })
@@ -531,7 +544,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
           <Form.Item
             validateTrigger={['onBlur', 'onChange']}
             className="authing-g2-input-form"
-            rules={generateRules(metaData)}
+            rules={generateRules(metaData) as any}
             key={metaData.name}
             name={metaData.name}
             label={label}

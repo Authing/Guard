@@ -448,6 +448,22 @@
   // }
 }
 
+.authing-g2-dropdown {
+  border-radius: 8px;
+  padding: 6px;
+  border: 1px solid #e5e6eb;
+
+  .authing-ant-select-item {
+    border-radius: 4px;
+  }
+  .authing-ant-select-item-option-selected:not(.authing-ant-select-item-option-disabled) {
+    background: #f2f3f5;
+  }
+  .authing-ant-select-item-option-active:not(.authing-ant-select-item-option-disabled) {
+    background: #f2f3f5;
+  }
+}
+
 .authing-g2-input-form {
   .authing-g2-select {
     // &:hover {
@@ -483,11 +499,32 @@
     }
   }
 
+  .authing-ant-form-item-control-input-content {
+    .authing-g2-textarea {
+      background: #f7f8fa;
+      border-radius: 4px;
+      border: 1px solid #f7f8fa;
+      transition: all 0.3s linear, height 0s;
+    }
+  }
+
+  .authing-g2-textarea {
+    &::placeholder {
+      color: #86909c;
+    }
+  }
+
   // .authing-ant-select:not(.authing-ant-select-customize-input)
   //   .authing-ant-select-selector {
   //   border-color: #f5f6f7;
   // }
   &.authing-ant-form-item-has-error {
+    textarea,
+    textarea:hover,
+    textarea:focus {
+      border-color: red !important;
+    }
+
     .authing-g2-select {
 
       // &:hover {
@@ -1182,7 +1219,7 @@ input {
     font-weight: 600;
     font-size: 24px;
     line-height: 34px;
-    color: #282D3C;
+    color: #282d3c;
     margin-bottom: 4px;
   }
 
@@ -1190,11 +1227,12 @@ input {
     font-family: 'PingFang SC';
     font-style: normal;
     font-weight: 400;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 20px;
-    color: #86909C;
+    color: #545968;
     margin-bottom: 16px;
   }
+
 
   .authing-g2-input {
     height: 46px;
