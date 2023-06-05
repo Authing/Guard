@@ -346,7 +346,7 @@ export class Guard {
       codeChallenge
     )
 
-    this.setStorageCache(access_token, id_token)
+    this.setTokenCache(access_token, id_token)
   }
 
   private async getAccessTokenByCode(code: string, codeChallenge: string) {
@@ -368,12 +368,12 @@ export class Guard {
     }
   }
 
-  private setStorageCache(accessToken: string, idToken: string) {
+  private setTokenCache(accessToken: string, idToken: string) {
     localStorage.setItem('accessToken', accessToken)
     localStorage.setItem('idToken', idToken)
   }
 
-  private clearStorageCache() {
+  private clearTokenCache() {
     localStorage.removeItem('accessToken')
     localStorage.removeItem('idToken')
   }
@@ -474,7 +474,7 @@ export class Guard {
       })
     }
 
-    this.clearStorageCache()
+    this.clearTokenCache()
     authClient.tokenProvider.clearUser()
 
     window.location.href = logoutUri || logoutRedirectUri
