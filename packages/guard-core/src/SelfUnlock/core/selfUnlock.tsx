@@ -13,8 +13,6 @@ import {
 
 import SubmitButton from '../../SubmitButton'
 
-import { IconFont } from '../../IconFont'
-
 import { InputPassword } from '../../InputPassword'
 
 import { SceneType } from 'authing-js-sdk'
