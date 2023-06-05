@@ -402,7 +402,41 @@ export class Guard {
   async trackSession(): Promise<User | null> {
     const authClient = await this.getAuthClient()
 
-    return authClient.getCurrentUser()
+    const accessToken = authClient.tokenProvider.getToken()
+
+    if (!accessToken) {
+      return null
+    }
+
+    const publicConfig = await this.then()
+
+    const host = `${this.options.host}` || 'https://core.authing.cn'
+
+    const options: RequestInit = {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-authing-userpool-id': publicConfig.userPoolId,
+        Authorization: accessToken
+      }
+    }
+
+    try {
+      const fetchRes = await fetch(`${host}/api/v2/users/me`, options)
+
+      const userInfoText = await fetchRes.text()
+
+      const { code, data } = JSON.parse(userInfoText)
+
+      if (code === 200) {
+        return data
+      }
+
+      return null
+    } catch (e) {
+      return null
+    }
   }
 
   async logout(params: LogoutParams = {}) {
