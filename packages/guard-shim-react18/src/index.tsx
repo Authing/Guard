@@ -123,6 +123,19 @@ export class Guard {
     return options
   }
 
+  private async getRequestHost() {
+    if (this.options.host) {
+      return this.options.host
+    }
+
+    const publicConfig = await this.then()
+    if (publicConfig.requestHostname) {
+      return `https://${publicConfig.requestHostname}`
+    }
+
+    return 'https://core.authing.cn'
+  }
+
   private async getPublicConfig(): Promise<{
     [prop: string]: any
   }> {
@@ -152,11 +165,13 @@ export class Guard {
       throw new Error(JSON.stringify(e))
     }
 
+    const requestHostname = await this.getRequestHost()
+
     const _authClientOptions = Object.assign(
       {},
       {
         appId: this.options.appId,
-        appHost: this.options.host || `https://${publicConfig.requestHostname}`,
+        appHost: requestHostname,
         tenantId: this.options.tenantId,
         redirectUri:
           this.options.redirectUri || publicConfig.oidcConfig.redirect_uris[0],
@@ -241,23 +256,52 @@ export class Guard {
   }
 
   async checkLoginStatus(): Promise<JwtTokenStatus | undefined> {
+    // 与嵌入式登录保持一致，使用 JS SDK 缓存 token 及用户信息
     const authClient = await this.getAuthClient()
-    const user = await authClient.getCurrentUser()
 
-    if (!user) {
+    const userInfo = await this.trackSession()
+
+    if (!userInfo) {
       return
     }
 
-    const token = user.token
+    authClient.tokenProvider.setUser(userInfo)
 
-    if (!token) {
+    // 兼容老版本
+    const accessToken = localStorage.getItem('accessToken')
+
+    if (!accessToken) {
       return
     }
 
-    const loginStatus: JwtTokenStatus = await authClient.checkLoginStatus(token)
+    const requestHostname = await this.getRequestHost()
 
-    if (loginStatus.status) {
-      return loginStatus
+    const options: RequestInit = {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        token: accessToken
+      })
+    }
+
+    try {
+      const fetchRes = await fetch(
+        `${requestHostname}/api/v2/users/login/check-status`,
+        options
+      )
+
+      const loginStatusText = await fetchRes.text()
+
+      const loginStatus: JwtTokenStatus = JSON.parse(loginStatusText)
+
+      if (loginStatus.code === 200 && loginStatus.status === true) {
+        return loginStatus
+      }
+    } catch (e) {
+      return
     }
   }
 
@@ -341,11 +385,7 @@ export class Guard {
       codeChallenge
     )
 
-    const authClient = await this.getAuthClient()
-
-    const userInfo = await authClient.getUserInfoByAccessToken(access_token)
-
-    this.setStorageCache(access_token, id_token, userInfo)
+    this.setTokenCache(access_token, id_token)
   }
 
   private async getAccessTokenByCode(code: string, codeChallenge: string) {
@@ -367,14 +407,21 @@ export class Guard {
     }
   }
 
-  private setStorageCache(
-    accessToken: string,
-    idToken: string,
-    userInfo: string
-  ) {
+  private setTokenCache(accessToken: string, idToken: string) {
     localStorage.setItem('accessToken', accessToken)
     localStorage.setItem('idToken', idToken)
-    localStorage.setItem('userInfo', JSON.stringify(userInfo))
+  }
+
+  private clearTokenCache() {
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('idToken')
+  }
+
+  private async clearLoginCache() {
+    const authClient = await this.getAuthClient()
+    localStorage.removeItem('codeChallenge')
+    authClient.tokenProvider.clearUser()
+    this.clearTokenCache()
   }
 
   private parseUrlQuery() {
@@ -406,7 +453,45 @@ export class Guard {
   async trackSession(): Promise<User | null> {
     const authClient = await this.getAuthClient()
 
-    return authClient.getCurrentUser()
+    const idToken =
+      authClient.tokenProvider.getToken() || localStorage.getItem('idToken')
+
+    if (!idToken) {
+      return null
+    }
+
+    const publicConfig = await this.then()
+
+    const requestHostname = await this.getRequestHost()
+
+    const options: RequestInit = {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-authing-userpool-id': publicConfig.userPoolId,
+        Authorization: idToken
+      }
+    }
+
+    try {
+      const fetchRes = await fetch(
+        `${requestHostname}/api/v2/users/me`,
+        options
+      )
+
+      const userInfoText = await fetchRes.text()
+
+      const { code, data } = JSON.parse(userInfoText)
+
+      if (code === 200) {
+        return data
+      }
+
+      return null
+    } catch (e) {
+      return null
+    }
   }
 
   async logout(params: LogoutParams = {}) {
@@ -424,21 +509,30 @@ export class Guard {
       logoutRedirectUri = origin
     }
 
-    let logoutUri = ''
-    const idToken = localStorage.getItem('idToken')
     const authClient = await this.getAuthClient()
 
-    await (quitCurrentDevice ? authClient.logoutCurrent() : authClient.logout())
-
-    if (idToken) {
-      logoutUri = authClient.buildLogoutUrl({
-        expert: true,
-        redirectUri: logoutRedirectUri,
-        idToken
-      })
+    try {
+      if (quitCurrentDevice) {
+        await authClient.logoutCurrent()
+      } else {
+        await authClient.logout()
+      }
+    } catch (error) {
+      // 兜底 redirect 场景下，Safari 和 Firefox 开启『阻止跨站跟踪』后无法退出
+      // 此方法只能退出当前设备
+      const idToken =
+        authClient.tokenProvider.getToken() || localStorage.getItem('idToken')
+      if (idToken) {
+        logoutRedirectUri = authClient.buildLogoutUrl({
+          expert: true,
+          redirectUri: logoutRedirectUri,
+          idToken
+        })
+      }
+    } finally {
+      await this.clearLoginCache()
+      window.location.href = logoutRedirectUri
     }
-
-    window.location.href = logoutUri || logoutRedirectUri
   }
 
   async render() {
