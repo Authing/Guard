@@ -229,16 +229,9 @@ export class Guard {
   }
 
   async checkLoginStatus(): Promise<JwtTokenStatus | undefined> {
-    const authClient = await this.getAuthClient()
-    const user = await authClient.getCurrentUser()
+    const accessToken = localStorage.getItem('accessToken')
 
-    if (!user) {
-      return
-    }
-
-    const token = user.token
-
-    if (!token) {
+    if (!accessToken) {
       return
     }
 
@@ -251,7 +244,7 @@ export class Guard {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        token
+        token: accessToken
       })
     }
 
@@ -353,11 +346,7 @@ export class Guard {
       codeChallenge
     )
 
-    const authClient = await this.getAuthClient()
-
-    const userInfo = await authClient.getUserInfoByAccessToken(access_token)
-
-    this.setStorageCache(access_token, id_token, userInfo)
+    this.setStorageCache(access_token, id_token)
   }
 
   private async getAccessTokenByCode(code: string, codeChallenge: string) {
@@ -379,14 +368,9 @@ export class Guard {
     }
   }
 
-  private setStorageCache(
-    accessToken: string,
-    idToken: string,
-    userInfo: string
-  ) {
+  private setStorageCache(accessToken: string, idToken: string) {
     localStorage.setItem('accessToken', accessToken)
     localStorage.setItem('idToken', idToken)
-    localStorage.setItem('userInfo', JSON.stringify(userInfo))
   }
 
   private parseUrlQuery() {
