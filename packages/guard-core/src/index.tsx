@@ -229,6 +229,18 @@ export class Guard {
   }
 
   async checkLoginStatus(): Promise<JwtTokenStatus | undefined> {
+    // 与嵌入式登录保持一致，使用 JS SDK 缓存 token 及用户信息
+    const authClient = await this.getAuthClient()
+
+    const userInfo = await this.trackSession()
+
+    if (!userInfo) {
+      return
+    }
+
+    authClient.tokenProvider.setUser(userInfo)
+
+    // 兼容老版本
     const accessToken = localStorage.getItem('accessToken')
 
     if (!accessToken) {
@@ -378,6 +390,13 @@ export class Guard {
     localStorage.removeItem('idToken')
   }
 
+  private async clearLoginCache() {
+    const authClient = await this.getAuthClient()
+    localStorage.removeItem('codeChallenge')
+    authClient.tokenProvider.clearUser()
+    this.clearTokenCache()
+  }
+
   private parseUrlQuery() {
     const query: Record<string, string> = {}
 
@@ -464,7 +483,11 @@ export class Guard {
     const idToken = localStorage.getItem('idToken')
     const authClient = await this.getAuthClient()
 
-    await (quitCurrentDevice ? authClient.logoutCurrent() : authClient.logout())
+    if (quitCurrentDevice) {
+      await authClient.logoutCurrent()
+      await this.clearLoginCache()
+      return
+    }
 
     if (idToken) {
       logoutUri = authClient.buildLogoutUrl({
@@ -474,8 +497,7 @@ export class Guard {
       })
     }
 
-    this.clearTokenCache()
-    authClient.tokenProvider.clearUser()
+    await this.clearLoginCache()
 
     window.location.href = logoutUri || logoutRedirectUri
   }
