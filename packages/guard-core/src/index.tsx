@@ -402,7 +402,8 @@ export class Guard {
   async trackSession(): Promise<User | null> {
     const authClient = await this.getAuthClient()
 
-    const idToken = authClient.tokenProvider.getToken()
+    let idToken =
+      authClient.tokenProvider.getToken() || localStorage.getItem('idToken')
 
     if (!idToken) {
       return null
