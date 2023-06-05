@@ -402,9 +402,9 @@ export class Guard {
   async trackSession(): Promise<User | null> {
     const authClient = await this.getAuthClient()
 
-    const accessToken = authClient.tokenProvider.getToken()
+    const idToken = authClient.tokenProvider.getToken()
 
-    if (!accessToken) {
+    if (!idToken) {
       return null
     }
 
@@ -418,7 +418,7 @@ export class Guard {
       headers: {
         'Content-Type': 'application/json',
         'x-authing-userpool-id': publicConfig.userPoolId,
-        Authorization: accessToken
+        Authorization: idToken
       }
     }
 
