@@ -501,15 +501,28 @@ export class Guard {
 
     const authClient = await this.getAuthClient()
 
-    if (quitCurrentDevice) {
-      await authClient.logoutCurrent()
-    } else {
-      await authClient.logout()
+    try {
+      if (quitCurrentDevice) {
+        await authClient.logoutCurrent()
+      } else {
+        await authClient.logout()
+      }
+    } catch (error) {
+      // 兜底 redirect 场景下，Safari 和 Firefox 开启『阻止跨站跟踪』后无法退出
+      // 此方法只能退出当前设备
+      const idToken =
+        authClient.tokenProvider.getToken() || localStorage.getItem('idToken')
+      if (idToken) {
+        logoutRedirectUri = authClient.buildLogoutUrl({
+          expert: true,
+          redirectUri: logoutRedirectUri,
+          idToken
+        })
+      }
+    } finally {
+      await this.clearLoginCache()
+      window.location.href = logoutRedirectUri
     }
-
-    await this.clearLoginCache()
-
-    window.location.href = logoutRedirectUri
   }
 
   async _render() {
