@@ -450,8 +450,6 @@ export class Guard {
 
     const publicConfig = await this.then()
 
-    const host = `${this.options.host}` || 'https://core.authing.cn'
-
     const requestHostname = await this.getRequestHost()
 
     const options: RequestInit = {
