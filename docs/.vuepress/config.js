@@ -112,10 +112,6 @@ module.exports = {
             link: '/guide/'
           },
           {
-            text: '插件',
-            link: '/plugin/'
-          },
-          {
             text: '在线体验',
             link: 'https://cdn.authing.co/packages/guard/ui/index.html',
             target: '_blank'
