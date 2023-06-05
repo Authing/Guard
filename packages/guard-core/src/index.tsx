@@ -138,6 +138,19 @@ export class Guard {
     return JSON.parse(publicConfig)
   }
 
+  private async getRequestHost() {
+    if (this.options.host) {
+      return this.options.host
+    }
+
+    const publicConfig = await this.then()
+    if (publicConfig.requestHostname) {
+      return `https://${publicConfig.requestHostname}`
+    }
+
+    return 'https://core.authing.cn'
+  }
+
   async getAuthClient(): Promise<AuthenticationClient> {
     let publicConfig = {} as any
 
@@ -147,11 +160,13 @@ export class Guard {
       throw new Error(JSON.stringify(e))
     }
 
+    const requestHostname = await this.getRequestHost()
+
     const _authClientOptions = Object.assign(
       {},
       {
         appId: this.options.appId,
-        appHost: this.options.host || `https://${publicConfig.requestHostname}`,
+        appHost: requestHostname,
         tenantId: this.options.tenantId,
         redirectUri:
           this.options.redirectUri || publicConfig.oidcConfig.redirect_uris[0],
@@ -247,7 +262,7 @@ export class Guard {
       return
     }
 
-    const host = `${this.options.host}` || 'https://core.authing.cn'
+    const requestHostname = await this.getRequestHost()
 
     const options: RequestInit = {
       method: 'POST',
@@ -262,7 +277,7 @@ export class Guard {
 
     try {
       const fetchRes = await fetch(
-        `${host}/api/v2/users/login/check-status`,
+        `${requestHostname}/api/v2/users/login/check-status`,
         options
       )
 
@@ -437,6 +452,8 @@ export class Guard {
 
     const host = `${this.options.host}` || 'https://core.authing.cn'
 
+    const requestHostname = await this.getRequestHost()
+
     const options: RequestInit = {
       method: 'GET',
       credentials: 'include',
@@ -448,7 +465,10 @@ export class Guard {
     }
 
     try {
-      const fetchRes = await fetch(`${host}/api/v2/users/me`, options)
+      const fetchRes = await fetch(
+        `${requestHostname}/api/v2/users/me`,
+        options
+      )
 
       const userInfoText = await fetchRes.text()
 
@@ -479,36 +499,17 @@ export class Guard {
       logoutRedirectUri = origin
     }
 
-    let logoutUri = ''
     const authClient = await this.getAuthClient()
-    const idToken =
-      authClient.tokenProvider.getToken() || localStorage.getItem('idToken')
 
     if (quitCurrentDevice) {
-      let logoutError = null
-
-      try {
-        await authClient.logoutCurrent()
-      } catch (error) {
-        // 退出失败：Safari 和 Firefox 等浏览器默认开启『阻止跨站跟踪』，接口无法携带 cookie
-        logoutError = error
-      } finally {
-        await this.clearLoginCache()
-        return logoutError
-      }
-    }
-
-    if (idToken) {
-      logoutUri = authClient.buildLogoutUrl({
-        expert: true,
-        redirectUri: logoutRedirectUri,
-        idToken
-      })
+      await authClient.logoutCurrent()
+    } else {
+      await authClient.logout()
     }
 
     await this.clearLoginCache()
 
-    window.location.href = logoutUri || logoutRedirectUri
+    window.location.href = logoutRedirectUri
   }
 
   async _render() {
@@ -533,12 +534,11 @@ export class Guard {
       })
     }, {} as GuardEvents)
 
-    const publicConfig = await this.then()
     const authClient = await this.getAuthClient()
 
     if (this.options.config) {
-      this.options.config.host =
-        this.options.host || `https://${publicConfig.requestHostname}`
+      const requestHostname = await this.getRequestHost()
+      this.options.config.host = requestHostname
     }
 
     render({
