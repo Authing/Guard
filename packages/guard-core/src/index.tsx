@@ -480,13 +480,22 @@ export class Guard {
     }
 
     let logoutUri = ''
-    const idToken = localStorage.getItem('idToken')
     const authClient = await this.getAuthClient()
+    const idToken =
+      authClient.tokenProvider.getToken() || localStorage.getItem('idToken')
 
     if (quitCurrentDevice) {
-      await authClient.logoutCurrent()
-      await this.clearLoginCache()
-      return
+      let logoutError = null
+
+      try {
+        await authClient.logoutCurrent()
+      } catch (error) {
+        // 退出失败：Safari 和 Firefox 等浏览器默认开启『阻止跨站跟踪』，接口无法携带 cookie
+        logoutError = error
+      } finally {
+        await this.clearLoginCache()
+        return logoutError
+      }
     }
 
     if (idToken) {

@@ -33,6 +33,10 @@ guard.on('lang-change', res => {
 
 guard.on('login', res => {
   console.log('on login success: ', res)
+
+  // setTimeout(() => {
+  //   guard.logout()
+  // }, 2000)
 })
 
 guard.on('login-error', res => {
