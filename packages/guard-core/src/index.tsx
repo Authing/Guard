@@ -373,6 +373,11 @@ export class Guard {
     localStorage.setItem('idToken', idToken)
   }
 
+  private clearStorageCache() {
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('idToken')
+  }
+
   private parseUrlQuery() {
     const query: Record<string, string> = {}
 
@@ -402,7 +407,7 @@ export class Guard {
   async trackSession(): Promise<User | null> {
     const authClient = await this.getAuthClient()
 
-    let idToken =
+    const idToken =
       authClient.tokenProvider.getToken() || localStorage.getItem('idToken')
 
     if (!idToken) {
@@ -468,6 +473,9 @@ export class Guard {
         idToken
       })
     }
+
+    this.clearStorageCache()
+    authClient.tokenProvider.clearUser()
 
     window.location.href = logoutUri || logoutRedirectUri
   }
