@@ -1,6 +1,8 @@
 import { React } from 'shim-react'
 
-import { GuardAppendConfig, setPublicConfig } from '../..'
+import { setPublicConfig } from '../../_utils'
+
+import { GuardAppendConfig } from '../../Type'
 
 import { initAppendConfig } from '../../_utils/appendConfig'
 

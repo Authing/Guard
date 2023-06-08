@@ -1,4 +1,4 @@
-import { Lang } from '../Type'
+export type Lang = 'zh-CN' | 'en-US' | 'zh-TW' | 'ja-JP'
 
 import { PasswordStrength } from '../_utils'
 

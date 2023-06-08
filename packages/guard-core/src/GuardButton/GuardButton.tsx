@@ -10,7 +10,7 @@ import { IconFont } from '../IconFont'
 
 export interface GuardButtonProps extends ButtonProps {}
 
-const { useEffect, useMemo, useState } = React
+const { useMemo, useState } = React
 
 export const GuardButton: React.FC<GuardButtonProps> = props => {
   const [isHover, setHover] = useState(false)

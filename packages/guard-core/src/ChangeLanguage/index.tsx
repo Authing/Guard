@@ -8,13 +8,13 @@ import { useTranslation } from 'react-i18next'
 
 import { IconFont } from '../IconFont'
 
-import { GuardMode, Lang } from '../Type'
+import { Lang } from '../Type'
 
 import { useGuardFinallyConfig, useGuardPageConfig } from '../_utils/context'
 
 import './style.less'
 
-const { useCallback, useMemo } = React
+const { useMemo } = React
 
 export const LngTextMapping: Record<
   Lang,

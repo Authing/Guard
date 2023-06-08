@@ -1,6 +1,8 @@
 import { React } from 'shim-react'
 
-import { PasswordFormItemProps } from '.'
+import { FormItemProps } from 'shim-antd'
+
+export interface PasswordFormItemProps extends FormItemProps {}
 
 import { CommonFormItem } from '../CommonFormItem'
 

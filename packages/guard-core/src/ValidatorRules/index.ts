@@ -11,6 +11,8 @@ import {
   CustomNameFormItem
 } from './ValidatorFormItem'
 
+export * from './PasswordFormItem'
+
 export interface ValidatorFormItemProps extends FormItemProps {
   form?: FormInstance
   checkRepeat?: boolean
@@ -25,8 +27,6 @@ export interface ValidatorFormItemProps extends FormItemProps {
 export interface ValidatorFormItemMetaProps extends ValidatorFormItemProps {
   method: 'email' | 'phone' | 'username' | string
 }
-
-export interface PasswordFormItemProps extends FormItemProps {}
 
 export interface ICheckProps {
   check: (values: any) => void

@@ -14,8 +14,6 @@ import { fieldRequiredRule, isDisabled } from '../../_utils'
 
 import { InputPassword } from '../../InputPassword'
 
-import { IconFont } from '../../IconFont'
-
 import {
   useGuardInitData,
   useGuardIsAuthFlow,

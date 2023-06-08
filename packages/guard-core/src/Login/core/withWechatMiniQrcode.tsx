@@ -14,7 +14,7 @@ import { useGuardEvents, useGuardHttpClient } from '../../_utils/context'
 
 import { StoreInstance } from '../../Guard/core/hooks/useMultipleAccounts'
 
-import { LoginMethods } from '../..'
+import { LoginMethods } from '../../Type'
 
 import { isWeChatBrowser } from '../../_utils'
 

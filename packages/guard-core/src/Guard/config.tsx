@@ -1,6 +1,6 @@
 import { React, ReactNode } from 'shim-react'
 
-import { GuardModuleType } from '.'
+import { GuardModuleType } from './module'
 
 import { ForgetPasswordConfig } from '../ForgetPassword/interface'
 
