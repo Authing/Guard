@@ -19,23 +19,21 @@ try {
 readyGo()
 
 function readyGo () {
-  webpack(webpackReact16ESMConfig, (error, stats) => {
+  webpack(webpackReact16ESMConfig, (error) => {
     if (error) {
       console.error('build Authing Guard v4 core esm 16 bundler error: ', error)
-    } else {
-      console.log(stats)
     }
   })
 
-  // webpack(webpackReact18ESMConfig, (error) => {
-  //   if (error) {
-  //     console.error('build Authing Guard v4 core esm 18 bundler error: ', error)
-  //   }
-  // })
+  webpack(webpackReact18ESMConfig, (error) => {
+    if (error) {
+      console.error('build Authing Guard v4 core esm 18 bundler error: ', error)
+    }
+  })
 
-  // webpack(webpackGlobalConfig, (error) => {
-  //   if (error) {
-  //     console.error('build Authing Guard v4 core global bundler error: ', error)
-  //   }
-  // })
+  webpack(webpackGlobalConfig, (error) => {
+    if (error) {
+      console.error('build Authing Guard v4 core global bundler error: ', error)
+    }
+  })
 }

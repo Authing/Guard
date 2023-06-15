@@ -8,7 +8,7 @@ const resolve = (dir, file = '') =>{
   return path.join(__dirname, '../', dir, file)
 }
 
-const reactVersions = [16]
+const reactVersions = [16, 18]
 
 readyGo()
 
