@@ -21,7 +21,7 @@ const client = new OSS({
 readyGo()
 
 function readyGo() {
-  getAndPutFile(`${process.cwd()}/packages/guard-core/dist/global`)
+  getAndPutFile(`${process.cwd()}/packages/guard-core-v4/dist/global`)
 }
 
 function getAndPutFile(dir) {
@@ -47,7 +47,6 @@ async function put(fullPath, ossPath) {
   try {
     const { version } = require(`${process.cwd()}/lerna.json`)
     await client.put(`packages/guard/${version}/${ossPath}`, fullPath)
-    await client.put(`packages/guard/latest/${ossPath}`, fullPath)
   } catch (e) {
     throw new Error(`put oss error(${fullPath}): ` + JSON.stringify(e))
   }

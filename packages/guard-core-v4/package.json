@@ -1,0 +1,43 @@
+{
+  "name": "@authing/guard-core-v4",
+  "version": "4.4.0-alpha.5",
+  "description": "Authing Guard Component for core codes, only be used to internal",
+  "types": "dist/typings/src/index.d.ts",
+  "files": [
+    "package.json",
+    "package-lock.json"
+  ],
+  "scripts": {
+    "autoinstall": "npm ci && cd shim-antd4 && npm ci && cd ../shim-antd5 && npm ci && cd ../shim-react16 && npm ci && cd ../shim-react18 && npm ci",
+    "build": "node scripts/build.js",
+    "build:bundle-analyzer": "webpack --config ./scripts/webpack.bundle-analyzer.js",
+    "build:ui": "rm -rf dist/ui && webpack --config ./scripts/webpack.ui.js",
+    "dev": "webpack-dev-server --config scripts/webpack.dev.config.js",
+    "release:official": "npm publish --verbose --access public",
+    "release:alpha": "npm publish --verbose --tag=alpha --access public"
+  },
+  "author": "https://github.com/authing",
+  "license": "MIT",
+  "dependencies": {
+    "authing-js-sdk": "^4.23.44",
+    "classnames": "^2.3.1",
+    "i18next": "^22.4.11",
+    "i18next-browser-languagedetector": "^7.0.1",
+    "moment": "^2.29.4",
+    "phone": "^3.1.12",
+    "qrcode.react": "^3.1.0",
+    "query-string": "^7.0.0",
+    "react-i18next": "^12.2.0",
+    "react-responsive": "^9.0.0-beta.5",
+    "react-use": "^17.3.1",
+    "ua-parser-js": "^1.0.2"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.175",
+    "@types/throttle-debounce": "^5.0.0",
+    "@types/ua-parser-js": "^0.7.36",
+    "face-api.js": "^0.22.2",
+    "throttle-debounce": "^5.0.0",
+    "url-loader": "^4.1.1"
+  }
+}

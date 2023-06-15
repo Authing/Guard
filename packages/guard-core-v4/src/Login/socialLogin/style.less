@@ -1,0 +1,124 @@
+.g2-guard-full-width-space {
+  width: 100%;
+}
+
+.no-login-methods {
+  padding: 0px 38px;
+}
+.no-login-methods-desc {
+  margin-top: 16px;
+  color: #545968;
+  font-family: PingFang SC;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+}
+.authing-ant-btn.g2-guard-third-login-btn {
+  display: flex;
+  border: none;
+  background-color: #f5f6f7;
+  border-radius: 4px;
+  color: #282d3c;
+  font-size: 14px;
+  margin-bottom: 8px;
+  margin-top: 8px;
+  justify-content: center;
+  align-items: center;
+  box-shadow: none;
+  span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+  }
+  // &:last-child {
+  //   margin-bottom: 16px !important;
+  // }
+  &:hover {
+    background-color: rgba(84, 89, 104, 0.2);
+  }
+}
+
+*[class*='authing-'].authing-ant-btn.g2-social-login-item {
+  display: inline-flex;
+  margin: 8px;
+  width: 48px;
+  height: 48px;
+  border: 0px;
+  background-color: #f5f6f7;
+  border-radius: 4px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: none;
+  .g2-icon {
+    font-size: 24px;
+    transition: color 0.3s ease-out;
+  }
+
+  &:hover {
+    background: rgba(84, 89, 104, 0.2);
+  }
+}
+
+.g2-social-login-title {
+  user-select: none;
+  text-align: center;
+  font-size: 14px;
+  color: #c8c9cc;
+}
+
+.g2-social-login-title::before,
+.g2-social-login-title::after {
+  content: '——';
+  color: #eeeeee;
+  margin: 0 11px;
+}
+
+.g2-social-login-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0 35px;
+}
+
+.authing-ant-avatar > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media only screen and (max-width: 450px) {
+  .no-login-methods {
+    padding: 0px 8px;
+    margin: auto 0;
+  }
+  .g2-social-login-list {
+    padding: 0 8px;
+  }
+}
+
+.no-login-methods-view {
+  .g2-view-container-inner {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .g2-view-header {
+      margin-bottom: 0px;
+    }
+    .g2-social-login {
+      margin: 32px 0px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .authing-ant-btn.g2-guard-third-login-btn {
+      height: 48px;
+    }
+  }
+}

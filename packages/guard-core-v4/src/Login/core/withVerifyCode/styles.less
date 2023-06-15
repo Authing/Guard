@@ -1,0 +1,64 @@
+.select-option-item {
+  height: 26px;
+  line-height: 26px;
+  font-family: PingFang SC;
+  font-style: normal;
+  font-weight: normal;
+  display: flex;
+  > span:first-child {
+    width: 40%;
+  }
+  // > span:last-child {
+  //   width: 60%;
+  // }
+}
+.authing-g2-input-form.remove-padding {
+  .authing-ant-input-affix-wrapper {
+    padding-left: 0px;
+  }
+  *[class*='authing-'].authing-ant-select {
+    display: flex;
+    align-items: center;
+    .authing-ant-select-arrow {
+      top: unset;
+    }
+  }
+  *[class*='authing-'].authing-ant-select:not(.authing-ant-select-customize-input)
+    .authing-ant-select-selector {
+    display: flex;
+    align-items: center;
+    height: 28px;
+    width: 87px;
+    border: none;
+    padding-left: 18px;
+    cursor: pointer;
+  }
+}
+
+.areacode-virtual-dropdown {
+  &.authing-ant-select-dropdown {
+    border-radius: 4px;
+  }
+
+  .authing-ant-select-item-option-active {
+    color: #215ae5;
+    background-color: #eff2f6;
+  }
+  .authing-ant-select-item-option-selected:not(.authing-ant-select-item-option-disabled) {
+    color: #215ae5;
+    background-color: #eff2f6;
+  }
+}
+// .areacode-virtual-dropdown-icon {
+//   transition: transform 0.3s;
+// }
+.authing-ant-select-open {
+  .areacode-virtual-dropdown-icon {
+    transform: rotate(180deg);
+  }
+}
+.country {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 60%;
+}

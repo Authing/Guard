@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env: 
-      PUBLISH_OPTS: ${{ github.ref_name == 'v6' && '--verbose' || '--verbose --tag=alpha' }}
+      PUBLISH_OPTS: ${{ github.ref_name == 'v4' && '--verbose' || '--verbose --tag=alpha' }}
       VERSION: ${{ github.event.inputs.version }}
       NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
@@ -66,14 +66,14 @@ jobs:
           lerna version $VERSION --yes
           
       - name: release official
-        if: ${{ github.ref_name == 'v6' }}
+        if: ${{ github.ref_name == 'v4' }}
         run: |
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
           lerna run release:official
           echo "release:official successfully 🚀"
           
       - name: release alpha
-        if: ${{ github.ref_name != 'v6' }}
+        if: ${{ github.ref_name != 'v4' }}
         run: |
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
           lerna run release:alpha

@@ -9,6 +9,7 @@ module.exports = {
   extends: [
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
+    'plugin:react-hooks/recommended'
   ],
   root: true,
   rules: {
@@ -38,6 +39,7 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 'off',
     'prefer-const': 'off',
     '@typescript-eslint/ban-types': 'off',
-    '@typescript-eslint/no-unused-vars': 'off'
+    '@typescript-eslint/no-unused-vars': 'off',
+    'react-hooks/exhaustive-deps': 'off'
   }
 }

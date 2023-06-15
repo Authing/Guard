@@ -1,0 +1,40 @@
+.authing-g2-send-code-btn {
+  height: 43px;
+  width: 100%;
+  border: 1px solid #d4d6dc;
+  border-radius: 4px;
+}
+
+.send-code-btn-jp span {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  line-height: 30px;
+}
+
+.authing-g2-send-code-btn:hover {
+  background: rgba(57, 106, 255, 0.1);
+}
+
+.authing-g2-send-code-btn:focus {
+  outline: none;
+}
+
+.authing-g2-send-code-btn[disabled] {
+  cursor: not-allowed;
+  filter: opacity(0.5);
+}
+
+@media only screen and (max-width: 719px) {
+  .authing-g2-send-code-btn {
+    font-size: 14px;
+  }
+}
+
+.g2-loading-btn-center {
+  .authing-ant-btn-loading-icon .anticon {
+    padding-right: 0;
+  }
+}
