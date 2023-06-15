@@ -5,8 +5,7 @@ const fs = require('fs-extra')
 const rm = require('rimraf')
 
 const resolve = (dir, file = '') =>{
-  console.log('__dirname: ', __dirname)
-  return path.resolve(__dirname, '../', dir, file)
+  return path.join(__dirname, '../', dir, file)
 }
 
 const reactVersions = [16, 18]
