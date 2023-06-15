@@ -4,6 +4,7 @@ module.exports = {
   optimization: {
     minimize: true,
     minimizer: [new TerserPlugin({
+      extractComments: false,
       parallel: true,
       terserOptions: {
         compress: {
