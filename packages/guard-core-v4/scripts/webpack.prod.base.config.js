@@ -1,6 +1,10 @@
 const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = {
+  externals: {
+    react: 'react',
+    'react-dom': 'react-dom'
+  },
   optimization: {
     minimize: true,
     minimizer: [new TerserPlugin({
