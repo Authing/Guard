@@ -1,6 +1,6 @@
 {
-  "name": "@authing/guard-core-v4",
-  "version": "4.4.0-alpha.12",
+  "name": "@authing/guard-core",
+  "version": "6.0.0-alpha.17",
   "description": "Authing Guard Component for core codes, only be used to internal",
   "types": "dist/typings/src/index.d.ts",
   "files": [
@@ -36,7 +36,7 @@
     "@types/lodash": "^4.14.175",
     "@types/throttle-debounce": "^5.0.0",
     "@types/ua-parser-js": "^0.7.36",
-    "face-api.js": "^0.20.0",
+    "face-api.js": "^0.22.2",
     "throttle-debounce": "^5.0.0",
     "url-loader": "^4.1.1"
   }

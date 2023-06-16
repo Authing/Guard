@@ -5,9 +5,9 @@
   "main": "index.ts",
   "module": "index.ts",
   "author": "https://github.com/authing",
-  "license": "MIT",
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
     "antd": "^5.1.7"
-  }
+  },
+  "license": "MIT"
 }

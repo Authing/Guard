@@ -12,15 +12,6 @@ module.exports = function webpackConfigFn ({
   reactVersion = '16'
 }) {
   return {
-    entry: resolve('src/index.tsx'),
-    output: {
-      filename: 'guard.min.js',
-      path: resolve(`dist/esm-react${reactVersion}`),
-      library: {
-        name: 'GuardFactory',
-        type: 'umd'
-      }
-    },
     resolve: {
       extensions: ['.tsx', '.ts', '.js', '.json'],
       alias: {

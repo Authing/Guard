@@ -2,7 +2,7 @@ const { merge } = require('webpack-merge')
 
 const webpackBaseConfigFn = require('./webpack.base.config')
 
-const webpackProdBaseConfig = require('./webpack.prod.base.config')
+const webpackProdBaseConfigFn = require('./webpack.prod.base.config')
 
 const { resolve } = require('./utils')
 
@@ -25,5 +25,7 @@ module.exports = merge(
       }
     }
   },
-  webpackProdBaseConfig
+  webpackProdBaseConfigFn({
+    reactVersion: '16'
+  })
 )
