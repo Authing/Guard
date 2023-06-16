@@ -24,6 +24,8 @@ const isDef = (value: unknown) => value !== undefined
 
 export * from './types'
 
+export * from './Guard'
+
 export class Guard {
   public options: GuardOptions
 
