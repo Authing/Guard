@@ -2,6 +2,8 @@ const { merge } = require('webpack-merge')
 
 const webpackBaseConfigFn = require('./webpack.base.config')
 
+const webpack = require('webpack')
+
 const { resolve } = require('./utils')
 
 const reactVersion = '16'

@@ -10,7 +10,6 @@ export default function Home () {
   const appId = '630ed3137dd6f2fd7001da24'
 
   const config: Partial<GuardLocalConfig> = {
-    mode: GuardMode.Modal,
     lang: 'en-US'
   }
 

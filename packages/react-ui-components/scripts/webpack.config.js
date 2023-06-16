@@ -15,11 +15,8 @@ module.exports = {
     filename: 'guard.min.js',
     path: resolve(`dist/esm`),
     library: {
-      type: 'module'
+      type: 'umd'
     }
-  },
-  experiments: {
-    outputModule: true
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.json']

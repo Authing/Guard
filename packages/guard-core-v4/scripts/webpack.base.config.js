@@ -12,7 +12,6 @@ module.exports = function webpackConfigFn ({
   reactVersion = '16'
 }) {
   return {
-    mode: 'production',
     entry: resolve('src/index.tsx'),
     output: {
       filename: 'guard.min.js',
@@ -22,9 +21,6 @@ module.exports = function webpackConfigFn ({
         type: 'umd'
       }
     },
-    // experiments: {
-    //   outputModule: true
-    // },
     resolve: {
       extensions: ['.tsx', '.ts', '.js', '.json'],
       alias: {

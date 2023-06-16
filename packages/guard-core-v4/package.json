@@ -36,7 +36,7 @@
     "@types/lodash": "^4.14.175",
     "@types/throttle-debounce": "^5.0.0",
     "@types/ua-parser-js": "^0.7.36",
-    "face-api.js": "^0.22.2",
+    "face-api.js": "^0.20.0",
     "throttle-debounce": "^5.0.0",
     "url-loader": "^4.1.1"
   }
