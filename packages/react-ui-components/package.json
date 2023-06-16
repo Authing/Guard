@@ -18,7 +18,7 @@
   "author": "https://github.com/authing",
   "license": "MIT",
   "dependencies": {
-    "@authing/guard-shim-react": "^4.4.0-alpha.7",
+    "@authing/guard-shim-react": "^4.4.0-alpha.8",
     "react": "^16.13.1"
   },
   "devDependencies": {
