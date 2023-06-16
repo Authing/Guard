@@ -32,7 +32,7 @@ const propsAreEqual = (pre: GuardProps, current: GuardProps) => {
   return GuardPropsFilter(pre, current)
 }
 
-const GuardComponent = memo((props: GuardProps) => {
+export const Guard = memo((props: GuardProps) => {
   const { config } = props
 
   const ref = useRef<HTMLDivElement>(null)
@@ -64,16 +64,3 @@ const GuardComponent = memo((props: GuardProps) => {
     </div>
   )
 }, propsAreEqual)
-
-export function Guard(props: GuardProps) {
-  useEffect(() => {
-    render({
-      container: document.querySelector(
-        '#authing-guard-container-v4'
-      ) as Element,
-      element: <GuardComponent {...props} />
-    })
-  }, [])
-
-  return <div id="authing-guard-container-v4"></div>
-}
