@@ -1,6 +1,6 @@
 {
   "name": "@authing/ng-ui-components",
-  "version": "4.4.0-alpha.6",
+  "version": "4.4.0-alpha.7",
   "description": "Authing Guard for Angular",
   "module": "dist/fesm2015/authing-guard-angular.mjs",
   "types": "dist/index.d.ts",
@@ -20,7 +20,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "^14.1.1",
     "@angular/cli": "^14.1.1",
-    "@authing/native-js-ui-components": "^4.4.0-alpha.6",
+    "@authing/native-js-ui-components": "^4.4.0-alpha.7",
     "ng-packagr": "^14.1.0"
   },
   "peerDependencies": {
