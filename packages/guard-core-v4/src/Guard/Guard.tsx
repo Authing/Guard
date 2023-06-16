@@ -1,4 +1,4 @@
-import { React } from 'shim-react'
+import { React, render } from 'shim-react'
 
 import { GuardEvents } from './event'
 
@@ -32,7 +32,7 @@ const propsAreEqual = (pre: GuardProps, current: GuardProps) => {
   return GuardPropsFilter(pre, current)
 }
 
-export const Guard = memo((props: GuardProps) => {
+const GuardComponent = memo((props: GuardProps) => {
   const { config } = props
 
   const ref = useRef<HTMLDivElement>(null)
@@ -64,3 +64,16 @@ export const Guard = memo((props: GuardProps) => {
     </div>
   )
 }, propsAreEqual)
+
+export function Guard(props: GuardProps) {
+  useEffect(() => {
+    render({
+      container: document.querySelector(
+        '#authing-guard-container-v4'
+      ) as Element,
+      element: <GuardComponent {...props} />
+    })
+  }, [])
+
+  return <div id="authing-guard-container-v4"></div>
+}
