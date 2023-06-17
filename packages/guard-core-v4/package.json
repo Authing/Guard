@@ -11,7 +11,6 @@
     "autoinstall": "npm ci && cd shim-antd4 && npm ci && cd ../shim-antd5 && npm ci && cd ../shim-react16 && npm ci && cd ../shim-react18 && npm ci",
     "build": "node scripts/build.js",
     "build:bundle-analyzer": "webpack --config ./scripts/webpack.bundle-analyzer.js",
-    "build:ui": "rm -rf dist/ui && webpack --config ./scripts/webpack.ui.js",
     "dev": "webpack-dev-server --config scripts/webpack.dev.config.js",
     "release:official": "npm publish --verbose --access public",
     "release:alpha": "npm publish --verbose --tag=alpha --access public"
