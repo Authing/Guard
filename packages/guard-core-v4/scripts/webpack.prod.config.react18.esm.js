@@ -12,6 +12,6 @@ module.exports = merge(
     reactVersion
   }),
   webpackProdBaseConfigFn({
-    reactVersion: '18'
+    reactVersion
   })
 )
