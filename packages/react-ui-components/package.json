@@ -1,6 +1,6 @@
 {
   "name": "@authing/react-ui-components",
-  "version": "4.4.0-alpha.17",
+  "version": "4.4.0-alpha.18",
   "description": "Authing Guard for React",
   "module": "dist/esm/guard.min.js",
   "types": "dist/typings/index.d.ts",
