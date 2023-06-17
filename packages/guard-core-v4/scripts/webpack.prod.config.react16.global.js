@@ -15,6 +15,9 @@ module.exports = merge(
       reactVersion
     }
   ), 
+  webpackProdBaseConfigFn({
+    reactVersion: '16'
+  }),
   {
     output: {
       filename: 'guard.min.js',
@@ -24,8 +27,5 @@ module.exports = merge(
         type: 'global'
       }
     }
-  },
-  webpackProdBaseConfigFn({
-    reactVersion: '16'
-  })
+  }
 )
