@@ -21,7 +21,7 @@ const client = new OSS({
 readyGo()
 
 function readyGo() {
-  getAndPutFile(`${process.cwd()}/packages/guard-core/dist/global`)
+  getAndPutFile(`${process.cwd()}/packages/guard-core-v6/dist/global`)
 }
 
 function getAndPutFile(dir) {
