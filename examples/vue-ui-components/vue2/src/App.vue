@@ -1,0 +1,41 @@
+<template>
+  <div id="app">
+    <Guard :appId="appId" @login="onLogin"></Guard>
+  </div>
+</template>
+
+<script>
+import { Guard } from '@authing/vue-ui-components'
+
+import '@authing/vue-ui-components/dist/esm/guard.min.css'
+
+console.log('Guard: ', Guard)
+
+export default {
+  name: 'App',
+  components: {
+    Guard
+  },
+  data: function () {
+    return {
+      appId: '630ed3137dd6f2fd7001da24'
+    }
+  },
+  methods: {
+    onLogin (userInfo) {
+      console.log(userInfo)
+    }
+  }
+}
+</script>
+
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+</style>

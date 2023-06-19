@@ -2,10 +2,8 @@
   <div id="authing-guard-container"></div>
 </template>
 
-<script scoped lang="ts">
+<script>
 import { Guard as NativeGuard, GuardEventsCamelToKebabMapping } from '@authing/native-js-ui-components'
-
-import '@authing/native-js-ui-components/dist/esm/guard.min.css'
 
 const callbackEvent = ['before-login', 'before-register']
 
@@ -67,7 +65,7 @@ export default {
   data() {
     return {
       localVisible: false,
-      guardInstance: null,
+      guardInstance: {},
       guarConfig: {}
     }
   },
