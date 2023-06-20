@@ -47,6 +47,7 @@ jobs:
       - name: install global packages
         run: |
           npm install -g lerna@4.0.0
+          npm ci
 
       - name: lint codes
         run: |
