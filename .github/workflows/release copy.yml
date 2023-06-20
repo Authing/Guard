@@ -59,19 +59,23 @@ jobs:
       - name: update version
         run: |
           lerna version $VERSION --yes
+      
+      - name: build libs
+        run: |
+          lerna run build:lib
 
       - name: release official
         if: ${{ github.ref_name == 'v4' }}
         run: |
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
-          npm run release:official
+          lerna run release:official
           echo "release:official successfully 🚀"
           
       - name: release alpha
         if: ${{ github.ref_name != 'v4' }}
         run: |
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
-          npm run release:alpha
+          lerna run release:alpha
           echo "release:alpha successfully 🚀"
 
       - name: upload oss
