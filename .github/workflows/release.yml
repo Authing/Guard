@@ -57,6 +57,11 @@ jobs:
       - name: build core
         run: |
           npm run build:core
+
+      - name: transfer shims
+        run: |
+          cd packages/guard-shim-react && rm -rf dist
+          cd packages/guard-shim-react18 && rm -rf dist
           npm run transfer-packages
 
       - name: update version
