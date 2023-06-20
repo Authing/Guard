@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "prepare": "husky install",
-    "build:core": "cd packages/guard-core-v4 && npm ci && npm run build",
+    "build:core": "cd packages/guard-core-v4 && npm run autoinstall && npm run build",
     "link": "lerna link",
     "lint": "eslint --ext .tsx,.ts packages/**/src",
     "lint:fix": "eslint --fix --ext .tsx,.ts packages/**/src",

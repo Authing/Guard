@@ -27,7 +27,6 @@ function callShell (args) {
   const releaseType = type === 'alpha' ? RELEASE_ALPHA : RELEASE_OFFICIAL
 
   shelljs.exec(`
-    npm run transfer-packages
     cd packages/guard-shim-react && ${releaseType}
     cd ../../
     cd packages/guard-shim-react18 && ${releaseType}
