@@ -11,7 +11,7 @@
     "start": "ng serve",
     "watch": "ng build --watch --configuration development",
     "autoinstall": "npm ci",
-    "build:lib": "npm run build:ng && npm run build:assets",
+    "build:lib": "npm ci && npm run build:ng && npm run build:assets",
     "build:assets": "node scripts/build.js",
     "build:ng": "ng build guard",
     "release:official": "npm publish --verbose --access public",

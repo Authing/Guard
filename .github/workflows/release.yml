@@ -44,11 +44,9 @@ jobs:
           git config --global user.email ${{ github.event.inputs.email }}
           git config --global user.name ${{ github.event.inputs.name }}
           
-      - name: install packages
+      - name: install global packages
         run: |
           npm install -g lerna@4.0.0
-          npm ci
-          lerna run autoinstall
 
       - name: lint codes
         run: |
@@ -58,23 +56,13 @@ jobs:
         run: |
           npm run build:core
 
-      - name: transfer shims
-        run: |
-          cd packages/guard-shim-react && rm -rf dist
-          cd packages/guard-shim-react18 && rm -rf dist
-          npm run transfer-packages
-
       - name: update version
         run: |
           lerna version $VERSION --yes
-
+      
       - name: build libs
         run: |
-          cd packages/native-js-components && npm run build:lib
-          cd packages/ng-ui-components && npm run build:lib
-          cd packages/react-ui-components && npm run build:lib
-          cd packages/react18-ui-components && npm run build:lib
-          cd packages/vue-ui-components && npm run build:lib
+          lerna run build:lib
 
       - name: release official
         if: ${{ github.ref_name == 'v4' }}

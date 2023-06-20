@@ -6,7 +6,7 @@
   "types": "dist/typings/index.d.ts",
   "scripts": {
     "autoinstall": "npm ci",
-    "build:lib": "node scripts/build.js",
+    "build:lib": "npm ci && node scripts/build.js",
     "release:official": "npm publish --verbose --access public",
     "release:alpha": "npm publish --verbose --tag=alpha --access public"
   },
