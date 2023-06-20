@@ -64,14 +64,14 @@ jobs:
         if: ${{ github.ref_name == 'v4' }}
         run: |
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
-          npm run release:official
+          npm run release type=official version=$VERSION
           echo "release:official successfully 🚀"
           
       - name: release alpha
         if: ${{ github.ref_name != 'v4' }}
         run: |
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
-          npm run release:alpha
+          npm run release type=alpha version=$VERSION
           echo "release:alpha successfully 🚀"
 
       - name: upload oss
