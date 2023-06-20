@@ -65,8 +65,11 @@ jobs:
 
       - name: build libs
         run: |
-          lerna link
-          lerna run build:lib
+          cd packages/native-js-components && npm run build:lib
+          cd packages/ng-ui-components && npm run build:lib
+          cd packages/react-ui-components && npm run build:lib
+          cd packages/react18-ui-components && npm run build:lib
+          cd packages/vue-ui-components && npm run build:lib
 
       - name: release official
         if: ${{ github.ref_name == 'v4' }}
