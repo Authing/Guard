@@ -24,7 +24,7 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
-    "@authing/react18-ui-components": "^4.4.0-alpha.21",
+    "@authing/react18-ui-components": "^4.4.0-alpha.37",
     "antd": "^4.24.0",
     "face-api.js": "^0.22.2",
     "react": "^18.2.0",

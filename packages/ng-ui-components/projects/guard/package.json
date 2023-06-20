@@ -1,0 +1,11 @@
+{
+  "name": "@authing/ng-ui-components",
+  "version": "4.4.0-alpha.37",
+  "peerDependencies": {
+    "@angular/common": "^14.2.0",
+    "@angular/core": "^14.2.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}

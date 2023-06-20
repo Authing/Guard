@@ -12,7 +12,7 @@ module.exports = function getWebpackConfig ({
 }) {
   return {
     mode: 'production',
-    entry: resolve(`src/${entryFileName}`),
+    entry: resolve(`projects/guard/src/${entryFileName}`),
     output: {
       filename: outputFileName,
       path: resolve('dist'),

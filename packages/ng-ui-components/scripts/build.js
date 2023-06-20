@@ -21,7 +21,5 @@ function readyGo () {
     }
 
     rm.sync(path.resolve(__dirname, `../dist/${outputFileName}`))
-    rm.sync(path.resolve(__dirname, `../dist/${entryFileName}`))
-    rm.sync(path.resolve(__dirname, `../dist/node_modules`))
   })
 }

@@ -3,33 +3,39 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "guard-angular": {
+    "guard": {
       "projectType": "library",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "less"
-        }
-      },
-      "root": ".",
-      "sourceRoot": "src",
+      "root": "projects/guard",
+      "sourceRoot": "projects/guard/src",
       "prefix": "authing",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "tsconfig.json",
-            "project": "ng-package.json"
+            "project": "projects/guard/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "tsconfig.json"
+              "tsConfig": "projects/guard/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/guard/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/guard/src/test.ts",
+            "tsConfig": "projects/guard/tsconfig.spec.json",
+            "karmaConfig": "projects/guard/karma.conf.js"
+          }
         }
       }
     }
   },
+  "defaultProject": "guard",
   "cli": {
     "analytics": false
   }
