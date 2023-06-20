@@ -1,6 +1,6 @@
 {
   "name": "@authing/react-ui-components",
-  "version": "4.4.0-alpha.45",
+  "version": "4.4.0-alpha.48",
   "description": "Authing Guard for React",
   "module": "dist/esm/guard.min.js",
   "types": "dist/typings/index.d.ts",
@@ -18,7 +18,7 @@
   "author": "https://github.com/authing",
   "license": "MIT",
   "dependencies": {
-    "@authing/guard-shim-react": "^4.4.0-alpha.45",
+    "@authing/guard-shim-react": "^4.4.0-alpha.48",
     "react": "^16.13.1"
   },
   "devDependencies": {
