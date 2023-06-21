@@ -21,7 +21,7 @@ import {
   LogoutParams
 } from './types'
 
-import '@authing/react-ui-components/lib/index.min.css'
+import '@authing/react-ui-components/dist/esm/guard.min.css'
 
 export * from './types'
 
