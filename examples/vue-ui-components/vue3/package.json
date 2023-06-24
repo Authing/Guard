@@ -10,7 +10,7 @@
   },
   "author": "https://github.com/authing",
   "dependencies": {
-    "@authing/vue-ui-components": "^4.4.0-alpha.56",
+    "@authing/vue-ui-components": "^4.4.0-alpha.60",
     "vue": "^3.2.37",
     "vue-router": "^4.1.2"
   },
