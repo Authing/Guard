@@ -11,12 +11,8 @@ module.exports = function webpackProdBaseConfigFn ({
     output: {
       filename: 'guard.min.js',
       path: resolve(`dist/esm-react${reactVersion}`),
-      library: {
-        type: 'module'
-      }
-    },
-    experiments: {
-      outputModule: true
+      library: 'GuardFactory',
+      libraryTarget: 'umd'
     },
     externals: {
       react: 'react',
