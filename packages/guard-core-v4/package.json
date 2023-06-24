@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard-core",
-  "version": "4.4.0-alpha.58",
+  "version": "4.4.0-alpha.59",
   "description": "Authing Guard Component for core codes, only be used to internal",
   "types": "dist/typings/src/index.d.ts",
   "files": [
