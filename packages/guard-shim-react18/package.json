@@ -25,7 +25,7 @@
     "webpack": "^5.72.0"
   },
   "dependencies": {
-    "@authing/react18-ui-components": "^4.4.0-alpha.56",
+    "@authing/react18-ui-components": "^4.4.0-alpha.60",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },
