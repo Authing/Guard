@@ -1,14 +1,8 @@
 import Head from 'next/head'
 
-import dynamic from 'next/dynamic'
-
 import '@authing/react18-ui-components/dist/esm/guard.min.css'
 
-import { User } from '@authing/react18-ui-components'
-
-const GuardComponent = dynamic(() => import('@authing/react18-ui-components').then(res => res.Guard), {
-  ssr: false
-})
+import { Guard, User } from '@authing/react18-ui-components'
 
 export default function Home () {
   const onLogin = (userInfo: User) => {
@@ -16,7 +10,7 @@ export default function Home () {
   }
 
   return <div>
-    <GuardComponent appId='AUTHING_APP_ID' onLogin={onLogin}></GuardComponent>
+    <Guard appId='630ed3137dd6f2fd7001da24' onLogin={onLogin}></Guard>
   </div>
 }
 
