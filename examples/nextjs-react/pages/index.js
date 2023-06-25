@@ -4,9 +4,11 @@ import dynamic from 'next/dynamic'
 
 import '@authing/react-ui-components/dist/esm/guard.min.css'
 
-const GuardComponent = dynamic(() => import('@authing/react-ui-components').then(res => res.Guard), {
-  ssr: false
-})
+import { Guard } from '@authing/react-ui-components'
+
+// const GuardComponent = dynamic(() => import('@authing/react-ui-components').then(res => res.Guard), {
+//   ssr: false
+// })
 
 export default function Home () {
   const onLogin = (userInfo) => {
@@ -14,7 +16,8 @@ export default function Home () {
   }
 
   return <div>
-    <GuardComponent appId='630ed3137dd6f2fd7001da24' onLogin={onLogin}></GuardComponent>
+    {/* <GuardComponent appId='AUTHING_APP_ID' onLogin={onLogin}></GuardComponent> */}
+    <Guard appId='AUTHING_APP_ID' onLogin={onLogin}></Guard>
   </div>
 }
 

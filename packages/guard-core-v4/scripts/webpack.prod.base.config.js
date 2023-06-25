@@ -11,15 +11,11 @@ module.exports = function webpackProdBaseConfigFn ({
     output: {
       filename: 'guard.min.js',
       path: resolve(`dist/esm-react${reactVersion}`),
-      library: {
-        name: 'GuardFactory',
-        type: 'umd'
-      }
+      library: 'GuardFactory',
+      libraryTarget: 'umd',
+      globalObject: 'this'
     },
-    externals: {
-      react: 'react',
-      'react-dom': 'react-dom'
-    },
+    externals: ['react', 'react-dom'],
     optimization: {
       minimize: true,
       minimizer: [new TerserPlugin({

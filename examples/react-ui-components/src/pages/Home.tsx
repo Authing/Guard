@@ -7,7 +7,7 @@ import '@authing/react-ui-components/dist/esm/guard.min.css'
 import * as facePlugin from 'face-api.js'
 
 export default function Home () {
-  const appId = '630ed3137dd6f2fd7001da24'
+  const appId = 'AUTHING_APP_ID'
 
   const config: Partial<GuardLocalConfig> = {
     lang: 'en-US'

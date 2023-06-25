@@ -18,7 +18,7 @@ export default {
   },
   data: function () {
     return {
-      appId: '630ed3137dd6f2fd7001da24'
+      appId: 'AUTHING_APP_ID'
     }
   },
   methods: {

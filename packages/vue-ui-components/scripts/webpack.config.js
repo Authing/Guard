@@ -16,9 +16,9 @@ module.exports = {
   output: {
     filename: 'guard.min.js',
     path: resolve(`dist/esm`),
-    library: {
-      type: 'umd'
-    }
+    library: 'GuardFactory',
+    libraryTarget: 'umd',
+    globalObject: 'this'
   },
   externals: {
     'vue': 'vue'

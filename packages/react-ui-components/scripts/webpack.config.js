@@ -14,9 +14,9 @@ module.exports = {
   output: {
     filename: 'guard.min.js',
     path: resolve(`dist/esm`),
-    library: {
-      type: 'umd'
-    }
+    library: 'GuardFactory',
+    libraryTarget: 'umd',
+    globalObject: 'this'
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.json']
