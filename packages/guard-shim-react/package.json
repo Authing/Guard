@@ -12,6 +12,9 @@
     "release:official": "npm publish --verbose --access public",
     "release:alpha": "npm publish --verbose --tag=alpha --access public"
   },
+  "peerDependencies": {
+    "authing-js-sdk": "^4.23.44"
+  },
   "author": "https://github.com/authing",
   "license": "MIT"
 }
