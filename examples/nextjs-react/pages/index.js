@@ -16,8 +16,8 @@ export default function Home () {
   }
 
   return <div>
-    {/* <GuardComponent appId='630ed3137dd6f2fd7001da24' onLogin={onLogin}></GuardComponent> */}
-    <Guard appId='630ed3137dd6f2fd7001da24' onLogin={onLogin}></Guard>
+    {/* <GuardComponent appId='AUTHING_APP_ID' onLogin={onLogin}></GuardComponent> */}
+    <Guard appId='AUTHING_APP_ID' onLogin={onLogin}></Guard>
   </div>
 }
 

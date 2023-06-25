@@ -18,7 +18,7 @@ export default defineComponent({
     Guard
   },
   setup () {
-    const appId = '630ed3137dd6f2fd7001da24'
+    const appId = 'AUTHING_APP_ID'
 
     const onLogin = (userInfo: User) => {
       console.log(userInfo)
