@@ -143,10 +143,15 @@ export const RenderContext: React.FC<{
     const httpClient = initGuardHttp(defaultMergedConfig.host)
     httpClient.setAppId(appId)
     tenantId && httpClient.setTenantId(tenantId)
-    deviceId && httpClient.setDeviceId(deviceId)
+    if (deviceId) {
+      httpClient.setDeviceId(deviceId)
+    } else if (publicConfig?.deviceFuncEnabled) {
+      const browserId = localStorage.getItem('browserId')
+      browserId && httpClient.setDeviceId(browserId)
+    }
 
     setHttpClient(httpClient)
-  }, [appId, defaultMergedConfig, tenantId, deviceId])
+  }, [appId, defaultMergedConfig, tenantId, deviceId, publicConfig])
 
   /**
    *
@@ -197,6 +202,14 @@ export const RenderContext: React.FC<{
       }
     })
   }, [appId, authClint, config?.isSSO, events, httpClient])
+
+  //浏览器上报
+  useEffect(() => {
+    if (publicConfig?.deviceFuncEnabled) {
+      authClint?.browserInfoClient?.createDevice()
+    }
+  }, [authClint, config, publicConfig])
+
 
   useEffect(() => {
     if (httpClient && finallyConfig) {
