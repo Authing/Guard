@@ -788,7 +788,6 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
                 {/* <div className="switch-text">{switchText}</div> */}
                 <Popover
                   placement="leftTop"
-                  open={true}
                   content={switchText}
                   overlayClassName={
                     switchText === i18n.t('login.moreWays')
