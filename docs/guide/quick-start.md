@@ -158,10 +158,10 @@ export class AppModule {}
 :::
 
 ::: tab JavaScript
-::: hint-info
-所有 API 均可通过实例化 `Guard` 调用，后续不再赘述。
-:::
 ``` js
+// ******************
+// 所有 API 均可通过实例化 `Guard` 调用，后续不再赘述。
+// ******************
 import { Guard } from '@authing/guard'
 
 const guard = new Guard({
@@ -172,4 +172,5 @@ guard.start('#authing-guard-container').then(userInfo => {
   console.log('userInfo in start: ', userInfo)
 })
 ```
+:::
 ::::
