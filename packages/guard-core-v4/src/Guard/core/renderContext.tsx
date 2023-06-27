@@ -210,7 +210,6 @@ export const RenderContext: React.FC<{
     }
   }, [authClint, config, publicConfig])
 
-
   useEffect(() => {
     if (httpClient && finallyConfig) {
       httpClient?.setBaseUrl(finallyConfig.host)
