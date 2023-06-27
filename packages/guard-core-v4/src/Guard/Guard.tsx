@@ -73,6 +73,6 @@ export function Guard(props: GuardProps) {
       ) as Element,
       element: <GuardComponent {...props}></GuardComponent>
     })
-  }, [])
+  }, [props])
   return <div id="authing-guard-container-v4"></div>
 }
