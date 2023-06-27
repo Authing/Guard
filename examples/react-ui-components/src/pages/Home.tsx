@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Guard, GuardMode, GuardLocalConfig, User } from '@authing/react-ui-components'
+import { Guard, GuardLocalConfig, User } from '@authing/react-ui-components'
 
 import '@authing/react-ui-components/dist/esm/guard.min.css'
 
