@@ -19,7 +19,7 @@
     "@angular/platform-browser": "^14.0.0",
     "@angular/platform-browser-dynamic": "^14.0.0",
     "@angular/router": "^14.0.0",
-    "@authing/ng-ui-components": "^4.4.0-alpha.60",
+    "@authing/ng-ui-components": "^4.4.0-alpha.66",
     "face-api.js": "^0.22.2",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

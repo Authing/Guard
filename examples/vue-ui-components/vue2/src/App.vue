@@ -7,7 +7,7 @@
 <script>
 import { Guard } from '@authing/vue-ui-components'
 
-import '@authing/vue-ui-components/dist/esm/guard.min.css'
+import '@authing/vue-ui-components/lib/index.min.css'
 
 console.log('Guard: ', Guard)
 

@@ -9,7 +9,7 @@ import { defineComponent } from 'vue'
 
 import { Guard } from '@authing/vue-ui-components'
 
-import '@authing/vue-ui-components/dist/esm/guard.min.css'
+import '@authing/vue-ui-components/lib/index.min.css'
 
 import type { User } from '@authing/vue-ui-components'
 

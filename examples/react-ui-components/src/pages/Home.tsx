@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Guard, GuardLocalConfig, User } from '@authing/react-ui-components'
 
-import '@authing/react-ui-components/dist/esm/guard.min.css'
+import '@authing/react-ui-components/lib/index.min.css'
 
 import * as facePlugin from 'face-api.js'
 
