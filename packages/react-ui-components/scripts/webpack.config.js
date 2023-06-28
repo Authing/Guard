@@ -12,8 +12,8 @@ module.exports = {
   mode: 'production',
   entry: resolve('src/index.tsx'),
   output: {
-    filename: 'guard.min.js',
-    path: resolve(`dist/esm`),
+    filename: 'index.min.js',
+    path: resolve('lib'),
     library: 'GuardFactory',
     libraryTarget: 'umd',
     globalObject: 'this'
@@ -43,7 +43,7 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'guard.min.css'
+      filename: 'index.min.css'
     }),
     new CssMinimizerPlugin(),
   ]

@@ -2,10 +2,10 @@
   "name": "@authing/native-js-ui-components",
   "version": "4.4.0-alpha.65",
   "description": "Authing Guard for Native",
-  "module": "dist/esm/guard.min.js",
-  "types": "dist/typings/index.d.ts",
+  "module": "lib/index.min.js",
+  "types": "lib/typings/index.d.ts",
   "files": [
-    "dist",
+    "lib",
     "package.json",
     "package-lock.json"
   ],

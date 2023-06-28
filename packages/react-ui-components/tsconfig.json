@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "outDir": "dist",
+    "outDir": "lib",
     "target": "es5",
     "lib": ["dom", "esnext"],
     "allowJs": false,
@@ -15,7 +15,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "declaration": true,
-    "declarationDir": "./dist/typings",
+    "declarationDir": "./lib/typings",
     "noEmit": false,
     "jsx": "react",
     "downlevelIteration": true

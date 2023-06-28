@@ -1,4 +1,4 @@
-import '@authing/native-js-ui-components/dist/esm/guard.min.css'
+import '@authing/native-js-ui-components/lib/index.min.css'
 
 import Guard from './Guard.vue'
 
