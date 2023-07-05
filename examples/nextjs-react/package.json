@@ -6,7 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@authing/react-ui-components": "^4.4.0-alpha.66",
+    "@authing/react-ui-components": "^4.4.0-alpha.67",
     "face-api.js": "^0.22.2",
     "next": "latest",
     "react": "17.0.2",
