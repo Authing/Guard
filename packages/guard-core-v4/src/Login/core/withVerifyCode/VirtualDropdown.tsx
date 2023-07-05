@@ -52,12 +52,16 @@ export const VirtualDropdown: React.FC<VirtualDropdownProps> = props => {
   return (
     <Select
       showSearch
-      dropdownClassName="areacode-virtual-dropdown"
+      popupClassName="areacode-virtual-dropdown"
       bordered={false}
       listHeight={258}
       options={options}
       value={value}
       onChange={onChange}
+      onClick={e => {
+        e.preventDefault()
+        e.stopPropagation()
+      }}
       optionLabelProp="children"
       dropdownMatchSelectWidth={138}
       filterOption={(input, option: any) => {

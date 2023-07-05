@@ -154,7 +154,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
         <Select
           key={props.key}
           className={classnames('authing-g2-select', 'authing-g2-input')}
-          dropdownClassName="authing-g2-dropdown"
+          popupClassName="authing-g2-dropdown"
           options={[
             { label: i18n.t('common.man'), value: 'M' },
             { label: i18n.t('common.female'), value: 'F' }
@@ -165,7 +165,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
         <Select
           key={props.key}
           className={classnames('authing-g2-select', 'authing-g2-input')}
-          dropdownClassName="authing-g2-dropdown"
+          popupClassName="authing-g2-dropdown"
           options={countryList}
           showSearch
           filterOption={filterOption}
@@ -199,7 +199,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
         <Select
           key={props.key}
           className={classnames('authing-g2-select', 'authing-g2-input')}
-          dropdownClassName="authing-g2-dropdown"
+          popupClassName="authing-g2-dropdown"
           showSearch
           options={props.options}
           filterOption={filterOption}
@@ -209,7 +209,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
         <Select
           key={props.key}
           className={classnames('authing-g2-select', 'authing-g2-input')}
-          dropdownClassName="authing-g2-dropdown"
+          popupClassName="authing-g2-dropdown"
           showSearch
           options={props.options}
           filterOption={filterOption}
@@ -219,7 +219,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
         <Select
           key={props.key}
           className={classnames('authing-g2-select', 'authing-g2-input')}
-          dropdownClassName="authing-g2-dropdown"
+          popupClassName="authing-g2-dropdown"
           options={[
             { label: i18n.t('common.yes'), value: true as any },
             { label: i18n.t('common.no'), value: false as any }
