@@ -135,7 +135,7 @@ module.exports = {
             link: '/about/introduce'
           },
           {
-            text: 'GitHub',
+            text: 'Github',
             link: 'https://github.com/authing/guard',
             target: '_blank'
           }
