@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>zendesk</title>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="54" height="54" rx="8"></rect>
+    </defs>
+    <g id="应用" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="应用市场" transform="translate(-383.000000, -1696.000000)">
+            <g id="zendesk" transform="translate(383.000000, 1696.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="蒙版" fill="#03363D" xlink:href="#path-1"></use>
+                <g id="zendesk-2" mask="url(#mask-2)" fill="#FFFFFF" fill-rule="nonzero">
+                    <g transform="translate(12.000000, 16.000000)" id="形状">
+                        <path d="M13.3969769,5.8122525 L13.3969769,21.9633466 L0.0191585152,21.9633466 L13.3969769,5.8122525 Z M13.3969769,0.0149253854 C13.3969769,3.70912306 10.4022654,6.70383459 6.7080677,6.70383459 C3.01387003,6.70383459 0.0191585152,3.70912306 0.0191585152,0.0149253854 L13.3969769,0.0149253854 Z M15.6006794,21.9633466 C15.6006794,18.2691489 18.5953909,15.2744374 22.2895886,15.2744374 C25.9837863,15.2744374 28.9784978,18.2691489 28.9784978,21.9633466 L15.6006794,21.9633466 L15.6006794,21.9633466 Z M15.6006794,16.1660195 L15.6006794,0.0149253854 L28.9798115,0.0149253854 L15.6006794,16.1660195 Z"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

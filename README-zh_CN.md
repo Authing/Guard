@@ -65,7 +65,7 @@ Authing 支持 OAuth2、OIDC、SAML、LDAP 等多种协议，开发者可以配�
 
 ## 👀 在线体验
 
-点击查看 [sample-sso.authing.cn](https://sample-sso.authing.cn/login?app_id=5d70d0e991fdd597019df70d&protocol=oidc&finish_login_url=%2Finteraction%2Foidc%2Fd7223e6b-b796-4068-a3f2-298d527993c2%2Flogin&login_page_context=)
+点击查看 [sample-sso.authing.cn](https://sample-sso.authing.cn/login)
 
 ## 📚 文档
 
