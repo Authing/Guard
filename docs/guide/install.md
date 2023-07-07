@@ -30,8 +30,8 @@
 <head>
   <meta charset="utf-8">
   <title>Authing Guard</title>
-  <script type="text/javascript" src="https://cdn.authing.co/packages/guard/latest/guard.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.authing.co/packages/guard/latest/guard.min.css" />
+  <script type="text/javascript" src="https://cdn.authing.co/packages/guard/5.2.0/guard.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.authing.co/packages/guard/5.2.0/guard.min.css" />
 </head>
 
 <body>
