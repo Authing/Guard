@@ -6,7 +6,7 @@
 
 ## 使用推荐工程
 
-我们为你准备好了基础工程，以此为基础开发，可以为你省去大量配置和调试环境的时间。可前往 [examples](https://github.com/Authing/Guard/tree/master/examples) 获取对应的代码。
+我们为你准备好了基础工程，以此为基础开发，可以为你省去大量配置和调试环境的时间。可前往 [examples](https://github.com/Authing/Guard/tree/dev-v6/examples) 获取对应的代码。
 
 如果你使用了我们推荐的工程，可以略过下面的内容直接进入开发阶段，我们也推荐使用这套工程来构建你的项目。
 
