@@ -167,6 +167,128 @@ import { Guard } from '@authing/guard'
 const guard = new Guard({
   appId: 'AUTHING_APP_ID'
 })
+```
+:::
+::::
+
+## 初始化 Guard
+
+:::: tabs :options="{ useUrlFragment: false }"
+::: tab React
+```tsx
+// Embed.tsx
+
+// React 16 / 17
+// 代码示例：https://github.com/Authing/Guard/tree/v5/examples/guard-react/normal/src/pages/Embed.tsx
+import { useGuard } from '@authing/guard-react'
+
+// React 18
+// 代码示例：https://github.com/Authing/Guard/tree/v5/examples/guard-react18/normal/src/pages/Embed.tsx
+import { useGuard, User } from '@authing/guard-react'
+
+import React, { useEffect } from 'react'
+
+function Login() {
+  const guard = useGuard()
+
+  useEffect(() => {
+    // 使用 start 方法挂载 Guard 组件到你指定的 DOM 节点，登录成功后返回 userInfo
+    guard.start('#authing-guard-container').then((userInfo: User) => {
+      console.log('userInfo: ', userInfo)
+    })
+  }, [])
+
+  return (
+    <div id="authing-guard-container"></div>
+  );
+}
+```
+:::
+
+::: tab Vue2
+``` html
+<div id="authing-guard-container"></div>
+```
+```javascript
+// 代码示例：https://github.com/Authing/Guard/tree/v5/examples/guard-vue2/normal/src/views/Embed.vue
+// Embed.vue
+export default {
+  mounted () {
+    // 使用 start 方法挂载 Guard 组件到你指定的 DOM 节点，登录成功后返回 userInfo
+    this.$guard.start('#authing-guard-container').then(userInfo => {
+      console.log('userInfo in start: ', userInfo)
+    })
+  }
+}
+```
+:::
+
+::: tab Vue3
+``` html
+<div id="authing-guard-container"></div>
+```
+```typescript
+// 代码示例：https://github.com/Authing/Guard/tree/v5/examples/guard-vue3/normal/src/views/Embed.vue
+// Embed.vue
+import { ref, onMounted } from 'vue'
+
+import { useGuard  } from '@authing/guard-vue3'
+
+import type { User, RefreshToken, AuthenticationClient } from '@authing/guard-vue3'
+
+const guard = useGuard()
+
+onMounted(() => {
+  // 使用 start 方法挂载 Guard 组件到你指定的 DOM 节点，登录成功后返回 userInfo
+  guard.start('#authing-guard-container').then((user: User) => {
+    console.log("userInfo: ", user)
+  })
+})
+```
+:::
+
+::: tab Angular
+```html
+<div id="authing-guard-container"></div>
+```
+
+```typescript
+// 代码示例：https://github.com/Authing/Guard/blob/v5/examples/guard-angular/normal/src/app/pages/embed/embed.component.ts
+import { Component } from '@angular/core'
+
+import { GuardService, User } from '@authing/guard-angular'
+
+@Component({
+  selector: 'embed-container',
+  templateUrl: './embed.component.html',
+  styleUrls: ['./embed.component.css']
+})
+export class EmbedComponent {
+  constructor(
+    private guard: GuardService,
+  ) {}
+
+  ngOnInit() {
+    // 使用 start 方法挂载 Guard 组件到你指定的 DOM 节点，登录成功后返回 userInfo
+    this.guard.client.start('#authing-guard-container').then((userInfo: User) => {
+      console.log(userInfo)
+    })
+  }
+}
+
+```
+:::
+
+::: tab JavaScript
+``` js
+// ******************
+// 所有 API 均可通过实例化 `Guard` 调用，后续不再赘述。
+// ******************
+import { Guard } from '@authing/guard'
+
+const guard = new Guard({
+  appId: 'AUTHING_APP_ID'
+})
 
 guard.start('#authing-guard-container').then(userInfo => {
   console.log('userInfo in start: ', userInfo)
