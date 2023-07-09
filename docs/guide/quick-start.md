@@ -167,10 +167,6 @@ import { Guard } from '@authing/guard'
 const guard = new Guard({
   appId: 'AUTHING_APP_ID'
 })
-
-guard.start('#authing-guard-container').then(userInfo => {
-  console.log('userInfo in start: ', userInfo)
-})
 ```
 :::
 ::::
