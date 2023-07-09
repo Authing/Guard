@@ -12,7 +12,7 @@
 
 如果你希望自己配置或使用其它工程，请继续往下阅读。
 
-## 引入 Guard
+## 引入并初始化 Guard
 
 :::: tabs :options="{ useUrlFragment: false }"
 ::: tab React
@@ -171,7 +171,7 @@ const guard = new Guard({
 :::
 ::::
 
-## 初始化 Guard
+## 渲染 Guard
 
 :::: tabs :options="{ useUrlFragment: false }"
 ::: tab React
