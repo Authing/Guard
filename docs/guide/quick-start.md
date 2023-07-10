@@ -253,7 +253,7 @@ onMounted(() => {
 ```
 
 ```typescript
-// 代码示例：https://github.com/Authing/Guard/blob/v5/examples/guard-angular/normal/src/app/pages/embed/embed.component.ts
+// 代码示例：https://github.com/Authing/Guard/tree/v5/examples/guard-angular/normal/src/app/pages/embed/embed.component.ts
 import { Component } from '@angular/core'
 
 import { GuardService, User } from '@authing/guard-angular'
