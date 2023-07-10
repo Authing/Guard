@@ -137,8 +137,6 @@ const eventsMapping: Partial<GuardEvents> = {
 
     if (user) {
       user.token && client.setToken(user.token)
-      delete user.password
-      delete user.encryptedPassword
       client.setCurrentUser(user)
     }
 
