@@ -47,7 +47,8 @@ export const HIDE_SOCIALS_SHOWIN_ENTERPRISE = [
   'lark-internal',
   'wechatwork:corp:qrconnect',
   'wechatwork:service-provider:qrconnect',
-  'wechatwork:agency:qrconnect'
+  'wechatwork:agency:qrconnect',
+  'wechatwork:qrconnect:of:authing:agency',
 ]
 
 let thisAppId = ''
