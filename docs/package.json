@@ -1,0 +1,29 @@
+{
+  "scripts": {
+    "dev": "node --max_old_space_size=8192 ./node_modules/vuepress/cli.js dev -p 8888 --no-cache",
+    "build": "rm -rf .vuepress/dist && node --max_old_space_size=8192 ./node_modules/vuepress/cli.js build --max-concurrency=150 --no-cache"
+  },
+  "devDependencies": {
+    "@vuepress/plugin-google-analytics": "^1.8.3",
+    "@vuepress/plugin-medium-zoom": "^1.8.2",
+    "async": "^3.2.4",
+    "html-minifier-terser": "^7.0.0-beta.0",
+    "patch-package": "^6.4.7",
+    "sass-loader": "^7.3.1",
+    "vuepress": "^1.9.7",
+    "vuepress-plugin-code-copy": "^1.0.6"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cosmiconfig": "^7.0.1",
+    "dayjs": "^1.10.4",
+    "markdown-it-include": "^2.0.0",
+    "node-sass": "npm:dart-sass@^1.25.0",
+    "v-tooltip": "^2.1.3",
+    "vue-notification": "^1.3.20",
+    "vue-pagination-2": "^3.0.8",
+    "vue-select": "^3.11.2",
+    "vue-tabs-component": "^1.5.0",
+    "vuepress-plugin-tabs": "^0.3.0"
+  }
+}
