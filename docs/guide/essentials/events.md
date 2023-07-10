@@ -8,11 +8,11 @@
 
 ```tsx
 // React 16 / 17
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/pages/Embed.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/v5/examples/guard-react/normal/src/pages/Embed.tsx
 import { useGuard, User } from "@authing/guard-react";
 
 // React 18
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react18/normal/src/pages/Embed.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/v5/examples/guard-react18/normal/src/pages/Embed.tsx
 // import { useGuard, User } from "@authing/guard-react18";
 
 import React, { useEffect } from "react";
@@ -46,7 +46,7 @@ export default function Login() {
 ::: tab Vue2
 
 ```javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue2/normal/src/views/Embed.vue
+// 代码示例：https://github.com/Authing/Guard/tree/v5/examples/guard-vue2/normal/src/views/Embed.vue
 export default {
   mounted() {
     // 使用 start 方法挂载 Guard 组件到你指定的 DOM 节点，登录成功后返回 userInfo
@@ -69,7 +69,7 @@ export default {
 
 ```html
 <script lang="ts" setup>
-  // 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue3/normal/src/views/Embed.vue
+  // 代码示例：https://github.com/Authing/Guard/tree/v5/examples/guard-vue3/normal/src/views/Embed.vue
   import { onMounted } from "vue";
 
   import { useGuard } from "@authing/guard-vue3";
@@ -98,7 +98,7 @@ export default {
 ::: tab Angular
 
 ```typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-angular/normal/src/app/pages/embed/embed.component.ts
+// 代码示例：https://github.com/Authing/Guard/tree/v5/examples/guard-angular/normal/src/app/pages/embed/embed.component.ts
 import { Component, ChangeDetectorRef } from "@angular/core";
 
 import { GuardService, User } from "@authing/guard-angular";
@@ -132,7 +132,7 @@ export class EmbedComponent {
 
 ::: tab CDN
 ```javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard/normal/embed.html
+// 代码示例：https://github.com/Authing/Guard/tree/v5/examples/guard/normal/embed.html
 guard.on("login", (userInfo) => {
   // 自定义登录成功后的业务逻辑
   // 比如跳转到对应的某个页面等
