@@ -49,11 +49,11 @@
 // Jump.tsx
 
 // React16 / 17
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/pages/Jump.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react/normal/src/pages/Jump.tsx
 import { useGuard } from "@authing/guard-react";
 
 // React 18
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react18/normal/src/pages/Jump.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react18/normal/src/pages/Jump.tsx
 // import { useGuard } from '@authing/guard-react18';
 
 export default function Jump() {
@@ -78,11 +78,11 @@ export default function Jump() {
 // Callback.tsx
 
 // React 16 / 17
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/pages/Callback.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react/normal/src/pages/Callback.tsx
 import { JwtTokenStatus, useGuard, User } from '@authing/guard-react';
 
 // React 18
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react18/normal/src/pages/Callback.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react18/normal/src/pages/Callback.tsx
 // import { JwtTokenStatus, useGuard, User } from '@authing/guard-react18';
 
 import React, { useEffect } from 'react';
@@ -138,11 +138,11 @@ export default function Callback() {
 // Personal.tsx
 
 // React 16 / 17
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/pages/Personal.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react/normal/src/pages/Personal.tsx
 import { useGuard, User } from '@authing/guard-react';
 
 // React 18
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react18/normal/src/pages/Personal.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react18/normal/src/pages/Personal.tsx
 // import { useGuard, User } from '@authing/guard-react18';
 
 import React, { useEffect, useState } from 'react';
@@ -175,7 +175,7 @@ export default function Personal() {
 ::: tab Vue2
 
 ```javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue2/normal/src/views/Jump.vue
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue2/normal/src/views/Jump.vue
 // Jump.vue
 export default {
   methods: {
@@ -188,7 +188,7 @@ export default {
 ```
 
 ``` javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue2/normal/src/views/Callback.vue
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue2/normal/src/views/Callback.vue
 // Callback.vue
 export default {
   data () {
@@ -238,7 +238,7 @@ export default {
 ``` html
 <template>
   <div class="personal-container">
-    <!-- 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue2/normal/src/views/Personal.vue -->
+    <!-- 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue2/normal/src/views/Personal.vue -->
     <!-- Personal.vue -->
     <textarea id="" cols="100" rows="30" :value="userInfo"></textarea>
   </div>
@@ -269,7 +269,7 @@ export default {
 ::: tab Vue3
 
 ```javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue3/normal/src/views/Jump.vue
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue3/normal/src/views/Jump.vue
 // Jump.vue
 import { useGuard } from "@authing/guard-vue3";
 
@@ -284,7 +284,7 @@ const startWithRedirect = () => {
 ``` html
 <template>
   <div class="personal-container">
-    <!-- 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue3/normal/src/views/Callback.vue -->
+    <!-- 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue3/normal/src/views/Callback.vue -->
     <!-- Callback.vue -->
     <textarea id="" cols="100" rows="30" :value="userInfo"></textarea>
   </div>
@@ -346,7 +346,7 @@ onMounted(() => {
 ``` html
 <template>
   <div class="personal-container">
-    <!-- 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue3/normal/src/views/Personal.vue -->
+    <!-- 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue3/normal/src/views/Personal.vue -->
     <!-- Personal.vue -->
     <textarea id="" cols="100" rows="30" :value="userInfo"></textarea>
   </div>
@@ -378,7 +378,7 @@ onMounted(() => {
 ::: tab Angular
 
 ```typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-angular/normal/src/app/pages/jump/jump.component.ts
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-angular/normal/src/app/pages/jump/jump.component.ts
 // jump.component.ts
 // Angular 组件中使用 Guard API
 import { Component } from "@angular/core";
@@ -403,7 +403,7 @@ export class HomeComponent {
 ```
 
 ``` typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-angular/normal/src/app/pages/callback/callback.component.ts
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-angular/normal/src/app/pages/callback/callback.component.ts
 // callback.component.ts
 import { Component } from '@angular/core'
 import { Router } from '@angular/router'
@@ -464,7 +464,7 @@ export class CallbackComponent {
 ```
 
 ``` typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-angular/normal/src/app/pages/personal/personal.component.ts
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-angular/normal/src/app/pages/personal/personal.component.ts
 // personal.component.ts
 import { Component } from '@angular/core'
 
@@ -496,7 +496,7 @@ export class PersonalComponent {
 ::: tab CDN
 
 ```javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard/normal/jump.html
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard/normal/jump.html
 // jump.html
 const guard = new GuardFactory.Guard({
   // 你可以前往 Authing 控制台的本应用详情页查看你的 App ID
@@ -517,7 +517,7 @@ function startWithRedirect() {
 ```
 
 ``` javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard/normal/callback.html
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard/normal/callback.html
 // callback.html
 const guard = new GuardFactory.Guard(guardOptions)
 
@@ -572,7 +572,7 @@ async function handleAuthingLoginCallback () {
   <link rel="stylesheet" href="https://cdn.authing.co/packages/guard/latest/guard.min.css" />
 </head>
 <body>
-  <!-- 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard/normal/personal.html -->
+  <!-- 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard/normal/personal.html -->
   <!-- personal.html -->
   <button onclick="getUserInfo()">Get User Info</button>
 
@@ -604,11 +604,11 @@ async function handleAuthingLoginCallback () {
 
 ```tsx
 // React 16 / 17
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/normal/src/pages/Embed.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react/normal/src/pages/Embed.tsx
 import { useGuard, User } from "@authing/guard-react";
 
 // React 18
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react18/normal/src/pages/Embed.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react18/normal/src/pages/Embed.tsx
 // import { useGuard, User } from "@authing/guard-react18";
 
 import React, { useEffect } from "react";
@@ -638,7 +638,7 @@ export default function Login() {
 
 ```vue
 <template>
-  <!-- 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue2/normal/src/views/Embed.vue -->
+  <!-- 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue2/normal/src/views/Embed.vue -->
   <div id="authing-guard-container"></div>
 </template>
 <script>
@@ -659,7 +659,7 @@ export default {
 
 ```vue
 <template>
-  <!-- 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue3/normal/src/views/Embed.vue -->
+  <!-- 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue3/normal/src/views/Embed.vue -->
   <div id="authing-guard-container"></div>
 </template>
 
@@ -684,7 +684,7 @@ onMounted(() => {
 ::: tab Angular
 
 ```typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-angular/normal/src/app/pages/embed/embed.component.ts
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-angular/normal/src/app/pages/embed/embed.component.ts
 import { Component } from "@angular/core";
 import { GuardService, User } from "@authing/guard-angular";
 
@@ -758,12 +758,12 @@ guard.start("#authing-guard-container").then((userInfo) => {
 // App.tsx
 
 // React 16 / 17
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/modal/src/App.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react/modal/src/App.tsx
 import { GuardProvider } from "@authing/guard-react";
 import "@authing/guard-react/dist/esm/guard.min.css";
 
 // React 18
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react18/modal/src/App.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react18/modal/src/App.tsx
 // import { GuardProvider } from "@authing/guard-react18";
 // import "@authing/guard-react18/dist/esm/guard.min.css";
 
@@ -792,11 +792,11 @@ function App() {
 // Embed.tsx
 
 // React 16 / 17
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react/modal/src/pages/Embed.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react/modal/src/pages/Embed.tsx
 import { useGuard, User } from "@authing/guard-react";
 
 // React 18
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-react18/modal/src/pages/Embed.tsx
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-react18/modal/src/pages/Embed.tsx
 // import { useGuard, User } from "@authing/guard-react18";
 
 export default function Embed() {
@@ -837,7 +837,7 @@ export default function Embed() {
 ::: tab Vue2
 
 ```javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue2/modal/src/main.js
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue2/modal/src/main.js
 // main.js
 import Vue from "vue";
 import { GuardPlugin } from "@authing/guard-vue2";
@@ -857,7 +857,7 @@ Vue.use(GuardPlugin, {
 
 ```html
 <template>
-  <!-- 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue2/modal/src/views/Embed.vue -->
+  <!-- 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue2/modal/src/views/Embed.vue -->
   <!-- Embed.vue -->
   <div class="embed-container">
     <button class="authing-button" @click="showGuard">Show Guard</button>
@@ -897,7 +897,7 @@ Vue.use(GuardPlugin, {
 ::: tab Vue3
 
 ```javascript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue3/modal/src/main.ts
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue3/modal/src/main.ts
 // main.ts
 import { createApp } from "vue";
 import App from "./App.vue";
@@ -922,7 +922,7 @@ app.use(
 
 ```html
 <template>
-  <!-- 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-vue3/modal/src/views/Embed.vue -->
+  <!-- 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-vue3/modal/src/views/Embed.vue -->
   <!-- Embed.vue -->
   <div class="embed-container">
     <button class="authing-button" @click="showGuard">Show Guard</button>
@@ -963,7 +963,7 @@ app.use(
 ::: tab Angular
 
 ```typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-angular/modal/src/app/app.module.ts
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-angular/modal/src/app/app.module.ts
 // app.module.ts
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
@@ -993,7 +993,7 @@ export class AppModule {}
 ```
 
 ```typescript
-// 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard-angular/modal/src/app/pages/embed/embed.component.ts
+// 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard-angular/modal/src/app/pages/embed/embed.component.ts
 // embed.component.ts
 import { Component } from "@angular/core";
 
@@ -1030,7 +1030,7 @@ export class EmbedComponent {
 ::: tab CDN
 
 ```html
-<!-- 代码示例：https://github.com/Authing/Guard/blob/master/examples/guard/modal/embed.html -->
+<!-- 代码示例：https://github.com/Authing/Guard/tree/dev-v6/examples/guard/modal/embed.html -->
 <button onclick="showGuard()">Show Guard</button>
 
 <div>
