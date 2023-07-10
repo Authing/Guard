@@ -143,10 +143,17 @@ export const RenderContext: React.FC<{
     const httpClient = initGuardHttp(defaultMergedConfig.host)
     httpClient.setAppId(appId)
     tenantId && httpClient.setTenantId(tenantId)
-    deviceId && httpClient.setDeviceId(deviceId)
+    if (deviceId) {
+      httpClient.setDeviceId(deviceId)
+    } else if (publicConfig?.deviceFuncEnabled) {
+      authClint?.browserFingerprint?.createDevice().then(() => {
+        const browserId = localStorage.getItem('browserId')
+        browserId && httpClient.setDeviceId(browserId)
+      })
+    }
 
     setHttpClient(httpClient)
-  }, [appId, defaultMergedConfig, tenantId, deviceId])
+  }, [appId, defaultMergedConfig, tenantId, deviceId, publicConfig, authClint])
 
   /**
    *

@@ -252,6 +252,7 @@ export interface ApplicationConfig {
   name: string
   logo: string
   description?: string
+  deviceFuncEnabled?: boolean
   redirectUris: string[]
   registerDisabled: boolean
   mergeAdAndAccountPasswordLogin: boolean
