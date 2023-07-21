@@ -454,10 +454,15 @@ export class Guard {
     const authClient = await this.getAuthClient()
 
     const idToken =
-      authClient.tokenProvider.getToken() || localStorage.getItem('idToken')
+      authClient.tokenProvider.getToken() ||
+      localStorage.getItem('idToken') ||
+      ''
 
     if (!idToken) {
-      return null
+      const user = await authClient.getCurrentUser()
+      if (user) {
+        return user
+      }
     }
 
     const publicConfig = await this.then()
