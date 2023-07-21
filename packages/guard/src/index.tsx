@@ -236,7 +236,7 @@ export class Guard {
     }
 
     return new Promise(resolve => {
-      this.on('login', userInfo => {
+      this.on('login', (userInfo: User) => {
         resolve(userInfo)
       })
     })
@@ -451,16 +451,19 @@ export class Guard {
   async trackSession(): Promise<User | null> {
     const authClient = await this.getAuthClient()
 
+    const user = await authClient.getCurrentUser()
+
+    if (user) {
+      return user
+    }
+
     const idToken =
       authClient.tokenProvider.getToken() ||
       localStorage.getItem('idToken') ||
       ''
 
     if (!idToken) {
-      const user = await authClient.getCurrentUser()
-      if (user) {
-        return user
-      }
+      return null
     }
 
     const publicConfig = await this.then()
