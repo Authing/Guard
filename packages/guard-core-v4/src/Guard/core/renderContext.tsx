@@ -206,7 +206,8 @@ export const RenderContext: React.FC<{
   }, [appId, authClint, config?.isSSO, events, httpClient])
 
   useEffect(() => {
-    if (httpClient && finallyConfig) {
+    // 优先使用用户自定义 host
+    if (httpClient && finallyConfig && !config?.host) {
       httpClient?.setBaseUrl(finallyConfig.host)
     }
   }, [finallyConfig, httpClient])
