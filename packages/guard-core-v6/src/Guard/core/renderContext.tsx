@@ -200,7 +200,7 @@ export const RenderContext: React.FC<{
   }, [appId, authClint, config?.isSSO, events, httpClient])
 
   useEffect(() => {
-    if (httpClient && finallyConfig) {
+    if (httpClient && finallyConfig && !config?.host) {
       httpClient?.setBaseUrl(finallyConfig.host)
     }
   }, [finallyConfig, httpClient])
