@@ -1,5 +1,3 @@
-import Head from 'next/head'
-
 import { useEffect, useState } from 'react'
 
 import { Guard } from '@authing/guard-react18'
@@ -8,7 +6,7 @@ import { guardOptions } from '../config'
 
 import '@authing/guard-react18/dist/esm/guard.min.css'
 
-export default function Personal () {
+export default function Personal() {
   const [userInfo, setUserInfo] = useState('')
 
   const guard = new Guard(guardOptions)
@@ -26,11 +24,17 @@ export default function Personal () {
 
   const onLogout = () => guard.logout()
 
-  return <div>
-    <div><button onClick={onLogout}>登出</button></div>
-    {userInfo && <div>
-      <div>用户信息：</div>
-      <textarea cols={100} rows={30} defaultValue={userInfo}></textarea>
-    </div>}
-  </div>
+  return (
+    <div>
+      <div>
+        <button onClick={onLogout}>登出</button>
+      </div>
+      {userInfo && (
+        <div>
+          <div>用户信息：</div>
+          <textarea cols={100} rows={30} defaultValue={userInfo}></textarea>
+        </div>
+      )}
+    </div>
+  )
 }

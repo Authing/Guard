@@ -6,10 +6,11 @@
     "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "next lint --fix"
   },
   "dependencies": {
-    "@authing/guard-react18": "^5.2.4-alpha.1",
+    "@authing/guard-react18": "^5.2.4",
     "@types/node": "18.11.9",
     "@types/react": "18.0.24",
     "@types/react-dom": "18.0.8",

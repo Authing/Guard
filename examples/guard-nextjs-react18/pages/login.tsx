@@ -1,5 +1,3 @@
-import Head from 'next/head'
-
 import { useEffect } from 'react'
 import { Guard } from '@authing/guard-react18'
 import '@authing/guard-react18/dist/esm/guard.min.css'
@@ -14,7 +12,7 @@ export default function Login() {
       console.log('start userInfo: ', userInfo)
     })
 
-    guard.on('load', (e) => {
+    guard.on('load', e => {
       console.log('加载啊', e)
     })
 

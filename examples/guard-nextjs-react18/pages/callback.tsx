@@ -1,5 +1,3 @@
-import Head from 'next/head'
-
 import { useEffect } from 'react'
 import { Guard } from '@authing/guard-react18'
 import '@authing/guard-react18/dist/esm/guard.min.css'
@@ -47,7 +45,5 @@ export default function Callback() {
     handleCallback()
   }, [])
 
-  return (
-    <div>This is Callback page</div>
-  )
+  return <div>This is Callback page</div>
 }

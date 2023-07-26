@@ -1,6 +1,3 @@
-import Head from 'next/head'
-
-import { useEffect } from 'react'
 import { Guard } from '@authing/guard-react18'
 import '@authing/guard-react18/dist/esm/guard.min.css'
 
