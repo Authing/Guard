@@ -1,9 +1,6 @@
 import { React } from 'shim-react'
 
-import {
-  assembledRequestHost as utilAssembledRequestHost,
-  transformSortMethod
-} from '../compute'
+import { transformSortMethod } from '../compute'
 
 import { GuardLocalConfig } from '../../Guard/config'
 
@@ -176,21 +173,6 @@ const mergedPublicConfig = (
   return mergedPublicConfig
 }
 
-// host 拼接
-const assembledRequestHost = (
-  config: GuardLocalConfig,
-  publicConfig: ApplicationConfig
-) => {
-  const host = config?.__internalRequest__
-    ? config?.host
-    : utilAssembledRequestHost(
-        publicConfig.requestHostname,
-        config?.host as string
-      )
-
-  return host
-}
-
 /**
  * 请求服务console关于guard的配置
  * @param forceUpdate
@@ -229,12 +211,25 @@ export const useFetchConsoleConfig = (
     initPublicConfig()
   }, [initPublicConfig, forceUpdate])
 
+  const assembledRequestHost = (
+    configHost: string,
+    publicConfigHost: string
+  ) => {
+    const configUrl = new URL(configHost)
+
+    if (configUrl.hostname === 'core.authing.cn') {
+      return configUrl.protocol + '//' + publicConfigHost
+    }
+
+    return configHost
+  }
+
   return useMemo(() => {
     if (publicConfig && config && pageConfig) {
       return {
         finallyConfig: {
           ...mergedPublicConfig(config, publicConfig),
-          host: assembledRequestHost(config, publicConfig)
+          host: assembledRequestHost(config.host, publicConfig.requestHostname)
         },
         guardPageConfig: pageConfig
       }
