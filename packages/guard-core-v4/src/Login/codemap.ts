@@ -101,6 +101,10 @@ export const codeMap: Record<number, GuardModuleAction> = {
     action: 'changeModule',
     module: GuardModuleType.RESET_ACCOUNT_NAME
   },
+  2930: {
+    action: 'changeModule',
+    module: GuardModuleType.SELECT_ACCOUNT_2_LOGIN
+  },
   // 1643: {},
   408: {
     action: 'message'

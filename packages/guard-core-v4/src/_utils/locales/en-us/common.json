@@ -13,6 +13,7 @@
   "confirm": "Confirm",
   "unlock": "unlock",
   "email": "Email",
+  "publicAccount": "Public account",
   "emailFormatError": "Enter a valid Email address ",
   "emailLabel": "Email",
   "female": "Female",
