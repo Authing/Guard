@@ -11,6 +11,7 @@
   "username": "ユーザー名",
   "login": "ログイン",
   "noAccYet": "アカウントがないので,",
+  "publicAccount": "パブリックアカウント",
   "registerImmediate": "すぐに登録します",
   "sure": "確定",
   "hasLooseSaftyCode": "セキュリティコードの紛失?",

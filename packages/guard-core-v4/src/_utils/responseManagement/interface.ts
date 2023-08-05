@@ -39,7 +39,7 @@ export enum ApiCode {
   FLOW_SELECT_ACCOUNT = 2921,
 
   TENANT_PORTAL = 1644,
-
+  SELECT_ACCOUNT_2_LOGIN = 2930,
   RESET_ACCOUNT_NAME = 1108 // 用户名重复
 }
 
@@ -57,5 +57,6 @@ export const ChangeModuleApiCodeMapping: Record<string, GuardModuleType> = {
   [ApiCode.UNLOCK]: GuardModuleType.SELF_UNLOCK,
   [ApiCode.UNSAFE_PASSWORD_RESET]: GuardModuleType.UNSAFE_PASSWORD_RESET,
   [ApiCode.FLOW_SELECT_ACCOUNT]: GuardModuleType.FLOW_SELECT_ACCOUNT,
+  [ApiCode.SELECT_ACCOUNT_2_LOGIN]: GuardModuleType.SELECT_ACCOUNT_2_LOGIN,
   [ApiCode.TENANT_PORTAL]: GuardModuleType.TENANT_PORTAL
 }

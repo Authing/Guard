@@ -24,6 +24,7 @@ export enum GuardModuleType {
   /** 多租户门户选择页 */
   TENANT_PORTAL = 'tenant-portal',
   New_SUBMIT_SUCCESS = 'newSubmitSuccess', // 提交成功展示页
+  SELECT_ACCOUNT_2_LOGIN = 'selectAccout2Login', // 选择登录身份
   RESET_ACCOUNT_NAME = 'resetAccountName'
 }
 export interface GuardModuleAction {

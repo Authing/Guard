@@ -32,14 +32,14 @@ const MULTIPLE_ACCOUNT_LISTS: LoginWay[] = [
   'ldap',
   'ldap-password',
   'ldap-email',
-  'ldap-phone',
+  'ldap-phone'
 ]
 
 // 扫码登录方式
 export const QR_CODE_WAY: LoginWay[] = [
   'wechat-miniprogram-qrcode',
   'wechatmp-qrcode',
-  'app-qrcode',
+  'app-qrcode'
 ]
 
 // 展示多账号时 默认排除的登录方式
@@ -285,7 +285,7 @@ class MultipleAccount {
     }
     return {
       memberState,
-      backfillData,
+      backfillData
     }
   }
 
@@ -310,7 +310,7 @@ class MultipleAccount {
     }
     return {
       qrCount,
-      normalCount,
+      normalCount
     }
   }
 
@@ -321,14 +321,14 @@ class MultipleAccount {
     // TODO: backfillData 回填时考虑 AD 和  LDAP 对应的账号
     const wayLists = initWay === 'qrCode' ? QR_CODE_WAY : MULTIPLE_ACCOUNT_LISTS
     const userLists = Object.values(this.currentStore)
-    const user = userLists.find((i) => wayLists.includes(i.way))
+    const user = userLists.find(i => wayLists.includes(i.way))
     // 如果是扫码的用户 回填状态就可以了
     if (user && wayLists.includes(user.way)) {
       const data =
         initWay === 'qrCode'
           ? {
               account: '',
-              way: user.way,
+              way: user.way
             }
           : this.getAccountByWay(user.way, user)
 
@@ -337,7 +337,7 @@ class MultipleAccount {
         tab: user.tab,
         qrCodeId: user.qrCodeId,
         phoneCountryCode: user.phoneCountryCode,
-        areaCode: user.areaCode,
+        areaCode: user.areaCode
       }
     }
   }
@@ -452,30 +452,46 @@ class MultipleAccount {
    * 设置/更新 store 内的用户信息
    */
   private setUserInfo = (
-    user: Omit<User & { id: string, loginAccount?: string }, 'way' | 'tab' | 'phoneCountryCode'> // 添加扩展字段登录名
+    user: Omit<
+      User & { id: string; loginAccount?: string; usertype?: string },
+      'way' | 'tab' | 'phoneCountryCode'
+    > // 添加扩展字段登录名
   ) => {
     // 排除 ad 登录方式
     if (!user || !this.loginWay || !this.tabStatus || this.loginWay === 'ad') {
       console.log('User or LoginWay does not exist.')
       return
     }
-    const { photo, nickname, phone, username, email, id, name, loginAccount } = user
-    this.currentStore[id] = Object.assign({
-      way: this.loginWay, // 登录方式
-      tab: this.tabStatus, // 当前大tab 扫码 or 输入
+    const {
       photo,
       nickname,
       phone,
-      username: loginAccount || username,
-      name,
+      username,
       email,
       id,
-      qrCodeId: this.qrCodeId,
-      phoneCountryCode: this.phoneCountryCode,
-      areaCode: this.areaCode,
-      _updateTime: Date.now(),
-    })
-    this.saveStore()
+      name,
+      loginAccount,
+      usertype
+    } = user
+    if (usertype !== '2') {
+      this.currentStore[id] = Object.assign({
+        way: this.loginWay, // 登录方式
+        tab: this.tabStatus, // 当前大tab 扫码 or 输入
+        photo,
+        nickname,
+        phone,
+        username: loginAccount || username,
+        usertype,
+        name,
+        email,
+        id,
+        qrCodeId: this.qrCodeId,
+        phoneCountryCode: this.phoneCountryCode,
+        areaCode: this.areaCode,
+        _updateTime: Date.now()
+      })
+      this.saveStore()
+    }
   }
 
   /**
@@ -483,7 +499,7 @@ class MultipleAccount {
    */
   private saveStore = () => {
     const newStore = Object.assign({}, this.originStore, {
-      [this.appId]: this.currentStore,
+      [this.appId]: this.currentStore
     })
     localStorage.setItem(MULTIPLE_ACCOUNT_KEY, JSON.stringify(newStore))
   }
@@ -599,7 +615,7 @@ class MultipleAccount {
         way: parseWay,
         // fix: 回填时需要携带国际化信息。
         phoneCountryCode,
-        areaCode,
+        areaCode
       }
     }
   }
@@ -655,7 +671,7 @@ class MultipleAccount {
       phone,
       _updateTime,
       phoneCountryCode,
-      way,
+      way
     } = value
     // 1. 姓名 > 昵称 > username
     const title = name || nickname || username || undefined
@@ -699,7 +715,7 @@ class MultipleAccount {
       getFirstBackFillData: () => this.firstBackFillData,
       // 原始的登录账号和密码
       getOriginAccount: () => this.originAccount,
-      getOriginWay: () => this.originWay,
+      getOriginWay: () => this.originWay
     }
   }
 }
@@ -710,7 +726,7 @@ class MultipleAccount {
  */
 const useMultipleAccounts = ({
   appId,
-  finallyConfig,
+  finallyConfig
 }: {
   appId?: string
   finallyConfig?: any
@@ -799,7 +815,7 @@ const useMultipleAccounts = ({
     // 增加一个多的 国际化短信是否开启
     storeInstance.initStore(appId, {
       serverSideLoginMethods: [...configLists, ...serverSideLoginMethods],
-      isInternationSms,
+      isInternationSms
     })
     setStoreInstance(storeInstance)
     // 根据 instance 中的状态和数据初始化登录页面状态
@@ -812,14 +828,14 @@ const useMultipleAccounts = ({
       isMultipleAccount,
       referMultipleState,
       multipleAccountData,
-      clearBackFillData,
+      clearBackFillData
     }
   }, [
     storeInstance,
     isMultipleAccount,
     referMultipleState,
     multipleAccountData,
-    clearBackFillData,
+    clearBackFillData
   ])
 }
 
