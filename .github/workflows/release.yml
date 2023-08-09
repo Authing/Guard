@@ -53,14 +53,14 @@ jobs:
         run: |
           npm run lint
 
+      - name: update version
+        run: |
+          lerna version $VERSION --yes
+
       - name: build core
         run: |
           npm run build:core
           npm run transfer-packages
-
-      - name: update version
-        run: |
-          lerna version $VERSION --yes
 
       - name: release official
         if: ${{ github.ref_name == 'v4' }}
