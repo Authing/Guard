@@ -146,6 +146,8 @@
   "verifyCodeLogin": "Verify Code",
   "phoneVerifyCode": "Phone Code",
   "emailVerifyCode": "Email Code",
+  "phoneCodeTab": "Phone Code",
+  "emailCodeTab": "Email Code",
   "phoneOrEmail": "Phone Or Email",
   "skip": "Skip",
   "back": "Back",

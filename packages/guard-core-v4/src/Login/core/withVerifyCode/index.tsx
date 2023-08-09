@@ -54,6 +54,11 @@ import { GraphicVerifyCode } from '../withPassword/GraphicVerifyCode'
 
 import { getCaptchaUrl } from '../../../_utils/getCaptchaUrl'
 
+export enum SpecifyCodeMethods {
+  Phone = 'phone',
+  Email = 'email'
+}
+
 const { useCallback, useEffect, useMemo, useRef, useState } = React
 
 const LoginWithVerifyCode = (props: any) => {
@@ -75,7 +80,8 @@ const LoginWithVerifyCode = (props: any) => {
     onLoginSuccess,
     saveIdentify,
     multipleInstance,
-    backfillData
+    backfillData,
+    specifyCodeMethod
   } = props
 
   const verifyCodeLength = publicConfig?.verifyCodeLength ?? 4
@@ -99,6 +105,8 @@ const LoginWithVerifyCode = (props: any) => {
   )
   // 是否仅开启国际化短信
   const [isOnlyInternationSms, setInternationSms] = useState(false)
+  // 是否仅使用邮箱验证码
+  const [isOnlyEmailCode, setIsOnlyEmailCode] = useState(false)
   // 区号 默认
   const [areaCode, setAreaCode] = useState(
     publicConfig?.internationalSmsConfig?.defaultISOType || 'CN'
@@ -155,9 +163,11 @@ const LoginWithVerifyCode = (props: any) => {
             className="authing-g2-input g2-send-code-input"
             autoComplete="off"
             size="large"
-            placeholder={t('common.inputFourVerifyCode', {
-              length: verifyCodeLength
-            })}
+            placeholder={
+              t('common.inputFourVerifyCode', {
+                length: verifyCodeLength
+              }) as string
+            }
             areaCode={areaCode}
             prefix={
               <IconFont
@@ -185,9 +195,11 @@ const LoginWithVerifyCode = (props: any) => {
               className="authing-g2-input g2-send-code-input"
               autoComplete="off"
               size="large"
-              placeholder={t('common.inputFourVerifyCode', {
-                length: verifyCodeLength
-              })}
+              placeholder={
+                t('common.inputFourVerifyCode', {
+                  length: verifyCodeLength
+                }) as string
+              }
               areaCode={areaCode}
               prefix={
                 <IconFont
@@ -213,9 +225,11 @@ const LoginWithVerifyCode = (props: any) => {
               className="authing-g2-input g2-send-code-input"
               autoComplete="off"
               size="large"
-              placeholder={t('common.inputFourVerifyCode', {
-                length: verifyCodeLength
-              })}
+              placeholder={
+                t('common.inputFourVerifyCode', {
+                  length: verifyCodeLength
+                }) as string
+              }
               prefix={
                 <IconFont
                   type="authing-a-shield-check-line1"
@@ -250,14 +264,18 @@ const LoginWithVerifyCode = (props: any) => {
   useEffect(() => {
     // 开启国际化配置且登录方式为手机号码时
     if (
-      methods.length === 1 &&
-      methods[0] === 'phone-code' &&
-      publicConfig &&
-      publicConfig.internationalSmsConfig?.enabled
+      (methods.length === 1 &&
+        methods[0] === 'phone-code' &&
+        publicConfig?.internationalSmsConfig?.enabled) ||
+      specifyCodeMethod === SpecifyCodeMethods.Phone
     ) {
       setInternationSms(true)
     }
-  }, [publicConfig, methods])
+    // 指定了只用邮箱验证码
+    if (specifyCodeMethod === SpecifyCodeMethods.Email) {
+      setIsOnlyEmailCode(true)
+    }
+  }, [publicConfig, methods, specifyCodeMethod])
 
   useEffect(() => {
     /** 如果是国外用户池，那么有图形验证码，需要请求图片 */
@@ -484,8 +502,8 @@ const LoginWithVerifyCode = (props: any) => {
               size="large"
               autoFocus={!isPhoneMedia}
               value={identify}
-              methods={methods}
-              onChange={(e: any) => {
+              methods={isOnlyEmailCode ? ['email-code'] : methods}
+              onChange={e => {
                 let v = e.target.value
                 changeMethod(v)
               }}
@@ -526,7 +544,7 @@ const LoginWithVerifyCode = (props: any) => {
         </Form.Item>
         {Boolean(agreements?.length) && (
           <Agreements
-            onChange={(val: any) => {
+            onChange={val => {
               acceptedAgreements.current = val
             }}
             agreements={agreements}

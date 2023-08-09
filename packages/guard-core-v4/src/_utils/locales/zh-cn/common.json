@@ -144,6 +144,8 @@
   "corsErrorMessage2": "如果有疑问可以<a href=\"https://docs.authing.cn/v2/guides/security/config-domain.html\">参考文档</a>",
   "totpGenerateCode": "为你生成一串新的恢复代码，请安全地记录这段密钥",
   "verifyCodeLogin": "验证码登录",
+  "phoneCodeTab": "手机号登录",
+  "emailCodeTab": "邮箱登录",
   "phoneVerifyCode": "短信验证码",
   "emailVerifyCode": "邮箱验证码",
   "phoneOrEmail": "手机号或邮箱",

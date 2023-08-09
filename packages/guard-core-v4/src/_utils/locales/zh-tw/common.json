@@ -167,6 +167,8 @@
   "usernameFormatError": "輸入有效的用戶名",
   "customNameFormatError": "輸入有效的帳號",
   "verifyCodeLogin": "驗證碼登入",
+  "phoneCodeTab": "手機號登錄",
+  "emailCodeTab": "郵箱登錄",
   "verifyCodeRegister": "驗證碼註冊",
   "welcome": "歡迎訪問",
   "welcomeDoc": "歡迎加入 {{name}} ，為了提供最佳的線上體驗，請填寫您的個人資訊",

@@ -48,7 +48,7 @@ import {
 
 import { getPasswordIdentify, getSortTabs } from '../_utils'
 
-import { LoginWithVerifyCode } from './core/withVerifyCode'
+import { LoginWithVerifyCode, SpecifyCodeMethods } from './core/withVerifyCode'
 
 import { useMediaSize, useMethod } from '../_utils/hooks'
 
@@ -80,7 +80,8 @@ const inputWays = [
   LoginMethods.PhoneCode,
   LoginMethods.AD,
   LoginMethods.LDAP,
-  LoginMethods.AuthingOtpPush
+  LoginMethods.AuthingOtpPush,
+  LoginMethods.EmailCode
 ]
 const qrcodeWays = [
   LoginMethods.AppQr,
@@ -463,9 +464,80 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     ]
   )
 
-  const CodeTab = useMemo(
-    () =>
-      ms?.includes(LoginMethods.PhoneCode) && (
+  const CodeTab = useMemo(() => {
+    if (!ms?.includes(LoginMethods.PhoneCode)) {
+      return <></>
+    }
+
+    // 是否开启了国际化短信功能
+    const isInternationSms =
+      publicConfig?.internationalSmsConfig?.enabled || false
+
+    const tabs = []
+
+    // 开启国际化短信时要将短信和邮箱 tab 拆分，方便下拉选取手机区号
+    if (isInternationSms) {
+      if (
+        publicConfig.verifyCodeTabConfig?.enabledLoginMethods?.includes(
+          'phone-code'
+        )
+      ) {
+        tabs.push(
+          <Tabs.TabPane
+            key={LoginMethods.PhoneCode}
+            // TODO 需要适配控制台的配置
+            tab={computedTabName(t('common.phoneCodeTab'))}
+          >
+            <LoginWithVerifyCode
+              verifyCodeLength={publicConfig?.verifyCodeLength}
+              autoRegister={config?.autoRegister}
+              onBeforeLogin={onBeforeLogin}
+              // onLogin={onLogin}
+              onLoginSuccess={onLoginSuccess}
+              onLoginFailed={onLoginFailed}
+              saveIdentify={saveIdentify}
+              agreements={agreements}
+              methods={verifyLoginMethods}
+              backfillData={backfillData}
+              multipleInstance={multipleInstance}
+              specifyCodeMethod={SpecifyCodeMethods.Phone}
+            />
+          </Tabs.TabPane>
+        )
+      }
+
+      if (
+        publicConfig.verifyCodeTabConfig?.enabledLoginMethods?.includes(
+          'email-code'
+        )
+      ) {
+        tabs.push(
+          <Tabs.TabPane
+            key={LoginMethods.EmailCode}
+            // TODO 需要适配控制台的配置
+            tab={computedTabName(t('common.emailCodeTab'))}
+          >
+            <LoginWithVerifyCode
+              verifyCodeLength={publicConfig?.verifyCodeLength}
+              autoRegister={config?.autoRegister}
+              onBeforeLogin={onBeforeLogin}
+              // onLogin={onLogin}
+              onLoginSuccess={onLoginSuccess}
+              onLoginFailed={onLoginFailed}
+              saveIdentify={saveIdentify}
+              agreements={agreements}
+              methods={verifyLoginMethods}
+              backfillData={backfillData}
+              multipleInstance={multipleInstance}
+              specifyCodeMethod={SpecifyCodeMethods.Email}
+            />
+          </Tabs.TabPane>
+        )
+      }
+
+      return tabs
+    } else {
+      return (
         <Tabs.TabPane
           key={LoginMethods.PhoneCode}
           tab={computedTabName(
@@ -488,23 +560,26 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
             multipleInstance={multipleInstance}
           />
         </Tabs.TabPane>
-      ),
-    [
-      agreements,
-      ms,
-      multipleInstance,
-      backfillData,
-      config,
-      onBeforeLogin,
-      saveIdentify,
-      onLoginFailed,
-      onLoginSuccess,
-      publicConfig?.verifyCodeLength,
-      verifyLoginMethods,
-      verifyCodeI18n,
-      t
-    ]
-  )
+      )
+    }
+  }, [
+    ms,
+    publicConfig?.internationalSmsConfig?.enabled,
+    publicConfig.verifyCodeTabConfig?.enabledLoginMethods,
+    publicConfig?.verifyCodeLength,
+    t,
+    config?.autoRegister,
+    onBeforeLogin,
+    onLoginSuccess,
+    onLoginFailed,
+    saveIdentify,
+    agreements,
+    verifyLoginMethods,
+    backfillData,
+    multipleInstance,
+    verifyCodeI18n?.tab?.i18n,
+    verifyCodeI18n?.tab?.default
+  ])
 
   const LdapTab = useMemo(
     () =>
@@ -873,7 +948,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
                           }}
                           activeKey={loginWay}
                         >
-                          {GeneralLoginComponent}
+                          {GeneralLoginComponent?.flat()}
                         </Tabs>
                       </div>
                     ) : (

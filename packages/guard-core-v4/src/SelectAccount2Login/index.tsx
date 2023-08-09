@@ -65,7 +65,7 @@ export const GuardSelectAccount2LoginView = () => {
         <div className="g2-view-container g2-view-container-2-login">
           <div className="g2-view-header">
             <ImagePro
-              src={config?.logo!}
+              src={config?.logo as string}
               size={42}
               borderRadius={4}
               alt=""

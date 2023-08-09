@@ -144,6 +144,8 @@
   "corsErrorMessage2": "質問があれば<a href=\"https://docs.authing.cn/v2/guides/security/config-domain.html\">ドキュメント参照</a>",
   "totpGenerateCode": "この鍵を安全に記録してください",
   "verifyCodeLogin": "認証コード登録",
+  "phoneCodeTab": "携帯電話番号でのログイン",
+  "emailCodeTab": "電子メールでのログイン",
   "phoneVerifyCode": "sms認証コード",
   "emailVerifyCode": "メールボックス認証コード",
   "phoneOrEmail": "携帯電話/メールアドレス",
