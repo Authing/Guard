@@ -17,6 +17,8 @@ import { SelectOptions } from '../../../Login/multipleAccounts/panel'
 
 import { getPublicConfig } from '../../../_utils/config'
 
+import { getPhoneInLoginPageContext } from '../../../_utils'
+
 const { useCallback, useEffect, useMemo, useState } = React
 
 const MULTIPLE_ACCOUNT_KEY = '__authing__multiple_accounts'
@@ -796,6 +798,14 @@ const useMultipleAccounts = ({
     if (!appId || !finallyConfig) {
       return
     }
+
+    // login_page_context 中有 phone 字段，说明是从官网带着手机号跳转过来的
+    // 要定位到手机号验证码登录模块
+    const phone = getPhoneInLoginPageContext()
+    if (phone) {
+      return
+    }
+
     const publicConfig = getPublicConfig(appId)
 
     if (!publicConfig?.enableLoginAccountSwitch) {

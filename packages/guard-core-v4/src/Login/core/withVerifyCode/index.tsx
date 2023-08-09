@@ -7,7 +7,8 @@ import { useTranslation } from 'react-i18next'
 import {
   fieldRequiredRule,
   getUserRegisterParams,
-  validate
+  validate,
+  getPhoneInLoginPageContext
 } from '../../../_utils'
 
 import SubmitButton from '../../../SubmitButton'
@@ -269,11 +270,11 @@ const LoginWithVerifyCode = (props: any) => {
         publicConfig?.internationalSmsConfig?.enabled) ||
       specifyCodeMethod === SpecifyCodeMethods.Phone
     ) {
-      setInternationSms(true)
+      setCurrentMethod(InputMethod.PhoneCode)
     }
     // 指定了只用邮箱验证码
     if (specifyCodeMethod === SpecifyCodeMethods.Email) {
-      setIsOnlyEmailCode(true)
+      setCurrentMethod(InputMethod.EmailCode)
     }
   }, [publicConfig, methods, specifyCodeMethod])
 
@@ -467,6 +468,8 @@ const LoginWithVerifyCode = (props: any) => {
     }
   }
 
+  const phone = getPhoneInLoginPageContext()
+
   return (
     <div className="authing-g2-login-phone-code">
       <Form
@@ -481,6 +484,8 @@ const LoginWithVerifyCode = (props: any) => {
           initialValue={
             specifyDefaultLoginMethod === LoginMethods.PhoneCode
               ? _firstItemInitialValue
+              : (specifyCodeMethod === 'phone' || !isInternationSms) && phone
+              ? phone
               : ''
           }
           name="identify"
@@ -504,6 +509,10 @@ const LoginWithVerifyCode = (props: any) => {
               value={identify}
               methods={isOnlyEmailCode ? ['email-code'] : methods}
               onChange={e => {
+                let v = e.target.value
+                changeMethod(v)
+              }}
+              onBlur={e => {
                 let v = e.target.value
                 changeMethod(v)
               }}

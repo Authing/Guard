@@ -2,6 +2,8 @@ import { RegisterSortMethods, RegisterMethods } from '../Type'
 
 import UAParser from 'ua-parser-js'
 
+import qs from 'qs'
+
 // 拼接请求链接
 export const assembledRequestHost = (
   requestHostname: string,
@@ -169,4 +171,19 @@ export const isSpecialBrowser = () => {
 
   // 3. 可能有一些 UA 没有任何特征，这种情况下一律默认为特殊浏览器
   return true
+}
+
+export const getPhoneInLoginPageContext = () => {
+  const search = qs.parse(window.location.search, {
+    ignoreQueryPrefix: true
+  })
+
+  try {
+    if (search.login_page_context) {
+      const customData = JSON.parse(search.login_page_context as string)
+      return customData.phone || ''
+    }
+  } catch (e) {
+    return ''
+  }
 }

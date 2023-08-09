@@ -20,6 +20,8 @@ import {
   RegisterMethods
 } from '../../Type/application'
 
+import { getPhoneInLoginPageContext } from '..'
+
 const { useCallback, useEffect, useMemo, useState } = React
 
 const publicConfigMap: Record<string, ApplicationConfig> = {}
@@ -126,6 +128,9 @@ const mergedPublicConfig = (
       ) || []
     )
 
+  const phone = getPhoneInLoginPageContext()
+  const defaultLoginMethod = phone && LoginMethods.PhoneCode
+
   const mergedPublicConfig: GuardLocalConfig = {
     ...config,
     title: config.title ?? publicConfig.name,
@@ -140,7 +145,8 @@ const mergedPublicConfig = (
       [],
     // 默认登录方式
     defaultLoginMethod:
-      config.defaultLoginMethod ??
+      defaultLoginMethod ||
+      config.defaultLoginMethod ||
       (publicConfig.loginTabs.default as LoginMethods),
     // 禁止重制密码
     disableResetPwd: !!(
