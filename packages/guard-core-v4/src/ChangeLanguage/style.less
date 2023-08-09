@@ -1,0 +1,65 @@
+.g2-change-language-container {
+  display: flex;
+  justify-content: center;
+  user-select: none;
+}
+
+.authing-g2-change-language-menu {
+  background-color: #fff;
+  width: 115px;
+  border-radius: 8px;
+  padding: 6px;
+  border: 1px solid #e5e6eb;
+  box-shadow: 0px 10px 20px -10px rgba(4, 24, 115, 0.1);
+  overflow: hidden;
+  user-select: none;
+}
+
+.g2-change-language-text {
+  display: flex;
+  align-items: center;
+  color: #86909c;
+  cursor: pointer;
+
+  .lng-svg {
+    font-size: 16px;
+    margin-right: 5px;
+  }
+
+  .down-fill-svg {
+    margin-left: 2px;
+  }
+}
+
+.authing-g2-change-language-menu ul {
+  box-shadow: unset;
+  padding: 0px;
+
+  li {
+    padding: 9px 10px;
+    margin: 0;
+    font-size: 14px;
+    width: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &:hover {
+      background-color: #f2f3f5;
+      border-radius: 4px;
+    }
+
+    svg {
+      font-size: 16px;
+      color: #000;
+    }
+  }
+
+  li.select {
+    color: #215ae5;
+
+    svg {
+      color: #215ae5;
+    }
+  }
+}

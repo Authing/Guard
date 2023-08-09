@@ -1,0 +1,28 @@
+{
+  "name": "@authing/react-ui-components",
+  "version": "4.5.0-alpha.1",
+  "description": "Authing Guard for React",
+  "module": "lib/index.min.js",
+  "types": "lib/typings/index.d.ts",
+  "scripts": {
+    "autoinstall": "npm ci",
+    "build:lib": "npm ci && node scripts/build.js",
+    "release:official": "npm publish --verbose --access public",
+    "release:alpha": "npm publish --verbose --tag=alpha --access public"
+  },
+  "files": [
+    "lib",
+    "package.json",
+    "package-lock.json"
+  ],
+  "author": "https://github.com/authing",
+  "license": "MIT",
+  "dependencies": {
+    "@authing/guard-shim-react": "^4.5.0-alpha.1",
+    "@authing/native-js-ui-components": "^4.5.0-alpha.1",
+    "react": "^16.13.1"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.0"
+  }
+}

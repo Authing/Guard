@@ -1,0 +1,29 @@
+{
+  "name": "@authing/vue-ui-components",
+  "version": "4.5.0-alpha.1",
+  "description": "Authing Guard for Vue",
+  "module": "lib/index.min.js",
+  "types": "lib/typings/index.d.ts",
+  "files": [
+    "lib",
+    "package.json",
+    "package-lock.json"
+  ],
+  "scripts": {
+    "autoinstall": "npm ci",
+    "build:lib": "npm ci && node scripts/build.js",
+    "release:official": "npm publish --verbose --access public",
+    "release:alpha": "npm publish --verbose --tag=alpha --access public"
+  },
+  "author": "https://github.com/authing",
+  "license": "MIT",
+  "dependencies": {
+    "@authing/native-js-ui-components": "^4.5.0-alpha.1",
+    "vue": "^3.2.20"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.22.5",
+    "vue-loader": "^17.2.2",
+    "vue-template-compiler": "^2.6.11"
+  }
+}

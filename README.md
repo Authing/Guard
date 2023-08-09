@@ -1,110 +1,88 @@
-<div align=center>
-  <img width="250" src="https://files.authing.co/authing-console/authing-logo-new-20210924.svg" />
-</div>
+<div align=center><img width="300" src="https://files.authing.co/authing-console/authing-logo-new-20210924.svg"></div>
 
 <div align="center">
   <a href="javascript:;"><img src="https://img.shields.io/badge/test-passing-brightgreen" /></a>
   <a href="https://forum.authing.cn/" target="_blank"><img src="https://img.shields.io/badge/chat-forum-blue" /></a>
   <a href="https://docs.authing.cn/v2/reference/ui-components/" target="_blank"><img src="https://img.shields.io/badge/docs-passing-brightgreen" /></a>
-  <a href="javascript:;"><img src="https://img.shields.io/badge/License-MIT-success" alt="License"></a>
+  <a href="https://github.com/Authing/AuthingSSO" target="_blank"><img src="https://img.shields.io/badge/License-MIT-success" alt="License"></a>
   <a href="javascript:;" target="_blank"><img src="https://img.shields.io/badge/node-%3E=12-green.svg" alt="Node"></a>
 </div>
 
-English | [简体中文](./README-zh_CN.md)
-
-The Guard helps developers shield the details of the underlying authentication and tedious UI development. It enables enterprises and developers to quickly launch a secure, customizable UI unified login form.
-
 <br />
 
-<div align="center">
-  <img src="./guard.png" width="650" />
-</div>
+English | [简体中文](./README-zh_CN.md) 
+
+[Authing](https://authing.cn) is an enterprise-class identity provider that integrates with OAuth, LDAP, OIDC, and other authentication and authorization solutions. This repository contains some of the UI components provided by Authing.
 
 ## 🌍 Ecosystem
 
-|Project|Status|Description
-|-----|----|----|
-|@authing/guard-react|[![npm version](https://badge.fury.io/js/@authing%2Fguard-react.svg)](https://www.npmjs.com/package/@authing/guard-react)|<a href="https://docs.authing.cn/v2/reference/guard/v2/web.html" target="_blank">Guard for React</a>|
-|@authing/guard-react18|[![npm version](https://badge.fury.io/js/@authing%2Fguard-react18.svg)](https://www.npmjs.com/package/@authing/guard-react18)|<a href="https://docs.authing.cn/v2/reference/guard/v2/web.html" target="_blank">Guard for React18</a>|
-|@authing/guard-vue2|[![npm version](https://badge.fury.io/js/@authing%2Fguard-vue2.svg)](https://www.npmjs.com/package/@authing/guard-vue2)|<a href="https://docs.authing.cn/v2/reference/guard/v2/web.html" target="_blank">Guard for Vue2</a>|
-|@authing/guard-vue3|[![npm version](https://badge.fury.io/js/@authing%2Fguard-vue3.svg)](https://www.npmjs.com/package/@authing/guard-vue3)|<a href="https://docs.authing.cn/v2/reference/guard/v2/web.html" target="_blank">Guard for Vue3</a>|
-|@authing/guard-angular|[![npm version](https://badge.fury.io/js/@authing%2Fguard-angular.svg)](https://www.npmjs.com/package/@authing/guard-angular)|<a href="https://docs.authing.cn/v2/reference/guard/v2/web.html" target="_blank">Guard for Angular</a>|
-|@authing/guard|[![npm version](https://badge.fury.io/js/@authing%2Fguard.svg)](https://www.npmjs.com/package/@authing/guard)|<a href="https://docs.authing.cn/v2/reference/guard/v2/web.html" target="_blank">Guard for JavaScript</a>|
+| package                          | version                                                                                                                                           | Using the documentation                                                                                              |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| @authing/react-ui-components     | [![npm version](https://badge.fury.io/js/@authing%2Freact-ui-components.svg)](https://www.npmjs.com/package/@authing/react-ui-components)         | [Authing React UI Components](https://docs.authing.cn/v2/reference/ui-components/react.html)                         |
+| @authing/vue-ui-components       | [![npm version](https://badge.fury.io/js/@authing%2Fvue-ui-components.svg)](https://www.npmjs.com/package/@authing/vue-ui-components)             | [Authing Vue UI Components](https://docs.authing.cn/v2/reference/ui-components/vue.html)                             |
+| @authing/ng-ui-components        | [![npm version](https://badge.fury.io/js/@authing%2Fng-ui-components.svg)](https://www.npmjs.com/package/@authing/ng-ui-components)               | [Authing Angular UI Components](https://docs.authing.cn/v2/reference/ui-components/angular.html)                     |
+| @authing/native-js-ui-components | [![npm version](https://badge.fury.io/js/@authing%2Fnative-js-ui-components.svg)](https://www.npmjs.com/package/@authing/native-js-ui-components) | [Authing Native JavaScript UI Components](https://docs.authing.cn/v2/reference/ui-components/native-javascript.html) |
 
-## 🖥 Environment Support
+## ✨ Login Component (Guard)
 
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br> Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Safari |
-| --- | --- | --- | --- |
-| last 2 versions | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
+Authing Login Component (Guard) is an embeddable login form that can be configured according to your needs and is recommended for single page applications. It allows you to easily add various social login methods so that your users can log in seamlessly and have a consistent login experience across platforms. guard shields developers from many of the underlying authentication implementation details, as well as tedious UI development.
 
-## ✨ Features
+Guard can be integrated into your React, Vue.js, Angular, and native JavaScript projects, and you can quickly implement a login authentication process with this component.
 
-### 🌈 Rich login and registration methods
+![Guard Demo](./static/images/guard-demo_en.png)
 
-Account password / phone verification / APP scan code / corporate identity source / social login.
+## 🌈 Feature List
 
-### 📦 Built in multiple functions, no need to write additional code
+#### Rich login and registration methods
 
-Built-in interactive UI for forgetting the password, MFA function, users do not need to write any additional code to complete tasks.
+Rich login and registration options are built in for developers to choose from:
 
-### 🛡 Have a responsive layout
+- Account password login (including mobile number + password, email + password, username + password)
+- Mobile verification code login
+- APP Scan code to login（[You need to access the APP first and scan the code to log in](https://docs.authing.cn/v2/en/guides/authentication/qrcode/use-self-build-app/)）
+- Applet Sweep Login（[You need to configure it in the backend first](https://docs.authing.cn/v2/en/guides/connections/social/wechat-miniprogram-qrconnect/)）
+- Social Identity Source Login, such as Github logins（[You need to configure it in the backend first](https://docs.authing.cn/v2/en/guides/connections/social.html)）
+- Enterprise Identity Source Login（[Requires configuration of enterprise identity source](https://docs.authing.cn/v2/en/guides/connections/enterprise.html)）
 
-Perfectly compatible with mobile and PC, you can easily customize the login box style with CSS.
+#### Built-in forgotten password process
 
-### 🎇 Compatible with all mainstream front-end frameworks
+Guard has a built-in interactive UI for forgetting passwords, so you don't need to write any additional code.
 
-Including login components such as React, Vue, Angular, JavaScript, etc.
+#### Built-in Multi-Factor Authentication (MFA) capability
 
-### 🎨 SSO
+Guard has a built-in Multi-Factor Authentication (MFA) feature that allows users to use this component to complete multi-factor authentication when your application has [multi-factor authentication enabled](https://docs.authing.cn/v2/en/guides/app/mfa.html). You don't need to write any additional code.
 
-Authing supports many protocols such as OAuth2, OIDC, SAML, LDAP, etc. Developers can easily implement single sign-on with a minimum of five lines of code and realize login customization.
+#### Responsive layout
 
-<div align="center">
-  <img src="https://authing-cdn-cn-prod.oss-cn-beijing.aliyuncs.com/authing-assets/init-guard-react.png" width="650" />
-</div>
+Responsive layout, perfectly compatible with mobile and PC, while you can easily customize the login box style with custom CSS.
 
-## 👀 Online preview
+#### Compatible with all major front-end frameworks
 
-[Click to](https://cdn.authing.co/packages/guard/ui/index.html)
+- [Native JavaScript](https://docs.authing.cn/v2/en/reference/ui-components/native-javascript.html)
+- [Vue Components](https://docs.authing.cn/v2/en/reference/ui-components/vue.html)
+- [React Components](https://docs.authing.cn/v2/en/reference/ui-components/react.html)
+- [Angular Components](https://docs.authing.cn/v2/en/reference/ui-components/angular.html)
 
-## 📚 Documentation
+## 🌴 Online Experience
 
-To check out live examples and docs, visit [docs](https://cdn.authing.co/packages/guard/doc/guide/install.html)
+Click to view [sample-sso.authing.cn](https://sample-sso.authing.cn/login?app_id=5d70d0e991fdd597019df70d&protocol=oidc&finish_login_url=%2Finteraction%2Foidc%2Fd7223e6b-b796-4068-a3f2-298d527993c2%2Flogin&login_page_context=)
 
-## ❓ Questions
+## 🌳 Get Help
 
-For questions and support please use the [official forum](https://forum.authing.cn/). The issue list of this repo is exclusively for bug reports and feature requests.
+Join us on forum: [#authing-chat](https://forum.authing.cn/)
 
-## 👍 Changelog
+For detailed usage documentation, please see [Guard for Web](https://docs.authing.cn/v2/en/reference/ui-components/)
 
-Detailed changes for each release are documented in the [release notes](https://github.com/Authing/Guard/releases).
-
-## 🤝 Contribution
+## 🍻 Open Source Co-Building
 
 - Fork it
 - Create your feature branch (git checkout -b my-new-feature)
 - Commit your changes (git commit -am 'Add some feature')
-- Push to the branch (git push -u origin my-new-feature)
+- Push to the branch (git push origin my-new-feature)
 - Create new Pull Request
 
-Thank you to all the people who already contributed to Guard!
-
-<div>
-  <a href="https://github.com/leinue"><img width="30px" src="https://avatars.githubusercontent.com/u/2469688?v=4" /></a>
-  <a href="https://github.com/lixpng"><img width="30px" src="https://avatars.githubusercontent.com/u/19266401?v=4" /></a>
-  <a href="https://github.com/yelexin"><img width="30px" src="https://avatars.githubusercontent.com/u/27125445?v=4" /></a>
-  <a href="https://github.com/liaochangjiang"><img width="30px" src="https://avatars.githubusercontent.com/u/35447896?v=4" /></a>
-  <a href="https://github.com/zhaoyiming0803"><img width="30px" src="https://avatars.githubusercontent.com/u/25874685?s=96&v=4" /></a>
-</div>
-
-## 🎁 License
+## 📝 LICENSE
 
 [MIT](https://opensource.org/licenses/MIT)
 
 Copyright (c) 2019 Authing
-
-## 🔗 Links
-- [authing-mfa-component](https://github.com/Authing/authing-mfa-component)
-- [authing-js-sdk](https://github.com/Authing/authing-js-sdk)
-- [AuthingMove](https://github.com/authing/authingmove)
-- [authingmove-template](https://github.com/Authing/authingmove-template)

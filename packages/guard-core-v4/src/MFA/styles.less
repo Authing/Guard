@@ -1,0 +1,115 @@
+.authing-g2-mfa-title {
+  color: #282d3c;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 8px;
+  margin-top: 40px;
+}
+
+.authing-g2-mfa-tips {
+  font-size: 14px;
+  color: #545968;
+  text-align: center;
+  margin-bottom: 24px;
+  min-height: 23px;
+}
+
+.g2-mfa-content {
+  margin: 0 38px;
+
+  .authing-g2-mfa-totp-recoveryCode {
+    margin-top: 12px;
+    text-align: right;
+    color: #545968;
+    font-size: 14px;
+
+    span {
+      color: #215ae5;
+      cursor: pointer;
+    }
+  }
+
+  .authing-g2-submit-button.bind-totp {
+    margin-top: 40px;
+  }
+
+  .authing-ant-form-item-control-input-content {
+    display: flex;
+    justify-content: center;
+  }
+  // totp 恢复码 高度问题
+  .authing-g2-input-form.g2-mfa-totp-verify-input {
+    .authing-ant-form-item-explain {
+      display: none;
+    }
+  }
+
+  .g2-mfa-totp-verify-input {
+    text-align: center;
+    .authing-code-input-item {
+      &:not(:first-child) {
+        margin-left: 14px;
+      }
+    }
+  }
+
+  .authing-ant-form-horizontal {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .g2-mfa-face-image {
+    margin: 0px auto;
+    display: block;
+    margin-bottom: 24px;
+  }
+  .g2-mfa-face-identifying {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .video-round {
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      vertical-align: middle;
+    }
+    .mesh {
+      z-index: 100;
+      cursor: pointer;
+      user-select: none;
+      color: white;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      background: rgba(0, 0, 0, 0.4);
+    }
+    .ring {
+      width: 240px;
+      height: 240px;
+      position: absolute;
+      transform: rotate(270deg);
+    }
+  }
+}
+.svg-circle-bg {
+  stroke-width: 4;
+  // stroke: rgba(255, 161, 39, 1);
+}
+.svg-circle-running {
+  stroke-width: 4;
+  transition: all 0.2s linear;
+  stroke: #215ae5;
+  stroke-linecap: round;
+}
+
+.g2-mfa-verifyCode-formItem {
+  .authing-ant-form-item-explain-error {
+    display: flex;
+    justify-content: center;
+  }
+}

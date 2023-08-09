@@ -1,0 +1,48 @@
+.authing-agreements {
+  padding: 0 2px;
+  // margin-top: 20px;
+  margin-bottom: 16px;
+  display: inline-flex;
+  flex-direction: column;
+  &.authing-agreements-error {
+    .authing-agreements-item-invalid {
+      color: #ff4d4f;
+      a {
+        color: #ff4d4f;
+      }
+      :global(.ant-checkbox-inner) {
+        border-color: #ff4d4f;
+      }
+    }
+  }
+}
+
+.authing-agreements-item {
+  color: #999999;
+  user-select: none;
+  cursor: pointer;
+  font-size: 12px;
+  &:not(:first-child) {
+    margin-top: 4px;
+  }
+  p {
+    margin-bottom: 0;
+    margin-top: 0;
+    display: inline-block;
+  }
+}
+
+.authing-agreements-checkbox {
+  margin-bottom: 2px;
+  :global(.ant-checkbox-inner) {
+    width: 14px;
+    height: 14px;
+    &::after {
+      left: 20%;
+    }
+  }
+}
+
+.authing-agreements-item-content {
+  line-height: 23px;
+}

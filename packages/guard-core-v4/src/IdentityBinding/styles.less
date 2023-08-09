@@ -1,0 +1,63 @@
+.g2-view-container {
+  .g2-view-identity-binding-content {
+    display: flex;
+    flex-direction: column;
+    padding: 0 38px;
+    margin-top: 16px;
+
+    .g2-view-identity-binding-content-logo {
+      img {
+        width: 42px;
+        height: 42px;
+      }
+      margin-bottom: 4px;
+    }
+
+    .g2-view-identity-binding-content-title {
+      font-size: 24px;
+      color: #282d3c;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .g2-view-identity-binding-content-desc {
+      font-size: 14px;
+      color: #545968;
+      margin-bottom: 24px;
+    }
+  }
+
+  .g2-view-identity-binding-content-button-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+
+    .g2-view-identity-binding-content-button {
+      width: calc(100% - 4px);
+      height: 42px;
+      border-radius: 4px;
+      border: 0px;
+    }
+
+    .g2-view-identity-binding-content-button-create {
+      background: #f5f6f7;
+      color: #282d3c;
+
+      margin-bottom: 16px;
+
+      &:hover {
+        color: #282d3c;
+        background: rgba(84, 89, 104, 0.2);
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .g2-view-container {
+    .g2-view-identity-binding-content {
+      padding: 0 12px;
+    }
+  }
+}

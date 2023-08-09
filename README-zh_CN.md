@@ -1,110 +1,88 @@
-<div align=center>
-  <img width="250" src="https://files.authing.co/authing-console/authing-logo-new-20210924.svg" />
-</div>
+<div align=center><img width="300" src="https://files.authing.co/authing-console/authing-logo-new-20210924.svg"></div>
 
 <div align="center">
   <a href="javascript:;"><img src="https://img.shields.io/badge/test-passing-brightgreen" /></a>
   <a href="https://forum.authing.cn/" target="_blank"><img src="https://img.shields.io/badge/chat-forum-blue" /></a>
   <a href="https://docs.authing.cn/v2/reference/ui-components/" target="_blank"><img src="https://img.shields.io/badge/docs-passing-brightgreen" /></a>
-  <a href="javascript:;"><img src="https://img.shields.io/badge/License-MIT-success" alt="License"></a>
+  <a href="https://github.com/Authing/AuthingSSO" target="_blank"><img src="https://img.shields.io/badge/License-MIT-success" alt="License"></a>
   <a href="javascript:;" target="_blank"><img src="https://img.shields.io/badge/node-%3E=12-green.svg" alt="Node"></a>
 </div>
 
-[English](./README.md) | 简体中文
-
-通用登录组件（Guard）帮助开发者屏蔽了很多底层认证的实现细节，同时也包括繁琐的 UI 开发。使得企业和开发者可以快速上线安全的、跨平台的统一登录表单。
-
 <br />
 
-<div align="center">
-  <img src="./guard.png" width="650" />
-</div>
+[English](./README.md) | 简体中文 
+
+[Authing](https://authing.cn) 是一个企业级身份认证提供商，其集成了 OAuth、LDAP、OIDC 等多种身份认证和授权解决方案。此仓库包含了 Authing 提供的一些 UI 组件。
 
 ## 🌍 生态系统
 
-|项目|状态|描述
-|-----|----|----|
-|@authing/guard-react|[![npm version](https://badge.fury.io/js/@authing%2Fguard-react.svg)](https://www.npmjs.com/package/@authing/guard-react)|<a href="https://docs.authing.cn/v2/reference/guard/v2/web.html" target="_blank">Guard 适用于 React</a>|
-|@authing/guard-react18|[![npm version](https://badge.fury.io/js/@authing%2Fguard-react18.svg)](https://www.npmjs.com/package/@authing/guard-react18)|<a href="https://docs.authing.cn/v2/reference/guard/v2/web.html" target="_blank">Guard 适用于 React18</a>|
-|@authing/guard-vue2|[![npm version](https://badge.fury.io/js/@authing%2Fguard-vue2.svg)](https://www.npmjs.com/package/@authing/guard-vue2)|<a href="https://docs.authing.cn/v2/reference/guard/v2/web.html" target="_blank">Guard 适用于 Vue2</a>|
-|@authing/guard-vue3|[![npm version](https://badge.fury.io/js/@authing%2Fguard-vue3.svg)](https://www.npmjs.com/package/@authing/guard-vue3)|<a href="https://docs.authing.cn/v2/reference/guard/v2/web.html" target="_blank">Guard 适用于 Vue3</a>|
-|@authing/guard-angular|[![npm version](https://badge.fury.io/js/@authing%2Fguard-angular.svg)](https://www.npmjs.com/package/@authing/guard-angular)|<a href="https://docs.authing.cn/v2/reference/guard/v2/web.html" target="_blank">Guard 适用于 Angular</a>|
-|@authing/guard|[![npm version](https://badge.fury.io/js/@authing%2Fguard.svg)](https://www.npmjs.com/package/@authing/guard)|<a href="https://docs.authing.cn/v2/reference/guard/v2/web.html" target="_blank">Guard 适用于原生 JavaScript</a>|
+| 包名                             | 版本                                                                                                                                              | 使用文档                                                                                                             |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| @authing/react-ui-components     | [![npm version](https://badge.fury.io/js/@authing%2Freact-ui-components.svg)](https://www.npmjs.com/package/@authing/react-ui-components)         | [Authing React UI Components](https://docs.authing.cn/v2/reference/ui-components/react.html)                         |
+| @authing/vue-ui-components       | [![npm version](https://badge.fury.io/js/@authing%2Fvue-ui-components.svg)](https://www.npmjs.com/package/@authing/vue-ui-components)             | [Authing Vue UI Components](https://docs.authing.cn/v2/reference/ui-components/vue.html)                             |
+| @authing/ng-ui-components        | [![npm version](https://badge.fury.io/js/@authing%2Fng-ui-components.svg)](https://www.npmjs.com/package/@authing/ng-ui-components)               | [Authing Angular UI Components](https://docs.authing.cn/v2/reference/ui-components/angular.html)                     |
+| @authing/native-js-ui-components | [![npm version](https://badge.fury.io/js/@authing%2Fnative-js-ui-components.svg)](https://www.npmjs.com/package/@authing/native-js-ui-components) | [Authing Native JavaScript UI Components](https://docs.authing.cn/v2/reference/ui-components/native-javascript.html) |
 
-## ✨ 特性
+## ✨ 登录组件（Guard）
 
-### 🌈 拥有丰富的登录注册方式
+Authing 登录组件（Guard）是一种可嵌入的登录表单，可根据你的需求进行配置，建议用于单页面应用程序。它使你可以轻松添加各种社会化登录方式，以便你的用户可以无缝登录，并且在不同平台拥有一致的登录体验。Guard 为开发者屏蔽了很多底层认证的实现细节，同时也包括繁琐的 UI 开发。
 
-账号密码 / 手机验证码 / APP 扫码 / 小程序扫码 / 企业身份源 / 社会化登录。
+Guard 可以集成到你的 React、Vue.js、Angular 以及原生 JavaScript 项目中，你可以借助此组件快速实现登录认证流程。
 
-### 📦 内置多种功能，无需额外编写代码
+![Guard Demo](./static/images/guard-demo_zh.png)
 
-内置了忘记密码的交互 UI、多因素认证（MFA）功能，用户无需编写任何额外代码，即可使用该组件完成任务。
+## 🌈 功能列表
 
-### 🛡 拥有响应式布局
+#### 丰富的登录注册方式
 
-不仅完美兼容移动端和 PC 端，还可以用 CSS 轻松自定义登录框样式。
+内置丰富的登录注册方式供开发者选择：
 
-### 🎇 兼容前端所有主流框架
+- 账号密码登录（包括手机号 + 密码、邮箱 + 密码、用户名 + 密码）
+- 手机验证码登录
+- APP 扫码登录（[需先接入 APP 扫码登录](https://docs.authing.cn/v2/guides/authentication/qrcode/use-self-build-app/)）
+- 小程序扫码登录（[需先在后台配置](https://docs.authing.cn/v2/guides/authentication/qrcode/use-wechat-miniprogram/)）
+- 社会化登录，如 Github 登录（[需先在后台配置](https://docs.authing.cn/v2/guides/connections/social.html)）
+- 企业身份源登录（[需要配置企业身份源](https://docs.authing.cn/v2/guides/connections/enterprise.html)）
 
-包括 React、Vue、Angular、JavaScript 等登录组件。
+#### 内置忘记密码流程
 
-### 🎨 单点登录
+Guard 内置了忘记密码的交互 UI，你无需编写任何额外代码。
 
-Authing 支持 OAuth2、OIDC、SAML、LDAP 等多种协议，开发者可以配合统一用户池，最低五行代码轻松实现单点登录，实现登录定制化。
+#### 内置多因素认证（MFA）能力
 
-<div align="center">
-  <img src="https://docs.authing.cn/authing-assets/init-guard-react.png" width="650" />
-</div>
+Guard 内置了多因素认证（MFA）功能，当你的[应用开启了多因素认证](https://docs.authing.cn/v2/guides/app/mfa.html)之后，用户可以使用该组件完成多因素认证。你无需编写任何额外代码。
 
-## 🖥 环境支持
+#### 响应式布局
 
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br> Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Safari |
-| --- | --- | --- | --- |
-| last 2 versions | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
+响应式布局，完美兼容移动端和 PC 端，同时你可以通过自定义 CSS 轻易地自定义登录框样式。
 
-## 👀 在线体验
+#### 兼容前端所有主流框架
 
-[点击查看](https://cdn.authing.co/packages/guard/ui/index.html)
+- [原生 JavaScript 调用](https://docs.authing.cn/v2/reference/ui-components/native-javascript.html)
+- [Vue 组件](https://docs.authing.cn/v2/reference/ui-components/vue.html)
+- [React 组件](https://docs.authing.cn/v2/reference/ui-components/react.html)
+- [Angular 组件](https://docs.authing.cn/v2/reference/ui-components/angular.html)
 
-## 📚 文档
+## 🌴 在线体验
 
-更多示例和使用说明可参考[官方文档](https://cdn.authing.co/packages/guard/doc/guide/install.html)
+点击查看 [sample-sso.authing.cn](https://sample-sso.authing.cn/login?app_id=5d70d0e991fdd597019df70d&protocol=oidc&finish_login_url=%2Finteraction%2Foidc%2Fd7223e6b-b796-4068-a3f2-298d527993c2%2Flogin&login_page_context=)
 
-## ❓ 问题反馈
+## 🌳 获取帮助
 
-如果需要在线技术支持，可访问[官方论坛](https://forum.authing.cn/). 此仓库的 issue 仅用于上报 Bug 和提交新功能特性。
+加入论坛: [#authing-chat](https://forum.authing.cn/)
 
-## 👍 更新日志
+详细使用文档请查看 [Guard for Web](https://docs.authing.cn/v2/reference/ui-components/)
 
-详细发布记录可参考[更新日志](https://github.com/Authing/Guard/releases).
-
-## 🤝 开源共建
+## 🍻 开源共建
 
 - Fork 此仓库
 - 创建自己的 git 分支 (git checkout -b my-new-feature)
 - 提交你的修改 (git commit -am 'Add some feature')
-- 将修改内容推送到远程分支 (git push -u origin my-new-feature)
+- 将修改内容推送到远程分支 (git push origin my-new-feature)
 - 创建一个 Pull Request
 
-感谢所有为 Guard 做出贡献的人！
-
-<div>
-  <a href="https://github.com/leinue"><img width="30px" src="https://avatars.githubusercontent.com/u/2469688?v=4" /></a>
-  <a href="https://github.com/lixpng"><img width="30px" src="https://avatars.githubusercontent.com/u/19266401?v=4" /></a>
-  <a href="https://github.com/yelexin"><img width="30px" src="https://avatars.githubusercontent.com/u/27125445?v=4" /></a>
-  <a href="https://github.com/liaochangjiang"><img width="30px" src="https://avatars.githubusercontent.com/u/35447896?v=4" /></a>
-  <a href="https://github.com/zhaoyiming0803"><img width="30px" src="https://avatars.githubusercontent.com/u/25874685?s=96&v=4" /></a>
-</div>
-
-## 🎁 开源许可
+## 📝 开源许可
 
 [MIT](https://opensource.org/licenses/MIT)
 
-Copyright (c) 2019 Authing
-
-## 🔗 友情链接
-- [authing-mfa-component](https://github.com/Authing/authing-mfa-component)
-- [authing-js-sdk](https://github.com/Authing/authing-js-sdk)
-- [AuthingMove](https://github.com/authing/authingmove)
-- [authingmove-template](https://github.com/Authing/authingmove-template)
+Copyright (c) 2019-present Authing

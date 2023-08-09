@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env: 
-      PUBLISH_OPTS: ${{ github.ref_name == 'v6' && '--verbose' || '--verbose --tag=alpha' }}
+      PUBLISH_OPTS: ${{ github.ref_name == 'v4' && '--verbose' || '--verbose --tag=alpha' }}
       VERSION: ${{ github.event.inputs.version }}
       NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
@@ -44,39 +44,36 @@ jobs:
           git config --global user.email ${{ github.event.inputs.email }}
           git config --global user.name ${{ github.event.inputs.name }}
           
-      - name: install packages
+      - name: install global packages
         run: |
           npm install -g lerna@4.0.0
           npm ci
-          lerna run autoinstall
 
       - name: lint codes
         run: |
           npm run lint
 
-      - name: build
-        run: |
-          npm run build:core
-          npm run transfer-packages
-          lerna link
-          lerna run build:lib
-
       - name: update version
         run: |
           lerna version $VERSION --yes
-          
+
+      - name: build core
+        run: |
+          npm run build:core
+          npm run transfer-packages
+
       - name: release official
-        if: ${{ github.ref_name == 'v6' }}
+        if: ${{ github.ref_name == 'v4' }}
         run: |
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
-          lerna run release:official
+          npm run release type=official version=$VERSION
           echo "release:official successfully 🚀"
           
       - name: release alpha
-        if: ${{ github.ref_name != 'v6' }}
+        if: ${{ github.ref_name != 'v4' }}
         run: |
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
-          lerna run release:alpha
+          npm run release type=alpha version=$VERSION
           echo "release:alpha successfully 🚀"
 
       - name: upload oss
