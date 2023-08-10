@@ -1,6 +1,6 @@
 {
   "name": "@authing/vue-ui-components",
-  "version": "4.5.0-alpha.1",
+  "version": "4.5.0-alpha.2",
   "description": "Authing Guard for Vue",
   "module": "lib/index.min.js",
   "types": "lib/typings/index.d.ts",
@@ -18,7 +18,7 @@
   "author": "https://github.com/authing",
   "license": "MIT",
   "dependencies": {
-    "@authing/native-js-ui-components": "^4.5.0-alpha.1",
+    "@authing/native-js-ui-components": "^4.5.0-alpha.2",
     "vue": "^3.2.20"
   },
   "devDependencies": {
