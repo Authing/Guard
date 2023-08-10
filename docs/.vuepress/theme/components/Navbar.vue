@@ -84,7 +84,7 @@ export default {
         text: version
       }, {
         text: '4.x',
-        link: 'https://docs.authing.cn/v2/reference/guard/v2/react.html'
+        link: 'https://docs.authing.cn/v2/reference/guard/v2/guard-v4.html'
       }]
     };
   },
