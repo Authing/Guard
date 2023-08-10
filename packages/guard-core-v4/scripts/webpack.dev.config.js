@@ -23,7 +23,8 @@ module.exports = merge({}, webpackBaseConfigFn({
   },
   resolve: {
     fallback: {
-      fs: false
+      fs: false,
+      crypto: false
     }
   },
   devServer: {

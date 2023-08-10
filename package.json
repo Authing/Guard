@@ -21,7 +21,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.32.0",
     "@typescript-eslint/parser": "^5.62.0",
-    "ali-oss": "^6.16.0",
+    "ali-oss": "^0.0.0",
     "babel-loader": "^9.1.2",
     "css-loader": "^6.7.3",
     "css-minimizer-webpack-plugin": "^4.2.2",

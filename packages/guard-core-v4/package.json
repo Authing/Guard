@@ -25,6 +25,7 @@
     "moment": "^2.29.4",
     "phone": "^3.1.12",
     "qrcode.react": "^3.1.0",
+    "qs": "^6.9.4",
     "query-string": "^7.0.0",
     "react-i18next": "^12.2.0",
     "react-responsive": "^9.0.0-beta.5",
@@ -35,7 +36,7 @@
     "@types/lodash": "^4.14.175",
     "@types/throttle-debounce": "^5.0.0",
     "@types/ua-parser-js": "^0.7.36",
-    "face-api.js": "^0.22.2",
+    "face-api.js": "^0.20.0",
     "throttle-debounce": "^5.0.0",
     "url-loader": "^4.1.1"
   }
