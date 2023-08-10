@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@authing/react18-ui-components": "^4.4.0-alpha.67",
+    "@authing/react18-ui-components": "^4.5.0-alpha.1",
     "@types/node": "18.11.9",
     "@types/react": "18.0.24",
     "@types/react-dom": "18.0.8",
