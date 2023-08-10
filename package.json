@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "prepare": "husky install",
+    "autoinstall": "npm ci && lerna run autoinstall",
     "link": "lerna link",
     "build:guard": "cd packages/guard && npm run autoinstall && npm run build",
     "build:guard-shim-react18": "cd packages/guard-shim-react18 && npm run autoinstall && npm run build",
