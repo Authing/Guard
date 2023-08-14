@@ -164,11 +164,9 @@ const LoginWithVerifyCode = (props: any) => {
             className="authing-g2-input g2-send-code-input"
             autoComplete="off"
             size="large"
-            placeholder={
-              t('common.inputFourVerifyCode', {
-                length: verifyCodeLength
-              }) as string
-            }
+            placeholder={t('common.inputFourVerifyCode', {
+              length: verifyCodeLength
+            })}
             areaCode={areaCode}
             prefix={
               <IconFont
@@ -196,11 +194,9 @@ const LoginWithVerifyCode = (props: any) => {
               className="authing-g2-input g2-send-code-input"
               autoComplete="off"
               size="large"
-              placeholder={
-                t('common.inputFourVerifyCode', {
-                  length: verifyCodeLength
-                }) as string
-              }
+              placeholder={t('common.inputFourVerifyCode', {
+                length: verifyCodeLength
+              })}
               areaCode={areaCode}
               prefix={
                 <IconFont
@@ -226,11 +222,9 @@ const LoginWithVerifyCode = (props: any) => {
               className="authing-g2-input g2-send-code-input"
               autoComplete="off"
               size="large"
-              placeholder={
-                t('common.inputFourVerifyCode', {
-                  length: verifyCodeLength
-                }) as string
-              }
+              placeholder={t('common.inputFourVerifyCode', {
+                length: verifyCodeLength
+              })}
               prefix={
                 <IconFont
                   type="authing-a-shield-check-line1"
@@ -270,10 +264,12 @@ const LoginWithVerifyCode = (props: any) => {
         publicConfig?.internationalSmsConfig?.enabled) ||
       specifyCodeMethod === SpecifyCodeMethods.Phone
     ) {
+      setInternationSms(true)
       setCurrentMethod(InputMethod.PhoneCode)
     }
     // 指定了只用邮箱验证码
     if (specifyCodeMethod === SpecifyCodeMethods.Email) {
+      setIsOnlyEmailCode(true)
       setCurrentMethod(InputMethod.EmailCode)
     }
   }, [publicConfig, methods, specifyCodeMethod])
