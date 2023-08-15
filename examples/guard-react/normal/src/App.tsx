@@ -24,7 +24,6 @@ export default function App() {
 
       isSSO={true}
       config={{
-        socialConnectionList: ['github'],
         langRange: ['zh-CN']
       }}
       facePlugin={facePlugin}
