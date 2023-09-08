@@ -118,6 +118,11 @@ export default function Embed() {
     console.log('getAccessTokenByIdToken: ', res)
   }
 
+  const checkLoginStatus = async () => {
+    const res = await guard.checkLoginStatus()
+    console.log('checkLoginStatus: ', res)
+  }
+
   return <div>
     <select value={langCache} onChange={changeLang}>
       <option value="zh-CN">zh-CN</option>
@@ -137,6 +142,8 @@ export default function Embed() {
     <button className='authing-button' onClick={refreshToken}>Refresh Token</button>
 
     <button className='authing-button' onClick={getAccessTokenByIdToken}>Get Access Token By ID Token</button>
+
+    <button className='authing-button' onClick={checkLoginStatus}>Check Login Status</button>
 
     <button className='authing-button' onClick={checkAllAgreements}>Check All Agreements</button>
 

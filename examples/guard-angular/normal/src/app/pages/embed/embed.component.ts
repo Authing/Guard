@@ -87,4 +87,9 @@ export class EmbedComponent {
     })
     console.log('getAccessTokenByIdToken: ', res)
   }
+
+  async checkLoginStatus () {
+    const res = await this.guard.client.checkLoginStatus()
+    console.log('checkLoginStatus: ', res)
+  }
 }

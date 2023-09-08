@@ -22,6 +22,8 @@
 
     <button class='authing-button' @click="getAccessTokenByIdToken">Get Access Token By ID Token</button>
 
+    <button class='authing-button' @click="checkLoginStatus">Check Login Status</button>
+
     <div id="authing-guard-container"></div>
   </div>
 </template>
@@ -98,6 +100,11 @@ export default {
         idToken: this.userInfo.token
       })
       console.log('getAccessTokenByIdToken: ', res)
+    },
+
+    async checkLoginStatus () {
+      const res = await this.$guard.checkLoginStatus()
+      console.log('checkLoginStatus: ', res)
     }
   }
 }
