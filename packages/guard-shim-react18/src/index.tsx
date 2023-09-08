@@ -268,7 +268,10 @@ export class Guard {
     authClient.tokenProvider.setUser(userInfo)
 
     // 兼容老版本
-    const accessToken = localStorage.getItem('accessToken')
+    const accessToken =
+      localStorage.getItem('accessToken') ||
+      authClient.tokenProvider.getUser()?.token ||
+      ''
 
     if (!accessToken) {
       return
