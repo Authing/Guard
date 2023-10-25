@@ -8,7 +8,7 @@ export default function Login() {
   const guard = new Guard(guardOptions)
 
   const guardEffects = async () => {
-    guard.start('#authing-guard-container').then(userInfo => {
+    guard.start(document.querySelector('#authing-guard-container') as HTMLElement).then(userInfo => {
       console.log('start userInfo: ', userInfo)
     })
 
