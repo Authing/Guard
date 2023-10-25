@@ -224,7 +224,7 @@ export class Guard {
    * @param el String
    * @returns Promise
    */
-  async start(el?: string): Promise<User> {
+  async start(el?: string | HTMLElement): Promise<User> {
     ;(this.options.config as Partial<GuardLocalConfig>).target = el
 
     this.render()
