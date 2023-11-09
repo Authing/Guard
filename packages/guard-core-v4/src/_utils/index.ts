@@ -26,6 +26,7 @@ import {
 import { LngTextMapping } from '../ChangeLanguage'
 
 import { Lang } from '../Type'
+import { getGuardHttp } from './guardHttp'
 
 export const VALIDATE_PATTERN = {
   // https://emailregex.com/
@@ -228,7 +229,8 @@ export enum PasswordStrength {
   Low,
   Middle,
   High,
-  AUTO
+  AUTO,
+  Custom
 }
 
 export const PASSWORD_STRENGTH_TEXT_MAP: Record<
@@ -257,6 +259,10 @@ export const PASSWORD_STRENGTH_TEXT_MAP: Record<
   [PasswordStrength.AUTO]: {
     placeholder: () => i18n.t('login.inputPwd'),
     validateMessage: () => i18n.t('login.inputPwd')
+  },
+  [PasswordStrength.Custom]: {
+    placeholder: () => i18n.t('login.inputPwd'),
+    validateMessage: () => i18n.t('login.inputPwd')
   }
 }
 
@@ -276,8 +282,11 @@ export const getSymbolTypeLength = (pwd: string) => {
 export const getPasswordValidate = (
   strength: PasswordStrength = PasswordStrength.NoCheck,
   customPasswordStrength: any = {},
-  fieldRequiredRuleMessage?: string
+  fieldRequiredRuleMessage?: string,
+  userId?: string
 ): Rule[] => {
+  const { post } = getGuardHttp()
+
   const required = [
     ...fieldRequiredRule(i18n.t('common.password'), fieldRequiredRuleMessage)
     // {
@@ -363,6 +372,31 @@ export const getPasswordValidate = (
         pattern: customPasswordStrength?.regex,
         message: getCustomPassword()
       }
+    ],
+    [PasswordStrength.Custom]: [
+      // ...required,
+      {
+        validateTrigger: 'onBlur',
+        async validator(r, v) {
+          if (!v || v?.length === 0) {
+            return Promise.reject(i18n.t('login.inputPwd'))
+          } else {
+            const res = await post('/api/v2/password/user-action/check', {
+              password: v,
+              userId
+            })
+            if (res?.code === 200) {
+              if (res?.data?.valid) {
+                return Promise.resolve(true)
+              } else {
+                return Promise.reject(res?.data?.message)
+              }
+            } else {
+              return Promise.reject(res?.message)
+            }
+          }
+        }
+      }
     ]
   }
 
@@ -373,8 +407,11 @@ export const getPasswordValidateRules = (
   strength: PasswordStrength = PasswordStrength.NoCheck,
   customPasswordStrength: any = {},
   customValidateTrigger?: string,
-  fieldRequiredRuleMessage?: string
+  fieldRequiredRuleMessage?: string,
+  userId?: string
 ): Rule[] => {
+  const { post } = getGuardHttp()
+
   const required = [
     ...fieldRequiredRule(i18n.t('common.password'), fieldRequiredRuleMessage)
   ]
@@ -450,6 +487,31 @@ export const getPasswordValidateRules = (
         validateTrigger: customValidateTrigger,
         pattern: customPasswordStrength?.regex,
         message: getCustomPassword()
+      }
+    ],
+    [PasswordStrength.Custom]: [
+      // ...required,
+      {
+        validateTrigger: customValidateTrigger,
+        async validator(r, v) {
+          if (!v || v?.length === 0) {
+            return Promise.reject(i18n.t('login.inputPwd'))
+          } else {
+            const res = await post('/api/v2/password/user-action/check', {
+              password: v,
+              userId
+            })
+            if (res?.code === 200) {
+              if (res?.data?.valid) {
+                return Promise.resolve(true)
+              } else {
+                return Promise.reject(res?.data?.message)
+              }
+            } else {
+              return Promise.reject(res?.message)
+            }
+          }
+        }
       }
     ]
   }

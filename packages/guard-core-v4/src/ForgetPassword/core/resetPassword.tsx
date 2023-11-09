@@ -44,6 +44,7 @@ interface ResetPasswordProps {
   // onSend: (type: 'email' | 'phone') => void
   // onSendError: (type: 'email' | 'phone', error: any) => void
   setResetToken: React.Dispatch<React.SetStateAction<string>>
+  setUserId: React.Dispatch<React.SetStateAction<string>>
 }
 
 export const ResetPassword = (props: ResetPasswordProps) => {
@@ -133,6 +134,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
           }
           props.setControlShow(false)
           props.setResetToken(r?.data?.resetPasswordToken)
+          props.setUserId(r?.data?.userId)
         }
       })
       .catch(e => {

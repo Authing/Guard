@@ -60,6 +60,7 @@ export const GuardForgetPassword: React.FC = () => {
 
   // 忘记密码的 token，在第二步重置密码时传给后端
   const [resetToken, setResetToken] = useState('')
+  const [userId, setUserId] = useState('')
 
   /**
    * 「返回」的回调函数，goBack 是 null 的时候就隐藏「第一步的返回按钮、最后提交成功后的返回和自动跳转」
@@ -127,13 +128,15 @@ export const GuardForgetPassword: React.FC = () => {
       PasswordStrength.Low,
       PasswordStrength.Middle,
       PasswordStrength.High,
-      PasswordStrength.AUTO
+      PasswordStrength.AUTO,
+      PasswordStrength.Custom
     ]
     let rule = getPasswordValidateRules(
       passwordStrength[policyStrength],
       customPasswordStrength,
       'onChange',
-      t('login.resetPassword.pleaseInputPassword') as string
+      t('login.resetPassword.pleaseInputPassword') as string,
+      userId
     )
     return rule
   }
@@ -172,6 +175,7 @@ export const GuardForgetPassword: React.FC = () => {
           setCustomPasswordStrength={setCustomPasswordStrength}
           setPhoneOrEmailText={setPhoneOrEmailText}
           setResetToken={setResetToken}
+          setUserId={setUserId}
         />
       </div>
       {needBack && (
