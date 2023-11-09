@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard-angular",
-  "version": "5.3.2-alpha.0",
+  "version": "5.3.2-alpha.1",
   "description": "Guard for Angular",
   "module": "dist/fesm2015/authing-guard-angular.mjs",
   "types": "dist/index.d.ts",
@@ -33,7 +33,7 @@
     "@angular/core": "^14.0.0"
   },
   "dependencies": {
-    "@authing/guard": "^5.3.2-alpha.0"
+    "@authing/guard": "^5.3.2-alpha.1"
   },
   "author": "https://github.com/authing",
   "license": "MIT",
