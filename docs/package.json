@@ -14,7 +14,7 @@
     "vuepress-plugin-code-copy": "^1.0.6"
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^1.6.0",
     "cosmiconfig": "^7.0.1",
     "dayjs": "^1.10.4",
     "markdown-it-include": "^2.0.0",
