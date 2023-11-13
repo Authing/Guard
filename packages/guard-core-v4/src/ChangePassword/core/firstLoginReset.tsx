@@ -126,16 +126,17 @@ export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({
         }}
         autoComplete="off"
       >
-        {initData?.enableFirstLoginResetPasswordVerifyPhone && initData?.phone && (
-          <Form.Item
-            validateTrigger={['onBlur', 'onChange']}
-            className="authing-g2-input-form"
-            name="code"
-            rules={[...fieldRequiredRule(t('common.captchaCode'))]}
-          >
-            <SendPhoneCode publicConfig={publicConfig} />
-          </Form.Item>
-        )}
+        {initData?.enableFirstLoginResetPasswordVerifyPhone &&
+          initData?.phone && (
+            <Form.Item
+              validateTrigger={['onBlur', 'onChange']}
+              className="authing-g2-input-form"
+              name="code"
+              rules={[...fieldRequiredRule(t('common.captchaCode'))]}
+            >
+              <SendPhoneCode publicConfig={publicConfig} />
+            </Form.Item>
+          )}
         <CustomFormItem.Password
           className="authing-g2-input-form"
           name="password"
