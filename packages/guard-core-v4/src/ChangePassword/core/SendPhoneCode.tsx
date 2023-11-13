@@ -30,9 +30,11 @@ export const SendPhoneCode = (props: SendPhoneCodeProps) => {
         className="authing-g2-input g2-send-code-input"
         autoComplete="off"
         size="large"
-        placeholder={t('login.resetPassword.inputFourVerifyCode', {
-          length: verifyCodeLength
-        })}
+        placeholder={
+          t('login.resetPassword.inputFourVerifyCode', {
+            length: verifyCodeLength
+          }) as string
+        }
         prefix={
           <IconFont
             type="authing-a-shield-check-line1"
