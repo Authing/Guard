@@ -28,6 +28,10 @@ import { useMediaSize } from '../../_utils/hooks'
 
 import { usePasswordErrorText } from '../../_utils/useErrorText'
 
+import { SendPhoneCode } from './SendPhoneCode'
+
+import { fieldRequiredRule } from '../../_utils'
+
 interface FirstLoginResetProps {
   onReset: any
 }
@@ -39,11 +43,17 @@ export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({
 }) => {
   const { t } = useTranslation()
 
-  const initData = useGuardInitData<{ token: string }>()
+  const initData = useGuardInitData<{
+    token: string
+    enableFirstLoginResetPasswordVerifyPhone?: boolean
+    phone?: string
+  }>()
 
   const isAuthFlow = useGuardIsAuthFlow()
 
-  const { publicKey } = useGuardPublicConfig()
+  const publicConfig = useGuardPublicConfig()
+
+  const { publicKey } = publicConfig
 
   let [form] = Form.useForm()
 
@@ -61,14 +71,23 @@ export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({
     submitButtonRef.current?.onSpin(true)
 
     if (isAuthFlow) {
+      const flowData: {
+        password: string
+        code?: string
+      } = {
+        password: await encrypt!(newPassword, publicKey)
+      }
+      if (values.code) {
+        flowData.code = values.code
+      }
+
       // 重置密码成功不会返回 UserInfo
       const {
         apiCode,
         onGuardHandling,
         message: msg
-      } = await authFlow(ChangePasswordBusinessAction.FirstLoginReset, {
-        password: await encrypt!(newPassword, publicKey)
-      })
+      } = await authFlow(ChangePasswordBusinessAction.FirstLoginReset, flowData)
+
       submitButtonRef.current?.onSpin(false)
 
       if (apiCode === ApiCode.ABORT_FLOW) {
@@ -107,6 +126,16 @@ export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({
         }}
         autoComplete="off"
       >
+        {initData?.enableFirstLoginResetPasswordVerifyPhone && initData?.phone && (
+          <Form.Item
+            validateTrigger={['onBlur', 'onChange']}
+            className="authing-g2-input-form"
+            name="code"
+            rules={[...fieldRequiredRule(t('common.captchaCode'))]}
+          >
+            <SendPhoneCode publicConfig={publicConfig} />
+          </Form.Item>
+        )}
         <CustomFormItem.Password
           className="authing-g2-input-form"
           name="password"

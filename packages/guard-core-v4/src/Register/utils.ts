@@ -3,7 +3,9 @@ import { useGuardPublicConfig } from '../_utils/context'
 import omit from 'lodash/omit'
 
 // 是否进行注册信息补全
-export const useIsChangeComplete = (currentMode: 'phone' | 'email') => {
+export const useIsChangeComplete = (
+  currentMode: 'phone' | 'email' | string
+) => {
   const { extendsFields } = useGuardPublicConfig()
 
   const { complateFiledsPlace } = useGuardPublicConfig()

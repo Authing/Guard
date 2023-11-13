@@ -110,7 +110,7 @@
   "checkPreferences": "请检查偏好设置",
   "requireError": "无法满足要求错误",
   "hardwareSupport": "硬件不支持",
-  "verifyCodeTip": "换一张",
+  "verifyCodeTip": "看不清？换一张",
   "resetPassword": {
     "pleaseInputPassword": "请输入密码",
     "checkPasswordDiff": "请输入一致的密码",

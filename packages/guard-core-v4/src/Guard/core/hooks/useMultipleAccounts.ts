@@ -635,12 +635,14 @@ class MultipleAccount {
     user: User
   ) => { way: LoginWay; account: string } = (way: LoginWay, user: User) => {
     const { email, phone, username, name } = user
+    // 开启国际化短信后 邮箱验证码方式作为单独tab 未开启时和短信验证码共用一个
+    const emailCode = this.isInternationSms ? 'email-code' : 'phone-code'
     // 根据对应的 LoginWay 进行返回
     switch (way) {
       case 'email':
         return { account: email!, way: 'password' }
       case 'email-code':
-        return { account: email!, way: 'phone-code' }
+        return { account: email!, way: emailCode }
       case 'phone-code':
         return { account: phone!, way: 'phone-code' }
       case 'phone':

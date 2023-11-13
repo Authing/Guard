@@ -271,7 +271,7 @@ export interface ApplicationConfig {
       phoneRegisterType?: RegisterMethods[]
     }
   }
-
+  resetPwdCustomLogo?: string
   qrcodeTabsSettings: QrcodeTabsSettings
 
   qrCodeSortConfig: {

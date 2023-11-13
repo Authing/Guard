@@ -190,7 +190,12 @@ export const MFAFace = (props: any) => {
     if (isFlowEnd) {
       props.mfaLogin(200, data)
     } else {
-      if (apiCode === 1700 || apiCode === 1701 || apiCode === 1702) {
+      if (
+        apiCode === 1700 ||
+        apiCode === 1701 ||
+        apiCode === 1702 ||
+        apiCode === 502
+      ) {
         p1.current = undefined
 
         p2.current = undefined

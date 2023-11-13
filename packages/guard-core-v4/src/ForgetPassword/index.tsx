@@ -50,6 +50,8 @@ export const GuardForgetPassword: React.FC = () => {
 
   useGuardView()
 
+  const logo = publicConfig?.resetPwdCustomLogo || config?.logo
+
   const { changeModule } = useGuardModule()
   const [controlShow, setControlShow] = useState(true)
   const [policyStrength, setPolicyStrength] = useState(0)
@@ -155,7 +157,7 @@ export const GuardForgetPassword: React.FC = () => {
     <div className="g2-view-container g2-forget-password g2-password-reset-pageWrap g2-password-reset-step1">
       <div className="g2-view-header">
         <ImagePro
-          src={config?.logo as string}
+          src={logo!}
           size={48}
           borderRadius={4}
           alt=""
@@ -191,7 +193,7 @@ export const GuardForgetPassword: React.FC = () => {
     <div className="g2-view-container g2-forget-password g2-password-reset-pageWrap g2-password-reset-step2">
       <div className="g2-view-header">
         <ImagePro
-          src={config?.logo as string}
+          src={logo!}
           size={48}
           borderRadius={4}
           alt=""

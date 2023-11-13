@@ -11,6 +11,7 @@ export const authFlow = async (
   content: {
     password: string
     oldPassword?: string
+    code?: string
   }
 ) => {
   const { authFlow } = getGuardHttp()

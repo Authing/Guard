@@ -74,7 +74,9 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
   const authClient = useGuardAuthClient()
   const [form] = Form.useForm()
   const config = useGuardFinallyConfig()
-  const isChangeComplete = useIsChangeComplete('email')
+  const isChangeComplete = useIsChangeComplete(
+    (method || 'email').split('-')[0]
+  )
   const { changeModule } = useGuardModule()
   const { post } = useGuardHttpClient()
 
