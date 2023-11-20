@@ -100,6 +100,8 @@ export const initGuardI18n = async (
     lng,
     detection: {
       order: detectionOrder,
+      // todo 后续改为可配置项
+      lookupCookie: '_authing_lang', // 与公有云 portal 语言保持一致
       lookupLocalStorage: '_guard_i18nextLng' //与console主要业务i18n相关的key脱离
     },
     resources: LanguageResources,
