@@ -32,7 +32,7 @@ const propsAreEqual = (pre: GuardProps, current: GuardProps) => {
   return GuardPropsFilter(pre, current)
 }
 
-const GuardComponent = memo((props: GuardProps) => {
+export const GuardComponent = memo((props: GuardProps) => {
   const { config } = props
 
   const ref = useRef<HTMLDivElement>(null)
@@ -73,6 +73,6 @@ export function Guard(props: GuardProps) {
       ) as Element,
       element: <GuardComponent {...props}></GuardComponent>
     })
-  }, [props])
+  }, [props, GuardComponent])
   return <div id="authing-guard-container-v4"></div>
 }
