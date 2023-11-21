@@ -1,6 +1,6 @@
 import { Form } from 'shim-antd'
 
-import '@antd-es-style/form/style/index.less'
+import '@antd-lib-style/form/style/index.less'
 
 import { React } from 'shim-react'
 

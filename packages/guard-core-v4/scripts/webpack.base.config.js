@@ -21,10 +21,10 @@ module.exports = function webpackConfigFn({ reactVersion = '16' }) {
         'shim-antd': resolve(
           `shim-${reactVersion === '18' ? 'antd4' : 'antd4'}`
         ),
-        '@antd-es-style': resolve(
+        '@antd-lib-style': resolve(
           `shim-${
             reactVersion === '18' ? 'antd4' : 'antd4'
-          }/node_modules/antd/es`
+          }/node_modules/antd/lib`
         )
       }
     },
@@ -48,6 +48,7 @@ module.exports = function webpackConfigFn({ reactVersion = '16' }) {
           use: [
             MiniCssExtractPlugin.loader,
             'css-loader',
+            'resolve-url-loader',
             {
               loader: 'less-loader',
               options: {
@@ -71,7 +72,9 @@ module.exports = function webpackConfigFn({ reactVersion = '16' }) {
       ]
     },
     plugins: [
-      // new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)(),
+      // new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)({
+      //   analyzerPort: 4040
+      // }),
       new webpack.IgnorePlugin({
         resourceRegExp: /^\.\/locale$/,
         contextRegExp: /moment$/

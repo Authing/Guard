@@ -1,10 +1,10 @@
 import { message, Space, Tooltip } from 'shim-antd'
 
-import '@antd-es-style/message/style/index.less'
+import '@antd-lib-style/message/style/index.less'
 
-import '@antd-es-style/space/style/index.less'
+import '@antd-lib-style/space/style/index.less'
 
-import '@antd-es-style/tooltip/style/index.less'
+import '@antd-lib-style/tooltip/style/index.less'
 
 import { Lang } from 'authing-js-sdk/build/main/types'
 

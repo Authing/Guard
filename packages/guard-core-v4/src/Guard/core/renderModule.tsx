@@ -1,10 +1,10 @@
 import { ConfigProvider, message, Modal, antdLocales } from 'shim-antd'
 
-import '@antd-es-style/message/style/index.less'
+import '@antd-lib-style/message/style/index.less'
 
-import '@antd-es-style/modal/style/index.less'
+import '@antd-lib-style/modal/style/index.less'
 
-import '@antd-es-style/config-provider/style/index.less'
+import '@antd-lib-style/config-provider/style/index.less'
 
 import { React } from 'shim-react'
 
@@ -70,8 +70,6 @@ import { GuardIdentityBindingView } from '../../IdentityBinding'
 
 import { GuardIdentityBindingAskView } from '../../IdentityBindingAsk'
 
-import '../styles.less'
-
 import { updateFlowHandle } from '../../_utils/flowHandleStorage'
 
 import { GuardUnlockView } from '../../SelfUnlock'
@@ -81,7 +79,10 @@ import { GuardSelectAccountView } from '../../SelectAccount'
 import { GuardTenantPortalSelectView } from '../../TenantPortalSelect'
 
 import { GuardNewSubmitSuccessView } from '../../NewSubmitSuccess'
+
 import { i18n } from '../../_utils/locales'
+
+import '../styles.less'
 
 const { useEffect, useMemo } = React
 

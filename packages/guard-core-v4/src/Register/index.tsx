@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 import { Tabs } from 'shim-antd'
 
-import '@antd-es-style/tabs/style/index.less'
+import '@antd-lib-style/tabs/style/index.less'
 
 import { ChangeLanguage } from '../ChangeLanguage'
 

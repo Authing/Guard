@@ -1,8 +1,8 @@
 import { Avatar, Tag } from 'shim-antd'
 
-import '@antd-es-style/avatar/style/index.less'
+import '@antd-lib-style/avatar/style/index.less'
 
-import '@antd-es-style/tag/style/index.less'
+import '@antd-lib-style/tag/style/index.less'
 
 import { AvatarProps } from 'shim-antd/lib/avatar'
 

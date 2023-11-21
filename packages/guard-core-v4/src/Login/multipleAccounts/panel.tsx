@@ -1,6 +1,6 @@
 import { Popover } from 'shim-antd'
 
-import '@antd-es-style/popover/style/index.less'
+import '@antd-lib-style/popover/style/index.less'
 
 import { React } from 'shim-react'
 

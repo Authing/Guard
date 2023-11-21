@@ -2,7 +2,7 @@ import { React } from 'shim-react'
 
 import { Form } from 'shim-antd'
 
-import '@antd-es-style/form/style/index.less'
+import '@antd-lib-style/form/style/index.less'
 
 import CustomFormItem from '../../ValidatorRules'
 

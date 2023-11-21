@@ -1,8 +1,8 @@
 import { Divider, Input } from 'shim-antd'
 
-import '@antd-es-style/divider/style.index.less'
+import '@antd-lib-style/divider/style.index.less'
 
-import '@antd-es-style/input/style/index.less'
+import '@antd-lib-style/input/style/index.less'
 
 import { React } from 'shim-react'
 

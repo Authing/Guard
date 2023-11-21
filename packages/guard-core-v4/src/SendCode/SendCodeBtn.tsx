@@ -1,6 +1,6 @@
 import { Button } from 'shim-antd'
 
-import '@antd-es-style/button/style/index.less'
+import '@antd-lib-style/button/style/index.less'
 
 import { React } from 'shim-react'
 

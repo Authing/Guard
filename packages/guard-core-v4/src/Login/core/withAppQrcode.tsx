@@ -8,7 +8,7 @@ import { QrCodeResponse } from '../../Qrcode/hooks/usePostQrCode'
 
 import { message } from 'shim-antd'
 
-import '@antd-es-style/message/style/index.less'
+import '@antd-lib-style/message/style/index.less'
 
 import { useGuardEvents, useGuardHttpClient } from '../../_utils/context'
 

@@ -1,4 +1,4 @@
-// import 'antd/dist/antd.less'
+import 'antd/es/style/index.less'
 
 export * from 'antd'
 

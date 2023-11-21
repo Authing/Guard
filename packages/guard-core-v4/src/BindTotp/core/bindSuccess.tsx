@@ -1,10 +1,10 @@
 import { Form, Checkbox, Typography } from 'shim-antd'
 
-import '@antd-es-style/form/style/index.less'
+import '@antd-lib-style/form/style/index.less'
 
-import '@antd-es-style/checkbox/style/index.less'
+import '@antd-lib-style/checkbox/style/index.less'
 
-import '@antd-es-style/typography/style/index.less'
+import '@antd-lib-style/typography/style/index.less'
 
 import { React } from 'shim-react'
 

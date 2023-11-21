@@ -1,10 +1,10 @@
 import { Input, message, message as Message, Form } from 'shim-antd'
 
-import '@antd-es-style/message/style/index.less'
+import '@antd-lib-style/message/style/index.less'
 
-import '@antd-es-style/input/style/index.less'
+import '@antd-lib-style/input/style/index.less'
 
-import '@antd-es-style/form/style/index.less'
+import '@antd-lib-style/form/style/index.less'
 
 import { React } from 'shim-react'
 

@@ -2,7 +2,7 @@ import { React } from 'shim-react'
 
 import { Input, InputProps } from 'shim-antd'
 
-import '@antd-es-style/input/style/index.less'
+import '@antd-lib-style/input/style/index.less'
 
 import { InputNumber } from '../../../InputNumber'
 

@@ -1,8 +1,8 @@
 import { Col, Row } from 'shim-antd'
 
-import '@antd-es-style/grid/style/index.less'
+import '@antd-lib-style/grid/style/index.less'
 
-// import '@antd-es-style/row/style/index.less'
+// import '@antd-lib-style/row/style/index.less'
 
 import { React } from 'shim-react'
 

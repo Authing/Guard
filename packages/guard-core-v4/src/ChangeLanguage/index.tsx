@@ -1,6 +1,6 @@
 import { Dropdown, MenuProps } from 'shim-antd'
 
-import '@antd-es-style/dropdown/style/index.less'
+import '@antd-lib-style/dropdown/style/index.less'
 
 import { React } from 'shim-react'
 
