@@ -1,5 +1,7 @@
 import { message } from 'shim-antd'
 
+import '@antd-es-style/message/style/index.less'
+
 import { getHundreds } from '../compute'
 
 import { AuthingGuardResponse, AuthingResponse } from '../http'

@@ -1,5 +1,7 @@
 import { message } from 'shim-antd'
 
+import '@antd-es-style/message/style/index.less'
+
 import { User } from 'authing-js-sdk'
 
 import { React } from 'shim-react'

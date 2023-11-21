@@ -4,6 +4,10 @@ import { useTranslation } from 'react-i18next'
 
 import { Form, message } from 'shim-antd'
 
+import '@antd-es-style/form/style/index.less'
+
+import '@antd-es-style/message/style/index.less'
+
 import { useGuardAuthClient } from '../../Guard/authClient'
 
 import SubmitButton from '../../SubmitButton'
