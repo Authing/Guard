@@ -71,7 +71,7 @@ module.exports = function webpackConfigFn({ reactVersion = '16' }) {
       ]
     },
     plugins: [
-      new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)(),
+      // new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)(),
       new webpack.IgnorePlugin({
         resourceRegExp: /^\.\/locale$/,
         contextRegExp: /moment$/

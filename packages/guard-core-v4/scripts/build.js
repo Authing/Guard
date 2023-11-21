@@ -21,17 +21,17 @@ try {
 readyGo()
 
 function readyGo() {
-  // webpack(webpackReact16ESMConfig, error => {
-  //   if (error) {
-  //     console.error('build Authing Guard core esm 16 bundler error: ', error)
-  //   }
-  // })
+  webpack(webpackReact16ESMConfig, error => {
+    if (error) {
+      console.error('build Authing Guard core esm 16 bundler error: ', error)
+    }
+  })
 
-  // webpack(webpackReact18ESMConfig, error => {
-  //   if (error) {
-  //     console.error('build Authing Guard core esm 18 bundler error: ', error)
-  //   }
-  // })
+  webpack(webpackReact18ESMConfig, error => {
+    if (error) {
+      console.error('build Authing Guard core esm 18 bundler error: ', error)
+    }
+  })
 
   webpack(webpackGlobalConfig, error => {
     if (error) {
