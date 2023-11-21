@@ -8,17 +8,19 @@ const webpack = require('webpack')
 
 const { resolve } = require('./utils')
 
-module.exports = function webpackConfigFn ({
-  reactVersion = '16'
-}) {
+module.exports = function webpackConfigFn({ reactVersion = '16' }) {
   return {
     resolve: {
       extensions: ['.tsx', '.ts', '.js', '.json'],
       alias: {
         'shim-react': resolve(`shim-react${reactVersion}`),
-        'react': resolve(`shim-react${reactVersion}/node_modules/react`),
-        'react-dom': resolve(`shim-react${reactVersion}/node_modules/react-dom`),
-        'shim-antd': resolve(`shim-${reactVersion === '18' ? 'antd4' : 'antd4'}`)
+        react: resolve(`shim-react${reactVersion}/node_modules/react`),
+        'react-dom': resolve(
+          `shim-react${reactVersion}/node_modules/react-dom`
+        ),
+        'shim-antd': resolve(
+          `shim-${reactVersion === '18' ? 'antd5' : 'antd4'}`
+        )
       }
     },
     module: {
@@ -26,7 +28,7 @@ module.exports = function webpackConfigFn ({
         {
           test: /\.tsx?$/,
           use: 'ts-loader',
-          exclude: /node_modules/,
+          exclude: /node_modules/
         },
         {
           test: /\.js$/,
@@ -38,20 +40,24 @@ module.exports = function webpackConfigFn ({
         },
         {
           test: /\.less$/,
-          use: [MiniCssExtractPlugin.loader, 'css-loader', {
-            loader: 'less-loader',
-            options: {
-              sourceMap: true,
-              lessOptions: {
-                javascriptEnabled: true,
-                modifyVars: {
-                  '@primary-color': '#215AE5',
-                  '@link-color': '#215AE5',
-                  '@ant-prefix': 'authing-ant',
-                },
-              },
-            },
-          }]
+          use: [
+            MiniCssExtractPlugin.loader,
+            'css-loader',
+            {
+              loader: 'less-loader',
+              options: {
+                sourceMap: true,
+                lessOptions: {
+                  javascriptEnabled: true,
+                  modifyVars: {
+                    '@primary-color': '#215AE5',
+                    '@link-color': '#215AE5',
+                    '@ant-prefix': 'authing-ant'
+                  }
+                }
+              }
+            }
+          ]
         },
         {
           test: /\.(png|jpg|gif|svg)$/i,
@@ -60,12 +66,19 @@ module.exports = function webpackConfigFn ({
       ]
     },
     plugins: [
+      // new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)({
+      //   analyzerReport: 4040
+      // }),
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^\.\/locale$/,
+        contextRegExp: /moment$/
+      }),
       new HtmlWebpackPlugin({
         template: resolve('index.html'),
         filename: 'index.html',
         env: process.env.NODE_ENV,
         reactVersion,
-        scriptLoading: "module",
+        scriptLoading: 'module',
         minify: {
           removeComments: true,
           collapseWhitespace: true,

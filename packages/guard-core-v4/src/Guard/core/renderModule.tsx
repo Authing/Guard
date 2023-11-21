@@ -1,4 +1,4 @@
-import { ConfigProvider, message, Modal } from 'shim-antd'
+import { ConfigProvider, message, Modal, antdLocales } from 'shim-antd'
 
 import { React } from 'shim-react'
 
@@ -75,6 +75,7 @@ import { GuardSelectAccountView } from '../../SelectAccount'
 import { GuardTenantPortalSelectView } from '../../TenantPortalSelect'
 
 import { GuardNewSubmitSuccessView } from '../../NewSubmitSuccess'
+import { i18n } from '../../_utils/locales'
 
 const { useEffect, useMemo } = React
 
@@ -88,6 +89,12 @@ export enum LangMAP {
   zhCn = 'zh-CN',
   enUs = 'en-US',
   jaJp = 'ja-JP'
+}
+
+const langMap = {
+  [LangMAP.zhCn]: antdLocales.zhCN,
+  [LangMAP.enUs]: antdLocales.enUS,
+  [LangMAP.jaJp]: antdLocales.jaJP
 }
 
 export const RenderModule: React.FC<{
@@ -289,7 +296,10 @@ export const RenderModule: React.FC<{
   }, [GuardButtonProvider, renderModule])
 
   return (
-    <ConfigProvider prefixCls={PREFIX_CLS}>
+    <ConfigProvider
+      prefixCls={PREFIX_CLS}
+      locale={langMap[i18n.language as LangMAP]}
+    >
       {defaultMergedConfig.mode === GuardMode.Modal ? (
         <Modal
           className="authing-g2-render-module-modal"
