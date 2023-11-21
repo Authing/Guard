@@ -1,5 +1,7 @@
 import { Form, FormItemProps } from 'shim-antd'
 
+import '@antd-es-style/form/style/index.less'
+
 import { React } from 'shim-react'
 
 import { getPasswordValidate } from '../_utils'

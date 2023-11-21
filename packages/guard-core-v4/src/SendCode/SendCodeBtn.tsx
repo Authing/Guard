@@ -1,5 +1,7 @@
 import { Button } from 'shim-antd'
 
+import '@antd-es-style/button/style/index.less'
+
 import { React } from 'shim-react'
 
 import { useTranslation } from 'react-i18next'

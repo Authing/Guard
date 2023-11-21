@@ -1,5 +1,11 @@
 import { message, Spin, Upload, PlusOutlined } from 'shim-antd'
 
+import '@antd-es-style/message/style/index.less'
+
+import '@antd-es-style/spin/style/index.less'
+
+import '@antd-es-style/upload/style/index.less'
+
 import { UploadChangeParam } from 'shim-antd/lib/upload'
 
 import { React } from 'shim-react'

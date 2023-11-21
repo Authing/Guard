@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next'
 
 import { Form } from 'shim-antd'
 
+import '@antd-es-style/form/style/index.less'
+
 import { fieldRequiredRule, validate, getPasswordIdentify } from '../../_utils'
 
 import SubmitButton from '../../SubmitButton'

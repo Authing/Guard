@@ -1,5 +1,7 @@
 import { message } from 'shim-antd'
 
+import '@antd-es-style/message/style/index.less'
+
 import { React } from 'shim-react'
 
 import { SceneType } from 'authing-js-sdk'
