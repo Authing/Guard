@@ -19,6 +19,8 @@ import SubmitButton from '../../SubmitButton'
 
 import { message } from 'shim-antd'
 
+import '@antd-es-style/message/style/index.less'
+
 import { faceErrorMessage } from '../../_utils/errorFace'
 
 import { MFABackStateContext } from '../context'

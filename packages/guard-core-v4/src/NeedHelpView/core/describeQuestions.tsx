@@ -12,6 +12,20 @@ import {
   Upload
 } from 'shim-antd'
 
+import '@antd-es-style/form/style/index.less'
+
+import '@antd-es-style/input/style/index.less'
+
+import '@antd-es-style/message/style/index.less'
+
+import '@antd-es-style/modal/style/index.less'
+
+import '@antd-es-style/progress/style/index.less'
+
+import '@antd-es-style/select/style/index.less'
+
+import '@antd-es-style/upload/style/index.less'
+
 import SubmitButton from '../../SubmitButton'
 
 import { PlusOutlined, UploadFile } from 'shim-antd'

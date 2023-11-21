@@ -1,5 +1,9 @@
 import { Avatar, message } from 'shim-antd'
 
+import '@antd-es-style/message/style/index.less'
+
+import '@antd-es-style/avatar/style/index.less'
+
 import qs from 'qs'
 
 import { React } from 'shim-react'

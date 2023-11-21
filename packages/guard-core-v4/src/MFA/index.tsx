@@ -24,6 +24,8 @@ import './styles.less'
 
 import { message } from 'shim-antd'
 
+import '@antd-es-style/message/style/index.less'
+
 import {
   useGuardEvents,
   useGuardFinallyConfig,
