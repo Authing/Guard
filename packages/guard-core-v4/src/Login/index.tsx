@@ -34,6 +34,16 @@ import { ChangeLanguage } from '../ChangeLanguage'
 
 import { fallbackLng, i18n } from '../_utils/locales'
 
+import '@antd-es-style/message/style/index.less'
+
+import '@antd-es-style/popover/style/index.less'
+
+import '@antd-es-style/tabs/style/index.less'
+
+import '@antd-es-style/tag/style/index.less'
+
+import '@antd-es-style/tooltip/style/index.less'
+
 import './styles.less'
 
 import {

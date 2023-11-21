@@ -19,7 +19,10 @@ module.exports = function webpackConfigFn({ reactVersion = '16' }) {
           `shim-react${reactVersion}/node_modules/react-dom`
         ),
         'shim-antd': resolve(
-          `shim-${reactVersion === '18' ? 'antd5' : 'antd4'}`
+          `shim-${reactVersion === '18' ? 'antd4' : 'antd4'}`
+        ),
+        '@antd-es-style': resolve(
+          `shim-${reactVersion === '18' ? 'antd4' : 'antd4'}/node_modules/antd/es`
         )
       }
     },
@@ -66,9 +69,7 @@ module.exports = function webpackConfigFn({ reactVersion = '16' }) {
       ]
     },
     plugins: [
-      // new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)({
-      //   analyzerReport: 4040
-      // }),
+      // new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)(),
       new webpack.IgnorePlugin({
         resourceRegExp: /^\.\/locale$/,
         contextRegExp: /moment$/

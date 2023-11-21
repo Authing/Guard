@@ -1,5 +1,7 @@
 import { FormItemProps, Form } from 'shim-antd'
 
+import '@antd-es-style/form/style/index.less'
+
 import { React } from 'shim-react'
 
 import { useTranslation } from 'react-i18next'
