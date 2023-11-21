@@ -1,5 +1,7 @@
 import { Button, ButtonProps } from 'shim-antd'
 
+import '@antd-es-style/button/style/index.less'
+
 import { React } from 'shim-react'
 
 import { useGuardButtonState } from '../_utils/context'

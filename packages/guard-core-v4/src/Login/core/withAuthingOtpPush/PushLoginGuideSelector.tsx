@@ -1,5 +1,7 @@
 import { Select } from 'shim-antd'
 
+import '@antd-es-style/select/style/index.less'
+
 import { React } from 'shim-react'
 
 import { SelectorOptions, Selector } from './types'

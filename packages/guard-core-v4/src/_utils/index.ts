@@ -1,5 +1,7 @@
 import { Rule } from 'shim-antd/lib/form'
 
+import '@antd-es-style/message/style/index.less'
+
 import qs from 'qs'
 
 import { i18n } from './locales'

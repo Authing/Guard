@@ -1,5 +1,7 @@
 import { Tabs } from 'shim-antd'
 
+import '@antd-es-style/tabs/style/index.less'
+
 import { React, ReactNode } from 'shim-react'
 
 import { useTranslation } from 'react-i18next'

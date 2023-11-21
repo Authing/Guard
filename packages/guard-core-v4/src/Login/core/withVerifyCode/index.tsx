@@ -2,6 +2,8 @@ import { React } from 'shim-react'
 
 import { Form } from 'shim-antd'
 
+import '@antd-es-style/form/style/index.less'
+
 import { useTranslation } from 'react-i18next'
 
 import {

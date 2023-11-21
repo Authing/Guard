@@ -1,3 +1,9 @@
+// @import '@antd-es-style/style/mixins/index.less';
+
+// *[class*='authing-'] {
+//   @import '@antd-es-style/style/core/global.less';
+// }
+
 .authing-g2-render-module-normal {
   position: fixed;
   top: 50%;
@@ -260,10 +266,14 @@
   .authing-ant-select-item {
     border-radius: 4px;
   }
-  .authing-ant-select-item-option-selected:not(.authing-ant-select-item-option-disabled) {
+  .authing-ant-select-item-option-selected:not(
+      .authing-ant-select-item-option-disabled
+    ) {
     background: #f2f3f5;
   }
-  .authing-ant-select-item-option-active:not(.authing-ant-select-item-option-disabled) {
+  .authing-ant-select-item-option-active:not(
+      .authing-ant-select-item-option-disabled
+    ) {
     background: #f2f3f5;
   }
 }
@@ -301,7 +311,9 @@
       background: #f7f8fa;
       border-radius: 4px;
       border: 1px solid #f7f8fa;
-      transition: all 0.3s linear, height 0s;
+      transition:
+        all 0.3s linear,
+        height 0s;
     }
   }
   .authing-g2-textarea {
@@ -711,11 +723,15 @@
 
 // form 必填 icon 后置
 .authing-g2-form-required-item-icon-after {
-  label.authing-ant-form-item-required:not(.authing-ant-form-item-required-mark-optional)::before {
+  label.authing-ant-form-item-required:not(
+      .authing-ant-form-item-required-mark-optional
+    )::before {
     display: none;
   }
 
-  label.authing-ant-form-item-required:not(.authing-ant-form-item-required-mark-optional)::after {
+  label.authing-ant-form-item-required:not(
+      .authing-ant-form-item-required-mark-optional
+    )::after {
     display: inline-block;
     margin-right: 4px;
     margin-top: 4px;

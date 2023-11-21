@@ -2,6 +2,10 @@ import './styles.less'
 
 import { Avatar, List } from 'shim-antd'
 
+import '@antd-es-style/list/style/index.less'
+
+import '@antd-es-style/avatar/style/index.less'
+
 import { AvatarProps } from 'shim-antd/lib/avatar'
 
 import { ListItemProps, ListProps } from 'shim-antd/lib/list'

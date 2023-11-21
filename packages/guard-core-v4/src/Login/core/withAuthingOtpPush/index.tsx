@@ -16,6 +16,8 @@ import {
 
 import { message } from 'shim-antd'
 
+import '@antd-es-style/message/style/index.less'
+
 import { useGuardPublicConfig } from '../../../_utils/context'
 
 import { LoginMethods } from '../../../Type/application'

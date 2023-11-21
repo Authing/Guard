@@ -1,5 +1,7 @@
 import { Input } from 'shim-antd'
 
+import '@antd-es-style/input/style/index.less'
+
 import { React } from 'shim-react'
 
 import { IconFont } from '../IconFont'

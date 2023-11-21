@@ -2,6 +2,10 @@ import { React } from 'shim-react'
 
 import { Button, Form } from 'shim-antd'
 
+import '@antd-es-style/form/style/index.less'
+
+import '@antd-es-style/button/style/index.less'
+
 import './styles.less'
 
 import { IconFont } from '../../../IconFont'

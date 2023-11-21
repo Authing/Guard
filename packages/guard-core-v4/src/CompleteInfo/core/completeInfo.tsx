@@ -2,6 +2,16 @@ import { React } from 'shim-react'
 
 import { Form, Input, Select, DatePicker, message } from 'shim-antd'
 
+import '@antd-es-style/form/style/index.less'
+
+import '@antd-es-style/input/style/index.less'
+
+import '@antd-es-style/select/style/index.less'
+
+import '@antd-es-style/date-picker/style/index.less'
+
+import '@antd-es-style/message/style/index.less'
+
 import { useTranslation } from 'react-i18next'
 
 import { useAsyncFn } from 'react-use'

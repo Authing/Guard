@@ -1,5 +1,7 @@
 import { Popover } from 'shim-antd'
 
+import '@antd-es-style/popover/style/index.less'
+
 import { React } from 'shim-react'
 
 import { useTranslation } from 'react-i18next'

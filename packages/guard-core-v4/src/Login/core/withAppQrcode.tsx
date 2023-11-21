@@ -8,6 +8,8 @@ import { QrCodeResponse } from '../../Qrcode/hooks/usePostQrCode'
 
 import { message } from 'shim-antd'
 
+import '@antd-es-style/message/style/index.less'
+
 import { useGuardEvents, useGuardHttpClient } from '../../_utils/context'
 
 import { WorkQrCodeRef } from '../../Qrcode/WorkQrCode'

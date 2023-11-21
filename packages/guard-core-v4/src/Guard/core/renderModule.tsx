@@ -1,5 +1,11 @@
 import { ConfigProvider, message, Modal, antdLocales } from 'shim-antd'
 
+import '@antd-es-style/message/style/index.less'
+
+import '@antd-es-style/modal/style/index.less'
+
+import '@antd-es-style/config-provider/style/index.less'
+
 import { React } from 'shim-react'
 
 import { GuardProps } from '../Guard'

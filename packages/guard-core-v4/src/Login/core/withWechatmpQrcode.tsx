@@ -4,6 +4,8 @@ import { useGuardEvents, useGuardHttpClient } from '../../_utils/context'
 
 import { message } from 'shim-antd'
 
+import '@antd-es-style/message/style/index.less'
+
 import { QrCode } from '../../Qrcode'
 
 import { CodeStatus } from '../../Qrcode/UiQrCode'

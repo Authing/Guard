@@ -1,5 +1,7 @@
 import { Input, InputProps } from 'shim-antd'
 
+import '@antd-es-style/input/style/index.less'
+
 import { React } from 'shim-react'
 
 const { useEffect, useState } = React

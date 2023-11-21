@@ -1,5 +1,7 @@
 import { Spin } from 'shim-antd'
 
+import '@antd-es-style/spin/style/index.less'
+
 import { React } from 'shim-react'
 
 import { useTranslation } from 'react-i18next'

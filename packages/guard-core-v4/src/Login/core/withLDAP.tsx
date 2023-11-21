@@ -4,6 +4,12 @@ import { useTranslation } from 'react-i18next'
 
 import { Form, Input, message } from 'shim-antd'
 
+import '@antd-es-style/message/style/index.less'
+
+import '@antd-es-style/input/style/index.less'
+
+import '@antd-es-style/form/style/index.less'
+
 import { ErrorCode } from '../../_utils/GuardErrorCode'
 
 import SubmitButton from '../../SubmitButton'
