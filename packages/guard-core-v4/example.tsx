@@ -5,12 +5,13 @@ import { React, render } from 'shim-react'
 import * as facePlugin from 'face-api.js'
 
 const App = () => {
-  const appId = '630ed3137dd6f2fd7001da24'
+  const appId = '655311b0aa01066bc8e2d599'
   // const deviceId = '6486be0f60e50cb92678a468' //如要使用必须使用开启元数据对的 用户池 测试
 
   const config: Partial<GuardLocalConfig> = {
     // mode: GuardMode.Modal,
-    // lang: 'en-US'
+    // lang: 'en-US',
+    host: 'http://passkey.authing.localhost:3000'
   }
 
   const onLogin = (userInfo: User) => {

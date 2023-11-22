@@ -71,6 +71,7 @@ import { useLoginMultiple } from './hooks/useLoginMultiple'
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
 
 import { LoginWithAuthingOtpPush } from './core/withAuthingOtpPush/index'
+import { LoginWithPasskey } from './core/withPasskey'
 
 const { useEffect, useLayoutEffect, useState, useRef, useMemo, useCallback } =
   React
@@ -81,7 +82,8 @@ const inputWays = [
   LoginMethods.AD,
   LoginMethods.LDAP,
   LoginMethods.AuthingOtpPush,
-  LoginMethods.EmailCode
+  LoginMethods.EmailCode,
+  LoginMethods.Passkey
 ]
 const qrcodeWays = [
   LoginMethods.AppQr,
@@ -735,6 +737,16 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     )
   }, [ms, onLoginSuccess, t, backfillData, multipleInstance, agreements])
 
+  const PasskeyTab = useMemo(
+    () =>
+      ms?.includes(LoginMethods.Passkey) && (
+        <Tabs.TabPane key={LoginMethods.Passkey} tab={'Passkey'}>
+          <LoginWithPasskey />
+        </Tabs.TabPane>
+      ),
+    [ms]
+  )
+
   // 登录方式对应 tab Component
   const tabMap = useMemo(() => {
     return {
@@ -742,9 +754,10 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       [LoginMethods.PhoneCode]: CodeTab,
       [LoginMethods.LDAP]: LdapTab,
       [LoginMethods.AD]: ADTab,
-      [LoginMethods.AuthingOtpPush]: AuthingOtpPushTab
+      [LoginMethods.AuthingOtpPush]: AuthingOtpPushTab,
+      [LoginMethods.Passkey]: PasskeyTab
     }
-  }, [PasswordTab, CodeTab, LdapTab, ADTab, AuthingOtpPushTab])
+  }, [PasswordTab, CodeTab, LdapTab, ADTab, AuthingOtpPushTab, PasskeyTab])
 
   const GeneralLoginComponent = useMemo(() => {
     const total = ms?.filter(tabName =>
@@ -753,12 +766,13 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         LoginMethods.PhoneCode,
         LoginMethods.LDAP,
         LoginMethods.AD,
-        LoginMethods.AuthingOtpPush
+        LoginMethods.AuthingOtpPush,
+        LoginMethods.Passkey
       ].includes(tabName)
     )
-
     if (total) {
-      return getSortTabs(total, config.defaultLoginMethod ?? '').map(
+      const sortedTable = getSortTabs(total, config.defaultLoginMethod ?? '')
+      const tabs = sortedTable.map(
         tabName =>
           tabMap[
             tabName as
@@ -767,11 +781,15 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
               | LoginMethods.LDAP
               | LoginMethods.AD
               | LoginMethods.AuthingOtpPush
+              | LoginMethods.Passkey
           ]
       )
+      return tabs
     }
     return null
   }, [config.defaultLoginMethod, ms, tabMap])
+
+  console.log('GeneralLoginComponent: ', GeneralLoginComponent)
 
   const QrCodeTabMap = useMemo(() => {
     return {

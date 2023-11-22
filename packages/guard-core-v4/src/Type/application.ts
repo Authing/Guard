@@ -13,7 +13,8 @@ export enum LoginMethods {
   WxMinQr = 'wechat-miniprogram-qrcode', // 对应社会化登录的 wechat:miniprogram:qrconnect(小程序扫码登录)
   AD = 'ad', // 对应企业身份源的 Windows AD 登录
   WechatMpQrcode = 'wechatmp-qrcode', // 微信扫码关注登录
-  AuthingOtpPush = 'authing-otp-push' // App 扫码登录
+  AuthingOtpPush = 'authing-otp-push', // App 扫码登录
+  Passkey = 'passkey' // passkey
 }
 
 export enum OIDCConnectionMode {
