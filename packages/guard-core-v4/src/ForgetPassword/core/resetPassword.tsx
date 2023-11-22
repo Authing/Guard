@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next'
 
 import { Form, message } from 'shim-antd'
 
-import '@antd-lib-style/message/style/index.less'
+// import '@antd-lib-style/message/style/index.less'
 
-import '@antd-lib-style/form/style/index.less'
+// import '@antd-lib-style/form/style/index.less'
 
 import { fieldRequiredRule, validate } from '../../_utils'
 

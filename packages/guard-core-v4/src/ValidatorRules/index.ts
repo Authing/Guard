@@ -2,7 +2,7 @@ import { FormInstance } from 'shim-antd/lib/form'
 
 import { Form, FormItemProps } from 'shim-antd'
 
-import '@antd-lib-style/form/style/index.less'
+// import '@antd-lib-style/form/style/index.less'
 
 import { PasswordFormItem } from './PasswordFormItem'
 

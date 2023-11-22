@@ -2,15 +2,15 @@ import { React } from 'shim-react'
 
 import { Form, Input, Select, DatePicker, message } from 'shim-antd'
 
-import '@antd-lib-style/form/style/index.less'
+// import '@antd-lib-style/form/style/index.less'
 
-import '@antd-lib-style/input/style/index.less'
+// import '@antd-lib-style/input/style/index.less'
 
-import '@antd-lib-style/select/style/index.less'
+// import '@antd-lib-style/select/style/index.less'
 
-import '@antd-lib-style/date-picker/style/index.less'
+// import '@antd-lib-style/date-picker/style/index.less'
 
-import '@antd-lib-style/message/style/index.less'
+// import '@antd-lib-style/message/style/index.less'
 
 import { useTranslation } from 'react-i18next'
 

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 import { Form } from 'shim-antd'
 
-import '@antd-lib-style/form/style/index.less'
+// import '@antd-lib-style/form/style/index.less'
 
 import { fieldRequiredRule, validate, getPasswordIdentify } from '../../_utils'
 

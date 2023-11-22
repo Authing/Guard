@@ -1,7 +1,7 @@
 import { User } from 'authing-js-sdk'
 import { useGuardAuthClient } from '../Guard/authClient'
 import { Space } from 'shim-antd'
-import '@antd-lib-style/space/style/index.less'
+// import '@antd-lib-style/space/style/index.less'
 import { React } from 'shim-react'
 import { useTranslation } from 'react-i18next'
 import { ImagePro } from '../ImagePro'

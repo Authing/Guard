@@ -2,9 +2,9 @@ import './styles.less'
 
 import { Avatar, List } from 'shim-antd'
 
-import '@antd-lib-style/list/style/index.less'
+// import '@antd-lib-style/list/style/index.less'
 
-import '@antd-lib-style/avatar/style/index.less'
+// import '@antd-lib-style/avatar/style/index.less'
 
 import { AvatarProps } from 'shim-antd/lib/avatar'
 

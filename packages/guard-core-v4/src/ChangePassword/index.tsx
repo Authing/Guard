@@ -2,7 +2,7 @@ import { React, ReactNode } from 'shim-react'
 
 import { message } from 'shim-antd'
 
-import '@antd-lib-style/message/style/index.less'
+// import '@antd-lib-style/message/style/index.less'
 
 import { useTranslation } from 'react-i18next'
 

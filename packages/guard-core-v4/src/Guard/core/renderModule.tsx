@@ -1,10 +1,10 @@
 import { ConfigProvider, message, Modal, antdLocales } from 'shim-antd'
 
-import '@antd-lib-style/message/style/index.less'
+// import '@antd-lib-style/message/style/index.less'
 
-import '@antd-lib-style/modal/style/index.less'
+// import '@antd-lib-style/modal/style/index.less'
 
-import '@antd-lib-style/config-provider/style/index.less'
+// import '@antd-lib-style/config-provider/style/index.less'
 
 import { React } from 'shim-react'
 

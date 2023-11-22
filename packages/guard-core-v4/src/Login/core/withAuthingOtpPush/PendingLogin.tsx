@@ -2,9 +2,9 @@ import { React } from 'shim-react'
 
 import { Button, Form } from 'shim-antd'
 
-import '@antd-lib-style/form/style/index.less'
+// import '@antd-lib-style/form/style/index.less'
 
-import '@antd-lib-style/button/style/index.less'
+// import '@antd-lib-style/button/style/index.less'
 
 import './styles.less'
 

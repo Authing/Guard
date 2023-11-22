@@ -1,6 +1,6 @@
 import { Select } from 'shim-antd'
 
-import '@antd-lib-style/select/style/index.less'
+// import '@antd-lib-style/select/style/index.less'
 
 import { React } from 'shim-react'
 

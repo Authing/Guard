@@ -12,19 +12,19 @@ import {
   Upload
 } from 'shim-antd'
 
-import '@antd-lib-style/form/style/index.less'
+// import '@antd-lib-style/form/style/index.less'
 
-import '@antd-lib-style/input/style/index.less'
+// import '@antd-lib-style/input/style/index.less'
 
-import '@antd-lib-style/message/style/index.less'
+// import '@antd-lib-style/message/style/index.less'
 
-import '@antd-lib-style/modal/style/index.less'
+// import '@antd-lib-style/modal/style/index.less'
 
-import '@antd-lib-style/progress/style/index.less'
+// import '@antd-lib-style/progress/style/index.less'
 
-import '@antd-lib-style/select/style/index.less'
+// import '@antd-lib-style/select/style/index.less'
 
-import '@antd-lib-style/upload/style/index.less'
+// import '@antd-lib-style/upload/style/index.less'
 
 import SubmitButton from '../../SubmitButton'
 

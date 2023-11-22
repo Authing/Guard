@@ -1,6 +1,6 @@
 import { Rule } from 'shim-antd/lib/form'
 
-import '@antd-lib-style/message/style/index.less'
+// import '@antd-lib-style/message/style/index.less'
 
 import qs from 'qs'
 

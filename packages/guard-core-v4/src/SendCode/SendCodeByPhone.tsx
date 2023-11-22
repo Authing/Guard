@@ -1,6 +1,6 @@
 import { message } from 'shim-antd'
 
-import '@antd-lib-style/message/style/index.less'
+// import '@antd-lib-style/message/style/index.less'
 
 import { React } from 'shim-react'
 

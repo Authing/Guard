@@ -2,9 +2,9 @@ import { React } from 'shim-react'
 
 import { Space, Checkbox } from 'shim-antd'
 
-import '@antd-lib-style/space/style/index.less'
+// import '@antd-lib-style/space/style/index.less'
 
-import '@antd-lib-style/checkbox/style/index.less'
+// import '@antd-lib-style/checkbox/style/index.less'
 
 import './style.less'
 

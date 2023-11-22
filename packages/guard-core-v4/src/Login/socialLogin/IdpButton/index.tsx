@@ -1,8 +1,8 @@
 import { Avatar, message } from 'shim-antd'
 
-import '@antd-lib-style/message/style/index.less'
+// import '@antd-lib-style/message/style/index.less'
 
-import '@antd-lib-style/avatar/style/index.less'
+// import '@antd-lib-style/avatar/style/index.less'
 
 import qs from 'qs'
 

@@ -4,15 +4,15 @@ import { useTranslation } from 'react-i18next'
 
 import { message, Popover, Tabs, Tag, Tooltip } from 'shim-antd'
 
-import '@antd-lib-style/message/style/index.less'
+// import '@antd-lib-style/message/style/index.less'
 
-import '@antd-lib-style/popover/style/index.less'
+// import '@antd-lib-style/popover/style/index.less'
 
-import '@antd-lib-style/tabs/style/index.less'
+// import '@antd-lib-style/tabs/style/index.less'
 
-import '@antd-lib-style/tag/style/index.less'
+// import '@antd-lib-style/tag/style/index.less'
 
-import '@antd-lib-style/tooltip/style/index.less'
+// import '@antd-lib-style/tooltip/style/index.less'
 
 import intersection from 'lodash/intersection'
 

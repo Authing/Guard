@@ -2,9 +2,9 @@ import { React } from 'shim-react'
 
 import { Select, Tooltip } from 'shim-antd'
 
-import '@antd-lib-style/select/style/index.less'
+// import '@antd-lib-style/select/style/index.less'
 
-import '@antd-lib-style/tooltip/style/index.less'
+// import '@antd-lib-style/tooltip/style/index.less'
 
 import { isoInfo, IsoType } from '../../../_utils/countryList'
 

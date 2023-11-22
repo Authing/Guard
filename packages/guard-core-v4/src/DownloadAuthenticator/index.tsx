@@ -1,6 +1,6 @@
 import { Tabs } from 'shim-antd'
 
-import '@antd-lib-style/tabs/style/index.less'
+// import '@antd-lib-style/tabs/style/index.less'
 
 import { React, ReactNode } from 'shim-react'
 

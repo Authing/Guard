@@ -2,7 +2,7 @@ import { React } from 'shim-react'
 
 import { Drawer } from 'shim-antd'
 
-import '@antd-lib-style/drawer/style/index.less'
+// import '@antd-lib-style/drawer/style/index.less'
 
 import { useTranslation } from 'react-i18next'
 

@@ -1,6 +1,6 @@
 import { Spin } from 'shim-antd'
 
-import '@antd-lib-style/spin/style/index.less'
+// import '@antd-lib-style/spin/style/index.less'
 
 import { React } from 'shim-react'
 

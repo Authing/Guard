@@ -1,8 +1,8 @@
 import { message, Form } from 'shim-antd'
 
-import '@antd-lib-style/form/style/index.less'
+// import '@antd-lib-style/form/style/index.less'
 
-import '@antd-lib-style/message/style/index.less'
+// import '@antd-lib-style/message/style/index.less'
 
 import { SceneType } from 'authing-js-sdk'
 

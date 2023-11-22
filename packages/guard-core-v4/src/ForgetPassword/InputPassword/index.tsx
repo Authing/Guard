@@ -2,7 +2,7 @@ import { React } from 'shim-react'
 
 import { Input } from 'shim-antd'
 
-import '@antd-lib-style/input/style/index.less'
+// import '@antd-lib-style/input/style/index.less'
 
 import { PasswordProps, InputProps } from 'shim-antd/lib/input'
 
