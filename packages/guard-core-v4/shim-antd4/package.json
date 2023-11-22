@@ -9,5 +9,6 @@
     "@ant-design/icons": "^5.0.1",
     "antd": "^4.24.8"
   },
+
   "license": "MIT"
 }

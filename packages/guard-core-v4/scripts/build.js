@@ -13,25 +13,27 @@ const webpackGlobalConfig = require('./webpack.prod.config.react16.global')
 try {
   rm.sync(path.resolve(__dirname, '../', 'dist'))
 } catch (e) {
-  console.error('\n\n build Authing Guard, failed to delete dist directory, please operate manually \n\n')
+  console.error(
+    '\n\n build Authing Guard, failed to delete dist directory, please operate manually \n\n'
+  )
 }
 
 readyGo()
 
-function readyGo () {
-  webpack(webpackReact16ESMConfig, (error) => {
+function readyGo() {
+  webpack(webpackReact16ESMConfig, error => {
     if (error) {
       console.error('build Authing Guard core esm 16 bundler error: ', error)
     }
   })
 
-  webpack(webpackReact18ESMConfig, (error) => {
+  webpack(webpackReact18ESMConfig, error => {
     if (error) {
       console.error('build Authing Guard core esm 18 bundler error: ', error)
     }
   })
 
-  webpack(webpackGlobalConfig, (error) => {
+  webpack(webpackGlobalConfig, error => {
     if (error) {
       console.error('build Authing Guard core global bundler error: ', error)
     }
