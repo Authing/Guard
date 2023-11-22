@@ -27,7 +27,7 @@ const SubmitButton = (props: SubmitButtonProps, ref: any) => {
     if (shaking === true) {
       timeOut = setTimeout(() => {
         UnMountShaking()
-      }, 1000)
+      }, 820)
     }
 
     return () => {
@@ -38,9 +38,14 @@ const SubmitButton = (props: SubmitButtonProps, ref: any) => {
   useImperativeHandle(ref, () => ({
     onError: (text?: string) => {
       setSpin(false)
-      MountShaking()
       setShaking(true)
       spinChange(false)
+      let timeOut: NodeJS.Timeout
+
+      timeOut = setTimeout(() => {
+        MountShaking()
+        clearTimeout(timeOut)
+      })
     },
     onSpin: (sp: boolean) => {
       setSpin(sp)
