@@ -8,7 +8,7 @@ import { GuardLocalConfig } from './config'
 
 import { GuardModuleType } from './module'
 
-import 'moment/locale/zh-cn'
+// import 'moment/locale/zh-cn'
 
 import { GuardCore } from './core/index'
 
