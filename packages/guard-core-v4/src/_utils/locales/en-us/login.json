@@ -111,6 +111,7 @@
   "requireError": "Unable to satisfy request error",
   "hardwareSupport": "Hardware not supported",
   "verifyCodeTip": "Try another",
+  "loginWithPasskey": "Sign in with Passkey",
   "resetPassword": {
     "pleaseInputPassword": "Please input a password",
     "checkPasswordDiff": "Please enter a consistent password",
