@@ -789,8 +789,6 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     return null
   }, [config.defaultLoginMethod, ms, tabMap])
 
-  console.log('GeneralLoginComponent: ', GeneralLoginComponent)
-
   const QrCodeTabMap = useMemo(() => {
     return {
       [LoginMethods.AppQr]: AppQrTab,

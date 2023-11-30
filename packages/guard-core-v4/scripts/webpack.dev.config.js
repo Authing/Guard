@@ -5,6 +5,7 @@ const webpackBaseConfigFn = require('./webpack.base.config')
 const { resolve } = require('./utils')
 
 const reactVersion = '16'
+const fs = require('fs')
 
 module.exports = merge({}, webpackBaseConfigFn({
   reactVersion
@@ -28,8 +29,12 @@ module.exports = merge({}, webpackBaseConfigFn({
     }
   },
   devServer: {
-    host: 'localhost',
-    port: 8090,
+    https: {
+      key: fs.readFileSync('/Users/jayl/Code/authing/Guard/test.local.key'),
+      cert: fs.readFileSync('/Users/jayl/Code/authing/Guard/test.local.crt'),
+    },
+    host: 'passkey.cj.local',
+    port: 8443,
     hot: true,
     open: true
   }

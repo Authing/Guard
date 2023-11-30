@@ -1,10 +1,59 @@
 import { React } from 'shim-react'
+import { useState } from 'react'
 
-import { Form } from 'shim-antd'
+import { message } from 'shim-antd'
+import axios from 'axios'
+import {
+  CredentialRequestOptionsJSON,
+  create as createWebauthnCredential,
+  get as getWebauthnCredential
+} from '@github/webauthn-json'
+import { useGuardHttp } from '../../../_utils/guardHttp'
 
 interface LoginWithPasskeyProps {}
 
 export const LoginWithPasskey = (props: LoginWithPasskeyProps) => {
-  const [form] = Form.useForm()
-  return <div>test</div>
+  const [webAuthn, setWebAuthn] = useState(null)
+  const { post, get } = useGuardHttp()
+
+  const [abortController, setAbortController] = useState<AbortController>()
+
+  const createAbortSignal = () => {
+    if (abortController) {
+      abortController.abort()
+    }
+    const controller = new AbortController()
+    setAbortController(controller)
+    return controller.signal
+  }
+
+  const initializeLogin = async () => {
+    const { data } = await post('/api/v3/webauthn/login/initialize', {})
+    return data
+  }
+
+  const finalizeLogin = async (assertion: any, ticket: string) => {
+    const { data } = await post('/api/v3/webauthn/login/finalize', {
+      credential: assertion,
+      ticket
+    })
+    return data
+  }
+
+  const handleLogin = async () => {
+    const challenge = await initializeLogin()
+    challenge.mediation = 'required' as CredentialMediationRequirement
+    challenge.signal = createAbortSignal()
+    const ticket = challenge.ticket
+    const assertion = await getWebauthnCredential(challenge)
+    console.log(assertion)
+    const assertionResponse = await finalizeLogin(assertion, ticket)
+    alert(JSON.stringify(assertionResponse))
+  }
+
+  return (
+    <div>
+      <button onClick={handleLogin}>Sign in with a passkey</button>
+    </div>
+  )
 }
