@@ -2,6 +2,7 @@
   "name": "@authing/vue-ui-components",
   "version": "4.5.2-alpha.0",
   "description": "Authing Guard for Vue",
+  "main":"lib/index.min.js",
   "module": "lib/index.min.js",
   "types": "lib/typings/index.d.ts",
   "files": [

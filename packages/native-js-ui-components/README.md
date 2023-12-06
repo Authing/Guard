@@ -1,6 +1,6 @@
-# Authing React UI Components
+# Authing Native JavaScript UI Components
 
-[Authing](https://authing.cn) 是一个企业级身份认证提供商，其集成了 OAuth、LDAP、OIDC 等多种身份认证和授权解决方案。此仓库包含了 Authing 提供的一些 React UI 组件。
+[Authing](https://authing.cn) 是一个企业级身份认证提供商，其集成了 OAuth、LDAP、OIDC 等多种身份认证和授权解决方案。此仓库包含了 Authing 提供的一些 Native JavaScript UI 组件。
 
 ## Guard
 
@@ -30,4 +30,4 @@ Guard 拥有以下基本功能：
 
 ![Guard Demo](/static/images/guard-demo.jpg)
 
-详细使用文档请查看 [Guard for Web](https://docs.authing.cn/sdk/guard/#guard-for-react)
+详细使用文档请查看 [Guard for Web](https://docs.authing.cn/sdk/guard/#guard-for-native-javascript)

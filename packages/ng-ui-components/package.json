@@ -4,6 +4,7 @@
   "files": [
     "dist"
   ],
+  "main":"dist/guard",
   "module": "dist/guard",
   "types": "dist/guard/index.d.ts",
   "scripts": {
