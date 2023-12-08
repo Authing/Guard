@@ -126,5 +126,6 @@
     "successTipMsg": "你可以使用新密碼繼續登入",
     "successTip": "密碼重置成功",
     "backLogin": "秒後將自動跳轉登入頁"
-  }
+  },
+  "wecomScanLogin":"企業微信掃碼登入"
 }

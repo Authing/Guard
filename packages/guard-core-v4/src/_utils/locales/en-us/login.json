@@ -126,5 +126,6 @@
     "successTipMsg": "You can continue to log in with your new password",
     "successTip": "Password reset succeeded",
     "backLogin": "Seconds will automatically jump to the login page"
-  }
+  },
+  "wecomScanLogin":"Enterprise WeChat scan code to log in"
 }

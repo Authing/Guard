@@ -22,10 +22,6 @@ import { useGuardPublicConfig, useGuardTenantId } from '../../_utils/context'
 
 import { IdpButton } from './IdpButton'
 
-import { usePostMessage } from './postMessage'
-
-import { CodeAction } from '../../_utils/responseManagement/interface'
-
 import { getVersion } from '../../_utils'
 
 import { GuardLocalConfig } from '../../Guard'
@@ -37,8 +33,6 @@ import { GuardButton } from '../../GuardButton'
 import { ApplicationConfig, SocialConnectionItem } from '../../Type/application'
 
 import { StoreInstance } from '../../Guard/core/hooks/useMultipleAccounts'
-
-const { useEffect } = React
 
 export interface SocialLoginProps {
   appId: string
@@ -57,11 +51,8 @@ export interface SocialLoginProps {
 export const SocialLogin: React.FC<SocialLoginProps> = ({
   appId,
   config,
-  onLoginFailed,
-  onLoginSuccess,
   enterpriseConnectionObjs,
-  socialConnectionObjs,
-  multipleInstance
+  socialConnectionObjs
 }) => {
   const noLoginMethods = !config?.loginMethods?.length
 
@@ -73,37 +64,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
 
   const { isPhoneMedia } = useMediaSize()
 
-  const onMessage = usePostMessage()
-
   const tenantId = useGuardTenantId()
-
-  useEffect(() => {
-    const onPostMessage = (evt: MessageEvent) => {
-      const res = onMessage(evt)
-      if (!res) return
-
-      // 更新本次登录方式
-      multipleInstance && multipleInstance.setLoginWay('input', 'social')
-
-      const { code, data, onGuardHandling } = res
-
-      if (code === 200) {
-        onLoginSuccess(data)
-      } else {
-        const handMode = onGuardHandling?.()
-        // 向上层抛出错误
-        handMode === CodeAction.RENDER_MESSAGE &&
-          onLoginFailed(code, data, evt?.data?.message)
-      }
-    }
-
-    const guardWindow = getGuardWindow()
-
-    guardWindow?.addEventListener('message', onPostMessage)
-    return () => {
-      guardWindow?.removeEventListener('message', onPostMessage)
-    }
-  }, [onLoginFailed, multipleInstance, onLoginSuccess, onMessage])
 
   const idpButtons = enterpriseConnectionObjs.map((i: any) => {
     return (
