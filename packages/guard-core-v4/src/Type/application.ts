@@ -313,6 +313,8 @@ export interface ApplicationConfig {
       | ICasConnectionConfig
       | IAzureAdConnectionConfig
       | IOAuthConnectionConfig
+    /** 是否开启内嵌模式 */
+    embedded?: boolean
   }[]
 
   ssoPageComponentDisplay: {

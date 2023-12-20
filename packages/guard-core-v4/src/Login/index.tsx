@@ -252,7 +252,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         qrcodeTabsSettings &&
         (qrcodeTabsSettings?.[LoginMethods.WechatMpQrcode].length > 1 ||
           qrcodeTabsSettings?.[LoginMethods.WxMinQr].length > 1 ||
-          qrcodeTabsSettings?.[LoginMethods.WechatworkCorpQrconnect].length > 1)
+          qrcodeTabsSettings?.[LoginMethods.WechatworkCorpQrconnect]?.length >
+            1)
       ) {
         return false
       } else {
