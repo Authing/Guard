@@ -4,16 +4,17 @@ import { React } from 'shim-react'
 
 import qs from 'qs'
 
-import { CodeAction } from '../..'
+import { CodeAction, LoginMethods } from '../..'
 
 import { getGuardWindow } from '../../Guard/core/useAppendConfig'
 
 import { ShieldSpin } from '../../ShieldSpin'
 
-import { getVersion, isSpecialBrowser, isWeComOrigin } from '../../_utils'
+import { isSpecialBrowser, isWeComOrigin } from '../../_utils'
 
 import {
   useGuardAppId,
+  useGuardEvents,
   useGuardFinallyConfig,
   useGuardHttpClient,
   useGuardPublicConfig,
@@ -22,13 +23,20 @@ import {
 
 import { i18n } from '../../_utils/locales'
 
+import { useGuardAuthClient } from '../../Guard/authClient'
+
+import { getVersion } from '../../_utils/getVersion'
+
 const version = getVersion()
 
-const { useCallback, useEffect } = React
+const { useCallback, useEffect, useState } = React
+
 export const LoginWithWeComQrcode = (props: any) => {
-  const { QRConfig } = props
+  const { QRConfig, id } = props
 
   const WwLogin = window.WwLogin
+
+  const [loading, setLoading] = useState(true)
 
   const { get } = useGuardHttpClient()
 
@@ -39,6 +47,11 @@ export const LoginWithWeComQrcode = (props: any) => {
   const config = useGuardFinallyConfig()
 
   const publicConfig = useGuardPublicConfig()
+
+  const events = useGuardEvents()
+
+  const authClient = useGuardAuthClient()
+
   const fetchQrcode = useCallback(async () => {
     const query: Record<string, any> = {
       from_guard: '1',
@@ -62,27 +75,32 @@ export const LoginWithWeComQrcode = (props: any) => {
       }
     }
 
-    // let redirect_uri = encodeURIComponent(
-    //   `https://console.authing.localhost${QRConfig.redirectUrl}`
-    // )
-
     // 初始化iframe二维码
-    new WwLogin({
-      id: 'weCom_qrcode_wrapper',
+    const wwInstance = new WwLogin({
+      id: `weCom_qrcode_wrapper-${id}`,
       appid: QRConfig.corpId,
       agentid: QRConfig.agentId,
       redirect_uri: encodeURIComponent(
         `${QRConfig.redirectUrl}?${qs.stringify(query)}`
       ),
       // redirect_uri,
-      href: `${publicConfig?.cdnBase}/guard-assets/wecom_authing.css`, //企业微信二维码样式文件
+      href: `${publicConfig?.cdnBase}/guard-assets/wrp_code_friesland.css`, //企业微信二维码样式文件
       lang: i18n.language.includes('zh') ? 'zh' : 'en'
     })
+
+    wwInstance.frame.onload = (event: Event) => {
+      setLoading(false)
+      wwInstance.frame.contentWindow.postMessage &&
+        wwInstance.frame.contentWindow.postMessage('ask_usePostMessage', '*')
+    }
   }, [
-    QRConfig,
+    QRConfig.agentId,
+    QRConfig.corpId,
+    QRConfig.redirectUrl,
     WwLogin,
     appId,
     config?.isHost,
+    id,
     publicConfig?.cdnBase,
     tenantId
   ])
@@ -95,6 +113,15 @@ export const LoginWithWeComQrcode = (props: any) => {
     const messageEvent = async (event: MessageEvent) => {
       if (isWeComOrigin(event)) {
         try {
+          if (events?.onBeforeLogin) {
+            const isContinue = await events?.onBeforeLogin(
+              { type: LoginMethods.WechatworkCorpQrconnect, data: event.data },
+              authClient
+            )
+            if (!isContinue) {
+              return
+            }
+          }
           // 拦截query信息
           const query = new URL(event.data).search
           // 向应用域名下发起认证验证请求
@@ -102,6 +129,12 @@ export const LoginWithWeComQrcode = (props: any) => {
             `/api/v1/qrcode/${QRConfig.identifier}/verify${query}`
           )
           if (res.code === 200) {
+            props.multipleInstance &&
+              props.multipleInstance.setLoginWay(
+                'qrcode',
+                LoginMethods.WechatworkCorpQrconnect,
+                props.id
+              )
             props.onLoginSuccess(res.data)
           } else {
             const handMode = res?.onGuardHandling?.()
@@ -109,35 +142,27 @@ export const LoginWithWeComQrcode = (props: any) => {
             handMode === CodeAction.RENDER_MESSAGE &&
               props.onLoginFailed(res.code, res.data)
           }
-          // TODO 通过微信认证校验 获取authing认证数据
-          // const { data } = await Axios(event.data, {
-          //   headers: getHeaders(),
-          // })
-          // if (data?.code === 200) {
-          //   props.onLoginSuccess(data.data)
-          // } else {
-          //   const res = responseIntercept(data)
-          //   const handMode = res?.onGuardHandling?.()
-          //   // 向上层抛出错误
-          //   handMode === CodeAction.RENDER_MESSAGE &&
-          //     props.onLoginFailed(res.code, data)
-          // }
         } catch (e: any) {
           message.error(e.message)
         }
       }
     }
-
-    window.addEventListener('message', messageEvent, false)
+    if (!loading) {
+      window.addEventListener('message', messageEvent, false)
+    }
 
     return () => {
       window.removeEventListener('message', messageEvent, false)
     }
-  })
+  }, [QRConfig.identifier, authClient, events, get, loading, props])
 
   return (
-    <div id="weCom_qrcode_wrapper">
-      <ShieldSpin />
+    <div className="wecom_container">
+      {loading && <ShieldSpin />}
+      <div
+        id={`weCom_qrcode_wrapper-${id}`}
+        style={{ display: loading ? 'none' : '' }}
+      ></div>
     </div>
   )
 }

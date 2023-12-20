@@ -81,7 +81,7 @@ import { usePostMessage } from './socialLogin/postMessage'
 
 import { LoginWithWeComQrcode } from './core/withWeComQrcode'
 
-import { getGuardWindow } from 'src/Guard/core/useAppendConfig'
+import { getGuardWindow } from '../Guard/core/useAppendConfig'
 
 const { useEffect, useLayoutEffect, useState, useRef, useMemo, useCallback } =
   React
@@ -251,7 +251,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       if (
         qrcodeTabsSettings &&
         (qrcodeTabsSettings?.[LoginMethods.WechatMpQrcode].length > 1 ||
-          qrcodeTabsSettings?.[LoginMethods.WxMinQr].length > 1)
+          qrcodeTabsSettings?.[LoginMethods.WxMinQr].length > 1 ||
+          qrcodeTabsSettings?.[LoginMethods.WechatworkCorpQrconnect].length > 1)
       ) {
         return false
       } else {
@@ -825,6 +826,12 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
           | LoginMethods.WechatworkCorpQrconnect
         title: string
         id: string
+        QRConfig?: {
+          corpId: string
+          agentId: string
+          redirectUrl: string
+          identifier: string
+        }
       }
     } = {}
 
@@ -836,7 +843,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
             | LoginMethods.WxMinQr
             | LoginMethods.WechatworkCorpQrconnect,
           title: item.title,
-          id: item.id
+          id: item.id,
+          QRConfig: item?.QRConfig
         }
       })
     })
