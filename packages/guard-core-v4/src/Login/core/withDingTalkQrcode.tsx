@@ -10,7 +10,7 @@ import { getGuardWindow } from '../../Guard/core/useAppendConfig'
 
 import { ShieldSpin } from '../../ShieldSpin'
 
-import { isSpecialBrowser, isWeComOrigin } from '../../_utils'
+import { isSpecialBrowser } from '../../_utils'
 
 import {
   useGuardAppId,
@@ -21,22 +21,20 @@ import {
   useGuardTenantId
 } from '../../_utils/context'
 
-import { i18n } from '../../_utils/locales'
-
 import { useGuardAuthClient } from '../../Guard/authClient'
 
 import { getVersion } from '../../_utils/getVersion'
 
 const version = getVersion()
 
-const { useCallback, useEffect, useState, useMemo } = React
+const { useCallback, useEffect, useState } = React
 
-export const LoginWithWeComQrcode = (props: any) => {
+export const LoginWithDingTalkQrcode = (props: any) => {
   const { QRConfig, id } = props
 
-  const WwLogin = window.WwLogin
+  const DTLogin = window.DTFrameLogin
 
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   const { get } = useGuardHttpClient()
 
@@ -44,13 +42,13 @@ export const LoginWithWeComQrcode = (props: any) => {
 
   const appId = useGuardAppId()
 
-  const config = useGuardFinallyConfig()
-
-  const publicConfig = useGuardPublicConfig()
-
   const events = useGuardEvents()
 
   const authClient = useGuardAuthClient()
+
+  const config = useGuardFinallyConfig()
+
+  const publicConfig = useGuardPublicConfig()
 
   const fetchQrcode = useCallback(async () => {
     const query: Record<string, any> = {
@@ -75,47 +73,36 @@ export const LoginWithWeComQrcode = (props: any) => {
       }
     }
 
-    // 初始化iframe二维码
-    const wwInstance = new WwLogin({
-      id: `weCom_qrcode_wrapper-${id}`,
-      appid: QRConfig.corpId,
-      agentid: QRConfig.agentId,
-      redirect_uri: encodeURIComponent(
-        `${QRConfig.redirectUrl}?${qs.stringify(query)}`
-      ),
-      // redirect_uri,
-      href: `${publicConfig?.cdnBase}/guard-assets/wrp_code_friesland.css`, //企业微信二维码样式文件
-      lang: i18n.language.includes('zh') ? 'zh' : 'en'
-    })
+    const DTFrame = DTLogin(
+      {
+        id: `dingtalk_qrcode_wrapper-${id}`,
+        width: '100%',
+        height: 388
+      },
+      {
+        redirect_uri: encodeURIComponent(
+          `${QRConfig.redirectUrl}?${qs.stringify(query)}`
+        ),
+        client_id: QRConfig.clientId,
+        scope: 'openid',
+        response_type: 'code',
+        // state: 'xxxxxxxxx',
+        prompt: 'consent'
+      },
+      async (loginResult: any) => {
+        const { redirectUrl, authCode, state } = loginResult
+        // 这里可以直接进行重定向
+        // window.location.href = redirectUrl
+        // 也可以在不跳转页面的情况下，使用code进行授权
+        console.log(authCode, loginResult)
 
-    wwInstance.frame.onload = (event: Event) => {
-      setLoading(false)
-      wwInstance.frame.contentWindow.postMessage &&
-        wwInstance.frame.contentWindow.postMessage('ask_usePostMessage', '*')
-    }
-  }, [
-    QRConfig.agentId,
-    QRConfig.corpId,
-    QRConfig.redirectUrl,
-    WwLogin,
-    appId,
-    config?.isHost,
-    id,
-    publicConfig?.cdnBase,
-    tenantId
-  ])
-
-  useEffect(() => {
-    fetchQrcode()
-  }, [fetchQrcode])
-
-  useEffect(() => {
-    const messageEvent = async (event: MessageEvent) => {
-      if (isWeComOrigin(event)) {
         try {
           if (events?.onBeforeLogin) {
             const isContinue = await events?.onBeforeLogin(
-              { type: LoginMethods.WechatworkCorpQrconnect, data: event.data },
+              {
+                type: LoginMethods.WechatworkCorpQrconnect,
+                data: loginResult
+              },
               authClient
             )
             if (!isContinue) {
@@ -123,16 +110,14 @@ export const LoginWithWeComQrcode = (props: any) => {
             }
           }
           // 拦截query信息
-          const query = new URL(event.data).search
+          // const query = new URL(event.data).search
           // 向应用域名下发起认证验证请求
-          const res = await get(
-            `/api/v1/qrcode/${QRConfig.identifier}/verify${query}`
-          )
+          const res = await get(`/api/v1/qrcode/${QRConfig.identifier}/verify`)
           if (res.code === 200) {
             props.multipleInstance &&
               props.multipleInstance.setLoginWay(
                 'qrcode',
-                LoginMethods.WechatworkCorpQrconnect,
+                LoginMethods.DingTalkQrcode,
                 props.id
               )
             props.onLoginSuccess(res.data)
@@ -145,22 +130,27 @@ export const LoginWithWeComQrcode = (props: any) => {
         } catch (e: any) {
           message.error(e.message)
         }
+      },
+      (errorMsg: any) => {
+        // 这里一般需要展示登录失败的具体原因
+        console.log(errorMsg)
       }
+    )
+    // frame 页面二维码加载完毕
+    DTFrame.onload = () => {
+      setLoading(false)
     }
-    if (!loading) {
-      window.addEventListener('message', messageEvent, false)
-    }
+  }, [DTLogin, QRConfig, appId, config?.isHost, tenantId])
 
-    return () => {
-      window.removeEventListener('message', messageEvent, false)
-    }
-  }, [QRConfig.identifier, authClient, events, get, loading, props])
+  useEffect(() => {
+    fetchQrcode()
+  }, [fetchQrcode])
 
   return (
     <div className="wecom_container">
       {loading && <ShieldSpin />}
       <div
-        id={`weCom_qrcode_wrapper-${id}`}
+        id={`dingtalk_qrcode_wrapper-${id}`}
         style={{ display: loading ? 'none' : '' }}
       ></div>
     </div>

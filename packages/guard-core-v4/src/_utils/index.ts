@@ -865,6 +865,11 @@ export const isWeComOrigin = (event: MessageEvent) => {
   return false
 }
 
+// 钉钉域check https://open.dingtalk.com/document/org/scan-qr-code-to-login-3rdapp
+export const isDingTalkOrigin = (origin: string) => {
+  return origin === 'https://login.dingtalk.com'
+}
+
 export * from './popupCenter'
 
 export * from './clipboard'

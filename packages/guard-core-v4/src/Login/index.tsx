@@ -50,6 +50,7 @@ import {
   CodeAction,
   getPasswordIdentify,
   getSortTabs,
+  isDingTalkOrigin,
   isWeComOrigin
 } from '../_utils'
 
@@ -68,6 +69,7 @@ import { GuardButton } from '../GuardButton'
 import {
   LoginMethods,
   QrCodeItem,
+  SocialConnectionItem,
   VerifyLoginMethods
 } from '../Type/application'
 
@@ -82,6 +84,8 @@ import { usePostMessage } from './socialLogin/postMessage'
 import { LoginWithWeComQrcode } from './core/withWeComQrcode'
 
 import { getGuardWindow } from '../Guard/core/useAppendConfig'
+
+import { LoginWithDingTalkQrcode } from './core/withDingTalkQrcode'
 
 const { useEffect, useLayoutEffect, useState, useRef, useMemo, useCallback } =
   React
@@ -98,7 +102,8 @@ const qrcodeWays = [
   LoginMethods.AppQr,
   LoginMethods.WxMinQr,
   LoginMethods.WechatMpQrcode,
-  LoginMethods.WechatworkCorpQrconnect
+  LoginMethods.WechatworkCorpQrconnect,
+  LoginMethods.DingTalkQrcode
 ]
 
 const useMethods = (config: any) => {
@@ -198,6 +203,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
 
   const qrcodeTabsSettings = publicConfig?.qrcodeTabsSettings
 
+  const socialConnections = publicConfig?.socialConnections || []
+
   const [errorNumber, setErrorNumber] = useState(0)
 
   const [accountLock, setAccountLock] = useState(false)
@@ -252,8 +259,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         qrcodeTabsSettings &&
         (qrcodeTabsSettings?.[LoginMethods.WechatMpQrcode].length > 1 ||
           qrcodeTabsSettings?.[LoginMethods.WxMinQr].length > 1 ||
-          qrcodeTabsSettings?.[LoginMethods.WechatworkCorpQrconnect]?.length >
-            1)
+          qrcodeTabsSettings?.[LoginMethods.DingTalkQrcode].length > 1 ||
+          qrcodeTabsSettings?.[LoginMethods.WechatworkCorpQrconnect].length > 1)
       ) {
         return false
       } else {
@@ -273,7 +280,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       [
         LoginMethods.WechatMpQrcode,
         LoginMethods.WxMinQr,
-        LoginMethods.WechatworkCorpQrconnect
+        LoginMethods.WechatworkCorpQrconnect,
+        LoginMethods.DingTalkQrcode
       ].includes(defaultMethod)
     ) {
       const id = qrcodeTabsSettings?.[defaultMethod as LoginMethods]?.find(
@@ -743,6 +751,26 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
           tab={item.title ?? t('login.wecomScanLogin')}
         >
           <LoginWithWeComQrcode
+            id={item.id}
+            QRConfig={item.QRConfig}
+            onLoginSuccess={onLoginSuccess}
+            onLoginFailed={onLoginFailed}
+          />
+        </Tabs.TabPane>
+      )
+    },
+    [canLoop, multipleInstance, onLoginSuccess, t]
+  )
+
+  const DTQrTab = useCallback(
+    (item: QrCodeItem) => {
+      return (
+        <Tabs.TabPane
+          key={LoginMethods.WechatworkCorpQrconnect + item.id}
+          tab={item.title ?? t('login.wecomScanLogin')}
+        >
+          <LoginWithDingTalkQrcode
+            id={item.id}
             QRConfig={item.QRConfig}
             onLoginSuccess={onLoginSuccess}
             onLoginFailed={onLoginFailed}
@@ -814,7 +842,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       [LoginMethods.AppQr]: AppQrTab,
       [LoginMethods.WechatMpQrcode]: WechatMpQrTab,
       [LoginMethods.WxMinQr]: WxMiniQrTab,
-      [LoginMethods.WechatworkCorpQrconnect]: WeComQrTab
+      [LoginMethods.WechatworkCorpQrconnect]: WeComQrTab,
+      [LoginMethods.DingTalkQrcode]: DTQrTab
     }
   }, [AppQrTab, WechatMpQrTab, WxMiniQrTab])
 
@@ -825,6 +854,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
           | LoginMethods.WechatMpQrcode
           | LoginMethods.WxMinQr
           | LoginMethods.WechatworkCorpQrconnect
+          | LoginMethods.DingTalkQrcode
         title: string
         id: string
         QRConfig?: {
@@ -832,6 +862,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
           agentId: string
           redirectUrl: string
           identifier: string
+          clientId?: string
         }
       }
     } = {}
@@ -842,10 +873,11 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
           type: key as
             | LoginMethods.WechatMpQrcode
             | LoginMethods.WxMinQr
-            | LoginMethods.WechatworkCorpQrconnect,
+            | LoginMethods.WechatworkCorpQrconnect
+            | LoginMethods.DingTalkQrcode,
           title: item.title,
           id: item.id,
-          QRConfig: item?.QRConfig
+          QRConfig: item.QRConfig
         }
       })
     })
@@ -884,7 +916,29 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
   useEffect(() => {
     const onPostMessage = (evt: MessageEvent) => {
       // 去掉钉钉和企微域下的postmessage处理 由他们内部自己监听的message控制 避免重复触发
-      if (isWeComOrigin(evt)) return
+      /** 是否存在开启内嵌模式的身份源 */
+      const isEmbeddedIdp = socialConnections.filter(conn => conn.embedded)
+      /** 处于扫码登录方式 */
+      if (isEmbeddedIdp.length > 0 && qrcodeWays.includes(loginWay)) {
+        if (
+          isEmbeddedIdp.find(
+            idp =>
+              idp.provider.replaceAll(':', '-') ===
+              LoginMethods.WechatworkCorpQrconnect
+          ) &&
+          isWeComOrigin(evt)
+        ) {
+          return
+        }
+        if (
+          isEmbeddedIdp.find(
+            idp => idp.provider.replaceAll(':', '-') === 'dingtalk'
+          ) &&
+          isDingTalkOrigin(evt.origin)
+        ) {
+          return
+        }
+      }
       const res = onMessage(evt)
       if (!res) return
 
