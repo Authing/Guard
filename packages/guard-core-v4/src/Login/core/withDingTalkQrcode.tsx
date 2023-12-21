@@ -17,7 +17,6 @@ import {
   useGuardEvents,
   useGuardFinallyConfig,
   useGuardHttpClient,
-  useGuardPublicConfig,
   useGuardTenantId
 } from '../../_utils/context'
 
@@ -48,11 +47,10 @@ export const LoginWithDingTalkQrcode = (props: any) => {
 
   const config = useGuardFinallyConfig()
 
-  const publicConfig = useGuardPublicConfig()
-
   const fetchQrcode = useCallback(async () => {
     const query: Record<string, any> = {
       from_guard: '1',
+      embedded: '1',
       app_id: appId,
       guard_version: `Guard@${version}`,
       ...(tenantId && { tenant_id: tenantId })
@@ -112,7 +110,9 @@ export const LoginWithDingTalkQrcode = (props: any) => {
           // const query = new URL(event.data).search
           // 向应用域名下发起认证验证请求
           const res = await get(
-            `/api/v1/qrcode/${QRConfig.identifier}/verify?code=${authCode}`
+            `/api/v1/qrcode/${QRConfig.identifier}/verify?${qs.stringify(
+              query
+            )}&code=${authCode}`
           )
           if (res.code === 200) {
             props.multipleInstance &&
