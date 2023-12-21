@@ -90,11 +90,10 @@ export const LoginWithDingTalkQrcode = (props: any) => {
         prompt: 'consent'
       },
       async (loginResult: any) => {
-        const { redirectUrl, authCode, state } = loginResult
+        const { authCode } = loginResult
         // 这里可以直接进行重定向
         // window.location.href = redirectUrl
         // 也可以在不跳转页面的情况下，使用code进行授权
-        console.log(authCode, loginResult)
 
         try {
           if (events?.onBeforeLogin) {
@@ -112,7 +111,9 @@ export const LoginWithDingTalkQrcode = (props: any) => {
           // 拦截query信息
           // const query = new URL(event.data).search
           // 向应用域名下发起认证验证请求
-          const res = await get(`/api/v1/qrcode/${QRConfig.identifier}/verify`)
+          const res = await get(
+            `/api/v1/qrcode/${QRConfig.identifier}/verify?code=${authCode}`
+          )
           if (res.code === 200) {
             props.multipleInstance &&
               props.multipleInstance.setLoginWay(
@@ -137,9 +138,9 @@ export const LoginWithDingTalkQrcode = (props: any) => {
       }
     )
     // frame 页面二维码加载完毕
-    DTFrame.onload = () => {
-      setLoading(false)
-    }
+    // DTFrame.onload = () => {
+    //   setLoading(false)
+    // }
   }, [DTLogin, QRConfig, appId, config?.isHost, tenantId])
 
   useEffect(() => {
