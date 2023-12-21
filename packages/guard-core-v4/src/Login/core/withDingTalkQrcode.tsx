@@ -8,7 +8,7 @@ import { CodeAction, LoginMethods } from '../..'
 
 import { getGuardWindow } from '../../Guard/core/useAppendConfig'
 
-import { ShieldSpin } from '../../ShieldSpin'
+// import { ShieldSpin } from '../../ShieldSpin'
 
 import { isSpecialBrowser } from '../../_utils'
 
@@ -33,7 +33,7 @@ export const LoginWithDingTalkQrcode = (props: any) => {
 
   const DTLogin = window.DTFrameLogin
 
-  const [loading, setLoading] = useState(false)
+  // const [loading, setLoading] = useState(false)
 
   const { get } = useGuardHttpClient()
 
@@ -71,7 +71,7 @@ export const LoginWithDingTalkQrcode = (props: any) => {
       }
     }
 
-    const DTFrame = DTLogin(
+    DTLogin(
       {
         id: `dingtalk_qrcode_wrapper-${id}`,
         width: '100%',
@@ -149,10 +149,10 @@ export const LoginWithDingTalkQrcode = (props: any) => {
 
   return (
     <div className="wecom_container">
-      {loading && <ShieldSpin />}
+      {/* {loading && <ShieldSpin />} */}
       <div
         id={`dingtalk_qrcode_wrapper-${id}`}
-        style={{ display: loading ? 'none' : '' }}
+        // style={{ display: loading ? 'none' : '' }}
       ></div>
     </div>
   )
