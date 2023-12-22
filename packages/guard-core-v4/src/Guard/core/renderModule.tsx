@@ -39,6 +39,8 @@ import { GuardRegisterView } from '../../Register'
 
 import { GuardSubmitSuccessView } from '../../SubmitSuccess'
 
+import { GuardGatewayError } from '../../GatewayError'
+
 import {
   useGuardButtonContext,
   useGuardContextLoaded,
@@ -212,7 +214,8 @@ export const RenderModule: React.FC<{
     [GuardModuleType.TENANT_PORTAL]: key => <GuardTenantPortalSelectView />,
     [GuardModuleType.New_SUBMIT_SUCCESS]: key => (
       <GuardNewSubmitSuccessView key={key} />
-    )
+    ),
+    [GuardModuleType.GATEWAY_ERROR]: key => <GuardGatewayError />
   }
 
   // 初始化 请求拦截器 （Error Code）

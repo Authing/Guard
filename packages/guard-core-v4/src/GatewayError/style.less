@@ -1,0 +1,208 @@
+.g2-view-gateway {
+  width: 100vw;
+  max-width: 558px;
+  padding: 32px 24px;
+  border-radius: 8px;
+  background: #FFF;
+  box-shadow: 0px 8px 64px 0px rgba(78, 89, 105, 0.04);
+  display: flex;
+  flex-direction: column;
+
+  .g2-gateway-steps {
+    display: flex;
+
+    .authing-ant-steps-item {
+      position: relative;
+      flex: 1;
+      text-align: center;
+      &-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      &:first-child {
+        .authing-ant-steps-item-icon::after {
+          border-top-left-radius: 30px;
+          border-bottom-left-radius: 30px;
+        }
+      }
+
+      &:last-child {
+        .authing-ant-steps-item-tail {
+          display: none;
+        }
+
+        .authing-ant-steps-item-icon::after {
+          border-top-right-radius: 30px;
+          border-bottom-right-radius: 30px;
+        }
+      }
+
+      &-icon {
+        width: 16px;
+        height: 30px;
+        line-height: 30px;
+        // padding: 7px 0;
+        // background-color: #F7F8FA;
+        // line-height: 0;
+
+        .g2-gateway-icon {
+          font-size: 16px;
+        }
+        .authing-ant-steps-icon {
+          position: relative;
+          z-index: 999;
+        }
+        &::after {
+          content: "";
+          display: block;
+          position: absolute;
+          width: 100%;
+          background-color: #F7F8FA;
+          height: 30px;
+          top: 0;
+          left: 0;
+
+        }
+      }
+
+      &-content {
+        margin-top: 8px;
+      }
+
+      &-tail {
+        top: calc((30px - 2px)/2);
+        margin-left: 100%;
+        position: absolute;
+        width: calc(100% - 18px);
+        height: 1px;
+        background-color: #C9CDD4;
+        z-index: 999;
+
+        // &::after {
+        //   display: inline-block;
+        //   content: "";
+        //   position: absolute;
+        //   width: calc(100% - 59px);
+        //   height: 1px;
+        //   margin-inline-start: 12px;
+        //   background-color: #C9CDD4;
+        //   z-index: 9;
+        // }
+      }
+
+    }
+
+
+
+  }
+
+  .g2-gateway-error {
+    padding: 16px;
+    background-color: #FFF8E8;
+    border-radius: 4px;
+  }
+
+  .g2-gateway-error {
+    margin-top: 32px;
+
+    &-title {
+      margin-bottom: 8px;
+    }
+
+    &-content {
+      padding: 0 28px;
+
+      p {
+        display: flex;
+        font-size: 14px;
+        color: #4E5969;
+        line-height: 24px;
+        margin-bottom: 0;
+      }
+
+      &-title {
+        width: 70px;
+        color: #86909C;
+      }
+    }
+  }
+
+  .g2-gateway-warning {
+    font-size: 20px;
+    margin-right: 8px;
+    color: #FB9926;
+  }
+}
+
+// @media only screen and (max-width: 558px) {
+//   .g2-view-gateway {
+//     width: 100vw;
+//   }
+// }
+
+@media only screen and (max-width: 450px) {
+  .g2-view-gateway {
+    padding: 0 !important;
+    box-shadow: none !important;
+    height: 100%;
+    flex-direction: column-reverse;
+  }
+  .authing-ant-steps {
+    padding: 0 24px;
+    flex-direction: column !important;
+    .authing-ant-steps-item-container {
+      flex-direction: row !important;
+    }
+    .authing-ant-steps-item-icon:after {
+      width: 40px !important;
+      height: 100% !important;
+    }
+    .authing-ant-steps-item-icon {
+      height: 78px !important;
+      line-height: 78px !important;
+      width: 40px !important;
+
+    }
+    .authing-ant-steps-item-content {
+      margin-top: 0;
+      margin-left: 16px;
+    }
+    .authing-ant-steps-item {
+      &:first-child {
+        .authing-ant-steps-item-icon::after {
+          border-radius: 0 !important;
+          border-top-left-radius: 30px !important;
+          border-top-right-radius: 30px !important;
+        }
+      }
+
+      &:last-child {
+        .authing-ant-steps-item-icon::after {
+          border-radius: 0 !important;
+          border-bottom-left-radius: 30px !important;
+          border-bottom-right-radius: 30px !important;
+        }
+      }
+    }
+    .authing-ant-steps-item-tail {
+      position: absolute !important;
+      width: 1px !important;
+      height: calc(100% - 18px) !important;
+      margin-left: 0 !important;
+      left: calc((40px - 2px)/2);
+      margin-top: 47.5px;
+      top: 0 !important;
+      &::after {
+        display: none !important;
+      }
+    }
+
+  }
+  .g2-gateway-error {
+    margin-top: 0 !important;
+    margin-bottom: 32px;
+    border-radius: 0 !important;
+  }
+}
