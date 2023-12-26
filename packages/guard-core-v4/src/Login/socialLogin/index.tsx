@@ -18,7 +18,11 @@ import './style.less'
 
 import { useMediaSize, SocialConnectionEvent } from '../../_utils/hooks'
 
-import { useGuardPublicConfig, useGuardTenantId } from '../../_utils/context'
+import {
+  useGuardModule,
+  useGuardPublicConfig,
+  useGuardTenantId
+} from '../../_utils/context'
 
 import { IdpButton } from './IdpButton'
 
@@ -38,7 +42,7 @@ import { ApplicationConfig, SocialConnectionItem } from '../../Type/application'
 
 import { StoreInstance } from '../../Guard/core/hooks/useMultipleAccounts'
 
-const { useEffect } = React
+const { useEffect, useCallback } = React
 
 export interface SocialLoginProps {
   appId: string
@@ -77,8 +81,10 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
 
   const tenantId = useGuardTenantId()
 
-  useEffect(() => {
-    const onPostMessage = (evt: MessageEvent) => {
+  const { changeModule } = useGuardModule()
+
+  const onPostMessage = useCallback(
+    (evt: MessageEvent) => {
       const res = onMessage(evt)
       if (!res) return
 
@@ -90,20 +96,24 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
       if (code === 200) {
         onLoginSuccess(data)
       } else {
-        const handMode = onGuardHandling?.()
+        const handMode = onGuardHandling?.(changeModule)
+
         // 向上层抛出错误
         handMode === CodeAction.RENDER_MESSAGE &&
           onLoginFailed(code, data, evt?.data?.message)
       }
-    }
+    },
+    [changeModule, multipleInstance, onLoginFailed, onLoginSuccess, onMessage]
+  )
 
+  useEffect(() => {
     const guardWindow = getGuardWindow()
 
     guardWindow?.addEventListener('message', onPostMessage)
     return () => {
       guardWindow?.removeEventListener('message', onPostMessage)
     }
-  }, [onLoginFailed, multipleInstance, onLoginSuccess, onMessage])
+  }, [onPostMessage])
 
   const idpButtons = enterpriseConnectionObjs.map((i: any) => {
     return (

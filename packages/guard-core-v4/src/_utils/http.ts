@@ -7,6 +7,7 @@ import { CodeAction } from './responseManagement/interface'
 import Axios, { AxiosRequestConfig, CancelTokenSource } from 'axios'
 
 import { getCurrentLng } from '.'
+import { GuardModuleType } from '../Guard'
 
 export const requestClient = async (...rest: Parameters<typeof fetch>) => {
   const res = await fetch(...rest)
@@ -24,7 +25,9 @@ export interface AuthingResponse<T = any> {
 }
 
 export interface AuthingGuardResponse<T = any> extends AuthingResponse<T> {
-  onGuardHandling?: () => CodeAction
+  onGuardHandling?: (
+    _changeModule?: (moduleName: GuardModuleType, initData: any) => void
+  ) => CodeAction
   isFlowEnd?: boolean
 }
 

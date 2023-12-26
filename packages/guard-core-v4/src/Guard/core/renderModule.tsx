@@ -228,12 +228,19 @@ export const RenderModule: React.FC<{
       res.flowHandle && updateFlowHandle(res.flowHandle)
 
       const codeActionMapping = {
-        [CodeAction.CHANGE_MODULE]: () => {
+        [CodeAction.CHANGE_MODULE]: (
+          _changeModule?: (moduleName: GuardModuleType, initData: any) => void
+        ) => {
           const nextModule = ChangeModuleApiCodeMapping[res.apiCode!]
 
           const nextData = res.data
 
-          changeModule(nextModule, nextData)
+          if (_changeModule && _changeModule instanceof Function) {
+            _changeModule(nextModule, nextData)
+          } else {
+            changeModule(nextModule, nextData)
+          }
+
           return CodeAction.CHANGE_MODULE
         },
         [CodeAction.RENDER_MESSAGE]: () => {
