@@ -67,6 +67,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
   //   setPasswordErrorTextShow,
   // } = usePasswordErrorText()
   const onFinish = async (values: any) => {
+    submitButtonRef.current?.onSpin(true)
     // 校验手机号和验证码
     let identify = values.identify
     let code = values.code
@@ -112,6 +113,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
     context
       .then((r: any) => {
         const { code } = r
+        submitButtonRef.current?.onSpin(false)
         if (code !== 200) {
           message.error(r?.message)
           return

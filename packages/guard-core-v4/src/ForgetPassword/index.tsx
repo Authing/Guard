@@ -75,6 +75,7 @@ export const GuardForgetPassword: React.FC = () => {
   const { post } = getGuardHttp()
   let submitBtnRef = useRef<any>(null)
   const onFinish = async () => {
+    submitBtnRef.current?.onSpin(true)
     // 重置密码
     let data = form.getFieldsValue()
     const newPassword = await authClient.options?.encryptFunction?.(
@@ -94,6 +95,7 @@ export const GuardForgetPassword: React.FC = () => {
 
     res
       .then((r: any) => {
+        submitBtnRef.current?.onSpin(false)
         const { code } = r
         if (code === ApiCode.UNSAFE_PASSWORD_TIP) {
           setPasswordErrorTextShow(true)

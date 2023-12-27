@@ -8,7 +8,7 @@ import { GuardLocalConfig } from './config'
 
 import { GuardModuleType } from './module'
 
-import 'moment/locale/zh-cn'
+// import 'moment/locale/zh-cn'
 
 import { GuardCore } from './core/index'
 
@@ -32,7 +32,7 @@ const propsAreEqual = (pre: GuardProps, current: GuardProps) => {
   return GuardPropsFilter(pre, current)
 }
 
-const GuardComponent = memo((props: GuardProps) => {
+export const GuardComponent = memo((props: GuardProps) => {
   const { config } = props
 
   const ref = useRef<HTMLDivElement>(null)
