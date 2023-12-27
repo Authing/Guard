@@ -71,7 +71,7 @@ import { useLoginMultiple } from './hooks/useLoginMultiple'
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
 
 import { LoginWithAuthingOtpPush } from './core/withAuthingOtpPush/index'
-import { LoginWithPasskey } from './core/withPasskey'
+// import { LoginWithPasskey } from './core/withPasskey'
 
 const { useEffect, useLayoutEffect, useState, useRef, useMemo, useCallback } =
   React
@@ -82,8 +82,7 @@ const inputWays = [
   LoginMethods.AD,
   LoginMethods.LDAP,
   LoginMethods.AuthingOtpPush,
-  LoginMethods.EmailCode,
-  LoginMethods.Passkey
+  LoginMethods.EmailCode
 ]
 const qrcodeWays = [
   LoginMethods.AppQr,
@@ -737,15 +736,15 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     )
   }, [ms, onLoginSuccess, t, backfillData, multipleInstance, agreements])
 
-  const PasskeyTab = useMemo(
-    () =>
-      ms?.includes(LoginMethods.Passkey) && (
-        <Tabs.TabPane key={LoginMethods.Passkey} tab={'Passkey'}>
-          <LoginWithPasskey />
-        </Tabs.TabPane>
-      ),
-    [ms]
-  )
+  // const PasskeyTab = useMemo(
+  //   () =>
+  //     ms?.includes(LoginMethods.Passkey) && (
+  //       <Tabs.TabPane key={LoginMethods.Passkey} tab={'Passkey'}>
+  //         <LoginWithPasskey />
+  //       </Tabs.TabPane>
+  //     ),
+  //   [ms]
+  // )
 
   // 登录方式对应 tab Component
   const tabMap = useMemo(() => {
@@ -754,10 +753,9 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       [LoginMethods.PhoneCode]: CodeTab,
       [LoginMethods.LDAP]: LdapTab,
       [LoginMethods.AD]: ADTab,
-      [LoginMethods.AuthingOtpPush]: AuthingOtpPushTab,
-      [LoginMethods.Passkey]: PasskeyTab
+      [LoginMethods.AuthingOtpPush]: AuthingOtpPushTab
     }
-  }, [PasswordTab, CodeTab, LdapTab, ADTab, AuthingOtpPushTab, PasskeyTab])
+  }, [PasswordTab, CodeTab, LdapTab, ADTab, AuthingOtpPushTab])
 
   const GeneralLoginComponent = useMemo(() => {
     const total = ms?.filter(tabName =>
@@ -766,8 +764,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         LoginMethods.PhoneCode,
         LoginMethods.LDAP,
         LoginMethods.AD,
-        LoginMethods.AuthingOtpPush,
-        LoginMethods.Passkey
+        LoginMethods.AuthingOtpPush
       ].includes(tabName)
     )
     if (total) {
@@ -781,7 +778,6 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
               | LoginMethods.LDAP
               | LoginMethods.AD
               | LoginMethods.AuthingOtpPush
-              | LoginMethods.Passkey
           ]
       )
       return tabs
