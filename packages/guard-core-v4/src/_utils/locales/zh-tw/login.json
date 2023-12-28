@@ -45,6 +45,7 @@
   "bindPhoneInfo": "請輸入手機號碼進行綁定",
   "captchaCode": "圖形驗證碼",
   "clickSent": "點擊發送驗證碼",
+  "reSent": "點擊重發驗證碼",
   "forgetPwd": "忘記密碼",
   "inputAccount": "請輸入{{text}}",
   "inputAdPwd": "請輸入 AD 密碼",

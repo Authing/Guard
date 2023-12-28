@@ -59,7 +59,7 @@ const useSentCounter = (effect: any) => {
 export const SendCodeBtn: React.FC<SendCodeProps> = props => {
   const { t } = useTranslation()
   const {
-    sendDesc = t('login.clickSent'),
+    sendDesc = t('login.reSent'),
     beforeSend,
     btnRef,
     setSent,
