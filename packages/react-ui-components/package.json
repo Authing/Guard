@@ -1,6 +1,6 @@
 {
   "name": "@authing/react-ui-components",
-  "version": "4.5.3-alpha.6",
+  "version": "4.5.4-alpha.1",
   "description": "Authing Guard for React",
   "main": "lib/index.min.js",
   "module": "lib/index.min.js",
@@ -19,8 +19,8 @@
   "author": "https://github.com/authing",
   "license": "MIT",
   "dependencies": {
-    "@authing/guard-shim-react": "^4.5.3-alpha.6",
-    "@authing/native-js-ui-components": "^4.5.3-alpha.6",
+    "@authing/guard-shim-react": "^4.5.4-alpha.1",
+    "@authing/native-js-ui-components": "^4.5.4-alpha.1",
     "react": "^16.13.1"
   },
   "devDependencies": {
