@@ -128,7 +128,8 @@ export const PasskeyButton = (props: LoginWithPasskeyProps) => {
         return
       }
       onLoginSuccess(tokenSet)
-    } catch (error) {
+    } catch (error: any) {
+      onLoginFailed(500, undefined, error.message)
     } finally {
       setLoading(false)
     }
