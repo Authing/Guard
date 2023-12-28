@@ -302,7 +302,10 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
         marginTop: -8
       }}
     >
-      <PasskeyButton />
+      <PasskeyButton
+        onLoginSuccess={onLoginSuccess}
+        onLoginFailed={onLoginFailed}
+      />
     </div>
   )
 

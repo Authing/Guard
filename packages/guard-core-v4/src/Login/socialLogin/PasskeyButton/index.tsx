@@ -1,25 +1,37 @@
 import { React } from 'shim-react'
 import { useState } from 'react'
 import { useMediaSize } from '../../../_utils/hooks'
-import { message } from 'shim-antd'
-import axios from 'axios'
-import {
-  CredentialRequestOptionsJSON,
-  create as createWebauthnCredential,
-  get as getWebauthnCredential
-} from '@github/webauthn-json'
+import { get as getWebauthnCredential } from '@github/webauthn-json'
 import { useGuardHttp } from '../../../_utils/guardHttp'
-import { useGuardPublicConfig } from '../../../_utils/context'
+import {
+  useGuardAppId,
+  useGuardFinallyConfig,
+  useGuardHttpClient,
+  useGuardPublicConfig
+} from '../../../_utils/context'
 import { GuardButton } from '../../../GuardButton'
 import { IconFont } from '../../../IconFont'
 import { useTranslation } from 'react-i18next'
+import { requestClient } from '../../../_utils/http'
+import { CodeAction, getVersion, i18n } from '../../../_utils'
+
+interface LoginWithPasskeyProps {
+  onLoginSuccess: any
+  onLoginFailed: any
+}
+
 const { useCallback } = React
-export const PasskeyButton = () => {
-  const [webAuthn, setWebAuthn] = useState(null)
-  const { post, get } = useGuardHttp()
+
+export const PasskeyButton = (props: LoginWithPasskeyProps) => {
+  const { onLoginFailed, onLoginSuccess } = props
   const { isPhoneMedia } = useMediaSize()
   const publicConfig = useGuardPublicConfig()
   const [abortController, setAbortController] = useState<AbortController>()
+  const [loading, setLoading] = useState<boolean>(false)
+  const { host } = useGuardFinallyConfig()
+  const appId = useGuardAppId()
+  const version = getVersion()
+  const { responseIntercept } = useGuardHttpClient()
 
   const { t } = useTranslation()
 
@@ -50,28 +62,79 @@ export const PasskeyButton = () => {
     }
   }, [isPhoneMedia, publicConfig])
 
-  const initializeLogin = async () => {
-    const { data } = await post('/api/v3/webauthn/login/initialize', {})
-    return data
-  }
-
-  const finalizeLogin = async (assertion: any, ticket: string) => {
-    const { data } = await post('/api/v3/webauthn/login/finalize', {
-      credential: assertion,
-      ticket
-    })
-    return data
-  }
-
   const handleLogin = async () => {
-    const challenge = await initializeLogin()
-    challenge.mediation = 'required' as CredentialMediationRequirement
-    challenge.signal = createAbortSignal()
-    const ticket = challenge.ticket
-    const assertion = await getWebauthnCredential(challenge)
-    console.log(assertion)
-    const assertionResponse = await finalizeLogin(assertion, ticket)
-    alert(JSON.stringify(assertionResponse))
+    setLoading(true)
+    try {
+      const initializeApi = `${host}/api/v3/webauthn/login/initialize`
+
+      const initializeRes = await fetch(initializeApi, {
+        method: 'POST',
+        body: JSON.stringify({}),
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          [requestClient.langHeader]: i18n.language,
+          'x-authing-userpool-id': publicConfig.userPoolId,
+          'x-authing-app-id': appId,
+          'x-authing-sdk-version': version,
+          'x-authing-request-from': `Guard@${version}`
+        }
+      })
+      const initializeJson = await initializeRes.json()
+      const {
+        statusCode,
+        data: challenge,
+        onGuardHandling,
+        message: tips
+      } = responseIntercept(initializeJson)
+      if (statusCode !== 200) {
+        const handMode = onGuardHandling?.()
+        // 向上层抛出错误
+        handMode === CodeAction.RENDER_MESSAGE &&
+          onLoginFailed(statusCode, challenge, tips)
+        return
+      }
+
+      challenge.mediation = 'required' as CredentialMediationRequirement
+      challenge.signal = createAbortSignal()
+      const ticket = challenge.ticket
+      const assertion = await getWebauthnCredential(challenge)
+
+      const finalizeApi = `${host}/api/v3/webauthn/login/finalize`
+      const finalizeRes = await fetch(finalizeApi, {
+        method: 'POST',
+        body: JSON.stringify({
+          credential: assertion,
+          ticket
+        }),
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          [requestClient.langHeader]: i18n.language,
+          'x-authing-userpool-id': publicConfig.userPoolId,
+          'x-authing-app-id': appId,
+          'x-authing-sdk-version': version,
+          'x-authing-request-from': `Guard@${version}`
+        }
+      })
+      const finalizeJson = await finalizeRes.json()
+      const {
+        statusCode: code2,
+        data: tokenSet,
+        message: tips2
+      } = responseIntercept(finalizeJson)
+      if (code2 !== 200) {
+        const handMode = onGuardHandling?.()
+        // 向上层抛出错误
+        handMode === CodeAction.RENDER_MESSAGE &&
+          onLoginFailed(code2, tokenSet, tips2)
+        return
+      }
+      onLoginSuccess(tokenSet)
+    } catch (error) {
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -80,6 +143,7 @@ export const PasskeyButton = () => {
         <GuardButton
           className="g2-guard-third-login-btn"
           block
+          loading={loading}
           size="large"
           onClick={handleLogin}
           icon={
