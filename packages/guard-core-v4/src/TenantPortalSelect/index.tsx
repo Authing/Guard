@@ -35,6 +35,7 @@ import { JoinButton } from './JoinButton'
 import { CreateButton } from './CreateButton'
 import { CreateTenantView } from '../CreateTenant'
 import { VisitorButton } from './VisitorButton'
+import { Tag } from 'shim-antd'
 
 const { useCallback, useMemo, useState } = React
 
@@ -86,7 +87,14 @@ export const GuardTenantPortalSelectView = () => {
     () =>
       list?.map?.(it => ({
         ...it,
-        title: it.tenantName!,
+        title: it.isUserPool ? (
+          <>
+            {it.tenantName!}
+            <Tag className="authing-tag blue">{t('common.visitor')}</Tag>
+          </>
+        ) : (
+          it.tenantName!
+        ),
         // description: it.userName!,
         avatar: {
           size: 40,
@@ -159,11 +167,11 @@ export const GuardTenantPortalSelectView = () => {
           )}
         </div>
         <CreateButton onClick={() => setActive('create')} />
-        <VisitorButton
+        {/* <VisitorButton
           onClick={() => {
             handleSelect(list[0])
           }}
-        />
+        /> */}
       </div>
     ),
     join: (
