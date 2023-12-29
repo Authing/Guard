@@ -100,7 +100,7 @@ export const initGuardI18n = async (
     lng,
     detection: {
       order: detectionOrder,
-      lookupCookie: '_authing_lang_app',
+      lookupCookie: '_authing_app_lang',
       caches: ['localStorage', 'cookie'],
       cookieOptions: { path: '/' },
       lookupLocalStorage: '_guard_i18nextLng' //与console主要业务i18n相关的key脱离
