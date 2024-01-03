@@ -40,7 +40,7 @@ import { useInitAppId } from '../../_utils/initAppId'
 
 import { updateFlowHandle } from '../../_utils/flowHandleStorage'
 
-import { ApplicationConfig } from '../../Type/application'
+import { ApplicationConfig, LoginMethods } from '../../Type/application'
 
 import { AuthenticationClient } from 'authing-js-sdk'
 
@@ -50,10 +50,14 @@ import { i18n } from '../../_utils/locales'
 
 // hooks
 import useMultipleAccounts from './hooks/useMultipleAccounts'
+
 import { useMultipleTenant } from '../../_utils/tenant'
+
 import Axios from 'axios'
 
-const { useCallback, useEffect, useMemo, useReducer, useState } = React
+import { getGuardDocument } from '../../_utils/guardDocument'
+
+const { useCallback, useEffect, useMemo, useReducer, useState, useRef } = React
 
 interface IBaseAction<T = string, P = any> {
   type: T & string
@@ -77,6 +81,7 @@ export const RenderContext: React.FC<{
   const [error, setError] = useState()
   const [isAuthFlow, setIsAuthFlow] = useState(true)
   const [i18nInit, setI18nInit] = useState(false)
+  const scriptNodes = useRef<Record<string, Element>>({})
   const appId = useInitAppId(guardProps.appId, guardProps.authClient, setError)
 
   const [defaultLanguageConfig, setDefaultLanguageConfig] = useState<Lang>()
@@ -223,6 +228,41 @@ export const RenderContext: React.FC<{
 
     setCdnBase(publicConfig.cdnBase)
   }, [appId, finallyConfig])
+
+  // 特殊脚本注入
+  useEffect(() => {
+    if (!publicConfig) {
+      return
+    }
+    const guardDocument = getGuardDocument()
+    // TODO: 脚本后续上传到 oss
+    if (
+      publicConfig.qrcodeTabsSettings?.[LoginMethods.DingTalkQrcode] &&
+      !scriptNodes.current?.dingtalk
+    ) {
+      const dingdingScriptDom = document.createElement('script')
+      dingdingScriptDom.innerHTML =
+        '!function(e){var t={};function r(n){if(t[n])return t[n].exports;var o=t[n]={i:n,l:!1,exports:{}};return e[n].call(o.exports,o,o.exports,r),o.l=!0,o.exports}r.m=e,r.c=t,r.d=function(e,t,n){r.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:n})},r.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},r.t=function(e,t){if(1&t&&(e=r(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var n=Object.create(null);if(r.r(n),Object.defineProperty(n,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)r.d(n,o,function(t){return e[t]}.bind(null,o));return n},r.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return r.d(t,"a",t),t},r.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},r.p="",r(r.s=1382)}({1382:function(e,t){var r=function(e,t){var r=e.match(new RegExp("[?&]"+t+"=([^&]+)"));return r?r[1]:null};window.DTFrameLogin=function(e,t,n,o){var i,u=e.id&&document.getElementById(e.id)||null,c=document.createElement("iframe");t.client_id&&t.redirect_uri&&t.response_type&&t.scope?u?(u.innerHTML="",u.appendChild(c),c&&c.contentWindow&&c.contentWindow.postMessage&&window.addEventListener?(c.src="https://"+((i=t).isPre?"pre-login":"login")+".dingtalk.com/oauth2/auth?iframe=true&redirect_uri="+i.redirect_uri+"&response_type="+i.response_type+"&client_id="+i.client_id+"&scope="+i.scope+(i.prompt?"&prompt="+i.prompt:"")+(i.state?"&state="+i.state:"")+(i.org_type?"&org_type="+i.org_type:"")+(i.corpId?"&corpId="+i.corpId:"")+(i.exclusiveLogin?"&exclusiveLogin="+i.exclusiveLogin:"")+(i.exclusiveCorpId?"&exclusiveCorpId="+i.exclusiveCorpId:""),c.width=""+(e.width||300),c.height=""+(e.height||300),c.frameBorder="0",c.scrolling="no",window.addEventListener("message",(function(e){var t=e.data,i=e.origin;if(/login.dingtalk.com/.test(i)&&t)if(t.success&&t.redirectUrl){var u=t.redirectUrl,c=r(u,"authCode")||"",d=r(u,"state")||"",s=r(u,"error")||"";c?n&&n({redirectUrl:u,authCode:c,state:d}):o&&o(s)}else o&&o(t.errorMsg)}))):o&&o("Browser not support")):o&&o("Element not found"):o&&o("Missing parameters");return c;}}});'
+      guardDocument.body.appendChild(dingdingScriptDom)
+      scriptNodes.current = Object.assign(scriptNodes.current, {
+        dingtalk: dingdingScriptDom
+      })
+    }
+
+    if (
+      publicConfig.qrcodeTabsSettings?.[LoginMethods.WechatworkCorpQrconnect] &&
+      !scriptNodes.current?.weCom
+    ) {
+      const weComScriptDom = document.createElement('script')
+      // weComScriptDom.innerHTML = `!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?module.exports=t():"function"==typeof define&&define.amd?define(t):(e="undefined"!=typeof globalThis?globalThis:e||self).WwLogin=t()}(this,(function(){"use strict";var e=["work.weixin.qq.com","tencent.com"],t={sso:"/wwopen/sso/qrConnect",tww:"/login/wwLogin/sso/qrConnect",native:"/native/sso/qrConnect",twxg:"/login/wwLogin/sso/qrConnect"},n="1.2.7";return function(){function o(e){this.options=e,this.options=e,this.createFrame()}return o.prototype.destroyed=function(){console.log("WwLogin had destroyed."),window.removeEventListener("message",this.onPostMessage)},o.prototype.getUrl=function(e){var o=[];Object.keys(e).forEach((function(t){var n=e[t];[void 0,null].indexOf(n)>-1||-1!==["string","number","boolean"].indexOf(typeof n)&&"id"!==t&&o.push("".concat(t,"=").concat(n))})),o.push("version=".concat(n)),o.push("login_type=jssdk");var s=t[e.business_type||"sso"];if(!s)throw new Error("Argument business_type not match. Current version is ".concat(n,"."));var i="https://open.work.weixin.qq.com";return/tencent\.com$/.test(window.location.host)&&(i="https://open.wecom.tencent.com"),"".concat(i).concat(s,"?").concat(o.join("&"))},o.prototype.createFrame=function(){var e=this;if(this.options.is_mobile)window.location.href=this.getUrl(this.options);else{this.frame=document.createElement("iframe");var t=document.getElementById(this.options.id);this.frame.src=this.getUrl(this.options),this.frame.frameBorder="0",this.frame.allowTransparency="true",this.frame.scrolling="no",this.frame.width="158px",this.frame.height="158px",t.innerHTML="",t.appendChild(this.frame),this.frame.onload=function(){e.frame.contentWindow.postMessage&&window.addEventListener&&(window.addEventListener("message",e.onPostMessage),e.frame.contentWindow.postMessage("ask_usePostMessage","*"))}}},o.prototype.onPostMessage=function(t){if(e.filter((function(e){return new RegExp("".concat(e,"$")).test(t.origin)})).length){var n=t.data;if(n&&"string"==typeof n&&/^http/.test(n)){var b = document.createElement('iframe');b.src = n; b.style.display = 'none';document.body.appendChild(b)}}},o}()}));`
+      weComScriptDom.innerHTML =
+        '!(function(e,t){"object"==typeof exports&&"undefined"!=typeof module?(module.exports=t()):"function"==typeof define&&define.amd?define(t):((e="undefined"!=typeof globalThis?globalThis:e||self).WwLogin=t())})(this,function(){"use strict";var e=["work.weixin.qq.com","tencent.com"],t={sso:"/wwopen/sso/qrConnect",tww:"/login/wwLogin/sso/qrConnect",native:"/native/sso/qrConnect",twxg:"/login/wwLogin/sso/qrConnect"},n="1.2.7";return(function(){function o(e){(this.options=e),(this.options=e),this.createFrame()}return((o.prototype.destroyed=function(){console.log("WwLogin had destroyed."),window.removeEventListener("message",this.onPostMessage)}),(o.prototype.getUrl=function(e){var o=[];Object.keys(e).forEach(function(t){var n=e[t];[void 0,null].indexOf(n)>-1||(-1!==["string","number","boolean"].indexOf(typeof n)&&"id"!==t&&o.push("".concat(t,"=").concat(n)))}),o.push("version=".concat(n)),o.push("login_type=jssdk");var s=t[e.business_type||"sso"];if(!s)throw new Error("Argument business_type not match. Current version is ".concat(n,"."));var i="https://open.work.weixin.qq.com";return(/tencent.com$/.test(window.location.host)&&(i="https://open.wecom.tencent.com"),"".concat(i).concat(s,"?").concat(o.join("&")))}),(o.prototype.createFrame=function(){var e=this;if(this.options.is_mobile)window.location.href=this.getUrl(this.options);else{this.frame=document.createElement("iframe");var t=document.getElementById(this.options.id);(this.frame.src=this.getUrl(this.options)),(this.frame.frameBorder="0"),(this.frame.allowTransparency="true"),(this.frame.scrolling="no"),(this.frame.width="100%"),(this.frame.height="194px"),(t.innerHTML=""),t.appendChild(this.frame),(this.frame.onload=function(){e.frame.contentWindow.postMessage&&window.addEventListener&&e.frame.contentWindow.postMessage("ask_usePostMessage","*")})}}),o)})()});'
+      guardDocument.body.appendChild(weComScriptDom)
+      scriptNodes.current = Object.assign(scriptNodes.current, {
+        weCom: weComScriptDom
+      })
+    }
+  }, [publicConfig])
 
   // I18n
   useEffect(() => {

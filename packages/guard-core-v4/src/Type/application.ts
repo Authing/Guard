@@ -14,6 +14,8 @@ export enum LoginMethods {
   AD = 'ad', // 对应企业身份源的 Windows AD 登录
   WechatMpQrcode = 'wechatmp-qrcode', // 微信扫码关注登录
   AuthingOtpPush = 'authing-otp-push', // App 扫码登录
+  WechatworkCorpQrconnect = 'wechatwork-corp-qrconnect', // 微信企业扫码关注登录
+  DingTalkQrcode = 'dingtalk-qrcode', //钉钉扫码
   Passkey = 'passkey' // passkey
 }
 
@@ -116,6 +118,8 @@ export interface ICasConnectionConfig {
 }
 
 export interface SocialConnectionItem {
+  id: string
+  embedded: boolean
   name: string
   name_en: string
   displayName: string
@@ -143,6 +147,13 @@ export interface QrCodeItem {
   id: string
   title: string
   isDefault?: boolean
+  QRConfig?: {
+    corpId: string
+    agentId: string
+    redirectUrl: string
+    identifier: string
+    clientId?: string
+  }
 }
 
 export type QrcodeTabsSettings = Record<LoginMethods, Array<QrCodeItem>>
@@ -307,6 +318,8 @@ export interface ApplicationConfig {
       | ICasConnectionConfig
       | IAzureAdConnectionConfig
       | IOAuthConnectionConfig
+    /** 是否开启内嵌模式 */
+    embedded?: boolean
   }[]
 
   ssoPageComponentDisplay: {
