@@ -25,7 +25,7 @@ export const CreateTenantView: React.FC<Props> = ({ onBack }) => {
   }, [t])
 
   return (
-    <div className="g2-view-container g2-view-create">
+    <div className="g2-view-container g2-view-join">
       {renderBack}
       <div className="g2-join-content">
         <p className="authing-g2-join-title">{t('common.createTenant')}</p>
