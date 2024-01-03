@@ -33,6 +33,7 @@ import { useMfaBusinessRequest, MfaBusinessAction } from '../businessRequest'
 import { InputInternationPhone } from '../../Login/core/withVerifyCode/InputInternationPhone'
 
 import { parsePhone } from '../../_utils/hooks'
+import { useEffectOnce } from 'react-use'
 
 const { useCallback, useMemo, useRef, useState } = React
 
@@ -173,7 +174,9 @@ export const VerifyMFASms: React.FC<VerifyMFASmsProps> = ({
     phone,
     areaCode
   )
-
+  useEffectOnce(() => {
+    sendCodeRef.current?.click()
+  })
   const businessRequest = useMfaBusinessRequest()[MfaBusinessAction.VerifySms]
 
   const onFinish = async (values: any) => {

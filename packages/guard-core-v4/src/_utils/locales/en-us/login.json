@@ -74,6 +74,7 @@
   "otherLoginWay": "OR",
   "verifyCodeSended": "Verification code has been sent to",
   "clickSent": "Click  send",
+  "reSent": "Click to resend the verification code",
   "bindPhoneInfo": "Please enter the phone number to bind",
   "inputPhoneCode": "Please enter the phone verification code",
   "forgetPwd": "Forgot Password",
@@ -111,6 +112,7 @@
   "requireError": "Unable to satisfy request error",
   "hardwareSupport": "Hardware not supported",
   "verifyCodeTip": "Try another",
+  "loginWithPasskey": "Sign in with Passkey",
   "resetPassword": {
     "pleaseInputPassword": "Please input a password",
     "checkPasswordDiff": "Please enter a consistent password",

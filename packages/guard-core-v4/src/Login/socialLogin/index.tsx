@@ -34,6 +34,8 @@ import { ApplicationConfig, SocialConnectionItem } from '../../Type/application'
 
 import { StoreInstance } from '../../Guard/core/hooks/useMultipleAccounts'
 
+import { PasskeyButton } from './PasskeyButton'
+
 export interface SocialLoginProps {
   appId: string
   config: GuardLocalConfig
@@ -254,6 +256,20 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
       )
     )
 
+  const otherLogin = (
+    <div
+      className="g2-social-login-list"
+      style={{
+        marginTop: -8
+      }}
+    >
+      <PasskeyButton
+        onLoginSuccess={onLoginSuccess}
+        onLoginFailed={onLoginFailed}
+      />
+    </div>
+  )
+
   return (
     <>
       {!noLoginMethods && (
@@ -270,6 +286,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
         className="g2-guard-full-width-space"
       >
         {!publicConfig?.ssoPageComponentDisplay.idpBtns || idp}
+        {otherLogin}
         {!publicConfig?.ssoPageComponentDisplay.socialLoginBtns || socialLogin}
       </Space>
     </>

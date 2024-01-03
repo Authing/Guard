@@ -77,6 +77,7 @@
   "otherVerifyWay": "その他の検証方法",
   "otherLoginWay": "その他の登録方法",
   "clickSent": "認証コードの送信をクリックする",
+  "reSent": "認証コードの再送をクリックしてください",
   "bindPhoneInfo": "携帯番号を入力して結びつけてください",
   "inputPhoneCode": "携帯認証コードを入力してください",
   "forgetPwd": "パスワードをお忘れの場合",
@@ -111,6 +112,7 @@
   "requireError": "要求エラーを満たすことができません",
   "hardwareSupport": "ハードウェアはサポートされていません",
   "verifyCodeTip": "別の画像を表示",
+  "loginWithPasskey": "パスキーを使用してログインする",
   "resetPassword": {
     "pleaseInputPassword": "パスワードを入力してください",
     "checkPasswordDiff": "一貫したパスワードを入力してください",
