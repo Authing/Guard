@@ -16,6 +16,8 @@ import * as jaJpTrans from './ja-jp'
 
 import { Lang } from '../../Type'
 
+import { getGuardDocument } from '../guardDocument'
+
 const LanguageResources: Resource = {
   'en-US': { translation: enUsTrans },
   'zh-CN': { translation: zhCnTrans },
@@ -102,6 +104,7 @@ export const initGuardI18n = async (
       order: detectionOrder,
       lookupCookie: '_authing_app_lang',
       caches: ['localStorage', 'cookie'],
+      cookieDomain: `.${getGuardDocument().domain}`,
       cookieOptions: { path: '/' },
       lookupLocalStorage: '_guard_i18nextLng' //与console主要业务i18n相关的key脱离
     },
