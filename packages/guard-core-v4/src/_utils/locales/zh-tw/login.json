@@ -45,6 +45,7 @@
   "bindPhoneInfo": "請輸入手機號碼進行綁定",
   "captchaCode": "圖形驗證碼",
   "clickSent": "點擊發送驗證碼",
+  "reSent": "點擊重發驗證碼",
   "forgetPwd": "忘記密碼",
   "inputAccount": "請輸入{{text}}",
   "inputAdPwd": "請輸入 AD 密碼",
@@ -111,6 +112,7 @@
   "requireError": "無法滿足要求錯誤",
   "hardwareSupport": "硬件不支持",
   "verifyCodeTip": "看不清？換一張",
+  "loginWithPasskey": "使用 Passkey 登入",
   "resetPassword": {
     "pleaseInputPassword": "請輸入密碼",
     "checkPasswordDiff": "請輸入一致的密碼",

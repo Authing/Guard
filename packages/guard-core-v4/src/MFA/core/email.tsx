@@ -27,6 +27,7 @@ import { MfaBusinessAction, useMfaBusinessRequest } from '../businessRequest'
 import { EmailScene } from '../../Type'
 
 import { getGuardHttp } from '../../_utils/guardHttp'
+import { useEffectOnce } from 'react-use'
 
 const { useRef, useState } = React
 
@@ -156,7 +157,9 @@ export const VerifyMFAEmail: React.FC<VerifyMFAEmailProps> = ({
       return false
     }
   }
-
+  useEffectOnce(() => {
+    sendCodeRef.current?.click()
+  })
   const onFinish = async (values: any) => {
     submitButtonRef.current?.onSpin(true)
     const mfaCode = form.getFieldValue('mfaCode')

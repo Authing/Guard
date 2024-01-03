@@ -78,6 +78,7 @@ import { useLoginMultiple } from './hooks/useLoginMultiple'
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
 
 import { LoginWithAuthingOtpPush } from './core/withAuthingOtpPush/index'
+// import { LoginWithPasskey } from './core/withPasskey'
 
 import { usePostMessage } from './socialLogin/postMessage'
 
@@ -799,6 +800,16 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     )
   }, [ms, onLoginSuccess, t, backfillData, multipleInstance, agreements])
 
+  // const PasskeyTab = useMemo(
+  //   () =>
+  //     ms?.includes(LoginMethods.Passkey) && (
+  //       <Tabs.TabPane key={LoginMethods.Passkey} tab={'Passkey'}>
+  //         <LoginWithPasskey />
+  //       </Tabs.TabPane>
+  //     ),
+  //   [ms]
+  // )
+
   // 登录方式对应 tab Component
   const tabMap = useMemo(() => {
     return {
@@ -820,9 +831,9 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         LoginMethods.AuthingOtpPush
       ].includes(tabName)
     )
-
     if (total) {
-      return getSortTabs(total, config.defaultLoginMethod ?? '').map(
+      const sortedTable = getSortTabs(total, config.defaultLoginMethod ?? '')
+      const tabs = sortedTable.map(
         tabName =>
           tabMap[
             tabName as
@@ -833,6 +844,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
               | LoginMethods.AuthingOtpPush
           ]
       )
+      return tabs
     }
     return null
   }, [config.defaultLoginMethod, ms, tabMap])

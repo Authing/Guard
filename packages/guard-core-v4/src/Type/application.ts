@@ -15,7 +15,8 @@ export enum LoginMethods {
   WechatMpQrcode = 'wechatmp-qrcode', // 微信扫码关注登录
   AuthingOtpPush = 'authing-otp-push', // App 扫码登录
   WechatworkCorpQrconnect = 'wechatwork-corp-qrconnect', // 微信企业扫码关注登录
-  DingTalkQrcode = 'dingtalk-qrcode' //钉钉扫码
+  DingTalkQrcode = 'dingtalk-qrcode', //钉钉扫码
+  Passkey = 'passkey' // passkey
 }
 
 export enum OIDCConnectionMode {
@@ -406,4 +407,5 @@ export interface ApplicationConfig {
   appRobotVerify: 'always_enable' | 'disable' | 'condition_set'
   /** 用户池的人机验证策略，始终开启、不开启、设置条件触发 */
   userpoolRobotVerify: 'always_enable' | 'disable' | 'condition_set'
+  passkeyEnabled: boolean
 }

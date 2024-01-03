@@ -77,6 +77,7 @@
   "otherVerifyWay": "其他验证方式",
   "otherLoginWay": "其他登录方式",
   "clickSent": "点击发送验证码",
+  "reSent": "点击重发验证码",
   "bindPhoneInfo": "请输入手机号进行绑定",
   "inputPhoneCode": "请输入手机验证码",
   "forgetPwd": "忘记密码",
@@ -111,6 +112,7 @@
   "requireError": "无法满足要求错误",
   "hardwareSupport": "硬件不支持",
   "verifyCodeTip": "看不清？换一张",
+  "loginWithPasskey": "使用 Passkey 登录",
   "resetPassword": {
     "pleaseInputPassword": "请输入密码",
     "checkPasswordDiff": "请输入一致的密码",
