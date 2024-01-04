@@ -5,19 +5,31 @@ import { Form, Input } from 'shim-antd'
 import SubmitButton from '../../SubmitButton'
 import { CreateTenantProps } from '../interface'
 import '../styles.less'
+import { TenantBusinessAction, authFlow } from '../businessRequest'
+import { useGuardEvents } from '../../_utils'
+import { useGuardAuthClient } from '../../Guard/authClient'
 
 const { useMemo, useRef } = React
 
 export const CreateTenantView: React.FC<CreateTenantProps> = ({ onBack }) => {
   const { t } = useTranslation()
+  const events = useGuardEvents()
+  const authClient = useGuardAuthClient()
+
   const [form] = Form.useForm()
   const submitButtonRef = useRef<any>(null)
 
   const handleCreate = async () => {
-    await form.validateFields()
     const values = form.getFieldsValue()
-    console.log('values: ', values)
-    // TODO: 调用 authflow 传递数据
+    const { isFlowEnd, data, onGuardHandling } = await authFlow(
+      TenantBusinessAction.CreateTenant,
+      { ...values }
+    )
+    if (isFlowEnd) {
+      events?.onLogin?.(data, authClient)
+    } else {
+      onGuardHandling?.()
+    }
   }
 
   const renderBack = useMemo(() => {
@@ -52,7 +64,7 @@ export const CreateTenantView: React.FC<CreateTenantProps> = ({ onBack }) => {
           </Form.Item>
           <Form.Item
             className="authing-g2-input-form"
-            name="email"
+            name="enterpriseDomains"
             label={t('common.tenantEmail')}
           >
             <Input

@@ -8,25 +8,31 @@ import { JoinTenantStepEnum, JoinTenantProps } from '../interface'
 import {
   getGuardHttp,
   mailDesensitization,
+  useGuardEvents,
   useGuardHttp,
   useGuardPublicConfig
 } from '../../_utils'
 import { InputEmailCode } from '../InputEmailCode'
+import {
+  TenantBusinessAction,
+  authFlow,
+  getTenantInfoByCode
+} from '../businessRequest'
 import '../styles.less'
+import { useGuardAuthClient } from '../../Guard/authClient'
 
 const { useMemo, useState, useRef, useCallback } = React
 
 export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
   const { t } = useTranslation()
-  const { post, get } = useGuardHttp()
+  const events = useGuardEvents()
   const config = useGuardPublicConfig()
-  const { authFlow } = getGuardHttp()
+  const authClient = useGuardAuthClient()
+
   const [tenantInfo, setTenantInfo] = useState<any>(null)
   const [currStepKey, setCurrStepKey] = useState<JoinTenantStepEnum>(
     JoinTenantStepEnum.InputTenantCode
   )
-  // const [verifyCode, setVerifyCode] = useState<string[]>([])
-  // const sendCodeBtnRef = useRef<HTMLButtonElement>(null)
   const [form] = Form.useForm()
   const submitButtonRef = useRef<any>(null)
   const [sent, setSent] = useState(false)
@@ -34,8 +40,8 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
 
   const handelJoinTenant = async (tenantId: string, passCode?: string) => {
     try {
-      const { isFlowEnd, message: tips } = await authFlow(
-        'join-tenant-portal',
+      const { isFlowEnd, data, onGuardHandling } = await authFlow(
+        TenantBusinessAction.JoinTenant,
         {
           tenantId,
           email: enterpriseEmail || undefined,
@@ -43,21 +49,22 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
         }
       )
       if (isFlowEnd) {
+        events?.onLogin?.(data, authClient)
       } else {
-        message.error(tips)
+        onGuardHandling?.()
       }
     } catch (e: any) {
       if (e?.message) {
-        // message.error(e?.message)
+        message.error(e?.message)
       }
     }
   }
 
   const handleJoinClick = useCallback(async () => {
     try {
-      const { data } = await get('/api/v3/get-tenant-public-info-by-code', {
-        ...form.getFieldsValue()
-      })
+      const { data, message: tips } = await getTenantInfoByCode(
+        form.getFieldValue('code')
+      )
       setTenantInfo(data)
 
       if (data) {
@@ -72,9 +79,11 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
         } else {
           await handelJoinTenant(data.tenantId)
         }
+      } else {
+        message.error(tips)
       }
     } catch (error) {
-      message.error('识别码错误，请重新输入')
+      message.error(t('common.codeError'))
     }
   }, [])
 
@@ -112,12 +121,12 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
       },
       {
         key: JoinTenantStepEnum.InputEnterpriseEmail,
-        title: '验证企业邮箱',
-        okBtnText: '验证',
+        title: t('common.emailVerify'),
+        okBtnText: t('common.verify'),
         formFields: [
           {
             type: 'text',
-            placeholder: '请输入企业邮箱',
+            placeholder: t('common.inputBusinessEmail'),
             name: 'email',
             rules: [
               {
@@ -125,7 +134,8 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
               }
             ],
             addonAfter: `@${tenantInfo?.enterpriseDomains?.[0]}`,
-            inputClassName: 'authing-g2-input-group'
+            inputClassName:
+              'authing-g2-input-group authing-g2-input-group-email'
           }
         ],
         onNext: () => {
@@ -141,14 +151,29 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
       },
       {
         key: JoinTenantStepEnum.NoEnterpriseDomain,
-        title: t('common.joinTenant'),
-        okBtnText: t('common.sure'),
-        onNext: () => {},
-        onPrevOrCancel() {}
+        title: t('common.emailVerify'),
+        hiddenConfirm: true,
+        formFields: [
+          {
+            type: 'custom',
+            customComponent: (
+              <div className="authing-warning-tips">
+                <IconFont
+                  type="authing-information-fill"
+                  className="authing-warning-tips-icon"
+                />
+                <span>{t('common.domainNotFound')}</span>
+              </div>
+            )
+          }
+        ],
+        onPrevOrCancel() {
+          setCurrStepKey(JoinTenantStepEnum.InputTenantCode)
+        }
       },
       {
         key: JoinTenantStepEnum.VerifyEmailCode,
-        title: '请输入验证码',
+        title: t('common.inputCode'),
         description: sent
           ? `${t('login.verifyCodeSended')} ${mailDesensitization(
               enterpriseEmail
@@ -174,7 +199,9 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
           }
         ],
         hiddenConfirm: true,
-        onPrevOrCancel() {}
+        onPrevOrCancel() {
+          setCurrStepKey(JoinTenantStepEnum.InputEnterpriseEmail)
+        }
       }
     ],
     [tenantInfo, enterpriseEmail, sent, setSent]
@@ -190,7 +217,7 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
         {t('common.back')}
       </BackCustom>
     )
-  }, [t])
+  }, [t, currStep])
 
   const getFieldComponent = (config: any) => {
     switch (config.type) {
@@ -225,7 +252,7 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
         <Form
           form={form}
           onFinish={currStep?.onNext}
-          style={{ width: '100%', textAlign: 'center' }}
+          style={{ width: '100%' }}
           onFinishFailed={() => submitButtonRef.current?.onError()}
         >
           {currStep?.formFields?.map?.((formItem: any) => (

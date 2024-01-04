@@ -81,6 +81,7 @@ export const InputEmailCode: React.FC<Props> = ({
         setSent={setSent}
         beforeSend={() => sendVerifyCode()}
         type="link"
+        className="authing-join-send-btn"
       />
     </>
   )

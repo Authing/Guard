@@ -197,5 +197,11 @@
   "tenantEmail": "租户企业邮箱域名",
   "tenantDesc": "租户描述",
   "visitor": "访客模式",
-  "createTenantDesc": "如需创建新租户，请点击此处"
+  "createTenantDesc": "如需创建新租户，请点击此处",
+  "codeError": "识别码错误，请重新输入",
+  "emailVerify": "验证企业邮箱",
+  "verify": "验证",
+  "inputBusinessEmail": "请输入企业邮箱",
+  "inputCode": "请输入验证码",
+  "domainNotFound": "当前组织管理员未设置企业邮箱域名，请联系管理员设置后加入组织。"
 }

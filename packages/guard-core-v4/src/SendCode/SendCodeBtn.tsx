@@ -9,6 +9,7 @@ import './style.less'
 import { ButtonProps } from 'shim-antd'
 
 import { i18n } from '../_utils/locales'
+import classNames from 'classnames'
 
 const { useState, useRef, useEffect, useMemo } = React
 
@@ -88,9 +89,12 @@ export const SendCodeBtn: React.FC<SendCodeProps> = props => {
   return (
     <Button
       {...buttonProps}
-      className={`${
-        buttonProps.type ?? 'authing-g2-send-code-btn g2-loading-btn-center'
-      } ${i18n.language === 'ja-JP' ? 'send-code-btn-jp' : ''}`}
+      className={classNames(
+        `${
+          buttonProps.type ?? 'authing-g2-send-code-btn g2-loading-btn-center'
+        } ${i18n.language === 'ja-JP' ? 'send-code-btn-jp' : ''}`,
+        props.className
+      )}
       disabled={disabled}
       loading={loading}
       onClick={onClick}
