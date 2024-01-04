@@ -96,9 +96,66 @@
 
 }
 
+
+.g2-view-join {
+  .g2-join-content {
+    padding: 0 38px;
+    .authing-g2-join-title {
+      margin: 40px 0 8px;
+      color: #282d3c;
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .authing-g2-join-description {
+      margin-bottom: 32px;
+      text-align: center;
+      color: #545968;
+    }
+    .authing-g2-join-button {
+      margin-top: 16px;
+    }
+  }
+  .authing-ant-input-group-addon {
+    border: none;
+    border-right: 1px solid #E5E6EB;
+    color: #86909C;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+  }
+  .authing-g2-input-group {
+    padding: 0;
+    input {
+      background: #f5f6f7;
+      border: 1px solid #f5f6f7;
+      border-radius: 4px;
+      &:hover {
+        background-color: #eeeff1 !important;
+      }
+      &:focus {
+        background: #ffffff !important;
+        border-color: #618eff;
+      }
+      &::placeholder,
+      &::-webkit-input-placeholder {
+        // color: #a7a7a7;
+        color: #c8c9cc;
+        font-size: 14px;
+      }
+    }
+  }
+  .authing-ant-form-item-required {
+    flex-direction: row-reverse;
+  }
+  .authing-ant-form-item-label>label {
+    color: #4E5969;
+  }
+}
+
 .authing-tenant-join {
   margin-top: 52px;
 }
+
 .authing-create-button {
   position: absolute;
   color: #878A95;
@@ -126,3 +183,4 @@
     background: #E8F2FF;
   }
 }
+

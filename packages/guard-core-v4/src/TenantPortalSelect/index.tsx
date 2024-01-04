@@ -8,8 +8,7 @@ import {
   useGuardCurrentModule,
   useGuardEvents,
   useGuardHttpClient,
-  useGuardInitData,
-  useGuardModule
+  useGuardInitData
 } from '../_utils/context'
 
 import { useGuardAuthClient } from '../Guard/authClient'
@@ -28,13 +27,11 @@ import {
 } from './interface'
 
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
-import { GuardModuleType } from '../Guard'
-import { JoinTenantView } from '../JoinTenant'
+import { JoinTenantView } from './core/JoinTenant'
 import { useTranslation } from 'react-i18next'
 import { JoinButton } from './JoinButton'
 import { CreateButton } from './CreateButton'
-import { CreateTenantView } from '../CreateTenant'
-import { VisitorButton } from './VisitorButton'
+import { CreateTenantView } from './core/CreateTenant'
 import { Tag } from 'shim-antd'
 
 const { useCallback, useMemo, useState } = React

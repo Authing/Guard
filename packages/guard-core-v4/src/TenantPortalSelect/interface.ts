@@ -45,3 +45,20 @@ export interface TenantButtonProps {
   onClick?: () => void
   style?: React.CSSProperties
 }
+
+export interface BackProps {
+  onBack: () => void
+}
+
+export interface CreateTenantProps extends BackProps {}
+
+export interface JoinTenantProps extends BackProps {}
+
+export enum JoinTenantStepEnum {
+  InputTenantCode = 'inputTenantCode',
+  InputEnterpriseEmail = 'inputEnterpriseEmail',
+  VerifyEmailCode = 'verifyEmailCode',
+  NoEnterpriseDomain = 'noEnterpriseDomain',
+  JoinSuccess = 'joinSuccess',
+  JoinFailed = 'joinFailed'
+}

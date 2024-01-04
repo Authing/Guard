@@ -1,14 +1,14 @@
 import { React } from 'shim-react'
-import { BackCustom } from '../../src/Back'
+import { BackCustom } from '../../Back'
 import { useTranslation } from 'react-i18next'
 import { Form, Input } from 'shim-antd'
-import SubmitButton from '../SubmitButton'
-import { Props } from './interface'
-import './styles.less'
+import SubmitButton from '../../SubmitButton'
+import { CreateTenantProps } from '../interface'
+import '../styles.less'
 
 const { useMemo, useRef } = React
 
-export const CreateTenantView: React.FC<Props> = ({ onBack }) => {
+export const CreateTenantView: React.FC<CreateTenantProps> = ({ onBack }) => {
   const { t } = useTranslation()
   const [form] = Form.useForm()
   const submitButtonRef = useRef<any>(null)

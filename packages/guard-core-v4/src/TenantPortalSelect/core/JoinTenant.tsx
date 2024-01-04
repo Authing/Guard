@@ -1,23 +1,22 @@
 import { React } from 'shim-react'
-import { BackCustom } from '../../src/Back'
+import { BackCustom } from '../../Back'
 import { useTranslation } from 'react-i18next'
 import { Form, Input, message } from 'shim-antd'
-import { IconFont } from '../IconFont'
-import SubmitButton from '../SubmitButton'
-import { JoinTenantStepEnum, Props } from './interface'
+import { IconFont } from '../../IconFont'
+import SubmitButton from '../../SubmitButton'
+import { JoinTenantStepEnum, JoinTenantProps } from '../interface'
 import {
   getGuardHttp,
   mailDesensitization,
   useGuardHttp,
   useGuardPublicConfig
-} from '../_utils'
-import '../CreateTenant/styles.less'
-import './styles.less'
-import { InputEmailCode } from './InputEmailCode'
+} from '../../_utils'
+import { InputEmailCode } from '../InputEmailCode'
+import '../styles.less'
 
 const { useMemo, useState, useRef, useCallback } = React
 
-export const JoinTenantView: React.FC<Props> = ({ onBack }) => {
+export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
   const { t } = useTranslation()
   const { post, get } = useGuardHttp()
   const config = useGuardPublicConfig()

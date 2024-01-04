@@ -1,9 +1,9 @@
 import { React } from 'shim-react'
-import { IconFont } from '../IconFont'
-import { TenantButtonProps } from './interface'
+import { IconFont } from '../../IconFont'
+import { TenantButtonProps } from '../interface'
 import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
-import './styles.less'
+import '../styles.less'
 
 export const CreateButton: React.FC<TenantButtonProps> = ({
   className,

@@ -76,7 +76,7 @@ import { GuardTenantPortalSelectView } from '../../TenantPortalSelect'
 
 import { GuardNewSubmitSuccessView } from '../../NewSubmitSuccess'
 
-import { JoinTenantView } from '../../JoinTenant'
+import { JoinTenantView } from '../../TenantPortalSelect/core/JoinTenant'
 
 import { i18n } from '../../_utils/locales'
 
