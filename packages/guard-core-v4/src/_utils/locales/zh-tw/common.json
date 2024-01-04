@@ -184,5 +184,22 @@
   "resetAccount": {
     "title": "設定用戶名",
     "message": "當前用戶名不是唯一的，請重新設定用戶名後才可以成功登入。"
-  }
+  },
+  "noTenant": "暫無已加入的租戶",
+  "joinTenant": "加入租戶",
+  "tenantExample": "請輸入租戶識別碼，例如：Ljrs18wa",
+  "enter": "進入",
+  "createTenant": "創建租戶",
+  "pleaseInput": "請輸入",
+  "tenantName": "租戶名稱",
+  "tenantEmail": "租戶企業郵箱功能變數名稱",
+  "tenantDesc": "租戶描述",
+  "visitor": "訪客模式",
+  "createTenantDesc": "如需創建新租戶，請點擊此處",
+  "codeError": "識別碼錯誤，請重新輸入",
+  "emailVerify": "驗證企業郵箱",
+  "verify": "驗證",
+  "inputBusinessEmail": "請輸入企業郵箱",
+  "inputCode": "請輸入驗證碼",
+  "domainNotFound": "當前組織管理員未設定企業郵箱功能變數名稱，請聯系管理員設定後加入組織。"
 }

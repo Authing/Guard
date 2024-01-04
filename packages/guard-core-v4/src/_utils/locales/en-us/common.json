@@ -186,5 +186,22 @@
   "resetAccount": {
     "title": "Set the user name",
     "message": "The current user name is not unique, please reset the user name before you can successfully log on."
-  }
+  },
+  "noTenant": "There are currently no tenants who have joined",
+  "joinTenant": "Join Tenant",
+  "tenantExample": "Please enter the tenant identification code, for example: Ljrs18wa",
+  "enter": "enter",
+  "createTenant": "Create Tenant",
+  "pleaseInput": "Enter",
+  "tenantName": "Tenant Name",
+  "tenantEmail": "Tenant's corporate email domain name",
+  "tenantDesc": "Tenant Description",
+  "visitor": "guesting",
+  "createTenantDesc": "To create a new tenant, please click here",
+  "codeError": "Identification code error, please re-enter",
+  "emailVerify": "Verify Enterprise Email",
+  "verify": "test and verify",
+  "inputBusinessEmail": "Please enter your company email address",
+  "inputCode": "Please enter the verification code",
+  "domainNotFound": "The current organization administrator has not set up a corporate email domain name. Please contact the administrator to set it up and join the organization."
 }
