@@ -128,5 +128,6 @@
     "successTipMsg": "你可以使用新密码继续登录",
     "successTip": "密码重置成功",
     "backLogin": "秒后将自动跳转登录页"
-  }
+  },
+  "wecomScanLogin":"企业微信扫码登录"
 }

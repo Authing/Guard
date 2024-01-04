@@ -574,6 +574,10 @@ export const useMethod: (params: {
     socialConnectionObjs = []
     enterpriseConnectionObjs = []
   }
+  /** 过滤掉企业身份源中开启内嵌模式的身份源连接 如：企业微信自建 钉钉 */
+  enterpriseConnectionObjs = enterpriseConnectionObjs.filter(
+    item => !item?.embedded
+  )
 
   const isNoMethod: boolean =
     noLoginMethods &&
@@ -581,5 +585,6 @@ export const useMethod: (params: {
       !socialConnectionObjs.length) &&
     (!publicConfig?.ssoPageComponentDisplay.idpBtns ||
       !enterpriseConnectionObjs.length)
+
   return [socialConnectionObjs, enterpriseConnectionObjs, isNoMethod]
 }
