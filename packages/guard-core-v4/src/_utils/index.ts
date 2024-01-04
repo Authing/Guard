@@ -849,6 +849,27 @@ export const isDisabled = (
   return disabled
 }
 
+// 企微域 check http://wwcdn.weixin.qq.com/node/wework/wwopen/js/wwLogin-1.2.7.js
+export const isWeComOrigin = (event: MessageEvent) => {
+  const originPages = ['work.weixin.qq.com', 'tencent.com']
+  if (
+    originPages.filter(function (origin) {
+      return new RegExp(''.concat(origin, '$')).test(event.origin)
+    }).length
+  ) {
+    let n = event.data
+    if (n && 'string' == typeof n && /^http/.test(n)) {
+      return true
+    }
+  }
+  return false
+}
+
+// 钉钉域check https://open.dingtalk.com/document/org/scan-qr-code-to-login-3rdapp
+export const isDingTalkOrigin = (origin: string) => {
+  return origin === 'https://login.dingtalk.com'
+}
+
 export * from './popupCenter'
 
 export * from './clipboard'

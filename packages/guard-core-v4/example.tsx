@@ -1,17 +1,17 @@
-import { Guard, User, GuardMode, GuardLocalConfig } from './src/index'
+import { Guard, User, GuardLocalConfig } from './src/index'
 
 import { React, render } from 'shim-react'
 
 import * as facePlugin from 'face-api.js'
 
 const App = () => {
-  const appId = '658bea8221ddf382ef4bb885'
+  const appId = '658e7ba8596b462d99912872'
   // const deviceId = '6486be0f60e50cb92678a468' //如要使用必须使用开启元数据对的 用户池 测试
 
   const config: Partial<GuardLocalConfig> = {
     // mode: GuardMode.Modal,
-    // lang: 'en-US'
-    host: "http://11ying.authing.localhost:3000"
+    // lang: 'en-US',
+    host: 'http://1229.authing.localhost:3000'
   }
 
   const onLogin = (userInfo: User) => {

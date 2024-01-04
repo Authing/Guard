@@ -112,6 +112,7 @@
   "requireError": "要求エラーを満たすことができません",
   "hardwareSupport": "ハードウェアはサポートされていません",
   "verifyCodeTip": "別の画像を表示",
+  "loginWithPasskey": "パスキーを使用してログインする",
   "resetPassword": {
     "pleaseInputPassword": "パスワードを入力してください",
     "checkPasswordDiff": "一貫したパスワードを入力してください",
@@ -127,5 +128,6 @@
     "successTipMsg": "新しいパスワードを使用してログインを続けることができます",
     "successTip": "パスワードのリセットに成功しました",
     "backLogin": "秒ログインページが自動的にジャンプされます"
-  }
+  },
+  "wecomScanLogin":"エンタープライズ WeChat ログイン"
 }

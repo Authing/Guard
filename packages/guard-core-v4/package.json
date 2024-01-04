@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard-core",
-  "version": "4.5.3",
+  "version": "4.5.7",
   "description": "Authing Guard Component for core codes, only be used to internal",
   "types": "dist/typings/src/index.d.ts",
   "files": [
@@ -18,6 +18,7 @@
   "author": "https://github.com/authing",
   "license": "MIT",
   "dependencies": {
+    "@github/webauthn-json": "^2.1.1",
     "authing-js-sdk": "^4.23.49",
     "classnames": "^2.3.1",
     "i18next": "^22.4.11",

@@ -112,6 +112,7 @@
   "requireError": "Unable to satisfy request error",
   "hardwareSupport": "Hardware not supported",
   "verifyCodeTip": "Try another",
+  "loginWithPasskey": "Sign in with Passkey",
   "resetPassword": {
     "pleaseInputPassword": "Please input a password",
     "checkPasswordDiff": "Please enter a consistent password",
@@ -127,5 +128,6 @@
     "successTipMsg": "You can continue to log in with your new password",
     "successTip": "Password reset succeeded",
     "backLogin": "Seconds will automatically jump to the login page"
-  }
+  },
+  "wecomScanLogin":"Enterprise WeChat scan code to log in"
 }

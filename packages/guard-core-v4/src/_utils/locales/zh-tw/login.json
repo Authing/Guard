@@ -112,6 +112,7 @@
   "requireError": "無法滿足要求錯誤",
   "hardwareSupport": "硬件不支持",
   "verifyCodeTip": "看不清？換一張",
+  "loginWithPasskey": "使用 Passkey 登入",
   "resetPassword": {
     "pleaseInputPassword": "請輸入密碼",
     "checkPasswordDiff": "請輸入一致的密碼",
@@ -127,5 +128,6 @@
     "successTipMsg": "你可以使用新密碼繼續登入",
     "successTip": "密碼重置成功",
     "backLogin": "秒後將自動跳轉登入頁"
-  }
+  },
+  "wecomScanLogin":"企業微信掃碼登入"
 }
