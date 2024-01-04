@@ -486,8 +486,11 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         tabs.push(
           <Tabs.TabPane
             key={LoginMethods.PhoneCode}
-            // TODO 需要适配控制台的配置
-            tab={computedTabName(t('common.phoneCodeTab'))}
+            tab={computedTabName(
+              verifyCodeI18n?.tab?.i18n?.[i18n.language] ||
+                verifyCodeI18n?.tab?.default ||
+                t('common.phoneCodeTab')
+            )}
           >
             <LoginWithVerifyCode
               verifyCodeLength={publicConfig?.verifyCodeLength}
@@ -515,7 +518,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         tabs.push(
           <Tabs.TabPane
             key={LoginMethods.EmailCode}
-            // TODO 需要适配控制台的配置
+            // TODO 后续需要单独抽出来
             tab={computedTabName(t('common.emailCodeTab'))}
           >
             <LoginWithVerifyCode
