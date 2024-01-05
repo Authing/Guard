@@ -10,6 +10,7 @@ import {
   mailDesensitization,
   useGuardEvents,
   useGuardHttp,
+  useGuardHttpClient,
   useGuardPublicConfig
 } from '../../_utils'
 import { InputEmailCode } from '../InputEmailCode'
@@ -28,6 +29,7 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
   const events = useGuardEvents()
   const config = useGuardPublicConfig()
   const authClient = useGuardAuthClient()
+  const http = useGuardHttpClient()
 
   const [tenantInfo, setTenantInfo] = useState<any>(null)
   const [currStepKey, setCurrStepKey] = useState<JoinTenantStepEnum>(
@@ -48,8 +50,22 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
           passCode
         }
       )
+      events?.onTenantSelect?.(tenantInfo)
+      if (tenantInfo?.host) {
+        http.setBaseUrl(tenantInfo?.host)
+      } else {
+        http.setBaseUrl(window.location.origin)
+      }
+      if (!tenantInfo?.isUserPool && tenantInfo?.tenantId) {
+        http.setTenantId(tenantInfo?.tenantId)
+      } else {
+        http.setTenantId('') //使用前重置，防止其他环境设置污染，便于状态可控
+      }
+
       if (isFlowEnd) {
-        events?.onLogin?.(data, authClient)
+        setTimeout(() => {
+          events?.onLogin?.(data, authClient)
+        })
       } else {
         onGuardHandling?.()
       }

@@ -6,7 +6,12 @@ import SubmitButton from '../../SubmitButton'
 import { CreateTenantProps } from '../interface'
 import '../styles.less'
 import { TenantBusinessAction, authFlow } from '../businessRequest'
-import { useGuardEvents } from '../../_utils'
+import {
+  useGuardCurrentModule,
+  useGuardEvents,
+  useGuardHttpClient,
+  useGuardPublicConfig
+} from '../../_utils'
 import { useGuardAuthClient } from '../../Guard/authClient'
 
 const { useMemo, useRef } = React
@@ -15,18 +20,49 @@ export const CreateTenantView: React.FC<CreateTenantProps> = ({ onBack }) => {
   const { t } = useTranslation()
   const events = useGuardEvents()
   const authClient = useGuardAuthClient()
+  const http = useGuardHttpClient()
+  const publicConfig = useGuardPublicConfig()
+  const cdnBase = publicConfig?.cdnBase
+  const { moduleName } = useGuardCurrentModule()
 
   const [form] = Form.useForm()
   const submitButtonRef = useRef<any>(null)
 
   const handleCreate = async () => {
     const values = form.getFieldsValue()
-    const { isFlowEnd, data, onGuardHandling } = await authFlow(
+    const { isFlowEnd, data, onGuardHandling, apiCode } = await authFlow(
       TenantBusinessAction.CreateTenant,
-      { ...values }
+      { ...values, logo: `${cdnBase}/tenant-default-logo.svg` }
     )
     if (isFlowEnd) {
-      events?.onLogin?.(data, authClient)
+      setTimeout(() => {
+        events?.onLogin?.(data, authClient)
+      })
+    } else if (apiCode === 1708) {
+      // 需要重新认证
+      const tenantInfo = { ...data }
+      events?.onTenantSelect?.(tenantInfo)
+      if (tenantInfo?.host) {
+        http.setBaseUrl(tenantInfo?.host)
+      } else {
+        http.setBaseUrl(window.location.origin)
+      }
+      if (!tenantInfo?.isUserPool && tenantInfo?.tenantId) {
+        http.setTenantId(tenantInfo?.tenantId)
+      } else {
+        http.setTenantId('') //使用前重置，防止其他环境设置污染，便于状态可控
+      }
+      // 调用加入接口
+      const {
+        isFlowEnd: end,
+        onGuardHandling,
+        data: res
+      } = await http.authFlow(moduleName)
+      if (end) {
+        setTimeout(() => events?.onLogin?.(res, authClient)) // 让选择事件先行，登录成功宏任务异步，方便异步并发
+      } else {
+        onGuardHandling?.()
+      }
     } else {
       onGuardHandling?.()
     }
