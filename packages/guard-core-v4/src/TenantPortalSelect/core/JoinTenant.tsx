@@ -42,17 +42,6 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
 
   const handelJoinTenant = async (tenantInfo: any, passCode?: string) => {
     try {
-      const { isFlowEnd, data, onGuardHandling } = await authFlow(
-        TenantBusinessAction.JoinTenant,
-        {
-          tenantId: tenantInfo.tenantId,
-          email: enterpriseEmail || undefined,
-          passCode
-        }
-      )
-      console.log('tenantInfo: ', tenantInfo)
-
-      events?.onTenantSelect?.(tenantInfo)
       if (tenantInfo?.host) {
         http.setBaseUrl(tenantInfo?.host)
       } else {
@@ -63,6 +52,17 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
       } else {
         http.setTenantId('') //使用前重置，防止其他环境设置污染，便于状态可控
       }
+
+      const { isFlowEnd, data, onGuardHandling } = await authFlow(
+        TenantBusinessAction.JoinTenant,
+        {
+          tenantId: tenantInfo.tenantId,
+          email: enterpriseEmail || undefined,
+          passCode
+        }
+      )
+
+      events?.onTenantSelect?.(tenantInfo)
 
       if (isFlowEnd) {
         setTimeout(() => {
