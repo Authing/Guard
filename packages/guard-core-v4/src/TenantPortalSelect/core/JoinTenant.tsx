@@ -40,16 +40,18 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
   const [sent, setSent] = useState(false)
   const [enterpriseEmail, setEnterpriseEmail] = useState('')
 
-  const handelJoinTenant = async (tenantId: string, passCode?: string) => {
+  const handelJoinTenant = async (tenantInfo: any, passCode?: string) => {
     try {
       const { isFlowEnd, data, onGuardHandling } = await authFlow(
         TenantBusinessAction.JoinTenant,
         {
-          tenantId,
+          tenantId: tenantInfo.tenantId,
           email: enterpriseEmail || undefined,
           passCode
         }
       )
+      console.log('tenantInfo: ', tenantInfo)
+
       events?.onTenantSelect?.(tenantInfo)
       if (tenantInfo?.host) {
         http.setBaseUrl(tenantInfo?.host)
@@ -93,7 +95,7 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
             setCurrStepKey(JoinTenantStepEnum.NoEnterpriseDomain)
           }
         } else {
-          await handelJoinTenant(data.tenantId)
+          await handelJoinTenant(data)
         }
       } else {
         message.error(tips)
@@ -205,7 +207,7 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
                 setSent={setSent}
                 onFinish={() => {
                   handelJoinTenant(
-                    tenantInfo.tenantId,
+                    tenantInfo,
                     form.getFieldValue('emailCode')?.join('')
                   )
                 }}
