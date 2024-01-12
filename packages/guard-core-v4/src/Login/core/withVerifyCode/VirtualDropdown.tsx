@@ -35,9 +35,15 @@ export const VirtualDropdown: React.FC<VirtualDropdownProps> = props => {
           <span>{info.phoneCountryCode}</span>
           <div className="country">
             <Tooltip
-              title={i18n.language === 'zh-CN' ? info.regions : info.regions_en}
+              title={
+                i18n.resolvedLanguage === 'zh-CN'
+                  ? info.regions
+                  : info.regions_en
+              }
             >
-              {i18n.language === 'zh-CN' ? info.regions : info.regions_en}
+              {i18n.resolvedLanguage === 'zh-CN'
+                ? info.regions
+                : info.regions_en}
             </Tooltip>
           </div>
         </div>

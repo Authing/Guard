@@ -89,7 +89,7 @@ export const IdpButton = (props: any) => {
             t('login.socialConnectionMessage', {
               provider:
                 i.displayName ??
-                (i18n.language === 'zh-CN' ? i.name : i.name_en) ??
+                (i18n.resolvedLanguage === 'zh-CN' ? i.name : i.name_en) ??
                 i.provider
             })
           )

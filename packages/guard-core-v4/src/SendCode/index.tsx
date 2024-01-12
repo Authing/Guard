@@ -34,7 +34,7 @@ export const SendCode: React.FC<SendPhoneCodeProps> = ({
     <>
       <Row justify="space-between" align="middle">
         <Col
-          span={/ja/.test(i18n.language) ? 9 : 15}
+          span={/ja/.test(i18n.resolvedLanguage) ? 9 : 15}
           className="g2-send-code-input-col"
         >
           <InputNumber
@@ -50,7 +50,7 @@ export const SendCode: React.FC<SendPhoneCodeProps> = ({
             maxLength={maxLength}
           />
         </Col>
-        <Col offset={1} span={/ja/.test(i18n.language) ? 14 : 8}>
+        <Col offset={1} span={/ja/.test(i18n.resolvedLanguage) ? 14 : 8}>
           <SendCodeBtn
             beforeSend={beforeSend}
             sendDesc={t('common.sendVerifyCode') as string}
