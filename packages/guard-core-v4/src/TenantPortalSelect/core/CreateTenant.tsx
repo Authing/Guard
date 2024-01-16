@@ -46,8 +46,6 @@ export const CreateTenantView: React.FC<CreateTenantProps> = ({ onBack }) => {
       events?.onTenantSelect?.(tenantInfo)
       if (tenantInfo?.host && appId !== publicConfig.defaultAppId) {
         http.setBaseUrl(tenantInfo?.host)
-      } else {
-        http.setBaseUrl(window.location.origin)
       }
       if (!tenantInfo?.isUserPool && tenantInfo?.tenantId) {
         http.setTenantId(tenantInfo?.tenantId)

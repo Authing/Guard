@@ -46,8 +46,6 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
     try {
       if (tenantInfo?.host && appId !== config.defaultAppId) {
         http.setBaseUrl(tenantInfo?.host)
-      } else {
-        http.setBaseUrl(window.location.origin)
       }
       if (!tenantInfo?.isUserPool && tenantInfo?.tenantId) {
         http.setTenantId(tenantInfo?.tenantId)

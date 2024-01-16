@@ -5,10 +5,12 @@ import omit from 'lodash/omit'
 import { React } from 'shim-react'
 
 import {
+  useGuardAppId,
   useGuardCurrentModule,
   useGuardEvents,
   useGuardHttpClient,
-  useGuardInitData
+  useGuardInitData,
+  useGuardPublicConfig
 } from '../_utils/context'
 
 import { useGuardAuthClient } from '../Guard/authClient'
@@ -44,6 +46,9 @@ export const GuardTenantPortalSelectView = () => {
   const events = useGuardEvents()
   const authClient = useGuardAuthClient()
   const http = useGuardHttpClient()
+  const publicConfig = useGuardPublicConfig()
+  const appId = useGuardAppId()
+
   const [active, setActive] = useState<TenantView>('default')
 
   useGuardView()
@@ -57,10 +62,8 @@ export const GuardTenantPortalSelectView = () => {
         'title'
       ]) as TenantPortalSelectType
       events?.onTenantSelect?.(metaData)
-      if (item?.host) {
+      if (item?.host && appId !== publicConfig.defaultAppId) {
         http.setBaseUrl(item?.host)
-      } else {
-        http.setBaseUrl(window.location.origin)
       }
       if (!item?.isUserPool && item?.tenantId) {
         http.setTenantId(item?.tenantId)
