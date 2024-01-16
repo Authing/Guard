@@ -411,4 +411,6 @@ export interface ApplicationConfig {
   enableVerifyDomainInJoinTenant: boolean
 
   passkeyEnabled: boolean
+
+  defaultAppId: string // 默认应用
 }

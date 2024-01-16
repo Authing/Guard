@@ -8,6 +8,7 @@ import { JoinTenantStepEnum, JoinTenantProps } from '../interface'
 import {
   getGuardHttp,
   mailDesensitization,
+  useGuardAppId,
   useGuardEvents,
   useGuardHttp,
   useGuardHttpClient,
@@ -30,6 +31,7 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
   const config = useGuardPublicConfig()
   const authClient = useGuardAuthClient()
   const http = useGuardHttpClient()
+  const appId = useGuardAppId()
 
   const [tenantInfo, setTenantInfo] = useState<any>(null)
   const [currStepKey, setCurrStepKey] = useState<JoinTenantStepEnum>(
@@ -42,7 +44,7 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
 
   const handelJoinTenant = async (tenantInfo: any, passCode?: string) => {
     try {
-      if (tenantInfo?.host) {
+      if (tenantInfo?.host && appId !== config.defaultAppId) {
         http.setBaseUrl(tenantInfo?.host)
       } else {
         http.setBaseUrl(window.location.origin)

@@ -7,6 +7,7 @@ import { CreateTenantProps } from '../interface'
 import '../styles.less'
 import { TenantBusinessAction, authFlow } from '../businessRequest'
 import {
+  useGuardAppId,
   useGuardCurrentModule,
   useGuardEvents,
   useGuardHttpClient,
@@ -24,6 +25,7 @@ export const CreateTenantView: React.FC<CreateTenantProps> = ({ onBack }) => {
   const publicConfig = useGuardPublicConfig()
   const cdnBase = publicConfig?.cdnBase
   const { moduleName } = useGuardCurrentModule()
+  const appId = useGuardAppId()
 
   const [form] = Form.useForm()
   const submitButtonRef = useRef<any>(null)
@@ -42,7 +44,7 @@ export const CreateTenantView: React.FC<CreateTenantProps> = ({ onBack }) => {
       // 需要重新认证
       const tenantInfo = { ...data }
       events?.onTenantSelect?.(tenantInfo)
-      if (tenantInfo?.host) {
+      if (tenantInfo?.host && appId !== publicConfig.defaultAppId) {
         http.setBaseUrl(tenantInfo?.host)
       } else {
         http.setBaseUrl(window.location.origin)
