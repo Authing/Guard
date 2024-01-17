@@ -45,8 +45,6 @@ export const GuardTenantPortalSelectView = () => {
   const events = useGuardEvents()
   const authClient = useGuardAuthClient()
   const http = useGuardHttpClient()
-  const publicConfig = useGuardPublicConfig()
-  const appId = useGuardAppId()
 
   const [active, setActive] = useState<TenantView>('default')
 
@@ -61,7 +59,7 @@ export const GuardTenantPortalSelectView = () => {
         'title'
       ]) as TenantPortalSelectType
       events?.onTenantSelect?.(metaData)
-      if (item?.host && appId !== publicConfig.defaultAppId) {
+      if (item?.host) {
         http.setBaseUrl(item?.host)
       }
       if (!item?.isUserPool && item?.tenantId) {

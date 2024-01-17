@@ -6,11 +6,8 @@ import { IconFont } from '../../IconFont'
 import SubmitButton from '../../SubmitButton'
 import { JoinTenantStepEnum, JoinTenantProps } from '../interface'
 import {
-  getGuardHttp,
   mailDesensitization,
-  useGuardAppId,
   useGuardEvents,
-  useGuardHttp,
   useGuardHttpClient,
   useGuardPublicConfig
 } from '../../_utils'
@@ -31,7 +28,6 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
   const config = useGuardPublicConfig()
   const authClient = useGuardAuthClient()
   const http = useGuardHttpClient()
-  const appId = useGuardAppId()
 
   const [tenantInfo, setTenantInfo] = useState<any>(null)
   const [currStepKey, setCurrStepKey] = useState<JoinTenantStepEnum>(
@@ -44,7 +40,7 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
 
   const handelJoinTenant = async (tenantInfo: any, passCode?: string) => {
     try {
-      if (tenantInfo?.host && appId !== config.defaultAppId) {
+      if (tenantInfo?.host) {
         http.setBaseUrl(tenantInfo?.host)
       }
       if (!tenantInfo?.isUserPool && tenantInfo?.tenantId) {
