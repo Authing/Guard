@@ -6,6 +6,7 @@ import * as facePlugin from 'face-api.js'
 
 const App = () => {
   const appId = '658e7ba8596b462d99912872'
+
   // const deviceId = '6486be0f60e50cb92678a468' //如要使用必须使用开启元数据对的 用户池 测试
 
   const config: Partial<GuardLocalConfig> = {
