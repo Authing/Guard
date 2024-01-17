@@ -158,7 +158,7 @@ export const GuardEventsCamelToKebabMapping = {
   onLangChange: 'lang-change',
   onBeforeChangeModule: 'before-change-module',
   onAfterChangeModule: 'after-change-module',
-  onTenantSelect:"tenant-select"
+  onTenantSelect: 'tenant-select'
 } as const
 
 export interface GuardEventsKebabToCamelType {
@@ -205,5 +205,5 @@ export interface GuardEventsKebabToCamelType {
   // 切换模块前
   'before-change-module': GuardEvents['onBeforeChangeModule']
   'after-change-module': GuardEvents['onAfterChangeModule']
-  'tenant-select':GuardEvents['onTenantSelect']
+  'tenant-select': GuardEvents['onTenantSelect']
 }
