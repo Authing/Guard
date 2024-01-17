@@ -44,6 +44,8 @@ export interface TenantButtonProps {
   className?: string
   onClick?: () => void
   style?: React.CSSProperties
+  icon: string
+  text: string
 }
 
 export interface BackProps {

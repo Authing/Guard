@@ -31,8 +31,7 @@ import {
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
 import { JoinTenantView } from './core/JoinTenant'
 import { useTranslation } from 'react-i18next'
-import { JoinButton } from './JoinButton'
-import { CreateButton } from './CreateButton'
+import { ActionButton } from './JoinButton'
 import { CreateTenantView } from './core/CreateTenant'
 import { Tag } from 'shim-antd'
 
@@ -129,7 +128,7 @@ export const GuardTenantPortalSelectView = () => {
                 gap={8}
               />
               <div className="g2-view-container-tenant">
-                <JoinButton
+                <ActionButton
                   style={{
                     padding: '8px 16px ',
                     marginTop: 8
@@ -137,6 +136,19 @@ export const GuardTenantPortalSelectView = () => {
                   onClick={() => {
                     setActive('join')
                   }}
+                  icon="authing-add-line"
+                  text={t('common.joinTenant')}
+                />
+                <ActionButton
+                  style={{
+                    padding: '8px 16px ',
+                    marginTop: 8
+                  }}
+                  onClick={() => {
+                    setActive('create')
+                  }}
+                  icon="authing-sticky-note-add-line"
+                  text={t('common.createTenant')}
                 />
               </div>
             </>
@@ -157,16 +169,18 @@ export const GuardTenantPortalSelectView = () => {
                 className="g2-error-message-text"
                 dangerouslySetInnerHTML={{ __html: t('common.noTenant') }}
               />
-              <JoinButton
+              <ActionButton
                 className="authing-tenant-join"
                 onClick={() => {
                   setActive('join')
                 }}
+                icon="authing-add-line"
+                text={t('common.joinTenant')}
               />
             </div>
           )}
         </div>
-        <CreateButton onClick={() => setActive('create')} />
+        {/* <CreateButton onClick={() => setActive('create')} /> */}
         {/* <VisitorButton
           onClick={() => {
             handleSelect(list[0])

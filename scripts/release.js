@@ -28,7 +28,6 @@ function callShell(args) {
 
   shelljs.exec(
     `
-    npm config set registry https://registry.npmjs.org
     cd packages/guard-shim-react && ${releaseType}
     cd ../../
     cd packages/guard-shim-react18 && ${releaseType}

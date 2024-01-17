@@ -5,10 +5,12 @@ import classNames from 'classnames'
 import { useTranslation } from 'react-i18next'
 import '../styles.less'
 
-export const JoinButton: React.FC<TenantButtonProps> = ({
+export const ActionButton: React.FC<TenantButtonProps> = ({
   className,
   onClick,
-  style
+  style,
+  icon,
+  text
 }) => {
   const { t } = useTranslation()
   return (
@@ -18,9 +20,9 @@ export const JoinButton: React.FC<TenantButtonProps> = ({
       style={style}
     >
       <span className="authing-add-button-icon">
-        <IconFont type="authing-add-line" />
+        <IconFont type={icon} />
       </span>
-      {t('common.joinTenant')}
+      {text}
     </div>
   )
 }
