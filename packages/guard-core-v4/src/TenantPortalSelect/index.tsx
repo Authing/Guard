@@ -45,6 +45,7 @@ export const GuardTenantPortalSelectView = () => {
   const events = useGuardEvents()
   const authClient = useGuardAuthClient()
   const http = useGuardHttpClient()
+  const publicConfig = useGuardPublicConfig()
 
   const [active, setActive] = useState<TenantView>('default')
 
@@ -126,28 +127,24 @@ export const GuardTenantPortalSelectView = () => {
                 gap={8}
               />
               <div className="g2-view-container-tenant">
-                <ActionButton
-                  style={{
-                    padding: '8px 16px ',
-                    marginTop: 8
-                  }}
-                  onClick={() => {
-                    setActive('join')
-                  }}
-                  icon="authing-add-line"
-                  text={t('common.joinTenant')}
-                />
-                <ActionButton
-                  style={{
-                    padding: '8px 16px ',
-                    marginTop: 8
-                  }}
-                  onClick={() => {
-                    setActive('create')
-                  }}
-                  icon="authing-sticky-note-add-line"
-                  text={t('common.createTenant')}
-                />
+                {publicConfig.enableJoinTenant && (
+                  <ActionButton
+                    onClick={() => {
+                      setActive('join')
+                    }}
+                    icon="authing-add-line"
+                    text={t('common.joinTenant')}
+                  />
+                )}
+                {publicConfig.enableCreateTenant && (
+                  <ActionButton
+                    onClick={() => {
+                      setActive('create')
+                    }}
+                    icon="authing-user-received-2-line"
+                    text={t('common.createTenant')}
+                  />
+                )}
               </div>
             </>
           ) : (

@@ -413,4 +413,8 @@ export interface ApplicationConfig {
   passkeyEnabled: boolean
 
   defaultAppId: string // 默认应用
+
+  enableCreateTenant: boolean // 是否允许创建租户
+
+  enableJoinTenant: boolean // 是否允许加入租户
 }
