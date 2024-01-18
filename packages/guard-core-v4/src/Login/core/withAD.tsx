@@ -166,7 +166,7 @@ export const LoginWithAD = (props: LoginWithADProps) => {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          [requestClient.langHeader]: i18n.language,
+          [requestClient.langHeader]: i18n.resolvedLanguage,
           'x-authing-userpool-id': publicConfig.userPoolId,
           'x-authing-app-id': appId,
           'x-authing-sdk-version': version,

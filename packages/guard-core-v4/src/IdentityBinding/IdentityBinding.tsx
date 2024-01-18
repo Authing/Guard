@@ -163,12 +163,12 @@ export const GuardIdentityBindingView: React.FC<{
       agreementEnabled
         ? config?.agreements?.filter(
             agree =>
-              fallbackLng(i18n.language).find(lng =>
+              fallbackLng(i18n.resolvedLanguage).find(lng =>
                 lng.includes(agree.lang)
               ) && !!agree?.availableAt
           ) ?? []
         : [],
-    [agreementEnabled, config?.agreements, i18n.language]
+    [agreementEnabled, config?.agreements, i18n.resolvedLanguage]
   )
 
   const passwordLoginMethods = useMemo<PasswordLoginMethods[]>(() => {

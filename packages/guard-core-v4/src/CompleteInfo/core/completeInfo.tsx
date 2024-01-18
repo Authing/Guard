@@ -92,7 +92,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
   const loadInitCountryList = useCallback(async () => {
     const { data } = await get('/api/v2/country-list')
 
-    const countryMap = i18n.language === 'zh-CN' ? data?.zh : data?.en
+    const countryMap = i18n.resolvedLanguage === 'zh-CN' ? data?.zh : data?.en
 
     const countryList: { label: string; value: string }[] = []
 
@@ -456,7 +456,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
   const inputElement = useCallback(
     (metaData: CompleteInfoMetaData) => {
       // const label =
-      //   i18n.language === 'zh-CN'
+      //   i18n.resolvedLanguage === 'zh-CN'
       //     ? metaData.label || metaData.name
       //     : metaData.name
       const label = getMetaDateLabel(metaData)

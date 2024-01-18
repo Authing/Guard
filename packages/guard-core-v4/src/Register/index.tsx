@@ -114,7 +114,7 @@ export const GuardRegisterView: React.FC = () => {
       agreements: agreementEnabled
         ? config?.agreements?.filter(
             agree =>
-              fallbackLng(i18n.language).find(lng =>
+              fallbackLng(i18n.resolvedLanguage).find(lng =>
                 lng.includes(agree.lang)
               ) && agree?.availableAt !== 1
           ) ?? []
@@ -126,7 +126,7 @@ export const GuardRegisterView: React.FC = () => {
       agreementEnabled,
       config?.agreements,
       events?.onBeforeRegister,
-      i18n.language,
+      i18n.resolvedLanguage,
       verifyRegisterMethods
     ]
   )
@@ -224,7 +224,7 @@ export const GuardRegisterView: React.FC = () => {
     publicConfig,
     defaultMethod,
     i18nFields,
-    i18n.language,
+    i18n.resolvedLanguage,
     registerContextProps,
     defaultLanguageConfig,
     t

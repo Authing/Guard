@@ -276,7 +276,7 @@ export const RenderContext: React.FC<{
         setI18nInit
       )
 
-      setDefaultLanguageConfig(i18n.language as Lang)
+      setDefaultLanguageConfig(i18n.resolvedLanguage as Lang)
     }
   }, [defaultMergedConfig, guardPageConfig, publicConfig, setI18nInit])
 

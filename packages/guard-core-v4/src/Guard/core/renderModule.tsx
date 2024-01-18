@@ -304,7 +304,7 @@ export const RenderModule: React.FC<{
   return (
     <ConfigProvider
       prefixCls={PREFIX_CLS}
-      locale={langMap[i18n.language as LangMAP]}
+      locale={langMap[i18n.resolvedLanguage as LangMAP]}
     >
       {defaultMergedConfig.mode === GuardMode.Modal ? (
         <Modal

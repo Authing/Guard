@@ -119,7 +119,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
           t('login.socialConnectionMessage', {
             provider:
               item.displayName ??
-              (i18n.language === 'zh-CN' ? item.name : item.name_en) ??
+              (i18n.resolvedLanguage === 'zh-CN' ? item.name : item.name_en) ??
               item.provider
           })
         )
@@ -156,7 +156,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
           }}
         >
           {item.displayName ??
-            (i18n.language === 'zh-CN' ? item.name : item.name_en) ??
+            (i18n.resolvedLanguage === 'zh-CN' ? item.name : item.name_en) ??
             item.provider}
         </GuardButton>
       )
@@ -170,7 +170,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
       ) : (
         <Tooltip
           key={item.id}
-          title={item.tooltip?.[i18n.language as Lang] || item.name}
+          title={item.tooltip?.[i18n.resolvedLanguage as Lang] || item.name}
           trigger={['hover', 'click', 'contextMenu']}
         >
           <GuardButton
@@ -196,7 +196,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
           onClick={onLogin}
         >
           {item.displayName ??
-            (i18n.language === 'zh-CN' ? item.name : item.name_en) ??
+            (i18n.resolvedLanguage === 'zh-CN' ? item.name : item.name_en) ??
             item.provider}
         </GuardButton>
       ) : isPhoneMedia ? (
@@ -212,7 +212,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
           key={item.id}
           title={
             item.displayName ||
-            item.tooltip?.[i18n.language as Lang] ||
+            item.tooltip?.[i18n.resolvedLanguage as Lang] ||
             item.name
           }
           trigger={['hover', 'click', 'contextMenu']}

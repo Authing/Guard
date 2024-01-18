@@ -300,19 +300,34 @@ export const getPasswordValidate = (
     // },
   ]
   const getCustomPassword = () => {
-    if (i18n.language === 'zh-CN' && customPasswordStrength?.zhMessageOpen) {
+    if (
+      i18n.resolvedLanguage === 'zh-CN' &&
+      customPasswordStrength?.zhMessageOpen
+    ) {
       return customPasswordStrength?.zhMessage
     }
-    if (i18n.language === 'en-US' && customPasswordStrength?.enMessageOpen) {
+    if (
+      i18n.resolvedLanguage === 'en-US' &&
+      customPasswordStrength?.enMessageOpen
+    ) {
       return customPasswordStrength?.enMessage
     }
-    if (i18n.language === 'ja-JP' && customPasswordStrength?.jaMessageOpen) {
+    if (
+      i18n.resolvedLanguage === 'ja-JP' &&
+      customPasswordStrength?.jaMessageOpen
+    ) {
       return customPasswordStrength?.jaMessage
     }
-    if (i18n.language === 'ja-JP' && customPasswordStrength?.jpMessageOpen) {
+    if (
+      i18n.resolvedLanguage === 'ja-JP' &&
+      customPasswordStrength?.jpMessageOpen
+    ) {
       return customPasswordStrength?.jpMessage
     }
-    if (i18n.language === 'zh-TW' && customPasswordStrength?.twMessageOpen) {
+    if (
+      i18n.resolvedLanguage === 'zh-TW' &&
+      customPasswordStrength?.twMessageOpen
+    ) {
       return customPasswordStrength?.twMessage
     }
     return customPasswordStrength?.message
@@ -416,19 +431,34 @@ export const getPasswordValidateRules = (
     ...fieldRequiredRule(i18n.t('common.password'), fieldRequiredRuleMessage)
   ]
   const getCustomPassword = () => {
-    if (i18n.language === 'zh-CN' && customPasswordStrength?.zhMessageOpen) {
+    if (
+      i18n.resolvedLanguage === 'zh-CN' &&
+      customPasswordStrength?.zhMessageOpen
+    ) {
       return customPasswordStrength?.zhMessage
     }
-    if (i18n.language === 'en-US' && customPasswordStrength?.enMessageOpen) {
+    if (
+      i18n.resolvedLanguage === 'en-US' &&
+      customPasswordStrength?.enMessageOpen
+    ) {
       return customPasswordStrength?.enMessage
     }
-    if (i18n.language === 'ja-JP' && customPasswordStrength?.jaMessageOpen) {
+    if (
+      i18n.resolvedLanguage === 'ja-JP' &&
+      customPasswordStrength?.jaMessageOpen
+    ) {
       return customPasswordStrength?.jaMessage
     }
-    if (i18n.language === 'ja-JP' && customPasswordStrength?.jpMessageOpen) {
+    if (
+      i18n.resolvedLanguage === 'ja-JP' &&
+      customPasswordStrength?.jpMessageOpen
+    ) {
       return customPasswordStrength?.jpMessage
     }
-    if (i18n.language === 'zh-TW' && customPasswordStrength?.twMessageOpen) {
+    if (
+      i18n.resolvedLanguage === 'zh-TW' &&
+      customPasswordStrength?.twMessageOpen
+    ) {
       return customPasswordStrength?.twMessage
     }
     return customPasswordStrength?.message
@@ -771,8 +801,8 @@ export const getPasswordIdentify = (identity: string): string => {
 }
 
 export const getCurrentLng = () => {
-  if (Object.keys(LngTextMapping).includes(i18n.language)) {
-    return i18n.language as Lang
+  if (Object.keys(LngTextMapping).includes(i18n.resolvedLanguage)) {
+    return i18n.resolvedLanguage as Lang
   } else {
     return i18n?.languages?.[i18n?.languages?.length - 1] as Lang
   }
