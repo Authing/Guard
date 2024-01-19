@@ -115,7 +115,7 @@ export const GuardTenantPortalSelectView = () => {
   )
   const TenantViewMap: { [key in TenantView]: React.ReactNode } = {
     default: (
-      <div className="g2-view-container">
+      <div className="g2-view-container g2-view-tenant">
         <div className="g2-view-container-inner">
           <GuardFace title={title} description={description} avatar={logo} />
           {!!dataSource?.length ? (
@@ -126,13 +126,13 @@ export const GuardTenantPortalSelectView = () => {
                 className="g2-view-container-tenant"
                 gap={8}
               />
-              <div className="g2-view-container-tenant">
+              <div className="g2-view-container-tenant g2-view-container-tenant-footer">
                 {publicConfig.enableJoinTenant && (
                   <ActionButton
                     onClick={() => {
                       setActive('join')
                     }}
-                    icon="authing-add-line"
+                    icon="authing-user-received-2-line"
                     text={t('common.joinTenant')}
                   />
                 )}
@@ -141,7 +141,7 @@ export const GuardTenantPortalSelectView = () => {
                     onClick={() => {
                       setActive('create')
                     }}
-                    icon="authing-user-received-2-line"
+                    icon="authing-add-line"
                     text={t('common.createTenant')}
                   />
                 )}
