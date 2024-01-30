@@ -213,7 +213,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
         message.error(errorMessage)
       }
     },
-    [form, acceptedAgreements],
+    [form, acceptedAgreements, areaCode],
     { loading: false }
   )
 
