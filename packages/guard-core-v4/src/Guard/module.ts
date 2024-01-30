@@ -26,7 +26,6 @@ export enum GuardModuleType {
   New_SUBMIT_SUCCESS = 'newSubmitSuccess', // 提交成功展示页
   SELECT_ACCOUNT_2_LOGIN = 'selectAccout2Login', // 选择登录身份
   RESET_ACCOUNT_NAME = 'resetAccountName'
-  // JOIN_TENANT = 'joinTenant' // 加入租户
 }
 export interface GuardModuleAction {
   action: string

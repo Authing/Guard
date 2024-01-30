@@ -9,7 +9,6 @@ import './style.less'
 import { ButtonProps } from 'shim-antd'
 
 import { i18n } from '../_utils/locales'
-import classNames from 'classnames'
 
 const { useState, useRef, useEffect, useMemo } = React
 

@@ -76,8 +76,6 @@ import { GuardTenantPortalSelectView } from '../../TenantPortalSelect'
 
 import { GuardNewSubmitSuccessView } from '../../NewSubmitSuccess'
 
-import { JoinTenantView } from '../../TenantPortalSelect/core/JoinTenant'
-
 import { i18n } from '../../_utils/locales'
 
 const { useEffect, useMemo } = React
@@ -216,7 +214,6 @@ export const RenderModule: React.FC<{
     [GuardModuleType.New_SUBMIT_SUCCESS]: key => (
       <GuardNewSubmitSuccessView key={key} />
     )
-    // [GuardModuleType.JOIN_TENANT]: key => <JoinTenantView />
   }
 
   // 初始化 请求拦截器 （Error Code）
