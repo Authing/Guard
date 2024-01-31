@@ -24,6 +24,8 @@ export enum ApiCode {
 
   COMPLETE_INFO = 1642,
 
+  TENANT_COMPLETE_INFO = 1645,
+
   UNLOCK = 1643,
 
   FLOW_END = 1600,
@@ -52,6 +54,7 @@ export const ChangeModuleApiCodeMapping: Record<string, GuardModuleType> = {
   [ApiCode.MFA]: GuardModuleType.MFA,
   [ApiCode.ABORT_FLOW]: GuardModuleType.LOGIN,
   [ApiCode.COMPLETE_INFO]: GuardModuleType.LOGIN_COMPLETE_INFO,
+  [ApiCode.TENANT_COMPLETE_INFO]: GuardModuleType.LOGIN_COMPLETE_INFO,
   [ApiCode.FIRST_LOGIN_PASSWORD]: GuardModuleType.FIRST_LOGIN_PASSWORD,
   [ApiCode.FORCED_PASSWORD_RESET]: GuardModuleType.FORCED_PASSWORD_RESET,
   [ApiCode.UNLOCK]: GuardModuleType.SELF_UNLOCK,

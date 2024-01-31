@@ -6,12 +6,12 @@ const RELEASE_OFFICIAL = 'npm run release:official'
 
 readyGo()
 
-function readyGo () {
+function readyGo() {
   const args = parseArgs()
   callShell(args)
 }
 
-function parseArgs () {
+function parseArgs() {
   const args = process.argv.slice(2)
   const parsedArgs = minimist(args)
 
@@ -22,11 +22,12 @@ function parseArgs () {
   }, {})
 }
 
-function callShell (args) {
+function callShell(args) {
   const { type, version } = args
   const releaseType = type === 'alpha' ? RELEASE_ALPHA : RELEASE_OFFICIAL
 
-  shelljs.exec(`
+  shelljs.exec(
+    `
     cd packages/guard-shim-react && ${releaseType}
     cd ../../
     cd packages/guard-shim-react18 && ${releaseType}
@@ -42,9 +43,11 @@ function callShell (args) {
     cd packages/vue-ui-components && npm ci && npm install --save @authing/native-js-ui-components@${version} && npm run build:lib && ${releaseType}
     cd ../../
     git commit -a -m "release: ${version} :rocket:"
-  `, error => {
-    if (error) {
-      console.error('release:alpha error: ', error)
+  `,
+    error => {
+      if (error) {
+        console.error('release:alpha error: ', error)
+      }
     }
-  })
+  )
 }

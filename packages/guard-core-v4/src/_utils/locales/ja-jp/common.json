@@ -186,5 +186,22 @@
   "resetAccount": {
     "title": "ユーザー名の設定",
     "message": "現在のユーザー名は一つではありません。ユーザー名を再設定してからログインできます。"
-  }
+  },
+  "noTenant": "未加入のテナントは現在存在しません",
+  "joinTenant": "テナントへの参加",
+  "tenantExample": "テナント識別コードを入力してください（例：Ljrs18wa）",
+  "enter": "に入る",
+  "createTenant": "テナントの作成",
+  "pleaseInput": "入力してください",
+  "tenantName": "租户テナント名名称",
+  "tenantEmail": "テナント企業メールアドレスドメイン",
+  "tenantDesc": "テナントの説明",
+  "visitor": "ゲストモード",
+  "createTenantDesc": "新規テナントを作成するには、こちらをクリックしてください",
+  "codeError": "識別コードエラー、再入力してください",
+  "emailVerify": "エンタープライズメールボックスの検証",
+  "verify": "検証",
+  "inputBusinessEmail": "エンタープライズメールアドレスを入力してください",
+  "inputCode": "認証コードを入力してください",
+  "domainNotFound": "現在の組織管理者はエンタープライズメールアドレスのドメイン名を設定していません。管理者に連絡して設定してから組織に参加してください。"
 }

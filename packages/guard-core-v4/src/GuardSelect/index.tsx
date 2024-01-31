@@ -34,13 +34,15 @@ export interface GuardSelectProps<T = any> extends ListProps<any> {
   dataSource: T[]
 
   onSelect?: (item?: T, index?: number) => void
+
+  isNewStyle?: boolean
 }
 
 /** 选择列表组件 兼容绝大多数选择场景 */
 export const GuardSelect = <D extends GuardSelectItem = any>(
   props: GuardSelectProps<D>
 ) => {
-  const { dataSource, onSelect, gap = 20, ...listProps } = props
+  const { dataSource, onSelect, gap = 20, isNewStyle, ...listProps } = props
 
   return (
     // @ts-ignore

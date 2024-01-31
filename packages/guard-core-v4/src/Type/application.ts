@@ -407,5 +407,14 @@ export interface ApplicationConfig {
   appRobotVerify: 'always_enable' | 'disable' | 'condition_set'
   /** 用户池的人机验证策略，始终开启、不开启、设置条件触发 */
   userpoolRobotVerify: 'always_enable' | 'disable' | 'condition_set'
+  /** 加入租户校验企业邮箱 */
+  enableVerifyDomainInJoinTenant: boolean
+
   passkeyEnabled: boolean
+
+  defaultAppId: string // 默认应用
+
+  enableCreateTenant: boolean // 是否允许创建租户
+
+  enableJoinTenant: boolean // 是否允许加入租户
 }

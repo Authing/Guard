@@ -93,6 +93,10 @@ export const codeMap: Record<number, GuardModuleAction> = {
     action: 'changeModule',
     module: GuardModuleType.LOGIN_COMPLETE_INFO
   },
+  1645: {
+    action: 'changeModule',
+    module: GuardModuleType.LOGIN_COMPLETE_INFO
+  },
   1666: {
     action: 'changeModule',
     module: GuardModuleType.IDENTITY_BINDING_NO_ASK

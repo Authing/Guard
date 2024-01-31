@@ -1,6 +1,6 @@
 {
   "name": "@authing/ng-ui-components",
-  "version": "4.5.10",
+  "version": "4.5.11-alpha.2",
   "files": [
     "dist"
   ],
@@ -29,7 +29,7 @@
     "@angular/platform-browser": "^14.2.0",
     "@angular/platform-browser-dynamic": "^14.2.0",
     "@angular/router": "^14.2.0",
-    "@authing/native-js-ui-components": "^4.5.10",
+    "@authing/native-js-ui-components": "^4.5.11-alpha.2",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

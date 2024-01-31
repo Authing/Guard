@@ -5,10 +5,12 @@ import omit from 'lodash/omit'
 import { React } from 'shim-react'
 
 import {
+  useGuardAppId,
   useGuardCurrentModule,
   useGuardEvents,
   useGuardHttpClient,
-  useGuardInitData
+  useGuardInitData,
+  useGuardPublicConfig
 } from '../_utils/context'
 
 import { useGuardAuthClient } from '../Guard/authClient'
@@ -22,20 +24,30 @@ import { IconFont } from '../IconFont'
 import {
   TenantPortalDataItem,
   TenantPortalDataType,
-  TenantPortalSelectType
+  TenantPortalSelectType,
+  TenantView
 } from './interface'
 
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
+import { JoinTenantView } from './core/JoinTenant'
+import { useTranslation } from 'react-i18next'
+import { ActionButton } from './JoinButton'
+import { CreateTenantView } from './core/CreateTenant'
+import { Tag } from 'shim-antd'
 
-const { useCallback, useMemo } = React
+const { useCallback, useMemo, useState } = React
 
 export const GuardTenantPortalSelectView = () => {
+  const { t } = useTranslation()
   const { moduleName } = useGuardCurrentModule()
   const { list, title, description, logo } =
     useGuardInitData<TenantPortalDataType>()
   const events = useGuardEvents()
   const authClient = useGuardAuthClient()
   const http = useGuardHttpClient()
+  const publicConfig = useGuardPublicConfig()
+
+  const [active, setActive] = useState<TenantView>('default')
 
   useGuardView()
 
@@ -50,8 +62,6 @@ export const GuardTenantPortalSelectView = () => {
       events?.onTenantSelect?.(metaData)
       if (item?.host) {
         http.setBaseUrl(item?.host)
-      } else {
-        http.setBaseUrl(window.location.origin)
       }
       if (!item?.isUserPool && item?.tenantId) {
         http.setTenantId(item?.tenantId)
@@ -75,26 +85,118 @@ export const GuardTenantPortalSelectView = () => {
     () =>
       list?.map?.(it => ({
         ...it,
-        title: it.tenantName!,
-        description: it.userName!,
-        avatar: { size: 40, src: it.tenantLogo! },
+        title: it.isUserPool ? (
+          <>
+            {it.tenantName!}
+            <Tag className="authing-tag blue">{t('common.visitor')}</Tag>
+          </>
+        ) : (
+          it.tenantName!
+        ),
+        // description: it.userName!,
+        avatar: {
+          size: 40,
+          src: it.tenantLogo!,
+          style: {
+            borderRadius: 4
+          }
+        },
         extra: (
-          <IconFont
-            type="authing-arrow-left-s-line" // 没有右箭头，使用左箭头旋转
-            className="authing-gaurd-select-extra-icon"
-          />
+          <div className="authing-gaurd-select-extra">
+            <span>{t('common.enter')}</span>
+            <IconFont
+              type="authing-arrow-left-s-line" // 没有右箭头，使用左箭头旋转
+              className="authing-gaurd-select-extra-icon"
+            />
+          </div>
         )
       })) as TenantPortalDataItem[],
     [list]
   )
-  return (
-    <div className="g2-view-container">
-      <div className="g2-view-container-inner">
-        <GuardFace title={title} description={description} avatar={logo} />
-        {!!dataSource?.length && (
-          <GuardSelect dataSource={dataSource} onSelect={handleSelect} />
-        )}
+  const TenantViewMap: { [key in TenantView]: React.ReactNode } = {
+    default: (
+      <div className="g2-view-container g2-view-tenant">
+        <div className="g2-view-container-inner">
+          <GuardFace title={title} description={description} avatar={logo} />
+          {!!dataSource?.length ? (
+            <>
+              <GuardSelect
+                dataSource={dataSource}
+                onSelect={handleSelect}
+                className="g2-view-container-tenant"
+                gap={8}
+              />
+              <div className="g2-view-container-tenant g2-view-container-tenant-footer">
+                {publicConfig.enableJoinTenant && (
+                  <ActionButton
+                    onClick={() => {
+                      setActive('join')
+                    }}
+                    icon="authing-user-received-2-line"
+                    text={t('common.joinTenant')}
+                  />
+                )}
+                {publicConfig.enableCreateTenant && (
+                  <ActionButton
+                    onClick={() => {
+                      setActive('create')
+                    }}
+                    icon="authing-add-line"
+                    text={t('common.createTenant')}
+                  />
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="g2-error-content g2-error-content-tenant">
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div
+                  style={{
+                    width: 240,
+                    height: 160,
+                    backgroundImage:
+                      'url(https://authing-files.oss-cn-zhangjiakou.aliyuncs.com/authing-guard/authing_error.svg)',
+                    backgroundSize: 'contain'
+                  }}
+                />
+              </div>
+              <span
+                className="g2-error-message-text"
+                dangerouslySetInnerHTML={{ __html: t('common.noTenant') }}
+              />
+              <ActionButton
+                className="authing-tenant-join"
+                onClick={() => {
+                  setActive('join')
+                }}
+                icon="authing-add-line"
+                text={t('common.joinTenant')}
+              />
+            </div>
+          )}
+        </div>
+        {/* <CreateButton onClick={() => setActive('create')} /> */}
+        {/* <VisitorButton
+          onClick={() => {
+            handleSelect(list[0])
+          }}
+        /> */}
       </div>
-    </div>
-  )
+    ),
+    join: (
+      <JoinTenantView
+        onBack={() => {
+          setActive('default')
+        }}
+      />
+    ),
+    create: (
+      <CreateTenantView
+        onBack={() => {
+          setActive('default')
+        }}
+      />
+    )
+  }
+  return <>{TenantViewMap[active]}</>
 }

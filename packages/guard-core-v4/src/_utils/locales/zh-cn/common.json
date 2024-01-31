@@ -186,5 +186,22 @@
   "resetAccount": {
     "title": "设置用户名",
     "message": "当前用户名不是唯一的，请重新设置用户名后才可以成功登录。"
-  }
+  },
+  "noTenant": "暂无已加入的租户",
+  "joinTenant": "加入租户",
+  "tenantExample": "请输入租户识别码，例如：Ljrs18wa",
+  "enter": "进入",
+  "createTenant": "创建租户",
+  "pleaseInput": "请输入",
+  "tenantName": "租户名称",
+  "tenantEmail": "租户企业邮箱域名",
+  "tenantDesc": "租户描述",
+  "visitor": "访客模式",
+  "createTenantDesc": "如需创建新租户，请点击此处",
+  "codeError": "识别码错误，请重新输入",
+  "emailVerify": "验证企业邮箱",
+  "verify": "验证",
+  "inputBusinessEmail": "请输入企业邮箱",
+  "inputCode": "请输入验证码",
+  "domainNotFound": "当前组织管理员未设置企业邮箱域名，请联系管理员设置后加入组织。"
 }
