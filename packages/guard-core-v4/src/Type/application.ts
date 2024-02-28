@@ -16,7 +16,8 @@ export enum LoginMethods {
   AuthingOtpPush = 'authing-otp-push', // App 扫码登录
   WechatworkCorpQrconnect = 'wechatwork-corp-qrconnect', // 微信企业扫码关注登录
   DingTalkQrcode = 'dingtalk-qrcode', //钉钉扫码
-  Passkey = 'passkey' // passkey
+  Passkey = 'passkey', // passkey
+  ZJZWFWQrcode = 'zjzwfw-qrcode' // 浙江政务钉
 }
 
 export enum OIDCConnectionMode {
@@ -153,6 +154,7 @@ export interface QrCodeItem {
     redirectUrl: string
     identifier: string
     clientId?: string
+    authorizationUrl?: string
   }
 }
 
