@@ -26,6 +26,7 @@
   "pwdLogin": "Password",
   "bindPwdLogin": "Password",
   "appScanLogin": "Mobile APP QR Code",
+  "zjzwScanLogin": "Zhejiang Office QR Code",
   "scanLogin": "QR Code",
   "ldapLogin": "LDAP",
   "adLogin": "AD",
@@ -129,5 +130,5 @@
     "successTip": "Password reset succeeded",
     "backLogin": "Seconds will automatically jump to the login page"
   },
-  "wecomScanLogin":"Enterprise WeChat scan code to log in"
+  "wecomScanLogin": "Enterprise WeChat scan code to log in"
 }

@@ -55,7 +55,7 @@ export const LoginWithZjQrcode = (props: LoginWithAppQrcodeProps) => {
         {t('login.scanAgain')}
       </span>
     ),
-    ready: t('login.appScanLogin'),
+    ready: t('login.zjzwScanLogin'),
     success: t('common.LoginSuccess'),
     MFA: t('common.LoginSuccess')
   }
@@ -65,12 +65,12 @@ export const LoginWithZjQrcode = (props: LoginWithAppQrcodeProps) => {
    * @param status
    * @param data
    */
-  const onStatusChange = async (status: CodeStatus, data: QrCodeResponse) => {
+  const onStatusChange = async (status: CodeStatus, data: any) => {
     switch (status) {
       case 'success':
         if (events?.onBeforeLogin) {
           const isContinue = await events?.onBeforeLogin(
-            { type: LoginMethods.AppQr, data },
+            { type: LoginMethods.ZJZWFWQrcode, data },
             authClient
           )
           if (!isContinue) {
@@ -78,8 +78,12 @@ export const LoginWithZjQrcode = (props: LoginWithAppQrcodeProps) => {
           }
         }
         props.multipleInstance &&
-          props.multipleInstance.setLoginWay('qrcode', LoginMethods.AppQr)
-        props.onLoginSuccess(data)
+          props.multipleInstance.setLoginWay(
+            'qrcode',
+            LoginMethods.ZJZWFWQrcode,
+            qrCodeScanOptions?.extIdpConnId
+          )
+        props.onLoginSuccess(data?.user)
         break
       case 'error':
         if (data.scannedResult) {

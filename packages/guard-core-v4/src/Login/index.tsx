@@ -752,7 +752,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       return (
         <Tabs.TabPane
           key={LoginMethods.ZJZWFWQrcode + item.id}
-          tab={item.title ?? t('login.wecomScanLogin')}
+          tab={item.title ?? t('login.zjzwScanLogin')}
         >
           <LoginWithZjQrcode
             qrCodeScanOptions={{

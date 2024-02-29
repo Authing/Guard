@@ -26,6 +26,7 @@
   "pwdLogin": "密码登录",
   "bindPwdLogin": "密码登录",
   "appScanLogin": "移动端 APP 扫码登录",
+  "zjzwScanLogin": "浙里办扫码登录",
   "scanLogin": "扫码登录",
   "scanAgain": "重新扫码",
   "wechatScanLogin": "使用微信扫码登录",
@@ -129,5 +130,5 @@
     "successTip": "密码重置成功",
     "backLogin": "秒后将自动跳转登录页"
   },
-  "wecomScanLogin":"企业微信扫码登录"
+  "wecomScanLogin": "企业微信扫码登录"
 }

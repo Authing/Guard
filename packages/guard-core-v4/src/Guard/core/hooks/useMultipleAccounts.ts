@@ -61,6 +61,7 @@ export type LoginWay =
   | 'wechat-miniprogram-qrcode' // 小程序扫码登录
   | 'wechatmp-qrcode' // 公众号扫码登录方式
   | 'app-qrcode' // App 扫码登录方式
+  | 'zjzwfw-qrcode' // 浙里办 扫码登录方式
   | 'ad' // AD 登录方式
   | 'ldap' // LDAP 登录方式
   | 'ldap-password'
@@ -363,6 +364,7 @@ class MultipleAccount {
       'phone-code': 'phone-code',
       'wechat-miniprogram-qrcode': 'wechat-miniprogram-qrcode',
       'wechatmp-qrcode': 'wechatmp-qrcode',
+      'zjzwfw-qrcode': 'zjzwfw-qrcode',
       'app-qrcode': 'app-qrcode',
       'authing-otp-push': 'authing-otp-push'
     }
@@ -503,6 +505,7 @@ class MultipleAccount {
     const newStore = Object.assign({}, this.originStore, {
       [this.appId]: this.currentStore
     })
+
     localStorage.setItem(MULTIPLE_ACCOUNT_KEY, JSON.stringify(newStore))
   }
 
