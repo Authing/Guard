@@ -233,7 +233,9 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
           {i18n.t('login.otherLoginWay')}
         </div>
       )}
-      <div className="g2-social-login-list">{idpButtons}</div>
+      <div className="g2-social-login-list g2-enterprise-connection-space">
+        {idpButtons}
+      </div>
     </>
   ) : null
 
@@ -252,7 +254,9 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
           <div className="g2-social-login-title">
             {t('login.thridAccLogin')}
           </div>
-          <div className="g2-social-login-list">{socialLoginButtons}</div>
+          <div className="g2-social-login-list g2-social-connection-space">
+            {socialLoginButtons}
+          </div>
         </>
       )
     )
