@@ -79,6 +79,7 @@
   "clickSent": "認証コードの送信をクリックする",
   "reSent": "認証コードの再送をクリックしてください",
   "bindPhoneInfo": "携帯番号を入力して結びつけてください",
+  "bindWarning": "管理者に連絡して携帯番号をバインドしてください",
   "inputPhoneCode": "携帯認証コードを入力してください",
   "forgetPwd": "パスワードをお忘れの場合",
   "inputPwd": "パスワードを入力してください",
@@ -129,5 +130,5 @@
     "successTip": "パスワードのリセットに成功しました",
     "backLogin": "秒ログインページが自動的にジャンプされます"
   },
-  "wecomScanLogin":"エンタープライズ WeChat ログイン"
+  "wecomScanLogin": "エンタープライズ WeChat ログイン"
 }
