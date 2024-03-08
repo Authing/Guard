@@ -144,7 +144,7 @@ export const BindMFASms: React.FC<BindMFASmsProps> = ({
         </Form>
       ) : (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <IconFont type="authing-otp" style={{ width: 247, height: 131 }} />
+          <IconFont type="authing-bianzu" style={{ width: 178, height: 120 }} />
         </div>
       )}
     </>
