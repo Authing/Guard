@@ -28,7 +28,8 @@ import {
   useGuardEvents,
   useGuardFinallyConfig,
   useGuardInitData,
-  useGuardModule
+  useGuardModule,
+  useGuardPublicConfig
 } from '../_utils/context'
 
 import { BackCustom, BackLogin } from '../Back'
@@ -50,8 +51,13 @@ const ComponentsMapping: Record<MFAType, (props: any) => React.ReactNode> = {
       mfaLogin={mfaLogin}
     />
   ),
-  [MFAType.SMS]: ({ config, initData, mfaLogin }) => (
-    <MFASms config={config} initData={initData} mfaLogin={mfaLogin} />
+  [MFAType.SMS]: ({ config, initData, mfaLogin, mfaConfigsMap }) => (
+    <MFASms
+      config={config}
+      initData={initData}
+      mfaLogin={mfaLogin}
+      mfaConfigsMap={mfaConfigsMap}
+    />
   ),
   [MFAType.TOTP]: ({ initData, config, changeModule, mfaLogin }) => (
     <MFATotp
@@ -75,6 +81,8 @@ export const GuardMFAView: React.FC = () => {
   const initData = useGuardInitData<GuardMFAInitData>()
 
   const config = useGuardFinallyConfig()
+
+  const publicConfig = useGuardPublicConfig()
 
   const { changeModule } = useGuardModule()
 
@@ -167,6 +175,14 @@ export const GuardMFAView: React.FC = () => {
     return <BackLogin />
   }, [currentMethod, initData.applicationMfa, mfaBackState, t])
 
+  const mfaConfigsMap: Map<MFAType, boolean> = useMemo(() => {
+    const map = new Map()
+    publicConfig.mfaBindConfigs?.forEach(item => {
+      map.set(item.mfa, !item.changeable)
+    })
+    return map
+  }, [publicConfig?.mfaBindConfigs])
+
   return (
     // 返回验证页和返回登录页 需要获取内部 face 模式下的状态
     <MFABackStateContext.Provider
@@ -180,7 +196,8 @@ export const GuardMFAView: React.FC = () => {
             initData: initData,
             changeModule: changeModule,
             mfaLogin: mfaLogin,
-            setShowMethods: setShowMethods
+            setShowMethods: setShowMethods,
+            mfaConfigsMap: mfaConfigsMap
           })}
         </div>
         {showMethods && (

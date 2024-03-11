@@ -18,7 +18,7 @@ import CustomFormItem from '../../ValidatorRules'
 
 import { VerifyCodeFormItem } from '../VerifyCodeInput/VerifyCodeFormItem'
 
-import { GuardMFAInitData, MFAConfig } from '../interface'
+import { GuardMFAInitData, MFAConfig, MFAType } from '../interface'
 
 import { InputNumber } from '../../InputNumber'
 
@@ -44,6 +44,7 @@ export interface BindMFASmsProps {
   areaCode: string
   setAreaCode: (areaCode: string) => void
   isInternationSms: boolean
+  mfaConfigsMap: Map<MFAType, boolean>
 }
 
 export const BindMFASms: React.FC<BindMFASmsProps> = ({
@@ -52,7 +53,8 @@ export const BindMFASms: React.FC<BindMFASmsProps> = ({
   config,
   areaCode,
   setAreaCode,
-  isInternationSms
+  isInternationSms,
+  mfaConfigsMap
 }) => {
   const submitButtonRef = useRef<any>(null)
   const { t } = useTranslation()
@@ -109,29 +111,42 @@ export const BindMFASms: React.FC<BindMFASmsProps> = ({
   return (
     <>
       <h3 className="authing-g2-mfa-title">{t('common.mfaCertification')}</h3>
-      <p className="authing-g2-mfa-tips">{t('login.bindPhoneInfo')}</p>
-      <Form
-        form={form}
-        onSubmitCapture={() => submitButtonRef.current.onSpin(true)}
-        onFinish={onFinish}
-        onFinishFailed={() => submitButtonRef.current.onError()}
-      >
-        <CustomFormItem.Phone
-          className={
-            isInternationSms
-              ? 'authing-g2-input-form remove-padding'
-              : 'authing-g2-input-form'
-          }
-          name="phone"
+      <p className="authing-g2-mfa-tips">
+        {mfaConfigsMap.get(MFAType.SMS)
+          ? t('login.bindWarning')
+          : t('login.bindPhoneInfo')}
+      </p>
+      {!mfaConfigsMap.get(MFAType.SMS) ? (
+        <Form
           form={form}
-          // checkRepeat={true}
-          required={true}
-          areaCode={areaCode}
+          onSubmitCapture={() => submitButtonRef.current.onSpin(true)}
+          onFinish={onFinish}
+          onFinishFailed={() => submitButtonRef.current.onError()}
         >
-          <PhoneAccount />
-        </CustomFormItem.Phone>
-        <SubmitButton text={t('common.sure') as string} ref={submitButtonRef} />
-      </Form>
+          <CustomFormItem.Phone
+            className={
+              isInternationSms
+                ? 'authing-g2-input-form remove-padding'
+                : 'authing-g2-input-form'
+            }
+            name="phone"
+            form={form}
+            // checkRepeat={true}
+            required={true}
+            areaCode={areaCode}
+          >
+            <PhoneAccount />
+          </CustomFormItem.Phone>
+          <SubmitButton
+            text={t('common.sure') as string}
+            ref={submitButtonRef}
+          />
+        </Form>
+      ) : (
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <IconFont type="authing-bianzu" style={{ width: 178, height: 120 }} />
+        </div>
+      )}
     </>
   )
 }
@@ -276,6 +291,7 @@ export const MFASms: React.FC<{
   mfaLogin: any
   config: MFAConfig
   initData: GuardMFAInitData
+  mfaConfigsMap: Map<MFAType, boolean>
 }> = ({
   mfaLogin,
   config,
@@ -283,7 +299,8 @@ export const MFASms: React.FC<{
     mfaPhone: userPhone,
     mfaToken,
     mfaPhoneCountryCode: phoneCountryCode
-  }
+  },
+  mfaConfigsMap
 }) => {
   const [phone, setPhone] = useState(userPhone)
 
@@ -327,6 +344,7 @@ export const MFASms: React.FC<{
             setPhone(phone)
             sendCodeRef.current?.click()
           }}
+          mfaConfigsMap={mfaConfigsMap}
         />
       )}
     </>

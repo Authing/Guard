@@ -76,6 +76,7 @@
   "clickSent": "Click  send",
   "reSent": "Click to resend the verification code",
   "bindPhoneInfo": "Please enter the phone number to bind",
+  "bindWarning": "Please contact the administrator to bind your phone number for you",
   "inputPhoneCode": "Please enter the phone verification code",
   "forgetPwd": "Forgot Password",
   "inputPwd": "Password",
@@ -129,5 +130,5 @@
     "successTip": "Password reset succeeded",
     "backLogin": "Seconds will automatically jump to the login page"
   },
-  "wecomScanLogin":"Enterprise WeChat scan code to log in"
+  "wecomScanLogin": "Enterprise WeChat scan code to log in"
 }

@@ -1,5 +1,6 @@
 export type Lang = 'zh-CN' | 'en-US' | 'zh-TW' | 'ja-JP'
 
+import { MFAType } from 'src/MFA/interface'
 import { PasswordStrength } from '../_utils'
 
 export * from 'authing-js-sdk'
@@ -417,4 +418,6 @@ export interface ApplicationConfig {
   enableCreateTenant: boolean // 是否允许创建租户
 
   enableJoinTenant: boolean // 是否允许加入租户
+
+  mfaBindConfigs?: { mfa: MFAType; changeable: boolean }[]
 }
