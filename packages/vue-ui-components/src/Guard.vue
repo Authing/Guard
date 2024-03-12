@@ -36,6 +36,7 @@ export default {
     },
     autoRegister: {
       type: Boolean,
+      default:false, // https://github.com/storybookjs/storybook/issues/11839
       required: false
     },
     isSSO: {
