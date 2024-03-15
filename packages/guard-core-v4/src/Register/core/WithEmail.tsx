@@ -1,6 +1,6 @@
 import { Form, Input, message } from 'shim-antd'
 
-import { RegisterMethods } from 'authing-js-sdk'
+import { RegisterMethods, SceneType } from 'authing-js-sdk'
 
 import { React } from 'shim-react'
 
@@ -10,7 +10,11 @@ import { useAsyncFn } from 'react-use'
 
 import { useGuardAuthClient } from '../../Guard/authClient'
 
-import { getDeviceName, getUserRegisterParams } from '../../_utils'
+import {
+  fieldRequiredRule,
+  getDeviceName,
+  getUserRegisterParams
+} from '../../_utils'
 
 import { Agreements } from '../components/Agreements'
 
@@ -43,6 +47,8 @@ import { usePasswordErrorText } from '../../_utils/useErrorText'
 import { Agreement, ApplicationConfig } from '../../Type/application'
 
 import { InputInternationPhone } from '../../Login/core/withVerifyCode/InputInternationPhone'
+
+import { SendCodeByPhone } from '../../SendCode/SendCodeByPhone'
 
 const { useRef, useState, useCallback, useMemo } = React
 
@@ -90,6 +96,11 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
   const isInternationSms =
     publicConfig?.internationalSmsConfig?.enabled || false
 
+  const enabledPPRegisterValid =
+    !config.autoRegister && publicConfig?.enabledPPRegisterValid
+
+  const verifyCodeLength = publicConfig?.verifyCodeLength ?? 4
+
   const { getPassWordUnsafeText, setPasswordErrorTextShow } =
     usePasswordErrorText()
   const [, onFinish] = useAsyncFn(
@@ -124,7 +135,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
         }
       }
 
-      await form.validateFields()
+      // await form.validateFields()
       setValidated(true)
 
       if (agreements?.length && !acceptedAgreements) {
@@ -140,6 +151,8 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
       const context = registeContext ?? {}
 
       let phoneCountryCode
+      let phoneToken
+      let profile
 
       if (method === 'phone-password') {
         const { phoneNumber, countryCode } = parsePhone(
@@ -149,6 +162,12 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
         )
         account = phoneNumber
         phoneCountryCode = countryCode
+        if (enabledPPRegisterValid) {
+          phoneToken = values?.code
+          profile = {
+            phone: phoneNumber
+          }
+        }
       }
 
       // 注册使用的详情信息
@@ -160,7 +179,8 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
         profile: {
           browser:
             typeof navigator !== 'undefined' ? navigator.userAgent : null,
-          device: getDeviceName()
+          device: getDeviceName(),
+          ...profile
         },
         forceLogin: false,
         generateToken: true,
@@ -169,7 +189,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
           ? JSON.stringify(getUserRegisterParams(['login_page_context']))
           : undefined,
         context: JSON.stringify(context),
-        phoneToken: undefined
+        phoneToken
       }
 
       // onRegisterSuccess 注册成功后需要回到对应的登录页面
@@ -254,27 +274,99 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
     [areaCode, form, publicConfig, t]
   )
 
+  const SendCode = useCallback(
+    (props: any) => {
+      if (isInternationSms) {
+        return (
+          <SendCodeByPhone
+            {...props}
+            isInternationSms={isInternationSms}
+            form={form}
+            fieldName="account"
+            className="authing-g2-input g2-send-code-input"
+            autoComplete="off"
+            size="large"
+            placeholder={t('common.inputFourVerifyCode', {
+              length: verifyCodeLength
+            })}
+            areaCode={areaCode}
+            prefix={
+              <IconFont
+                type="authing-a-shield-check-line1"
+                style={{ color: '#878A95' }}
+              />
+            }
+            scene={SceneType.SCENE_TYPE_REGISTER}
+            maxLength={verifyCodeLength}
+            onSendCodeBefore={async () => {
+              await form.validateFields(['account'])
+            }}
+          />
+        )
+      } else {
+        return (
+          <SendCodeByPhone
+            {...props}
+            form={form}
+            fieldName="account"
+            className="authing-g2-input g2-send-code-input"
+            autoComplete="off"
+            size="large"
+            placeholder={t('common.inputFourVerifyCode', {
+              length: verifyCodeLength
+            })}
+            maxLength={verifyCodeLength}
+            scene={SceneType.SCENE_TYPE_REGISTER}
+            prefix={
+              <IconFont
+                type="authing-a-shield-check-line1"
+                style={{ color: '#878A95' }}
+              />
+            }
+            onSendCodeBefore={async () => {
+              await form.validateFields(['account'])
+            }}
+          />
+        )
+      }
+    },
+    [areaCode, form, isInternationSms, t, verifyCodeLength]
+  )
+
   const AccountForm = useMemo(() => {
     if (!method) return null
 
     if (method === 'phone-password') {
       return (
-        <CustomFormItem.Phone
-          key="account"
-          name="account"
-          className={
-            publicConfig?.internationalSmsConfig?.enabled
-              ? 'authing-g2-input-form remove-padding'
-              : 'authing-g2-input-form'
-          }
-          validateFirst={true}
-          form={form}
-          checkRepeat={true}
-          required={true}
-          areaCode={areaCode}
-        >
-          <PhoneAccount autoFocus={!isPhoneMedia} />
-        </CustomFormItem.Phone>
+        <>
+          <CustomFormItem.Phone
+            key="account"
+            name="account"
+            className={
+              publicConfig?.internationalSmsConfig?.enabled
+                ? 'authing-g2-input-form remove-padding'
+                : 'authing-g2-input-form'
+            }
+            // validateFirst={true} // 会多次触发 find 接口
+            form={form}
+            checkRepeat={true}
+            required={true}
+            areaCode={areaCode}
+          >
+            <PhoneAccount autoFocus={!isPhoneMedia} />
+          </CustomFormItem.Phone>
+          {enabledPPRegisterValid && (
+            <Form.Item
+              key="code"
+              name="code"
+              validateTrigger={['onBlur', 'onChange']}
+              rules={fieldRequiredRule(t('common.captchaCode'))}
+              className="authing-g2-input-form"
+            >
+              <SendCode />
+            </Form.Item>
+          )}
+        </>
       )
     }
     return (

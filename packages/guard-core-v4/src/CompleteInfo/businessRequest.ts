@@ -68,8 +68,8 @@ const registerMethod = (
       postUserInfoPipeline: true
     }) as Promise<User>
   } else {
-    const phoneToken = profile.phoneToken
-    const emailToken = profile.emailToken
+    const phoneToken = profile.phoneToken ?? content?.phoneToken
+    const emailToken = profile.emailToken ?? content?.emailToken
 
     delete profile.phoneToken
     delete profile.emailToken
