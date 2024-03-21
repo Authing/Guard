@@ -138,6 +138,11 @@ export const isMobile = () => {
   )
 }
 
+// win10 上的 webview
+export const isWebview = () => {
+  return window.navigator.userAgent.match(/webview/i)
+}
+
 /* 利用浏览器的 UA 判断是否为不支持弹窗的特殊浏览器 */
 export const isSpecialBrowser = () => {
   // 1. 首先筛选出一定是特殊浏览器的 UA
@@ -149,7 +154,8 @@ export const isSpecialBrowser = () => {
     isQtWebEngine() ||
     isXiaomiBrowser() ||
     isQQBrowser() ||
-    isMobile()
+    isMobile() ||
+    isWebview()
   ) {
     return true
   }
