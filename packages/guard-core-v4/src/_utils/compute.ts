@@ -140,8 +140,8 @@ export const isMobile = () => {
 
 // win10 上的 webview
 export const isWebview = () => {
-  return window.navigator.userAgent.match(/webview/i);
-};
+  return window.navigator.userAgent.match(/webview/i)
+}
 
 /* 利用浏览器的 UA 判断是否为不支持弹窗的特殊浏览器 */
 export const isSpecialBrowser = () => {
