@@ -73,6 +73,7 @@ export interface GuardOptions extends GuardProps {
   isSSO?: boolean
   config?: Partial<IGuardConfig> // 兼容 4.x 的 config
   style?: CSSProperties
+  secret?: string
 }
 
 export interface StartWithRedirectOptions {
@@ -94,6 +95,7 @@ export interface StartWithRedirectOptions {
 export interface LogoutParams {
   redirectUri?: string
   quitCurrentDevice?: boolean
+  revocationToken?: boolean
 }
 
 export * from '@authing/react-ui-components'

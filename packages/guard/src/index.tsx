@@ -169,6 +169,7 @@ export class Guard {
       {},
       {
         appId: this.options.appId,
+        secret: this.options.secret,
         appHost: requestHostname,
         tenantId: this.options.tenantId,
         redirectUri:
@@ -505,8 +506,10 @@ export class Guard {
 
   async logout(params: LogoutParams = {}) {
     let logoutRedirectUri = ''
-    const { redirectUri, quitCurrentDevice } = params
+    const { redirectUri, quitCurrentDevice, revocationToken } = params
     const { logoutRedirectUris } = await this.then()
+    const requestHostname = await this.getRequestHost()
+
     const origin = window.location.origin
 
     try {
@@ -525,6 +528,31 @@ export class Guard {
         await authClient.logoutCurrent()
       } else {
         await authClient.logout()
+      }
+      if (revocationToken) {
+        // 兼容老版本
+        const accessToken =
+          localStorage.getItem('accessToken') ||
+          authClient.tokenProvider.getUser()?.token ||
+          ''
+
+        const body = new URLSearchParams()
+        body.append('token', accessToken)
+        body.append('client_id', this.options.appId)
+        if (this.options?.secret) {
+          body.append('client_secret', this.options.secret)
+        }
+
+        const options: RequestInit = {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body
+        }
+
+        await fetch(`${requestHostname}/oidc/token/revocation`, options)
       }
     } catch (error) {
       // 兜底 redirect 场景下，Safari 和 Firefox 开启『阻止跨站跟踪』后无法退出
