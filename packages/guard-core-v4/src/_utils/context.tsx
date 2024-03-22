@@ -295,3 +295,20 @@ export const useRobotVerify = () => {
 /** 当前用户池是否是国外用户池 */
 export const useIsForeignUserpool = () =>
   useContext(GuardXContext).isForeignUserpool
+
+/** 当前应用是否开启人机验证策略 */
+export const useCaptchaCheck = (sence: 'login' | 'register') => {
+  const { loginSmsConfig, registerSmsConfig } = useGuardPublicConfig()
+  const isForeignUserpool = useContext(GuardXContext).isForeignUserpool
+  let openCaptchaCheck = false
+  switch (sence) {
+    case 'login':
+      openCaptchaCheck =
+        isForeignUserpool || loginSmsConfig?.robot?.switch === 'ON'
+      break
+    case 'register':
+      openCaptchaCheck =
+        isForeignUserpool || registerSmsConfig?.robot?.switch === 'ON'
+  }
+  return openCaptchaCheck
+}

@@ -422,4 +422,16 @@ export interface ApplicationConfig {
   enableJoinTenant: boolean // 是否允许加入租户
 
   mfaBindConfigs?: { mfa: MFAType; changeable: boolean }[]
+  /** 注册阶段短信安全配置 */
+  registerSmsConfig?: {
+    robot: {
+      switch: 'OFF' | 'ON' | 'CONDON' //ON,COND_ON
+    }
+  }
+  /** 登录阶段短信安全配置 */
+  loginSmsConfig?: {
+    robot: {
+      switch: 'OFF' | 'ON' | 'CONDON' //ON,COND_ON
+    }
+  }
 }

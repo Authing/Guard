@@ -62,11 +62,11 @@ export const GuardRegisterView: React.FC = () => {
   const verifyRegisterMethods = useMemo<string[]>(() => {
     const verifyLoginMethods = []
     const { registerMethods } = config
-    if (registerMethods?.includes(RegisterMethods.EmailCode)) {
-      verifyLoginMethods.push('email-code')
-    }
     if (registerMethods?.includes(RegisterMethods.Phone)) {
       verifyLoginMethods.push('phone-code')
+    }
+    if (registerMethods?.includes(RegisterMethods.EmailCode)) {
+      verifyLoginMethods.push('email-code')
     }
 
     return verifyLoginMethods
