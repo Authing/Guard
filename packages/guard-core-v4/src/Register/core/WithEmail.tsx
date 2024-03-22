@@ -12,6 +12,7 @@ import { useGuardAuthClient } from '../../Guard/authClient'
 
 import {
   fieldRequiredRule,
+  getCaptchaUrl,
   getDeviceName,
   getUserRegisterParams
 } from '../../_utils'
@@ -31,6 +32,7 @@ import { InputNumber } from '../../InputNumber'
 import { useIsChangeComplete } from '../utils'
 
 import {
+  useCaptchaCheck,
   useGuardFinallyConfig,
   useGuardHttpClient,
   useGuardModule
@@ -50,7 +52,9 @@ import { InputInternationPhone } from '../../Login/core/withVerifyCode/InputInte
 
 import { SendCodeByPhone } from '../../SendCode/SendCodeByPhone'
 
-const { useRef, useState, useCallback, useMemo } = React
+import { GraphicVerifyCode } from '../../Login/core/withPassword/GraphicVerifyCode'
+
+const { useRef, useState, useCallback, useMemo, useEffect } = React
 
 export interface RegisterWithEmailProps {
   // onRegister: Function
@@ -86,8 +90,13 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
   const { changeModule } = useGuardModule()
   const { post } = useGuardHttpClient()
 
+  const captchaCheck = useCaptchaCheck('register')
+
   const [acceptedAgreements, setAcceptedAgreements] = useState(false)
+
   const [validated, setValidated] = useState(false)
+
+  const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
 
   // 区号 默认
   const [areaCode, setAreaCode] = useState(
@@ -298,8 +307,10 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
             }
             scene={SceneType.SCENE_TYPE_REGISTER}
             maxLength={verifyCodeLength}
+            codeFieldName={'captchaCode'}
             onSendCodeBefore={async () => {
               await form.validateFields(['account'])
+              await form.validateFields(['captchaCode'])
             }}
           />
         )
@@ -323,8 +334,10 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
                 style={{ color: '#878A95' }}
               />
             }
+            codeFieldName={'captchaCode'}
             onSendCodeBefore={async () => {
               await form.validateFields(['account'])
+              await form.validateFields(['captchaCode'])
             }}
           />
         )
@@ -332,6 +345,20 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
     },
     [areaCode, form, isInternationSms, t, verifyCodeLength]
   )
+
+  useEffect(() => {
+    /** 如果是国外用户池，那么有图形验证码，需要请求图片 */
+    if (captchaCheck) {
+      setVerifyCodeUrl(getCaptchaUrl(config.host!))
+    }
+  }, [captchaCheck, config?.host])
+
+  useEffect(() => {
+    // 方法发生变化时，图像验证码数据应该清空
+    if (captchaCheck) {
+      form?.setFieldsValue({ captchaCode: undefined })
+    }
+  }, [form, captchaCheck])
 
   const AccountForm = useMemo(() => {
     if (!method) return null
@@ -356,15 +383,36 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
             <PhoneAccount autoFocus={!isPhoneMedia} />
           </CustomFormItem.Phone>
           {enabledPPRegisterValid && (
-            <Form.Item
-              key="code"
-              name="code"
-              validateTrigger={['onBlur', 'onChange']}
-              rules={fieldRequiredRule(t('common.captchaCode'))}
-              className="authing-g2-input-form"
-            >
-              <SendCode />
-            </Form.Item>
+            <>
+              {/* 图形验证码 短信安全 */}
+              {captchaCheck && (
+                <Form.Item
+                  className="authing-g2-input-form"
+                  validateTrigger={['onBlur', 'onChange']}
+                  name="captchaCode"
+                  rules={fieldRequiredRule(t('common.captchaCode'))}
+                >
+                  <GraphicVerifyCode
+                    className="authing-g2-input"
+                    size="large"
+                    placeholder={t('login.inputCaptchaCode') as string}
+                    verifyCodeUrl={verifyCodeUrl}
+                    changeCode={() =>
+                      setVerifyCodeUrl(getCaptchaUrl(config.host!))
+                    }
+                  />
+                </Form.Item>
+              )}
+              <Form.Item
+                key="code"
+                name="code"
+                validateTrigger={['onBlur', 'onChange']}
+                rules={fieldRequiredRule(t('common.captchaCode'))}
+                className="authing-g2-input-form"
+              >
+                <SendCode />
+              </Form.Item>
+            </>
           )}
         </>
       )
@@ -408,6 +456,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
     label,
     t,
     form,
+    verifyCodeUrl,
     publicConfig?.internationalSmsConfig?.enabled
   ])
   return (
