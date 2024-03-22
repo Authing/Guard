@@ -78,9 +78,6 @@ export interface IGuardContext {
   defaultLanguageConfig: Lang
   /** 租户信息获取和操作处理相关 */
   tenantInstance?: MultipleTenant
-
-  /** 判断是否是国外的用户池 */
-  isForeignUserpool: boolean
 }
 
 const DefaultGuardX: IGuardContext = {
@@ -124,9 +121,7 @@ const DefaultGuardX: IGuardContext = {
   phoneRegex: null,
   defaultLanguageConfig: 'zh-CN',
 
-  tenantInstance: undefined,
-
-  isForeignUserpool: false
+  tenantInstance: undefined
 }
 
 const GuardXContext = React.createContext<IGuardContext>(DefaultGuardX)
@@ -292,23 +287,16 @@ export const useRobotVerify = () => {
   return customSecurityEnabled ? appRobotVerify : userpoolRobotVerify
 }
 
-/** 当前用户池是否是国外用户池 */
-export const useIsForeignUserpool = () =>
-  useContext(GuardXContext).isForeignUserpool
-
 /** 当前应用是否开启人机验证策略 */
 export const useCaptchaCheck = (sence: 'login' | 'register') => {
   const { loginSmsConfig, registerSmsConfig } = useGuardPublicConfig()
-  const isForeignUserpool = useContext(GuardXContext).isForeignUserpool
   let openCaptchaCheck = false
   switch (sence) {
     case 'login':
-      openCaptchaCheck =
-        isForeignUserpool || loginSmsConfig?.robot?.switch === 'ON'
+      openCaptchaCheck = loginSmsConfig?.robot?.switch === 'ON'
       break
     case 'register':
-      openCaptchaCheck =
-        isForeignUserpool || registerSmsConfig?.robot?.switch === 'ON'
+      openCaptchaCheck = registerSmsConfig?.robot?.switch === 'ON'
   }
   return openCaptchaCheck
 }
