@@ -69,10 +69,8 @@ const BindPasskey: React.FC<BindPasskeyProps> = props => {
 
   return (
     <>
-      <h3 className="authing-g2-mfa-title">创建 Passkey</h3>
-      <p className="authing-g2-mfa-tips">
-        当前账号没有 passkey，请先完成创建验证后登录
-      </p>
+      <h3 className="authing-g2-mfa-title">{t('common.cratePasskeyTitle')}</h3>
+      <p className="authing-g2-mfa-tips">{t('common.cratePasskeyTips')}</p>
       <ImagePro
         // className="g2-mfa-passkey-empty-image"
         width={215}
@@ -84,7 +82,7 @@ const BindPasskey: React.FC<BindPasskeyProps> = props => {
 
       <SubmitButton
         onClick={bindPasskey}
-        text="立即创建"
+        text={t('common.createNow')!}
         className="bind-passkey-btn"
         htmlType="button"
         ref={submitButtonRef}
@@ -143,10 +141,8 @@ const VerifyPasskey: React.FC<VerifyPasskeyProps> = props => {
 
   return (
     <>
-      <h3 className="authing-g2-mfa-title">Passkey 登录</h3>
-      <p className="authing-g2-mfa-tips">
-        为了保障访问安全，请根据浏览器提示完成验证
-      </p>
+      <h3 className="authing-g2-mfa-title">{t('common.passkeyVerifyTitle')}</h3>
+      <p className="authing-g2-mfa-tips">{t('common.passkeyVerifyTips')}</p>
       <ImagePro
         // className="g2-mfa-passkey-empty-image"
         width={215}
@@ -158,7 +154,7 @@ const VerifyPasskey: React.FC<VerifyPasskeyProps> = props => {
 
       <SubmitButton
         onClick={handleVerifyPasskey}
-        text="重新验证"
+        text={t('common.reVerify')!}
         className="bind-passkey-btn"
         htmlType="button"
         ref={submitButtonRef}
