@@ -201,5 +201,11 @@
   "verify": "驗證",
   "inputBusinessEmail": "請輸入企業郵箱",
   "inputCode": "請輸入驗證碼",
-  "domainNotFound": "當前組織管理員未設定企業郵箱功能變數名稱，請聯系管理員設定後加入組織。"
+  "domainNotFound": "當前組織管理員未設定企業郵箱功能變數名稱，請聯系管理員設定後加入組織。",
+  "cratePasskeyTitle": "建立 Passkey",
+  "cratePasskeyTips": "目前帳號沒有 passkey，請先完成建立驗證後登入",
+  "createNow": "立即建立",
+  "passkeyVerifyTitle": "Passkey 登入",
+  "passkeyVerifyTips": "為了保障存取安全，請根據瀏覽器提示完成驗證",
+  "reVerify": "重新驗證"
 }

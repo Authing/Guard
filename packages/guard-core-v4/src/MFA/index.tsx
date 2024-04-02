@@ -39,6 +39,7 @@ import { ChangeLanguage } from '../ChangeLanguage'
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
 
 import { MFABackStateContext } from './context'
+import { MFAPasskey } from './core/passkey'
 
 const { useMemo, useState } = React
 
@@ -73,6 +74,13 @@ const ComponentsMapping: Record<MFAType, (props: any) => React.ReactNode> = {
       initData={initData}
       mfaLogin={mfaLogin}
       setShowMethods={setShowMethods}
+    />
+  ),
+  [MFAType.PASSKEY]: ({ config, initData, mfaLogin, setShowMethods }) => (
+    <MFAPasskey
+      mfaToken={initData.mfaToken}
+      mfaLogin={mfaLogin}
+      passkeyEnabled={initData.passkeyEnabled}
     />
   )
 }

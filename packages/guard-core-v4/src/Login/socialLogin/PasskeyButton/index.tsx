@@ -59,8 +59,6 @@ export const PasskeyButton = (props: LoginWithPasskeyProps) => {
       return 'Edge'
     } else if (userAgent.includes('Brave')) {
       return 'Brave'
-    } else if (userAgent.includes('Windows')) {
-      return false
     } else {
       return false // 未知浏览器
     }

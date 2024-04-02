@@ -12,6 +12,7 @@
     "build": "node scripts/build.js",
     "build:bundle-analyzer": "webpack --config ./scripts/webpack.bundle-analyzer.js",
     "dev": "webpack-dev-server --config scripts/webpack.dev.config.js",
+    "dev-https": "webpack-dev-server --https --config scripts/webpack.dev.config.js",
     "release:official": "npm publish --verbose --access public",
     "release:alpha": "npm publish --verbose --tag=alpha --access public"
   },

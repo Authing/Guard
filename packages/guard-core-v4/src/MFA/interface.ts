@@ -24,7 +24,8 @@ export enum MFAType {
   SMS = 'SMS',
   EMAIL = 'EMAIL',
   TOTP = 'OTP',
-  FACE = 'FACE'
+  FACE = 'FACE',
+  PASSKEY = 'PASSKEY'
 }
 
 export interface GuardMFAInitData {

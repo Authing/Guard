@@ -45,6 +45,10 @@ const methodTitleMapping: Record<
   [MFAType.FACE]: {
     title: () => i18n.t('common.faceVerification'),
     icon: 'authing-face'
+  },
+  [MFAType.PASSKEY]: {
+    title: () => 'Passkey',
+    icon: 'authing-slideshow-3-line'
   }
 }
 

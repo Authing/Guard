@@ -1,3 +1,10 @@
+import {
+  CredentialCreationOptionsJSON,
+  CredentialRequestOptionsJSON,
+  PublicKeyCredentialWithAssertionJSON,
+  PublicKeyCredentialWithAttestationJSON
+} from '@github/webauthn-json'
+import { AuthingGuardResponse } from '../_utils/http'
 import { useGuardIsAuthFlow } from '../_utils/context'
 
 import { getGuardHttp } from '../_utils/guardHttp'
@@ -7,7 +14,9 @@ export enum MfaBusinessAction {
   VerifySms = 'verify-sms',
   VerifyTotp = 'verify-totp',
   VerifyFace = 'verify-face',
-  AssociateFace = 'associate-face'
+  AssociateFace = 'associate-face',
+  PasskeyBind = 'passkey-bind',
+  PasskeyVerify = 'passkey-verify'
 }
 
 export const authFlow = async (action: MfaBusinessAction, content: any) => {
@@ -46,6 +55,21 @@ interface AssociateFaceContent {
   photoB: string
   isExternalPhoto?: boolean
   mfaToken?: string
+}
+
+type BindPasskeyContent = PublicKeyCredentialWithAttestationJSON
+
+interface VerifyPasskeyContent {
+  credential: PublicKeyCredentialWithAssertionJSON
+  ticket: string
+}
+
+interface GetPasskeyBindChallengeParams {
+  mfaToken: string
+}
+
+interface GetPasskeyVerifyChallengeParams {
+  mfaToken: string
 }
 
 export const VerifyEmail = async (content: VerifyEmailContent) => {
@@ -138,6 +162,46 @@ export const AssociateFace = async (content: AssociateFaceContent) => {
   )
 }
 
+export const GetPasskeyBindChallenge = async (
+  content: GetPasskeyBindChallengeParams
+): Promise<AuthingGuardResponse<CredentialCreationOptionsJSON>> => {
+  const { mfaToken } = content
+  const { post } = getGuardHttp()
+
+  return await post(
+    '/api/v3/webauthn/mfa-bind/initialize',
+    {},
+    {
+      headers: {
+        authorization: `Bearer ${mfaToken}`
+      }
+    }
+  )
+}
+
+export const GetPasskeyVerifyChallenge = async (
+  content: GetPasskeyVerifyChallengeParams
+): Promise<
+  AuthingGuardResponse<
+    CredentialRequestOptionsJSON & {
+      ticket: string
+    }
+  >
+> => {
+  const { mfaToken } = content
+  const { post } = getGuardHttp()
+
+  return await post(
+    '/api/v3/webauthn/login/initialize',
+    {},
+    {
+      headers: {
+        authorization: `Bearer ${mfaToken}`
+      }
+    }
+  )
+}
+
 export const useMfaBusinessRequest = () => {
   const isFlow = useGuardIsAuthFlow()
 
@@ -176,6 +240,23 @@ export const useMfaBusinessRequest = () => {
       }
 
       return AssociateFace(content)
+    },
+
+    [MfaBusinessAction.PasskeyBind]: (content: BindPasskeyContent) => {
+      if (isFlow) {
+        return authFlow(MfaBusinessAction.PasskeyBind, content)
+      }
+
+      // return AssociateFace(content)
+      return null
+    },
+    [MfaBusinessAction.PasskeyVerify]: (content: VerifyPasskeyContent) => {
+      if (isFlow) {
+        return authFlow(MfaBusinessAction.PasskeyVerify, content)
+      }
+
+      // return AssociateFace(content)
+      return null
     }
   }
 
