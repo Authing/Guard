@@ -26,6 +26,7 @@
   "pwdLogin": "密码登录",
   "bindPwdLogin": "密码登录",
   "appScanLogin": "移动端 APP 扫码登录",
+  "zjzwScanLogin": "浙里办扫码登录",
   "scanLogin": "扫码登录",
   "scanAgain": "重新扫码",
   "wechatScanLogin": "使用微信扫码登录",

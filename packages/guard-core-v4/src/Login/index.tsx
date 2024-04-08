@@ -69,6 +69,7 @@ import { GuardButton } from '../GuardButton'
 import {
   LoginMethods,
   QrCodeItem,
+  QrcodeTabsSettings,
   SocialConnectionItem,
   VerifyLoginMethods
 } from '../Type/application'
@@ -87,6 +88,7 @@ import { LoginWithWeComQrcode } from './core/withWeComQrcode'
 import { getGuardWindow } from '../Guard/core/useAppendConfig'
 
 import { LoginWithDingTalkQrcode } from './core/withDingTalkQrcode'
+import { LoginWithZjQrcode } from './core/withZjQrcode'
 
 const { useEffect, useLayoutEffect, useState, useRef, useMemo, useCallback } =
   React
@@ -104,8 +106,26 @@ const qrcodeWays = [
   LoginMethods.WxMinQr,
   LoginMethods.WechatMpQrcode,
   LoginMethods.WechatworkCorpQrconnect,
-  LoginMethods.DingTalkQrcode
+  LoginMethods.DingTalkQrcode,
+  LoginMethods.ZJZWFWQrcode
 ]
+/**
+ * 作为内嵌登录方式的身份源链接
+ */
+const renderQrcodeByIdentify = [
+  LoginMethods.WechatMpQrcode,
+  LoginMethods.WxMinQr,
+  LoginMethods.DingTalkQrcode,
+  LoginMethods.WechatworkCorpQrconnect,
+  LoginMethods.ZJZWFWQrcode
+]
+
+function hasMultipleQRLengths(
+  qrcodeTabsSettings: QrcodeTabsSettings,
+  methods: Partial<keyof QrcodeTabsSettings>[]
+) {
+  return methods.some(method => qrcodeTabsSettings?.[method]?.length > 1)
+}
 
 const useMethods = (config: any) => {
   let dlm = config?.defaultLoginMethod
@@ -258,10 +278,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       // 如果只有一个且那一个还不是 app 类型
       if (
         qrcodeTabsSettings &&
-        (qrcodeTabsSettings?.[LoginMethods.WechatMpQrcode].length > 1 ||
-          qrcodeTabsSettings?.[LoginMethods.WxMinQr].length > 1 ||
-          qrcodeTabsSettings?.[LoginMethods.DingTalkQrcode].length > 1 ||
-          qrcodeTabsSettings?.[LoginMethods.WechatworkCorpQrconnect].length > 1)
+        hasMultipleQRLengths(qrcodeTabsSettings, renderQrcodeByIdentify)
       ) {
         return false
       } else {
@@ -282,7 +299,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         LoginMethods.WechatMpQrcode,
         LoginMethods.WxMinQr,
         LoginMethods.WechatworkCorpQrconnect,
-        LoginMethods.DingTalkQrcode
+        LoginMethods.DingTalkQrcode,
+        LoginMethods.ZJZWFWQrcode
       ].includes(defaultMethod)
     ) {
       const id = qrcodeTabsSettings?.[defaultMethod as LoginMethods]?.find(
@@ -729,6 +747,28 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     )
   }, [canLoop, multipleInstance, onLoginSuccess, t])
 
+  const ZjQrTab = useCallback(
+    (item: QrCodeItem) => {
+      return (
+        <Tabs.TabPane
+          key={LoginMethods.ZJZWFWQrcode + item.id}
+          tab={item.title ?? t('login.zjzwScanLogin')}
+        >
+          <LoginWithZjQrcode
+            qrCodeScanOptions={{
+              extIdpConnId: item.id
+            }}
+            qrConfig={item.QRConfig}
+            multipleInstance={multipleInstance}
+            onLoginSuccess={onLoginSuccess}
+            canLoop={canLoop}
+          />
+        </Tabs.TabPane>
+      )
+    },
+    [canLoop, multipleInstance, onLoginSuccess, t]
+  )
+
   const WechatMpQrTab = useCallback(
     (item: QrCodeItem) => {
       return (
@@ -862,7 +902,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       [LoginMethods.WechatMpQrcode]: WechatMpQrTab,
       [LoginMethods.WxMinQr]: WxMiniQrTab,
       [LoginMethods.WechatworkCorpQrconnect]: WeComQrTab,
-      [LoginMethods.DingTalkQrcode]: DTQrTab
+      [LoginMethods.DingTalkQrcode]: DTQrTab,
+      [LoginMethods.ZJZWFWQrcode]: ZjQrTab
     }
   }, [AppQrTab, WechatMpQrTab, WxMiniQrTab])
 
@@ -874,6 +915,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
           | LoginMethods.WxMinQr
           | LoginMethods.WechatworkCorpQrconnect
           | LoginMethods.DingTalkQrcode
+          | LoginMethods.ZJZWFWQrcode
         title: string
         id: string
         QRConfig?: {
@@ -893,7 +935,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
             | LoginMethods.WechatMpQrcode
             | LoginMethods.WxMinQr
             | LoginMethods.WechatworkCorpQrconnect
-            | LoginMethods.DingTalkQrcode,
+            | LoginMethods.DingTalkQrcode
+            | LoginMethods.ZJZWFWQrcode,
           title: item.title,
           id: item.id,
           QRConfig: item.QRConfig

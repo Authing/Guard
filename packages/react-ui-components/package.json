@@ -20,10 +20,6 @@
   "license": "MIT",
   "dependencies": {
     "@authing/guard-shim-react": "^4.5.13-alpha.2",
-    "@authing/native-js-ui-components": "^4.5.13-alpha.2",
-    "react": "^16.13.1"
-  },
-  "devDependencies": {
-    "@types/react": "^16.9.0"
+    "@authing/native-js-ui-components": "^4.5.13-alpha.2"
   }
 }

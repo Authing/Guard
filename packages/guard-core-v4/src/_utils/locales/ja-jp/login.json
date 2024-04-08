@@ -26,6 +26,7 @@
   "pwdLogin": "既にアカウントをお持ち",
   "bindPwdLogin": "アカウントログイン",
   "appScanLogin": "モバイルアプリでコード登録",
+  "zjzwScanLogin": "浙江事務所",
   "scanLogin": "コード登録",
   "scanAgain": "コードを掃き直す",
   "wechatScanLogin": "wechatのコードを使ってログインする",
