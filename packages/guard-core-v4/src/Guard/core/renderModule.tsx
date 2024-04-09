@@ -77,6 +77,8 @@ import { GuardTenantPortalSelectView } from '../../TenantPortalSelect'
 import { GuardNewSubmitSuccessView } from '../../NewSubmitSuccess'
 
 import { i18n } from '../../_utils/locales'
+import { GuardApplicationView } from '../../Invitation/Application'
+import { GuardMessageView } from '../../Message'
 
 const { useEffect, useMemo } = React
 
@@ -210,10 +212,16 @@ export const RenderModule: React.FC<{
     [GuardModuleType.FLOW_SELECT_ACCOUNT]: key => (
       <GuardSelectAccountView key={key} />
     ),
-    [GuardModuleType.TENANT_PORTAL]: key => <GuardTenantPortalSelectView />,
+    [GuardModuleType.TENANT_PORTAL]: key => (
+      <GuardTenantPortalSelectView key={key} />
+    ),
     [GuardModuleType.New_SUBMIT_SUCCESS]: key => (
       <GuardNewSubmitSuccessView key={key} />
-    )
+    ),
+    [GuardModuleType.APPLY_INVITATION]: key => (
+      <GuardApplicationView key={key} />
+    ),
+    [GuardModuleType.MESSAGE]: key => <GuardMessageView key={key} />
   }
 
   // 初始化 请求拦截器 （Error Code）

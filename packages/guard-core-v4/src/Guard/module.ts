@@ -25,7 +25,9 @@ export enum GuardModuleType {
   TENANT_PORTAL = 'tenant-portal',
   New_SUBMIT_SUCCESS = 'newSubmitSuccess', // 提交成功展示页
   SELECT_ACCOUNT_2_LOGIN = 'selectAccout2Login', // 选择登录身份
-  RESET_ACCOUNT_NAME = 'resetAccountName'
+  RESET_ACCOUNT_NAME = 'resetAccountName',
+  APPLY_INVITATION = 'applyInvitation',
+  MESSAGE = 'message'
 }
 export interface GuardModuleAction {
   action: string

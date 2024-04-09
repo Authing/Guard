@@ -203,5 +203,8 @@
   "verify": "验证",
   "inputBusinessEmail": "请输入企业邮箱",
   "inputCode": "请输入验证码",
-  "domainNotFound": "当前组织管理员未设置企业邮箱域名，请联系管理员设置后加入组织。"
+  "domainNotFound": "当前组织管理员未设置企业邮箱域名，请联系管理员设置后加入组织。",
+  "name": "姓名",
+  "applyJoin": "申请加入",
+  "welcomeJoin": "邀请你加入"
 }

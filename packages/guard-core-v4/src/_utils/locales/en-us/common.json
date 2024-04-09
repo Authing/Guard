@@ -203,5 +203,8 @@
   "verify": "test and verify",
   "inputBusinessEmail": "Please enter your company email address",
   "inputCode": "Please enter the verification code",
-  "domainNotFound": "The current organization administrator has not set up a corporate email domain name. Please contact the administrator to set it up and join the organization."
+  "domainNotFound": "The current organization administrator has not set up a corporate email domain name. Please contact the administrator to set it up and join the organization.",
+  "name": "name",
+  "applyJoin": "Apply to join",
+  "welcomeJoin": "Inviting you to join"
 }
