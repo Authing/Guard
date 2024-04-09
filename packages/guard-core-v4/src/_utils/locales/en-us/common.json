@@ -206,5 +206,8 @@
   "domainNotFound": "The current organization administrator has not set up a corporate email domain name. Please contact the administrator to set it up and join the organization.",
   "name": "name",
   "applyJoin": "Apply to join",
-  "welcomeJoin": "Inviting you to join"
+  "welcomeJoin": "Inviting you to join",
+  "inputCaptcha": "Please enter the authentication code",
+  "verifyAccount": "The identity verification code has been sent to {{0}}",
+  "captchaMaxErrorCount": "Verification code input error {{0}} times, the link will become invalid"
 }

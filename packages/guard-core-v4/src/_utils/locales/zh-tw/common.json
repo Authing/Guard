@@ -204,5 +204,8 @@
   "domainNotFound": "當前組織管理員未設定企業郵箱功能變數名稱，請聯系管理員設定後加入組織。",
   "name": "姓名",
   "applyJoin": "申請加入",
-  "welcomeJoin": "邀請你加入"
+  "welcomeJoin": "邀請你加入",
+  "inputCaptcha": "請輸入身份驗證碼",
+  "verifyAccount": "身份驗證碼已發送至 {{0}}",
+  "captchaMaxErrorCount": "驗證碼輸入錯誤 {{0}} 次，連結將會失效"
 }

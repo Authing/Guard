@@ -206,5 +206,8 @@
   "domainNotFound": "当前组织管理员未设置企业邮箱域名，请联系管理员设置后加入组织。",
   "name": "姓名",
   "applyJoin": "申请加入",
-  "welcomeJoin": "邀请你加入"
+  "welcomeJoin": "邀请你加入",
+  "inputCaptcha": "请输入身份验证码",
+  "verifyAccount": "身份验证码已发送至 {{0}}",
+  "captchaMaxErrorCount": "验证码输入错误 {{0}} 次，链接将会失效"
 }

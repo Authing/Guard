@@ -27,7 +27,9 @@ export enum GuardModuleType {
   SELECT_ACCOUNT_2_LOGIN = 'selectAccout2Login', // 选择登录身份
   RESET_ACCOUNT_NAME = 'resetAccountName',
   APPLY_INVITATION = 'applyInvitation',
-  MESSAGE = 'message'
+  MESSAGE = 'message',
+  INVITE_AUTH = 'inviteAuth',
+  INVITE_COMPLETE = 'inviteComplete'
 }
 export interface GuardModuleAction {
   action: string
