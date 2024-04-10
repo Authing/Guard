@@ -46,7 +46,7 @@ export interface InviteContext {
   extIdpBindMsg?: string
 }
 
-export interface EyGuardInviteLoginInitData extends Partial<InviteContext> {
+export interface GuardInviteLoginInitData extends Partial<InviteContext> {
   canBack?: boolean
   verifyAccount: string
   context: any
@@ -54,12 +54,12 @@ export interface EyGuardInviteLoginInitData extends Partial<InviteContext> {
   originContext: any
 }
 
-export interface EyGuardInviteCompleteInitData
-  extends Partial<EyGuardInviteLoginInitData> {
+export interface GuardInviteCompleteInitData
+  extends Partial<GuardInviteLoginInitData> {
   metaData: any
 }
-export interface EyGuardInviteIdentityBindInitData
-  extends Partial<EyGuardInviteLoginInitData> {
+export interface GuardInviteIdentityBindInitData
+  extends Partial<GuardInviteLoginInitData> {
   weComConfig: {
     QRConfig: any
     id: string
