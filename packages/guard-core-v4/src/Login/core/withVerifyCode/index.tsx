@@ -22,11 +22,11 @@ import { SceneType } from 'authing-js-sdk'
 import { SendCodeByPhone } from '../../../SendCode/SendCodeByPhone'
 
 import {
+  useCaptchaCheck,
   useGuardFinallyConfig,
   useGuardHttpClient,
   useGuardInitData,
-  useGuardPublicConfig,
-  useIsForeignUserpool
+  useGuardPublicConfig
 } from '../../../_utils/context'
 
 import { SendCodeByEmail } from '../../../SendCode/SendCodeByEmail'
@@ -113,7 +113,7 @@ const LoginWithVerifyCode = (props: any) => {
     publicConfig?.internationalSmsConfig?.defaultISOType || 'CN'
   )
 
-  const isForeignUserpool = useIsForeignUserpool()
+  const captchaCheck = useCaptchaCheck('login')
   const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
 
   let [form] = Form.useForm()
@@ -276,17 +276,17 @@ const LoginWithVerifyCode = (props: any) => {
 
   useEffect(() => {
     /** 如果是国外用户池，那么有图形验证码，需要请求图片 */
-    if (isForeignUserpool) {
+    if (captchaCheck) {
       setVerifyCodeUrl(getCaptchaUrl(config.host!))
     }
-  }, [isForeignUserpool, config?.host])
+  }, [captchaCheck, config?.host])
 
   useEffect(() => {
     // 方法发生变化时，图像验证码数据应该清空
-    if (isForeignUserpool) {
+    if (captchaCheck) {
       form?.setFieldsValue({ captchaCode: undefined })
     }
-  }, [form, currentMethod, isForeignUserpool])
+  }, [form, currentMethod, captchaCheck])
 
   const loginByPhoneCode = async (values: any) => {
     const reqContent: any = {
@@ -523,7 +523,7 @@ const LoginWithVerifyCode = (props: any) => {
         </FormItemIdentify>
 
         {/* 图形验证码 国外用户池并且是手机号 */}
-        {isForeignUserpool && currentMethod === InputMethod.PhoneCode && (
+        {captchaCheck && currentMethod === InputMethod.PhoneCode && (
           <Form.Item
             className="authing-g2-input-form"
             validateTrigger={['onBlur', 'onChange']}

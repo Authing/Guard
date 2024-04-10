@@ -26,6 +26,7 @@
   "pwdLogin": "密码登录",
   "bindPwdLogin": "密码登录",
   "appScanLogin": "移动端 APP 扫码登录",
+  "zjzwScanLogin": "浙里办扫码登录",
   "scanLogin": "扫码登录",
   "scanAgain": "重新扫码",
   "wechatScanLogin": "使用微信扫码登录",
@@ -79,6 +80,7 @@
   "clickSent": "点击发送验证码",
   "reSent": "点击重发验证码",
   "bindPhoneInfo": "请输入手机号进行绑定",
+  "bindWarning": "请联系管理员为你绑定手机号",
   "inputPhoneCode": "请输入手机验证码",
   "forgetPwd": "忘记密码",
   "inputPwd": "请输入密码",
@@ -129,5 +131,5 @@
     "successTip": "密码重置成功",
     "backLogin": "秒后将自动跳转登录页"
   },
-  "wecomScanLogin":"企业微信扫码登录"
+  "wecomScanLogin": "企业微信扫码登录"
 }

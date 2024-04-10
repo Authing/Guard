@@ -47,6 +47,9 @@ interface QrCodeRequest {
       url: string
     }>
   >
+
+  getAuthUrlRequest?: () => Promise<any>
+
   /**
    * 未扫码下的请求方法
    */
@@ -95,7 +98,8 @@ export const useQrCode = (options: QrCodeOptions, request: QrCodeRequest) => {
     readyCheckedRequest,
     alreadyCheckedRequest,
     exchangeUserInfo,
-    genCodeRequest
+    genCodeRequest,
+    getAuthUrlRequest
   } = request
 
   /**
@@ -204,6 +208,7 @@ export const useQrCode = (options: QrCodeOptions, request: QrCodeRequest) => {
     }
     const prev = state.status
     const next = getStatusByRes(res)
+
     const statusWillChange = prev !== next
     // 状态已经改变 交给状态的 Handler 来改变
     if (statusWillChange) {
@@ -226,11 +231,27 @@ export const useQrCode = (options: QrCodeOptions, request: QrCodeRequest) => {
       const { data } = await genCodeRequest()
       if (data) {
         const { url, random } = data
+
         dispatch({
           type: 'change',
           payload: {
             src: url,
             random
+          }
+        })
+      }
+    }
+    if (getAuthUrlRequest) {
+      const { data: res, code } = await getAuthUrlRequest()
+      if (res && res.code === 200) {
+        const data = res.data
+        const { authCode, authUrl } = data
+        console.log(data, authCode, authUrl, 'getAuthUrlRequest')
+        dispatch({
+          type: 'change',
+          payload: {
+            authCode,
+            authUrl
           }
         })
       }

@@ -5,4 +5,4 @@ node_modules
 dist
 lib
 .angular
-
+example.tsx

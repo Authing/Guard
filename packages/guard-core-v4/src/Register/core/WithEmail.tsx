@@ -1,6 +1,6 @@
 import { Form, Input, message } from 'shim-antd'
 
-import { RegisterMethods } from 'authing-js-sdk'
+import { RegisterMethods, SceneType } from 'authing-js-sdk'
 
 import { React } from 'shim-react'
 
@@ -10,7 +10,12 @@ import { useAsyncFn } from 'react-use'
 
 import { useGuardAuthClient } from '../../Guard/authClient'
 
-import { getDeviceName, getUserRegisterParams } from '../../_utils'
+import {
+  fieldRequiredRule,
+  getCaptchaUrl,
+  getDeviceName,
+  getUserRegisterParams
+} from '../../_utils'
 
 import { Agreements } from '../components/Agreements'
 
@@ -27,6 +32,7 @@ import { InputNumber } from '../../InputNumber'
 import { useIsChangeComplete } from '../utils'
 
 import {
+  useCaptchaCheck,
   useGuardFinallyConfig,
   useGuardHttpClient,
   useGuardModule
@@ -44,7 +50,11 @@ import { Agreement, ApplicationConfig } from '../../Type/application'
 
 import { InputInternationPhone } from '../../Login/core/withVerifyCode/InputInternationPhone'
 
-const { useRef, useState, useCallback, useMemo } = React
+import { SendCodeByPhone } from '../../SendCode/SendCodeByPhone'
+
+import { GraphicVerifyCode } from '../../Login/core/withPassword/GraphicVerifyCode'
+
+const { useRef, useState, useCallback, useMemo, useEffect } = React
 
 export interface RegisterWithEmailProps {
   // onRegister: Function
@@ -80,8 +90,13 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
   const { changeModule } = useGuardModule()
   const { post } = useGuardHttpClient()
 
+  const captchaCheck = useCaptchaCheck('register')
+
   const [acceptedAgreements, setAcceptedAgreements] = useState(false)
+
   const [validated, setValidated] = useState(false)
+
+  const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
 
   // 区号 默认
   const [areaCode, setAreaCode] = useState(
@@ -89,6 +104,11 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
   )
   const isInternationSms =
     publicConfig?.internationalSmsConfig?.enabled || false
+
+  const enabledPPRegisterValid =
+    !config.autoRegister && publicConfig?.enabledPPRegisterValid
+
+  const verifyCodeLength = publicConfig?.verifyCodeLength ?? 4
 
   const { getPassWordUnsafeText, setPasswordErrorTextShow } =
     usePasswordErrorText()
@@ -124,7 +144,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
         }
       }
 
-      await form.validateFields()
+      // await form.validateFields()
       setValidated(true)
 
       if (agreements?.length && !acceptedAgreements) {
@@ -140,6 +160,8 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
       const context = registeContext ?? {}
 
       let phoneCountryCode
+      let phoneToken
+      let profile
 
       if (method === 'phone-password') {
         const { phoneNumber, countryCode } = parsePhone(
@@ -149,6 +171,12 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
         )
         account = phoneNumber
         phoneCountryCode = countryCode
+        if (enabledPPRegisterValid) {
+          phoneToken = values?.code
+          profile = {
+            phone: phoneNumber
+          }
+        }
       }
 
       // 注册使用的详情信息
@@ -160,7 +188,8 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
         profile: {
           browser:
             typeof navigator !== 'undefined' ? navigator.userAgent : null,
-          device: getDeviceName()
+          device: getDeviceName(),
+          ...profile
         },
         forceLogin: false,
         generateToken: true,
@@ -169,7 +198,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
           ? JSON.stringify(getUserRegisterParams(['login_page_context']))
           : undefined,
         context: JSON.stringify(context),
-        phoneToken: undefined
+        phoneToken
       }
 
       // onRegisterSuccess 注册成功后需要回到对应的登录页面
@@ -254,27 +283,138 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
     [areaCode, form, publicConfig, t]
   )
 
+  const SendCode = useCallback(
+    (props: any) => {
+      if (isInternationSms) {
+        return (
+          <SendCodeByPhone
+            {...props}
+            isInternationSms={isInternationSms}
+            form={form}
+            fieldName="account"
+            className="authing-g2-input g2-send-code-input"
+            autoComplete="off"
+            size="large"
+            placeholder={t('common.inputFourVerifyCode', {
+              length: verifyCodeLength
+            })}
+            areaCode={areaCode}
+            prefix={
+              <IconFont
+                type="authing-a-shield-check-line1"
+                style={{ color: '#878A95' }}
+              />
+            }
+            scene={SceneType.SCENE_TYPE_REGISTER}
+            maxLength={verifyCodeLength}
+            codeFieldName={'captchaCode'}
+            onSendCodeBefore={async () => {
+              await form.validateFields(['account'])
+              await form.validateFields(['captchaCode'])
+            }}
+          />
+        )
+      } else {
+        return (
+          <SendCodeByPhone
+            {...props}
+            form={form}
+            fieldName="account"
+            className="authing-g2-input g2-send-code-input"
+            autoComplete="off"
+            size="large"
+            placeholder={t('common.inputFourVerifyCode', {
+              length: verifyCodeLength
+            })}
+            maxLength={verifyCodeLength}
+            scene={SceneType.SCENE_TYPE_REGISTER}
+            prefix={
+              <IconFont
+                type="authing-a-shield-check-line1"
+                style={{ color: '#878A95' }}
+              />
+            }
+            codeFieldName={'captchaCode'}
+            onSendCodeBefore={async () => {
+              await form.validateFields(['account'])
+              await form.validateFields(['captchaCode'])
+            }}
+          />
+        )
+      }
+    },
+    [areaCode, form, isInternationSms, t, verifyCodeLength]
+  )
+
+  useEffect(() => {
+    /** 如果是国外用户池，那么有图形验证码，需要请求图片 */
+    if (captchaCheck) {
+      setVerifyCodeUrl(getCaptchaUrl(config.host!))
+    }
+  }, [captchaCheck, config?.host])
+
+  useEffect(() => {
+    // 方法发生变化时，图像验证码数据应该清空
+    if (captchaCheck) {
+      form?.setFieldsValue({ captchaCode: undefined })
+    }
+  }, [form, captchaCheck])
+
   const AccountForm = useMemo(() => {
     if (!method) return null
 
     if (method === 'phone-password') {
       return (
-        <CustomFormItem.Phone
-          key="account"
-          name="account"
-          className={
-            publicConfig?.internationalSmsConfig?.enabled
-              ? 'authing-g2-input-form remove-padding'
-              : 'authing-g2-input-form'
-          }
-          validateFirst={true}
-          form={form}
-          checkRepeat={true}
-          required={true}
-          areaCode={areaCode}
-        >
-          <PhoneAccount autoFocus={!isPhoneMedia} />
-        </CustomFormItem.Phone>
+        <>
+          <CustomFormItem.Phone
+            key="account"
+            name="account"
+            className={
+              publicConfig?.internationalSmsConfig?.enabled
+                ? 'authing-g2-input-form remove-padding'
+                : 'authing-g2-input-form'
+            }
+            // validateFirst={true} // 会多次触发 find 接口
+            form={form}
+            checkRepeat={true}
+            required={true}
+            areaCode={areaCode}
+          >
+            <PhoneAccount autoFocus={!isPhoneMedia} />
+          </CustomFormItem.Phone>
+          {enabledPPRegisterValid && (
+            <>
+              {/* 图形验证码 短信安全 */}
+              {captchaCheck && (
+                <Form.Item
+                  className="authing-g2-input-form"
+                  validateTrigger={['onBlur', 'onChange']}
+                  name="captchaCode"
+                  rules={fieldRequiredRule(t('common.captchaCode'))}
+                >
+                  <GraphicVerifyCode
+                    className="authing-g2-input"
+                    size="large"
+                    placeholder={t('login.inputCaptchaCode') as string}
+                    verifyCodeUrl={verifyCodeUrl}
+                    changeCode={() =>
+                      setVerifyCodeUrl(getCaptchaUrl(config.host!))
+                    }
+                  />
+                </Form.Item>
+              )}
+              <Form.Item
+                key="code"
+                name="code"
+                validateTrigger={['onBlur', 'onChange']}
+                rules={fieldRequiredRule(t('common.captchaCode'))}
+                className="authing-g2-input-form"
+              >
+                <SendCode />
+              </Form.Item>
+            </>
+          )}
+        </>
       )
     }
     return (
@@ -316,6 +456,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
     label,
     t,
     form,
+    verifyCodeUrl,
     publicConfig?.internationalSmsConfig?.enabled
   ])
   return (

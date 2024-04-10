@@ -13,8 +13,9 @@ import { ShieldSpin } from '../ShieldSpin'
 import { CodeStatusDescriptions } from './WorkQrCode'
 
 import { useTranslation } from 'react-i18next'
+import { QRCodeSVG } from 'qrcode.react'
 
-const { useMemo } = React
+const { useMemo, useEffect } = React
 
 // 目前 UI 支持的状态（满载）
 export type CodeStatus =
@@ -136,4 +137,79 @@ const QrCode: React.FC<UiQrProps> = props => {
 
 const UiQrCode = React.memo(QrCode)
 
-export { UiQrCode }
+const LinkQrcode: React.FC<UiQrProps> = props => {
+  const {
+    status,
+    loadingComponent,
+    src,
+    descriptions,
+    containerStyle,
+    imageStyle,
+    onLoad,
+    onClickMaskEl,
+    onMaskContent
+  } = props
+  const { t } = useTranslation()
+  const [statusCls, statusComponent] = useStatus(status)
+
+  const classPrefix: any = `${prefix}-qrcode`
+
+  const classes = className(classPrefix, statusCls)
+
+  const Loading = useMemo(() => {
+    return loadingComponent || <ShieldSpin />
+  }, [loadingComponent])
+
+  useEffect(() => {
+    console.log(src, 'links')
+    if (src) {
+      onLoad?.()
+    }
+  }, [src])
+
+  return (
+    <div className={classes} style={containerStyle}>
+      {status === 'loading' ? (
+        Loading
+      ) : (
+        <>
+          <span
+            className={`${prefix}__image-wrapper`}
+            onClick={() => onMaskContent && onMaskContent(status)}
+          >
+            {statusComponent && (
+              <div className={`${prefix}-qrcode__mask`}>
+                {React.cloneElement(statusComponent as React.ReactElement, {
+                  onClick: (e: React.MouseEvent) => {
+                    onClickMaskEl && onClickMaskEl(status)
+                    ;(statusComponent as React.ReactElement).props.onClick?.(e)
+                  }
+                })}
+              </div>
+            )}
+            <QRCodeSVG
+              level="H"
+              imageSettings={{
+                height: 166,
+                width: 166,
+                src: src!,
+                excavate: false
+              }}
+              size={166}
+              value={src!}
+              style={{
+                padding: '11px',
+                backgroundColor: '#fff',
+                display: 'block'
+              }}
+            ></QRCodeSVG>
+          </span>
+          {/* 统一的处理模板 */}
+          <div className={`${prefix}__desc`}>{descriptions[status]}</div>
+        </>
+      )}
+    </div>
+  )
+}
+
+export { UiQrCode, LinkQrcode }
