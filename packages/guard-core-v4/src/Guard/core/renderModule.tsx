@@ -83,7 +83,7 @@ import { GuardMessageView } from '../../Message'
 import { GuardAuthenticationView } from '../../Invitation/AuthenticationBind'
 
 import { i18n } from '../../_utils/locales'
-import { GuardInviteCompleteView } from 'src/Invitation/Complete'
+import { GuardInviteCompleteView } from '../../Invitation/Complete'
 
 const { useEffect, useMemo } = React
 
