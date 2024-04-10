@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard-shim-react",
-  "version": "4.5.13",
+  "version": "4.5.14-alpha.0",
   "description": "Guard shim for react 16 / 17, only be used to internal",
   "types": "dist/typings/src/index.d.ts",
   "module": "dist/guard.min.js",
