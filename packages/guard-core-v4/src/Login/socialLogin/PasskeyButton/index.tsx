@@ -1,7 +1,7 @@
 import { React } from 'shim-react'
 import { useState } from 'react'
 import { useMediaSize } from '../../../_utils/hooks'
-import { get as getWebauthnCredential } from '@github/webauthn-json'
+import { get as getWebauthnCredential, supported } from '@github/webauthn-json'
 import { useGuardHttp } from '../../../_utils/guardHttp'
 import {
   useGuardAppId,
@@ -24,7 +24,6 @@ const { useCallback } = React
 
 export const PasskeyButton = (props: LoginWithPasskeyProps) => {
   const { onLoginFailed, onLoginSuccess } = props
-  const { isPhoneMedia } = useMediaSize()
   const publicConfig = useGuardPublicConfig()
   const [abortController, setAbortController] = useState<AbortController>()
   const [loading, setLoading] = useState<boolean>(false)
@@ -45,24 +44,12 @@ export const PasskeyButton = (props: LoginWithPasskeyProps) => {
   }
 
   const isShowPasskey = useCallback(() => {
-    if (isPhoneMedia || !publicConfig.passkeyEnabled) {
+    if (!publicConfig.passkeyEnabled) {
       return false
     }
 
-    const userAgent = navigator.userAgent
-
-    if (userAgent.includes('Chrome') && !userAgent.includes('Edge')) {
-      return 'Chrome'
-    } else if (userAgent.includes('Safari') && !userAgent.includes('Chrome')) {
-      return 'Safari'
-    } else if (userAgent.includes('Edg')) {
-      return 'Edge'
-    } else if (userAgent.includes('Brave')) {
-      return 'Brave'
-    } else {
-      return false // 未知浏览器
-    }
-  }, [isPhoneMedia, publicConfig])
+    return supported()
+  }, [publicConfig])
 
   const handleLogin = async () => {
     setLoading(true)
