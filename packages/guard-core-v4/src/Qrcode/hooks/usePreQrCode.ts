@@ -23,6 +23,14 @@ export type RootState = {
    * 二维码随机值
    */
   random?: string
+  /**
+   * 用于与浙里办交换的认证码
+   */
+  authCode?: string
+  /**
+   * 浙里办的认证地址
+   */
+  authUrl?: string
 }
 
 const reducer = (

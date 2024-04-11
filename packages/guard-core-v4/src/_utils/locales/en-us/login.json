@@ -26,6 +26,7 @@
   "pwdLogin": "Password",
   "bindPwdLogin": "Password",
   "appScanLogin": "Mobile APP QR Code",
+  "zjzwScanLogin": "Zhejiang Office QR Code",
   "scanLogin": "QR Code",
   "ldapLogin": "LDAP",
   "adLogin": "AD",

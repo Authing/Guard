@@ -86,8 +86,6 @@ export const RenderContext: React.FC<{
 
   const [defaultLanguageConfig, setDefaultLanguageConfig] = useState<Lang>()
 
-  const [isForeignUserpool, setIsForeignUserpool] = useState(false)
-
   useInitGuardAppendConfig(setForceUpdate, appId, guardProps.appendConfig)
 
   // 状态机
@@ -324,37 +322,6 @@ export const RenderContext: React.FC<{
     setIsAuthFlow(!Boolean(finallyConfig?.__unAuthFlow__))
   }, [finallyConfig])
 
-  // 是否是国外用户池
-  useEffect(() => {
-    const baseUrl = finallyConfig?.host
-
-    if (appId && baseUrl) {
-      try {
-        Axios.get<
-          any,
-          {
-            data: {
-              code: number
-              data: boolean
-              message: string
-            }
-          }
-        >(`${baseUrl}/api/v2/application/${appId}/check-app-is-show-code`)
-          .then(res => {
-            const { code, data } = res?.data || {}
-            if (code === 200) {
-              setIsForeignUserpool(data)
-            }
-          })
-          .catch(error => {
-            console.log('error', error)
-          })
-      } catch (error) {
-        console.log('error', error)
-      }
-    }
-  }, [appId, finallyConfig?.host])
-
   const moduleEvents = useMemo(() => {
     if (!events && !guardStateMachine) return undefined
     return {
@@ -446,8 +413,7 @@ export const RenderContext: React.FC<{
             multipleInstance,
             phoneRegex,
             defaultLanguageConfig,
-            tenantInstance,
-            isForeignUserpool
+            tenantInstance
           }
         : {
             defaultMergedConfig
@@ -468,8 +434,7 @@ export const RenderContext: React.FC<{
       multipleInstance,
       phoneRegex,
       defaultLanguageConfig,
-      tenantInstance,
-      isForeignUserpool
+      tenantInstance
     ]
   )
 

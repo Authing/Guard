@@ -17,7 +17,8 @@ export enum LoginMethods {
   AuthingOtpPush = 'authing-otp-push', // App 扫码登录
   WechatworkCorpQrconnect = 'wechatwork-corp-qrconnect', // 微信企业扫码关注登录
   DingTalkQrcode = 'dingtalk-qrcode', //钉钉扫码
-  Passkey = 'passkey' // passkey
+  Passkey = 'passkey', // passkey
+  ZJZWFWQrcode = 'zjzwfw-qrcode' // 浙江政务钉
 }
 
 export enum OIDCConnectionMode {
@@ -154,6 +155,7 @@ export interface QrCodeItem {
     redirectUrl: string
     identifier: string
     clientId?: string
+    authorizationUrl?: string
   }
 }
 
@@ -422,4 +424,16 @@ export interface ApplicationConfig {
   enableJoinTenant: boolean // 是否允许加入租户
 
   mfaBindConfigs?: { mfa: MFAType; changeable: boolean }[]
+  /** 注册阶段短信安全配置 */
+  registerSmsConfig?: {
+    robot: {
+      switch: 'OFF' | 'ON' | 'CONDON' //ON,COND_ON
+    }
+  }
+  /** 登录阶段短信安全配置 */
+  loginSmsConfig?: {
+    robot: {
+      switch: 'OFF' | 'ON' | 'CONDON' //ON,COND_ON
+    }
+  }
 }

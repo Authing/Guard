@@ -20,6 +20,7 @@ import { getGuardWindow } from '../../Guard/core/useAppendConfig'
 
 import {
   ApplicationConfig,
+  LoginMethods,
   SocialConnectionItem,
   SocialConnectionProvider
 } from '../../Type/application'
@@ -45,6 +46,7 @@ export const HIDE_SOCIALS_SHOWIN_ENTERPRISE = [
   'dingtalk',
   'lark-public',
   'lark-internal',
+  LoginMethods.ZJZWFWQrcode,
   'wechatwork:corp:qrconnect',
   'wechatwork:service-provider:qrconnect',
   'wechatwork:agency:qrconnect',

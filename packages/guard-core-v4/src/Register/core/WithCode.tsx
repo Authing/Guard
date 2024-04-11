@@ -28,9 +28,9 @@ import { parsePhone, useMediaSize } from '../../_utils/hooks'
 import { useIsChangeComplete } from '../utils'
 
 import {
+  useCaptchaCheck,
   useGuardFinallyConfig,
-  useGuardModule,
-  useIsForeignUserpool
+  useGuardModule
 } from '../../_utils/context'
 
 import { GuardModuleType } from '../../Guard'
@@ -125,7 +125,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
   const isInternationSms =
     publicConfig?.internationalSmsConfig?.enabled || false
 
-  const isForeignUserpool = useIsForeignUserpool()
+  const captchaCheck = useCaptchaCheck('register')
   const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
 
   useEffect(() => {
@@ -142,17 +142,17 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
 
   useEffect(() => {
     /** 如果是国外用户池，那么有图形验证码，需要请求图片 */
-    if (isForeignUserpool) {
+    if (captchaCheck) {
       setVerifyCodeUrl(getCaptchaUrl(config.host!))
     }
-  }, [isForeignUserpool, config?.host])
+  }, [captchaCheck, config?.host])
 
   useEffect(() => {
     // 方法发生变化时，图像验证码数据应该清空
-    if (isForeignUserpool) {
+    if (captchaCheck) {
       form?.setFieldsValue({ captchaCode: undefined })
     }
-  }, [form, currentMethod, isForeignUserpool])
+  }, [form, currentMethod, captchaCheck])
 
   const registerByPhoneCode = useCallback(
     async (values: any) => {
@@ -714,9 +714,8 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             />
           )}
         </FormItemIdentify>
-
         {/* 图形验证码 国外用户池并且是手机号 */}
-        {isForeignUserpool && currentMethod === InputMethod.PhoneCode && (
+        {captchaCheck && currentMethod === InputMethod.PhoneCode && (
           <Form.Item
             className="authing-g2-input-form"
             validateTrigger={['onBlur', 'onChange']}
