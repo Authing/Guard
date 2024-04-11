@@ -192,7 +192,7 @@ export const GetPasskeyVerifyChallenge = async (
   const { post } = getGuardHttp()
 
   return await post(
-    '/api/v3/webauthn/login/initialize',
+    '/api/v3/webauthn/mfa-verify/initialize',
     {},
     {
       headers: {
