@@ -209,5 +209,7 @@
   "welcomeJoin": "Inviting you to join",
   "inputCaptcha": "Please enter the authentication code",
   "verifyAccount": "The identity verification code has been sent to {{0}}",
-  "captchaMaxErrorCount": "Verification code input error {{0}} times, the link will become invalid"
+  "captchaMaxErrorCount": "Verification code input error {{0}} times, the link will become invalid",
+  "pendingMsg": "You have completed the application to join 「{{0}}」.<br />Please wait for the administrator's approval before you receive the email. Please pay attention.",
+  "doneMsg": "Successfully applied to join, please check your email!"
 }

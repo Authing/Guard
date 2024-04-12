@@ -7,7 +7,14 @@ import {
   useGuardModule,
   useGuardPublicConfig
 } from '../../_utils/context'
-import { Form, Input, Select, DatePicker, message } from 'shim-antd'
+import {
+  Form,
+  Input,
+  Select,
+  DatePicker,
+  message,
+  notification
+} from 'shim-antd'
 
 import { ChangeLanguage } from '../../ChangeLanguage'
 import SubmitButton from '../../SubmitButton'
@@ -30,7 +37,7 @@ export const GuardApplicationView = () => {
 
   const config = useGuardFinallyConfig()
   const events = useGuardEvents()
-  const initData = useGuardInitData<{ identifier: string }>()
+  const initData = useGuardInitData<{ identifier: string; inviter: any }>()
 
   const { changeModule } = useGuardModule()
 
@@ -44,27 +51,43 @@ export const GuardApplicationView = () => {
 
   const verifyCodeLength = publicConfig?.verifyCodeLength
 
-  const [inviter, setInviter] = useState('')
+  // const [inviter, setInviter] = useState('')
 
-  const getConfig = useCallback(async () => {
-    const { data } = await get(
-      `/api/v3/get-universal-invitation-public-config?identifier=${initData?.identifier}`
-    )
-    setInviter(data.inviter.displayName)
-  }, [initData])
+  // const getConfig = useCallback(async () => {
+  //   const { data } = await get(
+  //     `/api/v3/get-universal-invitation-public-config?identifier=${initData?.identifier}`
+  //   )
+  //   setInviter(data.inviter.displayName)
+  // }, [initData])
 
-  useEffect(() => {
-    getConfig()
-  }, [getConfig])
+  // useEffect(() => {
+  //   getConfig()
+  // }, [getConfig])
 
   const onFinishHandle = async () => {
     try {
       submitButtonRef.current?.onSpin(true)
-      // await post('/aa', { ...form.getFieldsValue() })
-      changeModule?.(GuardModuleType.MESSAGE, {
-        message:
-          '你已完成加入「北京奥星科技有限公司」的申请。<br />请等待管理员审批通过后，你将收到邮件，敬请留意。'
+      const {
+        statusCode,
+        message: msg,
+        data
+      } = await post('/api/v3/signup-by-invitation', {
+        ...form.getFieldsValue(),
+        identifier: initData?.identifier,
+        profile: {
+          ...form.getFieldsValue()
+        }
       })
+      if (statusCode !== 200) {
+        message.error(msg)
+      } else {
+        changeModule?.(GuardModuleType.MESSAGE, {
+          message:
+            data.status === 'PENDING'
+              ? t('common.pendingMsg', [initData?.inviter?.displayName])
+              : t('common.doneMsg')
+        })
+      }
     } catch (error) {
     } finally {
       submitButtonRef.current?.onSpin(false)
@@ -78,7 +101,7 @@ export const GuardApplicationView = () => {
           <img src={config?.logo} alt="" className="icon" />
           <div className="g2-view-header-container">
             <div className="invitation-welcome">
-              {inviter} {t('common.welcomeJoin')}
+              {initData?.inviter?.displayName} {t('common.welcomeJoin')}
             </div>
             <div className="title">{config?.title}</div>
           </div>

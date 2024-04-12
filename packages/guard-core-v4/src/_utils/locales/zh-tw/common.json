@@ -207,5 +207,7 @@
   "welcomeJoin": "邀請你加入",
   "inputCaptcha": "請輸入身份驗證碼",
   "verifyAccount": "身份驗證碼已發送至 {{0}}",
-  "captchaMaxErrorCount": "驗證碼輸入錯誤 {{0}} 次，連結將會失效"
+  "captchaMaxErrorCount": "驗證碼輸入錯誤 {{0}} 次，連結將會失效",
+  "pendingMsg": "你已完成加入「{{0}}」的申請。< br />請等待管理員審批通過後，你將收到郵件，敬請留意。",
+  "doneMsg": "申請加入成功，敬請查收郵件！"
 }

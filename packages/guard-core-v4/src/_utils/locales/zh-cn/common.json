@@ -209,5 +209,7 @@
   "welcomeJoin": "邀请你加入",
   "inputCaptcha": "请输入身份验证码",
   "verifyAccount": "身份验证码已发送至 {{0}}",
-  "captchaMaxErrorCount": "验证码输入错误 {{0}} 次，链接将会失效"
+  "captchaMaxErrorCount": "验证码输入错误 {{0}} 次，链接将会失效",
+  "pendingMsg": "你已完成加入「{{0}}」的申请。<br />请等待管理员审批通过后，你将收到邮件，敬请留意。",
+  "doneMsg": "申请加入成功，敬请查收邮件！"
 }
