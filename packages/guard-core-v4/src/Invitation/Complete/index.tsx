@@ -28,8 +28,8 @@ export const GuardInviteCompleteView = () => {
   const {
     metaData,
     extendsFieldsI18n,
-    enabledExtIdpBind,
-    qrCodeBindMethods,
+    // enabledExtIdpBind,
+    // qrCodeBindMethods,
     extendsFields,
     canBack = true,
     registerInfoFillMsg
@@ -42,10 +42,10 @@ export const GuardInviteCompleteView = () => {
   const nextStepHandle = async (data: CompleteInfoRequest) => {
     const { fieldValues } = data
 
-    const wecomQrs =
-      qrCodeBindMethods?.['wechatwork-service-provider-qrconnect'] || []
-    const wecomNewQrs =
-      qrCodeBindMethods?.['wechatwork-service-provider-qrconnect-v2'] || []
+    // const wecomQrs =
+    //   qrCodeBindMethods?.['wechatwork-service-provider-qrconnect'] || []
+    // const wecomNewQrs =
+    //   qrCodeBindMethods?.['wechatwork-service-provider-qrconnect-v2'] || []
 
     const { registerProfile, udf } = fieldValuesToRegisterProfile(
       extendsFields!,
@@ -106,25 +106,24 @@ export const GuardInviteCompleteView = () => {
   }
 
   return (
-    <div className="g2-view-container g2-complete-info">
+    <div className="g2-view-container g2-complete-info g2-invitation-complete">
       <div className="g2-view-header">
         {canBack && initData?.originModule && (
           <BackCustom
-          // text={t('common.ey.backPreStep')}
-          // clickHandle={() => {
-          //   initData?.originModule &&
-          //     changeModule?.(initData.originModule, initData.originContext)
-          // }}
+            onBack={() => {
+              initData?.originModule &&
+                changeModule?.(initData.originModule, initData.originContext)
+            }}
           >
-            返回
+            {t('common.back')}
           </BackCustom>
         )}
         <div className="content">
-          <div className="title">{t('common.ey.completeInfo')}</div>
+          <div className="title">{t('common.invitation.completeInfo')}</div>
           <div className="title-explain">
             {registerInfoFillMsg
               ? registerInfoFillMsg
-              : t('common.ey.completeInfoDesc')}
+              : t('common.invitation.completeInfoDesc')}
           </div>
         </div>
       </div>

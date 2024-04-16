@@ -1,7 +1,7 @@
 import { Form } from 'shim-antd'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useGuardView } from '../..'
+import { EmailScene, SceneType, useGuardView } from '../..'
 import { ChangeLanguage } from '../../ChangeLanguage'
 import { extendsFieldsToMetaData } from '../../CompleteInfo/utils'
 import { GuardModuleType } from '../../Guard'
@@ -15,7 +15,8 @@ import {
   useGuardFinallyConfig,
   useGuardHttpClient,
   useGuardInitData,
-  useGuardModule
+  useGuardModule,
+  useGuardPublicConfig
 } from '../../_utils/context'
 import { InviteContext, useRegisterHandleHook } from '../interface'
 import './style.less'
@@ -37,20 +38,27 @@ export const GuardAuthenticationView = () => {
 
   const { post } = useGuardHttpClient()
 
+  const publicConfig = useGuardPublicConfig()
+
+  const verifyCodeLength = publicConfig?.verifyCodeLength
+
   const [form] = Form.useForm()
 
   const submitButtonRef = useRef<any>(null)
 
   const [disabled, setDisabled] = useState<boolean>(true)
 
-  const [verifyType, setVerifyType] = useState<'emailCode' | 'phoneCode'>(
-    initData.receiverType
+  const [verifyType, setVerifyType] = useState<'emailCode' | 'smsCode'>(
+    initData.sendVerifyCodeMethod === 'prioritySMS' && initData.phone
+      ? 'smsCode'
+      : 'emailCode'
   )
+  const btnRef = useRef(null)
 
   const verifyAccount = useMemo(() => {
     if (verifyType === 'emailCode') {
       return initData.email
-    } else if (verifyType === 'phoneCode') {
+    } else if (verifyType === 'smsCode') {
       return initData.phone
     }
   }, [initData.email, initData.phone, verifyType])
@@ -59,36 +67,30 @@ export const GuardAuthenticationView = () => {
     const constants = {
       prioritySMS: {
         emailCode: {
-          desc: t('common.ey.sendSms'),
+          desc: t('common.sendSms'),
           show: initData.phone,
-          receiverType: 'phoneCode'
+          receiverType: 'smsCode'
         },
-        phoneCode: {
-          desc: t('common.ey.sendEmail'),
+        smsCode: {
+          desc: t('common.sendEmail'),
           show: initData.email,
           receiverType: 'emailCode'
         }
       },
       priorityEmail: {
         emailCode: {
-          desc: t('common.ey.sendSms'),
+          desc: t('common.sendSms'),
           show: initData.phone,
-          receiverType: 'phoneCode'
+          receiverType: 'smsCode'
         },
-        phoneCode: {
-          desc: t('common.ey.sendEmail'),
+        smsCode: {
+          desc: t('common.sendEmail'),
           show: initData.email,
           receiverType: 'emailCode'
         }
-      },
-      SMS: {
-        show: false
-      },
-      email: {
-        show: false
       }
     }
-    const codeMethod = initData.sendIdentifierCodeMethod
+    const codeMethod = initData.sendVerifyCodeMethod
     if (['prioritySMS', 'priorityEmail'].some(type => codeMethod === type)) {
       return {
         ...(constants[codeMethod] as any)[verifyType]
@@ -98,7 +100,19 @@ export const GuardAuthenticationView = () => {
   }, [initData, t, verifyType])
 
   const reSendVerifyCode = useCallback(
-    async params => await post('/api/v3/resend-verification', params),
+    async params =>
+      await post(
+        params.receiverType === 'emailCode'
+          ? '/api/v2/email/send'
+          : '/api/v2/sms/send',
+        {
+          ...params,
+          scene:
+            params.receiverType === 'emailCode'
+              ? EmailScene.REGISTER_VERIFY_CODE
+              : SceneType.SCENE_TYPE_REGISTER
+        }
+      ),
     [post]
   )
 
@@ -110,22 +124,20 @@ export const GuardAuthenticationView = () => {
     const res = await post('/api/v3/verify-invite-code', {
       code: captcha,
       receiverType: verifyType,
-      ticket: initData.ticket
+      token: initData.token
     })
 
-    const { statusCode, data, onGuardHandling } = res
+    const { statusCode, onGuardHandling } = res
     if (statusCode === 200) {
       const {
         extendsFields = [],
         extendsFieldsOptions = [],
-        enabledRegisterFillInfo,
-        enabledExtIdpBind,
-        qrCodeBindMethods
-      } = data
+        enabledInfoFill
+      } = initData
 
       const context = {
         code: captcha,
-        ticket: initData.ticket,
+        token: initData.token,
         receiverType: verifyType
       }
 
@@ -148,51 +160,26 @@ export const GuardAuthenticationView = () => {
         }
       )
 
+      console.log('needCompleteData: ', needCompleteData)
+
       const metaData = extendsFieldsToMetaData(
         needCompleteData,
         extendsFieldsOptions
       )
 
-      const wecomQrs =
-        qrCodeBindMethods?.['wechatwork-service-provider-qrconnect'] || []
-      const wecomNewQrs =
-        qrCodeBindMethods?.['wechatwork-service-provider-qrconnect-v2'] || []
+      console.log('metaData:-----', metaData)
 
-      if (enabledRegisterFillInfo && metaData.length > 0) {
+      if (enabledInfoFill && metaData.length > 0) {
         changeModule?.(GuardModuleType.INVITE_COMPLETE, {
           ...initData,
-          ...data,
+          // ...data,
           verifyAccount,
           metaData: metaData,
           originModule: GuardModuleType.INVITE_AUTH,
           originContext: initData,
           context
         })
-      }
-      // else if (enabledExtIdpBind && wecomQrs.length > 0) {
-      //   // 开启身份源绑定
-      //   changeModule?.(GuardModuleType.EY_IDENTITY_BIND, {
-      //     ...initData,
-      //     ...data,
-      //     verifyAccount,
-      //     context,
-      //     weComConfig: wecomQrs[0],
-      //     originModule: GuardModuleType.EY_CHECK_CAPTCHA,
-      //     originContext: initData
-      //   })
-      // } else if (enabledExtIdpBind && wecomNewQrs.length > 0) {
-      //   changeModule?.(GuardModuleType.EY_IDENTITY_BIND, {
-      //     ...initData,
-      //     ...data,
-      //     verifyAccount,
-      //     context,
-      //     weComConfig: wecomNewQrs[0],
-      //     isNew: true,
-      //     originModule: GuardModuleType.EY_CHECK_CAPTCHA,
-      //     originContext: initData
-      //   })
-      // }
-      else {
+      } else {
         await onRegisterHandle(context)
       }
     } else {
@@ -201,8 +188,28 @@ export const GuardAuthenticationView = () => {
   }
 
   useEffect(() => {
-    verifyCodeRef.current && verifyCodeRef.current?.send()
+    console.log('verifyCodeRef.current: ', verifyCodeRef.current.click)
+
+    verifyCodeRef.current && verifyCodeRef.current?.click()
   }, [])
+
+  const onSend = async (type: 'default' | 'reSend') => {
+    const receiverType =
+      type === 'default' ? verifyType : descConstants.receiverType
+    const res = await reSendVerifyCode({
+      phone: initData.phone,
+      phoneCountryCode: initData.phoneCountryCode,
+      email: initData.email,
+      receiverType
+    })
+    if (res.code === 200) {
+      setVerifyType(receiverType)
+      return true
+    } else {
+      res.onGuardHandling?.()
+      return false
+    }
+  }
 
   return (
     <div className="g2-view-container g2-view-invite">
@@ -226,10 +233,11 @@ export const GuardAuthenticationView = () => {
           onFinish={onFinishHandle}
           onFinishFailed={() => submitButtonRef.current?.onError()}
           onValuesChange={v => {
+            console.log('verifyCodeLength: ', verifyCodeLength)
+
             const codes: string[] = v.code
             if (
-              codes.filter(code => Boolean(code)).length >=
-              initData.verifyCodeMaxLength
+              codes.filter(code => Boolean(code)).length >= verifyCodeLength
             ) {
               setDisabled(false)
             } else {
@@ -237,13 +245,9 @@ export const GuardAuthenticationView = () => {
             }
           }}
         >
-          <VerifyCodeFormItem
-            codeLength={initData.verifyCodeMaxLength}
-            name="code"
-          >
+          <VerifyCodeFormItem codeLength={verifyCodeLength} name="code">
             <VerifyCodeInput
-              // ref={verifyCodeRef}
-              length={initData.verifyCodeMaxLength}
+              length={verifyCodeLength}
               showDivider={true}
               gutter={'10px'}
               // beforeSend={async () => {
@@ -263,6 +267,13 @@ export const GuardAuthenticationView = () => {
               // }}
             />
           </VerifyCodeFormItem>
+          <div className="resend_container">
+            <SendCodeBtn
+              btnRef={verifyCodeRef}
+              beforeSend={async () => await onSend('default')}
+              type="link"
+            />
+          </div>
           <SubmitButton
             text={t('login.nextStep') as string}
             ref={submitButtonRef}
@@ -270,24 +281,13 @@ export const GuardAuthenticationView = () => {
           />
         </Form>
         {descConstants?.show && (
-          <div className="resend_email">
+          <div className="resend_container">
             <SendCodeBtn
+              btnRef={btnRef}
               sendDesc={descConstants.desc}
-              className="resend_code"
-              beforeSend={async () => {
-                const res = await reSendVerifyCode({
-                  ticket: initData.ticket,
-                  receiverType: descConstants.receiverType
-                })
-                if (res.statusCode === 200) {
-                  setVerifyType(descConstants.receiverType)
-                  return true
-                } else {
-                  res.onGuardHandling?.()
-                  return false
-                }
-              }}
+              beforeSend={async () => await onSend('reSend')}
               type="link"
+              className="resend_code"
             />
           </div>
         )}

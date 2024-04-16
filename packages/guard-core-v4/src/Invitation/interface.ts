@@ -11,19 +11,21 @@ import { getGuardHttp } from '../_utils/guardHttp'
 import { ApiCode, CodeAction } from '../_utils/responseManagement/interface'
 
 export interface InviteContext {
-  autoLogin: boolean
+  // autoLogin: boolean
+  token: string
   email: string | null
   ticket: string
   enabledIdentifierCodeConfig: boolean
-  enabledRegisterFillInfo: boolean
-  enabledExtIdpBind: boolean
+  enabledInfoFill: boolean
+  // enabledExtIdpBind: boolean
   allowSkipBindExtIdp: boolean
-  sendIdentifierCodeMethod: 'prioritySMS' | 'priorityEmail' | 'SMS' | 'email'
-  receiverType: 'emailCode' | 'phoneCode'
+  sendVerifyCodeMethod: 'prioritySMS' | 'priorityEmail'
+  // receiverType: 'emailCode' | 'phoneCode'
+  phoneCountryCode: string | null
   phone: string | null
   username: string | null
   name: string | null
-  verifyCodeMaxLength: number
+  // verifyCodeMaxLength: number
   verifyCodeMaxErrCount: number
   extendsFieldsI18n?: {
     [key: string]: Record<Lang, { enabled: boolean; value: string }>
@@ -36,14 +38,14 @@ export interface InviteContext {
     }[]
   }[]
   extendsFields: any
-  qrCodeBindMethods: Record<
-    string,
-    { QRConfig: any; id: string; isDefault: boolean; title: string }[]
-  >
-  socialConnections: any[]
+  // qrCodeBindMethods: Record<
+  //   string,
+  //   { QRConfig: any; id: string; isDefault: boolean; title: string }[]
+  // >
+  // socialConnections: any[]
   registerInfoFillMsg?: string
   // 身份源绑定提示信息
-  extIdpBindMsg?: string
+  // extIdpBindMsg?: string
 }
 
 export interface GuardInviteLoginInitData extends Partial<InviteContext> {
@@ -128,11 +130,11 @@ export const useRegisterHandleHook = (
         }
       }
 
-      const res = await post('/api/v3/register-invitation-user', context)
+      const res = await post('/api/v3/join-by-invitation', context)
       const { statusCode, code, apiCode, data, onGuardHandling, message } = res
       if (statusCode === 200) {
         events?.onRegister?.(data, authClient)
-        // changeModule?.(GuardModuleType.EY_PRE_CHECK_EMAIL)
+        changeModule?.(GuardModuleType.MESSAGE)
       } else {
         onGuardHandling?.()
         events?.onRegisterError?.({

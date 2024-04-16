@@ -29,7 +29,8 @@ export enum GuardModuleType {
   APPLY_INVITATION = 'applyInvitation',
   MESSAGE = 'message',
   INVITE_AUTH = 'inviteAuth',
-  INVITE_COMPLETE = 'inviteComplete'
+  INVITE_COMPLETE = 'inviteComplete',
+  INVITE_EXPIRE = 'inviteExpire' // 邀请链接过期
 }
 export interface GuardModuleAction {
   action: string

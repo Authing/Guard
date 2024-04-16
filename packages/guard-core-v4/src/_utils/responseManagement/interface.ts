@@ -42,7 +42,8 @@ export enum ApiCode {
 
   TENANT_PORTAL = 1644,
   SELECT_ACCOUNT_2_LOGIN = 2930,
-  RESET_ACCOUNT_NAME = 1108 // 用户名重复
+  RESET_ACCOUNT_NAME = 1108, // 用户名重复
+  INVITE_EXPIRE = 4032 // 链接过期
 }
 
 export const ChangeModuleApiCodeMapping: Record<string, GuardModuleType> = {
@@ -61,5 +62,6 @@ export const ChangeModuleApiCodeMapping: Record<string, GuardModuleType> = {
   [ApiCode.UNSAFE_PASSWORD_RESET]: GuardModuleType.UNSAFE_PASSWORD_RESET,
   [ApiCode.FLOW_SELECT_ACCOUNT]: GuardModuleType.FLOW_SELECT_ACCOUNT,
   [ApiCode.SELECT_ACCOUNT_2_LOGIN]: GuardModuleType.SELECT_ACCOUNT_2_LOGIN,
-  [ApiCode.TENANT_PORTAL]: GuardModuleType.TENANT_PORTAL
+  [ApiCode.TENANT_PORTAL]: GuardModuleType.TENANT_PORTAL,
+  [ApiCode.INVITE_EXPIRE]: GuardModuleType.INVITE_EXPIRE
 }

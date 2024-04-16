@@ -84,6 +84,7 @@ import { GuardAuthenticationView } from '../../Invitation/AuthenticationBind'
 
 import { i18n } from '../../_utils/locales'
 import { GuardInviteCompleteView } from '../../Invitation/Complete'
+import { GuardInviteExpireView } from '../../Invitation/Error'
 
 const { useEffect, useMemo } = React
 
@@ -230,7 +231,8 @@ export const RenderModule: React.FC<{
     [GuardModuleType.INVITE_AUTH]: key => <GuardAuthenticationView key={key} />,
     [GuardModuleType.INVITE_COMPLETE]: key => (
       <GuardInviteCompleteView key={key} />
-    )
+    ),
+    [GuardModuleType.INVITE_EXPIRE]: key => <GuardInviteExpireView key={key} />
   }
 
   // 初始化 请求拦截器 （Error Code）

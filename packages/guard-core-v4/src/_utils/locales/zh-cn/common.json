@@ -211,5 +211,13 @@
   "verifyAccount": "身份验证码已发送至 {{0}}",
   "captchaMaxErrorCount": "验证码输入错误 {{0}} 次，链接将会失效",
   "pendingMsg": "你已完成加入「{{0}}」的申请。<br />请等待管理员审批通过后，你将收到邮件，敬请留意。",
-  "doneMsg": "申请加入成功，敬请查收邮件！"
+  "doneMsg": "申请加入成功，敬请查收邮件！",
+  "inviteExpire": "验证失败，当前链接已失效",
+  "inviteExpireMsg": "请联系邀请人为您重新发送邀请邮件",
+  "sendSms": "未收到邮件？点击发送短信",
+  "sendEmail": "未收到短信？点击发送邮件",
+  "invitation": {
+    "completeInfo": "请补全信息",
+    "completeInfoDesc": "请补全下方信息，信息为非必填的情况下， 可点击「下一步」直接跳过"
+  }
 }
