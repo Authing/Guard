@@ -138,3 +138,9 @@ export enum EmailScene {
   // 自助解锁验证码
   SELF_UNLOCKING_VERIFY_CODE = 'SELF_UNLOCKING_VERIFY_CODE'
 }
+
+export enum ForcedModifyPwdCycleUnit {
+  Day = 'DAY',
+  Month = 'MONTH',
+  Year = 'YEAR'
+}
