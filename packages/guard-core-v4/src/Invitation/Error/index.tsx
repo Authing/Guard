@@ -7,10 +7,7 @@ export const GuardInviteExpireView = () => {
     <GuardErrorView
       error={{
         name: 'invite_expire',
-        message:
-          i18n.t('common.inviteExpire') +
-          '</br>' +
-          i18n.t('common.inviteExpireMsg')
+        message: '当前邀请链接已失效，请联系相关管理员为你重新发起邀请。'
       }}
     />
   )
