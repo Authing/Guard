@@ -1,14 +1,14 @@
 import { message as messageNote } from 'shim-antd'
 import { useCallback } from 'react'
-import { GuardModuleType, Lang } from '..'
+import { GuardModuleType } from '../Guard/module'
 import { useGuardAuthClient } from '../Guard/authClient'
+import { Lang } from '../Type'
 import {
   useGuardEvents,
   useGuardHttpClient,
   useGuardModule
 } from '../_utils/context'
 import { getGuardHttp } from '../_utils/guardHttp'
-import { ApiCode, CodeAction } from '../_utils/responseManagement/interface'
 
 export interface InviteContext {
   // autoLogin: boolean

@@ -4,7 +4,6 @@ import { ChangeLanguage } from '../../ChangeLanguage'
 import { CompleteInfo } from '../../CompleteInfo/core/completeInfo'
 import { CompleteInfoRequest } from '../../CompleteInfo/interface'
 import { fieldValuesToRegisterProfile } from '../../CompleteInfo/utils'
-import { GuardModuleType } from '../../Guard'
 import {
   useGuardEvents,
   useGuardFinallyConfig,
