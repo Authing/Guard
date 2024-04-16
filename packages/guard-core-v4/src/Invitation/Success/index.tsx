@@ -1,5 +1,5 @@
 import React from 'react'
-import { GuardMessageView } from 'src/Message'
+import { GuardMessageView } from '../../Message'
 
 export const GuardInviteSuccessView = () => {
   return (
