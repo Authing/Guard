@@ -30,7 +30,8 @@ export enum GuardModuleType {
   MESSAGE = 'message',
   INVITE_AUTH = 'inviteAuth',
   INVITE_COMPLETE = 'inviteComplete',
-  INVITE_EXPIRE = 'inviteExpire' // 邀请链接过期
+  INVITE_EXPIRE = 'inviteExpire', // 邀请链接过期
+  INVITE_SUCCESS = 'inviteSuccess' // 邀请成功
 }
 export interface GuardModuleAction {
   action: string

@@ -134,7 +134,7 @@ export const useRegisterHandleHook = (
       const { statusCode, code, apiCode, data, onGuardHandling, message } = res
       if (statusCode === 200) {
         events?.onRegister?.(data, authClient)
-        changeModule?.(GuardModuleType.MESSAGE)
+        changeModule?.(GuardModuleType.INVITE_SUCCESS)
       } else {
         onGuardHandling?.()
         events?.onRegisterError?.({
