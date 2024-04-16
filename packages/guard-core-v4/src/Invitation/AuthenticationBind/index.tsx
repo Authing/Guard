@@ -1,5 +1,5 @@
 import { Form } from 'shim-antd'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { React } from 'shim-react'
 import { useTranslation } from 'react-i18next'
 import { EmailScene } from '../../Type'
 import { useGuardView } from '../../Guard/core/hooks/useGuardView'
@@ -22,6 +22,8 @@ import {
 } from '../../_utils/context'
 import { InviteContext, useRegisterHandleHook } from '../interface'
 import './style.less'
+
+const { useCallback, useEffect, useMemo, useRef, useState } = React
 
 export const GuardAuthenticationView = () => {
   const initData = useGuardInitData<InviteContext>()

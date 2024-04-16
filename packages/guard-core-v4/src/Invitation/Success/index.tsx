@@ -1,4 +1,4 @@
-import React from 'react'
+import { React } from 'shim-react'
 import { GuardMessageView } from '../../Message'
 
 export const GuardInviteSuccessView = () => {

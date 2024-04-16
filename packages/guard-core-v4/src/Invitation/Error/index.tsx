@@ -1,4 +1,4 @@
-import React from 'react'
+import { React } from 'shim-react'
 import { GuardErrorView } from '../../Error'
 import { i18n } from '../../_utils/locales'
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import { React } from 'shim-react'
 import { useTranslation } from 'react-i18next'
 import { ChangeLanguage } from '../../ChangeLanguage'
 import { CompleteInfo } from '../../CompleteInfo/core/completeInfo'
