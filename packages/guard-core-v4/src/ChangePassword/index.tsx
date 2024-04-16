@@ -23,7 +23,7 @@ import { RotateReset } from './core/rotateReset'
 import { PasswordNotSafeReset } from './core/PasswordNotSafeReset'
 
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
-import { ForcedModifyPwdCycleUnit } from 'src/Type'
+import { ForcedModifyPwdCycleUnit } from '../Type'
 
 const { useMemo } = React
 
