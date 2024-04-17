@@ -211,5 +211,13 @@
   "verifyAccount": "The identity verification code has been sent to {{0}}",
   "captchaMaxErrorCount": "Verification code input error {{0}} times, the link will become invalid",
   "pendingMsg": "You have completed the application to join 「{{0}}」.<br />Please wait for the administrator's approval before you receive the email. Please pay attention.",
-  "doneMsg": "Successfully applied to join, please check your email!"
+  "doneMsg": "Successfully applied to join, please check your email!",
+  "inviteExpire": "Verification failed, current link is no longer valid",
+  "inviteExpireMsg": "Please contact the inviter to resend the invitation email to you",
+  "sendSms": "Did not receive the email? Click to send SMS",
+  "sendEmail": "Did not receive the text message? Click to send email",
+  "invitation": {
+    "completeInfo": "Please complete the information",
+    "completeInfoDesc": "Please complete the information below. If the information is not mandatory, you can click「Next」to skip it directly"
+  }
 }

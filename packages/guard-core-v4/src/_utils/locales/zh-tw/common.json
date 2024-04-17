@@ -209,5 +209,13 @@
   "verifyAccount": "身份驗證碼已發送至 {{0}}",
   "captchaMaxErrorCount": "驗證碼輸入錯誤 {{0}} 次，連結將會失效",
   "pendingMsg": "你已完成加入「{{0}}」的申請。< br />請等待管理員審批通過後，你將收到郵件，敬請留意。",
-  "doneMsg": "申請加入成功，敬請查收郵件！"
+  "doneMsg": "申請加入成功，敬請查收郵件！",
+  "inviteExpire": "驗證失敗，當前連結已失效",
+  "inviteExpireMsg": "請聯系邀請人為您重新發送邀請郵件",
+  "sendSms": "未收到郵件？點擊發送短信",
+  "sendEmail": "未收到簡訊？點擊發送郵件",
+  "invitation": {
+    "completeInfo": "請補全資訊",
+    "completeInfoDesc": "請補全下方資訊，資訊為非必填的情况下，可點擊「下一步」直接跳過"
+  }
 }
