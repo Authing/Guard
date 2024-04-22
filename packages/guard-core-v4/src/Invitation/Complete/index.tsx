@@ -15,6 +15,7 @@ import {
   GuardInviteCompleteInitData,
   useRegisterHandleHook
 } from '../interface'
+import './style.less'
 
 export const GuardInviteCompleteView = () => {
   const initData = useGuardInitData<GuardInviteCompleteInitData>()
@@ -128,7 +129,7 @@ export const GuardInviteCompleteView = () => {
       </div>
       <div className="g2-view-tabs g2-completeInfo-content">
         <CompleteInfo
-          // extendsFieldsI18n={extendsFieldsI18n}
+          extendsFieldsI18n={extendsFieldsI18n}
           // submitText={t('login.nextStep')}
           metaData={metaData}
           businessRequest={nextStepHandle}
