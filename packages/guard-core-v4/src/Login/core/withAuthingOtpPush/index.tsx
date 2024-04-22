@@ -58,10 +58,11 @@ export function LoginWithAuthingOtpPush(props: LoginWithAuthingOtpPushProps) {
   }, [])
 
   const signinByPush = async (props: OnLoginProps) => {
-    const { account } = props
+    const { account, agreementIds } = props
     const url = '/api/v3/signin-by-push'
     const body = {
-      account
+      account,
+      agreementIds
     }
     return await post(url, body)
   }

@@ -76,6 +76,10 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
 
   const [acceptedAgreements, setAcceptedAgreements] = useState(false)
 
+  const [acceptedAgreementIds, setAcceptedAgreementIds] = useState<
+    (string | number)[]
+  >([])
+
   const { isPhoneMedia } = useMediaSize()
 
   const [validated, setValidated] = useState(false)
@@ -123,7 +127,8 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
         message: tips
       } = await post('/api/v2/ldap/verify-user', {
         username,
-        password
+        password,
+        agreementIds: agreements.length ? acceptedAgreementIds : undefined
       })
 
       submitButtonRef.current.onSpin(false)
@@ -193,6 +198,14 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
     // .finally(() => {
     //   submitButtonRef.current?.onSpin(false)
     // })
+  }
+
+  const onAgreementsChange = (
+    value: boolean,
+    acceptAgreement: (string | number)[]
+  ) => {
+    setAcceptedAgreements(value)
+    setAcceptedAgreementIds(acceptAgreement)
   }
 
   return (
@@ -270,7 +283,7 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
         )}
         {Boolean(agreements?.length) && (
           <Agreements
-            onChange={setAcceptedAgreements}
+            onChange={onAgreementsChange}
             agreements={agreements}
             showError={validated}
           />

@@ -14,7 +14,7 @@ const { useState, useMemo, useEffect } = React
 
 export interface AgreementsProps {
   value?: boolean
-  onChange?: (value: boolean) => void
+  onChange?: (value: boolean, acceptList: (string | number)[]) => void
   style?: React.CSSProperties
   agreements: Agreement[]
   showError?: boolean
@@ -60,8 +60,8 @@ export const Agreements: React.FC<AgreementsProps> = ({
   }, [acceptList, agreements])
 
   useEffect(() => {
-    onChange(isAccept)
-  }, [isAccept, onChange])
+    onChange(isAccept, acceptList)
+  }, [isAccept, onChange, acceptList])
 
   return (
     <div

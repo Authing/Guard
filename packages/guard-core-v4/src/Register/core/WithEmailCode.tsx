@@ -78,6 +78,8 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
 
   const [acceptedAgreements, setAcceptedAgreements] = useState(false)
 
+  const acceptedAgreementIds = useRef<(string | number)[]>([])
+
   const [validated, setValidated] = useState(false)
 
   const verifyCodeLength = publicConfig?.verifyCodeLength ?? 4
@@ -140,7 +142,10 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
             context: JSON.stringify(context),
             generateToken: true
             // params: getUserRegisterParams(),
-          }
+          },
+          agreementIds: agreements.length
+            ? acceptedAgreementIds.current
+            : undefined
         }
 
         if (needPassword) {
@@ -239,6 +244,14 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
     ]
   )
 
+  const onAgreementsChange = (
+    value: boolean,
+    acceptAgreement: (string | number)[]
+  ) => {
+    setAcceptedAgreements(value)
+    acceptedAgreementIds.current = acceptAgreement
+  }
+
   return (
     <div className="authing-g2-register-email">
       <Form
@@ -306,7 +319,7 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
         </Form.Item>
         {Boolean(agreements?.length) && (
           <Agreements
-            onChange={setAcceptedAgreements}
+            onChange={onAgreementsChange}
             agreements={agreements}
             showError={validated}
           />
