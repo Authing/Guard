@@ -39,7 +39,7 @@ export const GuardMessageView: React.FC<MessageProps> = propsInitData => {
             style={{
               width: 135,
               height: 103,
-              backgroundImage: `url(${publicConfig.cdnBase}/authing_message.svg)`,
+              backgroundImage: `url(${publicConfig.cdnBase}/authing_message.svg?v=1)`,
               backgroundSize: 'contain'
             }}
           />

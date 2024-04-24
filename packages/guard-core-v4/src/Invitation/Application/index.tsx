@@ -84,7 +84,7 @@ export const GuardApplicationView = () => {
         changeModule?.(GuardModuleType.MESSAGE, {
           message:
             data.status === 'PENDING'
-              ? t('common.pendingMsg', [initData?.inviter?.displayName])
+              ? t('common.pendingMsg', [config.title])
               : t('common.doneMsg')
         })
       }
