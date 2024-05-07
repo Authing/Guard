@@ -23,6 +23,8 @@ import {
 
 import '@authing/react18-ui-components/lib/index.min.css'
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export * from './types'
 
 const isDef = (value: unknown) => value !== undefined
@@ -227,7 +229,7 @@ export class Guard {
    * @returns Promise
    */
   async start(el?: string | HTMLElement): Promise<User> {
-    ;(this.options.config as Partial<GuardLocalConfig>).target = el
+    ; (this.options.config as Partial<GuardLocalConfig>).target = el
 
     this.render()
 
@@ -269,7 +271,7 @@ export class Guard {
 
     // 兼容老版本
     const accessToken =
-      localStorage.getItem('accessToken') ||
+      await AsyncStorage.getItem('accessToken') ||
       authClient.tokenProvider.getUser()?.token ||
       ''
 
@@ -347,8 +349,8 @@ export class Guard {
 
     // 生成一个 code_verifier
     const codeChallenge = authClient.generateCodeChallenge()
-
-    localStorage.setItem('codeChallenge', codeChallenge)
+console.log(AsyncStorage,"AsyncStorage")
+    await AsyncStorage.setItem('codeChallenge', codeChallenge)
 
     // 计算 code_verifier 的 SHA256 摘要
     const codeChallengeDigest = authClient.getCodeChallengeDigest({
@@ -377,18 +379,18 @@ export class Guard {
       responseType
     })
 
-    window.location.href = url
+    // window.location.href = url
   }
 
   async handleRedirectCallback() {
-    const { code, codeChallenge } = this.getCodeAndCodeChallenge()
+    const { code, codeChallenge } = await this.getCodeAndCodeChallenge()
 
     const { id_token, access_token } = await this.getAccessTokenByCode(
       code,
       codeChallenge
     )
 
-    this.setTokenCache(access_token, id_token)
+    await this.setTokenCache(access_token, id_token)
   }
 
   private async getAccessTokenByCode(code: string, codeChallenge: string) {
@@ -399,10 +401,10 @@ export class Guard {
     })
   }
 
-  private getCodeAndCodeChallenge() {
+  private async getCodeAndCodeChallenge() {
     const query = this.parseUrlQuery()
     const { code = '' } = query
-    const codeChallenge = localStorage.getItem('codeChallenge') || ''
+    const codeChallenge = await AsyncStorage.getItem('codeChallenge') || ''
 
     return {
       code,
@@ -410,21 +412,21 @@ export class Guard {
     }
   }
 
-  private setTokenCache(accessToken: string, idToken: string) {
-    localStorage.setItem('accessToken', accessToken)
-    localStorage.setItem('idToken', idToken)
+  private async setTokenCache(accessToken: string, idToken: string) {
+    await AsyncStorage.setItem('accessToken', accessToken)
+    await AsyncStorage.setItem('idToken', idToken)
   }
 
-  private clearTokenCache() {
-    localStorage.removeItem('accessToken')
-    localStorage.removeItem('idToken')
+  private async clearTokenCache() {
+    await AsyncStorage.removeItem('accessToken')
+    await AsyncStorage.removeItem('idToken')
   }
 
   private async clearLoginCache() {
     const authClient = await this.getAuthClient()
-    localStorage.removeItem('codeChallenge')
+    await AsyncStorage.removeItem('codeChallenge')
     authClient.tokenProvider.clearUser()
-    this.clearTokenCache()
+    await this.clearTokenCache()
   }
 
   private parseUrlQuery() {
@@ -464,7 +466,7 @@ export class Guard {
 
     const idToken =
       authClient.tokenProvider.getToken() ||
-      localStorage.getItem('idToken') ||
+      await AsyncStorage.getItem('idToken') ||
       ''
 
     if (!idToken) {
@@ -532,7 +534,7 @@ export class Guard {
       // 兜底 redirect 场景下，Safari 和 Firefox 开启『阻止跨站跟踪』后无法退出
       // 此方法只能退出当前设备
       const idToken =
-        authClient.tokenProvider.getToken() || localStorage.getItem('idToken')
+        authClient.tokenProvider.getToken() || await AsyncStorage.getItem('idToken')
       if (idToken) {
         logoutRedirectUri = authClient.buildLogoutUrl({
           expert: true,
@@ -605,7 +607,7 @@ export class Guard {
     evt: T,
     handler: Exclude<GuardEventsKebabToCamelType[T], undefined>
   ) {
-    ;(this.eventListeners as any)[evt].push(handler as any)
+    ; (this.eventListeners as any)[evt].push(handler as any)
   }
 
   show() {
