@@ -23,7 +23,7 @@ import {
 
 import '@authing/react18-ui-components/lib/index.min.css'
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export * from './types'
 
@@ -229,7 +229,7 @@ export class Guard {
    * @returns Promise
    */
   async start(el?: string | HTMLElement): Promise<User> {
-    ; (this.options.config as Partial<GuardLocalConfig>).target = el
+    ;(this.options.config as Partial<GuardLocalConfig>).target = el
 
     this.render()
 
@@ -271,7 +271,7 @@ export class Guard {
 
     // 兼容老版本
     const accessToken =
-      await AsyncStorage.getItem('accessToken') ||
+      (await AsyncStorage.getItem('accessToken')) ||
       authClient.tokenProvider.getUser()?.token ||
       ''
 
@@ -349,7 +349,6 @@ export class Guard {
 
     // 生成一个 code_verifier
     const codeChallenge = authClient.generateCodeChallenge()
-console.log(AsyncStorage,"AsyncStorage")
     await AsyncStorage.setItem('codeChallenge', codeChallenge)
 
     // 计算 code_verifier 的 SHA256 摘要
@@ -379,7 +378,7 @@ console.log(AsyncStorage,"AsyncStorage")
       responseType
     })
 
-    // window.location.href = url
+    window.location.href = url
   }
 
   async handleRedirectCallback() {
@@ -404,7 +403,7 @@ console.log(AsyncStorage,"AsyncStorage")
   private async getCodeAndCodeChallenge() {
     const query = this.parseUrlQuery()
     const { code = '' } = query
-    const codeChallenge = await AsyncStorage.getItem('codeChallenge') || ''
+    const codeChallenge = (await AsyncStorage.getItem('codeChallenge')) || ''
 
     return {
       code,
@@ -466,7 +465,7 @@ console.log(AsyncStorage,"AsyncStorage")
 
     const idToken =
       authClient.tokenProvider.getToken() ||
-      await AsyncStorage.getItem('idToken') ||
+      (await AsyncStorage.getItem('idToken')) ||
       ''
 
     if (!idToken) {
@@ -534,7 +533,8 @@ console.log(AsyncStorage,"AsyncStorage")
       // 兜底 redirect 场景下，Safari 和 Firefox 开启『阻止跨站跟踪』后无法退出
       // 此方法只能退出当前设备
       const idToken =
-        authClient.tokenProvider.getToken() || await AsyncStorage.getItem('idToken')
+        authClient.tokenProvider.getToken() ||
+        (await AsyncStorage.getItem('idToken'))
       if (idToken) {
         logoutRedirectUri = authClient.buildLogoutUrl({
           expert: true,
@@ -607,7 +607,7 @@ console.log(AsyncStorage,"AsyncStorage")
     evt: T,
     handler: Exclude<GuardEventsKebabToCamelType[T], undefined>
   ) {
-    ; (this.eventListeners as any)[evt].push(handler as any)
+    ;(this.eventListeners as any)[evt].push(handler as any)
   }
 
   show() {
