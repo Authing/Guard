@@ -37,7 +37,11 @@ export const GuardApplicationView = () => {
 
   const config = useGuardFinallyConfig()
   const events = useGuardEvents()
-  const initData = useGuardInitData<{ identifier: string; inviter: any }>()
+  const initData = useGuardInitData<{
+    identifier: string
+    inviter: any
+    userPool: any
+  }>()
 
   const { changeModule } = useGuardModule()
 
@@ -98,12 +102,12 @@ export const GuardApplicationView = () => {
     <div className="g2-view-container g2-view-invitation-apply">
       <div className="g2-view-container-inner">
         <div className="g2-view-header">
-          <img src={config?.logo} alt="" className="icon" />
+          <img src={initData?.userPool?.logo} alt="" className="icon" />
           <div className="g2-view-header-container">
             <div className="invitation-welcome">
               {initData?.inviter?.displayName} {t('common.welcomeJoin')}
             </div>
-            <div className="title">{config?.title}</div>
+            <div className="title">{initData?.userPool?.name}</div>
           </div>
         </div>
 
