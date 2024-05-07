@@ -374,7 +374,10 @@ const LoginWithVerifyCode = (props: any) => {
     let loginInfo = {
       type: currentMethod,
       data: {
-        identity: phoneNumber,
+        identity:
+          currentMethod === InputMethod.EmailCode
+            ? values.identify
+            : phoneNumber,
         code: values.code,
         phoneCountryCode
       }
