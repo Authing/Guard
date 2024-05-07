@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard-vue2",
-  "version": "5.3.4",
+  "version": "5.3.5-alpha.2",
   "description": "Guard for Vue2",
   "module": "dist/esm/guard.min.js",
   "types": "dist/typings/index.d.ts",
@@ -23,7 +23,7 @@
     "webpack": "^5.72.0"
   },
   "dependencies": {
-    "@authing/guard": "^5.3.4",
+    "@authing/guard": "^5.3.5-alpha.2",
     "vue": "^2.6.10"
   },
   "author": "https://github.com/authing",
