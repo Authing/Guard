@@ -38,6 +38,8 @@ export class Guard {
 
   private root?: Root
 
+  private storage: GuardOptions['storage']
+
   constructor(options: GuardOptions) {
     if (!options.appId) {
       throw new Error('appId is required')
@@ -62,6 +64,7 @@ export class Guard {
     this.then = init.then.bind(init)
 
     this.visible = !!(options.mode === GuardMode.Modal)
+    this.storage = options?.storage || window.localStorage
   }
 
   private adaptOptions(options: GuardOptions, config: Partial<IGuardConfig>) {
@@ -269,7 +272,7 @@ export class Guard {
 
     // 兼容老版本
     const accessToken =
-      localStorage.getItem('accessToken') ||
+      this.storage?.getItem('accessToken') ||
       authClient.tokenProvider.getUser()?.token ||
       ''
 
@@ -348,7 +351,7 @@ export class Guard {
     // 生成一个 code_verifier
     const codeChallenge = authClient.generateCodeChallenge()
 
-    localStorage.setItem('codeChallenge', codeChallenge)
+    this.storage?.setItem('codeChallenge', codeChallenge)
 
     // 计算 code_verifier 的 SHA256 摘要
     const codeChallengeDigest = authClient.getCodeChallengeDigest({
@@ -402,7 +405,7 @@ export class Guard {
   private getCodeAndCodeChallenge() {
     const query = this.parseUrlQuery()
     const { code = '' } = query
-    const codeChallenge = localStorage.getItem('codeChallenge') || ''
+    const codeChallenge = this.storage?.getItem('codeChallenge') || ''
 
     return {
       code,
@@ -411,18 +414,18 @@ export class Guard {
   }
 
   private setTokenCache(accessToken: string, idToken: string) {
-    localStorage.setItem('accessToken', accessToken)
-    localStorage.setItem('idToken', idToken)
+    this.storage?.setItem('accessToken', accessToken)
+    this.storage?.setItem('idToken', idToken)
   }
 
   private clearTokenCache() {
-    localStorage.removeItem('accessToken')
-    localStorage.removeItem('idToken')
+    this.storage?.removeItem('accessToken')
+    this.storage?.removeItem('idToken')
   }
 
   private async clearLoginCache() {
     const authClient = await this.getAuthClient()
-    localStorage.removeItem('codeChallenge')
+    this.storage?.removeItem('codeChallenge')
     authClient.tokenProvider.clearUser()
     this.clearTokenCache()
   }
@@ -464,7 +467,7 @@ export class Guard {
 
     const idToken =
       authClient.tokenProvider.getToken() ||
-      localStorage.getItem('idToken') ||
+      this.storage?.getItem('idToken') ||
       ''
 
     if (!idToken) {
@@ -532,7 +535,7 @@ export class Guard {
       // 兜底 redirect 场景下，Safari 和 Firefox 开启『阻止跨站跟踪』后无法退出
       // 此方法只能退出当前设备
       const idToken =
-        authClient.tokenProvider.getToken() || localStorage.getItem('idToken')
+        authClient.tokenProvider.getToken() || this.storage?.getItem('idToken')
       if (idToken) {
         logoutRedirectUri = authClient.buildLogoutUrl({
           expert: true,

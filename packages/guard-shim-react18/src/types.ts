@@ -73,6 +73,13 @@ export interface GuardOptions extends GuardProps {
   isSSO?: boolean
   config?: Partial<IGuardConfig> // 兼容 4.x 的 config
   style?: CSSProperties
+  storage?:
+    | {
+        getItem: (key: string) => any
+        setItem: (key: string, value: string) => any
+        removeItem: (key: string) => any
+      }
+    | Storage
 }
 
 export interface StartWithRedirectOptions {
