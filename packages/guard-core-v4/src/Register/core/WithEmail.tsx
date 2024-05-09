@@ -94,6 +94,8 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
 
   const [acceptedAgreements, setAcceptedAgreements] = useState(false)
 
+  const acceptedAgreementIds = useRef<(string | number)[]>([])
+
   const [validated, setValidated] = useState(false)
 
   const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
@@ -198,7 +200,10 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
           ? JSON.stringify(getUserRegisterParams(['login_page_context']))
           : undefined,
         context: JSON.stringify(context),
-        phoneToken
+        phoneToken,
+        agreementIds: agreements.length
+          ? acceptedAgreementIds.current
+          : undefined
       }
 
       // onRegisterSuccess 注册成功后需要回到对应的登录页面
@@ -459,6 +464,15 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
     verifyCodeUrl,
     publicConfig?.internationalSmsConfig?.enabled
   ])
+
+  const onAgreementsChange = (
+    value: boolean,
+    acceptAgreement: (string | number)[]
+  ) => {
+    setAcceptedAgreements(value)
+    acceptedAgreementIds.current = acceptAgreement
+  }
+
   return (
     <div className="authing-g2-register-email">
       <Form
@@ -558,7 +572,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
         </CustomFormItem.Password>
         {Boolean(agreements?.length) && (
           <Agreements
-            onChange={setAcceptedAgreements}
+            onChange={onAgreementsChange}
             agreements={agreements}
             showError={validated}
           />

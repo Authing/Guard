@@ -78,6 +78,10 @@ export const LoginWithAD = (props: LoginWithADProps) => {
 
   const [acceptedAgreements, setAcceptedAgreements] = useState(false)
 
+  const [acceptedAgreementIds, setAcceptedAgreementIds] = useState<
+    (string | number)[]
+  >([])
+
   const [validated, setValidated] = useState(false)
 
   const robotVerify = useRobotVerify()
@@ -161,7 +165,8 @@ export const LoginWithAD = (props: LoginWithADProps) => {
         body: JSON.stringify({
           username,
           password: encryptPassword,
-          captchaCode
+          captchaCode,
+          agreementIds: agreements.length ? acceptedAgreementIds : undefined
         }),
         credentials: 'include',
         headers: {
@@ -251,6 +256,14 @@ export const LoginWithAD = (props: LoginWithADProps) => {
     //   })
   }
 
+  const onAgreementsChange = (
+    value: boolean,
+    acceptAgreement: (string | number)[]
+  ) => {
+    setAcceptedAgreements(value)
+    setAcceptedAgreementIds(acceptAgreement)
+  }
+
   useEffect(() => {
     setShowCaptcha(robotVerify === 'always_enable')
     if (robotVerify === 'always_enable') {
@@ -335,7 +348,7 @@ export const LoginWithAD = (props: LoginWithADProps) => {
             )}
             {Boolean(agreements?.length) && (
               <Agreements
-                onChange={setAcceptedAgreements}
+                onChange={onAgreementsChange}
                 agreements={agreements}
                 showError={validated}
               />

@@ -76,6 +76,8 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
 
   const [acceptedAgreements, setAcceptedAgreements] = useState(false)
 
+  const acceptedAgreementIds = useRef<(string | number)[]>([])
+
   const [validated, setValidated] = useState(false)
 
   // 区号 默认
@@ -132,7 +134,10 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
               typeof navigator !== 'undefined' ? navigator.userAgent : null,
             device: getDeviceName()
           },
-          options
+          options,
+          agreementIds: agreements.length
+            ? acceptedAgreementIds.current
+            : undefined
         }
 
         if (needPassword) {
@@ -321,6 +326,14 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
     [areaCode, form, isInternationSms, t, verifyCodeLength]
   )
 
+  const onAgreementsChange = (
+    value: boolean,
+    acceptAgreement: (string | number)[]
+  ) => {
+    setAcceptedAgreements(value)
+    acceptedAgreementIds.current = acceptAgreement
+  }
+
   return (
     <div className="authing-g2-register-email">
       <Form
@@ -359,7 +372,7 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
         </Form.Item>
         {Boolean(agreements?.length) && (
           <Agreements
-            onChange={setAcceptedAgreements}
+            onChange={onAgreementsChange}
             agreements={agreements}
             showError={validated}
           />

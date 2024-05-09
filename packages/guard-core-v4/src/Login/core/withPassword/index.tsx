@@ -118,6 +118,8 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
   })
 
   const [acceptedAgreements, setAcceptedAgreements] = useState(false)
+  const acceptedAgreementIds = useRef<(string | number)[]>([])
+
   const { isPhoneMedia } = useMediaSize()
   const [validated, setValidated] = useState(false)
 
@@ -165,7 +167,10 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
           ? getUserRegisterParams(['login_page_context'])
           : undefined,
         autoRegister: props.autoRegister,
-        withCustomData: false
+        withCustomData: false,
+        agreementIds: agreements.length
+          ? acceptedAgreementIds.current
+          : undefined
       }
       const res = await post(url, body)
 
@@ -176,7 +181,9 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
       encrypt,
       post,
       props,
-      publicConfig?.mergeAdAndAccountPasswordLogin
+      publicConfig?.mergeAdAndAccountPasswordLogin,
+      acceptedAgreementIds,
+      agreements
     ]
   )
 
@@ -327,6 +334,14 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
     t
   ])
 
+  const onAgreementsChange = (
+    value: boolean,
+    acceptAgreement: (string | number)[]
+  ) => {
+    setAcceptedAgreements(value)
+    acceptedAgreementIds.current = acceptAgreement
+  }
+
   return (
     <div className="authing-g2-login-password">
       <Form
@@ -430,7 +445,7 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
 
         {Boolean(agreements?.length) && (
           <Agreements
-            onChange={setAcceptedAgreements}
+            onChange={onAgreementsChange}
             agreements={agreements}
             showError={validated}
           />
