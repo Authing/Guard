@@ -16,7 +16,6 @@ export * from './PasswordFormItem'
 export * from './ValidatorFormItem'
 
 export * from './useCheckRepeat'
-
 export interface ValidatorFormItemProps extends FormItemProps {
   form?: FormInstance
   checkRepeat?: boolean
