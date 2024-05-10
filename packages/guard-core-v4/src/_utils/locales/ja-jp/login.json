@@ -1,7 +1,7 @@
 {
   "inputAccount": "{{text}}をご入力ください",
   "inputAdUsername": "MAJNOON-IFMS ユーザー名を入力してください",
-  "inputAdPwd": "AD パスワードを入力してください",
+  "inputAdPwd": "MAJNOON-IFMS パスワードを入力してください",
   "inputLdapUsername": "LDAP ユーザ名を入力してください",
   "inputLdapPwd": "LDAP パスワードを入力してください",
   "inputCaptchaCode": "図形認証コードを入力してください",
