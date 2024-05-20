@@ -272,7 +272,7 @@ export class Guard {
 
     // 兼容老版本
     const accessToken =
-      this.storage?.getItem('accessToken') ||
+      (await this.storage?.getItem('accessToken')) ||
       authClient.tokenProvider.getUser()?.token ||
       ''
 
@@ -467,7 +467,7 @@ export class Guard {
 
     const idToken =
       authClient.tokenProvider.getToken() ||
-      this.storage?.getItem('idToken') ||
+      (await this.storage?.getItem('idToken')) ||
       ''
 
     if (!idToken) {
@@ -535,7 +535,8 @@ export class Guard {
       // 兜底 redirect 场景下，Safari 和 Firefox 开启『阻止跨站跟踪』后无法退出
       // 此方法只能退出当前设备
       const idToken =
-        authClient.tokenProvider.getToken() || this.storage?.getItem('idToken')
+        authClient.tokenProvider.getToken() ||
+        (await this.storage?.getItem('idToken'))
       if (idToken) {
         logoutRedirectUri = authClient.buildLogoutUrl({
           expert: true,
