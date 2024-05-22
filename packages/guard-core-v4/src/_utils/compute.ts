@@ -140,7 +140,18 @@ export const isMobile = () => {
 
 // win10 上的 webview
 export const isWebview = () => {
-  return window.navigator.userAgent.match(/webview/i)
+  if (typeof navigator === 'undefined') {
+    return null
+  }
+  return /webview/i.test(navigator.userAgent)
+}
+
+// 联想网盘
+export const isLenovoNetdisk = () => {
+  if (typeof navigator === 'undefined') {
+    return null
+  }
+  return /ldclient/i.test(navigator.userAgent)
 }
 
 /* 利用浏览器的 UA 判断是否为不支持弹窗的特殊浏览器 */
@@ -155,7 +166,8 @@ export const isSpecialBrowser = () => {
     isXiaomiBrowser() ||
     isQQBrowser() ||
     isMobile() ||
-    isWebview()
+    isWebview() ||
+    isLenovoNetdisk()
   ) {
     return true
   }
