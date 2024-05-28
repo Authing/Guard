@@ -7,6 +7,7 @@ import { AuthingGuardResponse, AuthingResponse, requestClient } from './http'
 import { errorCodeInterceptor } from './responseManagement'
 
 import { CodeAction } from './responseManagement/interface'
+import { getMacAddressHeader } from './config'
 
 let httpClient: GuardHttp
 
@@ -24,7 +25,8 @@ export class GuardHttp {
     'x-authing-userpool-id': '',
     'x-authing-app-id': '',
     'x-authing-sdk-version': version,
-    'x-authing-request-from': `Guard@${version}`
+    'x-authing-request-from': `Guard@${version}`,
+    'x-mac-address': getMacAddressHeader()
   }
 
   private responseInterceptorMap: Map<InterceptorName, ResponseInterceptor> =

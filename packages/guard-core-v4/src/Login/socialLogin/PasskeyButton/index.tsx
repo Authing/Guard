@@ -13,7 +13,12 @@ import { GuardButton } from '../../../GuardButton'
 import { IconFont } from '../../../IconFont'
 import { useTranslation } from 'react-i18next'
 import { requestClient } from '../../../_utils/http'
-import { CodeAction, getVersion, i18n } from '../../../_utils'
+import {
+  CodeAction,
+  getMacAddressHeader,
+  getVersion,
+  i18n
+} from '../../../_utils'
 
 interface LoginWithPasskeyProps {
   onLoginSuccess: any
@@ -66,7 +71,8 @@ export const PasskeyButton = (props: LoginWithPasskeyProps) => {
           'x-authing-userpool-id': publicConfig.userPoolId,
           'x-authing-app-id': appId,
           'x-authing-sdk-version': version,
-          'x-authing-request-from': `Guard@${version}`
+          'x-authing-request-from': `Guard@${version}`,
+          'x-mac-address': getMacAddressHeader()
         }
       })
       const initializeJson = await initializeRes.json()
@@ -99,7 +105,8 @@ export const PasskeyButton = (props: LoginWithPasskeyProps) => {
           'x-authing-userpool-id': publicConfig.userPoolId,
           'x-authing-app-id': appId,
           'x-authing-sdk-version': version,
-          'x-authing-request-from': `Guard@${version}`
+          'x-authing-request-from': `Guard@${version}`,
+          'x-mac-address': getMacAddressHeader()
         }
       })
       const finalizeJson = await finalizeRes.json()

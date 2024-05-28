@@ -23,7 +23,7 @@ import SubmitButton from '../../SubmitButton'
 
 import { Agreement } from '../../Type/application'
 
-import { getVersion } from '../../_utils'
+import { getMacAddressHeader, getVersion } from '../../_utils'
 
 import { fieldRequiredRule } from '../../_utils'
 
@@ -175,7 +175,8 @@ export const LoginWithAD = (props: LoginWithADProps) => {
           'x-authing-userpool-id': publicConfig.userPoolId,
           'x-authing-app-id': appId,
           'x-authing-sdk-version': version,
-          'x-authing-request-from': `Guard@${version}`
+          'x-authing-request-from': `Guard@${version}`,
+          'x-mac-address': getMacAddressHeader()
         }
       })
 

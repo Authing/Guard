@@ -22,6 +22,8 @@ import {
 
 import { getPhoneInLoginPageContext } from '..'
 
+import Axios from 'axios'
+
 const { useCallback, useEffect, useMemo, useState } = React
 
 const publicConfigMap: Record<string, ApplicationConfig> = {}
@@ -38,6 +40,14 @@ export const getPageConfig = (appId: string) => pageConfigMap?.[appId]
 
 export const setPageConfig = (appId: string, config: GuardPageConfig) =>
   (pageConfigMap[appId] = config)
+
+let macAddress = ''
+export const setMacAddress = (address: string) => {
+  macAddress = address
+}
+export const getMacAddressHeader = () => {
+  return window.btoa(encodeURIComponent(macAddress))
+}
 
 const requestPublicConfig = async (
   appId: string,
@@ -95,6 +105,27 @@ const requestGuardPageConfig = async (
   setPageConfig(appId, res.data)
 
   return getPageConfig(appId)
+}
+
+const requestMacAddress = async () => {
+  const address = await new Promise<string>(async resolve => {
+    try {
+      // 一秒钟还没获取完成，算超时
+      setTimeout(() => {
+        resolve('无法获取 mac 地址 - 获取超时')
+      }, 1000)
+
+      const res = await Axios.create().get<{
+        main_mac: string
+      }>('http://127.0.0.1:49999/getclientinfo')
+
+      resolve(res.data.main_mac)
+    } catch (e: any) {
+      resolve(`无法获取 mac 地址-${e.message}`)
+    }
+  })
+
+  setMacAddress(address)
 }
 
 export const useMergeDefaultConfig = (
@@ -202,7 +233,8 @@ export const useFetchConsoleConfig = (
         try {
           await Promise.all([
             await requestPublicConfig(appId, httpClient),
-            await requestGuardPageConfig(appId, httpClient)
+            await requestGuardPageConfig(appId, httpClient),
+            await requestMacAddress()
           ])
         } catch (error) {
           setError(error)
