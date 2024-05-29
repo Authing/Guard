@@ -232,15 +232,13 @@ export class Guard {
 
     const userInfo = await this.trackSession()
 
-    if (userInfo) {
-      return Promise.resolve(userInfo)
-    }
-
-    return new Promise(resolve => {
-      this.on('login', (userInfo: User) => {
-        resolve(userInfo)
+    return (
+      userInfo ||
+      new Promise<User>((resolve, reject) => {
+        this.on('login', resolve)
+        this.on('login-error', reject)
       })
-    })
+    )
   }
 
   startRegister() {
