@@ -9,7 +9,7 @@
   "inputEmail": "Enter Email",
   "inputLdapPwd": "LDAP Password",
   "inputLdapUsername": "LDAP Username",
-  "inputLoginPwd": "Enter Password",
+  "inputLoginPwd": "Password",
   "inputPhone": "Phone number",
   "inputPhoneOrEmail": "Enter Phone number or Email",
   "inputPwdAgain": "Enter password again",
