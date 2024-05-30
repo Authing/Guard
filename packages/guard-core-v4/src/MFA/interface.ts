@@ -25,7 +25,8 @@ export enum MFAType {
   EMAIL = 'EMAIL',
   TOTP = 'OTP',
   FACE = 'FACE',
-  PASSKEY = 'PASSKEY'
+  PASSKEY = 'PASSKEY',
+  NINGDON = 'NINGDON'
 }
 
 export interface GuardMFAInitData {
@@ -38,6 +39,7 @@ export interface GuardMFAInitData {
   phoneCountryCode?: string
   faceMfaEnabled: boolean
   totpMfaEnabled: boolean
+  ningDonMfaEnable: boolean
   email?: string
   phone?: string
   avatar?: string

@@ -11,6 +11,7 @@ import { MFASms } from './core/sms'
 import { MFAFace } from './core/face'
 
 import { MFATotp } from './core/totp'
+import { NingdonMFATotp } from './core/ningdon'
 
 import { MFAMethods } from './mfaMethods'
 
@@ -82,6 +83,14 @@ const ComponentsMapping: Record<MFAType, (props: any) => React.ReactNode> = {
       mfaLogin={mfaLogin}
       passkeyEnabled={initData.passkeyEnabled}
     />
+  ),
+  [MFAType.NINGDON]: ({ initData, config, changeModule, mfaLogin }) => (
+    <NingdonMFATotp
+      changeModule={changeModule}
+      config={config}
+      initData={initData}
+      mfaLogin={mfaLogin}
+    />
   )
 }
 
@@ -100,7 +109,9 @@ export const GuardMFAView: React.FC = () => {
 
   const [currentMethod, setCurrentMethod] = useState(
     initData.current ??
-      initData.applicationMfa?.sort((a, b) => a.sort - b.sort)[0].mfaPolicy
+      (initData.ningDonMfaEnable
+        ? MFAType.NINGDON
+        : initData.applicationMfa?.sort((a, b) => a.sort - b.sort)[0].mfaPolicy)
   )
 
   const [mfaBackState, setMfaBackState] = useState<string>('login')
