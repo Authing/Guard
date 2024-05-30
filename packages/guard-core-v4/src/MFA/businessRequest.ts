@@ -13,7 +13,7 @@ export enum MfaBusinessAction {
   VerifyEmail = 'verify-email',
   VerifySms = 'verify-sms',
   VerifyTotp = 'verify-totp',
-  VerifyNingdon = 'verify-ningdon',
+  VerifyNington = 'verify-nington',
   VerifyFace = 'verify-face',
   AssociateFace = 'associate-face',
   PasskeyBind = 'passkey-bind',
@@ -45,7 +45,7 @@ interface VerifyTotpContent {
   totp: string
   mfaToken?: string
 }
-interface VerifyNingdonContent {
+interface VerifyNingtonContent {
   totp: string
   mfaToken?: string
 }
@@ -130,7 +130,7 @@ export const VerifyTotp = async (content: VerifyTotpContent) => {
     }
   )
 }
-export const VerifyNingdon = async (content: VerifyNingdonContent) => {
+export const VerifyNington = async (content: VerifyNingtonContent) => {
   const { totp, mfaToken } = content
   const { post } = getGuardHttp()
 
@@ -279,12 +279,12 @@ export const useMfaBusinessRequest = () => {
       // return AssociateFace(content)
       return null
     },
-    [MfaBusinessAction.VerifyNingdon]: (content: VerifyNingdonContent) => {
+    [MfaBusinessAction.VerifyNington]: (content: VerifyNingtonContent) => {
       if (isFlow) {
-        return authFlow(MfaBusinessAction.VerifyNingdon, content)
+        return authFlow(MfaBusinessAction.VerifyNington, content)
       }
 
-      return VerifyNingdon(content)
+      return VerifyNington(content)
     }
   }
 

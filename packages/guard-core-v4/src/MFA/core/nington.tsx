@@ -22,12 +22,12 @@ import { MfaBusinessAction, useMfaBusinessRequest } from '../businessRequest'
 
 const { useRef } = React
 
-export interface BindNingdonMFATotpProps {
+export interface BindNingtonMFATotpProps {
   initData: GuardMFAInitData
   changeModule: any
 }
 
-export const BindNingdonMFATotp: React.FC<BindNingdonMFATotpProps> = ({
+export const BindNingtonMFATotp: React.FC<BindNingtonMFATotpProps> = ({
   changeModule,
   initData
 }) => {
@@ -36,9 +36,7 @@ export const BindNingdonMFATotp: React.FC<BindNingdonMFATotpProps> = ({
   const next = () => changeModule(GuardModuleType.BIND_TOTP, initData)
   return (
     <>
-      <p className="authing-g2-mfa-title">
-        {t('common.ningDonMfaCertification')}
-      </p>
+      <p className="authing-g2-mfa-title">{t('common.mfaCertification')}</p>
       <p className="authing-g2-mfa-tips">{t('common.otpText1')}</p>
 
       <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -56,12 +54,12 @@ export const BindNingdonMFATotp: React.FC<BindNingdonMFATotpProps> = ({
   )
 }
 
-export interface VerifyNingdonMFATotpProps {
+export interface VerifyNingtonMFATotpProps {
   mfaToken: string
   mfaLogin: any
 }
 
-export const VerifyNingdonMFATotp: React.FC<VerifyNingdonMFATotpProps> = ({
+export const VerifyNingtonMFATotp: React.FC<VerifyNingtonMFATotpProps> = ({
   mfaToken,
   mfaLogin
 }) => {
@@ -72,7 +70,7 @@ export const VerifyNingdonMFATotp: React.FC<VerifyNingdonMFATotpProps> = ({
   const submitButtonRef = useRef<any>(null)
 
   const businessRequest =
-    useMfaBusinessRequest()[MfaBusinessAction.VerifyNingdon]
+    useMfaBusinessRequest()[MfaBusinessAction.VerifyNington]
 
   const [, onFinish] = useAsyncFn(async () => {
     submitButtonRef.current?.onSpin(true)
@@ -101,10 +99,8 @@ export const VerifyNingdonMFATotp: React.FC<VerifyNingdonMFATotpProps> = ({
 
   return (
     <>
-      <p className="authing-g2-mfa-title">
-        {t('common.ningDonMfaCertification')}
-      </p>
-      <p className="authing-g2-mfa-tips">{t('login.inputFourCode')}</p>
+      <p className="authing-g2-mfa-title">{t('common.mfaCertification')}</p>
+      <p className="authing-g2-mfa-tips">{t('common.ningTonInputCode')}</p>
       <Form
         form={form}
         onSubmitCapture={() => {}}
@@ -126,27 +122,27 @@ export const VerifyNingdonMFATotp: React.FC<VerifyNingdonMFATotpProps> = ({
   )
 }
 
-export interface NingdonMFATotpProps {
+export interface NingtonMFATotpProps {
   changeModule: any
   config: MFAConfig
   initData: GuardMFAInitData
   mfaLogin: any
 }
 
-export const NingdonMFATotp: React.FC<NingdonMFATotpProps> = ({
+export const NingtonMFATotp: React.FC<NingtonMFATotpProps> = ({
   changeModule,
   initData,
   mfaLogin
 }) => {
   return (
     <>
-      {initData.ningDonMfaEnable ? (
-        <VerifyNingdonMFATotp
+      {initData.ningTonMfaEnable ? (
+        <VerifyNingtonMFATotp
           mfaToken={initData.mfaToken}
           mfaLogin={mfaLogin}
         />
       ) : (
-        <BindNingdonMFATotp initData={initData} changeModule={changeModule} />
+        <BindNingtonMFATotp initData={initData} changeModule={changeModule} />
       )}
     </>
   )

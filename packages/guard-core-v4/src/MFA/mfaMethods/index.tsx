@@ -42,10 +42,9 @@ const methodTitleMapping: Record<
     title: () => i18n.t('common.OTPVerification'),
     icon: 'authing-totp'
   },
-  [MFAType.NINGDON]: {
-    title: () => i18n.t('common.ningDonOTPVerification'),
-
-    icon: 'authing-totp'
+  [MFAType.NINGTON]: {
+    title: () => i18n.t('common.ningTonOTPVerification'),
+    icon: 'authing-key-2-fill'
   },
   [MFAType.FACE]: {
     title: () => i18n.t('common.faceVerification'),

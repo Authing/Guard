@@ -26,7 +26,7 @@ export enum MFAType {
   TOTP = 'OTP',
   FACE = 'FACE',
   PASSKEY = 'PASSKEY',
-  NINGDON = 'NINGDON'
+  NINGTON = 'NINGTON'
 }
 
 export interface GuardMFAInitData {
@@ -39,7 +39,7 @@ export interface GuardMFAInitData {
   phoneCountryCode?: string
   faceMfaEnabled: boolean
   totpMfaEnabled: boolean
-  ningDonMfaEnable: boolean
+  ningTonMfaEnable: boolean
   email?: string
   phone?: string
   avatar?: string

@@ -53,7 +53,6 @@ import { GuardMode } from '../../Type'
 import { IconFont } from '../../IconFont'
 
 import { AuthingGuardResponse, AuthingResponse } from '../../_utils/http'
-import { mock } from './mock'
 
 import {
   CodeAction,
@@ -234,7 +233,6 @@ export const RenderModule: React.FC<{
           const nextModule = ChangeModuleApiCodeMapping[res.apiCode!]
 
           const nextData = res.data
-          // const nextData = mock.data
 
           changeModule(nextModule, nextData)
           return CodeAction.CHANGE_MODULE
