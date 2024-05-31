@@ -2,7 +2,7 @@ import { Rule } from 'shim-antd/lib/form'
 
 import qs from 'qs'
 
-import { i18n } from './locales'
+import { i18n, resolvedLanguage } from './locales'
 
 import { User } from 'authing-js-sdk'
 
@@ -801,8 +801,8 @@ export const getPasswordIdentify = (identity: string): string => {
 }
 
 export const getCurrentLng = () => {
-  if (Object.keys(LngTextMapping).includes(i18n.resolvedLanguage)) {
-    return i18n.resolvedLanguage as Lang
+  if (Object.keys(LngTextMapping).includes(resolvedLanguage)) {
+    return resolvedLanguage as Lang
   } else {
     return i18n?.languages?.[i18n?.languages?.length - 1] as Lang
   }

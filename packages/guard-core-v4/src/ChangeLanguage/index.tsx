@@ -10,7 +10,7 @@ import { Lang } from '../Type'
 
 import { useGuardFinallyConfig, useGuardPageConfig } from '../_utils/context'
 
-import { fallbackLng } from '../_utils/locales'
+import { fallbackLng, resolvedLanguage } from '../_utils/locales'
 
 import './style.less'
 
@@ -59,12 +59,12 @@ export const ChangeLanguage = (props: {
   }, [guardPageConfig])
 
   const currentLng = useMemo<Lang>(() => {
-    if (Object.keys(LngTextMapping).includes(i18n.resolvedLanguage)) {
-      return i18n.resolvedLanguage as Lang
+    if (Object.keys(LngTextMapping).includes(resolvedLanguage)) {
+      return resolvedLanguage as Lang
     } else {
-      return (fallbackLng(i18n.resolvedLanguage)[0] || 'en-US') as Lang
+      return (fallbackLng(resolvedLanguage)[0] || 'en-US') as Lang
     }
-  }, [i18n.resolvedLanguage])
+  }, [resolvedLanguage])
 
   const currentLngText = useMemo(() => {
     return (

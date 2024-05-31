@@ -1,8 +1,6 @@
 import { React } from 'shim-react'
 import { useState } from 'react'
-import { useMediaSize } from '../../../_utils/hooks'
 import { get as getWebauthnCredential, supported } from '@github/webauthn-json'
-import { useGuardHttp } from '../../../_utils/guardHttp'
 import {
   useGuardAppId,
   useGuardFinallyConfig,
@@ -13,7 +11,7 @@ import { GuardButton } from '../../../GuardButton'
 import { IconFont } from '../../../IconFont'
 import { useTranslation } from 'react-i18next'
 import { requestClient } from '../../../_utils/http'
-import { CodeAction, getVersion, i18n } from '../../../_utils'
+import { getVersion, resolvedLanguage } from '../../../_utils'
 
 interface LoginWithPasskeyProps {
   onLoginSuccess: any
@@ -62,7 +60,7 @@ export const PasskeyButton = (props: LoginWithPasskeyProps) => {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          [requestClient.langHeader]: i18n.resolvedLanguage,
+          [requestClient.langHeader]: resolvedLanguage,
           'x-authing-userpool-id': publicConfig.userPoolId,
           'x-authing-app-id': appId,
           'x-authing-sdk-version': version,
@@ -95,7 +93,7 @@ export const PasskeyButton = (props: LoginWithPasskeyProps) => {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          [requestClient.langHeader]: i18n.resolvedLanguage,
+          [requestClient.langHeader]: resolvedLanguage,
           'x-authing-userpool-id': publicConfig.userPoolId,
           'x-authing-app-id': appId,
           'x-authing-sdk-version': version,

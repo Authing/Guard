@@ -23,6 +23,9 @@ const App = () => {
       // deviceId={deviceId}
       appId={appId}
       onLogin={onLogin}
+      onLoginError={error => {
+        console.log(error,"loginerror")
+      }}
       visible={true}
       config={config}
       facePlugin={facePlugin}
