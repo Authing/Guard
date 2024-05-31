@@ -12,6 +12,8 @@ import { MFAFace } from './core/face'
 
 import { MFATotp } from './core/totp'
 
+import { NingtonMFATotp } from './core/nington'
+
 import { MFAMethods } from './mfaMethods'
 
 import { GuardMFAInitData, MFAType } from './interface'
@@ -82,6 +84,14 @@ const ComponentsMapping: Record<MFAType, (props: any) => React.ReactNode> = {
       mfaLogin={mfaLogin}
       passkeyEnabled={initData.passkeyEnabled}
     />
+  ),
+  [MFAType.NINGTON]: ({ initData, config, changeModule, mfaLogin }) => (
+    <NingtonMFATotp
+      changeModule={changeModule}
+      config={config}
+      initData={initData}
+      mfaLogin={mfaLogin}
+    />
   )
 }
 
@@ -100,7 +110,9 @@ export const GuardMFAView: React.FC = () => {
 
   const [currentMethod, setCurrentMethod] = useState(
     initData.current ??
-      initData.applicationMfa?.sort((a, b) => a.sort - b.sort)[0].mfaPolicy
+      (initData.ningTonMfaEnable
+        ? MFAType.NINGTON
+        : initData.applicationMfa?.sort((a, b) => a.sort - b.sort)[0].mfaPolicy)
   )
 
   const [mfaBackState, setMfaBackState] = useState<string>('login')

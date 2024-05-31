@@ -15,6 +15,7 @@
   "inputPwdAgain": "Enter password again",
   "inputRecoverCode": "Enter recovery code",
   "inputSixCode": "Enter 6-digit security code",
+  "inputFourCode": "Enter 4-digit security code",
   "loginBy": "Sign in with {{name}}",
   "mfaAfterReset": "If you do not have a recovery code, please contact the administrator",
   "noEmpty": "Please enter a {{label}}",

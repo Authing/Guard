@@ -8,6 +8,7 @@
   "captchaCode": "グラフィックス認証コード",
   "accPwdLoginVerify": "アカウント登録検証",
   "inputSixCode": "バインドされた 6 桁のセキュリティ コードを入力してください",
+  "inputFourCode": "バインドされた 4 桁のセキュリティ コードを入力してください",
   "inputLoginPwd": "パスワードをご入力ください",
   "inputPhone": "携帯番号を入力してください",
   "inputEmail": "メールアドレスをご入力ください",

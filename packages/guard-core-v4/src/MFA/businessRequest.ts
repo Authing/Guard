@@ -13,6 +13,7 @@ export enum MfaBusinessAction {
   VerifyEmail = 'verify-email',
   VerifySms = 'verify-sms',
   VerifyTotp = 'verify-totp',
+  VerifyNington = 'verify-nington',
   VerifyFace = 'verify-face',
   AssociateFace = 'associate-face',
   PasskeyBind = 'passkey-bind',
@@ -41,6 +42,10 @@ interface VerifyEmailContent {
 }
 
 interface VerifyTotpContent {
+  totp: string
+  mfaToken?: string
+}
+interface VerifyNingtonContent {
   totp: string
   mfaToken?: string
 }
@@ -110,6 +115,22 @@ export const VerifySms = async (content: VerifySmsContent) => {
 }
 
 export const VerifyTotp = async (content: VerifyTotpContent) => {
+  const { totp, mfaToken } = content
+  const { post } = getGuardHttp()
+
+  return await post(
+    '/api/v2/applications/mfa/totp/verify',
+    {
+      totp
+    },
+    {
+      headers: {
+        authorization: `Bearer ${mfaToken}`
+      }
+    }
+  )
+}
+export const VerifyNington = async (content: VerifyNingtonContent) => {
   const { totp, mfaToken } = content
   const { post } = getGuardHttp()
 
@@ -257,6 +278,13 @@ export const useMfaBusinessRequest = () => {
 
       // return AssociateFace(content)
       return null
+    },
+    [MfaBusinessAction.VerifyNington]: (content: VerifyNingtonContent) => {
+      if (isFlow) {
+        return authFlow(MfaBusinessAction.VerifyNington, content)
+      }
+
+      return VerifyNington(content)
     }
   }
 
