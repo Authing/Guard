@@ -305,7 +305,6 @@ export const RenderModule: React.FC<{
       prefixCls={PREFIX_CLS}
       locale={langMap[i18n.resolvedLanguage as LangMAP]}
     >
-      <>sss1</>
       {defaultMergedConfig.mode === GuardMode.Modal ? (
         <Modal
           className="authing-g2-render-module-modal"
@@ -330,7 +329,6 @@ export const RenderModule: React.FC<{
               : 'authing-g2-render-module-normal'
           }`}
         >
-          <>11</>
           {renderGuardContent}
         </div>
       )}
