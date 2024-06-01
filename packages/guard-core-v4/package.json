@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard-core",
-  "version": "4.5.19",
+  "version": "4.5.20-nington.13",
   "description": "Authing Guard Component for core codes, only be used to internal",
   "types": "dist/typings/src/index.d.ts",
   "files": [
