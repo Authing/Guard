@@ -210,6 +210,7 @@ export const GuardMFAView: React.FC = () => {
     >
       <div className="g2-view-container g2-view-mfa">
         {renderBack}
+        <>sss1</>
         <div className="g2-mfa-content">
           {ComponentsMapping[currentMethod]({
             config: config,
