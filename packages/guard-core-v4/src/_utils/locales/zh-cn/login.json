@@ -8,6 +8,7 @@
   "captchaCode": "图形验证码",
   "accPwdLoginVerify": "账号登录验证",
   "inputSixCode": "请输入绑定的 6 位数字安全码",
+  "inputFourCode": "请输入绑定的 4 位数字安全码",
   "inputLoginPwd": "请输入登录密码",
   "inputPhone": "请输入手机号",
   "inputEmail": "请输入邮箱",
