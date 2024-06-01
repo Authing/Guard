@@ -23,7 +23,7 @@ import SubmitButton from '../../SubmitButton'
 
 import { Agreement } from '../../Type/application'
 
-import { getVersion } from '../../_utils'
+import { getVersion, resolvedLanguage } from '../../_utils'
 
 import { fieldRequiredRule } from '../../_utils'
 
@@ -171,7 +171,7 @@ export const LoginWithAD = (props: LoginWithADProps) => {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          [requestClient.langHeader]: i18n.resolvedLanguage,
+          [requestClient.langHeader]: resolvedLanguage,
           'x-authing-userpool-id': publicConfig.userPoolId,
           'x-authing-app-id': appId,
           'x-authing-sdk-version': version,

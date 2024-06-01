@@ -4,7 +4,7 @@ import { React } from 'shim-react'
 
 import { SendCodeBtn } from './SendCodeBtn'
 
-import { i18n } from '../_utils/locales'
+import { i18n, resolvedLanguage } from '../_utils/locales'
 
 import './style.less'
 
@@ -34,7 +34,7 @@ export const SendCode: React.FC<SendPhoneCodeProps> = ({
     <>
       <Row justify="space-between" align="middle">
         <Col
-          span={/ja/.test(i18n.resolvedLanguage) ? 9 : 15}
+          span={/ja/.test(resolvedLanguage) ? 9 : 15}
           className="g2-send-code-input-col"
         >
           <InputNumber
@@ -50,7 +50,7 @@ export const SendCode: React.FC<SendPhoneCodeProps> = ({
             maxLength={maxLength}
           />
         </Col>
-        <Col offset={1} span={/ja/.test(i18n.resolvedLanguage) ? 14 : 8}>
+        <Col offset={1} span={/ja/.test(resolvedLanguage) ? 14 : 8}>
           <SendCodeBtn
             beforeSend={beforeSend}
             sendDesc={t('common.sendVerifyCode') as string}
