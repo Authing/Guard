@@ -436,4 +436,7 @@ export interface ApplicationConfig {
       switch: 'OFF' | 'ON' | 'CONDON' //ON,COND_ON
     }
   }
+
+  /** 特殊浏览器匹配字符串 */
+  specialBrowserSymbols?: string[]
 }

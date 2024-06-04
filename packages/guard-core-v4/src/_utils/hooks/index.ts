@@ -9,7 +9,6 @@ import {
   isLarkBrowser,
   // isQQBrowser,
   isQQBuiltInBrowser,
-  isSpecialBrowser,
   isWeChatBrowser,
   isWeWorkBuiltInBrowser
 } from '../compute'
@@ -24,6 +23,7 @@ import {
   SocialConnectionItem,
   SocialConnectionProvider
 } from '../../Type/application'
+import { useIsSpecialBrowser } from '..'
 export interface PhoneValidResult {
   isValid: boolean
   phoneNumber: string
@@ -202,6 +202,7 @@ export const useMethod: (params: {
   config: GuardLocalConfig
   publicConfig: ApplicationConfig
 }) => any = ({ config, publicConfig }) => {
+  const isSpecialBrowser = useIsSpecialBrowser()
   const noLoginMethods = !config?.loginMethods?.length
   let enterpriseConnectionObjs: ApplicationConfig['identityProviders']
   if (config.enterpriseConnections) {
@@ -571,7 +572,7 @@ export const useMethod: (params: {
 
   if (!guardWindow) return
 
-  if (!config?.isHost && (isSpecialBrowser() || !guardWindow.postMessage)) {
+  if (!config?.isHost && (isSpecialBrowser || !guardWindow.postMessage)) {
     // 嵌入模式下特殊浏览器不显示所有身份源登录
     socialConnectionObjs = []
     enterpriseConnectionObjs = []
