@@ -6,7 +6,12 @@ import { useInitGuardAuthClient } from '../authClient'
 
 import { GuardEvents, guardEventsFilter } from '../event'
 
-import { insertStyles, regexFromString, removeStyles } from '../../_utils'
+import {
+  computeIsSpecialBrowser,
+  insertStyles,
+  regexFromString,
+  removeStyles
+} from '../../_utils'
 
 import { getDefaultGuardLocalConfig } from '../config'
 
@@ -385,6 +390,10 @@ export const RenderContext: React.FC<{
     return null
   }, [publicConfig?.regexRules])
 
+  const isSpecialBrowser = useMemo(() => {
+    return computeIsSpecialBrowser(publicConfig?.specialBrowserSymbols || [])
+  }, [publicConfig?.specialBrowserSymbols])
+
   // TODO 触发 onLoad 事件
   useEffect(() => {
     if (!contextLoaded || error) return
@@ -413,7 +422,8 @@ export const RenderContext: React.FC<{
             multipleInstance,
             phoneRegex,
             defaultLanguageConfig,
-            tenantInstance
+            tenantInstance,
+            isSpecialBrowser
           }
         : {
             defaultMergedConfig
