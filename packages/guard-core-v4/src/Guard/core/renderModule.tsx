@@ -234,6 +234,9 @@ export const RenderModule: React.FC<{
       <GuardInviteCompleteView key={key} />
     ),
     [GuardModuleType.INVITE_EXPIRE]: key => <GuardInviteExpireView key={key} />,
+    [GuardModuleType.INVITE_PAGE_EXPIRE]: key => (
+      <GuardInviteExpireView key={key} />
+    ),
     [GuardModuleType.INVITE_SUCCESS]: key => (
       <GuardInviteSuccessView key={key} />
     )
