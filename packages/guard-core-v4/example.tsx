@@ -5,13 +5,13 @@ import { React, render } from 'shim-react'
 import * as facePlugin from 'face-api.js'
 
 const App = () => {
-  const appId = '65d2f8280a6f3d2ecae02513'
+  const appId = '60178760106d5f26cb267ac1'
   // const deviceId = '6486be0f60e50cb92678a468' //如要使用必须使用开启元数据对的 用户池 测试
 
   const config: Partial<GuardLocalConfig> = {
     // mode: GuardMode.Modal,
     // lang: 'en-US',
-    host: 'http://console.authing.localhost:3000'
+    // host: 'https://110.authing.cn'
   }
 
   const onLogin = (userInfo: User) => {
@@ -23,6 +23,9 @@ const App = () => {
       // deviceId={deviceId}
       appId={appId}
       onLogin={onLogin}
+      onLoginError={error => {
+        console.log(error,"loginerror")
+      }}
       visible={true}
       config={config}
       facePlugin={facePlugin}

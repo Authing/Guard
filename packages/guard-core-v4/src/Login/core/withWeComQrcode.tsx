@@ -10,7 +10,7 @@ import { getGuardWindow } from '../../Guard/core/useAppendConfig'
 
 import { ShieldSpin } from '../../ShieldSpin'
 
-import { isWeComOrigin } from '../../_utils'
+import { isWeComOrigin, resolvedLanguage } from '../../_utils'
 
 import {
   useGuardAppId,
@@ -88,7 +88,7 @@ export const LoginWithWeComQrcode = (props: any) => {
       ),
       // redirect_uri,
       href: `${publicConfig?.cdnBase}/guard-assets/wrp_code_friesland.css`, //企业微信二维码样式文件
-      lang: i18n.resolvedLanguage.includes('zh') ? 'zh' : 'en'
+      lang: resolvedLanguage.includes('zh') ? 'zh' : 'en'
     })
 
     wwInstance.frame.onload = (event: Event) => {
@@ -143,7 +143,7 @@ export const LoginWithWeComQrcode = (props: any) => {
             const handMode = res?.onGuardHandling?.()
             // 向上层抛出错误
             handMode === CodeAction.RENDER_MESSAGE &&
-              props.onLoginFailed(res.code, res.data)
+              props.onLoginFailed(res.code, res.data, res.message)
           }
         } catch (e: any) {
           message.error(e.message)
