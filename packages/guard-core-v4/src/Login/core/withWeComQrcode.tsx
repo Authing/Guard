@@ -10,7 +10,7 @@ import { getGuardWindow } from '../../Guard/core/useAppendConfig'
 
 import { ShieldSpin } from '../../ShieldSpin'
 
-import { isSpecialBrowser, isWeComOrigin } from '../../_utils'
+import { isWeComOrigin, resolvedLanguage } from '../../_utils'
 
 import {
   useGuardAppId,
@@ -18,7 +18,8 @@ import {
   useGuardFinallyConfig,
   useGuardHttpClient,
   useGuardPublicConfig,
-  useGuardTenantId
+  useGuardTenantId,
+  useIsSpecialBrowser
 } from '../../_utils/context'
 
 import { i18n } from '../../_utils/locales'
@@ -52,6 +53,8 @@ export const LoginWithWeComQrcode = (props: any) => {
 
   const authClient = useGuardAuthClient()
 
+  const isSpecialBrowser = useIsSpecialBrowser()
+
   const fetchQrcode = useCallback(async () => {
     const query: Record<string, any> = {
       from_guard: '1',
@@ -63,7 +66,7 @@ export const LoginWithWeComQrcode = (props: any) => {
       delete query.from_guard
       query.from_hosted_guard = '1'
 
-      if (isSpecialBrowser()) {
+      if (isSpecialBrowser) {
         query.redirected = '1'
         const guardWindow = getGuardWindow()
         if (guardWindow) {
@@ -85,7 +88,7 @@ export const LoginWithWeComQrcode = (props: any) => {
       ),
       // redirect_uri,
       href: `${publicConfig?.cdnBase}/guard-assets/wrp_code_friesland.css`, //企业微信二维码样式文件
-      lang: i18n.resolvedLanguage.includes('zh') ? 'zh' : 'en'
+      lang: resolvedLanguage.includes('zh') ? 'zh' : 'en'
     })
 
     wwInstance.frame.onload = (event: Event) => {
@@ -140,7 +143,7 @@ export const LoginWithWeComQrcode = (props: any) => {
             const handMode = res?.onGuardHandling?.()
             // 向上层抛出错误
             handMode === CodeAction.RENDER_MESSAGE &&
-              props.onLoginFailed(res.code, res.data)
+              props.onLoginFailed(res.code, res.data, res.message)
           }
         } catch (e: any) {
           message.error(e.message)

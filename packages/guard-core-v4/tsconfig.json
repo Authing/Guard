@@ -27,13 +27,6 @@
       "shim-antd/lib/*": ["./shim-antd4/node_modules/antd/lib/*"]
     }
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.json",
-    "example.tsx"
-  ],
-  "exclude": [
-    "node_modules/**"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.json", "example.tsx"],
+  "exclude": ["node_modules/**"]
 }
