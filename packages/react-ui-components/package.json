@@ -20,7 +20,6 @@
   "license": "MIT",
   "dependencies": {
     "@authing/guard-shim-react": "^4.5.22-fehorizon.1",
-    "@authing/native-js-ui-components": "^4.5.22-fehorizon.1",
     "react": "^16.13.1"
   },
   "devDependencies": {
