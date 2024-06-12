@@ -1,13 +1,13 @@
 import { useGuardHttpClient } from '../../_utils/context'
 
-import { AuthingResponse } from '../../_utils/http'
+import { AuthingGuardResponse, AuthingResponse } from '../../_utils/http'
 
 // 处理所有使用 postMessage 方式的登录
 export const usePostMessage = () => {
   // 借用一下 GuardHttpClient 的方法
   const { responseIntercept } = useGuardHttpClient()
 
-  const onMessage = (evt: MessageEvent) => {
+  const onMessage = (evt: MessageEvent): AuthingGuardResponse | undefined => {
     const { message, data, event, code } = evt.data
 
     const { source } = event || {}

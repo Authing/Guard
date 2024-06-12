@@ -1007,13 +1007,15 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       // 更新本次登录方式
       multipleInstance && multipleInstance.setLoginWay('input', 'social')
 
-      const { code, data, onGuardHandling } = res
+      const { code, data, onGuardHandling, message } = res
+
       if (code === 200) {
         onLoginSuccess(data)
       } else {
         const handMode = onGuardHandling?.()
         // 向上层抛出错误
-        handMode === CodeAction.RENDER_MESSAGE && onLoginFailed(code, data)
+        handMode === CodeAction.RENDER_MESSAGE &&
+          onLoginFailed(code, data, message)
       }
     }
 
