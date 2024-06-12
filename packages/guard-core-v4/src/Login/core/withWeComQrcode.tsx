@@ -88,7 +88,7 @@ export const LoginWithWeComQrcode = (props: any) => {
       ),
       // redirect_uri,
       href: `${publicConfig?.cdnBase}/guard-assets/wrp_code_friesland.css`, //企业微信二维码样式文件
-      lang: i18n.resolvedLanguage.includes('zh') ? 'zh' : 'en'
+      lang: i18n.resolvedLanguage!.includes('zh') ? 'zh' : 'en'
     })
 
     wwInstance.frame.onload = (event: Event) => {

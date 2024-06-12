@@ -116,7 +116,7 @@ export const fieldValuesToRegisterProfile = (
 export const getI18nValue = (record: any, key: string) => {
   const label = record?.[key]
   const i18nObj = record?.i18n?.[key] || {}
-  const i18nLan = i18nObj?.[i18n.resolvedLanguage]
+  const i18nLan = i18nObj?.[i18n.resolvedLanguage!]
   const i18nName = i18nLan?.enabled && i18nLan?.value
   return i18nName || label
 }

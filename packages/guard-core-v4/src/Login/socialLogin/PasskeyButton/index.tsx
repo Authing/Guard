@@ -62,7 +62,7 @@ export const PasskeyButton = (props: LoginWithPasskeyProps) => {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          [requestClient.langHeader]: i18n.resolvedLanguage,
+          [requestClient.langHeader]: i18n.resolvedLanguage!,
           'x-authing-userpool-id': publicConfig.userPoolId,
           'x-authing-app-id': appId,
           'x-authing-sdk-version': version,
@@ -95,7 +95,7 @@ export const PasskeyButton = (props: LoginWithPasskeyProps) => {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          [requestClient.langHeader]: i18n.resolvedLanguage,
+          [requestClient.langHeader]: i18n.resolvedLanguage!,
           'x-authing-userpool-id': publicConfig.userPoolId,
           'x-authing-app-id': appId,
           'x-authing-sdk-version': version,

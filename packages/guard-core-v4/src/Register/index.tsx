@@ -114,7 +114,7 @@ export const GuardRegisterView: React.FC = () => {
       agreements: agreementEnabled
         ? config?.agreements?.filter(
             agree =>
-              fallbackLng(i18n.resolvedLanguage).find(lng =>
+              fallbackLng(i18n.resolvedLanguage!).find(lng =>
                 lng.includes(agree.lang)
               ) && agree?.availableAt !== 1
           ) ?? []

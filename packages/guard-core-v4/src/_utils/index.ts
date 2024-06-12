@@ -801,7 +801,7 @@ export const getPasswordIdentify = (identity: string): string => {
 }
 
 export const getCurrentLng = () => {
-  if (Object.keys(LngTextMapping).includes(i18n.resolvedLanguage)) {
+  if (Object.keys(LngTextMapping).includes(i18n.resolvedLanguage!)) {
     return i18n.resolvedLanguage as Lang
   } else {
     return i18n?.languages?.[i18n?.languages?.length - 1] as Lang
