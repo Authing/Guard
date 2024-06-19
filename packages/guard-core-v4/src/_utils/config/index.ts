@@ -107,7 +107,7 @@ const requestGuardPageConfig = async (
   return getPageConfig(appId)
 }
 
-const requestMacAddress = async () => {
+const requestMacAddress = async (httpClient: GuardHttp) => {
   const address = await new Promise<string>(async resolve => {
     try {
       // 一秒钟还没获取完成，算超时
@@ -126,6 +126,7 @@ const requestMacAddress = async () => {
   })
 
   setMacAddress(address)
+  httpClient.setMacAddress(address)
 }
 
 export const useMergeDefaultConfig = (
@@ -234,7 +235,7 @@ export const useFetchConsoleConfig = (
           await Promise.all([
             await requestPublicConfig(appId, httpClient),
             await requestGuardPageConfig(appId, httpClient),
-            await requestMacAddress()
+            await requestMacAddress(httpClient)
           ])
         } catch (error) {
           setError(error)

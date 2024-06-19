@@ -45,6 +45,11 @@ export class GuardHttp {
     return this.requestClient
   }
 
+  setMacAddress(macAddress: string) {
+    this.headers['x-mac-address'] = window.btoa(encodeURIComponent(macAddress))
+    return this
+  }
+
   setUserpoolId(userpoolId: string) {
     this.headers['x-authing-userpool-id'] = userpoolId
     return this
