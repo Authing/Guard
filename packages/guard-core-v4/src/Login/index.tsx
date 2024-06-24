@@ -1184,7 +1184,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
                           {t('common.backLoginPage')}
                         </GuardButton>
                       )}
-                      {(errorNumber >= 2 || accountLock) && (
+                      {/* {(errorNumber >= 2 || accountLock) && (
                         <Tooltip title={t('common.feedback')}>
                           <div
                             className="touch-tip question-feedback"
@@ -1200,7 +1200,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
                             />
                           </div>
                         </Tooltip>
-                      )}
+                      )} */}
 
                       {!disableRegister && (
                         <span className="go-to-register">

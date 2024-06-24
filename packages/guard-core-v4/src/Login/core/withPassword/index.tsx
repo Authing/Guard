@@ -306,18 +306,16 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
     if (config?.autoRegister) {
       // 密码 placeholder
       const methods = [...passwordLoginMethods]
-      return t('login.inputAccount', {
-        text: getSortLabels(methods, i18nFields, defaultLanguageConfig)
-      })
+      return getSortLabels(methods, i18nFields, defaultLanguageConfig)
     }
     // 登录注册分页
-    return t('login.inputAccount', {
-      text: getSortLabels(
-        [...passwordLoginMethods],
-        i18nFields,
-        defaultLanguageConfig
-      )
-    })
+    return getSortLabels(
+      [...passwordLoginMethods],
+      i18nFields,
+      defaultLanguageConfig
+    )
+      .replace('AD username', 'Email')
+      .replace('Username', 'Account')
   }, [
     config?.autoRegister,
     i18n,

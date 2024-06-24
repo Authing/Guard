@@ -1,7 +1,7 @@
 {
   "inputAccount": "请输入{{text}}",
   "inputAdUsername": "请输入 MAJNOON-IFMS 用户名",
-  "inputAdPwd": "请输入 AD 密码",
+  "inputAdPwd": "请输入 MAJNOON-IFMS 密码",
   "inputLdapUsername": "请输入 LDAP 用户名",
   "inputLdapPwd": "请输入 LDAP 密码",
   "inputCaptchaCode": "请输入图形验证码",
