@@ -121,7 +121,7 @@
     "nextStep": "Next",
     "reset": "reset password",
     "back": "Back",
-    "resetPasswordText1": "Please enter your registered mobile phone number/email to receive the verification code, and we will reset your password.",
+    "resetPasswordText1": "Please enter your email to receive the verification code, and we will reset your password.",
     "resetPasswordText2": "You are resetting Password for {{account}}。",
     "input": "Input{{text}}",
     "inputFourVerifyCode": "{{length}}-digit code",
