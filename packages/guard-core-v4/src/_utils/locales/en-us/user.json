@@ -9,7 +9,11 @@
   "error": "Error～",
   "contactAdministrator": "Unknown error ~ please contact the administrator for processing",
   "resetpasswordText1": "Enter your registered phone number/email, enter the verification code received, and we will reset your password.",
-  "modifyPwdText": "Your password has been used continuously for more than {{number}} months, which may be risky. Please reset your password.",
-  "modifyNoticePwdText": "Your password has been used continuously for more than {{number}} months, It will expire soon, in order not to affect your use, please set a new password",
+  "modifyPwdTextDay": "Your password has been used for more than {{number}} days and may be at risk. Please reset your password.",
+  "modifyPwdTextMonth": "Your password has been used continuously for more than {{number}} months and may be at risk. Please reset your password.",
+  "modifyPwdTextYear": "Your password has been used continuously for more than {{number}} years and may be at risk. Please reset your password.",
+  "modifyNoticePwdTextDay": "Your password has been used continuously for more than {{number}} days and is about to expire. In order not to affect your use, please set a new password",
+  "modifyNoticePwdTextMonth": "Your password has been used continuously for more than {{number}} months and is about to expire. In order not to affect your use, please set a new password",
+  "modifyNoticePwdTextYear": "Your password has been used continuously for more than {{number}} years and is about to expire. In order not to affect your use, please set a new password",
   "unlockTip": "If you encounter problems with unlocking, please click"
 }

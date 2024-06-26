@@ -140,3 +140,9 @@ export enum EmailScene {
   // 验证码模版
   VERIFY_CODE = 'VERIFY_CODE'
 }
+
+export enum ForcedModifyPwdCycleUnit {
+  Day = 'DAY',
+  Month = 'MONTH',
+  Year = 'YEAR'
+}

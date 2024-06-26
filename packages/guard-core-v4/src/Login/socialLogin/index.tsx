@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 
 import { i18n } from '../../_utils/locales'
 
-import { isSpecialBrowser, popupCenter } from '../../_utils'
+import { popupCenter } from '../../_utils'
 
 import querystring from 'query-string'
 
@@ -18,7 +18,11 @@ import './style.less'
 
 import { useMediaSize, SocialConnectionEvent } from '../../_utils/hooks'
 
-import { useGuardPublicConfig, useGuardTenantId } from '../../_utils/context'
+import {
+  useGuardPublicConfig,
+  useGuardTenantId,
+  useIsSpecialBrowser
+} from '../../_utils/context'
 
 import { IdpButton } from './IdpButton'
 
@@ -69,6 +73,8 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
 
   const tenantId = useGuardTenantId()
 
+  const isSpecialBrowser = useIsSpecialBrowser()
+
   const idpButtons = enterpriseConnectionObjs.map((i: any) => {
     return (
       <IdpButton
@@ -100,7 +106,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
     if (config?.isHost) {
       query.from_hosted_guard = '1'
 
-      if (isSpecialBrowser()) {
+      if (isSpecialBrowser) {
         query.redirected = '1'
 
         const guardWindow = getGuardWindow()

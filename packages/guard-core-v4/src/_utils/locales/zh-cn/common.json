@@ -219,5 +219,11 @@
   "invitation": {
     "completeInfo": "请补全信息",
     "completeInfoDesc": "请补全下方信息，信息为非必填的情况下， 可点击「下一步」直接跳过"
-  }
+  },
+  "cratePasskeyTitle": "创建 Passkey",
+  "cratePasskeyTips": "当前账号暂无 passkey，请先完成创建验证后登录",
+  "createNow": "立即创建",
+  "passkeyVerifyTitle": "Passkey 验证",
+  "passkeyVerifyTips": "为了保障访问安全，请根据浏览器提示完成验证",
+  "reVerify": "重新验证"
 }

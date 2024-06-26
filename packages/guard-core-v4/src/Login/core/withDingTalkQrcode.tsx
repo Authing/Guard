@@ -10,14 +10,13 @@ import { getGuardWindow } from '../../Guard/core/useAppendConfig'
 
 import { ShieldSpin } from '../../ShieldSpin'
 
-import { isSpecialBrowser } from '../../_utils'
-
 import {
   useGuardAppId,
   useGuardEvents,
   useGuardFinallyConfig,
   useGuardHttpClient,
-  useGuardTenantId
+  useGuardTenantId,
+  useIsSpecialBrowser
 } from '../../_utils/context'
 
 import { useGuardAuthClient } from '../../Guard/authClient'
@@ -47,6 +46,8 @@ export const LoginWithDingTalkQrcode = (props: any) => {
 
   const config = useGuardFinallyConfig()
 
+  const isSpecialBrowser = useIsSpecialBrowser()
+
   const fetchQrcode = useCallback(async () => {
     const query: Record<string, any> = {
       from_guard: '1',
@@ -59,7 +60,7 @@ export const LoginWithDingTalkQrcode = (props: any) => {
       delete query.from_guard
       query.from_hosted_guard = '1'
 
-      if (isSpecialBrowser()) {
+      if (isSpecialBrowser) {
         query.redirected = '1'
         const guardWindow = getGuardWindow()
         if (guardWindow) {

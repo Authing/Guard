@@ -59,7 +59,7 @@ export const ChangeLanguage = (props: {
   }, [guardPageConfig])
 
   const currentLng = useMemo<Lang>(() => {
-    if (Object.keys(LngTextMapping).includes(i18n.resolvedLanguage)) {
+    if (Object.keys(LngTextMapping).includes(i18n.resolvedLanguage!)) {
       return i18n.resolvedLanguage as Lang
     } else {
       return (fallbackLng(i18n.resolvedLanguage)[0] || 'en-US') as Lang

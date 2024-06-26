@@ -217,5 +217,11 @@
   "invitation": {
     "completeInfo": "請補全資訊",
     "completeInfoDesc": "請補全下方資訊，資訊為非必填的情况下，可點擊「下一步」直接跳過"
-  }
+  },
+  "cratePasskeyTitle": "建立 Passkey",
+  "cratePasskeyTips": "目前帳號沒有 passkey，請先完成建立驗證後登入",
+  "createNow": "立即建立",
+  "passkeyVerifyTitle": "Passkey 驗證",
+  "passkeyVerifyTips": "為了保障存取安全，請根據瀏覽器提示完成驗證",
+  "reVerify": "重新驗證"
 }

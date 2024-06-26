@@ -97,6 +97,8 @@ const LoginWithVerifyCode = (props: any) => {
 
   const acceptedAgreements = useRef(false)
 
+  const acceptedAgreementIds = useRef<(string | number)[]>([])
+
   const [validated, setValidated] = useState(false)
 
   const [identify, setIdentify] = useState('')
@@ -296,7 +298,8 @@ const LoginWithVerifyCode = (props: any) => {
         ? getUserRegisterParams(['login_page_context'])
         : undefined,
       autoRegister: autoRegister,
-      withCustomData: false
+      withCustomData: false,
+      agreementIds: agreements.length ? acceptedAgreementIds.current : undefined
     }
 
     if (publicConfig && publicConfig.internationalSmsConfig?.enabled)
@@ -330,7 +333,8 @@ const LoginWithVerifyCode = (props: any) => {
         ? getUserRegisterParams(['login_page_context'])
         : undefined,
       autoRegister: autoRegister,
-      withCustomData: false
+      withCustomData: false,
+      agreementIds: agreements.length ? acceptedAgreementIds.current : undefined
     }
     const {
       code,
@@ -370,7 +374,10 @@ const LoginWithVerifyCode = (props: any) => {
     let loginInfo = {
       type: currentMethod,
       data: {
-        identity: phoneNumber,
+        identity:
+          currentMethod === InputMethod.EmailCode
+            ? values.identify
+            : phoneNumber,
         code: values.code,
         phoneCountryCode
       }
@@ -464,6 +471,14 @@ const LoginWithVerifyCode = (props: any) => {
     }
   }
 
+  const onAgreementsChange = (
+    value: boolean,
+    acceptAgreement: (string | number)[]
+  ) => {
+    acceptedAgreements.current = value
+    acceptedAgreementIds.current = acceptAgreement
+  }
+
   const phone = getPhoneInLoginPageContext()
 
   return (
@@ -549,9 +564,10 @@ const LoginWithVerifyCode = (props: any) => {
         </Form.Item>
         {Boolean(agreements?.length) && (
           <Agreements
-            onChange={val => {
-              acceptedAgreements.current = val
-            }}
+            // onChange={val => {
+            //   acceptedAgreements.current = val
+            // }}
+            onChange={onAgreementsChange}
             agreements={agreements}
             showError={validated}
           />

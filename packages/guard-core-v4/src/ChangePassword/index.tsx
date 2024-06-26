@@ -23,6 +23,7 @@ import { RotateReset } from './core/rotateReset'
 import { PasswordNotSafeReset } from './core/PasswordNotSafeReset'
 
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
+import { ForcedModifyPwdCycleUnit } from '../Type'
 
 const { useMemo } = React
 
@@ -122,7 +123,10 @@ export const GuardForcedPasswordResetView: React.FC = () => {
 
   const { changeModule } = useGuardModule()
 
-  const initData = useGuardInitData<{ forcedCycle: number }>()
+  const initData = useGuardInitData<{
+    forcedCycle: number
+    forcedCycleUnit: ForcedModifyPwdCycleUnit
+  }>()
 
   const onReset = () => {
     message.success(t('common.updatePsswordSuccess'))
@@ -133,13 +137,26 @@ export const GuardForcedPasswordResetView: React.FC = () => {
 
   const coreForm = <RotateReset onReset={onReset} />
 
+  const modifyPwdText = useMemo(() => {
+    switch (initData?.forcedCycleUnit) {
+      case ForcedModifyPwdCycleUnit.Day:
+        return t('user.modifyPwdTextDay', {
+          number: initData.forcedCycle
+        })
+      case ForcedModifyPwdCycleUnit.Year:
+        return t('user.modifyPwdTextYear', {
+          number: initData.forcedCycle
+        })
+      case ForcedModifyPwdCycleUnit.Month:
+      default:
+        return t('user.modifyPwdTextMonth', {
+          number: initData.forcedCycle
+        })
+    }
+  }, [initData])
+
   return (
-    <GuardChangePassword
-      title={t('user.modifyPwd')}
-      explain={t('user.modifyPwdText', {
-        number: initData.forcedCycle
-      })}
-    >
+    <GuardChangePassword title={t('user.modifyPwd')} explain={modifyPwdText}>
       {coreForm}
     </GuardChangePassword>
   )
@@ -152,8 +169,27 @@ export const GuardNoticePasswordResetView: React.FC = () => {
 
   const initData = useGuardInitData<{
     forcedCycle: number
+    forcedCycleUnit: ForcedModifyPwdCycleUnit
     onFinishCallBack: any
   }>()
+
+  const modifyNoticePwdText = useMemo(() => {
+    switch (initData?.forcedCycleUnit) {
+      case ForcedModifyPwdCycleUnit.Day:
+        return t('user.modifyNoticePwdTextDay', {
+          number: initData.forcedCycle
+        })
+      case ForcedModifyPwdCycleUnit.Year:
+        return t('user.modifyNoticePwdTextYear', {
+          number: initData.forcedCycle
+        })
+      case ForcedModifyPwdCycleUnit.Month:
+      default:
+        return t('user.modifyNoticePwdTextMonth', {
+          number: initData.forcedCycle
+        })
+    }
+  }, [initData])
 
   const onReset = () => {
     message.success(t('common.updatePsswordSuccess'))
@@ -172,9 +208,7 @@ export const GuardNoticePasswordResetView: React.FC = () => {
   return (
     <GuardChangePassword
       title={t('user.modifyPwd')}
-      explain={t('user.modifyNoticePwdText', {
-        number: initData.forcedCycle
-      })}
+      explain={modifyNoticePwdText}
     >
       {coreForm}
     </GuardChangePassword>

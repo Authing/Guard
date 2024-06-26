@@ -1,5 +1,3 @@
-import { User } from 'authing-js-sdk'
-
 import { getGuardHttp } from '../_utils/guardHttp'
 
 import { CompleteInfoRequest, RegisterCompleteInfoInitData } from './interface'
@@ -66,7 +64,7 @@ const registerMethod = (
       },
       phoneToken,
       postUserInfoPipeline: true
-    }) as Promise<User>
+    })
   } else {
     const phoneToken = profile.phoneToken ?? content?.phoneToken
     const emailToken = profile.emailToken ?? content?.emailToken

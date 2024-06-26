@@ -15,6 +15,7 @@ export interface CheckPushCodeStatusProps {
 
 export interface OnLoginProps {
   account: string
+  agreementIds?: (string | number)[]
 }
 
 export type LoginStatus = 'before' | 'pending'

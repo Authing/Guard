@@ -67,6 +67,10 @@ export function BeforeLogin(props: BeforeLoginProps) {
 
   const [acceptedAgreements, setAcceptedAgreements] = useState(false)
 
+  const [acceptedAgreementIds, setAcceptedAgreementIds] = useState<
+    (string | number)[]
+  >([])
+
   const [validated, setValidated] = useState(false)
 
   let submitButtonRef = useRef<any>(null)
@@ -96,7 +100,8 @@ export function BeforeLogin(props: BeforeLoginProps) {
       message: _message,
       data
     } = await signinByPush({
-      account
+      account,
+      agreementIds: agreements.length ? acceptedAgreementIds : undefined
     })
 
     if (statusCode === 200) {
@@ -148,6 +153,14 @@ export function BeforeLogin(props: BeforeLoginProps) {
     t
   ])
 
+  const onAgreementsChange = (
+    value: boolean,
+    acceptAgreement: (string | number)[]
+  ) => {
+    setAcceptedAgreements(value)
+    setAcceptedAgreementIds(acceptAgreement)
+  }
+
   return (
     <div>
       {!pushLoginStatus && (
@@ -184,7 +197,7 @@ export function BeforeLogin(props: BeforeLoginProps) {
           <Agreements
             agreements={agreements}
             showError={validated}
-            onChange={setAcceptedAgreements}
+            onChange={onAgreementsChange}
           />
         )}
         <Form.Item className="authing-g2-sumbit-form">

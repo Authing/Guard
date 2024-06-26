@@ -106,6 +106,8 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
 
   const [acceptedAgreements, setAcceptedAgreements] = useState(false)
 
+  const acceptedAgreementIds = useRef<(string | number)[]>([])
+
   const [validated, setValidated] = useState(false)
 
   // 区号 默认
@@ -243,7 +245,10 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             ? JSON.stringify(getUserRegisterParams(['login_page_context']))
             : undefined,
           context: JSON.stringify(context),
-          emailToken: undefined
+          emailToken: undefined,
+          agreementIds: agreements.length
+            ? acceptedAgreementIds.current
+            : undefined
         }
         // onRegisterSuccess 注册成功后需要回到对应的登录页面
         const onRegisterSuccessIntercept = (user: any) => {
@@ -357,7 +362,8 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
       isPhoneChangeComplete,
       onRegisterSuccess,
       onRegisterFailed,
-      publicConfig?.enableCompletePassword
+      publicConfig?.enableCompletePassword,
+      acceptedAgreementIds
     ]
   )
 
@@ -662,6 +668,14 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
     [areaCode, form]
   )
 
+  const onAgreementsChange = (
+    value: boolean,
+    acceptAgreement: (string | number)[]
+  ) => {
+    setAcceptedAgreements(value)
+    acceptedAgreementIds.current = acceptAgreement
+  }
+
   return (
     <div className="authing-g2-register-email">
       <Form
@@ -747,7 +761,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
         </Form.Item>
         {Boolean(agreements?.length) && (
           <Agreements
-            onChange={setAcceptedAgreements}
+            onChange={onAgreementsChange}
             agreements={agreements}
             showError={validated}
           />
