@@ -225,5 +225,8 @@
   "createNow": "Create now",
   "passkeyVerifyTitle": "Passkey verify",
   "passkeyVerifyTips": "To ensure access security, please complete verification according to the browser prompts",
-  "reVerify": "reverify"
+  "reVerify": "reverify",
+  "inviteExpired": "The current invitation link has expired. Please contact the relevant administrator to resend the invitation for you.",
+  "pageExpired": "The current page has expired. Please click the invitation link again to enter",
+  "inviteSuccess": "Successfully joined, please check your email. Please complete the login based on the information in the email."
 }

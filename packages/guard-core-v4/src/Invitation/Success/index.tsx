@@ -1,8 +1,9 @@
 import { React } from 'shim-react'
 import { GuardMessageView } from '../../Message'
+import { useTranslation } from 'react-i18next'
 
 export const GuardInviteSuccessView = () => {
-  return (
-    <GuardMessageView message="已成功加入，敬请查收邮件。请根据邮件内的信息完成登录。" />
-  )
+  const { t } = useTranslation()
+
+  return <GuardMessageView message={t('common.inviteSuccess')} />
 }

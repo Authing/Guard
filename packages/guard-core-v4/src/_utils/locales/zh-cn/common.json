@@ -225,5 +225,8 @@
   "createNow": "立即创建",
   "passkeyVerifyTitle": "Passkey 验证",
   "passkeyVerifyTips": "为了保障访问安全，请根据浏览器提示完成验证",
-  "reVerify": "重新验证"
+  "reVerify": "重新验证",
+  "inviteExpired": "当前邀请链接已失效，请联系相关管理员为你重新发起邀请。",
+  "pageExpired": "当前页面已过期，请重新点击邀请链接进入",
+  "inviteSuccess": "已成功加入，敬请查收邮件。请根据邮件内的信息完成登录。"
 }

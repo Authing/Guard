@@ -223,5 +223,8 @@
   "createNow": "立即建立",
   "passkeyVerifyTitle": "Passkey 驗證",
   "passkeyVerifyTips": "為了保障存取安全，請根據瀏覽器提示完成驗證",
-  "reVerify": "重新驗證"
+  "reVerify": "重新驗證",
+  "inviteExpired": "當前邀請連結已失效，請聯系相關管理員為你重新發起邀請。",
+  "pageExpired": "當前頁面已過期，請重新點擊邀請連結進入",
+  "inviteSuccess": "已成功加入，敬請查收郵件。 請根據郵件內的資訊完成登入。"
 }
