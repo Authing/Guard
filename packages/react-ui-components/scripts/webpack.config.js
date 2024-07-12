@@ -22,14 +22,15 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js', '.json']
   },
   externals: {
-    react: 'react'
+    react: 'react',
+    'react-dom': 'react-dom'
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
-        exclude: /node_modules/,
+        exclude: /node_modules/
       },
       {
         test: /\.js$/,
@@ -45,6 +46,6 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'index.min.css'
     }),
-    new CssMinimizerPlugin(),
+    new CssMinimizerPlugin()
   ]
 }
