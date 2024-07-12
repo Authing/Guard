@@ -25,7 +25,14 @@ export enum GuardModuleType {
   TENANT_PORTAL = 'tenant-portal',
   New_SUBMIT_SUCCESS = 'newSubmitSuccess', // 提交成功展示页
   SELECT_ACCOUNT_2_LOGIN = 'selectAccout2Login', // 选择登录身份
-  RESET_ACCOUNT_NAME = 'resetAccountName'
+  RESET_ACCOUNT_NAME = 'resetAccountName',
+  APPLY_INVITATION = 'applyInvitation',
+  MESSAGE = 'message',
+  INVITE_AUTH = 'inviteAuth',
+  INVITE_COMPLETE = 'inviteComplete',
+  INVITE_EXPIRE = 'inviteExpire', // 邀请链接过期
+  INVITE_PAGE_EXPIRE = 'invitePageExpire', // 页面过期
+  INVITE_SUCCESS = 'inviteSuccess' // 邀请成功
 }
 export interface GuardModuleAction {
   action: string

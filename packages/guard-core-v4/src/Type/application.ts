@@ -1,6 +1,6 @@
 export type Lang = 'zh-CN' | 'en-US' | 'zh-TW' | 'ja-JP'
 
-import { MFAType } from 'src/MFA/interface'
+import { MFAType } from '../MFA/interface'
 import { PasswordStrength } from '../_utils'
 
 export * from 'authing-js-sdk'

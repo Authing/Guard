@@ -202,10 +202,29 @@
   "inputBusinessEmail": "請輸入企業郵箱",
   "inputCode": "請輸入驗證碼",
   "domainNotFound": "當前組織管理員未設定企業郵箱功能變數名稱，請聯系管理員設定後加入組織。",
+  "name": "姓名",
+  "applyJoin": "申請加入",
+  "welcomeJoin": "邀請你加入",
+  "inputCaptcha": "請輸入身份驗證碼",
+  "verifyAccount": "身份驗證碼已發送至 {{0}}",
+  "captchaMaxErrorCount": "驗證碼輸入錯誤 {{0}} 次，連結將會失效",
+  "pendingMsg": "你已完成加入「{{0}}」的申請。< br />請等待管理員審批通過後，你將收到郵件，敬請留意。",
+  "doneMsg": "申請加入成功，敬請查收郵件！",
+  "inviteExpire": "驗證失敗，當前連結已失效",
+  "inviteExpireMsg": "請聯系邀請人為您重新發送邀請郵件",
+  "sendSms": "未收到郵件？點擊發送短信",
+  "sendEmail": "未收到簡訊？點擊發送郵件",
+  "invitation": {
+    "completeInfo": "請補全資訊",
+    "completeInfoDesc": "請補全下方資訊，資訊為非必填的情况下，可點擊「下一步」直接跳過"
+  },
   "cratePasskeyTitle": "建立 Passkey",
   "cratePasskeyTips": "目前帳號沒有 passkey，請先完成建立驗證後登入",
   "createNow": "立即建立",
   "passkeyVerifyTitle": "Passkey 驗證",
   "passkeyVerifyTips": "為了保障存取安全，請根據瀏覽器提示完成驗證",
-  "reVerify": "重新驗證"
+  "reVerify": "重新驗證",
+  "inviteExpired": "當前邀請連結已失效，請聯系相關管理員為你重新發起邀請。",
+  "pageExpired": "當前頁面已過期，請重新點擊邀請連結進入",
+  "inviteSuccess": "已成功加入，敬請查收郵件。 請根據郵件內的資訊完成登入。"
 }

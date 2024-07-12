@@ -204,10 +204,29 @@
   "inputBusinessEmail": "请输入企业邮箱",
   "inputCode": "请输入验证码",
   "domainNotFound": "当前组织管理员未设置企业邮箱域名，请联系管理员设置后加入组织。",
+  "name": "姓名",
+  "applyJoin": "申请加入",
+  "welcomeJoin": "邀请你加入",
+  "inputCaptcha": "请输入身份验证码",
+  "verifyAccount": "身份验证码已发送至 {{0}}",
+  "captchaMaxErrorCount": "验证码输入错误 {{0}} 次，链接将会失效",
+  "pendingMsg": "你已完成加入「{{0}}」的申请。<br />请等待管理员审批通过后，你将收到邮件，敬请留意。",
+  "doneMsg": "申请加入成功，敬请查收邮件！",
+  "inviteExpire": "验证失败，当前链接已失效",
+  "inviteExpireMsg": "请联系邀请人为您重新发送邀请邮件",
+  "sendSms": "未收到邮件？点击发送短信",
+  "sendEmail": "未收到短信？点击发送邮件",
+  "invitation": {
+    "completeInfo": "请补全信息",
+    "completeInfoDesc": "请补全下方信息，信息为非必填的情况下， 可点击「下一步」直接跳过"
+  },
   "cratePasskeyTitle": "创建 Passkey",
   "cratePasskeyTips": "当前账号暂无 passkey，请先完成创建验证后登录",
   "createNow": "立即创建",
   "passkeyVerifyTitle": "Passkey 验证",
   "passkeyVerifyTips": "为了保障访问安全，请根据浏览器提示完成验证",
-  "reVerify": "重新验证"
+  "reVerify": "重新验证",
+  "inviteExpired": "当前邀请链接已失效，请联系相关管理员为你重新发起邀请。",
+  "pageExpired": "当前页面已过期，请重新点击邀请链接进入",
+  "inviteSuccess": "已成功加入，敬请查收邮件。请根据邮件内的信息完成登录。"
 }

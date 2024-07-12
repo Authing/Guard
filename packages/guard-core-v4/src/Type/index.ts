@@ -136,7 +136,9 @@ export enum EmailScene {
   // - 邮箱解绑验证码
   EMAIL_UNBIND_VERIFY_CODE = 'EMAIL_UNBIND_VERIFY_CODE',
   // 自助解锁验证码
-  SELF_UNLOCKING_VERIFY_CODE = 'SELF_UNLOCKING_VERIFY_CODE'
+  SELF_UNLOCKING_VERIFY_CODE = 'SELF_UNLOCKING_VERIFY_CODE',
+  // 验证码模版
+  VERIFY_CODE = 'VERIFY_CODE'
 }
 
 export enum ForcedModifyPwdCycleUnit {

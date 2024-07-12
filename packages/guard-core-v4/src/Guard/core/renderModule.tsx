@@ -76,7 +76,16 @@ import { GuardTenantPortalSelectView } from '../../TenantPortalSelect'
 
 import { GuardNewSubmitSuccessView } from '../../NewSubmitSuccess'
 
+import { GuardApplicationView } from '../../Invitation/Application'
+
+import { GuardMessageView } from '../../Message'
+
+import { GuardAuthenticationView } from '../../Invitation/AuthenticationBind'
+
 import { i18n } from '../../_utils/locales'
+import { GuardInviteCompleteView } from '../../Invitation/Complete'
+import { GuardInviteExpireView } from '../../Invitation/Error'
+import { GuardInviteSuccessView } from '../../Invitation/Success'
 
 const { useEffect, useMemo } = React
 
@@ -210,9 +219,26 @@ export const RenderModule: React.FC<{
     [GuardModuleType.FLOW_SELECT_ACCOUNT]: key => (
       <GuardSelectAccountView key={key} />
     ),
-    [GuardModuleType.TENANT_PORTAL]: key => <GuardTenantPortalSelectView />,
+    [GuardModuleType.TENANT_PORTAL]: key => (
+      <GuardTenantPortalSelectView key={key} />
+    ),
     [GuardModuleType.New_SUBMIT_SUCCESS]: key => (
       <GuardNewSubmitSuccessView key={key} />
+    ),
+    [GuardModuleType.APPLY_INVITATION]: key => (
+      <GuardApplicationView key={key} />
+    ),
+    [GuardModuleType.MESSAGE]: key => <GuardMessageView key={key} />,
+    [GuardModuleType.INVITE_AUTH]: key => <GuardAuthenticationView key={key} />,
+    [GuardModuleType.INVITE_COMPLETE]: key => (
+      <GuardInviteCompleteView key={key} />
+    ),
+    [GuardModuleType.INVITE_EXPIRE]: key => <GuardInviteExpireView key={key} />,
+    [GuardModuleType.INVITE_PAGE_EXPIRE]: key => (
+      <GuardInviteExpireView key={key} />
+    ),
+    [GuardModuleType.INVITE_SUCCESS]: key => (
+      <GuardInviteSuccessView key={key} />
     )
   }
 

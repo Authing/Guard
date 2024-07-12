@@ -52,6 +52,7 @@ const MomentPicker: any = DatePicker
 export interface CompleteInfoProps {
   metaData: CompleteInfoMetaData[]
   businessRequest: (data: CompleteInfoRequest) => Promise<void>
+  extendsFieldsI18n?: any
 }
 
 export interface FieldMetadata {
@@ -67,7 +68,7 @@ const filterOption = (input: any, option: any) => {
 }
 
 export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
-  const { metaData, businessRequest } = props
+  const { metaData, businessRequest, extendsFieldsI18n } = props
 
   const config = useGuardPublicConfig()
 
@@ -389,7 +390,9 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
     (metaData: CompleteInfoMetaData) => {
       let label = ''
 
-      const fieldsI18n = config.extendsFieldsI18n?.[metaData.name]
+      const fieldsI18n = (extendsFieldsI18n || config.extendsFieldsI18n)?.[
+        metaData.name
+      ]
 
       const currentLng = getCurrentLng()
 
@@ -401,7 +404,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
 
       return label
     },
-    [config.extendsFieldsI18n]
+    [config.extendsFieldsI18n, extendsFieldsI18n]
   )
 
   const generateRules = useCallback(
