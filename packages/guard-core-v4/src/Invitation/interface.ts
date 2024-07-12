@@ -39,14 +39,7 @@ export interface InviteContext {
     }[]
   }[]
   extendsFields: any
-  // qrCodeBindMethods: Record<
-  //   string,
-  //   { QRConfig: any; id: string; isDefault: boolean; title: string }[]
-  // >
-  // socialConnections: any[]
   registerInfoFillMsg?: string
-  // 身份源绑定提示信息
-  // extIdpBindMsg?: string
 }
 
 export interface GuardInviteLoginInitData extends Partial<InviteContext> {

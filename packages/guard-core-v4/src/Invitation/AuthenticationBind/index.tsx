@@ -164,14 +164,10 @@ export const GuardAuthenticationView = () => {
         }
       )
 
-      console.log('needCompleteData: ', needCompleteData)
-
       const metaData = extendsFieldsToMetaData(
         needCompleteData,
         extendsFieldsOptions
       )
-
-      console.log('metaData:-----', metaData)
 
       if (enabledInfoFill && metaData.length > 0) {
         changeModule?.(GuardModuleType.INVITE_COMPLETE, {
@@ -192,8 +188,6 @@ export const GuardAuthenticationView = () => {
   }
 
   useEffect(() => {
-    console.log('verifyCodeRef.current: ', verifyCodeRef.current.click)
-
     verifyCodeRef.current && verifyCodeRef.current?.click()
   }, [])
 
@@ -237,8 +231,6 @@ export const GuardAuthenticationView = () => {
           onFinish={onFinishHandle}
           onFinishFailed={() => submitButtonRef.current?.onError()}
           onValuesChange={v => {
-            console.log('verifyCodeLength: ', verifyCodeLength)
-
             const codes: string[] = v.code
             if (
               codes.filter(code => Boolean(code)).length >= verifyCodeLength
@@ -254,21 +246,6 @@ export const GuardAuthenticationView = () => {
               length={verifyCodeLength}
               showDivider={true}
               gutter={'10px'}
-              // beforeSend={async () => {
-              //   const res = await reSendVerifyCode({
-              //     receiverType: verifyType,
-              //     ticket: initData.ticket
-              //   })
-              //   if (res.statusCode === 200) {
-              //     return true
-              //   }
-              //   return false
-              // }}
-              // onFinish={async (code: number) => {
-              //   await onFinishHandle({
-              //     code
-              //   })
-              // }}
             />
           </VerifyCodeFormItem>
           <div className="resend_container">

@@ -28,8 +28,6 @@ export const GuardInviteCompleteView = () => {
   const {
     metaData,
     extendsFieldsI18n,
-    // enabledExtIdpBind,
-    // qrCodeBindMethods,
     extendsFields,
     canBack = true,
     registerInfoFillMsg
@@ -41,11 +39,6 @@ export const GuardInviteCompleteView = () => {
 
   const nextStepHandle = async (data: CompleteInfoRequest) => {
     const { fieldValues } = data
-
-    // const wecomQrs =
-    //   qrCodeBindMethods?.['wechatwork-service-provider-qrconnect'] || []
-    // const wecomNewQrs =
-    //   qrCodeBindMethods?.['wechatwork-service-provider-qrconnect-v2'] || []
 
     const { registerProfile, udf } = fieldValuesToRegisterProfile(
       extendsFields!,
@@ -78,31 +71,7 @@ export const GuardInviteCompleteView = () => {
       ...initData.context,
       ...complete
     }
-
-    //   todo 携带补全数据 判断走后续身份源绑定 还是直接注册
-    // await businessRequest?.(CompleteInfoAuthFlowAction.Complete, data)
-    //   todo 携带当前 metadata 跳转到身份源绑定页 以便回来后数据回显
-    // if (enabledExtIdpBind && wecomQrs.length > 0) {
-    //   changeModule?.(GuardModuleType.EY_IDENTITY_BIND, {
-    //     ...initData,
-    //     originModule: GuardModuleType.EY_INVITE_COMPLETE,
-    //     originContext: initData,
-    //     weComConfig: wecomQrs[0],
-    //     context,
-    //   })
-    // } else if (enabledExtIdpBind && wecomNewQrs.length > 0) {
-    //   changeModule?.(GuardModuleType.EY_IDENTITY_BIND, {
-    //     ...initData,
-    //     originModule: GuardModuleType.EY_INVITE_COMPLETE,
-    //     originContext: initData,
-    //     weComConfig: wecomNewQrs[0],
-    //     isNew: true,
-    //     context,
-    //   })
-    // } else {
-    // 直接注册登录
     await onRegisterHandle?.(context)
-    // }
   }
 
   return (
@@ -130,7 +99,6 @@ export const GuardInviteCompleteView = () => {
       <div className="g2-view-tabs g2-completeInfo-content">
         <CompleteInfo
           extendsFieldsI18n={extendsFieldsI18n}
-          // submitText={t('login.nextStep')}
           metaData={metaData}
           businessRequest={nextStepHandle}
         />
