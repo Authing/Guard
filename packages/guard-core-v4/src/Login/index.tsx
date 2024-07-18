@@ -1226,7 +1226,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
                 {renderQrcodeWay && (
                   <div
                     className={`g2-view-tabs ${qrcodeNone} ${
-                      hiddenTab && 'hidden'
+                      hiddenTab && 'hidden_tab'
                     }`}
                   >
                     <Tabs
