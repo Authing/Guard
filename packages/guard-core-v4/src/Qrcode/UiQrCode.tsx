@@ -166,7 +166,6 @@ const LinkQrcode: React.FC<UiQrProps> = props => {
       onLoad?.()
     }
   }, [src])
-
   return (
     <div className={classes} style={containerStyle}>
       {status === 'loading' ? (
@@ -189,12 +188,6 @@ const LinkQrcode: React.FC<UiQrProps> = props => {
             )}
             <QRCodeSVG
               level="H"
-              imageSettings={{
-                height: 166,
-                width: 166,
-                src: src!,
-                excavate: false
-              }}
               size={166}
               value={src!}
               style={{
