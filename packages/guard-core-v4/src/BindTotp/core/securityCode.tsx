@@ -61,7 +61,7 @@ export const SecurityCode: React.FC<SecurityCodeProps> = ({
       const { statusCode, onGuardHandling } = await authFlow(
         BindTotpBusinessAction.VerifyTotpFirstTime,
         {
-          totp: saftyCode.join('')
+          totp: saftyCode
         }
       )
       submitButtonRef.current?.onSpin(false)
@@ -77,7 +77,7 @@ export const SecurityCode: React.FC<SecurityCodeProps> = ({
         '/api/v2/mfa/totp/associate/confirm',
         {
           authenticator_type: 'totp',
-          totp: saftyCode.join(''),
+          totp: saftyCode,
           source: 'APPLICATION'
         },
         {

@@ -162,7 +162,9 @@ export const GuardTenantPortalSelectView = () => {
               </div>
               <span
                 className="g2-error-message-text"
-                dangerouslySetInnerHTML={{ __html: t('common.noTenant') }}
+                dangerouslySetInnerHTML={{
+                  __html: t('common.noTenant') as any
+                }}
               />
               <ActionButton
                 className="authing-tenant-join"
