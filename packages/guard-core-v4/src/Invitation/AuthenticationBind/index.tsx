@@ -123,7 +123,7 @@ export const GuardAuthenticationView = () => {
   const onRegisterHandle = useRegisterHandleHook(initData, submitButtonRef)
 
   const onFinishHandle = async (formValues: any) => {
-    const captcha = formValues.code.join('')
+    const captcha = formValues.code
 
     const res = await post('/api/v3/verify-invite-code', {
       code: captcha,

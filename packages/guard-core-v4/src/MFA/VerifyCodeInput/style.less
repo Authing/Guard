@@ -1,15 +1,21 @@
 .authing-g2-code-input-item {
+  position: relative;
   text-align: center;
-  width: 40px;
-  min-width: 40px;
-  min-height: 40px;
-  height: 40px;
-  line-height: 40px;
+  width: 46px;
+  min-width: 46px;
+  min-height: 46px;
+  height: 46px;
+  line-height: 46px;
   background-color: #f5f6f7;
   border: unset;
   border-radius: 4px;
   color: transparent;
   text-shadow: 0 0 0 #545968;
+  &.focus {
+    border-color: #497ef2;
+    box-shadow: 0 0 0 2px rgba(33, 90, 229, 0.2);
+    outline: 0;
+  }
 
   &:not(:first-child) {
     margin-left: 18px;
@@ -33,6 +39,29 @@
   .authing-g2-code-input-item {
     background-color: #f5f6f7;
     border: 1px solid #ff4d4f;
+    &.focus {
+      box-shadow: unset;
+    }
+  }
+}
+.authing-g2-otp-wrapper {
+  display: flex;
+  align-items: center;
+}
+.authing-g2-otp-input-cursor {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inset: 0;
+  animation: blink 1.2s step-end infinite;
+  &::after {
+    content: '|';
+  }
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
   }
 }
 // .g2-mfa-bindTotp .g2-mfa-bindTotp-securityCode-form .g2-mfa-totp-verify-input {

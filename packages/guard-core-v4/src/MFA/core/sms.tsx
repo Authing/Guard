@@ -201,7 +201,7 @@ export const VerifyMFASms: React.FC<VerifyMFASmsProps> = ({
     const requestData: any = {
       mfaToken,
       phone: phone!,
-      code: mfaCode.join(''),
+      code: mfaCode,
       phoneCountryCode: phoneCountryCode ? phoneCountryCode : countryCode
     }
 

@@ -82,7 +82,7 @@ export const VerifyMFATotp: React.FC<VerifyMFATotpProps> = ({
     const mfaCode = form.getFieldValue('mfaCode')
 
     const requestData = {
-      totp: mfaCode.join(''),
+      totp: mfaCode,
       mfaToken
     }
 
