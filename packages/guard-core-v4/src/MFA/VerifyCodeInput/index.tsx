@@ -70,6 +70,7 @@ export const VerifyCodeInput: React.FC<VerifyCodeInputProps> = ({
             ))}
           </div>
         )}
+        autoFocus
       />
     </div>
   )
