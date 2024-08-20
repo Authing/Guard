@@ -534,7 +534,7 @@ export class Guard {
         // 兼容老版本
         const accessToken =
           localStorage.getItem('accessToken') ||
-          authClient.tokenProvider.getToken ||
+          authClient.tokenProvider.getToken() ||
           ''
 
         const body = new URLSearchParams()
