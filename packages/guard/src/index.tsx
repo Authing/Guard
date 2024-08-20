@@ -267,7 +267,7 @@ export class Guard {
     // 兼容老版本
     const accessToken =
       localStorage.getItem('accessToken') ||
-      authClient.tokenProvider.getUser()?.token ||
+      authClient.tokenProvider.getToken() ||
       ''
 
     if (!accessToken) {
@@ -385,7 +385,7 @@ export class Guard {
       codeChallenge
     )
 
-    this.setTokenCache(access_token, id_token)
+    await this.setTokenCache(access_token, id_token)
   }
 
   private async getAccessTokenByCode(code: string, codeChallenge: string) {
@@ -407,9 +407,12 @@ export class Guard {
     }
   }
 
-  private setTokenCache(accessToken: string, idToken: string) {
+  private async setTokenCache(accessToken: string, idToken: string) {
     localStorage.setItem('accessToken', accessToken)
     localStorage.setItem('idToken', idToken)
+
+    const authClient = await this.getAuthClient()
+    authClient.tokenProvider.setToken(idToken)
   }
 
   private clearTokenCache() {
@@ -460,8 +463,8 @@ export class Guard {
     }
 
     const idToken =
-      authClient.tokenProvider.getToken() ||
       localStorage.getItem('idToken') ||
+      authClient.tokenProvider.getToken() ||
       ''
 
     if (!idToken) {
@@ -531,7 +534,7 @@ export class Guard {
         // 兼容老版本
         const accessToken =
           localStorage.getItem('accessToken') ||
-          authClient.tokenProvider.getUser()?.token ||
+          authClient.tokenProvider.getToken ||
           ''
 
         const body = new URLSearchParams()
@@ -556,7 +559,7 @@ export class Guard {
       // 兜底 redirect 场景下，Safari 和 Firefox 开启『阻止跨站跟踪』后无法退出
       // 此方法只能退出当前设备
       const idToken =
-        authClient.tokenProvider.getToken() || localStorage.getItem('idToken')
+        localStorage.getItem('idToken') || authClient.tokenProvider.getToken()
       if (idToken) {
         logoutRedirectUri = authClient.buildLogoutUrl({
           expert: true,
