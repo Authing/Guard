@@ -80,7 +80,9 @@ export const LoginWithDingTalkQrcode = (props: any) => {
       },
       {
         redirect_uri: encodeURIComponent(
-          `${QRConfig.redirectUrl}?${qs.stringify(query)}`
+          `${
+            config.isHost ? QRConfig.redirectUrl : window.location.origin
+          }?${qs.stringify(query)}`
         ),
         client_id: QRConfig.clientId,
         scope: 'openid',
@@ -140,7 +142,9 @@ export const LoginWithDingTalkQrcode = (props: any) => {
     )
     // frame 页面二维码加载完毕
     DTFrame.onload = () => {
-      setLoading(false)
+      setTimeout(() => {
+        setLoading(false)
+      }, 500)
     }
   }, [DTLogin, QRConfig, appId, config?.isHost, tenantId])
 
@@ -150,10 +154,10 @@ export const LoginWithDingTalkQrcode = (props: any) => {
 
   return (
     <div className="wecom_container">
-      {loading && <ShieldSpin />}
+      {loading && <ShieldSpin className="dingtalk_loading" />}
       <div
         id={`dingtalk_qrcode_wrapper-${id}`}
-        style={{ display: loading ? 'none' : '' }}
+        style={{ visibility: loading ? 'hidden' : 'visible' }}
       ></div>
     </div>
   )

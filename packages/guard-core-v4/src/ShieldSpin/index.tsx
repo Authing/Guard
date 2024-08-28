@@ -6,6 +6,7 @@ import loading from './loading.svg'
 
 interface IG2SpinProps {
   size?: number
+  className?: string
 }
 
 export const ShieldSpin = (props: IG2SpinProps) => {
@@ -18,6 +19,7 @@ export const ShieldSpin = (props: IG2SpinProps) => {
         width: size,
         height: size
       }}
+      className={props.className}
     >
       {publicConfig?.customLoading ? (
         <img src={publicConfig.customLoading} alt="" width={size} />
