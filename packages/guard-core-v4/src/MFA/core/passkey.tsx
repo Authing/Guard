@@ -97,7 +97,7 @@ const BindPasskey: React.FC<BindPasskeyProps> = props => {
       ) : (
         <>
           <p className="authing-g2-mfa-tips">
-            暂未绑定 Passkey，请联系管理员进行绑定操作
+            {t('common.onBindPasskeyTitle')}
           </p>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <IconFont
