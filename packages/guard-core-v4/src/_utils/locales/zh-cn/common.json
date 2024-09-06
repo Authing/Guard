@@ -222,6 +222,7 @@
   },
   "cratePasskeyTitle": "创建 Passkey",
   "cratePasskeyTips": "当前账号暂无 passkey，请先完成创建验证后登录",
+  "onBindPasskeyTitle": "暂未绑定 Passkey，请联系管理员进行绑定操作",
   "createNow": "立即创建",
   "passkeyVerifyTitle": "Passkey 验证",
   "passkeyVerifyTips": "为了保障访问安全，请根据浏览器提示完成验证",

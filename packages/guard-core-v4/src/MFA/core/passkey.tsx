@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { React } from 'shim-react'
 import { ImagePro } from '../../ImagePro'
 import { useGuardPublicConfig } from '../../_utils'
+import { IconFont } from '../../IconFont'
 import {
   GetPasskeyBindChallenge,
   GetPasskeyVerifyChallenge,
@@ -11,10 +12,12 @@ import {
 import { registerPasskey, verifyPasskey } from '../../_utils/passkey'
 import { message } from 'shim-antd'
 import SubmitButton from '../../SubmitButton'
+import { MFAType } from '../interface'
 
 interface BindPasskeyProps {
   mfaToken: string
   mfaLogin: (code: any, data: any, message?: string) => void
+  mfaConfigsMap: Map<MFAType, boolean>
 }
 interface VerifyPasskeyProps {
   mfaToken: string
@@ -28,7 +31,7 @@ export type MFAPasskeyProps = BindPasskeyProps &
   }
 
 const BindPasskey: React.FC<BindPasskeyProps> = props => {
-  const { mfaToken, mfaLogin } = props
+  const { mfaToken, mfaLogin, mfaConfigsMap } = props
   const submitButtonRef = React.useRef<any>(null)
   const businessRequest = useMfaBusinessRequest()[MfaBusinessAction.PasskeyBind]
 
@@ -70,23 +73,40 @@ const BindPasskey: React.FC<BindPasskeyProps> = props => {
   return (
     <>
       <h3 className="authing-g2-mfa-title">{t('common.cratePasskeyTitle')}</h3>
-      <p className="authing-g2-mfa-tips">{t('common.cratePasskeyTips')}</p>
-      <ImagePro
-        // className="g2-mfa-passkey-empty-image"
-        width={215}
-        height={145}
-        src={`${cdnBase}/passkey/guard-bind-passkey-press.png`}
-        alt=""
-        className="g2-mfa-register-passkey-image"
-      />
 
-      <SubmitButton
-        onClick={bindPasskey}
-        text={t('common.createNow')!}
-        className="bind-passkey-btn"
-        htmlType="button"
-        ref={submitButtonRef}
-      />
+      {!mfaConfigsMap.get(MFAType.PASSKEY) ? (
+        <>
+          <p className="authing-g2-mfa-tips">{t('common.cratePasskeyTips')}</p>
+          <ImagePro
+            // className="g2-mfa-passkey-empty-image"
+            width={215}
+            height={145}
+            src={`${cdnBase}/passkey/guard-bind-passkey-press.png`}
+            alt=""
+            className="g2-mfa-register-passkey-image"
+          />
+
+          <SubmitButton
+            onClick={bindPasskey}
+            text={t('common.createNow')!}
+            className="bind-passkey-btn"
+            htmlType="button"
+            ref={submitButtonRef}
+          />
+        </>
+      ) : (
+        <>
+          <p className="authing-g2-mfa-tips">
+            {t('common.onBindPasskeyTitle')}
+          </p>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <IconFont
+              type="authing-bianzu"
+              style={{ width: 178, height: 120 }}
+            />
+          </div>
+        </>
+      )}
     </>
   )
 }
@@ -164,10 +184,14 @@ const VerifyPasskey: React.FC<VerifyPasskeyProps> = props => {
 }
 
 export const MFAPasskey: React.FC<MFAPasskeyProps> = props => {
-  const { passkeyEnabled, mfaLogin, mfaToken } = props
+  const { passkeyEnabled, mfaLogin, mfaToken, mfaConfigsMap } = props
   return passkeyEnabled ? (
     <VerifyPasskey mfaLogin={mfaLogin} mfaToken={mfaToken} />
   ) : (
-    <BindPasskey mfaLogin={mfaLogin} mfaToken={mfaToken} />
+    <BindPasskey
+      mfaLogin={mfaLogin}
+      mfaToken={mfaToken}
+      mfaConfigsMap={mfaConfigsMap}
+    />
   )
 }

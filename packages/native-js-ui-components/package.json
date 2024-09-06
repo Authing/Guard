@@ -1,6 +1,6 @@
 {
   "name": "@authing/native-js-ui-components",
-  "version": "4.5.28-alpha.1",
+  "version": "4.5.29",
   "description": "Authing Guard for Native",
   "main": "lib/index.min.js",
   "module": "lib/index.min.js",
@@ -18,7 +18,7 @@
   "author": "https://github.com/authing",
   "license": "MIT",
   "dependencies": {
-    "@authing/guard-shim-react": "^4.5.28-alpha.1",
+    "@authing/guard-shim-react": "^4.5.29",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
