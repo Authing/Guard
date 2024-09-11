@@ -206,6 +206,7 @@
   "domainNotFound": "The current organization administrator has not set up a corporate email domain name. Please contact the administrator to set it up and join the organization.",
   "cratePasskeyTitle": "Create Passkey",
   "cratePasskeyTips": "The current account does not have a passkey, please complete the creation and verification before logging in",
+  "onBindPasskeyTitle": "Passkey has not been bound yet. Please contact the administrator for binding operation",
   "createNow": "Create now",
   "passkeyVerifyTitle": "Passkey verify",
   "passkeyVerifyTips": "To ensure access security, please complete verification according to the browser prompts",

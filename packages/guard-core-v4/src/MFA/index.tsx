@@ -76,11 +76,18 @@ const ComponentsMapping: Record<MFAType, (props: any) => React.ReactNode> = {
       setShowMethods={setShowMethods}
     />
   ),
-  [MFAType.PASSKEY]: ({ config, initData, mfaLogin, setShowMethods }) => (
+  [MFAType.PASSKEY]: ({
+    config,
+    initData,
+    mfaLogin,
+    setShowMethods,
+    mfaConfigsMap
+  }) => (
     <MFAPasskey
       mfaToken={initData.mfaToken}
       mfaLogin={mfaLogin}
       passkeyEnabled={initData.passkeyEnabled}
+      mfaConfigsMap={mfaConfigsMap}
     />
   )
 }

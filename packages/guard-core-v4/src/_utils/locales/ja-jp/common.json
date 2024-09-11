@@ -206,6 +206,7 @@
   "domainNotFound": "現在の組織管理者はエンタープライズメールアドレスのドメイン名を設定していません。管理者に連絡して設定してから組織に参加してください。",
   "cratePasskeyTitle": "パスキーの作成",
   "cratePasskeyTips": "現在のアカウントにはパスキーがありません。ログインする前に作成と検証を完了してください",
+  "onBindPasskeyTitle": "暂未绑定 Passkey，请联系管理员进行绑定操作",
   "createNow": "今すぐ作成",
   "passkeyVerifyTitle": "パスキーログイン",
   "passkeyVerifyTips": "アクセスのセキュリティを確保するため、ブラウザのプロンプトに従って検証を完了してください",

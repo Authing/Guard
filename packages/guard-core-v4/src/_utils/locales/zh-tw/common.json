@@ -204,6 +204,7 @@
   "domainNotFound": "當前組織管理員未設定企業郵箱功能變數名稱，請聯系管理員設定後加入組織。",
   "cratePasskeyTitle": "建立 Passkey",
   "cratePasskeyTips": "目前帳號沒有 passkey，請先完成建立驗證後登入",
+  "onBindPasskeyTitle": "暫未綁定 Passkey，請聯系管理員進行綁定操作",
   "createNow": "立即建立",
   "passkeyVerifyTitle": "Passkey 驗證",
   "passkeyVerifyTips": "為了保障存取安全，請根據瀏覽器提示完成驗證",
