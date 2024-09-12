@@ -116,10 +116,10 @@ const requestMacAddress = async (httpClient: GuardHttp) => {
       }, 1000)
 
       const res = await Axios.create().get<{
-        main_mac: string
+        machine_code: string
       }>('http://127.0.0.1:49999/getclientinfo')
 
-      resolve(res.data.main_mac)
+      resolve(res.data.machine_code)
     } catch (e: any) {
       resolve(`无法获取 mac 地址-${e.message}`)
     }
