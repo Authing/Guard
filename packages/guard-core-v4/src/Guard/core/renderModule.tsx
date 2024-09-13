@@ -66,7 +66,11 @@ import { GuardIdentityBindingAskView } from '../../IdentityBindingAsk'
 
 import '../styles.less'
 
-import { updateFlowHandle } from '../../_utils/flowHandleStorage'
+import {
+  updateFlowHandle,
+  updateTriggerId,
+  updateWorkflowId
+} from '../../_utils/flowHandleStorage'
 
 import { GuardUnlockView } from '../../SelfUnlock'
 
@@ -253,7 +257,8 @@ export const RenderModule: React.FC<{
     ): AuthingGuardResponse => {
       // 判断有没有 flowHandle
       res.flowHandle && updateFlowHandle(res.flowHandle)
-
+      res.triggerId && updateTriggerId(res.triggerId)
+      res.workflowId && updateWorkflowId(res.workflowId)
       const codeActionMapping = {
         [CodeAction.CHANGE_MODULE]: () => {
           const nextModule = ChangeModuleApiCodeMapping[res.apiCode!]

@@ -21,6 +21,8 @@ export interface AuthingResponse<T = any> {
   messages?: string
   message?: string
   flowHandle?: string
+  triggerId?: string
+  workflowId?: string
 }
 
 export interface AuthingGuardResponse<T = any> extends AuthingResponse<T> {

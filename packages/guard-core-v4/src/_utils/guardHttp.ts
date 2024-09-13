@@ -1,6 +1,6 @@
 import { getVersion } from './getVersion'
 
-import { getFlowHandle } from './flowHandleStorage'
+import { getFlowHandle, getTriggerId, getWorkflowId } from './flowHandleStorage'
 
 import { AuthingGuardResponse, AuthingResponse, requestClient } from './http'
 
@@ -119,14 +119,23 @@ export class GuardHttp {
     action: string,
     data?: any
   ): Promise<AuthingGuardResponse<T>> => {
-    const flowPath = '/interaction/authFlow'
+    let flowPath = '/interaction/authFlow'
 
     const flowHandle = getFlowHandle()
+    const triggerId = getTriggerId()
+    const workflowId = getWorkflowId()
 
     const requestData = {
       action,
       data,
       flowHandle
+    }
+    if (workflowId && triggerId) {
+      flowPath = '/interaction/authFlow-process'
+      Object.assign(requestData, {
+        workflowId,
+        triggerId
+      })
     }
 
     const res = await requestClient.post<T>(flowPath, requestData, {
