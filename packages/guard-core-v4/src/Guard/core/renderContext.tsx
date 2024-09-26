@@ -385,7 +385,7 @@ export const RenderContext: React.FC<{
       try {
         const regex = regexFromString(str)
         return regex
-      } catch (error) { }
+      } catch (error) {}
     }
     return null
   }, [publicConfig?.regexRules])
@@ -405,29 +405,29 @@ export const RenderContext: React.FC<{
     () =>
       contextLoaded
         ? {
-          contextLoaded,
-          isAuthFlow,
-          defaultMergedConfig,
-          finallyConfig,
-          publicConfig,
-          httpClient,
-          appId,
-          tenantId,
-          events,
-          ...moduleEvents,
-          initData: moduleState.initData,
-          currentModule: moduleState,
-          guardPageConfig,
-          // 多账号相关信息 store 实例
-          multipleInstance,
-          phoneRegex,
-          defaultLanguageConfig,
-          tenantInstance,
-          isSpecialBrowser
-        }
+            contextLoaded,
+            isAuthFlow,
+            defaultMergedConfig,
+            finallyConfig,
+            publicConfig,
+            httpClient,
+            appId,
+            tenantId,
+            events,
+            ...moduleEvents,
+            initData: moduleState.initData,
+            currentModule: moduleState,
+            guardPageConfig,
+            // 多账号相关信息 store 实例
+            multipleInstance,
+            phoneRegex,
+            defaultLanguageConfig,
+            tenantInstance,
+            isSpecialBrowser
+          }
         : {
-          defaultMergedConfig
-        },
+            defaultMergedConfig
+          },
     [
       appId,
       contextLoaded,
