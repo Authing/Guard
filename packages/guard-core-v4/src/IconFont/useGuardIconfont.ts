@@ -12,7 +12,7 @@ export const useGuardIconfont = (cdnBase?: string, setError?: any) => {
   const [loaded, setLoaded] = useState<boolean>(false)
 
   const initIconfont = useCallback(async () => {
-    console.log(cdnBase,"cdnBase")
+    console.log(cdnBase, 'cdnBase')
     if (!cdnBase) return
 
     try {
