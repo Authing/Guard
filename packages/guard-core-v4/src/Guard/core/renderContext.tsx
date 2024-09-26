@@ -358,7 +358,7 @@ export const RenderContext: React.FC<{
       defaultLanguageConfig,
       tenantInstance
     ]
-
+    console.log(list,"contextLoaded")
     return !list.includes(undefined) && !list.includes(false)
   }, [
     appId,
