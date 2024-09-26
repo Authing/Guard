@@ -198,7 +198,7 @@ export const RenderContext: React.FC<{
   })
 
   // iconfont
-  const iconfontLoaded = useGuardIconfont(cdnBase)
+  const iconfontLoaded = useGuardIconfont(cdnBase, setError)
 
   // SSO 登录
   useEffect(() => {

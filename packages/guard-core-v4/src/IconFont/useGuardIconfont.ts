@@ -26,8 +26,9 @@ export const useGuardIconfont = (cdnBase?: string, setError?: any) => {
       GenerateSvg(guardWindow.document, body)
 
       setLoaded(true)
-    } catch (error) {
+    } catch (error: any) {
       setError?.(error)
+      throw new Error('error', error)
     }
   }, [cdnBase, setError])
 
