@@ -4,8 +4,6 @@ import { getGuardWindow } from '../Guard/core/useAppendConfig'
 
 import { GenerateSvg } from './iconfont'
 
-import Axios from 'axios'
-
 const { useCallback, useEffect, useState } = React
 
 export const useGuardIconfont = (cdnBase?: string, setError?: any) => {
@@ -13,19 +11,18 @@ export const useGuardIconfont = (cdnBase?: string, setError?: any) => {
 
   const initIconfont = useCallback(async () => {
     if (!cdnBase) return
-
     try {
-      const res = await Axios(`${cdnBase}/svg-string/guard?v=1`) // 刷新缓存
+      // const res = await Promise.race([Axios(`${cdnBase}/svg-string/guard?v=1`)])
 
-      const body = res.data as unknown as string
-
+      const response = await fetch(`${cdnBase}/svg-string/guard?v=1`)
+      const body = await response.text()
       const guardWindow = getGuardWindow()
 
       if (!guardWindow) return
       GenerateSvg(guardWindow.document, body)
 
       setLoaded(true)
-    } catch (error) {
+    } catch (error: any) {
       setError?.(error)
     }
   }, [cdnBase, setError])
