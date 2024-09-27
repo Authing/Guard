@@ -11,25 +11,22 @@ const { useCallback, useEffect, useState } = React
 export const useGuardIconfont = (cdnBase?: string, setError?: any) => {
   const [loaded, setLoaded] = useState<boolean>(false)
 
-  const initIconfont = useCallback(() => {
+  const initIconfont = useCallback(async () => {
     if (!cdnBase) return
+    try {
+      const res = await Promise.race([Axios(`${cdnBase}/svg-string/guard?v=1`)])
+      const body = res.data as unknown as string
 
-    Axios(`${cdnBase}/svg-string/guard?v=1`)
-      .then(res => {
-        const body = res.data as unknown as string
+      const guardWindow = getGuardWindow()
 
-        const guardWindow = getGuardWindow()
+      if (!guardWindow) return
+      GenerateSvg(guardWindow.document, body)
 
-        if (!guardWindow) return
-        GenerateSvg(guardWindow.document, body)
-
-        setLoaded(true)
-      })
-      .catch(error => {
-        setError?.(error)
-        throw new Error('error', error)
-      })
-      .finally(() => {})
+      setLoaded(true)
+    } catch (error: any) {
+      setError?.(error)
+      throw Error('error: ', error)
+    }
   }, [cdnBase, setError])
 
   useEffect(() => {

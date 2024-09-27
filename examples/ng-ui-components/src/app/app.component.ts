@@ -8,7 +8,7 @@ import { Component } from '@angular/core'
 export class AppComponent {
   title = 'guard-angular'
 
-  appId = 'AUTHING_APP_ID'
+  appId = '5f6265c67ff6fdae64ec516e'
 
   onLogin(user: any): void {
     console.log(user)

@@ -253,24 +253,24 @@
   resolved "https://registry.npmmirror.com/@assemblyscript/loader/-/loader-0.10.1.tgz#70e45678f06c72fa2e350e8553ec4a4d72b92e06"
   integrity sha512-H71nDOOL8Y7kWRLqf6Sums+01Q5msqBW2KhDUTemh1tvY04eSkSXrK0uj/4mmY0Xr16/3zyZmsrxN7CKuRbNRg==
 
-"@authing/guard-shim-react@4.5.30-alpha.2":
-  version "4.5.30-alpha.2"
-  resolved "https://registry.npmmirror.com/@authing/guard-shim-react/-/guard-shim-react-4.5.30-alpha.2.tgz#61da33fce2edf07c1c5893e96f84653f2cb559c7"
-  integrity sha512-hLewvKrMWsmhkLkonF3gE3j9xQYUqG7T1WTuboWiaWujfq/EX1wPuwJ4ZxjBOh3jYvgp7gC+kvddLh+ir9jjmA==
+"@authing/guard-shim-react@4.5.30-alpha.4":
+  version "4.5.30-alpha.4"
+  resolved "https://registry.npmjs.org/@authing/guard-shim-react/-/guard-shim-react-4.5.30-alpha.4.tgz#0eb85fdf7c47573a7b6451d4cc84ac6432d108be"
+  integrity sha512-d17sagelOPkK4zCroS4kjgih3ox7Bp22zAJx06S6bkR2iltJkjUlbapB4JS3hNepivobLg0wt3FIbFoWdau1vA==
 
-"@authing/native-js-ui-components@4.5.30-alpha.2":
-  version "4.5.30-alpha.2"
-  resolved "https://registry.npmmirror.com/@authing/native-js-ui-components/-/native-js-ui-components-4.5.30-alpha.2.tgz#cff3c4e71ed74dc73fc21d19d49dadc7843a6a8a"
-  integrity sha512-sugQv3MlKlOzfBfklkwXHcONKKluM9aoKId9IHnVNzH0XNo5U11juIJepQKYakPk0OSEqI8WuDyX+rPre6rQUA==
+"@authing/native-js-ui-components@4.5.30-alpha.4":
+  version "4.5.30-alpha.4"
+  resolved "https://registry.npmjs.org/@authing/native-js-ui-components/-/native-js-ui-components-4.5.30-alpha.4.tgz#89a063534fc660d9b08161d409f7772b67c9c77a"
+  integrity sha512-JAB2f8FotnDSgOiP5IWuroiNeNER65yMbTnz0RByRSZoWptSSXXrloF+8au4unMJ0daDGkMhFKmbF+HpyWvplA==
   dependencies:
-    "@authing/guard-shim-react" "4.5.30-alpha.2"
+    "@authing/guard-shim-react" "4.5.30-alpha.4"
     react "^16.13.1"
     react-dom "^16.13.1"
 
-"@authing/ng-ui-components@^4.5.30-alpha.2":
-  version "4.5.30-alpha.2"
-  resolved "https://registry.npmmirror.com/@authing/ng-ui-components/-/ng-ui-components-4.5.30-alpha.2.tgz#743cba77534b079d3fb15a98ffd2be61ba003d67"
-  integrity sha512-F2my2R7LqMpIMbJnp6A2QXZWN1BNHiHA3AayRY8TWIgFj4VOrlVmM5eAZTk9G8+wygSjYcb0lFveYQmmW4F4EA==
+"@authing/ng-ui-components@^4.5.30-alpha.4":
+  version "4.5.30-alpha.4"
+  resolved "https://registry.npmjs.org/@authing/ng-ui-components/-/ng-ui-components-4.5.30-alpha.4.tgz#eebedd95e294b831058d2be988f103118c764e77"
+  integrity sha512-/6UlrNUERLTGjKcKZi9guS2lB00rKLjN2Xvcn5FQeFYsq3efQhdyQ7bi723vf0VTaRLkeLifFG/5eR9mldf8lw==
   dependencies:
     "@angular/animations" "^14.2.0"
     "@angular/common" "^14.2.0"
@@ -280,7 +280,7 @@
     "@angular/platform-browser" "^14.2.0"
     "@angular/platform-browser-dynamic" "^14.2.0"
     "@angular/router" "^14.2.0"
-    "@authing/native-js-ui-components" "4.5.30-alpha.2"
+    "@authing/native-js-ui-components" "4.5.30-alpha.4"
     rxjs "~7.5.0"
     tslib "^2.3.0"
     zone.js "~0.11.4"
