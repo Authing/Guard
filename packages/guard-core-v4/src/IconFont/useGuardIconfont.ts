@@ -14,9 +14,10 @@ export const useGuardIconfont = (cdnBase?: string, setError?: any) => {
   const initIconfont = useCallback(async () => {
     if (!cdnBase) return
     try {
-      const res = await Promise.race([Axios(`${cdnBase}/svg-string/guard?v=1`)])
-      const body = res.data as unknown as string
+      // const res = await Promise.race([Axios(`${cdnBase}/svg-string/guard?v=1`)])
 
+      const response = await fetch(`${cdnBase}/svg-string/guard?v=1`)
+      const body = await response.text()
       const guardWindow = getGuardWindow()
 
       if (!guardWindow) return
