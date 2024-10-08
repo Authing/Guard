@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard-react18",
-  "version": "5.3.5-fehorizon.6",
+  "version": "5.3.5-fehorizon.7",
   "description": "Guard for React18",
   "module": "dist/esm/guard.min.js",
   "types": "dist/typings/index.d.ts",
@@ -25,7 +25,7 @@
     "webpack": "^5.72.0"
   },
   "dependencies": {
-    "@authing/guard-shim-react18": "^5.3.5-fehorizon.6",
+    "@authing/guard-shim-react18": "^5.3.5-fehorizon.7",
     "react": "^18.0.0"
   },
   "author": "https://github.com/authing",
