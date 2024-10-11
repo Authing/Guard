@@ -155,9 +155,8 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
         onNext: () => {
           setCurrStepKey(JoinTenantStepEnum.VerifyEmailCode)
           setEnterpriseEmail(
-            `${form.getFieldValue('email')}@${
-              tenantInfo?.enterpriseDomains?.[0]
-            }`
+            `${form.getFieldValue('email')}@${tenantInfo
+              ?.enterpriseDomains?.[0]}`
           )
         },
         onPrevOrCancel() {
