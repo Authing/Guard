@@ -211,12 +211,24 @@ export function deepMerge<T extends object = any>(
  * @description 在托管页下上传query.login_page_context中指定的用户自定义字段进行补全(/oidc/auth发起的认证只会携带 login_page_context)
  */
 export const getUserRegisterParams = () => {
+  let customData: any[] = []
+
   const query = qs.parse(window.location.search, {
     ignoreQueryPrefix: true
   })
-  const loginPageContext: any = query.login_page_context
+
+  let loginPageContext: any = query.login_page_context
+
+  // 将 loginPageContext 从字符串转换为 JSON 对象
+  if (typeof loginPageContext === 'string') {
+    try {
+      loginPageContext = JSON.parse(loginPageContext)
+    } catch (error) {
+      console.error('Invalid JSON in login_page_context:', error)
+      return customData
+    }
+  }
   const type = Object.prototype.toString.call(loginPageContext)
-  let customData = []
   if (loginPageContext && type.includes('Array')) {
     // 遍历数组 b，将每个对象的 key-value 转换为 { key: keyName, value: keyValue } 的形式
     loginPageContext.forEach((item: { [x: string]: any }) => {
