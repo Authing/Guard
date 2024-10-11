@@ -208,20 +208,28 @@ export function deepMerge<T extends object = any>(
 }
 
 /**
- *  在托管页下上传query中指定的用户自定义字段进行补全
- * @param params 指定上传的用户自定义字段
+ * @description 在托管页下上传query.login_page_context中指定的用户自定义字段进行补全(/oidc/auth发起的认证只会携带 login_page_context)
  */
-export const getUserRegisterParams = (params?: string[]) => {
+export const getUserRegisterParams = () => {
   const query = qs.parse(window.location.search, {
     ignoreQueryPrefix: true
   })
-  return Object.keys(query)
-    .map(key => ({
-      key,
-      value: query[key]
-    }))
-    .filter(item => item.value)
-    .filter(item => (params ? params.includes(item.key) : true))
+  const loginPageContext: any = query.login_page_context
+  const type = Object.prototype.toString.call(loginPageContext)
+  let customData = []
+  if (loginPageContext && type.includes('Array')) {
+    // 遍历数组 b，将每个对象的 key-value 转换为 { key: keyName, value: keyValue } 的形式
+    loginPageContext.forEach((item: { [x: string]: any }) => {
+      for (let key in item) {
+        customData.push({ key: key, value: item[key] })
+      }
+    })
+  } else if (loginPageContext && type.includes('Object')) {
+    for (let key in loginPageContext) {
+      customData.push({ key: key, value: loginPageContext[key] })
+    }
+  }
+  return customData
 }
 
 export enum PasswordStrength {

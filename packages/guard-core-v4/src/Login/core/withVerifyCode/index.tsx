@@ -294,9 +294,7 @@ const LoginWithVerifyCode = (props: any) => {
     const reqContent: any = {
       phone: values.phoneNumber,
       code: values.code,
-      customData: config?.isHost
-        ? getUserRegisterParams(['login_page_context'])
-        : undefined,
+      customData: config?.isHost ? getUserRegisterParams() : undefined,
       autoRegister: autoRegister,
       withCustomData: false,
       agreementIds: agreements.length ? acceptedAgreementIds.current : undefined
@@ -329,9 +327,7 @@ const LoginWithVerifyCode = (props: any) => {
     const reqContent = {
       email: values.identify,
       code: values.code,
-      customData: config?.isHost
-        ? getUserRegisterParams(['login_page_context'])
-        : undefined,
+      customData: config?.isHost ? getUserRegisterParams() : undefined,
       autoRegister: autoRegister,
       withCustomData: false,
       agreementIds: agreements.length ? acceptedAgreementIds.current : undefined

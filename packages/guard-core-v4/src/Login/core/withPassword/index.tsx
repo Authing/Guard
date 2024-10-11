@@ -163,9 +163,7 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
         account: account,
         password: await encrypt!(password, props.publicKey),
         captchaCode,
-        customData: config?.isHost
-          ? getUserRegisterParams(['login_page_context'])
-          : undefined,
+        customData: config?.isHost ? getUserRegisterParams() : undefined,
         autoRegister: props.autoRegister,
         withCustomData: false,
         agreementIds: agreements.length

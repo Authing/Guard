@@ -197,7 +197,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
         generateToken: true,
         clientIp: undefined,
         params: config?.isHost
-          ? JSON.stringify(getUserRegisterParams(['login_page_context']))
+          ? JSON.stringify(getUserRegisterParams())
           : undefined,
         context: JSON.stringify(context),
         phoneToken,
