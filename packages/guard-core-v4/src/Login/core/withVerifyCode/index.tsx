@@ -291,10 +291,16 @@ const LoginWithVerifyCode = (props: any) => {
   }, [form, currentMethod, captchaCheck])
 
   const loginByPhoneCode = async (values: any) => {
+    let keyValueArray = getUserRegisterParams() || []
+
+    const customData = keyValueArray.reduce((acc: any, curr) => {
+      acc[curr.key] = curr.value
+      return acc
+    }, {})
     const reqContent: any = {
       phone: values.phoneNumber,
       code: values.code,
-      customData: config?.isHost ? getUserRegisterParams() : undefined,
+      customData: config?.isHost ? customData : undefined,
       autoRegister: autoRegister,
       withCustomData: false,
       agreementIds: agreements.length ? acceptedAgreementIds.current : undefined
@@ -324,10 +330,16 @@ const LoginWithVerifyCode = (props: any) => {
 
   // 邮箱验证码登录
   const loginByEmailCode = async (values: any) => {
+    let keyValueArray = getUserRegisterParams() || []
+
+    const customData = keyValueArray.reduce((acc: any, curr) => {
+      acc[curr.key] = curr.value
+      return acc
+    }, {})
     const reqContent = {
       email: values.identify,
       code: values.code,
-      customData: config?.isHost ? getUserRegisterParams() : undefined,
+      customData: config?.isHost ? customData : undefined,
       autoRegister: autoRegister,
       withCustomData: false,
       agreementIds: agreements.length ? acceptedAgreementIds.current : undefined

@@ -210,16 +210,18 @@ export function deepMerge<T extends object = any>(
 /**
  * @description 在托管页下上传query.login_page_context中指定的用户自定义字段进行补全(/oidc/auth发起的认证只会携带 login_page_context)
  */
-export const getUserRegisterParams = () => {
-  let customData: any[] = []
 
+export const getUserRegisterParams = () => {
+  let customData: Array<{ key: string; value: any }> = []
+
+  // 解析查询字符串
   const query = qs.parse(window.location.search, {
-    ignoreQueryPrefix: true
+    ignoreQueryPrefix: true // 去掉 '?' 前缀
   })
 
   let loginPageContext: any = query.login_page_context
 
-  // 将 loginPageContext 从字符串转换为 JSON 对象
+  // 尝试将 loginPageContext 从字符串转换为 JSON 对象
   if (typeof loginPageContext === 'string') {
     try {
       loginPageContext = JSON.parse(loginPageContext)
@@ -227,25 +229,36 @@ export const getUserRegisterParams = () => {
       console.error('Invalid JSON in login_page_context:', error)
     }
   }
-  const type = Object.prototype.toString.call(loginPageContext)
-  if (loginPageContext && type.includes('Array')) {
-    // 遍历数组 b，将每个对象的 key-value 转换为 { key: keyName, value: keyValue } 的形式
-    loginPageContext.forEach((item: any) => {
-      let obj = item
-      try {
-        obj = JSON.parse(item)
-      } catch (error) {
-        console.error('Invalid JSON in login_page_context:', error)
-      }
-      for (let key in obj) {
+
+  // 提取键值对函数，避免代码重复
+  const extractKeyValue = (obj: any) => {
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
         customData.push({ key: key, value: obj[key] })
       }
-    })
-  } else if (loginPageContext && type.includes('Object')) {
-    for (let key in loginPageContext) {
-      customData.push({ key: key, value: loginPageContext[key] })
     }
   }
+
+  // 判断 loginPageContext 是数组还是对象
+  if (Array.isArray(loginPageContext)) {
+    // 遍历数组，将每个对象转换为 { key, value }
+    loginPageContext.forEach((item: any) => {
+      try {
+        const obj = typeof item === 'string' ? JSON.parse(item) : item
+        extractKeyValue(obj)
+      } catch (error) {
+        console.error('Invalid JSON in array item:', error)
+      }
+    })
+  } else if (
+    typeof loginPageContext === 'object' &&
+    loginPageContext !== null
+  ) {
+    // 如果是对象，直接提取键值对
+    extractKeyValue(loginPageContext)
+  }
+
+  // 返回自定义数据
   return customData
 }
 

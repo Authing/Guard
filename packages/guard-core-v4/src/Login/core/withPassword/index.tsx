@@ -159,11 +159,18 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
       let password = loginData.password
       let captchaCode = loginData.captchaCode && loginData.captchaCode.trim()
 
+      let keyValueArray = getUserRegisterParams() || []
+
+      const customData = keyValueArray.reduce((acc: any, curr) => {
+        acc[curr.key] = curr.value
+        return acc
+      }, {})
+
       let body = {
         account: account,
         password: await encrypt!(password, props.publicKey),
         captchaCode,
-        customData: config?.isHost ? getUserRegisterParams() : undefined,
+        customData: config?.isHost ? customData : undefined,
         autoRegister: props.autoRegister,
         withCustomData: false,
         agreementIds: agreements.length
