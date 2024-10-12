@@ -225,15 +225,20 @@ export const getUserRegisterParams = () => {
       loginPageContext = JSON.parse(loginPageContext)
     } catch (error) {
       console.error('Invalid JSON in login_page_context:', error)
-      return customData
     }
   }
   const type = Object.prototype.toString.call(loginPageContext)
   if (loginPageContext && type.includes('Array')) {
     // 遍历数组 b，将每个对象的 key-value 转换为 { key: keyName, value: keyValue } 的形式
-    loginPageContext.forEach((item: { [x: string]: any }) => {
-      for (let key in item) {
-        customData.push({ key: key, value: item[key] })
+    loginPageContext.forEach((item: any) => {
+      let obj = item
+      try {
+        obj = JSON.parse(item)
+      } catch (error) {
+        console.error('Invalid JSON in login_page_context:', error)
+      }
+      for (let key in obj) {
+        customData.push({ key: key, value: obj[key] })
       }
     })
   } else if (loginPageContext && type.includes('Object')) {
