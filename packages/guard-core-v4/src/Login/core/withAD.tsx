@@ -48,6 +48,7 @@ import { ErrorCode } from '../../_utils/GuardErrorCode'
 import { getCaptchaUrl } from '../../_utils/getCaptchaUrl'
 
 import { GraphicVerifyCode } from './withPassword/GraphicVerifyCode'
+import { useMemo } from 'react'
 
 const { useEffect, useRef, useState } = React
 
@@ -71,10 +72,16 @@ interface LoginWithADProps {
    * 根据输入的账号 & 返回获得对应的登录方法
    */
   multipleInstance?: StoreInstance
+  placeholder?: {
+    [propName: string]: {
+      i18n: any
+      default?: string
+    }
+  }
 }
 
 export const LoginWithAD = (props: LoginWithADProps) => {
-  const { agreements, onLoginFailed, onLoginSuccess } = props
+  const { agreements, onLoginFailed, onLoginSuccess, placeholder } = props
 
   const [acceptedAgreements, setAcceptedAgreements] = useState(false)
 
@@ -271,6 +278,31 @@ export const LoginWithAD = (props: LoginWithADProps) => {
     }
   }, [robotVerify, host])
 
+  const accountPlaceholder = useMemo(() => {
+    const placeholderI18n = placeholder?.['account']
+    const desc =
+      placeholderI18n?.i18n?.[i18n.resolvedLanguage!] ||
+      placeholderI18n?.default
+    if (desc) {
+      return desc
+    }
+    return publicConfig?.mergeAdAndAccountPasswordLogin
+      ? (t('common.jobNumber') as string)
+      : (t('login.inputAdUsername') as string)
+  }, [])
+
+  const passwordPlaceholder = useMemo(() => {
+    const placeholderI18n = placeholder?.['password']
+    const desc =
+      placeholderI18n?.i18n?.[i18n.resolvedLanguage!] ||
+      placeholderI18n?.default
+    if (desc) {
+      return desc
+    }
+    return publicConfig?.mergeAdAndAccountPasswordLogin
+      ? t('login.inputPwd')
+      : t('login.inputAdPwd')
+  }, [])
   return (
     <div className="authing-g2-login-ad">
       <Form
@@ -293,11 +325,7 @@ export const LoginWithAD = (props: LoginWithADProps) => {
                 className="authing-g2-input"
                 autoComplete="off"
                 size="large"
-                placeholder={
-                  publicConfig?.mergeAdAndAccountPasswordLogin
-                    ? (t('common.jobNumber') as string)
-                    : (t('login.inputAdUsername') as string)
-                }
+                placeholder={accountPlaceholder}
                 prefix={
                   <IconFont
                     type="authing-a-user-line1"
@@ -316,11 +344,7 @@ export const LoginWithAD = (props: LoginWithADProps) => {
                 autoComplete="off"
                 className="authing-g2-input"
                 size="large"
-                placeholder={
-                  publicConfig?.mergeAdAndAccountPasswordLogin
-                    ? t('login.inputPwd')
-                    : t('login.inputAdPwd')
-                }
+                placeholder={passwordPlaceholder}
                 prefix={
                   <IconFont
                     type="authing-a-lock-line1"

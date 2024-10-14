@@ -686,6 +686,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
           )}
         >
           <LoginWithAD
+            placeholder={adI18n?.placeholder}
             backfillData={backfillData}
             multipleInstance={multipleInstance}
             publicKey={publicKey}
@@ -712,6 +713,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       adI18n
     ]
   )
+  console.log(ms, 'ccc')
 
   const WxMiniQrTab = useCallback(
     (item: QrCodeItem) => {

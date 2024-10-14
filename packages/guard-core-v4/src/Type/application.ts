@@ -248,6 +248,12 @@ interface LoginTypeI18nProps {
       [propName: string]: string
     }
   }
+  placeholder?: {
+    [propName: string]: {
+      i18n: any
+      default?: string
+    }
+  }
 }
 
 export interface ApplicationConfig {
@@ -298,6 +304,7 @@ export interface ApplicationConfig {
     default: string
     defaultV2?: string
     title: { [x: string]: string }
+    placeholderI18n: { [x: string]: any }
   }
   socialConnections: SocialConnectionItem[]
 
