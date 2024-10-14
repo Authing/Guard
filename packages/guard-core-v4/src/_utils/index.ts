@@ -208,20 +208,58 @@ export function deepMerge<T extends object = any>(
 }
 
 /**
- *  在托管页下上传query中指定的用户自定义字段进行补全
- * @param params 指定上传的用户自定义字段
+ * @description 在托管页下上传query.login_page_context中指定的用户自定义字段进行补全(/oidc/auth发起的认证只会携带 login_page_context)
  */
-export const getUserRegisterParams = (params?: string[]) => {
+
+export const getUserRegisterParams = () => {
+  let customData: Array<{ key: string; value: any }> = []
+
+  // 解析查询字符串
   const query = qs.parse(window.location.search, {
-    ignoreQueryPrefix: true
+    ignoreQueryPrefix: true // 去掉 '?' 前缀
   })
-  return Object.keys(query)
-    .map(key => ({
-      key,
-      value: query[key]
-    }))
-    .filter(item => item.value)
-    .filter(item => (params ? params.includes(item.key) : true))
+
+  let loginPageContext: any = query.login_page_context
+
+  // 尝试将 loginPageContext 从字符串转换为 JSON 对象
+  if (typeof loginPageContext === 'string') {
+    try {
+      loginPageContext = JSON.parse(loginPageContext)
+    } catch (error) {
+      console.error('Invalid JSON in login_page_context:', error)
+    }
+  }
+
+  // 提取键值对函数，避免代码重复
+  const extractKeyValue = (obj: any) => {
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        customData.push({ key: key, value: obj[key] })
+      }
+    }
+  }
+
+  // 判断 loginPageContext 是数组还是对象
+  if (Array.isArray(loginPageContext)) {
+    // 遍历数组，将每个对象转换为 { key, value }
+    loginPageContext.forEach((item: any) => {
+      try {
+        const obj = typeof item === 'string' ? JSON.parse(item) : item
+        extractKeyValue(obj)
+      } catch (error) {
+        console.error('Invalid JSON in array item:', error)
+      }
+    })
+  } else if (
+    typeof loginPageContext === 'object' &&
+    loginPageContext !== null
+  ) {
+    // 如果是对象，直接提取键值对
+    extractKeyValue(loginPageContext)
+  }
+
+  // 返回自定义数据
+  return customData
 }
 
 export enum PasswordStrength {
