@@ -76,7 +76,7 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
           pAppId = appId
           break
         case SceneType.SCENE_TYPE_REGISTER:
-          url = '/api/v2/sms-register'
+          url = '/api/v2/sms/send-register'
           pAppId = appId
           break
         default:
