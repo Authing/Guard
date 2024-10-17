@@ -13,6 +13,7 @@ import { QrCodeAuthenticationClient } from 'authing-js-sdk/build/main/lib/authen
 import {
   Agreement,
   LoginMethods,
+  Protocol,
   SocialConnectionProvider
 } from '../Type/application'
 
@@ -63,3 +64,21 @@ export interface GuardLoginInitData {
 export const getDefaultLoginConfig = (): LoginConfig => ({
   ...getDefaultG2Config()
 })
+
+export const baseLoginPathMapping: Partial<Record<Protocol, string | null>> = {
+  [Protocol.OIDC]: '/connections/oidc/init',
+  [Protocol.SAML]: '/connections/saml/init',
+  [Protocol.CAS]: '/connections/cas/init',
+  [Protocol.OAUTH]: '/connections/oauth2/init',
+  [Protocol.AZURE_AD]: '/connections/azure-ad/init',
+  [Protocol.AD_KERBEROS]: '/connections/ad-kerberos/init'
+}
+
+export const loginUrlFieldMapping: Partial<Record<Protocol, string>> = {
+  [Protocol.OIDC]: 'oidcConnectionLoginUrl',
+  [Protocol.SAML]: 'samlRequest',
+  [Protocol.CAS]: 'casConnectionLoginUrl',
+  [Protocol.OAUTH]: 'authUrl',
+  [Protocol.AZURE_AD]: 'authorizationUrl',
+  [Protocol.AD_KERBEROS]: 'authorizationUrl'
+}

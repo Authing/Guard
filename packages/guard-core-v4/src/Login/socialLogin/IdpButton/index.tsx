@@ -23,26 +23,9 @@ import { useGuardTenantId, useIsSpecialBrowser } from '../../../_utils/context'
 import { SocialConnectionEvent } from '../../../_utils/hooks'
 
 import { i18n } from '../../../_utils/locales'
+import { baseLoginPathMapping, loginUrlFieldMapping } from '../../interface'
 
 const { useCallback } = React
-
-const baseLoginPathMapping: Partial<Record<Protocol, string | null>> = {
-  [Protocol.OIDC]: '/connections/oidc/init',
-  [Protocol.SAML]: '/connections/saml/init',
-  [Protocol.CAS]: '/connections/cas/init',
-  [Protocol.OAUTH]: '/connections/oauth2/init',
-  [Protocol.AZURE_AD]: '/connections/azure-ad/init',
-  [Protocol.AD_KERBEROS]: '/connections/ad-kerberos/init'
-}
-
-const loginUrlFieldMapping: Partial<Record<Protocol, string>> = {
-  [Protocol.OIDC]: 'oidcConnectionLoginUrl',
-  [Protocol.SAML]: 'samlRequest',
-  [Protocol.CAS]: 'casConnectionLoginUrl',
-  [Protocol.OAUTH]: 'authUrl',
-  [Protocol.AZURE_AD]: 'authorizationUrl',
-  [Protocol.AD_KERBEROS]: 'authorizationUrl'
-}
 
 export const IdpButton = (props: any) => {
   // TODO: 能不能加个类型
