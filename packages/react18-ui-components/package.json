@@ -1,6 +1,6 @@
 {
   "name": "@authing/react18-ui-components",
-  "version": "4.5.30",
+  "version": "4.5.31-alpha.6",
   "description": "Authing Guard for React",
   "main": "lib/index.min.js",
   "module": "lib/index.min.js",
@@ -19,6 +19,6 @@
   "author": "https://github.com/authing",
   "license": "MIT",
   "dependencies": {
-    "@authing/guard-shim-react18": "^4.5.30"
+    "@authing/guard-shim-react18": "^4.5.31-alpha.6"
   }
 }
