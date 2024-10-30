@@ -498,11 +498,11 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
                 style={{ color: '#878A95' }}
               />
             }
-            onChange={e => {
-              let v = e.target.value
-              console.log(v, '22')
-              changeMethod(v)
-            }}
+            // onChange={e => {
+            //   let v = e.target.value
+            //   console.log(v, '22')
+            //   changeMethod(v)
+            // }}
             onBlur={e => {
               let v = e.target.value
               changeMethod(v)
