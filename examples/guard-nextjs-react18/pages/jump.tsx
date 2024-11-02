@@ -1,11 +1,6 @@
-import { Guard } from '@authing/guard-react18'
-import '@authing/guard-react18/dist/esm/guard.min.css'
-
-import { guardOptions } from '../config'
+import { guard } from '../common/authing-guard'
 
 export default function Jump() {
-  const guard = new Guard(guardOptions)
-
   const onLogin = () => guard.startWithRedirect()
 
   const checkLoginStatus = async () => {

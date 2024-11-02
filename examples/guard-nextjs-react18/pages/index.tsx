@@ -1,13 +1,11 @@
 import { useEffect } from 'react'
-
-import { Guard } from '@authing/guard-react18'
-
-import { guardOptions } from '../config'
+import { useRouter } from 'next/router'
+import { guard } from '../common/authing-guard'
 
 export default function Home() {
-  const guard = new Guard(guardOptions)
-  const toEmbed = () => (window.location.href = '/login')
-  const toJump = () => (window.location.href = '/jump')
+  const router = useRouter()
+  const toEmbed = () => router.push('/login')
+  const toJump = () => router.push('/jump')
 
   useEffect(() => {
     guard.trackSession().then(userInfo => {
