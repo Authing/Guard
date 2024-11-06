@@ -122,8 +122,12 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
           error
         }
       }
-      const { message: msg } = JSON.parse(error.message)
-      message.error(msg)
+      try {
+        const errorMessage = JSON.parse(error.message)
+        message.error(errorMessage.message)
+      } catch (_) {
+        message.error(error)
+      }
       return {
         status: false,
         error
