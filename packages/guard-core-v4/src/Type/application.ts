@@ -153,6 +153,7 @@ export interface QrCodeItem {
   id: string
   title: string
   isDefault?: boolean
+  type?: LoginMethods
   QRConfig?: {
     corpId: string
     agentId: string
