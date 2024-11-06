@@ -377,6 +377,8 @@ export interface ApplicationConfig {
   enableCompletePassword: boolean
   /** 是否开启手机密码注册手机号验证 */
   enabledPPRegisterValid?: boolean
+  /** 是否开启邮箱域名匹配登录 */
+  enabledMatchEmailDomain?: boolean
   /**
    * 登录注册排序
    */
