@@ -246,8 +246,12 @@ export const VerifyMFASms: React.FC<VerifyMFASmsProps> = ({
         message.error(t('login.sendCodeTimeout'))
         return false
       }
-      const errorMessage = JSON.parse(e.message)
-      message.error(errorMessage.message)
+      try {
+        const errorMessage = JSON.parse(e.message)
+        message.error(errorMessage.message)
+      } catch (_) {
+        message.error(e)
+      }
       return false
     }
   }
