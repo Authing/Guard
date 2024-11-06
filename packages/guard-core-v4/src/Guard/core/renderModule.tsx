@@ -86,7 +86,7 @@ import { i18n } from '../../_utils/locales'
 import { GuardInviteCompleteView } from '../../Invitation/Complete'
 import { GuardInviteExpireView } from '../../Invitation/Error'
 import { GuardInviteSuccessView } from '../../Invitation/Success'
-
+import { GuardResetPassword } from '../../ChangePassword/core/resetPassword'
 const { useEffect, useMemo } = React
 
 const PREFIX_CLS = 'authing-ant'
@@ -239,7 +239,8 @@ export const RenderModule: React.FC<{
     ),
     [GuardModuleType.INVITE_SUCCESS]: key => (
       <GuardInviteSuccessView key={key} />
-    )
+    ),
+    [GuardModuleType.RESET_PASSWORD]: key => <GuardResetPassword key={key} />
   }
 
   // 初始化 请求拦截器 （Error Code）
