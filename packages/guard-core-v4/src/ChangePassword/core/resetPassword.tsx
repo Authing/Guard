@@ -43,7 +43,7 @@ export const GuardResetPassword = () => {
   /**
    * initData
    */
-  const { account, userId, goBack, rule = [], token } = initData
+  const { account, userId, goBack, token } = initData
   const { getPassWordUnsafeText, setPasswordErrorTextShow } =
     usePasswordErrorText()
 
@@ -62,45 +62,35 @@ export const GuardResetPassword = () => {
     //   data.repeatPassword,
     //   publicConfig.publicKey
     // )
-    const checkRes = await post('/api/v2/password/user-action/check', {
-      userId,
-      password: newPassword
+    let res = post('/api/v2/users/password/forget/link-reset-password', {
+      token,
+      newPassword
     })
-    if (checkRes.code === 200 && checkRes?.data?.valid) {
-      let res = post('/api/v2/users/password/forget/link-reset-password', {
-        token,
-        newPassword
-      })
 
-      res
-        .then((r: any) => {
-          submitBtnRef.current?.onSpin(false)
-          const { code } = r
-          if (code === ApiCode.UNSAFE_PASSWORD_TIP) {
-            setPasswordErrorTextShow(true)
-          }
-          if (code !== 200) {
-            // events?.onPwdResetError?.(r, authClient)
-            message.error(r?.message)
-            return
-          }
-          // events?.onPwdReset?.(authClient)
-
-          changeModule?.(GuardModuleType.LOGIN)
-          // props.onSend(codeMethod)
-        })
-        .catch(e => {
-          submitBtnRef.current.onError()
-          // props.onSendError(codeMethod, e)
-          // events?.onPwdResetError?.(e, authClient)
-          message.error(e.message)
+    res
+      .then((r: any) => {
+        submitBtnRef.current?.onSpin(false)
+        const { code } = r
+        if (code === ApiCode.UNSAFE_PASSWORD_TIP) {
+          setPasswordErrorTextShow(true)
+        }
+        if (code !== 200) {
+          // events?.onPwdResetError?.(r, authClient)
+          message.error(r?.message)
           return
-        })
-    } else {
-      submitBtnRef.current?.onSpin(false)
-      message.error(checkRes?.message)
-      return
-    }
+        }
+        // events?.onPwdReset?.(authClient)
+
+        changeModule?.(GuardModuleType.LOGIN)
+        // props.onSend(codeMethod)
+      })
+      .catch(e => {
+        submitBtnRef.current.onError()
+        // props.onSendError(codeMethod, e)
+        // events?.onPwdResetError?.(e, authClient)
+        message.error(e.message)
+        return
+      })
   }
 
   return (
@@ -135,7 +125,34 @@ export const GuardResetPassword = () => {
           <Form.Item
             className="authing-g2-input-form-password"
             name="password"
-            rules={rule}
+            validateTrigger={['onBlur']}
+            rules={[
+              {
+                validateTrigger: 'onBlur',
+                async validator(r, v) {
+                  if (!v || v?.length === 0) {
+                    return Promise.reject(t('login.inputPwd'))
+                  } else {
+                    const res = await post(
+                      '/api/v2/password/user-action/check',
+                      {
+                        password: v,
+                        userId
+                      }
+                    )
+                    if (res?.code === 200) {
+                      if (res?.data?.valid) {
+                        return Promise.resolve(true)
+                      } else {
+                        return Promise.reject(res?.data?.message)
+                      }
+                    } else {
+                      return Promise.reject(res?.message)
+                    }
+                  }
+                }
+              }
+            ]}
           >
             <InputPasswordForget
               className="authing-g2-input"
