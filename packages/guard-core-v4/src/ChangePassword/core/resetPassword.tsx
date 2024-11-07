@@ -114,11 +114,13 @@ export const GuardResetPassword = () => {
           className="icon"
         />
         <div className="title">{t('login.resetPwd')}</div>
-        <div className="title-explain">
-          {t('login.resetPassword.resetPasswordText2', {
-            account
-          })}
-        </div>
+        {account && (
+          <div className="title-explain">
+            {t('login.resetPassword.resetPasswordText2', {
+              account
+            })}
+          </div>
+        )}
       </div>
       <div className="g2-view-tabs">
         <Form
