@@ -11,6 +11,7 @@ import { useGuardAuthClient } from '../../Guard/authClient'
 import {
   useGuardFinallyConfig,
   useGuardInitData,
+  useGuardModule,
   useGuardPublicConfig
 } from '../../_utils/context'
 import { IconFont } from '../../IconFont'
@@ -20,6 +21,7 @@ import { usePasswordErrorText } from '../../_utils/useErrorText'
 import { ApiCode } from '../../_utils/responseManagement/interface'
 import { useGuardView } from '../../Guard/core/hooks/useGuardView'
 import { InputPasswordForget } from '../../ForgetPassword/InputPassword'
+import { GuardModuleType } from '../../Guard'
 
 const { useRef } = React
 export const GuardResetPassword = () => {
@@ -32,6 +34,8 @@ export const GuardResetPassword = () => {
   const authClient = useGuardAuthClient()
 
   const config = useGuardFinallyConfig()
+
+  const { changeModule } = useGuardModule()
 
   useGuardView()
 
@@ -82,6 +86,7 @@ export const GuardResetPassword = () => {
           }
           // events?.onPwdReset?.(authClient)
 
+          changeModule?.(GuardModuleType.LOGIN)
           // props.onSend(codeMethod)
         })
         .catch(e => {
