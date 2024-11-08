@@ -29,7 +29,7 @@ import {
   StoreInstance
 } from '../../Guard/core/hooks/useMultipleAccounts'
 
-import { useLoginMultipleBackFill } from '../hooks/useLoginMultiple'
+import { useLoginAccountBackFill } from '../hooks/useLoginMultiple'
 
 const { useRef, useState } = React
 
@@ -50,9 +50,10 @@ interface LoginWithLDAPProps {
    */
   multipleInstance?: StoreInstance
   /**
-   * 多账号回填的数据
+   * 选择已登录账号回填的数据
    */
   backfillData?: BackFillMultipleState
+  loginHint?: string
 }
 
 export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
@@ -61,17 +62,19 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
     onLoginSuccess,
     onLoginFailed,
     multipleInstance,
-    backfillData
+    backfillData,
+    loginHint
   } = props
 
   const [form] = Form.useForm()
 
   // const { responseIntercept } = useGuardHttpClient()
-  useLoginMultipleBackFill({
+  useLoginAccountBackFill({
     form,
     way: 'ldap',
     formKey: 'account',
-    backfillData
+    backfillData,
+    loginHint
   })
 
   const [acceptedAgreements, setAcceptedAgreements] = useState(false)

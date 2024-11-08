@@ -493,6 +493,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
             passwordLoginMethods={config?.passwordLoginMethods ?? []}
             agreements={agreements}
             multipleInstance={multipleInstance}
+            loginHint={config?.loginHint}
           />
         </Tabs.TabPane>
       ),
@@ -509,7 +510,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       onLoginFailed,
       onLoginSuccess,
       t,
-      passwordI18n
+      passwordI18n,
+      config?.loginHint
     ]
   )
 
@@ -553,6 +555,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
               backfillData={backfillData}
               multipleInstance={multipleInstance}
               specifyCodeMethod={SpecifyCodeMethods.Phone}
+              loginHint={config?.loginHint}
             />
           </Tabs.TabPane>
         )
@@ -582,6 +585,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
               backfillData={backfillData}
               multipleInstance={multipleInstance}
               specifyCodeMethod={SpecifyCodeMethods.Email}
+              loginHint={config?.loginHint}
             />
           </Tabs.TabPane>
         )
@@ -610,6 +614,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
             methods={verifyLoginMethods}
             backfillData={backfillData}
             multipleInstance={multipleInstance}
+            loginHint={config?.loginHint}
           />
         </Tabs.TabPane>
       )
@@ -621,6 +626,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     publicConfig?.verifyCodeLength,
     t,
     config?.autoRegister,
+    config?.loginHint,
     onBeforeLogin,
     onLoginSuccess,
     onLoginFailed,
@@ -655,6 +661,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
             agreements={agreements}
             backfillData={backfillData}
             multipleInstance={multipleInstance}
+            loginHint={config?.loginHint}
           />
         </Tabs.TabPane>
       ),
@@ -663,6 +670,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       backfillData,
       config?.autoRegister,
       config?.host,
+      config?.loginHint,
       multipleInstance,
       onBeforeLogin,
       onLoginFailed,

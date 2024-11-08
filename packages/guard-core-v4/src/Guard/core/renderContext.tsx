@@ -54,7 +54,7 @@ import { Lang } from '../../Type'
 import { i18n } from '../../_utils/locales'
 
 // hooks
-import useMultipleAccounts from './hooks/useMultipleAccounts'
+import useSelectAccounts from './hooks/useMultipleAccounts'
 
 import { useMultipleTenant } from '../../_utils/tenant'
 
@@ -174,7 +174,7 @@ export const RenderContext: React.FC<{
     setError
   )
 
-  const multipleInstance = useMultipleAccounts({
+  const selectAccInstance = useSelectAccounts({
     appId,
     finallyConfig
   })
@@ -296,11 +296,11 @@ export const RenderContext: React.FC<{
       {
         ...guardProps
       },
-      multipleInstance.instance,
+      selectAccInstance.instance,
       defaultMergedConfig?.openEventsMapping
     )
     setEvents(events)
-  }, [guardProps, multipleInstance, defaultMergedConfig])
+  }, [guardProps, selectAccInstance, defaultMergedConfig])
 
   // 状态机相关
   useEffect(() => {
@@ -352,7 +352,7 @@ export const RenderContext: React.FC<{
       guardPageConfig,
       iconfontLoaded,
       // 保证 store 加载完成
-      multipleInstance,
+      selectAccInstance,
       // 保证 i18n 初始化完成
       i18nInit,
       defaultLanguageConfig,
@@ -371,7 +371,7 @@ export const RenderContext: React.FC<{
     authClint,
     guardPageConfig,
     iconfontLoaded,
-    multipleInstance,
+    selectAccInstance,
     i18nInit,
     defaultLanguageConfig,
     tenantInstance
@@ -419,7 +419,7 @@ export const RenderContext: React.FC<{
             currentModule: moduleState,
             guardPageConfig,
             // 多账号相关信息 store 实例
-            multipleInstance,
+            multipleInstance: selectAccInstance,
             phoneRegex,
             defaultLanguageConfig,
             tenantInstance,
@@ -441,7 +441,7 @@ export const RenderContext: React.FC<{
       moduleState,
       publicConfig,
       tenantId,
-      multipleInstance,
+      selectAccInstance,
       phoneRegex,
       defaultLanguageConfig,
       tenantInstance

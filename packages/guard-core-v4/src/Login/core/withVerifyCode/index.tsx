@@ -49,7 +49,7 @@ import { GuardLoginInitData } from '../../interface'
 
 import { LoginMethods, RegisterMethods } from '../../../Type/application'
 
-import { useLoginMultipleBackFill } from '../../hooks/useLoginMultiple'
+import { useLoginAccountBackFill } from '../../hooks/useLoginMultiple'
 
 import { GraphicVerifyCode } from '../withPassword/GraphicVerifyCode'
 
@@ -82,7 +82,8 @@ const LoginWithVerifyCode = (props: any) => {
     saveIdentify,
     multipleInstance,
     backfillData,
-    specifyCodeMethod
+    specifyCodeMethod,
+    loginHint
   } = props
 
   const verifyCodeLength = publicConfig?.verifyCodeLength ?? 4
@@ -141,15 +142,16 @@ const LoginWithVerifyCode = (props: any) => {
     [changeMethod]
   )
 
-  useLoginMultipleBackFill({
+  useLoginAccountBackFill({
     form,
-    way: LoginMethods.PhoneCode,
+    way: methods,
     formKey: 'identify',
     backfillData,
     isOnlyInternationSms,
     setAreaCode,
     cancelBackfill: specifyDefaultLoginMethod === LoginMethods.PhoneCode,
-    changeCurrentMethod
+    changeCurrentMethod,
+    loginHint
   })
 
   let submitButtonRef = useRef<any>(null)

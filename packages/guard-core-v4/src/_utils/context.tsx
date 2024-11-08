@@ -272,7 +272,7 @@ export const useGuardPageConfig = () =>
 /**
  * 多账号登录 store 实例
  */
-export const useGuardMultipleInstance = () =>
+export const useGuardAccountSelectInstance = () =>
   useContext(GuardXContext).multipleInstance
 
 // 手机号正则

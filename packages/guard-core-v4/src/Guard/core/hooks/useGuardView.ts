@@ -3,7 +3,7 @@ import { React } from 'shim-react'
 import {
   useGuardEvents,
   useGuardModule,
-  useGuardMultipleInstance
+  useGuardAccountSelectInstance
 } from '../../../_utils/context'
 
 const { useEffect } = React
@@ -20,7 +20,7 @@ export function useGuardView(options: Options = {}) {
 
   const events = useGuardEvents()
 
-  const { isMultipleAccount } = useGuardMultipleInstance()
+  const { isMultipleAccount } = useGuardAccountSelectInstance()
 
   // 修改 View 的方式：changeModule、changeTab
   // 为避免 Guard 组件多次渲染及复杂的依赖创建及销毁判断

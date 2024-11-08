@@ -69,7 +69,7 @@ import {
   StoreInstance
 } from '../../../Guard/core/hooks/useMultipleAccounts'
 
-import { useLoginMultipleBackFill } from '../../hooks/useLoginMultiple'
+import { useLoginAccountBackFill } from '../../hooks/useLoginMultiple'
 
 import { getCaptchaUrl } from '../../../_utils/getCaptchaUrl'
 import { getGuardWindow } from '../../../Guard/core/useAppendConfig'
@@ -101,9 +101,10 @@ interface LoginWithPasswordProps {
    */
   multipleInstance?: StoreInstance
   /**
-   * 多账号回填的数据
+   * 选择已登录账号回填的数据
    */
   backfillData?: BackFillMultipleState
+  loginHint?: string
 }
 
 export const LoginWithPassword = (props: LoginWithPasswordProps) => {
@@ -115,7 +116,8 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
     saveIdentify,
     multipleInstance,
     backfillData,
-    passwordLoginMethods
+    passwordLoginMethods,
+    loginHint
   } = props
   const appId = useGuardAppId()
   const [form] = Form.useForm()
@@ -128,12 +130,13 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
   const { _firstItemInitialValue = '', specifyDefaultLoginMethod } =
     useGuardInitData<GuardLoginInitData>()
 
-  useLoginMultipleBackFill({
+  useLoginAccountBackFill({
     form,
     way: LoginMethods.Password,
     formKey: 'account',
     backfillData,
-    cancelBackfill: LoginMethods.Password === specifyDefaultLoginMethod
+    cancelBackfill: LoginMethods.Password === specifyDefaultLoginMethod,
+    loginHint
   })
 
   const [acceptedAgreements, setAcceptedAgreements] = useState(false)

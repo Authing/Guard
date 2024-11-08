@@ -35,6 +35,7 @@ export interface LoginConfig extends IG2Config {
    * 关闭二维码状态check轮询(console上使用)
    */
   _closeLoopCheckQrcode?: boolean
+  loginHint?: string
 }
 
 export interface LoginEvents extends IG2Events {
