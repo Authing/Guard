@@ -71,6 +71,7 @@ import {
   QrCodeItem,
   QrcodeTabsSettings,
   SocialConnectionItem,
+  SocialConnectionProvider,
   VerifyLoginMethods
 } from '../Type/application'
 
@@ -79,7 +80,6 @@ import { useLoginMultiple } from './hooks/useLoginMultiple'
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
 
 import { LoginWithAuthingOtpPush } from './core/withAuthingOtpPush/index'
-// import { LoginWithPasskey } from './core/withPasskey'
 
 import { usePostMessage } from './socialLogin/postMessage'
 
@@ -106,6 +106,8 @@ const qrcodeWays = [
   LoginMethods.WxMinQr,
   LoginMethods.WechatMpQrcode,
   LoginMethods.WechatworkCorpQrconnect,
+  LoginMethods.WECHATWORKAGENCYQRCONNECT,
+  LoginMethods.WECHATWORKQRCONNECTOFAUTHINGAGENCY,
   LoginMethods.DingTalkQrcode,
   LoginMethods.ZJZWFWQrcode
 ]
@@ -117,8 +119,12 @@ const renderQrcodeByIdentify = [
   LoginMethods.WxMinQr,
   LoginMethods.DingTalkQrcode,
   LoginMethods.WechatworkCorpQrconnect,
+  LoginMethods.WECHATWORKAGENCYQRCONNECT,
+  LoginMethods.WECHATWORKQRCONNECTOFAUTHINGAGENCY,
   LoginMethods.ZJZWFWQrcode
-]
+] as const
+
+type QrCodeUnionType = (typeof renderQrcodeByIdentify)[number]
 
 function hasMultipleQRLengths(
   qrcodeTabsSettings: QrcodeTabsSettings,
@@ -205,6 +211,10 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     specifyDefaultLoginMethod || defaultMethod
   )
 
+  const [activeMode, setActiveMode] = useState<
+    'input' | 'qrcode' | 'collapsed'
+  >('collapsed')
+
   useGuardView({
     currentTab: loginWay,
     changeTab: setLoginWay
@@ -278,7 +288,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       // 如果只有一个且那一个还不是 app 类型
       if (
         qrcodeTabsSettings &&
-        hasMultipleQRLengths(qrcodeTabsSettings, renderQrcodeByIdentify)
+        hasMultipleQRLengths(qrcodeTabsSettings, renderQrcodeByIdentify as any)
       ) {
         return false
       } else {
@@ -294,15 +304,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     if (defaultQrWay) {
       return defaultQrWay
     }
-    if (
-      [
-        LoginMethods.WechatMpQrcode,
-        LoginMethods.WxMinQr,
-        LoginMethods.WechatworkCorpQrconnect,
-        LoginMethods.DingTalkQrcode,
-        LoginMethods.ZJZWFWQrcode
-      ].includes(defaultMethod)
-    ) {
+    if (renderQrcodeByIdentify.includes(defaultMethod)) {
       const id = qrcodeTabsSettings?.[defaultMethod as LoginMethods]?.find(
         (i: { id: string; title: string; isDefault?: boolean | undefined }) =>
           i.isDefault
@@ -525,6 +527,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       publicConfig?.internationalSmsConfig?.enabled || false
 
     const tabs = []
+    // 防止在开启国际化短信后 没有配置手机验证码登录方式 但默认登录方式又是phone-code 情况下 无法渲染到 email-code
+    let usedPhoneCode = false
 
     // 开启国际化短信时要将短信和邮箱 tab 拆分，方便下拉选取手机区号
     if (isInternationSms) {
@@ -533,6 +537,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
           'phone-code'
         )
       ) {
+        usedPhoneCode = true
         tabs.push(
           <Tabs.TabPane
             key={LoginMethods.PhoneCode}
@@ -568,7 +573,9 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       ) {
         tabs.push(
           <Tabs.TabPane
-            key={LoginMethods.EmailCode}
+            key={
+              usedPhoneCode ? LoginMethods.EmailCode : LoginMethods.PhoneCode
+            }
             // TODO 后续需要单独抽出来
             tab={computedTabName(t('common.emailCodeTab'))}
           >
@@ -801,9 +808,10 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
 
   const WeComQrTab = useCallback(
     (item: QrCodeItem) => {
+      const type = item.type || LoginMethods.WechatworkCorpQrconnect
       return (
         <Tabs.TabPane
-          key={LoginMethods.WechatworkCorpQrconnect + item.id}
+          key={type + item.id}
           tab={item.title ?? t('login.wecomScanLogin')}
         >
           <LoginWithWeComQrcode
@@ -822,7 +830,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     (item: QrCodeItem) => {
       return (
         <Tabs.TabPane
-          key={LoginMethods.WechatworkCorpQrconnect + item.id}
+          key={LoginMethods.DingTalkQrcode + item.id}
           tab={item.title ?? t('login.wecomScanLogin')}
         >
           <LoginWithDingTalkQrcode
@@ -910,6 +918,16 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       [LoginMethods.WechatMpQrcode]: WechatMpQrTab,
       [LoginMethods.WxMinQr]: WxMiniQrTab,
       [LoginMethods.WechatworkCorpQrconnect]: WeComQrTab,
+      [LoginMethods.WECHATWORKQRCONNECTOFAUTHINGAGENCY]: (config: QrCodeItem) =>
+        WeComQrTab({
+          ...config,
+          type: LoginMethods.WECHATWORKQRCONNECTOFAUTHINGAGENCY
+        }),
+      [LoginMethods.WECHATWORKAGENCYQRCONNECT]: (config: QrCodeItem) =>
+        WeComQrTab({
+          ...config,
+          type: LoginMethods.WECHATWORKAGENCYQRCONNECT
+        }),
       [LoginMethods.DingTalkQrcode]: DTQrTab,
       [LoginMethods.ZJZWFWQrcode]: ZjQrTab
     }
@@ -918,12 +936,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
   const CodeLoginComponent = useMemo(() => {
     const qrCodeMap: {
       [name: string]: {
-        type:
-          | LoginMethods.WechatMpQrcode
-          | LoginMethods.WxMinQr
-          | LoginMethods.WechatworkCorpQrconnect
-          | LoginMethods.DingTalkQrcode
-          | LoginMethods.ZJZWFWQrcode
+        type: QrCodeUnionType
         title: string
         id: string
         QRConfig?: {
@@ -939,12 +952,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     Object.keys(qrcodeTabsSettings).forEach(key => {
       qrcodeTabsSettings[key as LoginMethods].forEach(item => {
         qrCodeMap[item.id] = {
-          type: key as
-            | LoginMethods.WechatMpQrcode
-            | LoginMethods.WxMinQr
-            | LoginMethods.WechatworkCorpQrconnect
-            | LoginMethods.DingTalkQrcode
-            | LoginMethods.ZJZWFWQrcode,
+          type: key as QrCodeUnionType,
           title: item.title,
           id: item.id,
           QRConfig: item.QRConfig
@@ -970,7 +978,6 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       const item = loginMethodsSort.splice(position, 1)
       loginMethodsSort.unshift(item[0])
     }
-
     return (loginMethodsSort || []).map(key => {
       return qrCodeMap[key]
         ? QrCodeTabMap[qrCodeMap[key].type]?.(qrCodeMap[key])
@@ -991,18 +998,20 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       /** 处于扫码登录方式 */
       if (isEmbeddedIdp.length > 0 && qrcodeWays.includes(loginWay)) {
         if (
-          isEmbeddedIdp.find(
-            idp =>
-              idp.provider.replaceAll(':', '-') ===
-              LoginMethods.WechatworkCorpQrconnect
+          isEmbeddedIdp.find(idp =>
+            [
+              SocialConnectionProvider.WECHATWORK_CORP_QRCONNECT,
+              SocialConnectionProvider.WECHATWORK_AGENCY_QRCONNECT,
+              SocialConnectionProvider.WECHATWORK_QRCONNECT_OF_AUTHING_AGENCY
+            ].includes(idp.provider)
           ) &&
           isWeComOrigin(evt)
         ) {
           return
         }
         if (
-          isEmbeddedIdp.find(
-            idp => idp.provider.replaceAll(':', '-') === 'dingtalk'
+          isEmbeddedIdp.find(idp =>
+            [SocialConnectionProvider.DINGTALK].includes(idp.provider)
           ) &&
           isDingTalkOrigin(evt.origin)
         ) {
@@ -1091,8 +1100,10 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
                     onClick={() => {
                       message.destroy()
                       if (inputWays.includes(loginWay)) {
+                        setActiveMode('qrcode')
                         setLoginWay(firstQRcodeWay)
                       } else if (qrcodeWays.includes(loginWay)) {
+                        setActiveMode('input')
                         setLoginWay(firstInputWay)
                       }
                     }}
@@ -1145,108 +1156,112 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
               />
             ) : (
               <>
-                {renderInputWay && (
-                  <div className={inputNone}>
-                    {!isResetPage ? (
-                      <div className={'g2-view-tabs'}>
-                        <Tabs
-                          destroyInactiveTabPane={true}
-                          onChange={(k: any) => {
-                            setLoginWay(k)
-                            message.destroy()
-                            events?.onLoginTabChange?.(k)
-                          }}
-                          activeKey={loginWay}
-                        >
-                          {GeneralLoginComponent?.flat()}
-                        </Tabs>
-                      </div>
-                    ) : (
-                      <ResetAccountName />
-                    )}
-
-                    <div className={'g2-tips-line'}>
-                      {!disableResetPwd && !isResetPage && (
-                        <div>
-                          <GuardButton
-                            type="link"
-                            className="link-like forget-password-link"
-                            onClick={() =>
-                              changeModule?.(GuardModuleType.FORGET_PWD, {})
-                            }
+                {renderInputWay &&
+                  ['input', 'collapsed'].includes(activeMode) && (
+                    <div className={inputNone}>
+                      {!isResetPage ? (
+                        <div className={'g2-view-tabs'}>
+                          <Tabs
+                            destroyInactiveTabPane={true}
+                            onChange={(k: any) => {
+                              setLoginWay(k)
+                              message.destroy()
+                              events?.onLoginTabChange?.(k)
+                            }}
+                            activeKey={loginWay}
                           >
-                            {t('login.forgetPwd')}
-                          </GuardButton>
-                          {(errorNumber >= 2 || accountLock) && (
-                            <span style={{ margin: '0 4px', color: '#EAEBEE' }}>
-                              丨
-                            </span>
-                          )}
+                            {GeneralLoginComponent?.flat()}
+                          </Tabs>
                         </div>
-                      )}
-                      {isResetPage && (
-                        <GuardButton
-                          type="link"
-                          onClick={() => {
-                            changeModule?.(GuardModuleType.LOGIN)
-                          }}
-                        >
-                          {t('common.backLoginPage')}
-                        </GuardButton>
-                      )}
-                      {(errorNumber >= 2 || accountLock) && (
-                        <Tooltip title={t('common.feedback')}>
-                          <div
-                            className="touch-tip question-feedback"
-                            onClick={() =>
-                              changeModule?.(GuardModuleType.ANY_QUESTIONS, {
-                                identify: identifyRef.current[loginWay]
-                              })
-                            }
-                          >
-                            <IconFont
-                              type={'authing-a-question-line1'}
-                              style={{ fontSize: 16 }}
-                            />
-                          </div>
-                        </Tooltip>
+                      ) : (
+                        <ResetAccountName />
                       )}
 
-                      {!disableRegister && (
-                        <span className="go-to-register">
-                          {/* <span className="gray">{t('common.noAccYet')}</span> */}
+                      <div className={'g2-tips-line'}>
+                        {!disableResetPwd && !isResetPage && (
+                          <div>
+                            <GuardButton
+                              type="link"
+                              className="link-like forget-password-link"
+                              onClick={() =>
+                                changeModule?.(GuardModuleType.FORGET_PWD, {})
+                              }
+                            >
+                              {t('login.forgetPwd')}
+                            </GuardButton>
+                            {(errorNumber >= 2 || accountLock) && (
+                              <span
+                                style={{ margin: '0 4px', color: '#EAEBEE' }}
+                              >
+                                丨
+                              </span>
+                            )}
+                          </div>
+                        )}
+                        {isResetPage && (
                           <GuardButton
                             type="link"
-                            className="link-like register-link"
-                            onClick={() =>
-                              changeModule?.(GuardModuleType.REGISTER, {})
-                            }
+                            onClick={() => {
+                              changeModule?.(GuardModuleType.LOGIN)
+                            }}
                           >
-                            {t('common.registerImmediate')}
+                            {t('common.backLoginPage')}
                           </GuardButton>
-                        </span>
-                      )}
+                        )}
+                        {(errorNumber >= 2 || accountLock) && (
+                          <Tooltip title={t('common.feedback')}>
+                            <div
+                              className="touch-tip question-feedback"
+                              onClick={() =>
+                                changeModule?.(GuardModuleType.ANY_QUESTIONS, {
+                                  identify: identifyRef.current[loginWay]
+                                })
+                              }
+                            >
+                              <IconFont
+                                type={'authing-a-question-line1'}
+                                style={{ fontSize: 16 }}
+                              />
+                            </div>
+                          </Tooltip>
+                        )}
+
+                        {!disableRegister && (
+                          <span className="go-to-register">
+                            {/* <span className="gray">{t('common.noAccYet')}</span> */}
+                            <GuardButton
+                              type="link"
+                              className="link-like register-link"
+                              onClick={() =>
+                                changeModule?.(GuardModuleType.REGISTER, {})
+                              }
+                            >
+                              {t('common.registerImmediate')}
+                            </GuardButton>
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                )}
-                {renderQrcodeWay && (
-                  <div
-                    className={`g2-view-tabs ${qrcodeNone} ${
-                      hiddenTab && 'hidden_tab'
-                    }`}
-                  >
-                    <Tabs
-                      destroyInactiveTabPane={true}
-                      defaultActiveKey={defaultQrCodeWay}
-                      onChange={(k: any) => {
-                        message.destroy()
-                        events?.onLoginTabChange?.(k)
-                      }}
+                  )}
+                {renderQrcodeWay &&
+                  ['qrcode', 'collapsed'].includes(activeMode) && (
+                    <div
+                      className={`g2-view-tabs ${qrcodeNone} ${
+                        hiddenTab && 'hidden_tab'
+                      }`}
                     >
-                      {CodeLoginComponent}
-                    </Tabs>
-                  </div>
-                )}
+                      <Tabs
+                        destroyInactiveTabPane={true}
+                        defaultActiveKey={defaultQrCodeWay}
+                        onChange={(k: any) => {
+                          message.destroy()
+                          events?.onLoginTabChange?.(k)
+                        }}
+                      >
+                        {CodeLoginComponent}
+                      </Tabs>
+                    </div>
+                  )}
               </>
             )}
             <div className="g2-social-login">

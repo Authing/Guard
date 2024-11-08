@@ -16,6 +16,8 @@ export enum LoginMethods {
   WechatMpQrcode = 'wechatmp-qrcode', // 微信扫码关注登录
   AuthingOtpPush = 'authing-otp-push', // App 扫码登录
   WechatworkCorpQrconnect = 'wechatwork-corp-qrconnect', // 微信企业扫码关注登录
+  WECHATWORKQRCONNECTOFAUTHINGAGENCY = 'wechatwork-authing-agency-qrcode', // 代开发形式的以 authing 作为内部应用
+  WECHATWORKAGENCYQRCONNECT = 'wechatwork-agency-qrcode', // 代开发形式的内部应用
   DingTalkQrcode = 'dingtalk-qrcode', //钉钉扫码
   Passkey = 'passkey', // passkey
   ZJZWFWQrcode = 'zjzwfw-qrcode' // 浙江政务钉
@@ -40,6 +42,8 @@ export enum SocialConnectionProvider {
   WECHATWORK_ADDRESS_BOOK = 'wechatwork:addressbook',
   WECHATWORK_CORP_QRCONNECT = 'wechatwork:corp:qrconnect',
   WECHATWORK_SERVICEPROVIDER_QRCONNECT = 'wechatwork:service-provider:qrconnect',
+  WECHATWORK_QRCONNECT_OF_AUTHING_AGENCY = 'wechatwork:qrconnect:of:authing:agency', // 代开发形式的以 authing 作为内部应用
+  WECHATWORK_AGENCY_QRCONNECT = 'wechatwork:agency:qrconnect', // 代开发形式的内部应用
   DINGTALK = 'dingtalk',
   WEIBO = 'weibo',
   APPLE = 'apple',
@@ -149,6 +153,7 @@ export interface QrCodeItem {
   id: string
   title: string
   isDefault?: boolean
+  type?: LoginMethods
   QRConfig?: {
     corpId: string
     agentId: string
