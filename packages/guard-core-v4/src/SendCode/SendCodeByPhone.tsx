@@ -16,7 +16,7 @@ import { SendCode } from './index'
 
 import { parsePhone } from '../_utils/hooks'
 
-import { useGuardAppId, useGuardEvents } from '../_utils/context'
+import { useGuardEvents } from '../_utils/context'
 
 import { useGuardHttp } from '../_utils/guardHttp'
 
@@ -49,7 +49,6 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
   const { t } = useTranslation()
 
   const authClient = useGuardAuthClient()
-  const appId = useGuardAppId()
 
   const events = useGuardEvents()
   const { post } = useGuardHttp()
@@ -67,29 +66,11 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
        * post 方法：packages/react-components/components/_utils/http.ts
        * 响应拦截：packages/react-components/components/_utils/responseManagement/index.ts
        */
-      // 根据 scene 区分接口请求
-      let url, pAppId
-
-      switch (scene) {
-        case SceneType.SCENE_TYPE_LOGIN:
-          url = '/api/v2/sms/send-login'
-          pAppId = appId
-          break
-        case SceneType.SCENE_TYPE_REGISTER:
-          url = '/api/v2/sms/send-register'
-          pAppId = appId
-          break
-        default:
-          url = '/api/v2/sms/send'
-          break
-      }
-
-      const data = await post(url, {
+      const data = await post('/api/v2/sms/send', {
         phone,
         phoneCountryCode: countryCode,
         scene,
-        captchaCode,
-        appId: pAppId
+        captchaCode
       })
       const { code, statusCode, message: msg } = data
       // 200 表示请求成功，不报错
