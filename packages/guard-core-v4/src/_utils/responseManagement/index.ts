@@ -12,15 +12,18 @@ export * from './interface'
 
 export const errorCodeInterceptor: (
   res: AuthingResponse<any>,
-  callBack: (code: CodeAction, res: AuthingResponse) => AuthingGuardResponse
-) => AuthingResponse<any> = (res, callBack) => {
+  callBack: (code: CodeAction, res: AuthingResponse) => AuthingGuardResponse,
+  fetchErrorHandler?: () => void
+) => AuthingResponse<any> = (res, callBack, fetchErrorHandler) => {
   if (res.code === -1) {
     message.error(i18n.t('common.timeout'))
 
     return res
   }
   if (res.code === -2) {
-    message.error(i18n.t('common.fetchError'))
+    fetchErrorHandler
+      ? fetchErrorHandler()
+      : message.error(i18n.t('common.fetchError'))
 
     return res
   }

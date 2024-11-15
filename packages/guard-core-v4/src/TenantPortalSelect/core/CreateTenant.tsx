@@ -1,7 +1,7 @@
 import { React } from 'shim-react'
 import { BackCustom } from '../../Back'
 import { useTranslation } from 'react-i18next'
-import { Form, Input } from 'shim-antd'
+import { Form, Input, Modal } from 'shim-antd'
 import SubmitButton from '../../SubmitButton'
 import { CreateTenantProps } from '../interface'
 import '../styles.less'
@@ -10,9 +10,11 @@ import {
   useGuardCurrentModule,
   useGuardEvents,
   useGuardHttpClient,
+  useGuardModule,
   useGuardPublicConfig
 } from '../../_utils'
 import { useGuardAuthClient } from '../../Guard/authClient'
+import { GuardModuleType } from '../../Guard'
 
 const { useMemo, useRef } = React
 
@@ -24,6 +26,7 @@ export const CreateTenantView: React.FC<CreateTenantProps> = ({ onBack }) => {
   const publicConfig = useGuardPublicConfig()
   const cdnBase = publicConfig?.cdnBase
   const { moduleName } = useGuardCurrentModule()
+  const { changeModule } = useGuardModule()
 
   const [form] = Form.useForm()
   const submitButtonRef = useRef<any>(null)
@@ -42,6 +45,7 @@ export const CreateTenantView: React.FC<CreateTenantProps> = ({ onBack }) => {
       // 需要重新认证
       const tenantInfo = { ...data }
       events?.onTenantSelect?.(tenantInfo)
+      const prevBaseUrl = http.getBaseUrl()
       if (tenantInfo?.host) {
         http.setBaseUrl(tenantInfo?.host)
       }
@@ -55,7 +59,28 @@ export const CreateTenantView: React.FC<CreateTenantProps> = ({ onBack }) => {
         isFlowEnd: end,
         onGuardHandling,
         data: res
-      } = await http.authFlow(moduleName)
+      } = await http.authFlow(moduleName, null, () =>
+        Modal.info({
+          title: t('login.tenantCreateSuccess'),
+          content: (
+            <div>
+              <p>
+                {t('login.tenantConsoleDomain')}
+                {tenantInfo.consoleHost}
+              </p>
+              <p>
+                {t('login.tenantAppDomain')}
+                {tenantInfo.host}
+              </p>
+            </div>
+          ),
+          onOk() {
+            http.setTenantId('')
+            http.setBaseUrl(prevBaseUrl)
+            changeModule?.(GuardModuleType.LOGIN)
+          }
+        })
+      )
       if (end) {
         setTimeout(() => events?.onLogin?.(res, authClient)) // 让选择事件先行，登录成功宏任务异步，方便异步并发
       } else {

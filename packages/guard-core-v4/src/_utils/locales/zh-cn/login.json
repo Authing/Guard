@@ -131,5 +131,8 @@
     "successTip": "密码重置成功",
     "backLogin": "秒后将自动跳转登录页"
   },
-  "wecomScanLogin": "企业微信扫码登录"
+  "wecomScanLogin": "企业微信扫码登录",
+  "tenantCreateSuccess": "创建成功，请联系运营人员配置域名",
+  "tenantAppDomain": "租户应用域名：",
+  "tenantConsoleDomain": "租户后台域名："
 }

@@ -10,6 +10,12 @@ import { getDefaultRegisterConfig, RegisterConfig } from '../Register/interface'
 
 import { ShieldSpin } from '../ShieldSpin'
 
+import { Modal } from 'shim-antd'
+
+Modal.config({
+  rootPrefixCls: 'authing-ant'
+})
+
 export interface GuardLocalConfig
   extends RegisterConfig,
     LoginConfig,

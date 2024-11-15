@@ -16,7 +16,10 @@ enum InterceptorName {
   ERROR_CODE = 'errorCode'
 }
 
-type ResponseInterceptor = (res: AuthingResponse) => AuthingResponse
+type ResponseInterceptor = (
+  res: AuthingResponse,
+  fetchErrorHandler?: () => void
+) => AuthingResponse
 
 export class GuardHttp {
   private requestClient: any
@@ -68,6 +71,10 @@ export class GuardHttp {
     return this
   }
 
+  getBaseUrl() {
+    return this.getRequestClient().getBaseUrl()
+  }
+
   public getHeaders = () => this.headers
 
   public get = async <T = any>(
@@ -117,7 +124,8 @@ export class GuardHttp {
 
   public authFlow = async <T = any>(
     action: string,
-    data?: any
+    data?: any,
+    fetchErrorHandler?: () => void
   ): Promise<AuthingGuardResponse<T>> => {
     const flowPath = '/interaction/authFlow'
 
@@ -135,7 +143,7 @@ export class GuardHttp {
       }
     })
 
-    return this.responseIntercept(res)
+    return this.responseIntercept(res, fetchErrorHandler)
   }
 
   // 初始化 Error code 拦截器
@@ -147,20 +155,26 @@ export class GuardHttp {
 
     this.responseInterceptorMap.set(
       InterceptorName.ERROR_CODE,
-      res => errorCodeInterceptor(res, callBack) // 传入调度拦截器回调
+      (res, fetchErrorHandler?: () => void) => {
+        return errorCodeInterceptor(res, callBack, fetchErrorHandler) // 传入调度拦截器回调
+      }
     )
 
     return this
   }
 
-  public responseIntercept: (res: AuthingResponse) => AuthingGuardResponse = (
-    res: AuthingGuardResponse
+  public responseIntercept: (
+    res: AuthingResponse,
+    fetchErrorHandler?: () => void
+  ) => AuthingGuardResponse = (
+    res: AuthingGuardResponse,
+    fetchErrorHandler
   ) => {
     if (this.responseInterceptorMap.size === 0) return res
 
     const interceptors = Array.from(this.responseInterceptorMap.values())
 
-    return interceptors.reduce((acc, cur) => cur(acc), res)
+    return interceptors.reduce((acc, cur) => cur(acc, fetchErrorHandler), res)
   }
 }
 

@@ -131,5 +131,8 @@
     "successTip": "密碼重置成功",
     "backLogin": "秒後將自動跳轉登入頁"
   },
-  "wecomScanLogin": "企業微信掃碼登入"
+  "wecomScanLogin": "企業微信掃碼登入",
+  "tenantCreateSuccess": "建立成功，請聯絡營運人員配置網域名稱",
+  "tenantAppDomain": "租用戶應用網域：",
+  "tenantConsoleDomain": "租用戶後台網域："
 }

@@ -182,6 +182,9 @@ requestClient.baseUrl = ''
 requestClient.setBaseUrl = (base: string) => {
   requestClient.baseUrl = base.replace(/\/$/, '')
 }
+requestClient.getBaseUrl = (base: string) => {
+  return requestClient.baseUrl
+}
 
 const DEFAULT_LANG_HEADER = 'x-authing-lang'
 const DEFAULT_TENANT_HEADER = 'x-authing-app-tenant-idåå'
