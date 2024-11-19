@@ -12,6 +12,8 @@ import { MFAFace } from './core/face'
 
 import { MFATotp } from './core/totp'
 
+import { MFACloudEntify } from './core/cloudEntify'
+
 import { MFAMethods } from './mfaMethods'
 
 import { GuardMFAInitData, MFAType } from './interface'
@@ -88,6 +90,14 @@ const ComponentsMapping: Record<MFAType, (props: any) => React.ReactNode> = {
       mfaLogin={mfaLogin}
       passkeyEnabled={initData.passkeyEnabled}
       mfaConfigsMap={mfaConfigsMap}
+    />
+  ),
+  [MFAType.CLOUDENTIFY]: ({ initData, config, changeModule, mfaLogin }) => (
+    <MFACloudEntify
+      changeModule={changeModule}
+      config={config}
+      initData={initData}
+      mfaLogin={mfaLogin}
     />
   )
 }

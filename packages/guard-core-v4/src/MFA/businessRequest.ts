@@ -16,7 +16,8 @@ export enum MfaBusinessAction {
   VerifyFace = 'verify-face',
   AssociateFace = 'associate-face',
   PasskeyBind = 'passkey-bind',
-  PasskeyVerify = 'passkey-verify'
+  PasskeyVerify = 'passkey-verify',
+  VerifyCloudEntify = 'verify-cloudentify'
 }
 
 export const authFlow = async (action: MfaBusinessAction, content: any) => {
@@ -257,6 +258,13 @@ export const useMfaBusinessRequest = () => {
 
       // return AssociateFace(content)
       return null
+    },
+    [MfaBusinessAction.VerifyCloudEntify]: (content: VerifyTotpContent) => {
+      if (isFlow) {
+        return authFlow(MfaBusinessAction.VerifyCloudEntify, content)
+      }
+      // TODO cxmt
+      return VerifyTotp(content)
     }
   }
 

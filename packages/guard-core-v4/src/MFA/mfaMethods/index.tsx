@@ -40,7 +40,7 @@ const methodTitleMapping: Record<
   },
   [MFAType.TOTP]: {
     title: () => i18n.t('common.OTPVerification'),
-    icon: 'authing-totp'
+    icon: 'authing-otp-fill'
   },
   [MFAType.FACE]: {
     title: () => i18n.t('common.faceVerification'),
@@ -49,6 +49,10 @@ const methodTitleMapping: Record<
   [MFAType.PASSKEY]: {
     title: () => 'Passkey',
     icon: 'authing-slideshow-3-line'
+  },
+  [MFAType.CLOUDENTIFY]: {
+    title: () => i18n.t('common.cloudEntifyVerify'),
+    icon: 'authing-totp'
   }
 }
 

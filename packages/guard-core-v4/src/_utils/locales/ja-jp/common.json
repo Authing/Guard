@@ -139,7 +139,7 @@
   "feedback": "ヘルプ・お問い合わせ",
   "loginProtocolTips": "ログインプロトコルにチェックを入れてください",
   "registerProtocolTips": "登録プロトコルにチェックを入れてください",
-  "accountLock": "アカウントがロックされたら、下の疑問符をクリックしてフィードバックしてください",
+  "accountLock": "アカウントがロックされているので、セルフでロックを解除するか、管理者に連絡してロックを解除してください。",
   "corsErrorMessage": "現在のドメイン名はアクセスが許可されているドメイン名のリストには含まれていない。",
   "corsErrorMessage2": "質問があれば<a href=\"https://docs.authing.cn/v2/guides/security/config-domain.html\">ドキュメント参照</a>",
   "totpGenerateCode": "この鍵を安全に記録してください",
@@ -229,5 +229,7 @@
   "reVerify": "再検証",
   "inviteExpired": "現在の招待リンクは無効です。関連管理者に連絡して招待を再開してください。",
   "pageExpired": "現在のページは期限切れですので、招待リンクをもう一度クリックしてください",
-  "inviteSuccess": "正常に参加しました。メールを確認してください。メール内の情報に基づいてログインを完了してください。"
+  "inviteSuccess": "正常に参加しました。メールを確認してください。メール内の情報に基づいてログインを完了してください。",
+  "cloudEntifyVerify": "CloudEntify OTP パスワードの検証",
+  "cloundEntifyCodes": "受け取った6桁のセキュリティコードを入力してください"
 }

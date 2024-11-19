@@ -25,7 +25,11 @@ export enum MFAType {
   EMAIL = 'EMAIL',
   TOTP = 'OTP',
   FACE = 'FACE',
-  PASSKEY = 'PASSKEY'
+  PASSKEY = 'PASSKEY',
+  /**
+   * cxmt 飞天云信
+   */
+  CLOUDENTIFY = 'CLOUDENTIFY'
 }
 
 export interface GuardMFAInitData {

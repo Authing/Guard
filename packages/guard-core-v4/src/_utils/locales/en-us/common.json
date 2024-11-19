@@ -138,7 +138,7 @@
   "feedback": "Need help ？",
   "loginProtocolTips": "Please check the login protocol",
   "registerProtocolTips": "Please check the registration agreement",
-  "accountLock": "The account is locked, please click the question mark below to give feedback",
+  "accountLock": "The account is locked. Please unlock it by yourself or contact the administrator.",
   "corsErrorMessage": "The current domain name is not in the list of allowed domain names",
   "corsErrorMessage2": "If you have any questions, you can <a href=\"https://docs.authing.cn/v2/guides/security/config-domain.html\">refer to the document</a>",
   "totpGenerateCode": "Generate a new recovery code for you, please record this key safely",
@@ -229,5 +229,7 @@
   "reVerify": "reverify",
   "inviteExpired": "The current invitation link has expired. Please contact the relevant administrator to resend the invitation for you.",
   "pageExpired": "The current page has expired. Please click the invitation link again to enter",
-  "inviteSuccess": "Successfully joined, please check your email. Please complete the login based on the information in the email."
+  "inviteSuccess": "Successfully joined, please check your email. Please complete the login based on the information in the email.",
+  "cloudEntifyVerify": "CloudEntify OTP Verification",
+  "cloundEntifyCodes": "Please enter the 6-digit security code you received"
 }

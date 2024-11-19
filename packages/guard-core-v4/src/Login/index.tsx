@@ -697,7 +697,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
           tab={computedTabName(
             adI18n?.tab?.i18n?.[i18n.resolvedLanguage!] ||
               adI18n?.tab?.default ||
-              t('login.adLogin')
+              t('login.accountLogin')
           )}
         >
           <LoginWithAD

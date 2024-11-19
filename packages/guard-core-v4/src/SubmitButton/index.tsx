@@ -7,11 +7,12 @@ import { GuardButton } from '../GuardButton'
 import { useGuardButtonState } from '../_utils/context'
 
 import { ButtonProps } from 'shim-antd'
+import { DefaultTFuncReturn } from 'i18next'
 
 const { forwardRef, useState, useImperativeHandle, useEffect } = React
 
 interface SubmitButtonProps extends ButtonProps {
-  text?: string
+  text?: string | DefaultTFuncReturn
   className?: string
   onClick?: any
   disabled?: boolean

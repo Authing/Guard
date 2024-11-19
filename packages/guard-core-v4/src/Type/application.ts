@@ -413,6 +413,7 @@ export interface ApplicationConfig {
     validLoginMethods: Array<string> | null
     validRegisterMethods: Array<string> | null
   }
+
   /** 是否开启自定义安全规则 */
   customSecurityEnabled: boolean
   /** 应用的人机验证策略，始终开启、不开启、设置条件触发 */

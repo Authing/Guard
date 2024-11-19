@@ -131,5 +131,6 @@
     "successTip": "Password reset succeeded",
     "backLogin": "Seconds will automatically jump to the login page"
   },
-  "wecomScanLogin": "Enterprise WeChat scan code to log in"
+  "wecomScanLogin": "Enterprise WeChat scan code to log in",
+  "accountLogin": "Account Login"
 }
