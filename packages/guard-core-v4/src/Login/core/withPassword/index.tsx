@@ -213,13 +213,18 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
       return
     }
 
-    // 图形验证码出现后，不管是「图形验证码」错了，还是「账号」「密码」错了，都要重新发验证码
-    if (verifyCodeUrl) {
-      setVerifyCodeUrl(getCaptchaUrl(props.host!))
-    }
-    const res = await loginRequest(loginInfo)
+    try {
+      const res = await loginRequest(loginInfo)
 
-    onLoginRes(res, values.account)
+      onLoginRes(res, values.account)
+    } catch (e) {
+      throw e
+    } finally {
+      // 图形验证码出现后，不管是「图形验证码」错了，还是「账号」「密码」错了，都要重新发验证码
+      if (verifyCodeUrl) {
+        setVerifyCodeUrl(getCaptchaUrl(props.host!))
+      }
+    }
   }
 
   const onLoginRes = (res: AuthingGuardResponse, account: string) => {
