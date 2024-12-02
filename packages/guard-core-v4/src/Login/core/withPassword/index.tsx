@@ -329,26 +329,30 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
       return
     }
 
-    // 图形验证码出现后，不管是「图形验证码」错了，还是「账号」「密码」错了，都要重新发验证码
-    if (verifyCodeUrl) {
-      setVerifyCodeUrl(getCaptchaUrl(props.host!))
-    }
-
-    if (matchEmailDomain) {
-      const { code, data } = await matchIdpConnRequest({
-        account: values.account
-      })
-      submitButtonRef?.current?.onSpin(false)
-      if (code === 200 && data.matched) {
-        // gene idp init url
-        idpLogin(data.identityProvider)
+    try {
+      if (matchEmailDomain) {
+        const { code, data } = await matchIdpConnRequest({
+          account: values.account
+        })
+        submitButtonRef?.current?.onSpin(false)
+        if (code === 200 && data.matched) {
+          // gene idp init url
+          idpLogin(data.identityProvider)
+        } else {
+          setMatchRes('fail')
+        }
       } else {
-        setMatchRes('fail')
-      }
-    } else {
-      const res = await loginRequest(loginInfo)
+        const res = await loginRequest(loginInfo)
 
-      onLoginRes(res, values.account)
+        onLoginRes(res, values.account)
+      }
+    } catch (e) {
+      throw e
+    } finally {
+      // 图形验证码出现后，不管是「图形验证码」错了，还是「账号」「密码」错了，都要重新发验证码
+      if (verifyCodeUrl) {
+        setVerifyCodeUrl(getCaptchaUrl(props.host!))
+      }
     }
   }
 
