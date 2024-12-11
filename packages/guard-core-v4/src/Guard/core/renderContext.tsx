@@ -62,7 +62,15 @@ import Axios from 'axios'
 
 import { getGuardDocument } from '../../_utils/guardDocument'
 
-const { useCallback, useEffect, useMemo, useReducer, useState, useRef } = React
+const {
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useState,
+  useRef,
+  useLayoutEffect
+} = React
 
 interface IBaseAction<T = string, P = any> {
   type: T & string
@@ -75,6 +83,7 @@ export const RenderContext: React.FC<{
   children: ReactNode
 }> = ({ guardProps, initState, children }) => {
   const { tenantId, deviceId, config } = guardProps
+
   // 强制刷新
   const [forceUpdate, setForceUpdate] = useState(Date.now())
 
@@ -91,6 +100,7 @@ export const RenderContext: React.FC<{
 
   const [defaultLanguageConfig, setDefaultLanguageConfig] = useState<Lang>()
 
+  const [isForeignUserpool, setIsForeignUserpool] = useState(false)
   useInitGuardAppendConfig(setForceUpdate, appId, guardProps.appendConfig)
 
   // 状态机
@@ -147,7 +157,6 @@ export const RenderContext: React.FC<{
   // HttpClient
   useEffect(() => {
     if (!appId || !defaultMergedConfig) return
-
     const httpClient = initGuardHttp(defaultMergedConfig.host)
     httpClient.setAppId(appId)
     tenantId && httpClient.setTenantId(tenantId)
@@ -283,6 +292,31 @@ export const RenderContext: React.FC<{
     }
   }, [defaultMergedConfig, guardPageConfig, publicConfig, setI18nInit])
 
+  // 特殊脚本注入
+  useLayoutEffect(() => {
+    if (!publicConfig) {
+      return
+    }
+    const guardDocument = getGuardDocument()
+    // 企业微信脚本文件注入
+    if (
+      publicConfig.qrcodeTabsSettings?.[
+        LoginMethods.EYWechatworkCorpQrconnect
+      ] &&
+      !scriptNodes.current?.thirdWeCom
+    ) {
+      const thirdWeComScriptDom = document.createElement('script')
+      thirdWeComScriptDom.innerHTML =
+        '!(function(e,t){"object"==typeof exports&&"undefined"!=typeof module?(module.exports=t()):"function"==typeof define&&define.amd?define(t):((e="undefined"!=typeof globalThis?globalThis:e||self).EYWwLogin=t())})(this,function(){"use strict";var e=["work.weixin.qq.com","tencent.com"],t={sso:"/wwopen/sso/3rd_qrConnect",tww:"/login/wwLogin/sso/3rd_qrConnect",native:"/native/sso/3rd_qrConnect",twxg:"/login/wwLogin/sso/3rd_qrConnect"},n="1.2.7";return(function(){function o(e){(this.options=e),(this.options=e),this.createFrame()}return((o.prototype.destroyed=function(){console.log("WwLogin had destroyed."),window.removeEventListener("message",this.onPostMessage)}),(o.prototype.getUrl=function(e){var o=[];Object.keys(e).forEach(function(t){var n=e[t];[void 0,null].indexOf(n)>-1||(-1!==["string","number","boolean"].indexOf(typeof n)&&"id"!==t&&o.push("".concat(t,"=").concat(n)))}),o.push("version=".concat(n)),o.push("login_type=jssdk");var s=t[e.business_type||"sso"];if(!s)throw new Error("Argument business_type not match. Current version is ".concat(n,"."));var i="https://open.work.weixin.qq.com";return(/tencent.com$/.test(window.location.host)&&(i="https://open.wecom.tencent.com"),"".concat(i).concat(s,"?").concat(o.join("&")))}),(o.prototype.createFrame=function(){var e=this;if(this.options.is_mobile)window.location.href=this.getUrl(this.options);else{this.frame=document.createElement("iframe");var t=document.getElementById(this.options.id);(this.frame.src=this.getUrl(this.options)),(this.frame.frameBorder="0"),(this.frame.allowTransparency="true"),(this.frame.scrolling="no"),(this.frame.width=this.options?.width||"320px"),(this.frame.height=this.options?.height||"194px"),(t.innerHTML=""),t.appendChild(this.frame)}}),o)})()});'
+      // 上传到oss在无痕浏览器下加载异常
+      // weComScriptDom.src = `${publicConfig?.cdnBase}/guard-assets/wecom_authing.js`
+      guardDocument.body.appendChild(thirdWeComScriptDom)
+      scriptNodes.current = Object.assign(scriptNodes.current, {
+        thirdWeCom: thirdWeComScriptDom
+      })
+    }
+  }, [publicConfig])
+
   // AuthClient
   useEffect(() => {
     setAuthClint(sdkClient)
@@ -326,6 +360,37 @@ export const RenderContext: React.FC<{
 
     setIsAuthFlow(!Boolean(finallyConfig?.__unAuthFlow__))
   }, [finallyConfig])
+
+  // 是否是国外用户池
+  useEffect(() => {
+    const baseUrl = finallyConfig?.host
+
+    if (appId && baseUrl) {
+      try {
+        Axios.get<
+          any,
+          {
+            data: {
+              code: number
+              data: boolean
+              message: string
+            }
+          }
+        >(`${baseUrl}/api/v2/application/${appId}/check-app-is-show-code`)
+          .then(res => {
+            const { code, data } = res?.data || {}
+            if (code === 200) {
+              setIsForeignUserpool(data)
+            }
+          })
+          .catch(error => {
+            console.log('error', error)
+          })
+      } catch (error) {
+        console.log('error', error)
+      }
+    }
+  }, [appId, finallyConfig?.host])
 
   const moduleEvents = useMemo(() => {
     if (!events && !guardStateMachine) return undefined
@@ -389,7 +454,6 @@ export const RenderContext: React.FC<{
     }
     return null
   }, [publicConfig?.regexRules])
-
   const isSpecialBrowser = useMemo(() => {
     return computeIsSpecialBrowser(publicConfig?.specialBrowserSymbols || [])
   }, [publicConfig?.specialBrowserSymbols])
@@ -423,7 +487,8 @@ export const RenderContext: React.FC<{
             phoneRegex,
             defaultLanguageConfig,
             tenantInstance,
-            isSpecialBrowser
+            isSpecialBrowser,
+            isForeignUserpool
           }
         : {
             defaultMergedConfig
@@ -442,9 +507,11 @@ export const RenderContext: React.FC<{
       publicConfig,
       tenantId,
       selectAccInstance,
+      isSpecialBrowser,
       phoneRegex,
       defaultLanguageConfig,
-      tenantInstance
+      tenantInstance,
+      isForeignUserpool
     ]
   )
 

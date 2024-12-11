@@ -1,4 +1,5 @@
-export type Lang = 'zh-CN' | 'en-US' | 'zh-TW' | 'ja-JP'
+// export type Lang = 'zh-CN' | 'en-US' | 'zh-TW' | 'ja-JP'
+export type Lang = 'zh-CN' | 'en-US'
 
 import { MFAType } from '../MFA/interface'
 import { PasswordStrength } from '../_utils'
@@ -20,7 +21,12 @@ export enum LoginMethods {
   WECHATWORKAGENCYQRCONNECT = 'wechatwork-agency-qrcode', // 代开发形式的内部应用
   DingTalkQrcode = 'dingtalk-qrcode', //钉钉扫码
   Passkey = 'passkey', // passkey
-  ZJZWFWQrcode = 'zjzwfw-qrcode' // 浙江政务钉
+  ZJZWFWQrcode = 'zjzwfw-qrcode', // 浙江政务钉
+  /**
+   * ey
+   */
+  EYWechatworkCorpQrconnect = 'wechatwork-service-provider-qrconnect', // 微信企业扫码关注登录
+  WechatworkCorpQrconnectNew = 'wechatwork-service-provider-qrconnect-v2' // 微信企业扫码关注登录
 }
 
 export enum OIDCConnectionMode {
@@ -154,6 +160,7 @@ export interface QrCodeItem {
   title: string
   isDefault?: boolean
   type?: LoginMethods
+
   QRConfig?: {
     corpId: string
     agentId: string
@@ -292,6 +299,7 @@ export interface ApplicationConfig {
     }
   }
   resetPwdCustomLogo?: string
+
   qrcodeTabsSettings: QrcodeTabsSettings
 
   qrCodeSortConfig: {
@@ -419,6 +427,10 @@ export interface ApplicationConfig {
   appRobotVerify: 'always_enable' | 'disable' | 'condition_set'
   /** 用户池的人机验证策略，始终开启、不开启、设置条件触发 */
   userpoolRobotVerify: 'always_enable' | 'disable' | 'condition_set'
+  /**
+   * 是否为官方应用
+   */
+  isOfficial?: boolean
   /** 加入租户校验企业邮箱 */
   enableVerifyDomainInJoinTenant: boolean
 

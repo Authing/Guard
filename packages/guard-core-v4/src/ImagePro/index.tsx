@@ -147,6 +147,7 @@ export const ImagePro2 = (props: ImageProProps) => {
       {!loaded && (
         <GuardButton
           className="g2-base-imagepro-mask g2-base-imagepro-loading"
+          type="ghost"
           loading
         />
       )}

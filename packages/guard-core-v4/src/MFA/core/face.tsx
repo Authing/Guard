@@ -313,7 +313,7 @@ export const MFAFace = (props: any) => {
                 message.error(t('login.mediaDevicesSupport'))
               }
             }}
-            text={t('common.faceText3') as string}
+            text={t('common.faceText3')!}
             className="mfa-face"
           />
         </>

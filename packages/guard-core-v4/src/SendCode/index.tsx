@@ -18,6 +18,7 @@ export interface SendPhoneCodeProps extends InputProps {
   form?: any
   beforeSend?: any // 点击的时候先做这个
   autoSubmit?: boolean //验证码输入完毕是否自动提交
+  timerTime?: number
 }
 
 export const SendCode: React.FC<SendPhoneCodeProps> = ({
@@ -27,6 +28,7 @@ export const SendCode: React.FC<SendPhoneCodeProps> = ({
   form,
   beforeSend,
   maxLength,
+  timerTime,
   ...inputProps
 }) => {
   const { t } = useTranslation()
@@ -39,7 +41,7 @@ export const SendCode: React.FC<SendPhoneCodeProps> = ({
         >
           <InputNumber
             value={value}
-            onChange={(e: any) => {
+            onChange={e => {
               onChange?.(e)
               if (!autoSubmit) return
               if (maxLength && e.target.value.length >= maxLength) {
@@ -53,7 +55,8 @@ export const SendCode: React.FC<SendPhoneCodeProps> = ({
         <Col offset={1} span={/ja/.test(i18n.resolvedLanguage!) ? 14 : 8}>
           <SendCodeBtn
             beforeSend={beforeSend}
-            sendDesc={t('common.sendVerifyCode') as string}
+            sendDesc={t('common.sendVerifyCode')!}
+            timerTime={timerTime}
           />
         </Col>
       </Row>

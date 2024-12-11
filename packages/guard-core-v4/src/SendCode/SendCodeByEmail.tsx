@@ -125,6 +125,7 @@ export const SendCodeByEmail: React.FC<SendCodeByEmailProps> = props => {
           })
       }}
       form={form}
+      timerTime={60 * 5}
       {...remainProps}
     />
   )

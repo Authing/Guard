@@ -51,10 +51,10 @@ export const GuardSelectAccountView = () => {
     [authClient, post, events]
   )
   const renderList = useMemo(() => {
-    if (!initData) {
+    if (!initData || !initData?.accounts) {
       return null
     }
-    return initData?.accounts.map(user => {
+    return initData?.accounts.map((user: any) => {
       const { id, photo, phone, email, username, nickname, name } = user
       const title = name || nickname || username || undefined
       const description = phone || email

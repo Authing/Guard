@@ -18,6 +18,7 @@ import { ApplicationConfig } from '../Type/application'
 import { GuardHttp } from './guardHttp'
 
 import { MultipleTenant } from './tenant'
+import { i18n } from './locales'
 
 const { useContext, useMemo } = React
 
@@ -81,6 +82,9 @@ export interface IGuardContext {
 
   /** 特殊浏览器，身份源无法弹窗，非托管模式不显示身份源图标 */
   isSpecialBrowser: boolean
+
+  /** 判断是否是国外的用户池 */
+  isForeignUserpool: boolean
 }
 
 const DefaultGuardX: IGuardContext = {
@@ -125,8 +129,9 @@ const DefaultGuardX: IGuardContext = {
   defaultLanguageConfig: 'zh-CN',
 
   tenantInstance: undefined,
+  isSpecialBrowser: false,
 
-  isSpecialBrowser: false
+  isForeignUserpool: false
 }
 
 const GuardXContext = React.createContext<IGuardContext>(DefaultGuardX)
@@ -230,7 +235,6 @@ export const useGuardHttpClient = () => useContext(GuardXContext).httpClient
 
 export const useIsSpecialBrowser = () =>
   useContext(GuardXContext).isSpecialBrowser
-
 export const useGuardDefaultMergedConfig = () =>
   useContext(GuardXContext).defaultMergedConfig
 
@@ -258,8 +262,12 @@ export const useGuardModule = () => {
   }
 }
 
-export const useGuardFinallyConfig = () =>
-  useContext(GuardXContext).finallyConfig
+export const useGuardFinallyConfig = () => {
+  return {
+    ...useContext(GuardXContext).finallyConfig,
+    title: i18n.t('common.ey.title')
+  }
+}
 
 export const useGuardContextLoaded = () =>
   useContext(GuardXContext).contextLoaded
@@ -272,7 +280,11 @@ export const useGuardPageConfig = () =>
 /**
  * 多账号登录 store 实例
  */
+
 export const useGuardAccountSelectInstance = () =>
+  useContext(GuardXContext).multipleInstance
+
+export const useGuardMultipleInstance = () =>
   useContext(GuardXContext).multipleInstance
 
 // 手机号正则
@@ -294,6 +306,10 @@ export const useRobotVerify = () => {
 
   return customSecurityEnabled ? appRobotVerify : userpoolRobotVerify
 }
+
+/** 当前用户池是否是国外用户池 */
+export const useIsForeignUserpool = () =>
+  useContext(GuardXContext).isForeignUserpool
 
 /** 当前应用是否开启人机验证策略 */
 export const useCaptchaCheck = (sence: 'login' | 'register') => {

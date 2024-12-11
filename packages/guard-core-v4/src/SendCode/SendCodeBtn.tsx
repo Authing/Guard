@@ -10,17 +10,17 @@ import { ButtonProps } from 'shim-antd'
 
 import { i18n } from '../_utils/locales'
 
-const { useState, useRef, useEffect, useMemo } = React
+const { useState, useRef, useEffect, useMemo, useImperativeHandle } = React
 
-const TIME = 60
 export interface SendCodeProps extends ButtonProps {
   beforeSend: () => Promise<boolean>
   btnRef?: React.RefObject<HTMLButtonElement>
   setSent?: (value: boolean) => void
   sendDesc?: string
+  timerTime?: number
 }
 
-const useSentCounter = (effect: any) => {
+const useSentCounter = (effect: any, timerTime = 60) => {
   const [countDown, setCountDown] = useState(0)
   const timerRef = useRef<any>(0)
 
@@ -40,7 +40,7 @@ const useSentCounter = (effect: any) => {
   const enabled = useMemo(() => countDown <= 0, [countDown])
 
   const send = () => {
-    setCountDown(TIME)
+    setCountDown(timerTime)
 
     timerRef.current = setInterval(() => {
       setCountDown(prev => {
@@ -56,16 +56,17 @@ const useSentCounter = (effect: any) => {
   }
 }
 
-export const SendCodeBtn: React.FC<SendCodeProps> = props => {
+export const SendCodeBtn = React.forwardRef((props: SendCodeProps, ref) => {
   const { t } = useTranslation()
   const {
-    sendDesc = t('login.reSent'),
+    sendDesc = t('login.clickSent'),
     beforeSend,
     btnRef,
     setSent,
+    timerTime,
     ...buttonProps
   } = props
-  const { enabled, send, countDown } = useSentCounter(setSent)
+  const { enabled, send, countDown } = useSentCounter(setSent, timerTime)
   const [loading, setLoading] = useState(false)
   const disabled = useMemo(() => {
     return !enabled || loading
@@ -85,16 +86,23 @@ export const SendCodeBtn: React.FC<SendCodeProps> = props => {
     send()
   }
 
+  useImperativeHandle(ref, () => {
+    return {
+      send
+    }
+  })
+
   return (
     <Button
-      {...buttonProps}
       className={`${
         buttonProps.type ?? 'authing-g2-send-code-btn g2-loading-btn-center'
-      } ${i18n.resolvedLanguage === 'ja-JP' ? 'send-code-btn-jp' : ''}`}
+      } ${i18n.resolvedLanguage === 'ja-JP' ? 'send-code-btn-jp' : ''} `}
       disabled={disabled}
       loading={loading}
       onClick={onClick}
       ref={btnRef}
+      type="ghost"
+      {...buttonProps}
     >
       {loading === true && <span></span>}
       {loading === false && (
@@ -108,4 +116,4 @@ export const SendCodeBtn: React.FC<SendCodeProps> = props => {
       )}
     </Button>
   )
-}
+})

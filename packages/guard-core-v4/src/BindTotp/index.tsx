@@ -28,6 +28,7 @@ import './styles.less'
 
 import {
   useGuardEvents,
+  useGuardFinallyConfig,
   useGuardInitData,
   useGuardIsAuthFlow,
   useGuardModule
@@ -39,17 +40,19 @@ import { BackCustom } from '../Back'
 
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
 
+const { useEffect, useMemo, useState } = React
+
 enum BindTotpType {
   SECURITY_CODE = 'securityCode',
   BIND_SUCCESS = 'bindSuccess'
 }
 
-const { useEffect, useMemo, useState } = React
-
 export const GuardBindTotpView: React.FC = () => {
   const initData = useGuardInitData<GuardBindTotpInitData>()
 
   const events = useGuardEvents()
+
+  const finishConfig = useGuardFinallyConfig()
 
   const { changeModule } = useGuardModule()
 
@@ -92,7 +95,11 @@ export const GuardBindTotpView: React.FC = () => {
       )
       if (code === ErrorCode.LOGIN_INVALID) {
         message.error(msg)
-        changeModule?.(GuardModuleType.LOGIN, {})
+        if (finishConfig.isInvited) {
+          changeModule?.(GuardModuleType.EY_PRE_CHECK_EMAIL)
+        } else {
+          changeModule?.(GuardModuleType.LOGIN, {})
+        }
         return
       }
     } catch (error: any) {

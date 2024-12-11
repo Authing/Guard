@@ -1,0 +1,72 @@
+.bind-pre-check-wrapper {
+  padding: 0px 24px;
+  .g2-view-back {
+    padding-left: unset;
+  }
+  .ey-captcha-inputs {
+    display: flex;
+    justify-content: center;
+  }
+  .authing-ant-form.authing-ant-form-horizontal {
+    display: flex;
+    flex-direction: column;
+  }
+  .authing-g2-mfa-totp-recoveryCode {
+    text-align: end;
+  }
+  .g2-mfa-content {
+    margin: 0px;
+  }
+  .authing-g2-submit-button {
+    border-radius: 4px;
+  }
+  .submit-form {
+    button {
+      width: 100%;
+    }
+  }
+
+  .authing-g2-submit-button {
+    &[disabled] {
+      background: #618eff;
+      border-color: #618eff;
+      color: #fff;
+    }
+    box-shadow: none;
+    width: calc(100% - 4px);
+    border-radius: 4px;
+    height: 42px;
+    margin: 0 2px;
+    &.shaking {
+      animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+    @keyframes shake {
+      10%,
+      90% {
+        transform: translate3d(-1px, 0, 0);
+      }
+
+      20%,
+      80% {
+        transform: translate3d(2px, 0, 0);
+      }
+
+      30%,
+      50%,
+      70% {
+        transform: translate3d(-4px, 0, 0);
+      }
+
+      40%,
+      60% {
+        transform: translate3d(4px, 0, 0);
+      }
+    }
+  }
+  .g2-mfa-totp-verify-input {
+    .authing-ant-form-item-explain.authing-ant-form-item-explain-error {
+      display: flex;
+      justify-content: center;
+    }
+  }
+}

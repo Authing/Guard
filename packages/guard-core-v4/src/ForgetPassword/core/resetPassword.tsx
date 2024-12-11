@@ -22,7 +22,7 @@ import { InputIdentify } from './inputIdentify'
 
 import { parsePhone, useMediaSize } from '../../_utils/hooks'
 
-import { EmailScene } from '../../Type'
+import { EmailScene, VerifyLoginMethods } from '../../Type'
 
 import { getGuardHttp } from '../../_utils/guardHttp'
 
@@ -33,7 +33,6 @@ export enum InputMethodMap {
   email = 'email-code',
   phone = 'phone-code'
 }
-
 interface ResetPasswordProps {
   // onReset: any
   publicConfig: any
@@ -45,13 +44,18 @@ interface ResetPasswordProps {
   // onSendError: (type: 'email' | 'phone', error: any) => void
   setResetToken: React.Dispatch<React.SetStateAction<string>>
   setUserId: React.Dispatch<React.SetStateAction<string>>
+  supportMethods?: VerifyLoginMethods[]
+  firstValidate?: 'phone' | 'email'
 }
-
 export const ResetPassword = (props: ResetPasswordProps) => {
+  const {
+    supportMethods = ['email-code', 'phone-code'],
+    firstValidate = 'phone'
+  } = props
   const { t } = useTranslation()
   let [form] = Form.useForm()
   let [identify, setIdentify] = useState('')
-  let [codeMethod, setCodeMethod] = useState<'phone' | 'email'>('phone')
+  let [codeMethod, setCodeMethod] = useState<'phone' | 'email'>(firstValidate)
   let submitButtonRef = useRef<any>(null)
   const { isPhoneMedia } = useMediaSize()
   const { post } = getGuardHttp()
@@ -68,6 +72,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
   // } = usePasswordErrorText()
   const onFinish = async (values: any) => {
     submitButtonRef.current?.onSpin(true)
+
     // 校验手机号和验证码
     let identify = values.identify
     let code = values.code
@@ -206,8 +211,6 @@ export const ResetPassword = (props: ResetPasswordProps) => {
   )
 
   return (
-    // .map((item, index) => (index === 0 ? `「${item}」` : item))
-
     <div className="authing-g2-login-phone-code">
       <Form
         name="rePassword"
@@ -221,20 +224,21 @@ export const ResetPassword = (props: ResetPasswordProps) => {
         <FormItemIdentify
           name="identify"
           className="authing-g2-input-form"
-          methods={['email-code', 'phone-code']}
+          methods={supportMethods}
           currentMethod={InputMethodMap[codeMethod]}
           checkExist={true}
         >
           <InputIdentify
-            methods={['email-code', 'phone-code']}
+            methods={supportMethods}
             className="authing-g2-input"
             autoComplete="off"
             autoFocus={!isPhoneMedia}
             size="large"
             value={identify}
-            onChange={(e: any) => {
+            onChange={e => {
               let v = e.target.value
               setIdentify(v)
+              if (supportMethods.length === 1) return
               if (validate('email', v)) {
                 setCodeMethod('email')
               } else {
@@ -258,28 +262,13 @@ export const ResetPassword = (props: ResetPasswordProps) => {
         >
           <SendCode />
         </Form.Item>
-        {/* <CustomFormItem.Password
-          className="authing-g2-input-form"
-          name="password"
-        >
-          <InputPassword
-            className="authing-g2-input"
-            size="large"
-            placeholder={t('user.inputNewPwd')}
-            prefix={
-              <IconFont
-                type="authing-a-lock-line1"
-                style={{ color: '#878A95' }}
-              />
-            }
-          />
-        </CustomFormItem.Password> */}
+
         {/* // 这个密码记得加上 */}
         {/* {getPassWordUnsafeText()} */}
         <Form.Item className="authing-g2-sumbit-form submit-form">
           <SubmitButton
             className="validater-account-btn"
-            text={t('login.resetPassword.nextStep') as string}
+            text={t('login.resetPassword.nextStep')!}
             ref={submitButtonRef}
           />
         </Form.Item>

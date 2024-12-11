@@ -75,12 +75,13 @@
   "enterAccount": "请输入账号",
   "verifyCodeSended": "验证码已发送至",
   "inputEmailCode": "请输入邮箱验证码",
-  "otherVerifyWay": "其他验证方式",
+  "otherVerifyWay": "同时我们还提供了其他验证方式",
   "otherLoginWay": "其他登录方式",
   "clickSent": "点击发送验证码",
   "reSent": "点击重发验证码",
-  "bindPhoneInfo": "请输入手机号进行绑定",
+
   "bindWarning": "请联系管理员为你绑定手机号",
+  "bindPhoneInfo": "您可以使用手机短信获取验证码，请输入手机号进行绑定",
   "inputPhoneCode": "请输入手机验证码",
   "forgetPwd": "忘记密码",
   "inputPwd": "请输入密码",
@@ -105,6 +106,7 @@
   "inputNewPwd": "请输入新密码",
   "selectLoginAccount": "选择登录账号",
   "useOtherAccount": "使用其他账号",
+  "wecomLogin": "企业微信登录",
   "tenant": {
     "consoleManage": "管理员控制台",
     "ssoPad": "单点登录应用面板"
@@ -115,6 +117,7 @@
   "hardwareSupport": "硬件不支持",
   "verifyCodeTip": "看不清？换一张",
   "loginWithPasskey": "使用 Passkey 登录",
+
   "resetPassword": {
     "pleaseInputPassword": "请输入密码",
     "checkPasswordDiff": "请输入一致的密码",
@@ -122,7 +125,8 @@
     "reset": "重置密码",
     "back": "返回",
     "resetPasswordText1": "请输入你注册的手机号/邮箱用于接收验证码，我们将为你重置密码。",
-    "resetPasswordText2": "你正在重置 {{account}} 的密码。",
+    "resetPasswordText2": "正在重置 {{account}} 的密码。",
+
     "input": "输入{{text}}",
     "inputFourVerifyCode": "请输入 {{length}} 位验证码",
     "inputNewPwd": "请输入新密码",

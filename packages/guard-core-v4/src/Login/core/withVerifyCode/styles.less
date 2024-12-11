@@ -1,7 +1,7 @@
 .select-option-item {
   height: 26px;
   line-height: 26px;
-  font-family: PingFang SC;
+  font-family: 'EYInterstate';
   font-style: normal;
   font-weight: normal;
   display: flex;
@@ -23,7 +23,9 @@
       top: unset;
     }
   }
-  *[class*='authing-'].authing-ant-select:not(.authing-ant-select-customize-input)
+  *[class*='authing-'].authing-ant-select:not(
+      .authing-ant-select-customize-input
+    )
     .authing-ant-select-selector {
     display: flex;
     align-items: center;
@@ -44,7 +46,9 @@
     color: #215ae5;
     background-color: #eff2f6;
   }
-  .authing-ant-select-item-option-selected:not(.authing-ant-select-item-option-disabled) {
+  .authing-ant-select-item-option-selected:not(
+      .authing-ant-select-item-option-disabled
+    ) {
     color: #215ae5;
     background-color: #eff2f6;
   }

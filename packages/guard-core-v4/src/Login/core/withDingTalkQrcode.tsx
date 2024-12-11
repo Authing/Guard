@@ -23,11 +23,10 @@ import { useGuardAuthClient } from '../../Guard/authClient'
 
 import { getVersion } from '../../_utils/getVersion'
 
-const version = getVersion()
-
 const { useCallback, useEffect, useState } = React
 
 export const LoginWithDingTalkQrcode = (props: any) => {
+  const version = getVersion()
   const { QRConfig, id } = props
 
   const DTLogin = window.DTFrameLogin

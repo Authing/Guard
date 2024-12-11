@@ -14,6 +14,7 @@ export interface GuardLocalConfig
   extends RegisterConfig,
     LoginConfig,
     ForgetPasswordConfig {
+  isInvited?: boolean
   isSSO?: boolean
   defaultScenes?: GuardModuleType
   defaultInitData?: any

@@ -67,6 +67,7 @@ import { GuardLoginInitData } from './interface'
 import { GuardButton } from '../GuardButton'
 
 import {
+  ApplicationConfig,
   LoginMethods,
   QrCodeItem,
   QrcodeTabsSettings,
@@ -89,7 +90,7 @@ import { getGuardWindow } from '../Guard/core/useAppendConfig'
 
 import { LoginWithDingTalkQrcode } from './core/withDingTalkQrcode'
 import { LoginWithZjQrcode } from './core/withZjQrcode'
-
+import { EYLoginWithWeComQrcode } from './core/eyWithWeComQrcode'
 const { useEffect, useLayoutEffect, useState, useRef, useMemo, useCallback } =
   React
 
@@ -99,7 +100,8 @@ const inputWays = [
   LoginMethods.AD,
   LoginMethods.LDAP,
   LoginMethods.AuthingOtpPush,
-  LoginMethods.EmailCode
+  LoginMethods.EmailCode,
+  LoginMethods.EYWechatworkCorpQrconnect
 ]
 const qrcodeWays = [
   LoginMethods.AppQr,
@@ -133,18 +135,27 @@ function hasMultipleQRLengths(
   return methods.some(method => qrcodeTabsSettings?.[method]?.length > 1)
 }
 
-const useMethods = (config: any) => {
+const useMethods = (config: any, publicConfig: ApplicationConfig) => {
   let dlm = config?.defaultLoginMethod
   let propsMethods = config?.loginMethods
   if (!propsMethods?.includes(dlm)) {
     dlm = propsMethods?.[0]
+  }
+  if (dlm === LoginMethods.EYWechatworkCorpQrconnect) {
+    let id = publicConfig.qrcodeTabsSettings?.[
+      LoginMethods.EYWechatworkCorpQrconnect
+    ]?.find(
+      (i: { id: string; title: string; isDefault?: boolean | undefined }) =>
+        i.isDefault
+    )?.id
+    dlm += id
   }
   let renderInputWay = intersection(propsMethods, inputWays).length > 0
   let renderQrcodeWay = intersection(propsMethods, qrcodeWays).length > 0
   return [dlm, renderInputWay, renderQrcodeWay]
 }
 
-const useDisables = (data: any) => {
+export const useDisables = (data: any) => {
   let { disableResetPwd, disableRegister } = data.config
   let { loginWay, autoRegister } = data
 
@@ -152,6 +163,10 @@ const useDisables = (data: any) => {
     disableResetPwd = true
   }
   if ([LoginMethods.LDAP, LoginMethods.AuthingOtpPush].includes(loginWay)) {
+    disableResetPwd = true
+    disableRegister = true
+  }
+  if (loginWay.includes(LoginMethods.EYWechatworkCorpQrconnect)) {
     disableResetPwd = true
     disableRegister = true
   }
@@ -171,7 +186,9 @@ const useSwitchStates = (loginWay: LoginMethods) => {
   if (qrcodeWays.includes(loginWay)) {
     switchText = i18n.t('login.moreWays')
   }
-  let inputNone = !inputWays.includes(loginWay) ? 'none' : ''
+  // let inputNone = !inputWays.includes(loginWay) ? 'none' : ''
+  let inputNone = !inputWays.some(way => loginWay.includes(way)) ? 'none' : ''
+
   let qrcodeNone = !qrcodeWays.includes(loginWay) ? 'none' : ''
 
   return { switchText, inputNone, qrcodeNone }
@@ -199,7 +216,11 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
 
   const publicConfig = useGuardPublicConfig()
 
-  let [defaultMethod, renderInputWay, renderQrcodeWay] = useMethods(config)
+  // let [defaultMethod, renderInputWay, renderQrcodeWay] = useMethods(config)
+  let [defaultMethod, renderInputWay, renderQrcodeWay] = useMethods(
+    config,
+    publicConfig
+  )
 
   const agreementEnabled = config?.agreementEnabled
 
@@ -728,6 +749,25 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     ]
   )
 
+  const EYWxCorpQrTab = useCallback(
+    (item: QrCodeItem) => {
+      return (
+        <Tabs.TabPane
+          key={LoginMethods.EYWechatworkCorpQrconnect + item.id}
+          tab={item.title ?? t('login.wecomLogin')}
+        >
+          <EYLoginWithWeComQrcode
+            id={item.id}
+            QRConfig={item.QRConfig}
+            onLoginSuccess={onLoginSuccess}
+            onLoginFailed={onLoginFailed}
+          />
+        </Tabs.TabPane>
+      )
+    },
+    [onLoginFailed, onLoginSuccess, t]
+  )
+
   const WxMiniQrTab = useCallback(
     (item: QrCodeItem) => {
       return (
@@ -880,7 +920,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       [LoginMethods.PhoneCode]: CodeTab,
       [LoginMethods.LDAP]: LdapTab,
       [LoginMethods.AD]: ADTab,
-      [LoginMethods.AuthingOtpPush]: AuthingOtpPushTab
+      [LoginMethods.AuthingOtpPush]: AuthingOtpPushTab,
+      [LoginMethods.EYWechatworkCorpQrconnect]: EYWxCorpQrTab
     }
   }, [PasswordTab, CodeTab, LdapTab, ADTab, AuthingOtpPushTab])
 
@@ -894,6 +935,18 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         LoginMethods.AuthingOtpPush
       ].includes(tabName)
     )
+
+    let corpQrconnect: any = null
+    // 企微自建扫码登录
+    if (
+      ms?.find(tabName => tabName === LoginMethods.EYWechatworkCorpQrconnect)
+    ) {
+      corpQrconnect = qrcodeTabsSettings[
+        LoginMethods.EYWechatworkCorpQrconnect
+      ].map(item => {
+        return tabMap[LoginMethods.EYWechatworkCorpQrconnect](item)
+      })
+    }
     if (total) {
       const sortedTable = getSortTabs(total, config.defaultLoginMethod ?? '')
       const tabs = sortedTable.map(
@@ -907,9 +960,12 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
               | LoginMethods.AuthingOtpPush
           ]
       )
+      if (corpQrconnect) {
+        return [...corpQrconnect, ...tabs]
+      }
       return tabs
     }
-    return null
+    return corpQrconnect
   }, [config.defaultLoginMethod, ms, tabMap])
 
   const QrCodeTabMap = useMemo(() => {
@@ -992,6 +1048,13 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
 
   useEffect(() => {
     const onPostMessage = (evt: MessageEvent) => {
+      // ey
+      if (
+        isWeComOrigin(evt) &&
+        loginWay.includes(LoginMethods.EYWechatworkCorpQrconnect)
+      ) {
+        return
+      }
       // 去掉钉钉和企微域下的postmessage处理 由他们内部自己监听的message控制 避免重复触发
       /** 是否存在开启内嵌模式的身份源 */
       const isEmbeddedIdp = socialConnections.filter(conn => conn.embedded)
@@ -1032,7 +1095,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         const handMode = onGuardHandling?.()
         // 向上层抛出错误
         handMode === CodeAction.RENDER_MESSAGE &&
-          onLoginFailed(code, data, message)
+          onLoginFailed(code!, data, message)
       }
     }
 
@@ -1048,7 +1111,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     return () => {
       guardWindow?.removeEventListener('message', onPostMessage)
     }
-  }, [onLoginFailed, multipleInstance, onLoginSuccess, onMessage])
+  }, [onLoginFailed, multipleInstance, onLoginSuccess, onMessage, loginWay])
 
   return (
     <div className="g2-view-container g2-view-login">
@@ -1099,7 +1162,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
                     className="switch-img"
                     onClick={() => {
                       message.destroy()
-                      if (inputWays.includes(loginWay)) {
+                      if (inputWays.some(way => loginWay.includes(way))) {
                         setActiveMode('qrcode')
                         setLoginWay(firstQRcodeWay)
                       } else if (qrcodeWays.includes(loginWay)) {
@@ -1244,6 +1307,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
                     </div>
                   )}
                 {renderQrcodeWay &&
+                  canLoop &&
                   ['qrcode', 'collapsed'].includes(activeMode) && (
                     <div
                       className={`g2-view-tabs ${qrcodeNone} ${

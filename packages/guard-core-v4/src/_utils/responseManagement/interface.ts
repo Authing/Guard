@@ -24,9 +24,9 @@ export enum ApiCode {
 
   COMPLETE_INFO = 1642,
 
-  TENANT_COMPLETE_INFO = 1645,
-
   UNLOCK = 1643,
+
+  TENANT_COMPLETE_INFO = 1645,
 
   FLOW_END = 1600,
 
@@ -39,12 +39,24 @@ export enum ApiCode {
   UNSAFE_PASSWORD_RESET = 2071,
 
   FLOW_SELECT_ACCOUNT = 2921,
+  SELECT_ACCOUNT_2_LOGIN = 2930,
 
   TENANT_PORTAL = 1644,
-  SELECT_ACCOUNT_2_LOGIN = 2930,
+
   RESET_ACCOUNT_NAME = 1108, // 用户名重复
-  INVITE_EXPIRE = 4032, // 链接过期
-  INVITE_PAGE_EXPIRE = 4033
+  // ey invite complete
+  /**
+   * ey 登录协议条款
+   */
+  EY_PROTOCOLS = 1008,
+  /**
+   * ey 邀请码过期
+   */
+  EY_INVITE_EXPIRE = 4032,
+  /**
+   * 链接超时
+   */
+  EY_LINK_EXPIRE = 4033
 }
 
 export const ChangeModuleApiCodeMapping: Record<string, GuardModuleType> = {
@@ -57,6 +69,7 @@ export const ChangeModuleApiCodeMapping: Record<string, GuardModuleType> = {
   [ApiCode.ABORT_FLOW]: GuardModuleType.LOGIN,
   [ApiCode.COMPLETE_INFO]: GuardModuleType.LOGIN_COMPLETE_INFO,
   [ApiCode.TENANT_COMPLETE_INFO]: GuardModuleType.LOGIN_COMPLETE_INFO,
+
   [ApiCode.FIRST_LOGIN_PASSWORD]: GuardModuleType.FIRST_LOGIN_PASSWORD,
   [ApiCode.FORCED_PASSWORD_RESET]: GuardModuleType.FORCED_PASSWORD_RESET,
   [ApiCode.UNLOCK]: GuardModuleType.SELF_UNLOCK,
@@ -64,6 +77,7 @@ export const ChangeModuleApiCodeMapping: Record<string, GuardModuleType> = {
   [ApiCode.FLOW_SELECT_ACCOUNT]: GuardModuleType.FLOW_SELECT_ACCOUNT,
   [ApiCode.SELECT_ACCOUNT_2_LOGIN]: GuardModuleType.SELECT_ACCOUNT_2_LOGIN,
   [ApiCode.TENANT_PORTAL]: GuardModuleType.TENANT_PORTAL,
-  [ApiCode.INVITE_EXPIRE]: GuardModuleType.INVITE_EXPIRE,
-  [ApiCode.INVITE_PAGE_EXPIRE]: GuardModuleType.INVITE_PAGE_EXPIRE
+  [ApiCode.EY_PROTOCOLS]: GuardModuleType.EY_PROTOCOLS,
+  [ApiCode.EY_INVITE_EXPIRE]: GuardModuleType.EY_INVITE_EXPIRE,
+  [ApiCode.EY_LINK_EXPIRE]: GuardModuleType.EY_INVITE_EXPIRE
 }

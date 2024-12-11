@@ -41,6 +41,8 @@ import { useGuardView } from '../Guard/core/hooks/useGuardView'
 import { MFABackStateContext } from './context'
 import { MFAPasskey } from './core/passkey'
 
+import BindPreCheck from './BindPreCheck'
+
 const { useMemo, useState } = React
 
 const ComponentsMapping: Record<MFAType, (props: any) => React.ReactNode> = {
@@ -92,8 +94,44 @@ const ComponentsMapping: Record<MFAType, (props: any) => React.ReactNode> = {
   )
 }
 
+const MfaTypeMap = {
+  [MFAType.EMAIL]: 'mfaEmail',
+  [MFAType.FACE]: 'faceMfaEnabled',
+  [MFAType.SMS]: 'mfaPhone',
+  [MFAType.TOTP]: 'totpMfaEnabled'
+} as const
+
+function getFirstTrueProperty(initData: GuardMFAInitData) {
+  const keysInOrder = [
+    'mfaPhone',
+    'mfaEmail',
+    'totpMfaEnabled'
+    // 'faceMfaEnabled',
+  ] as const
+
+  const keyValueMap = Object.entries(MfaTypeMap)
+  // 遍历 keysInOrder，找到第一个值为 true 的属性
+  for (let key of keysInOrder) {
+    //@ts-ignore
+    const [type] = keyValueMap.find(([_key, _value]) => _value === key)
+    if (
+      initData[key] &&
+      initData.applicationMfa.some(mfa => mfa.mfaPolicy === type)
+    ) {
+      return type
+      // return key // 返回第一个值为 true 的属性名
+    }
+  }
+
+  return null // 如果没有找到值为 true 的属性，返回 null
+}
+
 export const GuardMFAView: React.FC = () => {
   const initData = useGuardInitData<GuardMFAInitData>()
+  const [bindCheck, setBindCheck] = useState({
+    visible: false,
+    type: null
+  })
 
   const config = useGuardFinallyConfig()
 
@@ -165,6 +203,27 @@ export const GuardMFAView: React.FC = () => {
     callback?.(data)
   }
 
+  const beforeBind = (item: { mfaPolicy: MFAType }, cb: any) => {
+    if (
+      item.mfaPolicy === MFAType.PASSKEY ||
+      initData?.[MfaTypeMap?.[item.mfaPolicy]]
+    ) {
+      cb()
+    } else {
+      const type: unknown = getFirstTrueProperty(initData)
+      if (type) {
+        setBindCheck({
+          visible: true,
+          //@ts-ignore
+          type: type,
+          callback: cb
+        })
+      } else {
+        cb()
+      }
+    }
+  }
+
   const renderBack = useMemo(() => {
     if (currentMethod === MFAType.FACE && mfaBackState === 'check') {
       return (
@@ -189,7 +248,6 @@ export const GuardMFAView: React.FC = () => {
 
     return <BackLogin />
   }, [currentMethod, initData.applicationMfa, mfaBackState, t])
-
   const mfaConfigsMap: Map<MFAType, boolean> = useMemo(() => {
     const map = new Map()
     publicConfig.mfaBindConfigs?.forEach(item => {
@@ -221,6 +279,7 @@ export const GuardMFAView: React.FC = () => {
             onChangeMethod={type => {
               setCurrentMethod(type)
             }}
+            beforeBind={beforeBind}
           />
         )}
         <ChangeLanguage
@@ -228,6 +287,18 @@ export const GuardMFAView: React.FC = () => {
           onLangChange={events?.onLangChange}
         />
       </div>
+      {bindCheck.visible && (
+        <BindPreCheck
+          {...bindCheck}
+          onCancel={() =>
+            setBindCheck({
+              visible: false,
+              type: null
+            })
+          }
+          initData={initData}
+        />
+      )}
     </MFABackStateContext.Provider>
   )
 }

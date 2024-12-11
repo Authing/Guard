@@ -21,6 +21,7 @@ const { useMemo, useState } = React
 export interface MFAMethodsProps {
   method: MFAType
   onChangeMethod: (type: MFAType) => void
+  beforeBind?: any
 }
 
 const methodTitleMapping: Record<
@@ -54,7 +55,8 @@ const methodTitleMapping: Record<
 
 export const MFAMethods: React.FC<MFAMethodsProps> = ({
   method,
-  onChangeMethod
+  onChangeMethod,
+  beforeBind
 }) => {
   const [currentMethod, setCurrentMethod] = useState(method)
   const { t } = useTranslation()
@@ -81,9 +83,11 @@ export const MFAMethods: React.FC<MFAMethodsProps> = ({
         .map(item => (
           <GuardButton
             className="g2-guard-mfa-methods-btn"
-            onClick={(e: any) => {
-              onChangeMethod(item.mfaPolicy)
-              setCurrentMethod(item.mfaPolicy)
+            onClick={() => {
+              beforeBind(item, () => {
+                onChangeMethod(item.mfaPolicy)
+                setCurrentMethod(item.mfaPolicy)
+              })
             }}
             key={item.mfaPolicy}
           >
@@ -91,7 +95,7 @@ export const MFAMethods: React.FC<MFAMethodsProps> = ({
             {`${methodTitleMapping[item.mfaPolicy].title()}`}
           </GuardButton>
         )),
-    [applicationMfa, currentMethod, onChangeMethod]
+    [applicationMfa, currentMethod, onChangeMethod, beforeBind]
   )
 
   return (
@@ -105,7 +109,7 @@ export const MFAMethods: React.FC<MFAMethodsProps> = ({
           />
           <div className="g2-mfa-method">
             <div className="g2-mfa-method-title">
-              {t('login.otherVerifyWay') as string}
+              {t('login.otherVerifyWay')}
             </div>
             {otherMethods}
           </div>

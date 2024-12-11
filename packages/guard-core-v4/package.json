@@ -20,10 +20,13 @@
   "license": "MIT",
   "dependencies": {
     "@github/webauthn-json": "^2.1.1",
+    "@wecom/jssdk": "1.4.3",
     "authing-js-sdk": "^4.23.50",
     "classnames": "^2.3.1",
+    "crypto-js": "^4.1.1",
     "i18next": "^22.4.11",
     "i18next-browser-languagedetector": "^7.0.1",
+    "input-otp": "^1.2.4",
     "moment": "^2.29.4",
     "phone": "^3.1.12",
     "qrcode.react": "^3.1.0",
@@ -35,6 +38,7 @@
     "ua-parser-js": "^1.0.2"
   },
   "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
     "@types/lodash": "^4.14.175",
     "@types/throttle-debounce": "^5.0.0",
     "@types/ua-parser-js": "^0.7.36",

@@ -8,13 +8,16 @@ import Axios, { AxiosRequestConfig, CancelTokenSource } from 'axios'
 
 import { getCurrentLng } from '.'
 
+const timeoutInSecond = 600 // 10 分钟
+
+Axios.defaults.timeout = timeoutInSecond * 1000
 export const requestClient = async (...rest: Parameters<typeof fetch>) => {
   const res = await fetch(...rest)
   return res.json()
 }
 
 export interface AuthingResponse<T = any> {
-  code: number
+  code?: number
   statusCode?: number
   apiCode?: number
   data?: T
@@ -24,12 +27,12 @@ export interface AuthingResponse<T = any> {
 }
 
 export interface AuthingGuardResponse<T = any> extends AuthingResponse<T> {
-  onGuardHandling?: () => CodeAction
+  onGuardHandling?: (initData?: any) => CodeAction
   isFlowEnd?: boolean
 }
 
 const timeoutAction = (cancel: CancelTokenSource['cancel']) => {
-  const timer = 10
+  const timer: number = timeoutInSecond
   return new Promise(resolve => {
     setTimeout(() => {
       const response = {

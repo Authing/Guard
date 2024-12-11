@@ -96,43 +96,59 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
     resolve: (value: unknown) => void,
     reject: (reason?: any) => void
   ) => {
-    get<boolean>('/api/v2/users/find', {
-      userPoolId: publicConfig?.userPoolId,
-      key: value,
-      type: method
-    }).then(({ data }) => {
-      if (checkExist) {
-        Boolean(data)
-          ? resolve(true)
-          : reject(methodContent.checkExistErrorMessage)
-      }
-      if (checkRepeat) {
-        Boolean(data)
-          ? reject(methodContent.checkRepeatErrorMessage)
-          : resolve(true)
-      }
-    })
+    if (value) {
+      get<boolean>('/api/v2/users/find', {
+        userPoolId: publicConfig?.userPoolId,
+        key: value,
+        type: method
+      }).then(({ data }) => {
+        if (checkExist) {
+          Boolean(data)
+            ? resolve(true)
+            : reject(methodContent.checkExistErrorMessage)
+        }
+        if (checkRepeat) {
+          Boolean(data)
+            ? reject(methodContent.checkRepeatErrorMessage)
+            : resolve(true)
+        }
+      })
+    } else {
+      resolve(true)
+    }
   }
 
   const checkRepeatFn = useCheckRepeat(checkRepeatRet)
 
-  const formatRules = useMemo<Rule>(() => {
+  const formatRules = useMemo<Rule[]>(() => {
     if (checkInternationalSms) {
-      return {
-        validateTrigger: 'onBlur',
-        validator: async (_, value) => {
-          if (!value || phone(value, { country: areaCode }).isValid)
-            return Promise.resolve()
-          return Promise.reject(t('common.internationPhoneMessage'))
+      return [
+        {
+          validateTrigger: 'onBlur',
+          validator: (_, value, callback) => {
+            if (!value || phone(value, { country: areaCode }).isValid)
+              callback()
+            callback(t('common.internationPhoneMessage')!)
+          }
+        },
+        {
+          validator: (rule, value, callback) => {
+            if (value && value.startsWith('+')) {
+              callback(t('common.ey.internationPhoneInput')!)
+            }
+            callback()
+          }
         }
-      }
+      ]
     }
 
-    return {
-      validateTrigger: 'onBlur',
-      pattern: methodContent.pattern,
-      message: methodContent.formatErrorMessage
-    }
+    return [
+      {
+        validateTrigger: 'onBlur',
+        pattern: methodContent.pattern,
+        message: methodContent.formatErrorMessage
+      }
+    ]
   }, [
     areaCode,
     checkInternationalSms,
@@ -142,14 +158,16 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
   ])
 
   const rules = useMemo<Rule[]>(() => {
-    // 如果不是必填就不校验
-    if (required === false) return []
+    const rules = []
 
-    // 必填项的默认校验规则
-    const rules = [...fieldRequiredRule(methodContent.field)]
+    // 如果不是必填就不校验
+    if (required) {
+      // 必填项的默认校验规则
+      rules.push(...fieldRequiredRule(methodContent.field))
+    }
 
     // 格式校验
-    rules.push(formatRules)
+    rules.push(...formatRules)
 
     // 是否校验重复
     if (checkRepeat || checkExist) {

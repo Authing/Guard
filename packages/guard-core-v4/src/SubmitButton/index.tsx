@@ -67,7 +67,9 @@ const SubmitButton = (props: SubmitButtonProps, ref: any) => {
       onClick={props.onClick ? props.onClick : () => {}}
       className={`authing-g2-submit-button ${propsCls} ${shakingCls}`}
     >
-      {props.text}
+      {spin === true && <span></span>}
+
+      {spin === false && props.text}
     </GuardButton>
   )
 }

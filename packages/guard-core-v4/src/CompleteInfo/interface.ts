@@ -134,6 +134,10 @@ export interface CompleteInfoRequest {
     name: string
     value: string
     code?: string
+    /**
+     * 国际手机区号
+     */
+    phoneCountryCode?: string
   }[]
 }
 

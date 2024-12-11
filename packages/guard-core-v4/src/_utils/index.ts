@@ -127,6 +127,7 @@ export const insertStyles = (
     styleSheet = (document as any).createStyleSheet()
   } else {
     const head = document.getElementsByTagName('head')[0]
+
     styleElt = document.createElement('style')
     head.appendChild(styleElt)
     styleSheet = document.styleSheets[document.styleSheets.length - 1]
@@ -139,6 +140,7 @@ export const insertStyles = (
     for (const selector in styles) {
       if (styleSheet.insertRule) {
         const rule = selector + ' {' + styles[selector] + '}'
+
         styleSheet.insertRule(rule, i++)
       } else {
         styleSheet.addRule(selector, styles[selector], i++)
@@ -324,7 +326,6 @@ export const getPasswordValidate = (
   userId?: string
 ): Rule[] => {
   const { post } = getGuardHttp()
-
   const required = [
     ...fieldRequiredRule(i18n.t('common.password'), fieldRequiredRuleMessage)
     // {
@@ -464,7 +465,6 @@ export const getPasswordValidateRules = (
   userId?: string
 ): Rule[] => {
   const { post } = getGuardHttp()
-
   const required = [
     ...fieldRequiredRule(i18n.t('common.password'), fieldRequiredRuleMessage)
   ]
@@ -716,6 +716,19 @@ export const transformMethod = (method: RegisterMethods | string) => {
   }
 }
 
+export const transformSortMethod = (method: RegisterSortMethods | string) => {
+  switch (method) {
+    case RegisterSortMethods.Email:
+      return RegisterMethods.Email
+    case RegisterSortMethods.EmailCode:
+      return RegisterMethods.EmailCode
+    case RegisterSortMethods.Phone:
+      return RegisterMethods.Phone
+    default:
+      return method
+  }
+}
+
 export const mailDesensitization = (mail: string) => {
   const mailArr = mail.split('@')
   const mailName = mailArr[0].substr(0, 1) + '***'
@@ -724,6 +737,10 @@ export const mailDesensitization = (mail: string) => {
 
 export const phoneDesensitization = (phone: string) => {
   return phone.replace(/(\d{3})\d*(\d{4})/, '$1****$2')
+}
+
+export const getHundreds = (num: number) => {
+  return Math.floor(num / 100)
 }
 
 export const GuardPropsFilter = (pre: GuardProps, current: GuardProps) => {
@@ -839,7 +856,7 @@ export const getPasswordIdentify = (identity: string): string => {
 }
 
 export const getCurrentLng = () => {
-  if (Object.keys(LngTextMapping).includes(i18n.resolvedLanguage!)) {
+  if (Object.keys(LngTextMapping).includes(i18n.language)) {
     return i18n.resolvedLanguage as Lang
   } else {
     return i18n?.languages?.[i18n?.languages?.length - 1] as Lang
@@ -899,7 +916,6 @@ export const getSortTabs = (tabs: string[], tab?: string) => {
 
   return tabs
 }
-
 export const isDisabled = (
   values: Record<string, any>,
   requireNames?: string[]

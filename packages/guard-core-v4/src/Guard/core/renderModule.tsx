@@ -44,6 +44,7 @@ import {
   useGuardContextLoaded,
   useGuardCurrentModule,
   useGuardDefaultMergedConfig,
+  useGuardFinallyConfig,
   useGuardHttpClient,
   useGuardModule
 } from '../../_utils/context'
@@ -87,7 +88,16 @@ import { GuardInviteCompleteView } from '../../Invitation/Complete'
 import { GuardInviteExpireView } from '../../Invitation/Error'
 import { GuardInviteSuccessView } from '../../Invitation/Success'
 import { GuardResetPassword } from '../../ChangePassword/core/resetPassword'
-const { useEffect, useMemo } = React
+import { EyGuardLoginView } from '../../EY/Login'
+import { EyGuardForgetPassword } from '../../EY/ForgetPassword'
+import { EyGuardPreCheckEmailView } from '../../EY/PreCheckEmail'
+import { EyGuardProtocolView } from '../../EY/Protocol'
+import { EyGuardCheckCaptchaView } from '../../EY/CheckCaptcha'
+import { EyGuardInviteExpireView } from '../../EY/Error'
+import { EyGuardIviteIdentityBindView } from '../../EY/InviteIdentityBind'
+import { EyGuardInviteCompleteView } from '../../EY/InviteComplete'
+import { EyGuardInviteLoadingView } from '../../EY/InviteLoading'
+const { useEffect, useMemo, useLayoutEffect } = React
 
 const PREFIX_CLS = 'authing-ant'
 
@@ -114,6 +124,8 @@ export const RenderModule: React.FC<{
 }> = ({ guardProps }) => {
   const defaultMergedConfig = useGuardDefaultMergedConfig()
 
+  const config = useGuardFinallyConfig()
+
   const contextLoaded = useGuardContextLoaded()
 
   const { moduleName } = useGuardCurrentModule()
@@ -128,6 +140,14 @@ export const RenderModule: React.FC<{
     return defaultMergedConfig.loadingComponent
   }, [defaultMergedConfig])
 
+  const isInvited = useMemo(() => {
+    return config.isInvited
+  }, [config])
+
+  useLayoutEffect(() => {
+    isInvited && require('../ey.styles.less')
+  }, [isInvited])
+
   const ComponentsMapping: Record<
     GuardModuleType,
     (key: string) => React.ReactNode
@@ -135,7 +155,13 @@ export const RenderModule: React.FC<{
     // Error
     [GuardModuleType.ERROR]: (key: string) => <GuardErrorView key={key} />,
     // Login
-    [GuardModuleType.LOGIN]: (key: string) => <GuardLoginView key={key} />,
+    [GuardModuleType.LOGIN]: (key: string) => {
+      return isInvited ? (
+        <EyGuardLoginView key={key} />
+      ) : (
+        <GuardLoginView key={key} />
+      )
+    },
     [GuardModuleType.RESET_ACCOUNT_NAME]: (key: string) => (
       <GuardLoginView key={key} isResetPage />
     ),
@@ -162,9 +188,13 @@ export const RenderModule: React.FC<{
       <GuardDownloadATView key={key} />
     ),
     // 忘记密码 -> 重置密码
-    [GuardModuleType.FORGET_PWD]: (key: string) => (
-      <GuardForgetPassword key={key} />
-    ),
+    [GuardModuleType.FORGET_PWD]: (key: string) => {
+      return isInvited ? (
+        <EyGuardForgetPassword key={key} />
+      ) : (
+        <GuardForgetPassword key={key} />
+      )
+    },
     // 首次登录修改密码
     [GuardModuleType.FIRST_LOGIN_PASSWORD]: (key: string) => (
       <GuardFirstLoginPasswordResetView key={key} />
@@ -219,12 +249,46 @@ export const RenderModule: React.FC<{
     [GuardModuleType.FLOW_SELECT_ACCOUNT]: key => (
       <GuardSelectAccountView key={key} />
     ),
+    // 切换登录身份
+    [GuardModuleType.SELECT_ACCOUNT_2_LOGIN]: (key: string) => (
+      <GuardSelectAccount2LoginView key={key} />
+    ),
     [GuardModuleType.TENANT_PORTAL]: key => (
       <GuardTenantPortalSelectView key={key} />
     ),
     [GuardModuleType.New_SUBMIT_SUCCESS]: key => (
       <GuardNewSubmitSuccessView key={key} />
     ),
+
+    // ey 定制
+
+    // [GuardModuleType.EY_INVITE_LOGIN]: (key) => <EyGuardLoginView key={key} />,
+
+    [GuardModuleType.EY_PRE_CHECK_EMAIL]: key => (
+      <EyGuardPreCheckEmailView key={key} />
+    ),
+
+    [GuardModuleType.EY_PROTOCOLS]: key => <EyGuardProtocolView key={key} />,
+
+    [GuardModuleType.EY_CHECK_CAPTCHA]: key => (
+      <EyGuardCheckCaptchaView key={key} />
+    ),
+    [GuardModuleType.EY_INVITE_EXPIRE]: key => (
+      <EyGuardInviteExpireView key={key} />
+    ),
+    [GuardModuleType.EY_INVITE_LOADING]: key => (
+      <EyGuardInviteLoadingView key={key} />
+    ),
+    [GuardModuleType.EY_IDENTITY_BIND]: key => (
+      <EyGuardIviteIdentityBindView key={key} />
+    ),
+    [GuardModuleType.EY_INVITE_COMPLETE]: key => (
+      <EyGuardInviteCompleteView key={key} />
+    ),
+    // [GuardModuleType.EY_FORGET_PASSWORD]: (key) => (
+    //   <EyGuardForgetPassword key={key} />
+    // ),
+
     [GuardModuleType.APPLY_INVITATION]: key => (
       <GuardApplicationView key={key} />
     ),
@@ -256,12 +320,12 @@ export const RenderModule: React.FC<{
       res.flowHandle && updateFlowHandle(res.flowHandle)
 
       const codeActionMapping = {
-        [CodeAction.CHANGE_MODULE]: () => {
+        [CodeAction.CHANGE_MODULE]: (initData?: any) => {
           const nextModule = ChangeModuleApiCodeMapping[res.apiCode!]
 
           const nextData = res.data
 
-          changeModule(nextModule, nextData)
+          changeModule(nextModule, { ...nextData, ...initData })
           return CodeAction.CHANGE_MODULE
         },
         [CodeAction.RENDER_MESSAGE]: () => {

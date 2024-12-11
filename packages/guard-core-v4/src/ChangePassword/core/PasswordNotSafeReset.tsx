@@ -15,6 +15,7 @@ import { IconFont } from '../../IconFont'
 import { InputPassword } from '../../InputPassword'
 
 import {
+  useGuardEvents,
   useGuardInitData,
   useGuardIsAuthFlow,
   useGuardPublicConfig
@@ -28,16 +29,17 @@ import { useMediaSize } from '../../_utils/hooks'
 
 import { usePasswordErrorText } from '../../_utils/useErrorText'
 
+const { useRef } = React
+
 interface PasswordNotSafeResetProps {
   onReset: any
 }
-
-const { useRef } = React
-
 export const PasswordNotSafeReset: React.FC<PasswordNotSafeResetProps> = ({
   onReset
 }) => {
   const { t } = useTranslation()
+
+  const events = useGuardEvents()
 
   const initData = useGuardInitData<{ token: string }>()
 
@@ -63,6 +65,8 @@ export const PasswordNotSafeReset: React.FC<PasswordNotSafeResetProps> = ({
     if (isAuthFlow) {
       // 重置密码成功不会返回 UserInfo
       const {
+        isFlowEnd,
+        data,
         apiCode,
         onGuardHandling,
         message: msg
@@ -74,7 +78,9 @@ export const PasswordNotSafeReset: React.FC<PasswordNotSafeResetProps> = ({
       )
       submitButtonRef.current?.onSpin(false)
 
-      if (apiCode === ApiCode.ABORT_FLOW) {
+      if (isFlowEnd) {
+        events?.onLogin?.(data, client)
+      } else if (apiCode === ApiCode.ABORT_FLOW) {
         onReset()
       } else if (apiCode === ApiCode.UNSAFE_PASSWORD_TIP) {
         message.error(msg)

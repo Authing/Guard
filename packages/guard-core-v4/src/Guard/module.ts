@@ -21,10 +21,11 @@ export enum GuardModuleType {
   IDENTITY_BINDING_NO_ASK = 'identityBindingNoAsk', // 身份源绑定页不问询
   SELF_UNLOCK = 'selfUnlock', // 自助解锁页
   FLOW_SELECT_ACCOUNT = 'flowSelectAccount', // 选择登录账号
+  SELECT_ACCOUNT_2_LOGIN = 'selectAccout2Login', // 选择登录身份
+
   /** 多租户门户选择页 */
   TENANT_PORTAL = 'tenant-portal',
   New_SUBMIT_SUCCESS = 'newSubmitSuccess', // 提交成功展示页
-  SELECT_ACCOUNT_2_LOGIN = 'selectAccout2Login', // 选择登录身份
   RESET_ACCOUNT_NAME = 'resetAccountName',
   APPLY_INVITATION = 'applyInvitation',
   MESSAGE = 'message',
@@ -33,7 +34,45 @@ export enum GuardModuleType {
   INVITE_EXPIRE = 'inviteExpire', // 邀请链接过期
   INVITE_PAGE_EXPIRE = 'invitePageExpire', // 页面过期
   INVITE_SUCCESS = 'inviteSuccess', // 邀请成功
-  RESET_PASSWORD = 'resetPassword'
+  RESET_PASSWORD = 'resetPassword',
+
+  // ey 定制
+  /**
+   * pre check email
+   */
+  EY_PRE_CHECK_EMAIL = 'ey_pre_check_email',
+  /**
+   * protocols
+   */
+  EY_PROTOCOLS = 'ey_protocols',
+  /**
+   * check captcha
+   */
+  EY_CHECK_CAPTCHA = 'ey_check_captcha',
+  /**
+   * invite expire
+   */
+  EY_INVITE_EXPIRE = 'ey_invite_expire',
+  /**
+   * invite loading
+   */
+  EY_INVITE_LOADING = 'ey_invite_loading',
+  /**
+   * identity bind
+   */
+  EY_IDENTITY_BIND = 'ey_identity_bind',
+  /**
+   * invite complete
+   */
+  EY_INVITE_COMPLETE = 'ey_invite_complete'
+  /**
+   * invite login
+   */
+  // EY_INVITE_LOGIN = 'ey_invite_login',
+  // /**
+  //  * forget password
+  //  */
+  // EY_FORGET_PASSWORD = 'ey_forget_password',
 }
 export interface GuardModuleAction {
   action: string

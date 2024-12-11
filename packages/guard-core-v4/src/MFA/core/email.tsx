@@ -22,7 +22,11 @@ import { mailDesensitization } from '../../_utils'
 
 import { useGuardPublicConfig } from '../../_utils/context'
 
-import { MfaBusinessAction, useMfaBusinessRequest } from '../businessRequest'
+import {
+  checkEmailOrSms,
+  MfaBusinessAction,
+  useMfaBusinessRequest
+} from '../businessRequest'
 
 import { EmailScene } from '../../Type'
 
@@ -30,13 +34,11 @@ import { getGuardHttp } from '../../_utils/guardHttp'
 import { useEffectOnce } from 'react-use'
 
 const { useRef, useState } = React
-
 interface BindMFAEmailProps {
   mfaToken: string
   onBind: (email: string) => void
   config: any
 }
-
 export const BindMFAEmail: React.FC<BindMFAEmailProps> = ({
   mfaToken,
   onBind,
@@ -80,7 +82,7 @@ export const BindMFAEmail: React.FC<BindMFAEmailProps> = ({
             className="authing-g2-input"
             autoComplete="off"
             size="large"
-            placeholder={t('login.inputEmail') as string}
+            placeholder={t('login.inputEmail')!}
             prefix={
               <IconFont
                 type="authing-a-mail-line3"
@@ -90,7 +92,7 @@ export const BindMFAEmail: React.FC<BindMFAEmailProps> = ({
           />
         </CustomFormItem.Email>
 
-        <SubmitButton text={t('common.sure') as string} ref={submitButtonRef} />
+        <SubmitButton text={t('common.sure')!} ref={submitButtonRef} />
       </Form>
     </>
   )
@@ -161,6 +163,7 @@ export const VerifyMFAEmail: React.FC<VerifyMFAEmailProps> = ({
       return false
     }
   }
+
   useEffectOnce(() => {
     sendCodeRef.current?.click()
   })
@@ -171,7 +174,7 @@ export const VerifyMFAEmail: React.FC<VerifyMFAEmailProps> = ({
     const requestData = {
       mfaToken,
       email: email!,
-      code: mfaCode.join('')
+      code: mfaCode
     }
 
     const { isFlowEnd, data, onGuardHandling } = await businessRequest(
@@ -203,20 +206,28 @@ export const VerifyMFAEmail: React.FC<VerifyMFAEmailProps> = ({
       >
         <VerifyCodeFormItem
           codeLength={codeLength}
-          ruleKeyword={t('common.captchaCode') as string}
+          ruleKeyword={t('common.captchaCode')!}
         >
-          <VerifyCodeInput length={codeLength} onFinish={onFinish} />
+          <VerifyCodeInput
+            length={codeLength}
+            onFinish={onFinish}
+            showDivider={true}
+            gutter={'10px'}
+            ResentBtnSort={() => (
+              <SendCodeBtn
+                className="resend_code"
+                btnRef={sendCodeRef}
+                setSent={setSent}
+                beforeSend={() => sendVerifyCode()}
+                type="link"
+                timerTime={60 * 5}
+              />
+            )}
+          />
         </VerifyCodeFormItem>
 
-        <SendCodeBtn
-          btnRef={sendCodeRef}
-          setSent={setSent}
-          beforeSend={() => sendVerifyCode()}
-          type="link"
-        />
-
         <SubmitButton
-          text={t('common.sure') as string}
+          text={t('common.sure')!}
           ref={submitButtonRef}
           className="g2-mfa-submit-button"
         />
@@ -260,6 +271,125 @@ export const MFAEmail: React.FC<{
           }}
         />
       )}
+    </>
+  )
+}
+export const EmailPreCheck: React.FC<any> = ({
+  email,
+  mfaToken,
+  checkSuccess,
+  codeLength
+}) => {
+  const { post } = getGuardHttp()
+
+  const submitButtonRef = useRef<any>(null)
+
+  const { t } = useTranslation()
+
+  const [form] = Form.useForm()
+
+  const [sent, setSent] = useState(false)
+
+  const sendVerifyCode = async () => {
+    try {
+      const {
+        code,
+        message: tips,
+        apiCode
+      } = await post('/api/v2/email/send', {
+        email,
+        scene: EmailScene.MFA_VERIFY_CODE
+      })
+      if (apiCode === 2080) {
+        // 一分钟只能发一次邮箱验证码的提示信息，特殊处理
+        message.error(tips)
+        return false
+      }
+      if (code === 200) {
+        setSent(true)
+        return true
+      } else {
+        message.error(t('login.sendCodeTimeout'))
+        return false
+      }
+      // await authClient.sendEmail(email!, EmailScene.MFA_VERIFY_CODE)
+      // setSent(true)
+      // return true
+    } catch (e: any) {
+      if (e.code === 'ECONNABORTED') {
+        message.error(t('login.sendCodeTimeout'))
+        return false
+      }
+      const errorMessage = JSON.parse(e.message)
+      message.error(errorMessage.message)
+      return false
+    }
+  }
+
+  const onFinish = async (values: any) => {
+    submitButtonRef.current?.onSpin(true)
+    const mfaCode = form.getFieldValue('mfaCode')
+
+    const requestData = {
+      type: 'email',
+      mfaToken,
+      email: email!,
+      code: mfaCode
+    }
+    try {
+      const { code, onGuardHandling } = await checkEmailOrSms(requestData)
+      submitButtonRef.current?.onSpin(false)
+
+      if (code === 200) {
+        checkSuccess()
+      } else {
+        onGuardHandling?.()
+      }
+    } finally {
+      submitButtonRef.current?.onSpin(false)
+    }
+  }
+
+  return (
+    <>
+      <p className="authing-g2-mfa-title">{t('common.mfaBindPreMessage')}</p>
+      <p className="authing-g2-mfa-tips">
+        {sent
+          ? `${t('login.verifyCodeSended')} ${mailDesensitization(email)}`
+          : t('common.emailMfaCheck')}
+      </p>
+      <Form
+        form={form}
+        onFinish={onFinish}
+        onFinishFailed={() => submitButtonRef.current?.onError()}
+      >
+        <VerifyCodeFormItem
+          codeLength={codeLength}
+          ruleKeyword={t('common.captchaCode')!}
+        >
+          <VerifyCodeInput
+            length={codeLength}
+            onFinish={onFinish}
+            showDivider={true}
+            gutter={'10px'}
+            ResentBtnSort={() => (
+              <SendCodeBtn
+                className="resend_code"
+                setSent={setSent}
+                beforeSend={() => sendVerifyCode()}
+                type="link"
+                timerTime={60 * 5}
+              />
+            )}
+          />
+        </VerifyCodeFormItem>
+
+        <SubmitButton
+          text={t('common.sure')!}
+          ref={submitButtonRef}
+          className="g2-mfa-submit-button"
+        />
+      </Form>
     </>
   )
 }

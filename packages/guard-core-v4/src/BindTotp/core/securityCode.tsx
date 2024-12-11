@@ -23,7 +23,6 @@ import { useGuardIsAuthFlow } from '../../_utils/context'
 import { authFlow, BindTotpBusinessAction } from '../businessRequest'
 
 const { useRef } = React
-
 export interface SecurityCodeProps {
   mfaToken: string
   qrcode: string
@@ -61,7 +60,7 @@ export const SecurityCode: React.FC<SecurityCodeProps> = ({
       const { statusCode, onGuardHandling } = await authFlow(
         BindTotpBusinessAction.VerifyTotpFirstTime,
         {
-          totp: saftyCode.join('')
+          totp: saftyCode
         }
       )
       submitButtonRef.current?.onSpin(false)
@@ -77,7 +76,7 @@ export const SecurityCode: React.FC<SecurityCodeProps> = ({
         '/api/v2/mfa/totp/associate/confirm',
         {
           authenticator_type: 'totp',
-          totp: saftyCode.join(''),
+          totp: saftyCode,
           source: 'APPLICATION'
         },
         {
@@ -107,13 +106,7 @@ export const SecurityCode: React.FC<SecurityCodeProps> = ({
         }}
       >
         {t('common.usePhoneOpen')}（{t('common.noValidator')}{' '}
-        <span
-          style={{
-            color: '#215AE5',
-            cursor: 'pointer'
-          }}
-          onClick={onJump}
-        >
+        <span className="totp_link" onClick={onJump}>
           {t('common.clickTodownload')}
         </span>
         ） {t('common.mfaText1')}

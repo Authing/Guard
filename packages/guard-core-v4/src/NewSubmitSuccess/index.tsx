@@ -42,7 +42,9 @@ export const GuardNewSubmitSuccessView: React.FC = () => {
     countDesc = t('login.resetPassword.backLogin'),
     // changeModule = GuardModuleType.LOGIN,
     needBack = true,
-    goBack = () => __changeModule?.(GuardModuleType.LOGIN)
+    goBack = () => {
+      __changeModule?.(GuardModuleType.LOGIN, initData)
+    }
   } = initData ?? {}
   const cdnBase = publicConfig?.cdnBase
 
@@ -74,11 +76,10 @@ export const GuardNewSubmitSuccessView: React.FC = () => {
           height={120}
         />
         <div className="success-page-title ">{title}</div>
-        <div className="success-page-message">{message}</div>
+        {message && <div className="success-page-message">{message}</div>}
         {needBack && (
           <>
             <SubmitButton
-              className="success-page-btn"
               onClick={() => {
                 goBack?.()
               }}

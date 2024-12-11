@@ -57,12 +57,13 @@ export const GuardForgetPassword: React.FC = () => {
   const [policyStrength, setPolicyStrength] = useState(0)
   const [customPasswordStrength, setCustomPasswordStrength] = useState({})
   const [phoneOrEmailText, setPhoneOrEmailText] = useState('')
+  const [userId, setUserId] = useState('')
   const { getPassWordUnsafeText, setPasswordErrorTextShow } =
     usePasswordErrorText()
-
+  // const initData = useGuardInitData<any>()
+  // const { userId } = initData
   // 忘记密码的 token，在第二步重置密码时传给后端
   const [resetToken, setResetToken] = useState('')
-  const [userId, setUserId] = useState('')
 
   /**
    * 「返回」的回调函数，goBack 是 null 的时候就隐藏「第一步的返回按钮、最后提交成功后的返回和自动跳转」
@@ -139,7 +140,7 @@ export const GuardForgetPassword: React.FC = () => {
       passwordStrength[policyStrength],
       customPasswordStrength,
       'onChange',
-      t('login.resetPassword.pleaseInputPassword') as string,
+      t('login.resetPassword.pleaseInputPassword')!,
       userId
     )
     return rule
@@ -232,7 +233,7 @@ export const GuardForgetPassword: React.FC = () => {
             <InputPasswordForget
               className="authing-g2-input"
               size="large"
-              placeholder={t('login.resetPassword.inputNewPwd') as string}
+              placeholder={t('login.resetPassword.inputNewPwd')!}
               prefix={
                 <IconFont
                   type="authing-a-lock-line1"
@@ -248,7 +249,7 @@ export const GuardForgetPassword: React.FC = () => {
             rules={[
               {
                 required: true,
-                message: t('login.resetPassword.pleaseInputPassword') as string
+                message: t('login.resetPassword.pleaseInputPassword')!
               },
               ({ getFieldValue }) => ({
                 validator: (_, value) => {
@@ -270,7 +271,7 @@ export const GuardForgetPassword: React.FC = () => {
             <InputPasswordForget
               className="authing-g2-input"
               size="large"
-              placeholder={t('login.resetPassword.confirmNewPwd') as string}
+              placeholder={t('login.resetPassword.confirmNewPwd')!}
               prefix={
                 <IconFont
                   type="authing-a-lock-line1"
@@ -284,7 +285,7 @@ export const GuardForgetPassword: React.FC = () => {
           <Form.Item className="authing-g2-sumbit-form submit-form">
             <SubmitButton
               className="reset-password-button"
-              text={t('login.resetPassword.reset') as string}
+              text={t('login.resetPassword.reset')!}
               ref={submitBtnRef}
             />
           </Form.Item>

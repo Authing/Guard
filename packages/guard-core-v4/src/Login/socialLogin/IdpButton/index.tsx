@@ -32,7 +32,6 @@ export const IdpButton = (props: any) => {
   const { i, appId, appHost, isHost } = props
 
   const { t } = useTranslation()
-
   const tenantId = useGuardTenantId()
 
   const version = getVersion()
@@ -51,7 +50,7 @@ export const IdpButton = (props: any) => {
       delete query.from_guard
       query.from_hosted_guard = '1'
 
-      if (isSpecialBrowser) {
+      if (isSpecialBrowser || true) {
         query.redirected = '1'
 
         const guardWindow = getGuardWindow()
@@ -140,11 +139,13 @@ export const IdpButton = (props: any) => {
           size="large"
           icon={<Avatar size={20} src={i.logo} style={{ marginRight: 8 }} />}
           onClick={() => {
-            if (query.redirected) {
-              window.location.replace(initUrl)
-            } else {
-              popupCenter(initUrl)
-            }
+            // if (query.redirected) {
+            //   window.location.replace(initUrl)
+            // } else {
+            //   popupCenter(initUrl)
+            // }
+            // ey 定制需求
+            window.location.replace(initUrl)
           }}
         >
           {t('login.loginBy', {

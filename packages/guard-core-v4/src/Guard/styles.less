@@ -38,7 +38,7 @@
 
 // 侵入 core 的样式代码，guard view 皮肤
 .g2-view-container {
-  font-family: sans-serif;
+  font-family: 'EYInterstate';
   box-shadow: 0px 0px 60px rgba(84, 89, 104, 0.05);
   background: #ffffff;
   display: flex;
@@ -533,17 +533,17 @@
   }
   height: 22px;
   .link-like {
-    color: #215ae5;
+    color: #ffe600;
     padding: 0px;
     height: auto;
     cursor: pointer;
     transition: all 0.3s;
-    &:hover {
-      color: #557fff;
-    }
-    &:active {
-      color: #254cd9;
-    }
+    // &:hover {
+    //   color: #557fff;
+    // }
+    // &:active {
+    //   color: #254cd9;
+    // }
   }
   .gray {
     color: #999;
@@ -555,7 +555,7 @@
     margin-left: auto;
   }
   .touch-tip {
-    color: #d4d6dc;
+    color: #878a95;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -732,7 +732,7 @@
     margin-top: 4px;
     color: #ff4d4f;
     font-size: 14px;
-    font-family: SimSun, sans-serif;
+    font-family: 'EYInterstate';
     line-height: 1;
     content: '*';
   }
@@ -884,7 +884,7 @@ input {
     align-self: flex-end;
   }
   .title {
-    font-family: 'PingFang SC';
+    font-family: 'EYInterstate';
     font-style: normal;
     font-weight: 600;
     font-size: 24px;
@@ -893,7 +893,7 @@ input {
     margin-bottom: 4px;
   }
   .title-explain {
-    font-family: 'PingFang SC';
+    font-family: 'EYInterstate';
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -926,7 +926,7 @@ input {
   }
   .authing-g2-send-code-btn {
     width: 100%;
-    font-family: 'PingFang SC';
+    font-family: 'EYInterstate';
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -940,7 +940,7 @@ input {
     }
   }
   .authing-g2-send-code-btn span {
-    font-family: 'PingFang SC';
+    font-family: 'EYInterstate';
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -962,13 +962,11 @@ input {
     background: rgba(255, 255, 255, 0.2);
     // opacity: .5;
   }
-  .authing-g2-send-code-btn[disabled] {
-    filter: none;
-  }
-  *[class*='authing-'].authing-g2-send-code-btn[disabled]:hover {
-    color: #4e5969;
-    border: 1px solid #d4d6dc;
-  }
+
+  // *[class*='authing-'].authing-g2-send-code-btn[disabled]:hover {
+  //   color: #4e5969;
+  //   border: 1px solid #d4d6dc;
+  // }
   .authing-g2-submit-button {
     width: 100%;
     margin-left: 0;
@@ -1121,7 +1119,7 @@ input {
     margin-bottom: 16px;
   }
   .success-page-title {
-    font-family: 'PingFang SC';
+    font-family: 'EYInterstate';
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
@@ -1130,7 +1128,7 @@ input {
     color: #1d2129;
   }
   .success-page-message {
-    font-family: 'PingFang SC';
+    font-family: 'EYInterstate';
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -1146,16 +1144,21 @@ input {
     @media only screen and (max-width: 450px) {
       height: 48px;
     }
-    background: #215ae5;
+    // background: #215ae5;
     border-radius: 4px;
     margin-bottom: 16px;
   }
   .success-page-timer-tip {
-    font-family: 'PingFang SC';
+    font-family: 'EYInterstate';
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
     line-height: 20px;
     color: #86909c;
   }
+}
+
+.totp_link {
+  color: '#215AE5';
+  cursor: pointer;
 }

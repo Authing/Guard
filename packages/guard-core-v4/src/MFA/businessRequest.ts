@@ -56,7 +56,6 @@ interface AssociateFaceContent {
   isExternalPhoto?: boolean
   mfaToken?: string
 }
-
 type BindPasskeyContent = PublicKeyCredentialWithAttestationJSON
 
 interface VerifyPasskeyContent {
@@ -90,6 +89,27 @@ export const VerifyEmail = async (content: VerifyEmailContent) => {
   )
 }
 
+export const checkEmailOrSms = async (content: any) => {
+  const { email, code, mfaToken, type, phone, phoneCountryCode } = content
+  const { post } = getGuardHttp()
+
+  return await post(
+    '/api/v2/check-mfa-phone-email',
+    {
+      authenticatorType: type,
+      code,
+      email,
+      phone,
+      phoneCountryCode
+    },
+    {
+      headers: {
+        authorization: `Bearer ${mfaToken}`
+      }
+    }
+  )
+}
+
 export const VerifySms = async (content: VerifySmsContent) => {
   const { phone, code, mfaToken, phoneCountryCode } = content
   const { post } = getGuardHttp()
@@ -114,7 +134,7 @@ export const VerifyTotp = async (content: VerifyTotpContent) => {
   const { post } = getGuardHttp()
 
   return await post(
-    '/api/v2/applications/mfa/totp/verify',
+    '/api/v2/mfa/totp/check-verify',
     {
       totp
     },

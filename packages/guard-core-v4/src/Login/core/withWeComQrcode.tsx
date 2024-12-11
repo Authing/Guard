@@ -28,12 +28,11 @@ import { useGuardAuthClient } from '../../Guard/authClient'
 
 import { getVersion } from '../../_utils/getVersion'
 
-const version = getVersion()
-
 const { useCallback, useEffect, useState, useMemo } = React
 
 export const LoginWithWeComQrcode = (props: any) => {
   const { QRConfig, id } = props
+  const version = getVersion()
 
   const WwLogin = window.WwLogin
 

@@ -37,7 +37,7 @@ import { parsePhone } from '../../_utils/hooks'
 
 import { InputInternationPhone } from '../../Login/core/withVerifyCode/InputInternationPhone'
 
-import { EmailScene } from '../../Type'
+import { EmailScene, Lang } from '../../Type'
 
 import { UploadImage } from '../../UploadImage'
 
@@ -48,11 +48,13 @@ import classnames from 'classnames'
 const { useCallback, useEffect, useMemo, useRef, useState } = React
 
 const MomentPicker: any = DatePicker
-
 export interface CompleteInfoProps {
   metaData: CompleteInfoMetaData[]
   businessRequest: (data: CompleteInfoRequest) => Promise<void>
-  extendsFieldsI18n?: any
+  submitText?: string
+  extendsFieldsI18n?: {
+    [key: string]: Record<Lang, { enabled: boolean; value: string }>
+  }
 }
 
 export interface FieldMetadata {
@@ -68,7 +70,14 @@ const filterOption = (input: any, option: any) => {
 }
 
 export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
-  const { metaData, businessRequest, extendsFieldsI18n } = props
+  const { t } = useTranslation()
+
+  const {
+    metaData,
+    businessRequest,
+    extendsFieldsI18n,
+    submitText = t('common.problem.form.submit')
+  } = props
 
   const config = useGuardPublicConfig()
 
@@ -85,8 +94,6 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
   )
 
   const { get, post } = useGuardHttp()
-
-  const { t } = useTranslation()
 
   const [form] = Form.useForm()
 
@@ -389,10 +396,13 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
   const getMetaDateLabel = useCallback(
     (metaData: CompleteInfoMetaData) => {
       let label = ''
-
-      const fieldsI18n = (extendsFieldsI18n || config.extendsFieldsI18n)?.[
-        metaData.name
-      ]
+      // TODO ey 代码合并风险项 属性读取优先级
+      /** v4 */
+      // const fieldsI18n = (extendsFieldsI18n || config.extendsFieldsI18n)?.[
+      //   metaData.name
+      // ]
+      /** ey */
+      const fieldsI18n = extendsFieldsI18n?.[metaData.name]
 
       const currentLng = getCurrentLng()
 
@@ -404,7 +414,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
 
       return label
     },
-    [config.extendsFieldsI18n, extendsFieldsI18n]
+    [extendsFieldsI18n]
   )
 
   const generateRules = useCallback(
@@ -414,12 +424,11 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
       const label = getMetaDateLabel(metaData)
 
       const rules = metaData.validateRules ?? []
-
       const required = metaData.required ?? false
 
       if (required) {
         formRules.push({
-          type: 'any',
+          type: 'string',
           required: true,
           validateTrigger: 'onChange',
           message: t('login.noEmpty', { label: label })
@@ -576,6 +585,10 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
         }
         // 手机验证码check
         if (fieldKeys.includes('phone')) {
+          if (values.phone && !values.phoneCode?.length) {
+            message.error(t('common.inputCode'))
+            return submitButtonRef.current?.onSpin(false)
+          }
           const options: any = {
             phone: values.phone,
             phoneCode: values.phoneCode
@@ -636,7 +649,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
 
       <Form.Item className="authing-g2-sumbit-form">
         <SubmitButton
-          text={t('common.problem.form.submit') as string}
+          text={submitText as string}
           ref={submitButtonRef}
           className="password g2-completeInfo-submit"
         />

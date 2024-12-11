@@ -55,7 +55,13 @@ export const GuardUnlockView: React.FC = () => {
         </span>
         <div
           className="link-like back-to-login"
-          onClick={() => changeModule?.(GuardModuleType.LOGIN)}
+          onClick={() => {
+            if (config.isInvited) {
+              changeModule?.(GuardModuleType.EY_PRE_CHECK_EMAIL)
+            } else {
+              changeModule?.(GuardModuleType.LOGIN)
+            }
+          }}
         >
           {t('common.backLoginPage')}
         </div>

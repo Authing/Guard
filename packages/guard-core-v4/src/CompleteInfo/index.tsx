@@ -54,6 +54,8 @@ export const GuardCompleteInfo: React.FC<{
 }> = ({ metaData, businessRequest, skipComplateFileds }) => {
   useGuardView()
 
+  const publicConfig = useGuardPublicConfig()
+
   const config = useGuardFinallyConfig()
 
   const { t } = useTranslation()
@@ -105,10 +107,16 @@ export const GuardCompleteInfo: React.FC<{
       </div>
       <div className="g2-view-tabs g2-completeInfo-content">
         <CompleteInfo
+          submitText={config.isInvited ? t('common.skip')! : undefined}
+          extendsFieldsI18n={publicConfig.extendsFieldsI18n}
           metaData={metaData}
-          businessRequest={async data =>
-            await businessRequest?.(CompleteInfoAuthFlowAction.Complete, data)
-          }
+          businessRequest={async data => {
+            if (config.isInvited) {
+              onSkip()
+            } else {
+              await businessRequest?.(CompleteInfoAuthFlowAction.Complete, data)
+            }
+          }}
         />
       </div>
     </div>
@@ -121,6 +129,8 @@ export const GuardLoginCompleteInfoView: React.FC = () => {
   const events = useGuardEvents()
 
   const authClient = useGuardAuthClient()
+
+  const config = useGuardFinallyConfig()
 
   const { instance: multipleInstance } = useGuardAccountSelectInstance()
 
@@ -156,7 +166,7 @@ export const GuardLoginCompleteInfoView: React.FC = () => {
     <GuardCompleteInfo
       metaData={metaData}
       businessRequest={businessRequest}
-      skipComplateFileds={skip}
+      skipComplateFileds={config.isInvited ? false : skip}
     />
   )
 }
@@ -193,7 +203,9 @@ export const GuardRegisterCompleteInfoView: React.FC = () => {
     )
   }, [initData.businessRequestName, publicConfig?.extendsFields])
 
-  const skipComplateFileds = publicConfig?.skipComplateFileds
+  const skipComplateFileds = config.isInvited
+    ? false
+    : publicConfig?.skipComplateFileds
 
   const loadingComponent = useMemo(() => {
     return config.loadingComponent

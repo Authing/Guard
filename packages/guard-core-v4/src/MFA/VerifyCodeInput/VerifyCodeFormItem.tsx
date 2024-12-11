@@ -26,19 +26,19 @@ export const VerifyCodeFormItem: React.FC<VerifyCodeFormItemProps> = props => {
       validateFirst={true}
       rules={[
         {
-          type: 'array',
+          // type: 'array',
           validateTrigger: ['onChange'],
           message: t('common.isMissing', {
             name: ruleKeyword
-          }) as string,
+          })!,
           required: true
         },
         {
-          type: 'array',
+          // type: 'array',
           validateTrigger: [''],
           message: t('common.fullCaptchaCode', {
             name: ruleKeyword
-          }) as string,
+          })!,
           min: codeLength
         }
       ]}

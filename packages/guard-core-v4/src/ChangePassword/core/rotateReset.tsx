@@ -17,6 +17,7 @@ import { InputPassword } from '../../InputPassword'
 import { IconFont } from '../../IconFont'
 
 import {
+  useGuardEvents,
   useGuardInitData,
   useGuardIsAuthFlow,
   useGuardPublicConfig
@@ -39,6 +40,8 @@ interface RotateResetProps {
 
 export const RotateReset = (props: RotateResetProps) => {
   const { t } = useTranslation()
+
+  const events = useGuardEvents()
 
   const { onReset, onFinishCallBack } = props
 
@@ -73,9 +76,11 @@ export const RotateReset = (props: RotateResetProps) => {
 
     if (isAuthFlow) {
       const {
+        isFlowEnd,
         apiCode,
         onGuardHandling,
-        message: msg
+        message: msg,
+        data
       } = await authFlow(ChangePasswordBusinessAction.ResetPassword, {
         password: await encrypt!(password, publicKey),
         oldPassword: await encrypt!(oldPassword, publicKey)
@@ -84,7 +89,9 @@ export const RotateReset = (props: RotateResetProps) => {
       submitButtonRef?.current?.onSpin(false)
 
       // 重置密码 返回的是流程终止
-      if (apiCode === ApiCode.ABORT_FLOW) {
+      if (isFlowEnd) {
+        events?.onLogin?.(data, authClient)
+      } else if (apiCode === ApiCode.ABORT_FLOW) {
         onReset()
       } else if (apiCode === ApiCode.UNSAFE_PASSWORD_TIP) {
         message.error(msg)
@@ -161,7 +168,7 @@ export const RotateReset = (props: RotateResetProps) => {
           name="password2"
           rules={[
             {
-              validator(_: any, value: any) {
+              validator(_, value) {
                 let pwd = form.getFieldValue('password')
                 if (!value) {
                   return Promise.reject(t('login.inputPwd'))

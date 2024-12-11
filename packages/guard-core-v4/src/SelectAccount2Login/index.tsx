@@ -15,10 +15,7 @@ import './style.less'
 
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
 
-import { useGlobalAuthClient } from '../AuthClientProvider'
-
 const { useCallback } = React
-
 export const GuardSelectAccount2LoginView = () => {
   const config = useGuardFinallyConfig()
   const events = useGuardEvents()

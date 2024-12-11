@@ -54,6 +54,12 @@ export const codeMap: Record<number, GuardModuleAction> = {
     // 验证码过期
     action: 'message'
   },
+  /**
+   * ey密码错误
+   */
+  2006: {
+    action: 'message'
+  },
   1576: {
     action: 'message'
   },

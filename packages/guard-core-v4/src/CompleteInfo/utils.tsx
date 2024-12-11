@@ -81,6 +81,43 @@ export const extendsFieldsToMetaData = (
     }
   })
 
+export const eyFieldValuesToRegisterProfile = (
+  extendsFields: ApplicationConfig['extendsFields'],
+  fieldValues?: CompleteInfoRequest['fieldValues']
+) => {
+  const udf: { key: string; value: string }[] = []
+  const registerProfile: Record<string, any> = {}
+
+  fieldValues?.forEach(({ name, value, code, phoneCountryCode }) => {
+    const fieldType = extendsFields.find(item => item.name === name)?.type
+
+    // 根据字段类型生成不同的数据结构
+    if (fieldType === 'internal') {
+      if (name === 'phone') {
+        registerProfile.phoneToken = code
+        registerProfile.phoneInfo = {
+          phone: value
+        }
+        if (phoneCountryCode) {
+          registerProfile.phoneInfo.phoneCountryCode = phoneCountryCode
+        }
+        return
+      }
+
+      if (name === 'email') registerProfile.emailToken = code
+
+      registerProfile[name] = value
+    } else if (fieldType === 'user') {
+      udf.push({
+        key: name,
+        value
+      })
+    }
+  })
+
+  return { registerProfile, udf }
+}
+
 export const fieldValuesToRegisterProfile = (
   extendsFields: ApplicationConfig['extendsFields'],
   fieldValues?: CompleteInfoRequest['fieldValues']
@@ -93,7 +130,9 @@ export const fieldValuesToRegisterProfile = (
 
     // 根据字段类型生成不同的数据结构
     if (fieldType === 'internal') {
-      if (name === 'phone') registerProfile.phoneToken = code
+      if (name === 'phone') {
+        registerProfile.phoneToken = code
+      }
 
       if (name === 'email') registerProfile.emailToken = code
 

@@ -24,7 +24,7 @@ import { getPhoneInLoginPageContext } from '..'
 
 const { useCallback, useEffect, useMemo, useState } = React
 
-const publicConfigMap: Record<string, ApplicationConfig> = {}
+let publicConfigMap: Record<string, ApplicationConfig> = {}
 
 export const getPublicConfig = (appId: string) => publicConfigMap?.[appId]
 
@@ -32,7 +32,7 @@ export const setPublicConfig = (appId: string, config: ApplicationConfig) => {
   return (publicConfigMap[appId] = config)
 }
 
-const pageConfigMap: Record<string, GuardPageConfig> = {}
+let pageConfigMap: Record<string, GuardPageConfig> = {}
 
 export const getPageConfig = (appId: string) => pageConfigMap?.[appId]
 
@@ -130,7 +130,6 @@ const mergedPublicConfig = (
 
   const phone = getPhoneInLoginPageContext()
   const defaultLoginMethod = phone && LoginMethods.PhoneCode
-
   const mergedPublicConfig: GuardLocalConfig = {
     ...config,
     title: config.title ?? publicConfig.name,
@@ -174,7 +173,7 @@ const mergedPublicConfig = (
     agreementEnabled: config.agreementEnabled ?? publicConfig.agreementEnabled,
     agreements: config.agreements ?? publicConfig.agreements,
     contentCss: config.contentCss ?? publicConfig.css,
-    loginHint: config.loginHint
+    isInvited: config.isInvited ?? !publicConfig.isOfficial
   }
 
   return mergedPublicConfig

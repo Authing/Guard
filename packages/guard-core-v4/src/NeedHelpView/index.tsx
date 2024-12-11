@@ -11,6 +11,7 @@ import { GuardModuleType } from '../Guard/module'
 import {
   useGuardAppId,
   useGuardFinallyConfig,
+  useGuardInitData,
   useGuardModule
 } from '../_utils/context'
 
@@ -18,6 +19,8 @@ import { useGuardView } from '../Guard/core/hooks/useGuardView'
 
 export const GuardNeedHelpView = (props: any) => {
   const { t } = useTranslation()
+
+  const initData = useGuardInitData<any>()
 
   const appId = useGuardAppId()
 
@@ -56,7 +59,7 @@ export const GuardNeedHelpView = (props: any) => {
           <span className="gray">{t('common.noQuestions')}</span>
           <span
             className="link-like"
-            onClick={() => changeModule?.(GuardModuleType.LOGIN)}
+            onClick={() => changeModule?.(GuardModuleType.LOGIN, initData)}
           >
             {t('common.goToLogin')}
           </span>

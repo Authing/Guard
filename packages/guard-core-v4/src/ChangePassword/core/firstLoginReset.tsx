@@ -15,6 +15,7 @@ import { IconFont } from '../../IconFont'
 import { InputPassword } from '../../InputPassword'
 
 import {
+  useGuardEvents,
   useGuardInitData,
   useGuardIsAuthFlow,
   useGuardPublicConfig
@@ -32,16 +33,16 @@ import { SendPhoneCode } from './SendPhoneCode'
 
 import { fieldRequiredRule } from '../../_utils'
 
+const { useRef } = React
 interface FirstLoginResetProps {
   onReset: any
 }
-
-const { useRef } = React
-
 export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({
   onReset
 }) => {
   const { t } = useTranslation()
+
+  const events = useGuardEvents()
 
   const initData = useGuardInitData<{
     token: string
@@ -80,17 +81,19 @@ export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({
       if (values.code) {
         flowData.code = values.code
       }
-
       // 重置密码成功不会返回 UserInfo
       const {
+        isFlowEnd,
         apiCode,
         onGuardHandling,
-        message: msg
+        message: msg,
+        data
       } = await authFlow(ChangePasswordBusinessAction.FirstLoginReset, flowData)
-
       submitButtonRef.current?.onSpin(false)
 
-      if (apiCode === ApiCode.ABORT_FLOW) {
+      if (isFlowEnd) {
+        events?.onLogin?.(data, client)
+      } else if (apiCode === ApiCode.ABORT_FLOW) {
         onReset()
       } else if (apiCode === ApiCode.UNSAFE_PASSWORD_TIP) {
         message.error(msg)

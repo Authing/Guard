@@ -49,6 +49,7 @@ export const HIDE_SOCIALS_SHOWIN_ENTERPRISE = [
   LoginMethods.ZJZWFWQrcode,
   'wechatwork:corp:qrconnect',
   'wechatwork:service-provider:qrconnect',
+  'wechatwork:service-provider:qrconnect-v2',
   'wechatwork:agency:qrconnect',
   'wechatwork:qrconnect:of:authing:agency'
 ]

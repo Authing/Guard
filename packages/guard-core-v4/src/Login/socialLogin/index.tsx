@@ -56,10 +56,11 @@ export interface SocialLoginProps {
 export const SocialLogin: React.FC<SocialLoginProps> = ({
   appId,
   config,
+  onLoginFailed,
+  onLoginSuccess,
   enterpriseConnectionObjs,
   socialConnectionObjs,
-  onLoginSuccess,
-  onLoginFailed
+  multipleInstance
 }) => {
   const noLoginMethods = !config?.loginMethods?.length
 
@@ -106,7 +107,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
     if (config?.isHost) {
       query.from_hosted_guard = '1'
 
-      if (isSpecialBrowser) {
+      if (isSpecialBrowser || true) {
         query.redirected = '1'
 
         const guardWindow = getGuardWindow()
@@ -134,11 +135,14 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
           item.identifier
         }?${querystring.stringify(query)}`
 
-        if (query.redirected) {
-          window.location.replace(initUrl)
-        } else {
-          popupCenter(initUrl)
-        }
+        // ey 特殊需求
+        window.location.replace(initUrl)
+
+        // if (query.redirected) {
+        //   window.location.replace(initUrl)
+        // } else {
+        //   popupCenter(initUrl)
+        // }
       }
     }
 

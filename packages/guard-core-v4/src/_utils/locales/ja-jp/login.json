@@ -27,6 +27,7 @@
   "bindPwdLogin": "アカウントログイン",
   "appScanLogin": "モバイルアプリでコード登録",
   "zjzwScanLogin": "浙江事務所",
+
   "scanLogin": "コード登録",
   "scanAgain": "コードを掃き直す",
   "wechatScanLogin": "wechatのコードを使ってログインする",
@@ -79,8 +80,9 @@
   "otherLoginWay": "その他の登録方法",
   "clickSent": "認証コードの送信をクリックする",
   "reSent": "認証コードの再送をクリックしてください",
-  "bindPhoneInfo": "携帯番号を入力して結びつけてください",
   "bindWarning": "管理者に連絡して携帯番号をバインドしてください",
+
+  "bindPhoneInfo": "携帯番号を入力して結びつけてください",
   "inputPhoneCode": "携帯認証コードを入力してください",
   "forgetPwd": "パスワードをお忘れの場合",
   "inputPwd": "パスワードを入力してください",
@@ -105,6 +107,7 @@
   "inputNewPwd": "新しいパスワードをご入力ください",
   "selectLoginAccount": "ログインアカウントを選択する",
   "useOtherAccount": "別のアカウントを使う",
+  "wecomLogin": "エンタープライズ WeChat ログイン",
   "tenant": {
     "consoleManage": "管理コンソール",
     "ssoPad": "シングル サインオン アプリケーション パネル"
@@ -115,6 +118,7 @@
   "hardwareSupport": "ハードウェアはサポートされていません",
   "verifyCodeTip": "別の画像を表示",
   "loginWithPasskey": "パスキーを使用してログインする",
+
   "resetPassword": {
     "pleaseInputPassword": "パスワードを入力してください",
     "checkPasswordDiff": "一貫したパスワードを入力してください",
@@ -122,7 +126,7 @@
     "reset": "パスワードをリセット",
     "back": "戻る",
     "resetPasswordText1": "認証コードを受け取るために登録した携帯電話番号/メールボックスを入力してください。パスワードをリセットします。",
-    "resetPasswordText2": "あなたはリセットしています {{account}} のパスワード。",
+    "resetPasswordText2": "{{アカウント}} のパスワードをリセットしています。",
     "input": "インプット{{text}}",
     "inputFourVerifyCode": "入力してください {{length}} ビット認証コード",
     "inputNewPwd": "新しいパスワードを入力してください",

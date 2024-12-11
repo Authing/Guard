@@ -1,0 +1,721 @@
+// ! ey
+
+.title-font() {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  color: #fff;
+}
+.g2-init-setting-loading {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(7.5px);
+  border-radius: 8px;
+}
+
+.g2-view-container {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(7.5px);
+  &.ey-pre-check-email {
+    min-height: 338px;
+  }
+
+  &.ey-protocols {
+    backdrop-filter: unset;
+    padding: unset;
+  }
+  &.g2-complete-info {
+    min-height: 358px;
+  }
+  &.g2-view-container-submit-success {
+    min-height: 434px;
+  }
+  &.ey-check-captcha {
+    min-height: 358px;
+  }
+  &.g2-change-password {
+    min-height: 372px;
+  }
+
+  &.ey-error {
+    min-height: 358px;
+  }
+  &.ey-invite-login {
+    min-height: 272px;
+  }
+
+  // &.g2-view-login {
+  //   min-height: 480px;
+  // }
+  // &.ey-identity-bind {
+  //   padding-bottom: 64px;
+  // }
+
+  .g2-view-header {
+    .title {
+      color: #fff;
+    }
+    .title-explain {
+      color: #c4c4cd;
+    }
+  }
+}
+.ey-pre-check-email,
+.ey-identity-bind,
+.ey-check-captcha,
+.g2-view-login {
+  .g2-change-language-container {
+    margin-top: 24px;
+  }
+}
+.g2-view-mfa,
+.g2-bind-totp {
+  .authing-g2-mfa-title {
+    .title-font();
+  }
+  .authing-g2-mfa-tips {
+    color: #c4c4cd;
+  }
+}
+
+.g2-view-content {
+  padding: 0 38px;
+}
+.g2-hint-message {
+  margin: 24px 0px;
+  color: #fff;
+  em {
+    font-style: normal;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.g2-download-authenticator {
+  .g2-mfa-totp-download-tabs {
+    .authing-ant-tabs-nav-wrap {
+      justify-content: center;
+    }
+    .authing-ant-tabs-tab {
+      margin: 0px;
+      color: #c9cdd4 !important;
+      &.authing-ant-tabs-tab-active > div {
+        color: #ffe600;
+      }
+      &:hover {
+        color: #ffe600 !important;
+      }
+      & ~ .authing-ant-tabs-tab {
+        margin-left: 32px;
+      }
+    }
+    .authing-ant-tabs-ink-bar.authing-ant-tabs-ink-bar-animated {
+      background: #ffe600;
+    }
+    .g2-mfa-totp-download-qrcode {
+      display: flex;
+      .g2-mfa-totp-download-qrcode-item:first-of-type {
+        margin-right: 32px;
+      }
+    }
+  }
+  .g2-mfa-totp-download-subtitle,
+  .g2-mfa-totp-download-qrcode-text {
+    color: #c4c4cd !important;
+  }
+}
+
+.ey-protocols {
+  .g2-protocol-content {
+    border-radius: 8px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(7.5px);
+    .g2-protocol-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #fff;
+      font-weight: 600;
+      line-height: 22px;
+      margin-bottom: 32px;
+      padding: 32px 32px 0px;
+      .brand-icon {
+        margin-bottom: 16px;
+      }
+    }
+    .policy_tabs {
+      padding: 0 32px;
+      .authing-ant-tabs-nav-wrap {
+        justify-content: center;
+      }
+      .authing-ant-tabs-tab {
+        margin: 0px;
+        color: #c9cdd4;
+        &.authing-ant-tabs-tab-active > div {
+          color: #ffe600;
+        }
+        &:hover {
+          color: #ffe600;
+        }
+        & ~ .authing-ant-tabs-tab {
+          margin-left: 32px;
+        }
+      }
+      .authing-ant-tabs-ink-bar.authing-ant-tabs-ink-bar-animated {
+        background: #ffe600;
+      }
+    }
+    .protocol {
+      padding: 0px 28px 0px 32px;
+      flex: 1;
+      overflow-y: scroll;
+      color: #fff;
+      margin-right: 4px;
+      // 在按钮覆盖下需要一些剩余空间
+      // padding-bottom: 72px;
+      margin-bottom: 72px;
+      .strong_text {
+        font-weight: bold;
+      }
+      .sub_text {
+        font-size: 14px;
+        color: #c4c4cd;
+        line-height: 22px;
+        margin-bottom: 16px;
+        em {
+          color: #fff;
+          font-style: normal;
+        }
+        ul {
+          margin-top: 16px;
+        }
+        .tertiary_text {
+          padding-left: 1.5em;
+        }
+      }
+      .table {
+        color: #c9cdd4;
+        &-header {
+          background: rgba(0, 0, 0, 0.4);
+          border-radius: 8px;
+          div {
+            font-size: 16px;
+            line-height: 26px;
+            font-weight: 500;
+          }
+        }
+        &-container {
+          border-radius: 8px;
+          overflow: hidden;
+          .table-row:nth-child(odd) {
+            background: rgba(0, 0, 0, 0.2);
+          }
+          .table-row:nth-child(even) {
+            background: rgba(0, 0, 0, 0.3);
+          }
+        }
+        &-row {
+          display: grid;
+          grid-template-columns: 2fr 1.7fr 2.1fr 2fr 2fr;
+        }
+        &-cell {
+          // display: flex;
+          // align-items: center;
+          padding: 17px 16px;
+          resize: none;
+          overflow: hidden;
+          overflow-wrap: break-word;
+        }
+        .rd {
+          position: relative;
+          display: inline-block;
+          width: 8px;
+          height: 22px;
+          &::before {
+            content: 'rd';
+            position: absolute;
+            transform: scale(0.5);
+            transform-origin: top left;
+          }
+        }
+      }
+      h5 {
+        margin: 8px 0px;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 22px;
+        color: #fff;
+      }
+      &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        z-index: 999999;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: #c4c4cd;
+        border-radius: 20px;
+      }
+    }
+  }
+  footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
+    display: flex;
+    padding: 16px 24px 24px 24px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0px 0px 8px 8px;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(7.5px);
+  }
+}
+.ey-check-captcha {
+  .header-content {
+    margin: 32px 0px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    word-break: break-all;
+    .caption {
+      color: #fff;
+      .title-font();
+    }
+    .hint {
+      color: #c4c4cd;
+    }
+    .desc {
+      margin-top: 8px;
+      color: #c4c4cd;
+    }
+  }
+
+  .resend_email {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+    color: #ffe600;
+    cursor: pointer;
+  }
+  .g2-mfa-totp-verify-input.authing-ant-form-item-has-error {
+    *[class*='authing-'].authing-ant-form-item-explain {
+      text-align: center;
+    }
+  }
+}
+.ey-error {
+  .error-title {
+    margin-top: 16px;
+    .title-font();
+    color: #fff;
+  }
+  .error-description {
+    margin-top: 32px;
+    color: #86909c;
+  }
+}
+.g2-complete-info {
+  .g2-view-header {
+    .content {
+      margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .title {
+      .title-font();
+      text-align: center;
+    }
+    .title-explain {
+      color: #c4c4cd;
+      margin-top: 8px;
+      text-align: center;
+      width: 75%;
+    }
+  }
+
+  .g2-completeInfo-submit[class*='authing-'].authing-g2-submit-button {
+    margin-top: 16px;
+  }
+  .g2-completeInfo-content {
+    margin-bottom: 24px;
+  }
+}
+
+.g2-view-login {
+  .method_title {
+    margin-bottom: 16px;
+    color: #c4c4cd;
+    font-weight: 300;
+    line-height: 22px;
+  }
+  .g2-tips-line {
+    margin-bottom: 16px;
+    .link-like {
+      color: #ffe600 !important;
+    }
+    .touch-tip:hover {
+      color: #ffe600 !important;
+    }
+  }
+}
+
+.ey-invite-login {
+  padding-top: 48px;
+  .g2-view-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .title {
+      color: #fff;
+      .title-font();
+    }
+    .loading {
+      width: 80px;
+      margin-top: 24px;
+      margin-bottom: 16px;
+    }
+    .desc {
+      color: #c4c4cd;
+    }
+  }
+}
+.g2-password-reset-pageWrap {
+  .back_wrapper {
+    margin-bottom: 24px;
+  }
+}
+
+.ey-identity-bind {
+  .content {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .title {
+      .title-font();
+    }
+    .sub_title {
+      text-align: center;
+      color: #c4c4cd;
+      margin-top: 8px;
+    }
+  }
+}
+.margin_top_32 {
+  margin-top: 32px;
+}
+.margin_bottom_32 {
+  margin-bottom: 32px;
+}
+
+*[class*='authing-'].authing-g2-change-language-menu {
+  background-color: #23232f;
+  border: unset;
+  ul {
+    background-color: #23232f;
+    li {
+      color: #fff;
+      &:hover {
+        color: #23232f;
+        background-color: #ffe600;
+      }
+      &.select {
+        &:hover {
+          color: #23232f;
+          background-color: #ffe600;
+        }
+        color: #ffe600;
+        & svg {
+          color: #ffe600;
+        }
+      }
+    }
+  }
+}
+
+.back_wrapper {
+  .back_btn {
+    display: flex;
+    align-items: center;
+    color: #fff !important;
+  }
+}
+
+*[class*='authing-'][class*='authing-'].authing-ant-btn-link {
+  color: unset;
+}
+
+.g2-view-container-submit-success {
+  .success-page-title {
+    .title-font();
+    color: #fff;
+  }
+  .authing-g2-submit-button {
+    margin-top: 32px;
+  }
+}
+
+*[class*='authing-'].authing-ant-btn {
+  text-shadow: unset;
+}
+
+*[class*='authing-'].authing-ant-btn:hover,
+*[class*='authing-'].authing-ant-btn:focus {
+  color: unset;
+  border-color: transparent;
+}
+*[class*='authing-'].authing-ant-btn::before {
+  background-color: transparent;
+}
+
+*[class*='authing-'].authing-ant-form-item-label > label {
+  color: #c4c4cd;
+  line-height: 22px;
+}
+*[class*='authing-'].authing-ant-btn-primary {
+  *[class*='authing-'].authing-ant-btn-loading-icon span {
+    color: #2e2e38;
+  }
+  &.authing-ant-btn-loading,
+  &:hover,
+  &:focus {
+    background: #eaeaf2;
+    border-color: #eaeaf2;
+    color: #2e2e38;
+  }
+}
+
+*[class*='authing-'].authing-ant-btn-ghost {
+  &.authing-ant-btn-loading {
+    background-color: transparent;
+  }
+  *[class*='authing-'].authing-ant-btn-loading-icon span {
+    color: #ffe600;
+  }
+  &:hover,
+  &:focus {
+    color: #ffe600;
+    border-color: #ffe600;
+    background-color: transparent;
+  }
+  color: #fff;
+  border-color: #eaeaf2;
+}
+
+// inputs
+
+*[class*='authing-'].authing-g2-input {
+  &:hover,
+  &:focus {
+    border-color: transparent;
+    box-shadow: unset;
+  }
+  & input[type='password'] {
+    font-family: auto;
+  }
+}
+
+// *[class*='authing-'].authing-g2-input-form .authing-g2-select {
+//   border-color: unset;
+// }
+
+*[class*='authing-'].authing-ant-select-selector {
+  border-color: unset;
+  box-shadow: unset;
+}
+*[class*='authing-'].authing-g2-input-form
+  .authing-g2-select.authing-ant-select-focused
+  .authing-ant-select-selector {
+  border-color: transparent;
+  box-shadow: unset;
+}
+
+*[class*='authing-'].authing-g2-submit-button[disabled]:not(.authing-ant-btn-loading) {
+  background: #282836;
+  color: #747480;
+  border-color: transparent;
+}
+
+.authing-g2-code-input-divider {
+  height: 1px;
+  background-color: #fff;
+  min-width: unset;
+  margin-left: 10px;
+  width: 14px;
+  min-width: 14px;
+  max-width: 14px;
+}
+
+.separator-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+  .hint {
+    color: #fff;
+    margin: 0px 8px;
+  }
+  .left-separator,
+  .right-separator {
+    display: flex;
+    align-items: center;
+  }
+}
+.other-identifies {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  .identity-item {
+    display: inline-flex;
+    margin: 8px;
+    width: 48px;
+    height: 48px;
+    border: 0;
+    background-color: #fff;
+    border-radius: 4px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    box-shadow: none;
+  }
+}
+
+.areacode-virtual-dropdown
+  *[class*='authing-'].authing-ant-select-item-option-active,
+.areacode-virtual-dropdown
+  *[class*='authing-'].authing-ant-select-item-option-selected:not(.authing-ant-select-item-option-disabled) {
+  color: #ffe600;
+}
+*[class*='authing-'].authing-g2-question-option.authing-g2-question-option-active {
+  color: #ffe600;
+}
+*[class*='authing-'].authing-ant-select-item-option-selected:not(.authing-ant-select-item-option-disabled) {
+  background-color: unset;
+}
+
+*[class*='authing-'].authing-ant-form-item-explain.authing-ant-form-item-explain-error {
+  color: #ff736a;
+}
+
+.g2-need-help {
+  .authing-g2-input-form {
+    color: #c4c4cd;
+  }
+  .authing-g2-questions-textarea {
+    &::after {
+      color: #c4c4cd;
+    }
+  }
+}
+
+.g2-forget-password {
+  .g2-tips-line {
+    & > span:first-of-type {
+      color: #c4c4cd;
+    }
+  }
+}
+
+*[class*='authing-'][class*='authing-'].authing-g2-send-code-btn[disabled] {
+  color: #fff;
+  &.g2-loading-btn-center {
+    background: transparent;
+  }
+}
+// 移动端
+
+@media only screen and (max-width: 450px) {
+  .g2-view-content {
+    padding: unset;
+  }
+}
+*[class*='authing-'].authing-ant-btn-primary {
+  background-color: #ffe600;
+  color: #2e2e38;
+  border-color: transparent;
+}
+
+*[class*='authing-'] input:-internal-autofill-selected {
+  box-shadow: unset !important;
+}
+.g2-view-back .g2-view-mfa-back-hover svg {
+  color: #fff;
+}
+.g2-view-back .g2-view-mfa-back-hover span {
+  color: #fff;
+}
+.g2-view-back .g2-view-mfa-back-hover:hover {
+  color: #fff !important;
+  svg,
+  span {
+    color: #fff;
+  }
+}
+
+.resend_code {
+  margin-top: 8px;
+  cursor: pointer;
+  text-align: center;
+  color: #ffe600 !important;
+  *[class*='authing-'].authing-ant-btn-loading-icon span {
+    color: #ffe600;
+  }
+}
+
+.authing-g2-mfa-tips .totp_link {
+  color: #ffe600;
+  cursor: pointer;
+}
+.wecom_container {
+  min-height: 211px;
+}
+
+.ey-captcha-inputs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .resend_code {
+    margin-top: 8px;
+    cursor: pointer;
+    text-align: center;
+    color: #ffe600 !important;
+    *[class*='authing-'].authing-ant-btn-loading-icon span {
+      color: #ffe600;
+    }
+  }
+  .authing-g2-code-input-item {
+    caret-color: #000;
+  }
+}
+.g2-view-container .g2-view-header .icon {
+  height: 56px;
+  width: 56px;
+}
+
+.g2-base-imagepro-mask.g2-base-imagepro-loading.authing-ant-btn-loading {
+  background-color: unset;
+}
+#g2-base-imagepro-container {
+  background-color: #fff;
+}
+.bind-pre-check-wrapper {
+  *[class*='authing-'].authing-ant-btn-primary {
+    *[class*='authing-'].authing-ant-btn-loading-icon span {
+      color: #2e2e38;
+    }
+    &.authing-ant-btn-loading,
+    &:hover,
+    &:focus {
+      background: #eaeaf2;
+      border-color: #eaeaf2;
+      color: #2e2e38;
+    }
+  }
+}

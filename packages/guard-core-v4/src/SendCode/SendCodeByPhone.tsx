@@ -153,6 +153,7 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
             })
         }}
         form={form}
+        timerTime={60}
         {...remainProps}
       />
     </>

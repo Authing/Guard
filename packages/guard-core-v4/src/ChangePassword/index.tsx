@@ -71,20 +71,24 @@ export const GuardFirstLoginPasswordResetView: React.FC = () => {
 
   const { changeModule } = useGuardModule()
 
+  const config = useGuardFinallyConfig()
+
   const onReset = () => {
     message.success(t('common.updatePsswordSuccess'))
     setTimeout(() => {
-      changeModule?.(GuardModuleType.LOGIN)
+      changeModule?.(
+        config.isInvited
+          ? GuardModuleType.EY_PRE_CHECK_EMAIL
+          : GuardModuleType.LOGIN
+      )
     }, 500)
   }
-
-  const config = useGuardFinallyConfig()
 
   const coreForm = <FirstLoginReset onReset={onReset} />
 
   return (
     <GuardChangePassword
-      title={`${t('common.welcome')} ${config.title}`}
+      title={config.title}
       explain={t('common.initPasswordText')}
     >
       {coreForm}
@@ -95,22 +99,26 @@ export const GuardFirstLoginPasswordResetView: React.FC = () => {
 export const GuardPasswordNotSafeResetView: React.FC = () => {
   const { t } = useTranslation()
 
+  const config = useGuardFinallyConfig()
+
   const { changeModule } = useGuardModule()
 
   const onReset = () => {
     message.success(t('common.updatePsswordSuccess'))
     setTimeout(() => {
-      changeModule?.(GuardModuleType.LOGIN)
+      changeModule?.(
+        config.isInvited
+          ? GuardModuleType.EY_PRE_CHECK_EMAIL
+          : GuardModuleType.LOGIN
+      )
     }, 500)
   }
-
-  const config = useGuardFinallyConfig()
 
   const coreForm = <PasswordNotSafeReset onReset={onReset} />
 
   return (
     <GuardChangePassword
-      title={`${t('common.welcome')} ${config.title}`}
+      title={config.title}
       explain={t('common.unsafePasswordChangeText')}
     >
       {coreForm}
@@ -120,6 +128,8 @@ export const GuardPasswordNotSafeResetView: React.FC = () => {
 
 export const GuardForcedPasswordResetView: React.FC = () => {
   const { t } = useTranslation()
+
+  const config = useGuardFinallyConfig()
 
   const { changeModule } = useGuardModule()
 
@@ -131,7 +141,11 @@ export const GuardForcedPasswordResetView: React.FC = () => {
   const onReset = () => {
     message.success(t('common.updatePsswordSuccess'))
     setTimeout(() => {
-      changeModule?.(GuardModuleType.LOGIN)
+      changeModule?.(
+        config.isInvited
+          ? GuardModuleType.EY_PRE_CHECK_EMAIL
+          : GuardModuleType.LOGIN
+      )
     }, 500)
   }
 
@@ -165,36 +179,23 @@ export const GuardForcedPasswordResetView: React.FC = () => {
 export const GuardNoticePasswordResetView: React.FC = () => {
   const { t } = useTranslation()
 
+  const config = useGuardFinallyConfig()
+
   const { changeModule } = useGuardModule()
 
   const initData = useGuardInitData<{
     forcedCycle: number
-    forcedCycleUnit: ForcedModifyPwdCycleUnit
     onFinishCallBack: any
   }>()
-
-  const modifyNoticePwdText = useMemo(() => {
-    switch (initData?.forcedCycleUnit) {
-      case ForcedModifyPwdCycleUnit.Day:
-        return t('user.modifyNoticePwdTextDay', {
-          number: initData.forcedCycle
-        })
-      case ForcedModifyPwdCycleUnit.Year:
-        return t('user.modifyNoticePwdTextYear', {
-          number: initData.forcedCycle
-        })
-      case ForcedModifyPwdCycleUnit.Month:
-      default:
-        return t('user.modifyNoticePwdTextMonth', {
-          number: initData.forcedCycle
-        })
-    }
-  }, [initData])
 
   const onReset = () => {
     message.success(t('common.updatePsswordSuccess'))
     setTimeout(() => {
-      changeModule?.(GuardModuleType.LOGIN)
+      changeModule?.(
+        config.isInvited
+          ? GuardModuleType.EY_PRE_CHECK_EMAIL
+          : GuardModuleType.LOGIN
+      )
     }, 500)
   }
 
@@ -208,7 +209,9 @@ export const GuardNoticePasswordResetView: React.FC = () => {
   return (
     <GuardChangePassword
       title={t('user.modifyPwd')}
-      explain={modifyNoticePwdText}
+      explain={t('user.modifyNoticePwdText', {
+        number: initData.forcedCycle
+      })}
     >
       {coreForm}
     </GuardChangePassword>
@@ -222,7 +225,7 @@ export const GuardRegisterCompletePasswordView: React.FC = () => {
 
   return (
     <GuardChangePassword
-      title={`${t('common.welcome')} ${config.title}`}
+      title={config.title}
       explain={t('common.registerCompletePasswordDesc')}
     >
       <CompletePassword />
