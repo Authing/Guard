@@ -1,12 +1,14 @@
 import { Divider } from 'shim-antd'
 import { OTPInput } from 'input-otp'
-import React from 'react'
+import { React } from 'shim-react'
 import { useTranslation } from 'react-i18next'
 import { SoltInput } from '.'
 import { SendCodeBtn } from '../../SendCode/SendCodeBtn'
 import './style.less'
 
 interface VerifyCodeInputProps extends React.HTMLAttributes<HTMLDivElement> {
+  beforeSend: () => Promise<boolean>
+  verifyType: 'emailCode' | 'phoneCode'
   length?: number
   size?: string
   gutter?: string
@@ -15,8 +17,6 @@ interface VerifyCodeInputProps extends React.HTMLAttributes<HTMLDivElement> {
   onChange?: any
   value?: string
   onFinish?: any
-  beforeSend: () => Promise<boolean>
-  verifyType: 'emailCode' | 'phoneCode'
 }
 
 export const EyVerifyCodeInput = React.forwardRef<any, VerifyCodeInputProps>(

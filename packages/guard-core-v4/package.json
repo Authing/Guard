@@ -20,7 +20,7 @@
   "license": "MIT",
   "dependencies": {
     "@github/webauthn-json": "^2.1.1",
-    "@wecom/jssdk": "1.4.3",
+    "@wecom/jssdk": "^1.4.3",
     "authing-js-sdk": "^4.23.50",
     "classnames": "^2.3.1",
     "crypto-js": "^4.1.1",
