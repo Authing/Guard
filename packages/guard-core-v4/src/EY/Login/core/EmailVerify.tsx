@@ -99,13 +99,13 @@ export const EmailVerifyScene: React.FC<EmailVerifySceneProps> = props => {
   const agreements = useMemo(
     () =>
       agreementEnabled
-        ? config?.agreements?.filter(
+        ? (config?.agreements?.filter(
             agree =>
               fallbackLng(i18n.language).find(lng =>
                 lng.includes(agree.lang)
               ) &&
               (config?.autoRegister || !!agree?.availableAt)
-          ) ?? []
+          ) ?? [])
         : [],
     [agreementEnabled, config?.autoRegister, config?.agreements, i18n.language]
   )
