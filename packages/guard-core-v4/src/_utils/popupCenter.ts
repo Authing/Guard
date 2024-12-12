@@ -28,14 +28,14 @@ export const popupCenter = (
   const width = guardWindow.innerWidth
     ? guardWindow.innerWidth
     : document.documentElement.clientWidth
-    ? document.documentElement.clientWidth
-    : guardWindow.screen.width
+      ? document.documentElement.clientWidth
+      : guardWindow.screen.width
 
   const height = guardWindow.innerHeight
     ? guardWindow.innerHeight
     : document.documentElement.clientHeight
-    ? document.documentElement.clientHeight
-    : guardWindow.screen.height
+      ? document.documentElement.clientHeight
+      : guardWindow.screen.height
 
   const systemZoom = width / guardWindow.screen.availWidth
   const left = (width - w) / 2 / systemZoom + dualScreenLeft
@@ -50,9 +50,9 @@ export const popupCenter = (
       resizable=no,
       location=no,
       status=no
-      width=${w / systemZoom}, 
-      height=${h / systemZoom}, 
-      top=${top}, 
+      width=${w / systemZoom},
+      height=${h / systemZoom},
+      top=${top},
       left=${left}
     `
   )
