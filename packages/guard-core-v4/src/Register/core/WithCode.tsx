@@ -242,7 +242,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
           generateToken: true,
           clientIp: undefined,
           params: config?.isHost
-            ? JSON.stringify(getUserRegisterParams(['login_page_context']))
+            ? JSON.stringify(getUserRegisterParams())
             : undefined,
           context: JSON.stringify(context),
           emailToken: undefined,
@@ -426,7 +426,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
           generateToken: true,
           // 托管模式下注册携带query上自定义参数login_page_context
           params: config?.isHost
-            ? JSON.stringify(getUserRegisterParams(['login_page_context'])) // 特殊处理 resetful api
+            ? JSON.stringify(getUserRegisterParams()) // 特殊处理 resetful api
             : undefined
         }
 

@@ -39,7 +39,8 @@ module.exports = merge(
       // host: 'passkey.cj.local',
       port: 8443,
       hot: true,
-      open: true
+      open: true,
+      allowedHosts: ['localhost', 'ub.lixpng.top']
     }
   }
 )

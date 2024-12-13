@@ -26,7 +26,7 @@ import {
   useGuardFinallyConfig,
   useGuardHttpClient,
   useGuardInitData,
-  useGuardMultipleInstance,
+  useGuardAccountSelectInstance,
   useGuardPublicConfig
 } from '../_utils/context'
 
@@ -122,7 +122,7 @@ export const GuardLoginCompleteInfoView: React.FC = () => {
 
   const authClient = useGuardAuthClient()
 
-  const { instance: multipleInstance } = useGuardMultipleInstance()
+  const { instance: multipleInstance } = useGuardAccountSelectInstance()
 
   const businessRequest = async (
     action: CompleteInfoAuthFlowAction,

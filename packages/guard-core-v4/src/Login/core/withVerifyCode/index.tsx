@@ -49,7 +49,7 @@ import { GuardLoginInitData } from '../../interface'
 
 import { LoginMethods, RegisterMethods } from '../../../Type/application'
 
-import { useLoginMultipleBackFill } from '../../hooks/useLoginMultiple'
+import { useLoginAccountBackFill } from '../../hooks/useLoginMultiple'
 
 import { GraphicVerifyCode } from '../withPassword/GraphicVerifyCode'
 
@@ -82,7 +82,8 @@ const LoginWithVerifyCode = (props: any) => {
     saveIdentify,
     multipleInstance,
     backfillData,
-    specifyCodeMethod
+    specifyCodeMethod,
+    loginHint
   } = props
 
   const verifyCodeLength = publicConfig?.verifyCodeLength ?? 4
@@ -104,7 +105,7 @@ const LoginWithVerifyCode = (props: any) => {
   const [identify, setIdentify] = useState('')
 
   const [currentMethod, setCurrentMethod] = useState<InputMethod>(
-    specifyDefaultLoginMethod ? _lockMethod ?? methods[0] : methods[0]
+    specifyDefaultLoginMethod ? (_lockMethod ?? methods[0]) : methods[0]
   )
   // 是否仅开启国际化短信
   const [isOnlyInternationSms, setInternationSms] = useState(false)
@@ -141,15 +142,16 @@ const LoginWithVerifyCode = (props: any) => {
     [changeMethod]
   )
 
-  useLoginMultipleBackFill({
+  useLoginAccountBackFill({
     form,
-    way: LoginMethods.PhoneCode,
+    way: methods,
     formKey: 'identify',
     backfillData,
     isOnlyInternationSms,
     setAreaCode,
     cancelBackfill: specifyDefaultLoginMethod === LoginMethods.PhoneCode,
-    changeCurrentMethod
+    changeCurrentMethod,
+    loginHint
   })
 
   let submitButtonRef = useRef<any>(null)
@@ -291,12 +293,16 @@ const LoginWithVerifyCode = (props: any) => {
   }, [form, currentMethod, captchaCheck])
 
   const loginByPhoneCode = async (values: any) => {
+    let keyValueArray = getUserRegisterParams() || []
+
+    const customData = keyValueArray.reduce((acc: any, curr) => {
+      acc[curr.key] = curr.value
+      return acc
+    }, {})
     const reqContent: any = {
       phone: values.phoneNumber,
       code: values.code,
-      customData: config?.isHost
-        ? getUserRegisterParams(['login_page_context'])
-        : undefined,
+      customData: config?.isHost ? customData : undefined,
       autoRegister: autoRegister,
       withCustomData: false,
       agreementIds: agreements.length ? acceptedAgreementIds.current : undefined
@@ -326,12 +332,16 @@ const LoginWithVerifyCode = (props: any) => {
 
   // 邮箱验证码登录
   const loginByEmailCode = async (values: any) => {
+    let keyValueArray = getUserRegisterParams() || []
+
+    const customData = keyValueArray.reduce((acc: any, curr) => {
+      acc[curr.key] = curr.value
+      return acc
+    }, {})
     const reqContent = {
       email: values.identify,
       code: values.code,
-      customData: config?.isHost
-        ? getUserRegisterParams(['login_page_context'])
-        : undefined,
+      customData: config?.isHost ? customData : undefined,
       autoRegister: autoRegister,
       withCustomData: false,
       agreementIds: agreements.length ? acceptedAgreementIds.current : undefined
@@ -496,8 +506,8 @@ const LoginWithVerifyCode = (props: any) => {
             specifyDefaultLoginMethod === LoginMethods.PhoneCode
               ? _firstItemInitialValue
               : (specifyCodeMethod === 'phone' || !isInternationSms) && phone
-              ? phone
-              : ''
+                ? phone
+                : ''
           }
           name="identify"
           className={

@@ -11,7 +11,10 @@ import { useGuardAuthClient } from '../../../Guard/authClient'
 import {
   fieldRequiredRule,
   getSortLabels,
-  getUserRegisterParams
+  getUserRegisterParams,
+  getVersion,
+  popupCenter,
+  validate
 } from '../../../_utils'
 
 import { ErrorCode } from '../../../_utils/GuardErrorCode'
@@ -37,20 +40,28 @@ import { CodeAction } from '../../../_utils/responseManagement/interface'
 import { useMediaSize } from '../../../_utils/hooks'
 
 import {
+  useGuardAppId,
   useGuardDefaultLanguage,
   useGuardFinallyConfig,
   useGuardInitData,
   useGuardPublicConfig,
+  useGuardTenantId,
+  useIsSpecialBrowser,
   useRobotVerify
 } from '../../../_utils/context'
 
-import { GuardLoginInitData } from '../../interface'
+import {
+  baseLoginPathMapping,
+  GuardLoginInitData,
+  loginUrlFieldMapping
+} from '../../interface'
 
 import {
   Agreement,
   LoginMethods,
   TabFieldsI18nItem,
-  RegisterMethods
+  RegisterMethods,
+  Protocol
 } from '../../../Type/application'
 
 import {
@@ -58,9 +69,11 @@ import {
   StoreInstance
 } from '../../../Guard/core/hooks/useMultipleAccounts'
 
-import { useLoginMultipleBackFill } from '../../hooks/useLoginMultiple'
+import { useLoginAccountBackFill } from '../../hooks/useLoginMultiple'
 
 import { getCaptchaUrl } from '../../../_utils/getCaptchaUrl'
+import { getGuardWindow } from '../../../Guard/core/useAppendConfig'
+import qs from 'qs'
 
 const { useCallback, useEffect, useMemo, useRef, useState } = React
 
@@ -88,40 +101,49 @@ interface LoginWithPasswordProps {
    */
   multipleInstance?: StoreInstance
   /**
-   * 多账号回填的数据
+   * 选择已登录账号回填的数据
    */
   backfillData?: BackFillMultipleState
+  loginHint?: string
 }
 
 export const LoginWithPassword = (props: LoginWithPasswordProps) => {
   const {
+    host,
     agreements,
     onLoginFailed,
     onLoginSuccess,
     saveIdentify,
     multipleInstance,
     backfillData,
-    passwordLoginMethods
+    passwordLoginMethods,
+    loginHint
   } = props
-
+  const appId = useGuardAppId()
   const [form] = Form.useForm()
+  const tenantId = useGuardTenantId()
+
+  const version = getVersion()
+
+  const isSpecialBrowser = useIsSpecialBrowser()
 
   const { _firstItemInitialValue = '', specifyDefaultLoginMethod } =
     useGuardInitData<GuardLoginInitData>()
 
-  useLoginMultipleBackFill({
+  useLoginAccountBackFill({
     form,
     way: LoginMethods.Password,
     formKey: 'account',
     backfillData,
-    cancelBackfill: LoginMethods.Password === specifyDefaultLoginMethod
+    cancelBackfill: LoginMethods.Password === specifyDefaultLoginMethod,
+    loginHint
   })
 
   const [acceptedAgreements, setAcceptedAgreements] = useState(false)
   const acceptedAgreementIds = useRef<(string | number)[]>([])
 
   const { isPhoneMedia } = useMediaSize()
-  const [validated, setValidated] = useState(false)
+  const [validated, setValidated] = useState(true)
 
   let { t, i18n } = useTranslation()
   let { post } = useGuardHttp()
@@ -141,7 +163,32 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
   const [remainCount, setRemainCount] = useState(0)
   const [accountLock, setAccountLock] = useState(false)
 
+  const [isEmail, updateIsEmail] = useState(
+    passwordLoginMethods.includes('email-password')
+  )
+  // match 状态
+  const [matchRes, setMatchRes] = useState<'fail' | 'pendding'>('pendding')
+
+  const matchEmailDomain = useMemo(() => {
+    return (
+      publicConfig?.enabledMatchEmailDomain && isEmail && matchRes !== 'fail'
+    )
+  }, [publicConfig, isEmail, matchRes])
+
   const encrypt = client.options.encryptFunction
+
+  const changeMethod = useCallback(
+    (v: string) => {
+      setMatchRes('pendding')
+      if (passwordLoginMethods.length === 1 || !v) return
+      if (validate('email', v)) {
+        updateIsEmail(true)
+      } else {
+        updateIsEmail(false)
+      }
+    },
+    [passwordLoginMethods.length]
+  )
 
   const loginRequest = useCallback(
     async (loginInfo: any): Promise<AuthingGuardResponse> => {
@@ -159,13 +206,18 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
       let password = loginData.password
       let captchaCode = loginData.captchaCode && loginData.captchaCode.trim()
 
+      let keyValueArray = getUserRegisterParams() || []
+
+      const customData = keyValueArray.reduce((acc: any, curr) => {
+        acc[curr.key] = curr.value
+        return acc
+      }, {})
+
       let body = {
         account: account,
         password: await encrypt!(password, props.publicKey),
         captchaCode,
-        customData: config?.isHost
-          ? getUserRegisterParams(['login_page_context'])
-          : undefined,
+        customData: config?.isHost ? customData : undefined,
         autoRegister: props.autoRegister,
         withCustomData: false,
         agreementIds: agreements.length
@@ -187,6 +239,70 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
     ]
   )
 
+  const matchIdpConnRequest = useCallback(
+    async body => {
+      const url = `/api/v2/applications/${appId}/matchIdpConnByAccount`
+      const res = await post(url, body)
+      return res
+    },
+    [appId]
+  )
+
+  // 模拟点击idp登录
+  const idpLogin = (idp: {
+    identifier: any
+    protocol: Protocol
+    config: { [x: string]: string }
+  }) => {
+    const query: Record<string, any> = {
+      from_guard: '1',
+      app_id: appId,
+      guard_version: `Guard@${version}`,
+      ...(tenantId && { tenant_id: tenantId })
+    }
+    let initUrl: string
+
+    if (config?.isHost) {
+      delete query.from_guard
+      query.from_hosted_guard = '1'
+
+      if (isSpecialBrowser) {
+        query.redirected = '1'
+
+        const guardWindow = getGuardWindow()
+        if (guardWindow) {
+          // 如果 isHost 是 true，则从 url 获取 finish_login_url 作为 social.authorize 方法的 targetUrl 参数
+          query.redirect_url = qs.parse(guardWindow.location.search)?.[
+            'finish_login_url'
+          ]
+        }
+      }
+
+      // 托管登录页，直接写死登录 URL
+      query.identifier = idp.identifier
+
+      const basePath = baseLoginPathMapping[idp.protocol as Protocol]
+      if (!basePath) {
+        return null
+      }
+
+      initUrl = `${host}${basePath}?${qs.stringify(query)}`
+    } else {
+      const field = loginUrlFieldMapping[idp.protocol as Protocol]
+      if (!field) {
+        return null
+      }
+
+      // 嵌入式组件，从配置字段获取登录 URL
+      initUrl = idp.config[field]
+    }
+
+    if (query.redirected) {
+      window.location.replace(initUrl)
+    } else {
+      popupCenter(initUrl)
+    }
+  }
   const onFinish = async (values: any) => {
     setValidated(true)
     if (agreements?.length && !acceptedAgreements) {
@@ -213,13 +329,31 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
       return
     }
 
-    // 图形验证码出现后，不管是「图形验证码」错了，还是「账号」「密码」错了，都要重新发验证码
-    if (verifyCodeUrl) {
-      setVerifyCodeUrl(getCaptchaUrl(props.host!))
-    }
-    const res = await loginRequest(loginInfo)
+    try {
+      if (matchEmailDomain) {
+        const { code, data } = await matchIdpConnRequest({
+          account: values.account
+        })
+        submitButtonRef?.current?.onSpin(false)
+        if (code === 200 && data.matched) {
+          // gene idp init url
+          idpLogin(data.identityProvider)
+        } else {
+          setMatchRes('fail')
+        }
+      } else {
+        const res = await loginRequest(loginInfo)
 
-    onLoginRes(res, values.account)
+        onLoginRes(res, values.account)
+      }
+    } catch (e) {
+      throw e
+    } finally {
+      // 图形验证码出现后，不管是「图形验证码」错了，还是「账号」「密码」错了，都要重新发验证码
+      if (verifyCodeUrl) {
+        setVerifyCodeUrl(getCaptchaUrl(props.host!))
+      }
+    }
   }
 
   const onLoginRes = (res: AuthingGuardResponse, account: string) => {
@@ -333,7 +467,6 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
     passwordLoginMethods,
     t
   ])
-
   const onAgreementsChange = (
     value: boolean,
     acceptAgreement: (string | number)[]
@@ -377,30 +510,41 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
                 style={{ color: '#878A95' }}
               />
             }
+            // onChange={e => {
+            //   let v = e.target.value
+            //   console.log(v, '22')
+            //   changeMethod(v)
+            // }}
+            onBlur={e => {
+              let v = e.target.value
+              changeMethod(v)
+            }}
             passwordLoginMethods={passwordLoginMethods}
             placeholder={placeholder}
           />
         </FormItemAccount>
-        <Form.Item
-          name="password"
-          validateTrigger={['onBlur', 'onChange']}
-          className="authing-g2-input-form"
-          rules={fieldRequiredRule(t('common.password'))}
-        >
-          <InputPassword
-            className="authing-g2-input"
-            size="large"
-            placeholder={t('login.inputLoginPwd')}
-            prefix={
-              <IconFont
-                type="authing-a-lock-line1"
-                style={{ color: '#878A95' }}
-              />
-            }
-          />
-        </Form.Item>
+        {!matchEmailDomain && (
+          <Form.Item
+            name="password"
+            validateTrigger={['onBlur', 'onChange']}
+            className="authing-g2-input-form"
+            rules={fieldRequiredRule(t('common.password'))}
+          >
+            <InputPassword
+              className="authing-g2-input"
+              size="large"
+              placeholder={t('login.inputLoginPwd')}
+              prefix={
+                <IconFont
+                  type="authing-a-lock-line1"
+                  style={{ color: '#878A95' }}
+                />
+              }
+            />
+          </Form.Item>
+        )}
         {/* 图形验证码 */}
-        {showCaptcha && (
+        {showCaptcha && !matchEmailDomain && (
           <Form.Item
             className="authing-g2-input-form"
             validateTrigger={['onBlur', 'onChange']}

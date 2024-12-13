@@ -205,9 +205,8 @@ export const VerifyMFASms: React.FC<VerifyMFASmsProps> = ({
       phoneCountryCode: phoneCountryCode ? phoneCountryCode : countryCode
     }
 
-    const { isFlowEnd, data, onGuardHandling } = await businessRequest(
-      requestData
-    )
+    const { isFlowEnd, data, onGuardHandling } =
+      await businessRequest(requestData)
 
     submitButtonRef.current?.onSpin(false)
 
@@ -246,8 +245,12 @@ export const VerifyMFASms: React.FC<VerifyMFASmsProps> = ({
         message.error(t('login.sendCodeTimeout'))
         return false
       }
-      const errorMessage = JSON.parse(e.message)
-      message.error(errorMessage.message)
+      try {
+        const errorMessage = JSON.parse(e.message)
+        message.error(errorMessage.message)
+      } catch (_) {
+        message.error(e)
+      }
       return false
     }
   }

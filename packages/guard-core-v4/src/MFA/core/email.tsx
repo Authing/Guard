@@ -27,6 +27,7 @@ import { MfaBusinessAction, useMfaBusinessRequest } from '../businessRequest'
 import { EmailScene } from '../../Type'
 
 import { getGuardHttp } from '../../_utils/guardHttp'
+
 import { useEffectOnce } from 'react-use'
 
 const { useRef, useState } = React
@@ -152,8 +153,12 @@ export const VerifyMFAEmail: React.FC<VerifyMFAEmailProps> = ({
         message.error(t('login.sendCodeTimeout'))
         return false
       }
-      const errorMessage = JSON.parse(e.message)
-      message.error(errorMessage.message)
+      try {
+        const errorMessage = JSON.parse(e.message)
+        message.error(errorMessage.message)
+      } catch (_) {
+        message.error(e)
+      }
       return false
     }
   }
@@ -170,9 +175,8 @@ export const VerifyMFAEmail: React.FC<VerifyMFAEmailProps> = ({
       code: mfaCode.join('')
     }
 
-    const { isFlowEnd, data, onGuardHandling } = await businessRequest(
-      requestData
-    )
+    const { isFlowEnd, data, onGuardHandling } =
+      await businessRequest(requestData)
 
     submitButtonRef.current?.onSpin(false)
 

@@ -109,7 +109,7 @@ export const LoginWithAD = (props: LoginWithADProps) => {
 
   const [form] = Form.useForm()
 
-  // useLoginMultipleBackFill({
+  // useLoginAccountBackFill({
   //   form,
   //   way: 'ad',
   //   formKey: 'account',
@@ -148,11 +148,6 @@ export const LoginWithAD = (props: LoginWithADProps) => {
     const encrypt = client.options.encryptFunction
 
     const encryptPassword = await encrypt!(password, props.publicKey)
-
-    // 图形验证码出现后，不管是「图形验证码」错了，还是「账号」「密码」错了，都要重新发验证码
-    if (verifyCodeUrl) {
-      setVerifyCodeUrl(getCaptchaUrl(host))
-    }
 
     // todo
     try {
@@ -215,6 +210,11 @@ export const LoginWithAD = (props: LoginWithADProps) => {
         onLoginFailed(2333, {}, JSON.stringify(error))
       } else {
         console.log(error)
+      }
+    } finally {
+      // 图形验证码出现后，不管是「图形验证码」错了，还是「账号」「密码」错了，都要重新发验证码
+      if (verifyCodeUrl) {
+        setVerifyCodeUrl(getCaptchaUrl(host))
       }
     }
 

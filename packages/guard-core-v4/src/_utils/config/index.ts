@@ -173,7 +173,8 @@ const mergedPublicConfig = (
     // 注册协议
     agreementEnabled: config.agreementEnabled ?? publicConfig.agreementEnabled,
     agreements: config.agreements ?? publicConfig.agreements,
-    contentCss: config.contentCss ?? publicConfig.css
+    contentCss: config.contentCss ?? publicConfig.css,
+    loginHint: config.loginHint
   }
 
   return mergedPublicConfig

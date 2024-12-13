@@ -731,7 +731,7 @@ class MultipleAccount {
  * MultipleAccounts 相关 Hook
  * Finally Config 类型过滤
  */
-const useMultipleAccounts = ({
+const useSelectAccounts = ({
   appId,
   finallyConfig
 }: {
@@ -791,8 +791,11 @@ const useMultipleAccounts = ({
    * 初始化数据 & 初始化登录页面渲染状态
    */
   const initFirstState = useCallback(
-    (storeInstance: StoreInstance) => {
-      const type = storeInstance.getMemberState() ? 'multiple' : 'login'
+    (storeInstance: StoreInstance, finallyConfig?: any) => {
+      const type =
+        !finallyConfig?.loginHint && storeInstance.getMemberState()
+          ? 'multiple'
+          : 'login'
       // 根据初始值 初始化数据
       referMultipleState(type, storeInstance.getFirstBackFillData())
     },
@@ -834,7 +837,7 @@ const useMultipleAccounts = ({
     })
     setStoreInstance(storeInstance)
     // 根据 instance 中的状态和数据初始化登录页面状态
-    initFirstState(storeInstance)
+    initFirstState(storeInstance, finallyConfig)
   }, [appId, finallyConfig, referMultipleState, initFirstState])
 
   return useMemo(() => {
@@ -854,4 +857,4 @@ const useMultipleAccounts = ({
   ])
 }
 
-export default useMultipleAccounts
+export default useSelectAccounts

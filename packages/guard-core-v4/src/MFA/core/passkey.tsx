@@ -1,17 +1,26 @@
-import { useTranslation } from 'react-i18next'
 import { React } from 'shim-react'
+
+import { message } from 'shim-antd'
+
+import { useTranslation } from 'react-i18next'
+
 import { ImagePro } from '../../ImagePro'
+
 import { useGuardPublicConfig } from '../../_utils'
+
 import { IconFont } from '../../IconFont'
+
 import {
   GetPasskeyBindChallenge,
   GetPasskeyVerifyChallenge,
   MfaBusinessAction,
   useMfaBusinessRequest
 } from '../businessRequest'
+
 import { registerPasskey, verifyPasskey } from '../../_utils/passkey'
-import { message } from 'shim-antd'
+
 import SubmitButton from '../../SubmitButton'
+
 import { MFAType } from '../interface'
 
 interface BindPasskeyProps {
