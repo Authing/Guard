@@ -197,11 +197,15 @@ const WorkQrCodeComponent: ForwardRefRenderFunction<any, WorkQrCodeProps> = (
     }
   }
 
-  useImperativeHandle(ref, () => {
-    return {
-      referQrCode
-    }
-  }, [referQrCode])
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        referQrCode
+      }
+    },
+    [referQrCode]
+  )
 
   /**
    * 渲染时进行格式化描述
@@ -348,11 +352,15 @@ const WorkGeneQrCodeComponent: ForwardRefRenderFunction<
     }
   }
 
-  useImperativeHandle(ref, () => {
-    return {
-      referQrCode
-    }
-  }, [referQrCode])
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        referQrCode
+      }
+    },
+    [referQrCode]
+  )
 
   /**
    * 渲染时进行格式化描述

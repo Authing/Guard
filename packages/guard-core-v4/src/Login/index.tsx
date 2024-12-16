@@ -386,13 +386,13 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
   const agreements = useMemo(
     () =>
       agreementEnabled
-        ? (config?.agreements?.filter(
+        ? config?.agreements?.filter(
             agree =>
               fallbackLng(i18n.resolvedLanguage).find(lng =>
                 lng.includes(agree.lang)
               ) &&
               (config?.autoRegister || !!agree?.availableAt)
-          ) ?? [])
+          ) ?? []
         : [],
     [
       agreementEnabled,
