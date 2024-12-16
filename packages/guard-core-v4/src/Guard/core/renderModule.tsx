@@ -258,8 +258,8 @@ export const RenderModule: React.FC<{
     ): AuthingGuardResponse => {
       // 判断有没有 flowHandle
       res.flowHandle && updateFlowHandle(res.flowHandle)
-      res.triggerId && updateTriggerId(res.triggerId)
       res.workflowId && updateWorkflowId(res.workflowId)
+      updateTriggerId(res.triggerId)
       const codeActionMapping = {
         [CodeAction.CHANGE_MODULE]: () => {
           const nextModule = ChangeModuleApiCodeMapping[res.apiCode!]

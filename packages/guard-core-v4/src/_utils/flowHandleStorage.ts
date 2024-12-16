@@ -20,7 +20,7 @@ export const useWorkflowId = getWorkflowId
 export const updateFlowHandle = (flowHandle: string) => {
   flowHandleStorage = flowHandle
 }
-export const updateTriggerId = (triggerId: string) => {
+export const updateTriggerId = (triggerId?: string) => {
   triggerIdStorage = triggerId
 }
 
