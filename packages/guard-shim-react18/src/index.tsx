@@ -226,8 +226,10 @@ export class Guard {
    * @param el String
    * @returns Promise
    */
-  async start(el?: string | HTMLElement): Promise<User> {
+  async start(el?: string | HTMLElement, visible?: boolean): Promise<User> {
     ;(this.options.config as Partial<GuardLocalConfig>).target = el
+
+    this.visible = visible ?? this.visible
 
     this.render()
 
