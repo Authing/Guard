@@ -227,23 +227,28 @@ export class Guard {
    * @returns Promise
    */
   async start(el?: string | HTMLElement, visible?: boolean): Promise<User> {
-    ;(this.options.config as Partial<GuardLocalConfig>).target = el
+    try {
+      ;(this.options.config as Partial<GuardLocalConfig>).target = el
 
-    this.visible = visible ?? this.visible
+      this.visible = visible ?? this.visible
 
-    this.render()
+      this.render()
 
-    const userInfo = await this.trackSession()
+      const userInfo = await this.trackSession()
 
-    if (userInfo) {
-      return Promise.resolve(userInfo)
-    }
+      if (userInfo) {
+        return Promise.resolve(userInfo)
+      }
 
-    return new Promise(resolve => {
-      this.on('login', (userInfo: User) => {
-        resolve(userInfo)
+      return new Promise(resolve => {
+        this.on('login', (userInfo: User) => {
+          resolve(userInfo)
+        })
       })
-    })
+    } catch (e) {
+      console.log(e)
+      throw new Error(`error ${e}`)
+    }
   }
 
   startRegister() {
