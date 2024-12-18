@@ -51,7 +51,8 @@ import {
   getPasswordIdentify,
   getSortTabs,
   isDingTalkOrigin,
-  isWeComOrigin
+  isWeComOrigin,
+  resolvedLanguage
 } from '../_utils'
 
 import { LoginWithVerifyCode, SpecifyCodeMethods } from './core/withVerifyCode'
@@ -388,7 +389,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       agreementEnabled
         ? (config?.agreements?.filter(
             agree =>
-              fallbackLng(i18n.resolvedLanguage).find(lng =>
+              fallbackLng(resolvedLanguage).find(lng =>
                 lng.includes(agree.lang)
               ) &&
               (config?.autoRegister || !!agree?.availableAt)
@@ -398,7 +399,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       agreementEnabled,
       config?.autoRegister,
       config?.agreements,
-      i18n.resolvedLanguage
+      resolvedLanguage
     ]
   )
 
@@ -476,7 +477,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         <Tabs.TabPane
           key={LoginMethods.Password}
           tab={computedTabName(
-            passwordI18n?.tab?.i18n?.[i18n.resolvedLanguage!] ||
+            passwordI18n?.tab?.i18n?.[resolvedLanguage] ||
               passwordI18n?.tab?.default ||
               t('login.pwdLogin')
           )}
@@ -542,7 +543,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
           <Tabs.TabPane
             key={LoginMethods.PhoneCode}
             tab={computedTabName(
-              verifyCodeI18n?.tab?.i18n?.[i18n.resolvedLanguage!] ||
+              verifyCodeI18n?.tab?.i18n?.[resolvedLanguage] ||
                 verifyCodeI18n?.tab?.default ||
                 t('common.phoneCodeTab')
             )}
@@ -604,7 +605,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         <Tabs.TabPane
           key={LoginMethods.PhoneCode}
           tab={computedTabName(
-            verifyCodeI18n?.tab?.i18n?.[i18n.resolvedLanguage!] ||
+            verifyCodeI18n?.tab?.i18n?.[resolvedLanguage] ||
               verifyCodeI18n?.tab?.default ||
               t('common.verifyCodeLogin')
           )}
@@ -652,7 +653,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         <Tabs.TabPane
           key={LoginMethods.LDAP}
           tab={computedTabName(
-            ldapI18n?.tab?.i18n?.[i18n.resolvedLanguage!] ||
+            ldapI18n?.tab?.i18n?.[resolvedLanguage] ||
               ldapI18n?.tab?.default ||
               t('login.ldapLogin')
           )}
@@ -695,7 +696,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         <Tabs.TabPane
           key={LoginMethods.AD}
           tab={computedTabName(
-            adI18n?.tab?.i18n?.[i18n.resolvedLanguage!] ||
+            adI18n?.tab?.i18n?.[resolvedLanguage] ||
               adI18n?.tab?.default ||
               t('login.adLogin')
           )}
@@ -1019,6 +1020,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         }
       }
       const res = onMessage(evt)
+
       if (!res) return
 
       // 更新本次登录方式
@@ -1032,7 +1034,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         const handMode = onGuardHandling?.()
         // 向上层抛出错误
         handMode === CodeAction.RENDER_MESSAGE &&
-          onLoginFailed(code, data, message)
+          onLoginFailed(code!, data, message)
       }
     }
 
@@ -1060,7 +1062,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
               <div className="title">{config?.title}</div>
               {!!publicConfig?.welcomeMessage && (
                 <div className="title-description">
-                  {publicConfig?.welcomeMessage[i18n.resolvedLanguage!]}
+                  {publicConfig?.welcomeMessage[resolvedLanguage]}
                 </div>
               )}
             </div>
@@ -1130,7 +1132,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
               </div>
               {!!publicConfig?.welcomeMessage && (
                 <div className="title-description">
-                  {publicConfig?.welcomeMessage[i18n.resolvedLanguage!]}
+                  {publicConfig?.welcomeMessage[resolvedLanguage]}
                 </div>
               )}
               {/* 提供头部打标签的功能 */}
