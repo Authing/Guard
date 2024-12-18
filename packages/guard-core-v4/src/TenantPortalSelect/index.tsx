@@ -69,8 +69,9 @@ export const GuardTenantPortalSelectView = () => {
         http.setTenantId('') //使用前重置，防止其他环境设置污染，便于状态可控
       }
 
-      const { isFlowEnd, onGuardHandling, data } =
-        await http.authFlow(moduleName)
+      const { isFlowEnd, onGuardHandling, data } = await http.authFlow(
+        moduleName
+      )
       if (isFlowEnd) {
         setTimeout(() => events?.onLogin?.(data, authClient)) // 让选择事件先行，登录成功宏任务异步，方便异步并发
       } else {

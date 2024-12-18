@@ -51,7 +51,8 @@ import {
   getPasswordIdentify,
   getSortTabs,
   isDingTalkOrigin,
-  isWeComOrigin
+  isWeComOrigin,
+  resolvedLanguage
 } from '../_utils'
 
 import { LoginWithVerifyCode, SpecifyCodeMethods } from './core/withVerifyCode'
@@ -124,7 +125,7 @@ const renderQrcodeByIdentify = [
   LoginMethods.ZJZWFWQrcode
 ] as const
 
-type QrCodeUnionType = (typeof renderQrcodeByIdentify)[number]
+type QrCodeUnionType = typeof renderQrcodeByIdentify[number]
 
 function hasMultipleQRLengths(
   qrcodeTabsSettings: QrcodeTabsSettings,
@@ -386,19 +387,19 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
   const agreements = useMemo(
     () =>
       agreementEnabled
-        ? (config?.agreements?.filter(
+        ? config?.agreements?.filter(
             agree =>
-              fallbackLng(i18n.resolvedLanguage).find(lng =>
+              fallbackLng(resolvedLanguage).find(lng =>
                 lng.includes(agree.lang)
               ) &&
               (config?.autoRegister || !!agree?.availableAt)
-          ) ?? [])
+          ) ?? []
         : [],
     [
       agreementEnabled,
       config?.autoRegister,
       config?.agreements,
-      i18n.resolvedLanguage
+      resolvedLanguage
     ]
   )
 
@@ -476,7 +477,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         <Tabs.TabPane
           key={LoginMethods.Password}
           tab={computedTabName(
-            passwordI18n?.tab?.i18n?.[i18n.resolvedLanguage!] ||
+            passwordI18n?.tab?.i18n?.[resolvedLanguage] ||
               passwordI18n?.tab?.default ||
               t('login.pwdLogin')
           )}
@@ -542,7 +543,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
           <Tabs.TabPane
             key={LoginMethods.PhoneCode}
             tab={computedTabName(
-              verifyCodeI18n?.tab?.i18n?.[i18n.resolvedLanguage!] ||
+              verifyCodeI18n?.tab?.i18n?.[resolvedLanguage] ||
                 verifyCodeI18n?.tab?.default ||
                 t('common.phoneCodeTab')
             )}
@@ -604,7 +605,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         <Tabs.TabPane
           key={LoginMethods.PhoneCode}
           tab={computedTabName(
-            verifyCodeI18n?.tab?.i18n?.[i18n.resolvedLanguage!] ||
+            verifyCodeI18n?.tab?.i18n?.[resolvedLanguage] ||
               verifyCodeI18n?.tab?.default ||
               t('common.verifyCodeLogin')
           )}
@@ -652,7 +653,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         <Tabs.TabPane
           key={LoginMethods.LDAP}
           tab={computedTabName(
-            ldapI18n?.tab?.i18n?.[i18n.resolvedLanguage!] ||
+            ldapI18n?.tab?.i18n?.[resolvedLanguage] ||
               ldapI18n?.tab?.default ||
               t('login.ldapLogin')
           )}
@@ -695,7 +696,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         <Tabs.TabPane
           key={LoginMethods.AD}
           tab={computedTabName(
-            adI18n?.tab?.i18n?.[i18n.resolvedLanguage!] ||
+            adI18n?.tab?.i18n?.[resolvedLanguage] ||
               adI18n?.tab?.default ||
               t('login.adLogin')
           )}
@@ -1019,6 +1020,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         }
       }
       const res = onMessage(evt)
+
       if (!res) return
 
       // 更新本次登录方式
@@ -1060,7 +1062,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
               <div className="title">{config?.title}</div>
               {!!publicConfig?.welcomeMessage && (
                 <div className="title-description">
-                  {publicConfig?.welcomeMessage[i18n.resolvedLanguage!]}
+                  {publicConfig?.welcomeMessage[resolvedLanguage]}
                 </div>
               )}
             </div>
@@ -1130,7 +1132,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
               </div>
               {!!publicConfig?.welcomeMessage && (
                 <div className="title-description">
-                  {publicConfig?.welcomeMessage[i18n.resolvedLanguage!]}
+                  {publicConfig?.welcomeMessage[resolvedLanguage]}
                 </div>
               )}
               {/* 提供头部打标签的功能 */}
@@ -1156,93 +1158,90 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
               />
             ) : (
               <>
-                {renderInputWay &&
-                  ['input', 'collapsed'].includes(activeMode) && (
-                    <div className={inputNone}>
-                      {!isResetPage ? (
-                        <div className={'g2-view-tabs'}>
-                          <Tabs
-                            destroyInactiveTabPane={true}
-                            onChange={(k: any) => {
-                              setLoginWay(k)
-                              message.destroy()
-                              events?.onLoginTabChange?.(k)
-                            }}
-                            activeKey={loginWay}
-                          >
-                            {GeneralLoginComponent?.flat()}
-                          </Tabs>
-                        </div>
-                      ) : (
-                        <ResetAccountName />
-                      )}
+                {renderInputWay && ['input', 'collapsed'].includes(activeMode) && (
+                  <div className={inputNone}>
+                    {!isResetPage ? (
+                      <div className={'g2-view-tabs'}>
+                        <Tabs
+                          destroyInactiveTabPane={true}
+                          onChange={(k: any) => {
+                            setLoginWay(k)
+                            message.destroy()
+                            events?.onLoginTabChange?.(k)
+                          }}
+                          activeKey={loginWay}
+                        >
+                          {GeneralLoginComponent?.flat()}
+                        </Tabs>
+                      </div>
+                    ) : (
+                      <ResetAccountName />
+                    )}
 
-                      <div className={'g2-tips-line'}>
-                        {!disableResetPwd && !isResetPage && (
-                          <div>
-                            <GuardButton
-                              type="link"
-                              className="link-like forget-password-link"
-                              onClick={() =>
-                                changeModule?.(GuardModuleType.FORGET_PWD, {})
-                              }
-                            >
-                              {t('login.forgetPwd')}
-                            </GuardButton>
-                            {(errorNumber >= 2 || accountLock) && (
-                              <span
-                                style={{ margin: '0 4px', color: '#EAEBEE' }}
-                              >
-                                丨
-                              </span>
-                            )}
-                          </div>
-                        )}
-                        {isResetPage && (
+                    <div className={'g2-tips-line'}>
+                      {!disableResetPwd && !isResetPage && (
+                        <div>
                           <GuardButton
                             type="link"
-                            onClick={() => {
-                              changeModule?.(GuardModuleType.LOGIN)
-                            }}
+                            className="link-like forget-password-link"
+                            onClick={() =>
+                              changeModule?.(GuardModuleType.FORGET_PWD, {})
+                            }
                           >
-                            {t('common.backLoginPage')}
+                            {t('login.forgetPwd')}
                           </GuardButton>
-                        )}
-                        {(errorNumber >= 2 || accountLock) && (
-                          <Tooltip title={t('common.feedback')}>
-                            <div
-                              className="touch-tip question-feedback"
-                              onClick={() =>
-                                changeModule?.(GuardModuleType.ANY_QUESTIONS, {
-                                  identify: identifyRef.current[loginWay]
-                                })
-                              }
-                            >
-                              <IconFont
-                                type={'authing-a-question-line1'}
-                                style={{ fontSize: 16 }}
-                              />
-                            </div>
-                          </Tooltip>
-                        )}
+                          {(errorNumber >= 2 || accountLock) && (
+                            <span style={{ margin: '0 4px', color: '#EAEBEE' }}>
+                              丨
+                            </span>
+                          )}
+                        </div>
+                      )}
+                      {isResetPage && (
+                        <GuardButton
+                          type="link"
+                          onClick={() => {
+                            changeModule?.(GuardModuleType.LOGIN)
+                          }}
+                        >
+                          {t('common.backLoginPage')}
+                        </GuardButton>
+                      )}
+                      {(errorNumber >= 2 || accountLock) && (
+                        <Tooltip title={t('common.feedback')}>
+                          <div
+                            className="touch-tip question-feedback"
+                            onClick={() =>
+                              changeModule?.(GuardModuleType.ANY_QUESTIONS, {
+                                identify: identifyRef.current[loginWay]
+                              })
+                            }
+                          >
+                            <IconFont
+                              type={'authing-a-question-line1'}
+                              style={{ fontSize: 16 }}
+                            />
+                          </div>
+                        </Tooltip>
+                      )}
 
-                        {!disableRegister && (
-                          <span className="go-to-register">
-                            {/* <span className="gray">{t('common.noAccYet')}</span> */}
-                            <GuardButton
-                              type="link"
-                              className="link-like register-link"
-                              onClick={() =>
-                                changeModule?.(GuardModuleType.REGISTER, {})
-                              }
-                            >
-                              {t('common.registerImmediate')}
-                            </GuardButton>
-                          </span>
-                        )}
-                      </div>
+                      {!disableRegister && (
+                        <span className="go-to-register">
+                          {/* <span className="gray">{t('common.noAccYet')}</span> */}
+                          <GuardButton
+                            type="link"
+                            className="link-like register-link"
+                            onClick={() =>
+                              changeModule?.(GuardModuleType.REGISTER, {})
+                            }
+                          >
+                            {t('common.registerImmediate')}
+                          </GuardButton>
+                        </span>
+                      )}
                     </div>
-                  )}
+                  </div>
+                )}
                 {renderQrcodeWay &&
                   ['qrcode', 'collapsed'].includes(activeMode) && (
                     <div
