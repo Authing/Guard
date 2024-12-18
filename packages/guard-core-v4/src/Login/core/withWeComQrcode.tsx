@@ -35,8 +35,6 @@ const { useCallback, useEffect, useState, useMemo } = React
 export const LoginWithWeComQrcode = (props: any) => {
   const { QRConfig, id } = props
 
-  const WwLogin = window.WwLogin
-
   const [loading, setLoading] = useState(true)
 
   const { get } = useGuardHttpClient()
@@ -56,6 +54,8 @@ export const LoginWithWeComQrcode = (props: any) => {
   const isSpecialBrowser = useIsSpecialBrowser()
 
   const fetchQrcode = useCallback(async () => {
+    const WwLogin = window.WwLogin
+
     const query: Record<string, any> = {
       from_guard: '1',
       app_id: appId,
@@ -100,7 +100,6 @@ export const LoginWithWeComQrcode = (props: any) => {
     QRConfig.agentId,
     QRConfig.corpId,
     QRConfig.redirectUrl,
-    WwLogin,
     appId,
     config?.isHost,
     id,

@@ -30,8 +30,6 @@ const { useCallback, useEffect, useState } = React
 export const LoginWithDingTalkQrcode = (props: any) => {
   const { QRConfig, id } = props
 
-  const DTLogin = window.DTFrameLogin
-
   const [loading, setLoading] = useState(true)
 
   const { get } = useGuardHttpClient()
@@ -49,6 +47,8 @@ export const LoginWithDingTalkQrcode = (props: any) => {
   const isSpecialBrowser = useIsSpecialBrowser()
 
   const fetchQrcode = useCallback(async () => {
+    const DTLogin = window.DTFrameLogin
+
     const query: Record<string, any> = {
       from_guard: '1',
       embedded: '1',
@@ -56,13 +56,13 @@ export const LoginWithDingTalkQrcode = (props: any) => {
       guard_version: `Guard@${version}`,
       ...(tenantId && { tenant_id: tenantId })
     }
+    const guardWindow = getGuardWindow()
     if (config?.isHost) {
       delete query.from_guard
       query.from_hosted_guard = '1'
 
       if (isSpecialBrowser) {
         query.redirected = '1'
-        const guardWindow = getGuardWindow()
         if (guardWindow) {
           // 如果 isHost 是 true，则从 url 获取 finish_login_url 作为 social.authorize 方法的 targetUrl 参数
           query.redirect_url = qs.parse(guardWindow.location.search)?.[
@@ -81,7 +81,7 @@ export const LoginWithDingTalkQrcode = (props: any) => {
       {
         redirect_uri: encodeURIComponent(
           `${
-            config.isHost ? QRConfig.redirectUrl : window.location.origin
+            config.isHost ? QRConfig.redirectUrl : guardWindow?.location?.origin
           }?${qs.stringify(query)}`
         ),
         client_id: QRConfig.clientId,
@@ -146,7 +146,7 @@ export const LoginWithDingTalkQrcode = (props: any) => {
         setLoading(false)
       }, 500)
     }
-  }, [DTLogin, QRConfig, appId, config?.isHost, tenantId])
+  }, [QRConfig, appId, config?.isHost, tenantId])
 
   useEffect(() => {
     fetchQrcode()

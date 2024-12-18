@@ -164,6 +164,8 @@ export const isLenovoNetdisk = () => {
 export const computeIsSpecialBrowser = (
   specialBrowserSymbol: string[] = []
 ) => {
+  if (typeof window === 'undefined' || typeof navigator === 'undefined')
+    return true
   // 1. 首先筛选出一定是特殊浏览器的 UA
   if (
     isWeChatBrowser() ||
