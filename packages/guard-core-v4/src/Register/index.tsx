@@ -112,12 +112,12 @@ export const GuardRegisterView: React.FC = () => {
       onBeforeRegister: events?.onBeforeRegister,
       //availableAt 0或者null-注册时，1-登录时，2-注册和登录时
       agreements: agreementEnabled
-        ? (config?.agreements?.filter(
+        ? config?.agreements?.filter(
             agree =>
               fallbackLng(i18n.resolvedLanguage!).find(lng =>
                 lng.includes(agree.lang)
               ) && agree?.availableAt !== 1
-          ) ?? [])
+          ) ?? []
         : [],
       publicConfig: publicConfig,
       methods: verifyRegisterMethods
