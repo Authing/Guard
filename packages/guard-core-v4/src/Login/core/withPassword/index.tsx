@@ -13,6 +13,7 @@ import {
   getSortLabels,
   getUserRegisterParams,
   getVersion,
+  isSpecialBrowser,
   popupCenter,
   validate
 } from '../../../_utils'
@@ -46,7 +47,6 @@ import {
   useGuardInitData,
   useGuardPublicConfig,
   useGuardTenantId,
-  useIsSpecialBrowser,
   useRobotVerify
 } from '../../../_utils/context'
 
@@ -124,8 +124,6 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
   const tenantId = useGuardTenantId()
 
   const version = getVersion()
-
-  const isSpecialBrowser = useIsSpecialBrowser()
 
   const { _firstItemInitialValue = '', specifyDefaultLoginMethod } =
     useGuardInitData<GuardLoginInitData>()
@@ -266,7 +264,7 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
       delete query.from_guard
       query.from_hosted_guard = '1'
 
-      if (isSpecialBrowser) {
+      if (isSpecialBrowser()) {
         query.redirected = '1'
 
         const guardWindow = getGuardWindow()
