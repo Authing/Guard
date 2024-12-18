@@ -124,7 +124,7 @@ const renderQrcodeByIdentify = [
   LoginMethods.ZJZWFWQrcode
 ] as const
 
-type QrCodeUnionType = typeof renderQrcodeByIdentify[number]
+type QrCodeUnionType = (typeof renderQrcodeByIdentify)[number]
 
 function hasMultipleQRLengths(
   qrcodeTabsSettings: QrcodeTabsSettings,
@@ -386,13 +386,13 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
   const agreements = useMemo(
     () =>
       agreementEnabled
-        ? config?.agreements?.filter(
+        ? (config?.agreements?.filter(
             agree =>
               fallbackLng(i18n.resolvedLanguage).find(lng =>
                 lng.includes(agree.lang)
               ) &&
               (config?.autoRegister || !!agree?.availableAt)
-          ) ?? []
+          ) ?? [])
         : [],
     [
       agreementEnabled,
@@ -1156,90 +1156,93 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
               />
             ) : (
               <>
-                {renderInputWay && ['input', 'collapsed'].includes(activeMode) && (
-                  <div className={inputNone}>
-                    {!isResetPage ? (
-                      <div className={'g2-view-tabs'}>
-                        <Tabs
-                          destroyInactiveTabPane={true}
-                          onChange={(k: any) => {
-                            setLoginWay(k)
-                            message.destroy()
-                            events?.onLoginTabChange?.(k)
-                          }}
-                          activeKey={loginWay}
-                        >
-                          {GeneralLoginComponent?.flat()}
-                        </Tabs>
-                      </div>
-                    ) : (
-                      <ResetAccountName />
-                    )}
-
-                    <div className={'g2-tips-line'}>
-                      {!disableResetPwd && !isResetPage && (
-                        <div>
-                          <GuardButton
-                            type="link"
-                            className="link-like forget-password-link"
-                            onClick={() =>
-                              changeModule?.(GuardModuleType.FORGET_PWD, {})
-                            }
+                {renderInputWay &&
+                  ['input', 'collapsed'].includes(activeMode) && (
+                    <div className={inputNone}>
+                      {!isResetPage ? (
+                        <div className={'g2-view-tabs'}>
+                          <Tabs
+                            destroyInactiveTabPane={true}
+                            onChange={(k: any) => {
+                              setLoginWay(k)
+                              message.destroy()
+                              events?.onLoginTabChange?.(k)
+                            }}
+                            activeKey={loginWay}
                           >
-                            {t('login.forgetPwd')}
-                          </GuardButton>
-                          {(errorNumber >= 2 || accountLock) && (
-                            <span style={{ margin: '0 4px', color: '#EAEBEE' }}>
-                              丨
-                            </span>
-                          )}
+                            {GeneralLoginComponent?.flat()}
+                          </Tabs>
                         </div>
-                      )}
-                      {isResetPage && (
-                        <GuardButton
-                          type="link"
-                          onClick={() => {
-                            changeModule?.(GuardModuleType.LOGIN)
-                          }}
-                        >
-                          {t('common.backLoginPage')}
-                        </GuardButton>
-                      )}
-                      {(errorNumber >= 2 || accountLock) && (
-                        <Tooltip title={t('common.feedback')}>
-                          <div
-                            className="touch-tip question-feedback"
-                            onClick={() =>
-                              changeModule?.(GuardModuleType.ANY_QUESTIONS, {
-                                identify: identifyRef.current[loginWay]
-                              })
-                            }
-                          >
-                            <IconFont
-                              type={'authing-a-question-line1'}
-                              style={{ fontSize: 16 }}
-                            />
-                          </div>
-                        </Tooltip>
+                      ) : (
+                        <ResetAccountName />
                       )}
 
-                      {!disableRegister && (
-                        <span className="go-to-register">
-                          {/* <span className="gray">{t('common.noAccYet')}</span> */}
+                      <div className={'g2-tips-line'}>
+                        {!disableResetPwd && !isResetPage && (
+                          <div>
+                            <GuardButton
+                              type="link"
+                              className="link-like forget-password-link"
+                              onClick={() =>
+                                changeModule?.(GuardModuleType.FORGET_PWD, {})
+                              }
+                            >
+                              {t('login.forgetPwd')}
+                            </GuardButton>
+                            {(errorNumber >= 2 || accountLock) && (
+                              <span
+                                style={{ margin: '0 4px', color: '#EAEBEE' }}
+                              >
+                                丨
+                              </span>
+                            )}
+                          </div>
+                        )}
+                        {isResetPage && (
                           <GuardButton
                             type="link"
-                            className="link-like register-link"
-                            onClick={() =>
-                              changeModule?.(GuardModuleType.REGISTER, {})
-                            }
+                            onClick={() => {
+                              changeModule?.(GuardModuleType.LOGIN)
+                            }}
                           >
-                            {t('common.registerImmediate')}
+                            {t('common.backLoginPage')}
                           </GuardButton>
-                        </span>
-                      )}
+                        )}
+                        {(errorNumber >= 2 || accountLock) && (
+                          <Tooltip title={t('common.feedback')}>
+                            <div
+                              className="touch-tip question-feedback"
+                              onClick={() =>
+                                changeModule?.(GuardModuleType.ANY_QUESTIONS, {
+                                  identify: identifyRef.current[loginWay]
+                                })
+                              }
+                            >
+                              <IconFont
+                                type={'authing-a-question-line1'}
+                                style={{ fontSize: 16 }}
+                              />
+                            </div>
+                          </Tooltip>
+                        )}
+
+                        {!disableRegister && (
+                          <span className="go-to-register">
+                            {/* <span className="gray">{t('common.noAccYet')}</span> */}
+                            <GuardButton
+                              type="link"
+                              className="link-like register-link"
+                              onClick={() =>
+                                changeModule?.(GuardModuleType.REGISTER, {})
+                              }
+                            >
+                              {t('common.registerImmediate')}
+                            </GuardButton>
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
                 {renderQrcodeWay &&
                   ['qrcode', 'collapsed'].includes(activeMode) && (
                     <div
