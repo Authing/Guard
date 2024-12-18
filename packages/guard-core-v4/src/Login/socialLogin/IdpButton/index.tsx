@@ -16,9 +16,9 @@ import { Protocol } from '../../../Type/application'
 
 import { getVersion } from '../../../_utils'
 
-import { popupCenter } from '../../../_utils'
+import { isSpecialBrowser, popupCenter } from '../../../_utils'
 
-import { useGuardTenantId, useIsSpecialBrowser } from '../../../_utils/context'
+import { useGuardTenantId } from '../../../_utils/context'
 
 import { SocialConnectionEvent } from '../../../_utils/hooks'
 
@@ -37,8 +37,6 @@ export const IdpButton = (props: any) => {
 
   const version = getVersion()
 
-  const isSpecialBrowser = useIsSpecialBrowser()
-
   const renderBtn = useCallback(() => {
     const query: Record<string, any> = {
       from_guard: '1',
@@ -51,7 +49,7 @@ export const IdpButton = (props: any) => {
       delete query.from_guard
       query.from_hosted_guard = '1'
 
-      if (isSpecialBrowser) {
+      if (isSpecialBrowser()) {
         query.redirected = '1'
 
         const guardWindow = getGuardWindow()

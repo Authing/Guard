@@ -78,9 +78,6 @@ export interface IGuardContext {
   defaultLanguageConfig: Lang
   /** 租户信息获取和操作处理相关 */
   tenantInstance?: MultipleTenant
-
-  /** 特殊浏览器，身份源无法弹窗，非托管模式不显示身份源图标 */
-  isSpecialBrowser: boolean
 }
 
 const DefaultGuardX: IGuardContext = {
@@ -124,9 +121,7 @@ const DefaultGuardX: IGuardContext = {
   phoneRegex: null,
   defaultLanguageConfig: 'zh-CN',
 
-  tenantInstance: undefined,
-
-  isSpecialBrowser: false
+  tenantInstance: undefined
 }
 
 const GuardXContext = React.createContext<IGuardContext>(DefaultGuardX)
@@ -227,9 +222,6 @@ export const useGuardButtonState = () => useContext(GuardButtonContext)
 export const useGuardPublicConfig = () => useContext(GuardXContext).publicConfig
 
 export const useGuardHttpClient = () => useContext(GuardXContext).httpClient
-
-export const useIsSpecialBrowser = () =>
-  useContext(GuardXContext).isSpecialBrowser
 
 export const useGuardDefaultMergedConfig = () =>
   useContext(GuardXContext).defaultMergedConfig
