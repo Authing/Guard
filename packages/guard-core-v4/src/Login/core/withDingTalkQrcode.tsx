@@ -10,13 +10,14 @@ import { getGuardWindow } from '../../Guard/core/useAppendConfig'
 
 import { ShieldSpin } from '../../ShieldSpin'
 
+import { isSpecialBrowser } from '../../_utils'
+
 import {
   useGuardAppId,
   useGuardEvents,
   useGuardFinallyConfig,
   useGuardHttpClient,
-  useGuardTenantId,
-  useIsSpecialBrowser
+  useGuardTenantId
 } from '../../_utils/context'
 
 import { useGuardAuthClient } from '../../Guard/authClient'
@@ -44,8 +45,6 @@ export const LoginWithDingTalkQrcode = (props: any) => {
 
   const config = useGuardFinallyConfig()
 
-  const isSpecialBrowser = useIsSpecialBrowser()
-
   const fetchQrcode = useCallback(async () => {
     const DTLogin = window.DTFrameLogin
 
@@ -61,7 +60,7 @@ export const LoginWithDingTalkQrcode = (props: any) => {
       delete query.from_guard
       query.from_hosted_guard = '1'
 
-      if (isSpecialBrowser) {
+      if (isSpecialBrowser()) {
         query.redirected = '1'
         if (guardWindow) {
           // 如果 isHost 是 true，则从 url 获取 finish_login_url 作为 social.authorize 方法的 targetUrl 参数

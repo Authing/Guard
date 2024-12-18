@@ -10,7 +10,7 @@ import { getGuardWindow } from '../../Guard/core/useAppendConfig'
 
 import { ShieldSpin } from '../../ShieldSpin'
 
-import { isWeComOrigin, resolvedLanguage } from '../../_utils'
+import { isWeComOrigin, resolvedLanguage, isSpecialBrowser } from '../../_utils'
 
 import {
   useGuardAppId,
@@ -18,8 +18,7 @@ import {
   useGuardFinallyConfig,
   useGuardHttpClient,
   useGuardPublicConfig,
-  useGuardTenantId,
-  useIsSpecialBrowser
+  useGuardTenantId
 } from '../../_utils/context'
 
 import { i18n } from '../../_utils/locales'
@@ -51,8 +50,6 @@ export const LoginWithWeComQrcode = (props: any) => {
 
   const authClient = useGuardAuthClient()
 
-  const isSpecialBrowser = useIsSpecialBrowser()
-
   const fetchQrcode = useCallback(async () => {
     const WwLogin = window.WwLogin
 
@@ -66,7 +63,7 @@ export const LoginWithWeComQrcode = (props: any) => {
       delete query.from_guard
       query.from_hosted_guard = '1'
 
-      if (isSpecialBrowser) {
+      if (isSpecialBrowser()) {
         query.redirected = '1'
         const guardWindow = getGuardWindow()
         if (guardWindow) {

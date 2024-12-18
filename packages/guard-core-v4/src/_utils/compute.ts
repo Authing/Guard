@@ -161,9 +161,7 @@ export const isLenovoNetdisk = () => {
 }
 
 /* 利用浏览器的 UA 判断是否为不支持弹窗的特殊浏览器 */
-export const computeIsSpecialBrowser = (
-  specialBrowserSymbol: string[] = []
-) => {
+export const isSpecialBrowser = () => {
   if (typeof window === 'undefined' || typeof navigator === 'undefined')
     return true
   // 1. 首先筛选出一定是特殊浏览器的 UA
@@ -182,17 +180,8 @@ export const computeIsSpecialBrowser = (
     return true
   }
 
-  // 2. 服务级别配置的特殊浏览器
-  if (
-    specialBrowserSymbol.some(str => {
-      return new RegExp(str, 'i').test(navigator.userAgent)
-    })
-  ) {
-    return true
-  }
-
-  // 3. 利用 ua-parser-js 进一步判断，筛选出很可能不是特殊浏览器的 UA
-  // 由于一些特殊浏览器也可能会被误判为非特殊，所以需要首先经过第 1, 2 步筛选
+  // 2. 利用 ua-parser-js 进一步判断，筛选出很可能不是特殊浏览器的 UA
+  // 由于一些特殊浏览器也可能会被误判为非特殊，所以需要首先经过第 1 步筛选
   const parser = UAParser()
   const nonSpecialBrowsers = [
     'Chrome',
@@ -206,7 +195,7 @@ export const computeIsSpecialBrowser = (
     return false
   }
 
-  // 4. 可能有一些 UA 没有任何特征，这种情况下一律默认为特殊浏览器
+  // 3. 可能有一些 UA 没有任何特征，这种情况下一律默认为特殊浏览器
   return true
 }
 
