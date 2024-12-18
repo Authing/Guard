@@ -138,7 +138,7 @@ export const isWeComeBrowser = () => {
 }
 
 export const isMobile = () => {
-  if (typeof window === 'undefined') return
+  if (typeof window === 'undefined') return null
 
   return window.navigator.userAgent.match(
     /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
@@ -210,6 +210,8 @@ export const computeIsSpecialBrowser = (
 }
 
 export const getPhoneInLoginPageContext = () => {
+  if (typeof window === 'undefined') return ''
+
   const search = qs.parse(window.location.search, {
     ignoreQueryPrefix: true
   })

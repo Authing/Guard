@@ -83,6 +83,7 @@ export const IdpButton = (props: any) => {
             i.identifier
           }?${qs.stringify(query)}`
           if (query.redirected) {
+            if (typeof window === 'undefined') return
             window.location.replace(initUrl)
           } else {
             popupCenter(initUrl)
@@ -141,6 +142,7 @@ export const IdpButton = (props: any) => {
           icon={<Avatar size={20} src={i.logo} style={{ marginRight: 8 }} />}
           onClick={() => {
             if (query.redirected) {
+              if (typeof window === 'undefined') return
               window.location.replace(initUrl)
             } else {
               popupCenter(initUrl)

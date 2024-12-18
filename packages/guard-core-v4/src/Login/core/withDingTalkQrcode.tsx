@@ -30,8 +30,6 @@ const { useCallback, useEffect, useState } = React
 export const LoginWithDingTalkQrcode = (props: any) => {
   const { QRConfig, id } = props
 
-  const DTLogin = window.DTFrameLogin
-
   const [loading, setLoading] = useState(true)
 
   const { get } = useGuardHttpClient()
@@ -49,6 +47,9 @@ export const LoginWithDingTalkQrcode = (props: any) => {
   const isSpecialBrowser = useIsSpecialBrowser()
 
   const fetchQrcode = useCallback(async () => {
+    if (typeof window === 'undefined') return
+
+    const DTLogin = window.DTFrameLogin
     const query: Record<string, any> = {
       from_guard: '1',
       embedded: '1',
@@ -146,7 +147,7 @@ export const LoginWithDingTalkQrcode = (props: any) => {
         setLoading(false)
       }, 500)
     }
-  }, [DTLogin, QRConfig, appId, config?.isHost, tenantId])
+  }, [QRConfig, appId, config?.isHost, tenantId])
 
   useEffect(() => {
     fetchQrcode()

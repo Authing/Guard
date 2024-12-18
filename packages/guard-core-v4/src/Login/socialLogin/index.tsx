@@ -135,6 +135,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
         }?${querystring.stringify(query)}`
 
         if (query.redirected) {
+          if (typeof window === 'undefined') return
           window.location.replace(initUrl)
         } else {
           popupCenter(initUrl)
