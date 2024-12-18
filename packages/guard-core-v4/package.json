@@ -42,5 +42,9 @@
     "face-api.js": "^0.20.0",
     "throttle-debounce": "^5.0.0",
     "url-loader": "^4.1.1"
+  },
+  "peerDependencies": {
+    "react": ">=16.9.0",
+    "react-dom": ">=16.9.0"
   }
 }
