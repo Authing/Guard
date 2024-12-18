@@ -296,6 +296,8 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
     }
 
     if (query.redirected) {
+      if (typeof window === 'undefined') return
+
       window.location.replace(initUrl)
     } else {
       popupCenter(initUrl)

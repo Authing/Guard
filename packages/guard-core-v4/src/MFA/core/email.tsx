@@ -175,8 +175,9 @@ export const VerifyMFAEmail: React.FC<VerifyMFAEmailProps> = ({
       code: mfaCode
     }
 
-    const { isFlowEnd, data, onGuardHandling } =
-      await businessRequest(requestData)
+    const { isFlowEnd, data, onGuardHandling } = await businessRequest(
+      requestData
+    )
 
     submitButtonRef.current?.onSpin(false)
 

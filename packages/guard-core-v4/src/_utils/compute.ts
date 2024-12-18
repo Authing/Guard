@@ -200,6 +200,7 @@ export const isSpecialBrowser = () => {
 }
 
 export const getPhoneInLoginPageContext = () => {
+  if (typeof window === 'undefined') return ''
   const search = qs.parse(window.location.search, {
     ignoreQueryPrefix: true
   })

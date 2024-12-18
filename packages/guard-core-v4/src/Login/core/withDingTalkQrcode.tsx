@@ -46,6 +46,7 @@ export const LoginWithDingTalkQrcode = (props: any) => {
   const config = useGuardFinallyConfig()
 
   const fetchQrcode = useCallback(async () => {
+    if (typeof window === 'undefined') return
     const DTLogin = window.DTFrameLogin
 
     const query: Record<string, any> = {

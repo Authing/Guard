@@ -229,6 +229,7 @@ export const RenderContext: React.FC<{
 
   // 特殊脚本注入
   useEffect(() => {
+    if (typeof window === 'undefined') return
     if (!publicConfig) {
       return
     }

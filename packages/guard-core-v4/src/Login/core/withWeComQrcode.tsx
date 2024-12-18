@@ -51,6 +51,8 @@ export const LoginWithWeComQrcode = (props: any) => {
   const authClient = useGuardAuthClient()
 
   const fetchQrcode = useCallback(async () => {
+    if (typeof window === 'undefined') return
+
     const WwLogin = window.WwLogin
 
     const query: Record<string, any> = {

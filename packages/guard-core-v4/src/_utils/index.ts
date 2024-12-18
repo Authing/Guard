@@ -213,6 +213,7 @@ export function deepMerge<T extends object = any>(
 
 export const getUserRegisterParams = () => {
   let customData: Array<{ key: string; value: any }> = []
+  if (typeof window === 'undefined') return customData
 
   // 解析查询字符串
   const query = qs.parse(window.location.search, {

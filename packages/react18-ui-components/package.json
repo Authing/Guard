@@ -2,7 +2,6 @@
   "name": "@authing/react18-ui-components",
   "version": "4.5.40-alpha.5",
   "description": "Authing Guard for React",
-  "main": "lib/index.min.js",
   "module": "lib/index.min.js",
   "types": "lib/typings/index.d.ts",
   "files": [
