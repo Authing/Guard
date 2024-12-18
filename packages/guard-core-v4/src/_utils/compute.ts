@@ -165,21 +165,22 @@ export const isLenovoNetdisk = () => {
 export const computeIsSpecialBrowser = (
   specialBrowserSymbol: string[] = []
 ) => {
+  if (typeof window === 'undefined') return true
   // 1. 首先筛选出一定是特殊浏览器的 UA
-  if (
-    isWeChatBrowser() ||
-    isWeComeBrowser() ||
-    isLarkBrowser() ||
-    isDingtalkBrowser() ||
-    isQtWebEngine() ||
-    isXiaomiBrowser() ||
-    isQQBrowser() ||
-    isMobile() ||
-    isWebview() ||
-    isLenovoNetdisk()
-  ) {
-    return true
-  }
+  // if (
+  //   isWeChatBrowser() ||
+  //   isWeComeBrowser() ||
+  //   isLarkBrowser() ||
+  //   isDingtalkBrowser() ||
+  //   isQtWebEngine() ||
+  //   isXiaomiBrowser() ||
+  //   isQQBrowser() ||
+  //   isMobile() ||
+  //   isWebview() ||
+  //   isLenovoNetdisk()
+  // ) {
+  //   return true
+  // }
 
   // 2. 服务级别配置的特殊浏览器
   if (
