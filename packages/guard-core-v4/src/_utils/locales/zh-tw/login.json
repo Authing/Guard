@@ -100,6 +100,8 @@
   "wechatmpQrcode": "公眾號關注登入",
   "selectLoginAccount": "選擇登入賬號",
   "useOtherAccount": "使用其他賬號",
+  "accountBaseInfo": "賬號基本信息：",
+  "accoutMergeConfirm": "您已選擇 {{account}} 賬號作為平台唯一賬戶，您放棄的賬號將無法再進行登錄，請確認是否進行該操作？",
   "wechatScanLogin": "使用微信掃碼登錄",
   "qrcodeRefer": "刷新",
   "qrcodeNetWorkError": "網路異常 點擊重試",

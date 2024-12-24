@@ -101,6 +101,8 @@
   "qrcodeNetWorkError": "网络异常 点击重试",
   "qrcodeRefer": "刷新",
   "noLoginMethodsDesc": "未配置登录方式",
+  "accoutMergeConfirm": "您已选择 {{account}} 账号作为平台唯一账户，您放弃的账号将无法再进行登录，请确认是否进行该操作？",
+  "accountBaseInfo": "账号基本信息：",
   "socialConnectionMessage": "不支持使用{{provider}}登录,请选择其他方式登录，或在其它浏览器中重试",
   "inputNewPwd": "请输入新密码",
   "selectLoginAccount": "选择登录账号",

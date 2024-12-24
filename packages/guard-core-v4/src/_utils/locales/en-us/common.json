@@ -179,7 +179,7 @@
   "del": "Delete",
   "qrcode": "QR Code",
   "registerCompletePasswordDesc": "To ensure account security, please set your password.",
-  "mfaCertification": "Multi-factor authentication",
+  "mfaCertification": "Confirm your identity with multi-factor authentication",
   "emailMfaCheck": "Please enter email verification code",
   "SmsMfaCheck": "Please enter SMS verification code",
   "faceCheck": "Please keep the camera turned on and unobstructed",

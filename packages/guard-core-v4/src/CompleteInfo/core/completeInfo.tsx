@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 
 import { useAsyncFn } from 'react-use'
 
-import { i18n } from '../../_utils/locales'
+import { i18n, resolvedLanguage } from '../../_utils/locales'
 
 import {
   CompleteInfoBaseControls,
@@ -44,6 +44,7 @@ import { UploadImage } from '../../UploadImage'
 import { getI18nValue } from '../utils'
 
 import classnames from 'classnames'
+import TreeSelect, { OptionType } from './components/TreeSelect'
 
 const { useCallback, useEffect, useMemo, useRef, useState } = React
 
@@ -93,7 +94,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
   const loadInitCountryList = useCallback(async () => {
     const { data } = await get('/api/v2/country-list')
 
-    const countryMap = i18n.resolvedLanguage === 'zh-CN' ? data?.zh : data?.en
+    const countryMap = resolvedLanguage === 'zh-CN' ? data?.zh : data?.en
 
     const countryList: { label: string; value: string }[] = []
 
@@ -260,20 +261,21 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
     }),
     [countryList]
   )
+
   const internalControlMap: Record<
     string,
-    (props: any) => React.ReactNode | undefined
+    (props: CompleteInfoMetaData) => React.ReactNode | undefined
   > = useMemo(
     () => ({
-      username: (props: any) => (
+      username: props => (
         <CustomFormItem.UserName
           validateFirst={true}
           className="authing-g2-input-form"
           name="username"
-          key={props.key}
+          key={props.name}
           label={props.label ?? i18n.t('common.username')}
           required={props.required}
-          checkRepeat={true}
+          checkRepeat={props.checkUnique === true}
         >
           <Input
             className="authing-g2-input"
@@ -281,11 +283,11 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
             key="internal-username:asdf"
             size="large"
             maxLength={11}
-            placeholder={t('login.inputUsername') as string}
+            placeholder={t('login.inputUsername')!}
           />
         </CustomFormItem.UserName>
       ),
-      phone: (props: { required?: boolean; label?: string }) => (
+      phone: props => (
         <>
           <CustomFormItem.Phone
             validateFirst={true}
@@ -298,7 +300,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
             key="internal-phone:phone"
             label={props.label ?? i18n.t('common.phoneLabel')}
             required={props.required}
-            checkRepeat={true}
+            checkRepeat={props.checkUnique === true}
             areaCode={areaCode}
           >
             <PhoneAccount />
@@ -334,12 +336,12 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
           </Form.Item>
         </>
       ),
-      email: (props: { required?: boolean; label?: string }) => (
+      email: props => (
         <>
           <CustomFormItem.Email
             className="authing-g2-input-form"
             name="email"
-            checkRepeat={true}
+            checkRepeat={props.checkUnique === true}
             label={props.label ?? i18n.t('common.email')}
             required={props.required}
             key="internal email:email13"
@@ -459,12 +461,28 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
   const inputElement = useCallback(
     (metaData: CompleteInfoMetaData) => {
       // const label =
-      //   i18n.resolvedLanguage === 'zh-CN'
+      //   i18n.language === 'zh-CN'
       //     ? metaData.label || metaData.name
       //     : metaData.name
       const label = getMetaDateLabel(metaData)
 
-      // 这部分的控件分两种 一个集成控件（手机号 + 验证码）一种是基础控件 分开处理
+      const userFormItem = (children: React.ReactNode) => (
+        <Form.Item
+          validateTrigger={['onBlur', 'onChange']}
+          className="authing-g2-input-form"
+          rules={generateRules(metaData) as any}
+          key={metaData.name}
+          name={metaData.name}
+          label={label}
+          style={{ marginBottom: 8 }}
+        >
+          {children}
+        </Form.Item>
+      )
+      if (metaData.type === CompleteInfoExtendsControls.TREE) {
+        const options = metaData.options as unknown as OptionType[]
+        return userFormItem(<TreeSelect options={options} />)
+      }
       if (
         (
           Object.values(CompleteInfoBaseControls) as (
@@ -473,9 +491,10 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
           )[]
         ).includes(metaData.type)
       ) {
+        // 这部分的控件分两种 一个集成控件（手机号 + 验证码）一种是基础控件 分开处理
         return internalControlMap[metaData.name]({
-          required: metaData.required,
-          label: label
+          ...metaData,
+          label
         })
       } else {
         const userFormItem = (children: React.ReactNode) => (

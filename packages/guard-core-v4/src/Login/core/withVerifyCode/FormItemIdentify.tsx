@@ -95,7 +95,8 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
     get<boolean>('/api/v2/users/find', {
       userPoolId: publicConfig?.userPoolId,
       key: checkValue,
-      type: FindMethodConversion[currentMethod]
+      type: FindMethodConversion[currentMethod],
+      t: new Date().valueOf()
     }).then(({ data }) => {
       if (checkExist) {
         Boolean(data)

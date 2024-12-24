@@ -1,0 +1,140 @@
+.g2-merge-user-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .icon {
+    font-size: 220px;
+  }
+  .title {
+    font-size: 18px;
+    color: #282d3c;
+    text-align: center;
+  }
+  .title-explain {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #878a95;
+  }
+}
+
+.g2-user-list-content {
+  margin-top: 32px;
+  width: 100%;
+  .user-item {
+    width: 100%;
+    height: 46px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f5f6f7;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #282d3c;
+    // margin-bottom: 16px;
+    cursor: pointer;
+    &.selected {
+      background: #f5f7ff;
+      border: 1px solid #396aff;
+    }
+  }
+  .user-desc {
+    display: flex;
+    margin: 8px 0;
+    color: #878a95;
+    label {
+      font-size: 12px;
+      width: 50%;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      margin-right: 16px;
+    }
+  }
+}
+
+.g2-user-list-btn {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  .authing-g2-submit-button {
+    margin-top: unset;
+  }
+  .btn {
+    width: 155px;
+  }
+}
+
+.confirm-merge {
+  .authing-ant-modal-content {
+    border-radius: 8px;
+  }
+  .authing-ant-modal-body {
+    padding: 24px;
+    padding-top: 32px;
+  }
+  .authing-ant-modal-confirm-body > .anticon {
+    margin-right: 8px;
+  }
+  .authing-ant-modal-confirm-body .authing-ant-modal-confirm-content {
+    color: #878a95;
+    margin-top: 16px;
+  }
+
+  .authing-ant-modal-body
+    > .anticon
+    + .authing-ant-modal-confirm-title
+    + .authing-ant-modal-confirm-content {
+    margin-left: 30px;
+  }
+  .authing-ant-modal-confirm-btns {
+    .authing-ant-btn > span {
+      text-shadow: none;
+    }
+    .authing-ant-btn {
+      background: #f2f3f5;
+      border-radius: 4px;
+      border: none;
+      box-shadow: none;
+      color: #1d2129;
+      margin-left: 16px !important;
+      &:hover {
+        background: #e5e6eb;
+      }
+
+      &:active {
+        background: #c9cdd4;
+      }
+    }
+    .authing-ant-btn-primary {
+      background: #215ae5;
+      border-color: #215ae5;
+      color: #fff;
+      border: none;
+      box-shadow: none;
+      &:hover {
+        background: #557fff;
+        border-color: #557fff;
+      }
+      &:active {
+        background: #254cd9;
+        border-color: #254cd9;
+      }
+    }
+  }
+  .authing-ant-modal-confirm-body-wrapper
+    .authing-ant-modal-confirm-body
+    .authing-ant-modal-confirm-title {
+    color: #282d3c;
+    font-weight: normal;
+  }
+  .account-base {
+    color: #282d3c;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  .account-info > div {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}

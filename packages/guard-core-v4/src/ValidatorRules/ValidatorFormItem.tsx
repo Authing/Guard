@@ -99,7 +99,8 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
     get<boolean>('/api/v2/users/find', {
       userPoolId: publicConfig?.userPoolId,
       key: value,
-      type: method
+      type: method,
+      t: new Date().valueOf()
     }).then(({ data }) => {
       if (checkExist) {
         Boolean(data)

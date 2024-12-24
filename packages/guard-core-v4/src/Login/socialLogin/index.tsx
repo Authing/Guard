@@ -6,7 +6,7 @@ import { React } from 'shim-react'
 
 import { useTranslation } from 'react-i18next'
 
-import { i18n } from '../../_utils/locales'
+import { i18n, resolvedLanguage } from '../../_utils/locales'
 
 import { popupCenter } from '../../_utils'
 
@@ -16,7 +16,7 @@ import { IconFont } from '../../IconFont'
 
 import './style.less'
 
-import { useMediaSize, SocialConnectionEvent } from '../../_utils/hooks'
+import { useMediaSize } from '../../_utils/hooks'
 
 import {
   useGuardPublicConfig,
@@ -120,25 +120,14 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
     }
 
     const onLogin = () => {
-      if (item.action === SocialConnectionEvent.Message) {
-        message.error(
-          t('login.socialConnectionMessage', {
-            provider:
-              item.displayName ??
-              (i18n.resolvedLanguage === 'zh-CN' ? item.name : item.name_en) ??
-              item.provider
-          })
-        )
-      } else if (item.action === SocialConnectionEvent.Auth) {
-        const initUrl = `${config.host}/connections/social/${
-          item.identifier
-        }?${querystring.stringify(query)}`
+      const initUrl = `${config.host}/connections/social/${
+        item.identifier
+      }?${querystring.stringify(query)}`
 
-        if (query.redirected) {
-          window.location.replace(initUrl)
-        } else {
-          popupCenter(initUrl)
-        }
+      if (query.redirected) {
+        window.location.replace(initUrl)
+      } else {
+        popupCenter(initUrl)
       }
     }
 
@@ -162,7 +151,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
           }}
         >
           {item.displayName ??
-            (i18n.resolvedLanguage === 'zh-CN' ? item.name : item.name_en) ??
+            (resolvedLanguage === 'zh-CN' ? item.name : item.name_en) ??
             item.provider}
         </GuardButton>
       )
@@ -176,7 +165,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
       ) : (
         <Tooltip
           key={item.id}
-          title={item.tooltip?.[i18n.resolvedLanguage as Lang] || item.name}
+          title={item.tooltip?.[resolvedLanguage as Lang] || item.name}
           trigger={['hover', 'click', 'contextMenu']}
         >
           <GuardButton
@@ -202,7 +191,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
           onClick={onLogin}
         >
           {item.displayName ??
-            (i18n.resolvedLanguage === 'zh-CN' ? item.name : item.name_en) ??
+            (resolvedLanguage === 'zh-CN' ? item.name : item.name_en) ??
             item.provider}
         </GuardButton>
       ) : isPhoneMedia ? (
@@ -218,7 +207,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
           key={item.id}
           title={
             item.displayName ||
-            item.tooltip?.[i18n.resolvedLanguage as Lang] ||
+            item.tooltip?.[resolvedLanguage as Lang] ||
             item.name
           }
           trigger={['hover', 'click', 'contextMenu']}

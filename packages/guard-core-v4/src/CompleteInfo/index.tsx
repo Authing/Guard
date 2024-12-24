@@ -7,6 +7,7 @@ import { ImagePro } from '../ImagePro'
 import { CompleteInfo } from './core/completeInfo'
 
 import {
+  CompleteInfoBaseControls,
   CompleteInfoInitData,
   CompleteInfoMetaData,
   CompleteInfoRequest,
@@ -27,7 +28,9 @@ import {
   useGuardHttpClient,
   useGuardInitData,
   useGuardAccountSelectInstance,
-  useGuardPublicConfig
+  useGuardPublicConfig,
+  useGuardModule,
+  useGuardAppId
 } from '../_utils/context'
 
 import {
@@ -41,6 +44,8 @@ import { extendsFieldsToMetaData, fieldValuesToRegisterProfile } from './utils'
 import { GuardButton } from '../GuardButton'
 
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
+import { User } from 'authing-js-sdk'
+import { GuardModuleType } from '../Guard'
 
 const { useCallback, useEffect, useMemo, useState } = React
 
@@ -273,5 +278,99 @@ export const GuardRegisterCompleteInfoView: React.FC = () => {
         />
       )}
     </>
+  )
+}
+
+// 高教社限定版 进入用户合并专用的 信息补全
+export const GuardAccountMergeCompleteInfoView: React.FC = () => {
+  const { user } = useGuardInitData<{ user: User }>()
+
+  const events = useGuardEvents()
+
+  const authClient = useGuardAuthClient()
+
+  const { changeModule } = useGuardModule()
+
+  const { userPoolId } = useGuardPublicConfig()
+
+  const { get, post } = useGuardHttpClient()
+
+  const appId = useGuardAppId()
+
+  authClient.setCurrentUser(user)
+
+  const metaData: CompleteInfoMetaData[] = [
+    {
+      type: CompleteInfoBaseControls.PHONE,
+      label: '手机号',
+      name: 'phone',
+      required: true,
+      validateRules: [],
+      checkUnique: false
+    }
+  ]
+
+  const businessRequest = async (_: any, data?: CompleteInfoRequest) => {
+    const phoneField = data?.fieldValues.find(i => i.name === 'phone')
+
+    const { data: isUnique } = await get<boolean>('/api/v2/users/find', {
+      userPoolId: userPoolId,
+      key: phoneField?.value,
+      type: 'phone',
+      t: new Date().valueOf()
+    })
+
+    // 如果手机号已经存在 进入到 账号合并
+    if (Boolean(isUnique)) {
+      const {
+        data: accountMergeInitData,
+        code,
+        onGuardHandling
+      } = await post(
+        '/api/gjs/prepareAccountMerge',
+        {
+          appId,
+          phone: phoneField?.value,
+          code: phoneField?.code
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          }
+        }
+      )
+
+      if (code === 200) {
+        changeModule?.(GuardModuleType.ACCOUNT_MERGE, {
+          ...accountMergeInitData
+        })
+      } else {
+        onGuardHandling?.()
+      }
+    }
+    // 手机号不存在 正常进行信息补全之后调用特定的方法 交由外部处理
+    else {
+      authClient.setCurrentUser(user)
+
+      const updatedUser = await authClient.updateProfile(
+        {
+          phone: phoneField?.value
+        },
+        {
+          phoneToken: phoneField?.code
+        }
+      )
+
+      // 交由外部处理
+      events.onAccountMergeCompleteInfo?.(updatedUser)
+    }
+  }
+
+  return (
+    <GuardCompleteInfo
+      metaData={metaData}
+      businessRequest={businessRequest}
+      skipComplateFileds={false}
+    />
   )
 }

@@ -7,6 +7,7 @@ import phone from 'phone'
 import {
   isDingtalkBrowser,
   isLarkBrowser,
+  isQQBrowser,
   // isQQBrowser,
   isQQBuiltInBrowser,
   isWeChatBrowser,
@@ -24,6 +25,8 @@ import {
   SocialConnectionProvider
 } from '../../Type/application'
 import { useIsSpecialBrowser } from '..'
+const { useRef, useCallback, useEffect } = React
+
 export interface PhoneValidResult {
   isValid: boolean
   phoneNumber: string
@@ -31,7 +34,6 @@ export interface PhoneValidResult {
   countryIso3: string
   countryCode: string
 }
-
 // 某些社会化登录会在 tabs 中显示，或者无法在 Guard 中使用，所以底部不显示了
 export const HIDE_SOCIALS = [
   'wechat:miniprogram:app-launch',
@@ -47,6 +49,7 @@ export const HIDE_SOCIALS_SHOWIN_ENTERPRISE = [
   'lark-public',
   'lark-internal',
   LoginMethods.ZJZWFWQrcode,
+
   'wechatwork:corp:qrconnect',
   'wechatwork:service-provider:qrconnect',
   'wechatwork:agency:qrconnect',
@@ -54,8 +57,6 @@ export const HIDE_SOCIALS_SHOWIN_ENTERPRISE = [
 ]
 
 let thisAppId = ''
-
-const { useRef, useCallback, useEffect } = React
 
 export const useAppId = (appId?: string) => {
   if (appId) {
@@ -203,6 +204,7 @@ export const useMethod: (params: {
   publicConfig: ApplicationConfig
 }) => any = ({ config, publicConfig }) => {
   const isSpecialBrowser = useIsSpecialBrowser()
+
   const noLoginMethods = !config?.loginMethods?.length
   let enterpriseConnectionObjs: ApplicationConfig['identityProviders']
   if (config.enterpriseConnections) {
@@ -245,328 +247,66 @@ export const useMethod: (params: {
       }
       return true
     })
-
-  // 在所有身份源下都要隐藏
-  const hiddenSocialConnection = [
-    'wechat:mobile',
-    'wechat:miniprogram:app-launch',
-    'wechat:miniprogram:default',
-    'apple',
-    'yidun'
-  ]
-
-  switch (true) {
-    // 微信内置浏览器
-    case isWeChatBrowser():
-      // 显示 点击提示
-      const wechatDisplayButtonsMessage = [
-        SocialConnectionProvider.WECHATPC,
-        SocialConnectionProvider.GITHUB,
-        SocialConnectionProvider.QQ,
-        SocialConnectionProvider.APPLE_WEB,
-        SocialConnectionProvider.ALIPAY,
-        SocialConnectionProvider.LINKEDIN,
-        SocialConnectionProvider.BAIDU,
-        SocialConnectionProvider.GOOGLE,
-        SocialConnectionProvider.WEIBO,
-        SocialConnectionProvider.FACEBOOK,
-        SocialConnectionProvider.SLACK,
-        SocialConnectionProvider.DINGTALK,
-        'wechatwork:mobile',
-        'instagram',
-        'qingcloud',
-        'gitee',
-        'gitlab'
-      ]
-
-      // 各个浏览器下特殊的身份源隐藏规则
-      const hiddenSocialConnectionInWeChatBrowser: string[] = [
-        SocialConnectionProvider.WECHATPC
-      ]
-
-      socialConnectionObjs = socialConnectionObjs
-        .filter(
-          item =>
-            ![
-              ...hiddenSocialConnection,
-              ...hiddenSocialConnectionInWeChatBrowser
-            ].includes(item.provider)
+    // 特殊浏览器登录方式
+    .filter(item =>
+      isWeChatBrowser()
+        ? item.provider === SocialConnectionProvider.WECHATMP
+        : item.provider !== SocialConnectionProvider.WECHATMP
+    )
+    .filter(item =>
+      isDingtalkBrowser()
+        ? item.provider !== SocialConnectionProvider.WECHATPC
+        : true
+    )
+    .filter(item => {
+      if (isLarkBrowser()) {
+        return (
+          item.provider === SocialConnectionProvider.LARK_INTERNAL ||
+          item.provider === SocialConnectionProvider.LARK_PUBLIC
         )
-        .map(item => {
-          if (wechatDisplayButtonsMessage.includes(item.provider)) {
-            item.action = SocialConnectionEvent.Message
-          } else {
-            item.action = SocialConnectionEvent.Auth
-          }
-          return item
-        })
-      enterpriseConnectionObjs = enterpriseConnectionObjs
-        .filter(
-          (item: any) =>
-            !(item?.provider && hiddenSocialConnection.includes(item.provider))
+      } else {
+        return true
+      }
+    })
+    .filter(item => {
+      if (isDingtalkBrowser()) {
+        return ![
+          SocialConnectionProvider.APPLE,
+          SocialConnectionProvider.APPLE_WEB,
+          SocialConnectionProvider.ALIPAY,
+          SocialConnectionProvider.GOOGLE
+        ].includes(item.provider)
+      } else {
+        return true
+      }
+    })
+    .filter(item => {
+      if (isQQBrowser()) {
+        return (
+          ![
+            SocialConnectionProvider.APPLE,
+            SocialConnectionProvider.APPLE_WEB,
+            SocialConnectionProvider.GOOGLE
+          ].includes(item.provider) && !item.provider.includes('wechat')
         )
-        .map((item: any) => {
-          if (wechatDisplayButtonsMessage.includes(item.provider)) {
-            item.action = SocialConnectionEvent.Message
-          } else {
-            item.action = SocialConnectionEvent.Auth
-          }
-          return item
-        })
-      break
-    // qq 内置浏览器
-    case isQQBuiltInBrowser():
-      const qqbuiltDisplayButtonsMessage = [
-        SocialConnectionProvider.WECHATPC,
-        SocialConnectionProvider.WECHATMP,
-        SocialConnectionProvider.APPLE_WEB,
-        SocialConnectionProvider.GOOGLE,
-        SocialConnectionProvider.ALIPAY,
-        SocialConnectionProvider.WECHATWORK_CORP_QRCONNECT,
-        SocialConnectionProvider.DINGTALK,
-        'wechatwork:agency:qrconnect',
-        'wechatwork:mobile'
-      ]
-      // 各个浏览器下特殊的身份源隐藏规则
-      const hiddenSocialConnectionInQQBuiltInBrowser = [
-        SocialConnectionProvider.WECHATMP
-      ]
-      socialConnectionObjs = socialConnectionObjs
-        .filter(
-          item =>
-            ![
-              ...hiddenSocialConnection,
-              ...hiddenSocialConnectionInQQBuiltInBrowser
-            ].includes(item.provider)
-        )
-        .map(item => {
-          if (qqbuiltDisplayButtonsMessage.includes(item.provider)) {
-            item.action = SocialConnectionEvent.Message
-          } else {
-            item.action = SocialConnectionEvent.Auth
-          }
-          return item
-        })
-      enterpriseConnectionObjs = enterpriseConnectionObjs
-        .filter(
-          (item: any) =>
-            !(item?.provider && hiddenSocialConnection.includes(item.provider))
-        )
-        .map((item: any) => {
-          if (qqbuiltDisplayButtonsMessage.includes(item.provider)) {
-            item.action = SocialConnectionEvent.Message
-          } else {
-            item.action = SocialConnectionEvent.Auth
-          }
-          return item
-        })
-      break
-    // 企业微信内置浏览器
-    case isWeWorkBuiltInBrowser():
-      const weWorkBuiltDisplayButtonsMessage = [
-        SocialConnectionProvider.WECHATPC,
-        SocialConnectionProvider.WECHATMP,
-        SocialConnectionProvider.GITHUB,
-        SocialConnectionProvider.QQ,
-        SocialConnectionProvider.APPLE_WEB,
-        SocialConnectionProvider.ALIPAY,
-        SocialConnectionProvider.LINKEDIN,
-        SocialConnectionProvider.BAIDU,
-        SocialConnectionProvider.GOOGLE,
-        SocialConnectionProvider.WEIBO,
-        SocialConnectionProvider.FACEBOOK,
-        SocialConnectionProvider.SLACK,
-        SocialConnectionProvider.DINGTALK,
-        'wechatwork:mobile',
-        'instagram',
-        'qingcloud',
-        'gitee',
-        'gitlab'
-      ]
-      // 各个浏览器下特殊的身份源隐藏规则
-      const hiddenSocialConnectionInWeWorkBuiltInBrowser = [
-        SocialConnectionProvider.WECHATMP
-      ]
-      socialConnectionObjs = socialConnectionObjs
-        .filter(
-          item =>
-            ![
-              ...hiddenSocialConnection,
-              ...hiddenSocialConnectionInWeWorkBuiltInBrowser
-            ].includes(item.provider)
-        )
-        .map(item => {
-          if (weWorkBuiltDisplayButtonsMessage.includes(item.provider)) {
-            item.action = SocialConnectionEvent.Message
-          } else {
-            item.action = SocialConnectionEvent.Auth
-          }
-          return item
-        })
-      enterpriseConnectionObjs = enterpriseConnectionObjs
-        .filter(
-          (item: any) =>
-            !(item?.provider && hiddenSocialConnection.includes(item.provider))
-        )
-        .map((item: any) => {
-          if (weWorkBuiltDisplayButtonsMessage.includes(item.provider)) {
-            item.action = SocialConnectionEvent.Message
-          } else {
-            item.action = SocialConnectionEvent.Auth
-          }
-          return item
-        })
-      break
-    // 钉钉内置浏览器
-    case isDingtalkBrowser():
-      const dingTalkDisplayButtonsMessage = [
-        SocialConnectionProvider.WECHATPC,
-        SocialConnectionProvider.WECHATMP,
-        SocialConnectionProvider.QQ,
-        SocialConnectionProvider.APPLE_WEB,
-        SocialConnectionProvider.GOOGLE,
-        SocialConnectionProvider.ALIPAY,
-        SocialConnectionProvider.WECHATWORK_CORP_QRCONNECT,
-        'wechatwork:agency:qrconnect',
-        'wechatwork:mobile'
-      ]
-
-      // 各个浏览器下特殊的身份源隐藏规则
-      const hiddenSocialConnectionInDingtalkBrowser = [
-        SocialConnectionProvider.WECHATMP
-      ]
-
-      socialConnectionObjs = socialConnectionObjs
-        .filter(
-          item =>
-            ![
-              ...hiddenSocialConnection,
-              ...hiddenSocialConnectionInDingtalkBrowser
-            ].includes(item.provider)
-        )
-        .map(item => {
-          if (dingTalkDisplayButtonsMessage.includes(item.provider)) {
-            item.action = SocialConnectionEvent.Message
-          } else {
-            item.action = SocialConnectionEvent.Auth
-          }
-          return item
-        })
-      enterpriseConnectionObjs = enterpriseConnectionObjs
-        .filter(
-          (item: any) =>
-            !(item?.provider && hiddenSocialConnection.includes(item.provider))
-        )
-        .map((item: any) => {
-          if (dingTalkDisplayButtonsMessage.includes(item.provider)) {
-            item.action = SocialConnectionEvent.Message
-          } else {
-            item.action = SocialConnectionEvent.Auth
-          }
-          return item
-        })
-      break
-    // 飞书内置浏览器
-    case isLarkBrowser():
-      const larkDisplayButtonsMessage = [
-        SocialConnectionProvider.WECHATPC,
-        SocialConnectionProvider.WECHATMP,
-        SocialConnectionProvider.GITHUB,
-        SocialConnectionProvider.QQ,
-        SocialConnectionProvider.APPLE_WEB,
-        SocialConnectionProvider.ALIPAY,
-        SocialConnectionProvider.LINKEDIN,
-        SocialConnectionProvider.BAIDU,
-        SocialConnectionProvider.GOOGLE,
-        SocialConnectionProvider.WEIBO,
-        SocialConnectionProvider.FACEBOOK,
-        SocialConnectionProvider.SLACK,
-        SocialConnectionProvider.DINGTALK,
-        'gitlab',
-        'gitee',
-        'instagram',
-        'wechatwork:agency:qrconnect',
-        'wechatwork:mobile'
-      ]
-
-      // 各个浏览器下特殊的身份源隐藏规则
-      const hiddenSocialConnectionInLarkBrowser = [
-        SocialConnectionProvider.WECHATMP
-      ]
-
-      socialConnectionObjs = socialConnectionObjs
-        .filter(
-          item =>
-            ![
-              ...hiddenSocialConnection,
-              ...hiddenSocialConnectionInLarkBrowser
-            ].includes(item.provider)
-        )
-        .map(item => {
-          if (larkDisplayButtonsMessage.includes(item.provider)) {
-            item.action = SocialConnectionEvent.Message
-          } else {
-            item.action = SocialConnectionEvent.Auth
-          }
-          return item
-        })
-      enterpriseConnectionObjs = enterpriseConnectionObjs
-        .filter(
-          (item: any) =>
-            !(item?.provider && hiddenSocialConnection.includes(item.provider))
-        )
-        .map((item: any) => {
-          if (larkDisplayButtonsMessage.includes(item.provider)) {
-            item.action = SocialConnectionEvent.Message
-          } else {
-            item.action = SocialConnectionEvent.Auth
-          }
-          return item
-        })
-      break
-    // pc 浏览器
-    default:
-      const pcDisplayButtonsMessage = [
-        SocialConnectionProvider.WECHATMP,
-        'wechatwork:mobile'
-      ]
-
-      // 各个浏览器下特殊的身份源隐藏规则
-      const hiddenSocialConnectionInPCBrowser = [
-        SocialConnectionProvider.WECHATMP
-      ]
-
-      socialConnectionObjs = socialConnectionObjs
-        .filter(
-          item =>
-            ![
-              ...hiddenSocialConnection,
-              ...hiddenSocialConnectionInPCBrowser
-            ].includes(item.provider)
-        )
-        .map(item => {
-          if (pcDisplayButtonsMessage.includes(item.provider)) {
-            item.action = SocialConnectionEvent.Message
-          } else {
-            item.action = SocialConnectionEvent.Auth
-          }
-          return item
-        })
-      enterpriseConnectionObjs = enterpriseConnectionObjs
-        .filter(
-          (item: any) =>
-            !(item?.provider && hiddenSocialConnection.includes(item.provider))
-        )
-        .map((item: any) => {
-          if (pcDisplayButtonsMessage.includes(item.provider)) {
-            item.action = SocialConnectionEvent.Message
-          } else {
-            item.action = SocialConnectionEvent.Auth
-          }
-          return item
-        })
-      break
-  }
+      } else {
+        return true
+      }
+    })
+    .filter(item => {
+      if (isQQBuiltInBrowser()) {
+        return ![SocialConnectionProvider.ALIPAY].includes(item.provider)
+      } else {
+        return true
+      }
+    })
+    .filter(item => {
+      if (isWeWorkBuiltInBrowser()) {
+        return ![SocialConnectionProvider.WECHATMP].includes(item.provider)
+      } else {
+        return true
+      }
+    })
 
   const guardWindow = getGuardWindow()
 
@@ -588,6 +328,5 @@ export const useMethod: (params: {
       !socialConnectionObjs.length) &&
     (!publicConfig?.ssoPageComponentDisplay.idpBtns ||
       !enterpriseConnectionObjs.length)
-
   return [socialConnectionObjs, enterpriseConnectionObjs, isNoMethod]
 }

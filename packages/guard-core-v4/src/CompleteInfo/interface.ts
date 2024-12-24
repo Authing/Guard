@@ -26,7 +26,11 @@ export interface CompleteInfoEvents extends IG2Events {
       key: any
       value: any
     }[],
-    authClient: AuthenticationClient
+    authClient: AuthenticationClient,
+    opts?: {
+      phone?: string
+      canMergeUser?: boolean
+    }
   ) => void
   onRegisterInfoCompletedError?: (
     error: CommonMessage,
@@ -36,6 +40,7 @@ export interface CompleteInfoEvents extends IG2Events {
     }[],
     authClient: AuthenticationClient
   ) => void
+  onAccountMergeCompleteInfo?: (user: User) => void
 }
 
 export interface GuardCompleteInfoProps extends IG2FCProps, CompleteInfoEvents {
@@ -87,6 +92,7 @@ export interface CompleteInfoMetaData {
   name: string
   required: boolean
   validateRules: CompleteInfoRule[]
+  checkUnique?: boolean
   options?: CompleteInfoSelectOption[]
 }
 
@@ -107,7 +113,8 @@ export enum CompleteInfoExtendsControls {
   STRING = 'string',
   TEXT = 'text',
   GENDER = 'gender',
-  COUNTRY = 'country'
+  COUNTRY = 'country',
+  TREE = 'tree'
 }
 
 export interface CompleteInfoInitData {

@@ -26,6 +26,10 @@ export enum GuardModuleType {
   New_SUBMIT_SUCCESS = 'newSubmitSuccess', // 提交成功展示页
   SELECT_ACCOUNT_2_LOGIN = 'selectAccout2Login', // 选择登录身份
   RESET_ACCOUNT_NAME = 'resetAccountName',
+  /** 高教社特殊节点 */
+  CUSTOM_COMPLETE_INFO = 'customCompleteInfo',
+  ACCOUNT_MERGE = 'accountMerge',
+  /**-------------- */
   APPLY_INVITATION = 'applyInvitation',
   MESSAGE = 'message',
   INVITE_AUTH = 'inviteAuth',

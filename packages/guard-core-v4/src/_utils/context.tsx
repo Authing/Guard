@@ -230,7 +230,6 @@ export const useGuardHttpClient = () => useContext(GuardXContext).httpClient
 
 export const useIsSpecialBrowser = () =>
   useContext(GuardXContext).isSpecialBrowser
-
 export const useGuardDefaultMergedConfig = () =>
   useContext(GuardXContext).defaultMergedConfig
 

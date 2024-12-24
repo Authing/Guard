@@ -74,8 +74,8 @@
   "otherVerifyWay": "Other verification methods",
   "otherLoginWay": "OR",
   "verifyCodeSended": "Verification code has been sent to",
-  "clickSent": "Click  send",
   "reSent": "Click to resend the verification code",
+  "clickSent": "Click  send",
   "bindPhoneInfo": "Please enter the phone number to bind",
   "bindWarning": "Please contact the administrator to bind your phone number for you",
   "inputPhoneCode": "Please enter the phone verification code",
@@ -105,6 +105,8 @@
   "qrcodeNetWorkError": "Retry",
   "scanAgain": "Scan the code again",
   "scanSuccess": "Scan Success",
+  "accountBaseInfo": "Basic account information:",
+  "accoutMergeConfirm": "You have selected the {{account}} account as the only account on the platform. The account you gave up will no longer be able to log in. Please confirm whether to perform this operation?",
   "tenant": {
     "consoleManage": "Admin console",
     "ssoPad": "Single sign-on application panel"

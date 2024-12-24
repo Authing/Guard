@@ -33,7 +33,7 @@ import {
 
 import { GuardHttp, initGuardHttp } from '../../_utils/guardHttp'
 
-import { initGuardI18n } from '../../_utils/locales'
+import { initGuardI18n, resolvedLanguage } from '../../_utils/locales'
 
 import { useGuardXContext } from '../../_utils/context'
 
@@ -75,6 +75,7 @@ export const RenderContext: React.FC<{
   children: ReactNode
 }> = ({ guardProps, initState, children }) => {
   const { tenantId, deviceId, config } = guardProps
+
   // 强制刷新
   const [forceUpdate, setForceUpdate] = useState(Date.now())
 
@@ -87,6 +88,7 @@ export const RenderContext: React.FC<{
   const [isAuthFlow, setIsAuthFlow] = useState(true)
   const [i18nInit, setI18nInit] = useState(false)
   const scriptNodes = useRef<Record<string, Element>>({})
+
   const appId = useInitAppId(guardProps.appId, guardProps.authClient, setError)
 
   const [defaultLanguageConfig, setDefaultLanguageConfig] = useState<Lang>()
@@ -147,7 +149,6 @@ export const RenderContext: React.FC<{
   // HttpClient
   useEffect(() => {
     if (!appId || !defaultMergedConfig) return
-
     const httpClient = initGuardHttp(defaultMergedConfig.host)
     httpClient.setAppId(appId)
     tenantId && httpClient.setTenantId(tenantId)
@@ -279,7 +280,7 @@ export const RenderContext: React.FC<{
         setI18nInit
       )
 
-      setDefaultLanguageConfig(i18n.resolvedLanguage as Lang)
+      setDefaultLanguageConfig(resolvedLanguage as Lang)
     }
   }, [defaultMergedConfig, guardPageConfig, publicConfig, setI18nInit])
 

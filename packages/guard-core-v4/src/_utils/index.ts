@@ -208,7 +208,8 @@ export function deepMerge<T extends object = any>(
 }
 
 /**
- * @description 在托管页下上传query.login_page_context中指定的用户自定义字段进行补全(/oidc/auth发起的认证只会携带 login_page_context)
+ *  在托管页下上传query中指定的用户自定义字段进行补全
+ * @param params 指定上传的用户自定义字段
  */
 
 export const getUserRegisterParams = () => {
@@ -324,7 +325,6 @@ export const getPasswordValidate = (
   userId?: string
 ): Rule[] => {
   const { post } = getGuardHttp()
-
   const required = [
     ...fieldRequiredRule(i18n.t('common.password'), fieldRequiredRuleMessage)
     // {
@@ -338,34 +338,19 @@ export const getPasswordValidate = (
     // },
   ]
   const getCustomPassword = () => {
-    if (
-      i18n.resolvedLanguage === 'zh-CN' &&
-      customPasswordStrength?.zhMessageOpen
-    ) {
+    if (resolvedLanguage === 'zh-CN' && customPasswordStrength?.zhMessageOpen) {
       return customPasswordStrength?.zhMessage
     }
-    if (
-      i18n.resolvedLanguage === 'en-US' &&
-      customPasswordStrength?.enMessageOpen
-    ) {
+    if (resolvedLanguage === 'en-US' && customPasswordStrength?.enMessageOpen) {
       return customPasswordStrength?.enMessage
     }
-    if (
-      i18n.resolvedLanguage === 'ja-JP' &&
-      customPasswordStrength?.jaMessageOpen
-    ) {
+    if (resolvedLanguage === 'ja-JP' && customPasswordStrength?.jaMessageOpen) {
       return customPasswordStrength?.jaMessage
     }
-    if (
-      i18n.resolvedLanguage === 'ja-JP' &&
-      customPasswordStrength?.jpMessageOpen
-    ) {
+    if (resolvedLanguage === 'ja-JP' && customPasswordStrength?.jpMessageOpen) {
       return customPasswordStrength?.jpMessage
     }
-    if (
-      i18n.resolvedLanguage === 'zh-TW' &&
-      customPasswordStrength?.twMessageOpen
-    ) {
+    if (resolvedLanguage === 'zh-TW' && customPasswordStrength?.twMessageOpen) {
       return customPasswordStrength?.twMessage
     }
     return customPasswordStrength?.message
@@ -464,39 +449,23 @@ export const getPasswordValidateRules = (
   userId?: string
 ): Rule[] => {
   const { post } = getGuardHttp()
-
   const required = [
     ...fieldRequiredRule(i18n.t('common.password'), fieldRequiredRuleMessage)
   ]
   const getCustomPassword = () => {
-    if (
-      i18n.resolvedLanguage === 'zh-CN' &&
-      customPasswordStrength?.zhMessageOpen
-    ) {
+    if (resolvedLanguage === 'zh-CN' && customPasswordStrength?.zhMessageOpen) {
       return customPasswordStrength?.zhMessage
     }
-    if (
-      i18n.resolvedLanguage === 'en-US' &&
-      customPasswordStrength?.enMessageOpen
-    ) {
+    if (resolvedLanguage === 'en-US' && customPasswordStrength?.enMessageOpen) {
       return customPasswordStrength?.enMessage
     }
-    if (
-      i18n.resolvedLanguage === 'ja-JP' &&
-      customPasswordStrength?.jaMessageOpen
-    ) {
+    if (resolvedLanguage === 'ja-JP' && customPasswordStrength?.jaMessageOpen) {
       return customPasswordStrength?.jaMessage
     }
-    if (
-      i18n.resolvedLanguage === 'ja-JP' &&
-      customPasswordStrength?.jpMessageOpen
-    ) {
+    if (resolvedLanguage === 'ja-JP' && customPasswordStrength?.jpMessageOpen) {
       return customPasswordStrength?.jpMessage
     }
-    if (
-      i18n.resolvedLanguage === 'zh-TW' &&
-      customPasswordStrength?.twMessageOpen
-    ) {
+    if (resolvedLanguage === 'zh-TW' && customPasswordStrength?.twMessageOpen) {
       return customPasswordStrength?.twMessage
     }
     return customPasswordStrength?.message
@@ -716,6 +685,19 @@ export const transformMethod = (method: RegisterMethods | string) => {
   }
 }
 
+export const transformSortMethod = (method: RegisterSortMethods | string) => {
+  switch (method) {
+    case RegisterSortMethods.Email:
+      return RegisterMethods.Email
+    case RegisterSortMethods.EmailCode:
+      return RegisterMethods.EmailCode
+    case RegisterSortMethods.Phone:
+      return RegisterMethods.Phone
+    default:
+      return method
+  }
+}
+
 export const mailDesensitization = (mail: string) => {
   const mailArr = mail.split('@')
   const mailName = mailArr[0].substr(0, 1) + '***'
@@ -724,6 +706,10 @@ export const mailDesensitization = (mail: string) => {
 
 export const phoneDesensitization = (phone: string) => {
   return phone.replace(/(\d{3})\d*(\d{4})/, '$1****$2')
+}
+
+export const getHundreds = (num: number) => {
+  return Math.floor(num / 100)
 }
 
 export const GuardPropsFilter = (pre: GuardProps, current: GuardProps) => {
@@ -898,6 +884,21 @@ export const getSortTabs = (tabs: string[], tab?: string) => {
   }
 
   return tabs
+}
+
+export const getPhoneInLoginPageContext = () => {
+  const search = qs.parse(window.location.search, {
+    ignoreQueryPrefix: true
+  })
+
+  try {
+    if (search.login_page_context) {
+      const customData = JSON.parse(search.login_page_context as string)
+      return customData.phone || ''
+    }
+  } catch (e) {
+    return ''
+  }
 }
 
 export const isDisabled = (

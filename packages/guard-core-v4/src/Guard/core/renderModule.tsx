@@ -17,6 +17,7 @@ import {
 } from '../../ChangePassword'
 import { GuardSelectAccount2LoginView } from '../../SelectAccount2Login'
 import {
+  GuardAccountMergeCompleteInfoView,
   GuardLoginCompleteInfoView,
   GuardRegisterCompleteInfoView
 } from '../../CompleteInfo'
@@ -82,11 +83,12 @@ import { GuardMessageView } from '../../Message'
 
 import { GuardAuthenticationView } from '../../Invitation/AuthenticationBind'
 
-import { i18n } from '../../_utils/locales'
+import { resolvedLanguage } from '../../_utils/locales'
 import { GuardInviteCompleteView } from '../../Invitation/Complete'
 import { GuardInviteExpireView } from '../../Invitation/Error'
 import { GuardInviteSuccessView } from '../../Invitation/Success'
 import { GuardResetPassword } from '../../ChangePassword/core/resetPassword'
+import { GuardAccountMergeView } from '../../AccountMerge'
 const { useEffect, useMemo } = React
 
 const PREFIX_CLS = 'authing-ant'
@@ -197,13 +199,18 @@ export const RenderModule: React.FC<{
     [GuardModuleType.REGISTER_COMPLETE_INFO]: (key: string) => (
       <GuardRegisterCompleteInfoView key={key} />
     ),
-    // 切换登录身份
-    [GuardModuleType.SELECT_ACCOUNT_2_LOGIN]: (key: string) => (
-      <GuardSelectAccount2LoginView key={key} />
-    ),
+
     // 登录信息补全
     [GuardModuleType.LOGIN_COMPLETE_INFO]: (key: string) => (
       <GuardLoginCompleteInfoView key={key} />
+    ),
+    // 高教社独有 账号合并
+    [GuardModuleType.ACCOUNT_MERGE]: (key: string) => (
+      <GuardAccountMergeView key={key} />
+    ),
+    // 高教社独有 自定义信息补全
+    [GuardModuleType.CUSTOM_COMPLETE_INFO]: (key: string) => (
+      <GuardAccountMergeCompleteInfoView key={key} />
     ),
     // 注册密码补全
     [GuardModuleType.REGISTER_PASSWORD]: (key: string) => (
@@ -219,9 +226,11 @@ export const RenderModule: React.FC<{
     [GuardModuleType.FLOW_SELECT_ACCOUNT]: key => (
       <GuardSelectAccountView key={key} />
     ),
-    [GuardModuleType.TENANT_PORTAL]: key => (
-      <GuardTenantPortalSelectView key={key} />
+    // 切换登录身份
+    [GuardModuleType.SELECT_ACCOUNT_2_LOGIN]: (key: string) => (
+      <GuardSelectAccount2LoginView key={key} />
     ),
+    [GuardModuleType.TENANT_PORTAL]: key => <GuardTenantPortalSelectView />,
     [GuardModuleType.New_SUBMIT_SUCCESS]: key => (
       <GuardNewSubmitSuccessView key={key} />
     ),
@@ -328,7 +337,7 @@ export const RenderModule: React.FC<{
   return (
     <ConfigProvider
       prefixCls={PREFIX_CLS}
-      locale={langMap[i18n.resolvedLanguage as LangMAP]}
+      locale={langMap[resolvedLanguage as LangMAP]}
     >
       {defaultMergedConfig.mode === GuardMode.Modal ? (
         <Modal

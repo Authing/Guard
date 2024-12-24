@@ -20,9 +20,6 @@ import { popupCenter } from '../../../_utils'
 
 import { useGuardTenantId, useIsSpecialBrowser } from '../../../_utils/context'
 
-import { SocialConnectionEvent } from '../../../_utils/hooks'
-
-import { i18n } from '../../../_utils/locales'
 import { baseLoginPathMapping, loginUrlFieldMapping } from '../../interface'
 
 const { useCallback } = React
@@ -69,24 +66,13 @@ export const IdpButton = (props: any) => {
       const iconType = `authing-${i.provider.replace(/:/g, '-')}`
 
       const onLogin = () => {
-        if (i.action === SocialConnectionEvent.Message) {
-          message.error(
-            t('login.socialConnectionMessage', {
-              provider:
-                i.displayName ??
-                (i18n.resolvedLanguage === 'zh-CN' ? i.name : i.name_en) ??
-                i.provider
-            })
-          )
-        } else if (i.action === SocialConnectionEvent.Auth) {
-          const initUrl = `${appHost}/connections/social/${
-            i.identifier
-          }?${qs.stringify(query)}`
-          if (query.redirected) {
-            window.location.replace(initUrl)
-          } else {
-            popupCenter(initUrl)
-          }
+        const initUrl = `${appHost}/connections/social/${
+          i.identifier
+        }?${qs.stringify(query)}`
+        if (query.redirected) {
+          window.location.replace(initUrl)
+        } else {
+          popupCenter(initUrl)
         }
       }
 
