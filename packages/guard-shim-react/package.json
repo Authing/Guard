@@ -13,7 +13,7 @@
     "release:alpha": "npm publish --verbose --tag=alpha --access public"
   },
   "peerDependencies": {
-    "authing-js-sdk": "^4.23.44"
+    "authing-js-sdk": "4.23.50"
   },
   "author": "https://github.com/authing",
   "license": "MIT"

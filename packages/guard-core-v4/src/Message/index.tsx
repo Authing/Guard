@@ -28,7 +28,7 @@ export const GuardMessageView: React.FC<MessageProps> = propsInitData => {
   const messages = useMemo(() => {
     const message = propsInitData?.message ?? guardXInitData?.message
 
-    return `${message}` ?? `${i18n.t('user.contactAdministrator')}`
+    return message ? `${message}` : `${i18n.t('user.contactAdministrator')}`
   }, [guardXInitData?.message, propsInitData?.message])
 
   return (

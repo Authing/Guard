@@ -138,9 +138,10 @@ export const GuardIdentityBindingView: React.FC<{
 
     spinChange(true)
 
-    const res = await bindMethodsMap[
-      type as 'phone-code' | 'email-code' | 'password'
-    ]?.(data)
+    const res =
+      await bindMethodsMap[type as 'phone-code' | 'email-code' | 'password']?.(
+        data
+      )
 
     const { isFlowEnd } = res
 
@@ -161,12 +162,12 @@ export const GuardIdentityBindingView: React.FC<{
   const agreements = useMemo(
     () =>
       agreementEnabled
-        ? config?.agreements?.filter(
+        ? (config?.agreements?.filter(
             agree =>
               fallbackLng(i18n.resolvedLanguage).find(lng =>
                 lng.includes(agree.lang)
               ) && !!agree?.availableAt
-          ) ?? []
+          ) ?? [])
         : [],
     [agreementEnabled, config?.agreements, i18n.resolvedLanguage]
   )

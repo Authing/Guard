@@ -105,7 +105,7 @@ const LoginWithVerifyCode = (props: any) => {
   const [identify, setIdentify] = useState('')
 
   const [currentMethod, setCurrentMethod] = useState<InputMethod>(
-    specifyDefaultLoginMethod ? _lockMethod ?? methods[0] : methods[0]
+    specifyDefaultLoginMethod ? (_lockMethod ?? methods[0]) : methods[0]
   )
   // 是否仅开启国际化短信
   const [isOnlyInternationSms, setInternationSms] = useState(false)
@@ -506,8 +506,8 @@ const LoginWithVerifyCode = (props: any) => {
             specifyDefaultLoginMethod === LoginMethods.PhoneCode
               ? _firstItemInitialValue
               : (specifyCodeMethod === 'phone' || !isInternationSms) && phone
-              ? phone
-              : ''
+                ? phone
+                : ''
           }
           name="identify"
           className={
