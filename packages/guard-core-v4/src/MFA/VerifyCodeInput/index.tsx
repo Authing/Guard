@@ -7,8 +7,6 @@ import { OTPInput, SlotProps } from 'input-otp'
 import './style.less'
 import classNames from 'classnames'
 
-const { Fragment, useCallback, useEffect, useRef, useState } = React
-
 interface VerifyCodeInputProps extends React.HTMLAttributes<HTMLDivElement> {
   length?: number
   size?: string

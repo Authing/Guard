@@ -94,8 +94,9 @@ export const VerifyMFATotp: React.FC<VerifyMFATotpProps> = ({
       mfaToken
     }
 
-    const { isFlowEnd, data, onGuardHandling } =
-      await businessRequest(requestData)
+    const { isFlowEnd, data, onGuardHandling } = await businessRequest(
+      requestData
+    )
 
     submitButtonRef.current?.onSpin(false)
 

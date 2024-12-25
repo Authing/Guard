@@ -123,4 +123,6 @@ export const initGuardI18n = async (
   callback(true)
 }
 
+export const resolvedLanguage = i18n.resolvedLanguage || i18n.language
+
 export { i18n }

@@ -113,8 +113,8 @@ function useLoginAccountBackFill(options: {
       const prefix = isOnlyInternationSms
         ? ''
         : backfillData?.phoneCountryCode
-          ? backfillData?.phoneCountryCode + ' '
-          : ''
+        ? backfillData?.phoneCountryCode + ' '
+        : ''
 
       const content = backfillData?.account || ''
 

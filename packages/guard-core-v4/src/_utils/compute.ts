@@ -130,9 +130,16 @@ export const isBaiduBrowser = () => {
   return /Baidu/i.test(navigator.userAgent)
 }
 
-export const isWeComeBrowser = () => /wxwork/i.test(navigator.userAgent)
+export const isWeComeBrowser = () => {
+  if (typeof navigator === 'undefined') {
+    return null
+  }
+  return /wxwork/i.test(navigator.userAgent)
+}
 
 export const isMobile = () => {
+  if (typeof window === 'undefined') return
+
   return window.navigator.userAgent.match(
     /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
   )
