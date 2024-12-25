@@ -227,10 +227,6 @@ export const RenderModule: React.FC<{
     [GuardModuleType.REGISTER_COMPLETE_INFO]: (key: string) => (
       <GuardRegisterCompleteInfoView key={key} />
     ),
-    // 切换登录身份
-    [GuardModuleType.SELECT_ACCOUNT_2_LOGIN]: (key: string) => (
-      <GuardSelectAccount2LoginView key={key} />
-    ),
     // 登录信息补全
     [GuardModuleType.LOGIN_COMPLETE_INFO]: (key: string) => (
       <GuardLoginCompleteInfoView key={key} />

@@ -213,8 +213,9 @@ export const VerifyMFASms: React.FC<VerifyMFASmsProps> = ({
       phoneCountryCode: phoneCountryCode ? phoneCountryCode : countryCode
     }
 
-    const { isFlowEnd, data, onGuardHandling } =
-      await businessRequest(requestData)
+    const { isFlowEnd, data, onGuardHandling } = await businessRequest(
+      requestData
+    )
 
     submitButtonRef.current?.onSpin(false)
 

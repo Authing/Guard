@@ -24,7 +24,9 @@ export const GuardErrorView: React.FC<ErrorProps> = propsInitData => {
   const messages = useMemo(() => {
     const error = propsInitData?.error ?? guardXInitData?.error
 
-    return `${error?.message}` ?? `${i18n.t('user.contactAdministrator')}`
+    return error?.message
+      ? `${error?.message}`
+      : `${i18n.t('user.contactAdministrator')}`
   }, [guardXInitData?.error, propsInitData?.error])
 
   return (
