@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 
 import { useAsyncFn } from 'react-use'
 
-import { i18n, resolvedLanguage } from '../../_utils/locales'
+import { i18n } from '../../_utils/locales'
 
 import {
   CompleteInfoBaseControls,
@@ -93,6 +93,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
 
   const loadInitCountryList = useCallback(async () => {
     const { data } = await get('/api/v2/country-list')
+    const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
 
     const countryMap = resolvedLanguage === 'zh-CN' ? data?.zh : data?.en
 

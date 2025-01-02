@@ -6,7 +6,7 @@ import { CodeAction } from './responseManagement/interface'
 
 import Axios, { AxiosRequestConfig, CancelTokenSource } from 'axios'
 
-import { getCurrentLng, resolvedLanguage } from '.'
+import { getCurrentLng } from '.'
 
 export const requestClient = async (...rest: Parameters<typeof fetch>) => {
   const res = await fetch(...rest)
@@ -100,7 +100,7 @@ requestClient.post = async <T>(
   const headers: Record<string, any> = {
     ...config?.headers,
     'Content-Type': 'application/json',
-    [requestClient.langHeader]: resolvedLanguage
+    [requestClient.langHeader]: i18n.resolvedLanguage ?? i18n.language
   }
 
   if (requestClient.tenantId !== '')

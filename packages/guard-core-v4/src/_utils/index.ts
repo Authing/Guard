@@ -2,7 +2,7 @@ import { Rule } from 'shim-antd/lib/form'
 
 import qs from 'qs'
 
-import { i18n, resolvedLanguage } from './locales'
+import { i18n } from './locales'
 
 import { User } from 'authing-js-sdk'
 
@@ -337,6 +337,7 @@ export const getPasswordValidate = (
     //   },
     // },
   ]
+  const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
   const getCustomPassword = () => {
     if (resolvedLanguage === 'zh-CN' && customPasswordStrength?.zhMessageOpen) {
       return customPasswordStrength?.zhMessage
@@ -452,6 +453,8 @@ export const getPasswordValidateRules = (
   const required = [
     ...fieldRequiredRule(i18n.t('common.password'), fieldRequiredRuleMessage)
   ]
+  const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
+
   const getCustomPassword = () => {
     if (resolvedLanguage === 'zh-CN' && customPasswordStrength?.zhMessageOpen) {
       return customPasswordStrength?.zhMessage
@@ -825,6 +828,7 @@ export const getPasswordIdentify = (identity: string): string => {
 }
 
 export const getCurrentLng = () => {
+  const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
   if (Object.keys(LngTextMapping).includes(resolvedLanguage)) {
     return resolvedLanguage as Lang
   } else {

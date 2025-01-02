@@ -83,7 +83,7 @@ import { GuardMessageView } from '../../Message'
 
 import { GuardAuthenticationView } from '../../Invitation/AuthenticationBind'
 
-import { resolvedLanguage } from '../../_utils/locales'
+import { i18n } from '../../_utils/locales'
 import { GuardInviteCompleteView } from '../../Invitation/Complete'
 import { GuardInviteExpireView } from '../../Invitation/Error'
 import { GuardInviteSuccessView } from '../../Invitation/Success'
@@ -337,7 +337,7 @@ export const RenderModule: React.FC<{
   return (
     <ConfigProvider
       prefixCls={PREFIX_CLS}
-      locale={langMap[resolvedLanguage as LangMAP]}
+      locale={langMap[(i18n.resolvedLanguage ?? i18n.language) as LangMAP]}
     >
       {defaultMergedConfig.mode === GuardMode.Modal ? (
         <Modal

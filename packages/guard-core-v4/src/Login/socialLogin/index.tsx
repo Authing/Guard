@@ -6,7 +6,7 @@ import { React } from 'shim-react'
 
 import { useTranslation } from 'react-i18next'
 
-import { i18n, resolvedLanguage } from '../../_utils/locales'
+import { i18n } from '../../_utils/locales'
 
 import { popupCenter } from '../../_utils'
 
@@ -62,6 +62,8 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
   onLoginFailed
 }) => {
   const noLoginMethods = !config?.loginMethods?.length
+
+  const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
 
   const publicConfig = useGuardPublicConfig()
 

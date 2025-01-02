@@ -51,8 +51,7 @@ import {
   getPasswordIdentify,
   getSortTabs,
   isDingTalkOrigin,
-  isWeComOrigin,
-  resolvedLanguage
+  isWeComOrigin
 } from '../_utils'
 
 import { LoginWithVerifyCode, SpecifyCodeMethods } from './core/withVerifyCode'
@@ -189,6 +188,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
   isResetPage = false
 }) => {
   const { specifyDefaultLoginMethod } = useGuardInitData<GuardLoginInitData>()
+
+  const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
 
   const config = useGuardFinallyConfig()
 

@@ -33,7 +33,7 @@ import {
 
 import { GuardHttp, initGuardHttp } from '../../_utils/guardHttp'
 
-import { initGuardI18n, resolvedLanguage } from '../../_utils/locales'
+import { initGuardI18n } from '../../_utils/locales'
 
 import { useGuardXContext } from '../../_utils/context'
 
@@ -279,8 +279,7 @@ export const RenderContext: React.FC<{
         },
         setI18nInit
       )
-
-      setDefaultLanguageConfig(resolvedLanguage as Lang)
+      setDefaultLanguageConfig((i18n.resolvedLanguage || i18n.language) as Lang)
     }
   }, [defaultMergedConfig, guardPageConfig, publicConfig, setI18nInit])
 
@@ -359,7 +358,6 @@ export const RenderContext: React.FC<{
       defaultLanguageConfig,
       tenantInstance
     ]
-
     return !list.includes(undefined) && !list.includes(false)
   }, [
     appId,
