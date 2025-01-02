@@ -100,7 +100,7 @@ requestClient.post = async <T>(
   const headers: Record<string, any> = {
     ...config?.headers,
     'Content-Type': 'application/json',
-    [requestClient.langHeader]: i18n.resolvedLanguage
+    [requestClient.langHeader]: i18n.resolvedLanguage ?? i18n.language
   }
 
   if (requestClient.tenantId !== '')

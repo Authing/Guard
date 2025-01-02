@@ -63,6 +63,8 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
 }) => {
   const noLoginMethods = !config?.loginMethods?.length
 
+  const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
+
   const publicConfig = useGuardPublicConfig()
 
   const userPoolId = publicConfig?.userPoolId

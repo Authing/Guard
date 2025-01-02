@@ -22,6 +22,8 @@ export interface VirtualDropdownProps {
 export const VirtualDropdown: React.FC<VirtualDropdownProps> = props => {
   const { value, onChange } = props
 
+  const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
+
   // 只能单次遍历了
 
   // const [open, setOpen] = useState(false)
@@ -36,14 +38,10 @@ export const VirtualDropdown: React.FC<VirtualDropdownProps> = props => {
           <div className="country">
             <Tooltip
               title={
-                i18n.resolvedLanguage === 'zh-CN'
-                  ? info.regions
-                  : info.regions_en
+                resolvedLanguage === 'zh-CN' ? info.regions : info.regions_en
               }
             >
-              {i18n.resolvedLanguage === 'zh-CN'
-                ? info.regions
-                : info.regions_en}
+              {resolvedLanguage === 'zh-CN' ? info.regions : info.regions_en}
             </Tooltip>
           </div>
         </div>

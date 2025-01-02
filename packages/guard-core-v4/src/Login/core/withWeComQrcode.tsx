@@ -10,7 +10,7 @@ import { getGuardWindow } from '../../Guard/core/useAppendConfig'
 
 import { ShieldSpin } from '../../ShieldSpin'
 
-import { isWeComOrigin, resolvedLanguage } from '../../_utils'
+import { isWeComOrigin } from '../../_utils'
 
 import {
   useGuardAppId,
@@ -34,6 +34,8 @@ const { useCallback, useEffect, useState, useMemo } = React
 
 export const LoginWithWeComQrcode = (props: any) => {
   const { QRConfig, id } = props
+
+  const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
 
   const WwLogin = window.WwLogin
 

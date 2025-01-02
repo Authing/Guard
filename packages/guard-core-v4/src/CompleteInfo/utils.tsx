@@ -10,8 +10,7 @@ import {
 } from './interface'
 
 import { ApplicationConfig } from '../Type/application'
-
-import { resolvedLanguage } from '../_utils/locales'
+import { i18n } from '../_utils/locales'
 
 export const completeFieldsFilter = (user: User, field: ExtendsField) => {
   if (!user) {
@@ -114,6 +113,8 @@ export const fieldValuesToRegisterProfile = (
  * @param key
  */
 export const getI18nValue = (record: any, key: string) => {
+  const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
+
   const label = record?.[key]
   const i18nObj = record?.i18n?.[key] || {}
   const i18nLan = i18nObj?.[resolvedLanguage]

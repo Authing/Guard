@@ -46,6 +46,8 @@ const { useEffect, useMemo, useState } = React
 export const GuardRegisterView: React.FC = () => {
   const events = useGuardEvents()
 
+  const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
+
   const config = useGuardFinallyConfig()
 
   const { changeModule } = useGuardModule()
@@ -114,7 +116,7 @@ export const GuardRegisterView: React.FC = () => {
       agreements: agreementEnabled
         ? config?.agreements?.filter(
             agree =>
-              fallbackLng(i18n.resolvedLanguage!).find(lng =>
+              fallbackLng(resolvedLanguage!).find(lng =>
                 lng.includes(agree.lang)
               ) && agree?.availableAt !== 1
           ) ?? []
@@ -126,7 +128,6 @@ export const GuardRegisterView: React.FC = () => {
       agreementEnabled,
       config?.agreements,
       events?.onBeforeRegister,
-      i18n.resolvedLanguage,
       verifyRegisterMethods
     ]
   )
@@ -224,7 +225,6 @@ export const GuardRegisterView: React.FC = () => {
     publicConfig,
     defaultMethod,
     i18nFields,
-    i18n.resolvedLanguage,
     registerContextProps,
     defaultLanguageConfig,
     t

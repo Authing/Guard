@@ -23,7 +23,7 @@ import SubmitButton from '../../SubmitButton'
 
 import { Agreement } from '../../Type/application'
 
-import { getVersion, resolvedLanguage } from '../../_utils'
+import { getVersion } from '../../_utils'
 
 import { fieldRequiredRule } from '../../_utils'
 
@@ -75,6 +75,8 @@ interface LoginWithADProps {
 
 export const LoginWithAD = (props: LoginWithADProps) => {
   const { agreements, onLoginFailed, onLoginSuccess } = props
+
+  const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
 
   const [acceptedAgreements, setAcceptedAgreements] = useState(false)
 

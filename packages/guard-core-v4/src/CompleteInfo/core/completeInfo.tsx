@@ -92,6 +92,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
 
   const loadInitCountryList = useCallback(async () => {
     const { data } = await get('/api/v2/country-list')
+    const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
 
     const countryMap = i18n.resolvedLanguage === 'zh-CN' ? data?.zh : data?.en
 

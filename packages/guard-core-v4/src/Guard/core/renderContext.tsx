@@ -278,8 +278,7 @@ export const RenderContext: React.FC<{
         },
         setI18nInit
       )
-
-      setDefaultLanguageConfig(i18n.resolvedLanguage as Lang)
+      setDefaultLanguageConfig((i18n.resolvedLanguage || i18n.language) as Lang)
     }
   }, [defaultMergedConfig, guardPageConfig, publicConfig, setI18nInit])
 
@@ -358,7 +357,6 @@ export const RenderContext: React.FC<{
       defaultLanguageConfig,
       tenantInstance
     ]
-
     return !list.includes(undefined) && !list.includes(false)
   }, [
     appId,

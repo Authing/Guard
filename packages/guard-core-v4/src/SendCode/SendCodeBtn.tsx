@@ -65,6 +65,8 @@ export const SendCodeBtn: React.FC<SendCodeProps> = props => {
     setSent,
     ...buttonProps
   } = props
+  const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
+
   const { enabled, send, countDown } = useSentCounter(setSent)
   const [loading, setLoading] = useState(false)
   const disabled = useMemo(() => {
@@ -90,7 +92,7 @@ export const SendCodeBtn: React.FC<SendCodeProps> = props => {
       {...buttonProps}
       className={`${
         buttonProps.type ?? 'authing-g2-send-code-btn g2-loading-btn-center'
-      } ${i18n.resolvedLanguage === 'ja-JP' ? 'send-code-btn-jp' : ''}`}
+      } ${resolvedLanguage === 'ja-JP' ? 'send-code-btn-jp' : ''}`}
       disabled={disabled}
       loading={loading}
       onClick={onClick}

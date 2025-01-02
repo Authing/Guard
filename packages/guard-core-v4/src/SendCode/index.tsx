@@ -4,7 +4,7 @@ import { React } from 'shim-react'
 
 import { SendCodeBtn } from './SendCodeBtn'
 
-import { i18n, resolvedLanguage } from '../_utils/locales'
+import { i18n } from '../_utils/locales'
 
 import './style.less'
 
@@ -30,6 +30,9 @@ export const SendCode: React.FC<SendPhoneCodeProps> = ({
   ...inputProps
 }) => {
   const { t } = useTranslation()
+
+  const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
+
   return (
     <>
       <Row justify="space-between" align="middle">

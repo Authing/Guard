@@ -11,7 +11,7 @@ import { GuardButton } from '../../../GuardButton'
 import { IconFont } from '../../../IconFont'
 import { useTranslation } from 'react-i18next'
 import { requestClient } from '../../../_utils/http'
-import { getVersion, resolvedLanguage } from '../../../_utils'
+import { getVersion, i18n } from '../../../_utils'
 
 interface LoginWithPasskeyProps {
   onLoginSuccess: any
@@ -22,6 +22,8 @@ const { useCallback } = React
 
 export const PasskeyButton = (props: LoginWithPasskeyProps) => {
   const { onLoginFailed, onLoginSuccess } = props
+  const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
+
   const publicConfig = useGuardPublicConfig()
   const [abortController, setAbortController] = useState<AbortController>()
   const [loading, setLoading] = useState<boolean>(false)
