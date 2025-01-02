@@ -185,6 +185,9 @@ const LoginWithVerifyCode = (props: any) => {
               await form.validateFields(['identify'])
               await form.validateFields(['captchaCode'])
             }}
+            onSendCodeAfter={() => {
+              setVerifyCodeUrl(getCaptchaUrl(config.host!))
+            }}
           />
         )
       }
@@ -217,6 +220,9 @@ const LoginWithVerifyCode = (props: any) => {
               onSendCodeBefore={async () => {
                 await form.validateFields(['identify'])
                 await form.validateFields(['captchaCode'])
+              }}
+              onSendCodeAfter={() => {
+                setVerifyCodeUrl(getCaptchaUrl(config.host!))
               }}
             />
           )}

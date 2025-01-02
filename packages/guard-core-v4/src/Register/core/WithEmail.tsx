@@ -317,6 +317,9 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
               await form.validateFields(['account'])
               await form.validateFields(['captchaCode'])
             }}
+            onSendCodeAfter={() =>
+              setVerifyCodeUrl(getCaptchaUrl(config.host!))
+            }
           />
         )
       } else {
@@ -344,6 +347,9 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
               await form.validateFields(['account'])
               await form.validateFields(['captchaCode'])
             }}
+            onSendCodeAfter={() =>
+              setVerifyCodeUrl(getCaptchaUrl(config.host!))
+            }
           />
         )
       }

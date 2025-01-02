@@ -576,6 +576,9 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
               await form.validateFields(['identify'])
               await form.validateFields(['captchaCode'])
             }}
+            onSendCodeAfter={() =>
+              setVerifyCodeUrl(getCaptchaUrl(config.host!))
+            }
           />
         )
       }
@@ -607,6 +610,9 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
                 await form.validateFields(['identify'])
                 await form.validateFields(['captchaCode'])
               }}
+              onSendCodeAfter={() =>
+                setVerifyCodeUrl(getCaptchaUrl(config.host!))
+              }
             />
           )}
           {currentMethod === InputMethod.EmailCode && (
