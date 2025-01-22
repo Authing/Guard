@@ -79,7 +79,7 @@ export const MFAFace = (props: any) => {
     const cdnBaseWithProtocol =
       cdnBase.startsWith('http://') || cdnBase.startsWith('https://')
         ? cdnBase
-        : `${currentProtocol}//${cdnBase}`
+        : `${currentProtocol}${cdnBase}`
     // 载入 cdn
     getCurrentFaceDetectionNet().loadFromUri(
       `${cdnBaseWithProtocol}/face-api/v1/tiny_face_detector_model-weights_manifest.json`
