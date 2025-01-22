@@ -74,9 +74,15 @@ export const MFAFace = (props: any) => {
   const _FACE_SCORE = publicConfig?.mfa?.faceScore ?? FACE_SCORE
   // 预加载数据
   useEffect(() => {
+    //  兼容 私有化配置不带协议的情况
+    const currentProtocol = window.location.protocol
+    const cdnBaseWithProtocol =
+      cdnBase.startsWith('http://') || cdnBase.startsWith('https://')
+        ? cdnBase
+        : `${currentProtocol}//${cdnBase}`
     // 载入 cdn
     getCurrentFaceDetectionNet().loadFromUri(
-      `${cdnBase}/face-api/v1/tiny_face_detector_model-weights_manifest.json`
+      `${cdnBaseWithProtocol}/face-api/v1/tiny_face_detector_model-weights_manifest.json`
     )
 
     if (faceState !== 'identifying') {
