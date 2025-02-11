@@ -60,13 +60,12 @@ export const ChangeLanguage = (props: {
 
   const currentLng = useMemo<Lang>(() => {
     const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
-
     if (Object.keys(LngTextMapping).includes(resolvedLanguage)) {
       return resolvedLanguage as Lang
     } else {
       return (fallbackLng(resolvedLanguage)[0] || 'en-US') as Lang
     }
-  }, [i18n])
+  }, [i18n.resolvedLanguage, i18n.language])
 
   const currentLngText = useMemo(() => {
     return (
