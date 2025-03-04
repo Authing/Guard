@@ -24,7 +24,8 @@ import {
   SocialConnectionItem,
   SocialConnectionProvider
 } from '../../Type/application'
-import { useIsSpecialBrowser } from '..'
+import { getUserRegisterParams, useIsSpecialBrowser } from '..'
+import { isArray } from 'lodash'
 const { useRef, useCallback, useEffect } = React
 
 export interface PhoneValidResult {
@@ -205,6 +206,14 @@ export const useMethod: (params: {
 }) => any = ({ config, publicConfig }) => {
   const isSpecialBrowser = useIsSpecialBrowser()
 
+  const keyValueArray = getUserRegisterParams()
+
+  const customData = keyValueArray.reduce((acc: any, curr) => {
+    acc[curr.key] = curr.value
+    return acc
+  }, {})
+  const hiddenIdp = customData.hiddenIdp ?? []
+
   const noLoginMethods = !config?.loginMethods?.length
   let enterpriseConnectionObjs: ApplicationConfig['identityProviders']
   if (config.enterpriseConnections) {
@@ -307,6 +316,17 @@ export const useMethod: (params: {
         return true
       }
     })
+    // hep 定制
+    .filter(item => {
+      // 支持 array 或 string 可匹配项有 provider 和 id
+      if (isArray(hiddenIdp)) {
+        if (hiddenIdp.includes(item.provider) || hiddenIdp.includes(item.id))
+          return false
+      } else {
+        return hiddenIdp !== item.provider && hiddenIdp !== item.id
+      }
+      return true
+    })
 
   const guardWindow = getGuardWindow()
 
@@ -318,9 +338,18 @@ export const useMethod: (params: {
     enterpriseConnectionObjs = []
   }
   /** 过滤掉企业身份源中开启内嵌模式的身份源连接 如：企业微信自建 钉钉 */
-  enterpriseConnectionObjs = enterpriseConnectionObjs.filter(
-    item => !item?.embedded
-  )
+  enterpriseConnectionObjs = enterpriseConnectionObjs
+    .filter(item => !item?.embedded)
+    // hep 定制
+    .filter(item => {
+      // 支持 array 或 string 可匹配项有 provider 和 id
+      if (isArray(hiddenIdp)) {
+        if (hiddenIdp.includes(item.id)) return false
+      } else {
+        return hiddenIdp !== item.id
+      }
+      return true
+    })
 
   const isNoMethod: boolean =
     noLoginMethods &&

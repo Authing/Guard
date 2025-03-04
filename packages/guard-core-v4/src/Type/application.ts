@@ -316,6 +316,7 @@ export interface ApplicationConfig {
   identifier: string
   requestHostname: string
   identityProviders: {
+    id: string
     identifier: string
     protocol: Protocol
     displayName: string

@@ -66,7 +66,7 @@ export const ChangeLanguage = (props: {
     } else {
       return (fallbackLng(resolvedLanguage)[0] || 'en-US') as Lang
     }
-  }, [i18n])
+  }, [i18n.resolvedLanguage, i18n.language])
 
   const currentLngText = useMemo(() => {
     return (
