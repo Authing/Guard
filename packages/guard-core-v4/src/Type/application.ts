@@ -20,7 +20,8 @@ export enum LoginMethods {
   WECHATWORKAGENCYQRCONNECT = 'wechatwork-agency-qrcode', // 代开发形式的内部应用
   DingTalkQrcode = 'dingtalk-qrcode', //钉钉扫码
   Passkey = 'passkey', // passkey
-  ZJZWFWQrcode = 'zjzwfw-qrcode' // 浙江政务钉
+  ZJZWFWQrcode = 'zjzwfw-qrcode', // 浙江政务钉
+  ZZDingQrcode = 'zzding' //浙政钉
 }
 
 export enum OIDCConnectionMode {

@@ -89,6 +89,7 @@ import { getGuardWindow } from '../Guard/core/useAppendConfig'
 
 import { LoginWithDingTalkQrcode } from './core/withDingTalkQrcode'
 import { LoginWithZjQrcode } from './core/withZjQrcode'
+import { LoginWithZZDingQrcode } from './core/withZZDingQrcode'
 
 const { useEffect, useLayoutEffect, useState, useRef, useMemo, useCallback } =
   React
@@ -109,7 +110,8 @@ const qrcodeWays = [
   LoginMethods.WECHATWORKAGENCYQRCONNECT,
   LoginMethods.WECHATWORKQRCONNECTOFAUTHINGAGENCY,
   LoginMethods.DingTalkQrcode,
-  LoginMethods.ZJZWFWQrcode
+  LoginMethods.ZJZWFWQrcode,
+  LoginMethods.ZZDingQrcode
 ]
 /**
  * 作为内嵌登录方式的身份源链接
@@ -121,7 +123,8 @@ const renderQrcodeByIdentify = [
   LoginMethods.WechatworkCorpQrconnect,
   LoginMethods.WECHATWORKAGENCYQRCONNECT,
   LoginMethods.WECHATWORKQRCONNECTOFAUTHINGAGENCY,
-  LoginMethods.ZJZWFWQrcode
+  LoginMethods.ZJZWFWQrcode,
+  LoginMethods.ZZDingQrcode
 ] as const
 
 type QrCodeUnionType = (typeof renderQrcodeByIdentify)[number]
@@ -234,7 +237,25 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
 
   const client = useGuardAuthClient()
 
-  const qrcodeTabsSettings = publicConfig?.qrcodeTabsSettings
+  const qrcodeTabsSettings = {
+    ...publicConfig?.qrcodeTabsSettings,
+    [LoginMethods.ZZDingQrcode]: [
+      {
+        id: '667b8e59c27fda9b3ea526e5',
+        title: '浙政钉',
+        displayName: '浙政钉',
+        isDefault: true,
+        QRConfig: {
+          agentId: '',
+          corpId: 'ding3a44da61efea86b435c2f4657eb6378f',
+          clientId: 'dingdxvf9ekwokkir6ev',
+          redirectUrl:
+            'https://www.id.zjedu.gov.cn/api/v1/qrcode/dingding/verify',
+          identifier: 'dingding'
+        }
+      }
+    ]
+  }
 
   const socialConnections = publicConfig?.socialConnections || []
 
@@ -267,7 +288,10 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
   let publicKey = config?.publicKey as string
 
   // let autoRegister = props.config?.autoRegister
-  let ms = config?.loginMethods
+  let ms = config?.loginMethods && [
+    ...config?.loginMethods,
+    LoginMethods.ZZDingQrcode
+  ]
 
   const firstInputWay = inputWays.filter(way => ms?.includes(way))[0]
 
@@ -300,6 +324,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       return true
     }
   }, [ms, qrcodeTabsSettings])
+  console.log(hiddenTab, 'hiddenTab')
 
   const defaultQrCodeWay = useMemo(() => {
     // 如果存在多账号的二维码方式
@@ -785,7 +810,27 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     },
     [canLoop, multipleInstance, onLoginSuccess, t]
   )
-
+  const ZZDingQrTab = useCallback(
+    (item: QrCodeItem) => {
+      return (
+        <Tabs.TabPane
+          key={LoginMethods.ZZDingQrcode + item.id}
+          tab={item.title ?? '浙政钉扫码登录'}
+        >
+          <LoginWithZZDingQrcode
+            qrCodeScanOptions={{
+              extIdpConnId: item.id
+            }}
+            qrConfig={item.QRConfig}
+            multipleInstance={multipleInstance}
+            onLoginSuccess={onLoginSuccess}
+            canLoop={canLoop}
+          />
+        </Tabs.TabPane>
+      )
+    },
+    [canLoop, multipleInstance, onLoginSuccess, t]
+  )
   const WechatMpQrTab = useCallback(
     (item: QrCodeItem) => {
       return (
@@ -931,7 +976,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
           type: LoginMethods.WECHATWORKAGENCYQRCONNECT
         }),
       [LoginMethods.DingTalkQrcode]: DTQrTab,
-      [LoginMethods.ZJZWFWQrcode]: ZjQrTab
+      [LoginMethods.ZJZWFWQrcode]: ZjQrTab,
+      [LoginMethods.ZZDingQrcode]: ZZDingQrTab
     }
   }, [AppQrTab, WechatMpQrTab, WxMiniQrTab])
 
@@ -950,7 +996,6 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         }
       }
     } = {}
-
     Object.keys(qrcodeTabsSettings).forEach(key => {
       qrcodeTabsSettings[key as LoginMethods].forEach(item => {
         qrCodeMap[item.id] = {
@@ -961,9 +1006,14 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         }
       })
     })
+    console.log(qrcodeTabsSettings, qrCodeMap, 'qrcodeTabsSettings')
 
     const loginMethodsSort =
-      publicConfig.qrCodeSortConfig?.loginMethodsSort || []
+      (publicConfig.qrCodeSortConfig?.loginMethodsSort && [
+        '667b8e59c27fda9b3ea526e5',
+        ...publicConfig.qrCodeSortConfig?.loginMethodsSort
+      ]) ||
+      []
 
     const sortWithType = (loginMethodsSort || []).map(key => {
       return {
@@ -992,8 +1042,11 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     defaultMethod
   ])
 
+  console.log(CodeLoginComponent, 'CodeLoginComponent')
+
   useEffect(() => {
     const onPostMessage = (evt: MessageEvent) => {
+      console.log(evt, 'event')
       // 去掉钉钉和企微域下的postmessage处理 由他们内部自己监听的message控制 避免重复触发
       /** 是否存在开启内嵌模式的身份源 */
       const isEmbeddedIdp = socialConnections.filter(conn => conn.embedded)
