@@ -7,6 +7,7 @@ import phone from 'phone'
 import {
   isDingtalkBrowser,
   isLarkBrowser,
+  isMobile,
   isQQBrowser,
   // isQQBrowser,
   isQQBuiltInBrowser,
@@ -327,7 +328,13 @@ export const useMethod: (params: {
       }
       return true
     })
-
+    .filter(item => {
+      // hep 非微信内置浏览器 h5 页面 不展示 微信pc扫码登录
+      if (!isWeChatBrowser() && isMobile()) {
+        return ![SocialConnectionProvider.WECHATPC].includes(item.provider)
+      }
+      return true
+    })
   const guardWindow = getGuardWindow()
 
   if (!guardWindow) return
