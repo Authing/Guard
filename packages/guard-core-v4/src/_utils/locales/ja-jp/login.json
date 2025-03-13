@@ -131,5 +131,8 @@
     "successTip": "パスワードのリセットに成功しました",
     "backLogin": "秒ログインページが自動的にジャンプされます"
   },
-  "wecomScanLogin": "エンタープライズ WeChat ログイン"
+  "wecomScanLogin": "エンタープライズ WeChat ログイン",
+  "passwordRuleTips": "パスワードには、以下を含める必要があります：",
+  "characterTypes": "Include at least {{x}} character types"
+
 }

@@ -14,7 +14,7 @@ export const useGuardIconfont = (cdnBase?: string, setError?: any) => {
     try {
       // const res = await Promise.race([Axios(`${cdnBase}/svg-string/guard?v=1`)])
 
-      const response = await fetch(`${cdnBase}/svg-string/guard?v=1`)
+      const response = await fetch(`${cdnBase}/svg-string/guard?v=2`)
       const body = await response.text()
       const guardWindow = getGuardWindow()
 
