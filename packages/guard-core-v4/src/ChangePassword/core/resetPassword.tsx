@@ -126,7 +126,7 @@ export const GuardResetPassword = () => {
           autoComplete="off"
         >
           <Form.Item
-            className="authing-g2-input-form-password"
+            className="authing-g2-input-form"
             name="password"
             validateTrigger={['onBlur']}
             rules={[
@@ -179,7 +179,7 @@ export const GuardResetPassword = () => {
             />
           </Form.Item>
           <Form.Item
-            className="authing-g2-input-form-password-repeat"
+            className="authing-g2-input-form"
             name="repeatPassword"
             validateFirst={true}
             rules={[

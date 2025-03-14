@@ -222,7 +222,7 @@ export const GuardForgetPassword: React.FC = () => {
           autoComplete="off"
         >
           <Form.Item
-            className="authing-g2-input-form-password"
+            className="authing-g2-input-form"
             name="password"
             rules={rules()}
             help={
@@ -244,7 +244,7 @@ export const GuardForgetPassword: React.FC = () => {
             />
           </Form.Item>
           <Form.Item
-            className="authing-g2-input-form-password-repeat"
+            className="authing-g2-input-form"
             name="repeatPassword"
             validateFirst={true}
             rules={[
