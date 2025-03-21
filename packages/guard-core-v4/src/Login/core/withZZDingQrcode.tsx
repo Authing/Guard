@@ -25,14 +25,12 @@ import { getVersion } from '../../_utils/getVersion'
 
 const version = getVersion()
 
-const { useCallback, useEffect, useState } = React
+const { useEffect, useState } = React
 
 export const LoginWithZZDingQrcode = (props: any) => {
   const { qrConfig, id } = props
 
-  const DTLogin = window.DTFrameLogin
-
-  const [loading, setLoading] = useState(false)
+  const [loading] = useState(false)
 
   const { get } = useGuardHttpClient()
 
@@ -71,7 +69,8 @@ export const LoginWithZZDingQrcode = (props: any) => {
         }
       }
     }
-    window.addEventListener('message', async event => {
+
+    const messageEvent = async (event: { data: { code: any } }) => {
       const { code } = event.data
       if (code) {
         try {
@@ -116,7 +115,14 @@ export const LoginWithZZDingQrcode = (props: any) => {
         // 这里一般需要展示登录失败的具体原因
         console.log(event)
       }
-    })
+    }
+    if (!loading) {
+      window.addEventListener('message', messageEvent, false)
+    }
+
+    return () => {
+      window.removeEventListener('message', messageEvent, false)
+    }
   }, [])
   return (
     <div className="wecom_container">
