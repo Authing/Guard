@@ -51,7 +51,8 @@ import {
   getPasswordIdentify,
   getSortTabs,
   isDingTalkOrigin,
-  isWeComOrigin
+  isWeComOrigin,
+  isZZDingOrigin
 } from '../_utils'
 
 import { LoginWithVerifyCode, SpecifyCodeMethods } from './core/withVerifyCode'
@@ -237,25 +238,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
 
   const client = useGuardAuthClient()
 
-  const qrcodeTabsSettings = {
-    ...publicConfig?.qrcodeTabsSettings,
-    [LoginMethods.ZZDingQrcode]: [
-      {
-        id: '667b8e59c27fda9b3ea526e5',
-        title: '浙政钉',
-        displayName: '浙政钉',
-        isDefault: true,
-        QRConfig: {
-          agentId: '',
-          corpId: 'ding3a44da61efea86b435c2f4657eb6378f',
-          clientId: 'dingdxvf9ekwokkir6ev',
-          redirectUrl:
-            'https://www.id.zjedu.gov.cn/api/v1/qrcode/dingding/verify',
-          identifier: 'dingding'
-        }
-      }
-    ]
-  }
+  const qrcodeTabsSettings = publicConfig?.qrcodeTabsSettings
 
   const socialConnections = publicConfig?.socialConnections || []
 
@@ -812,6 +795,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
   )
   const ZZDingQrTab = useCallback(
     (item: QrCodeItem) => {
+      console.log(item, 'item')
       return (
         <Tabs.TabPane
           key={LoginMethods.ZZDingQrcode + item.id}
@@ -1009,11 +993,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     console.log(qrcodeTabsSettings, qrCodeMap, 'qrcodeTabsSettings')
 
     const loginMethodsSort =
-      (publicConfig.qrCodeSortConfig?.loginMethodsSort && [
-        '667b8e59c27fda9b3ea526e5',
-        ...publicConfig.qrCodeSortConfig?.loginMethodsSort
-      ]) ||
-      []
+      publicConfig.qrCodeSortConfig?.loginMethodsSort || []
 
     const sortWithType = (loginMethodsSort || []).map(key => {
       return {
@@ -1035,21 +1015,15 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         ? QrCodeTabMap[qrCodeMap[key].type]?.(qrCodeMap[key])
         : QrCodeTabMap[LoginMethods.AppQr]()
     })
-  }, [
-    QrCodeTabMap,
-    qrcodeTabsSettings,
-    publicConfig.qrCodeSortConfig?.loginMethodsSort,
-    defaultMethod
-  ])
-
-  console.log(CodeLoginComponent, 'CodeLoginComponent')
+  }, [QrCodeTabMap, qrcodeTabsSettings, publicConfig, defaultMethod])
 
   useEffect(() => {
     const onPostMessage = (evt: MessageEvent) => {
-      console.log(evt, 'event')
       // 去掉钉钉和企微域下的postmessage处理 由他们内部自己监听的message控制 避免重复触发
       /** 是否存在开启内嵌模式的身份源 */
       const isEmbeddedIdp = socialConnections.filter(conn => conn.embedded)
+      console.log(evt, isEmbeddedIdp, 'event')
+
       /** 处于扫码登录方式 */
       if (isEmbeddedIdp.length > 0 && qrcodeWays.includes(loginWay)) {
         if (
@@ -1069,6 +1043,13 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
             [SocialConnectionProvider.DINGTALK].includes(idp.provider)
           ) &&
           isDingTalkOrigin(evt.origin)
+        ) {
+          return
+        }
+
+        if (
+          isEmbeddedIdp.find(idp => ['zzding'].includes(idp.provider)) &&
+          isZZDingOrigin(evt.origin)
         ) {
           return
         }

@@ -941,6 +941,10 @@ export const isWeComOrigin = (event: MessageEvent) => {
 export const isDingTalkOrigin = (origin: string) => {
   return origin === 'https://login.dingtalk.com'
 }
+// 浙政钉域check https://open-portal.on-premises.dingtalk.com/portal/#/helpdoc?apiType=DEV_GUIDE&docKey=3355049
+export const isZZDingOrigin = (origin: string) => {
+  return origin === 'https://login-pro.ding.zj.gov.cn'
+}
 
 export * from './popupCenter'
 
