@@ -18,7 +18,11 @@ import { getVersion } from '../../../_utils'
 
 import { popupCenter } from '../../../_utils'
 
-import { useGuardTenantId, useIsSpecialBrowser } from '../../../_utils/context'
+import {
+  useGuardHttpClient,
+  useGuardTenantId,
+  useIsSpecialBrowser
+} from '../../../_utils/context'
 
 import { SocialConnectionEvent } from '../../../_utils/hooks'
 
@@ -48,6 +52,8 @@ export const IdpButton = (props: any) => {
   // TODO: 能不能加个类型
   const { i, appId, appHost, isHost } = props
 
+  const httpClient = useGuardHttpClient()
+
   const { t } = useTranslation()
 
   const tenantId = useGuardTenantId()
@@ -57,11 +63,14 @@ export const IdpButton = (props: any) => {
   const isSpecialBrowser = useIsSpecialBrowser()
 
   const renderBtn = useCallback(() => {
+    const device_id = httpClient.getHeaders()['x-authing-device-id']
+
     const query: Record<string, any> = {
       from_guard: '1',
       app_id: appId,
       guard_version: `Guard@${version}`,
-      ...(tenantId && { tenant_id: tenantId })
+      ...(tenantId && { tenant_id: tenantId }),
+      ...(device_id && { device_id: device_id })
     }
 
     if (isHost) {

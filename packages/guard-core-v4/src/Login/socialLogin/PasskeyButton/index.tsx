@@ -32,7 +32,9 @@ export const PasskeyButton = (props: LoginWithPasskeyProps) => {
   const { host } = useGuardFinallyConfig()
   const appId = useGuardAppId()
   const version = getVersion()
-  const { responseIntercept } = useGuardHttpClient()
+  const httpClient = useGuardHttpClient()
+
+  const { responseIntercept } = httpClient
 
   const { t } = useTranslation()
 
@@ -69,7 +71,8 @@ export const PasskeyButton = (props: LoginWithPasskeyProps) => {
           'x-authing-app-id': appId,
           'x-authing-sdk-version': version,
           'x-authing-request-from': `Guard@${version}`,
-          'x-mac-address': getMacAddressHeader()
+          'x-mac-address': getMacAddressHeader(),
+          'x-authing-device-id': httpClient.getHeaders()['x-authing-device-id']
         }
       })
       const initializeJson = await initializeRes.json()
@@ -103,7 +106,8 @@ export const PasskeyButton = (props: LoginWithPasskeyProps) => {
           'x-authing-app-id': appId,
           'x-authing-sdk-version': version,
           'x-authing-request-from': `Guard@${version}`,
-          'x-mac-address': getMacAddressHeader()
+          'x-mac-address': getMacAddressHeader(),
+          'x-authing-device-id': httpClient.getHeaders()['x-authing-device-id']
         }
       })
       const finalizeJson = await finalizeRes.json()
