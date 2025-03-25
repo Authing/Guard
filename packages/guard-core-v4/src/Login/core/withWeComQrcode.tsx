@@ -41,7 +41,9 @@ export const LoginWithWeComQrcode = (props: any) => {
 
   const [loading, setLoading] = useState(true)
 
-  const { get } = useGuardHttpClient()
+  const httpClient = useGuardHttpClient()
+
+  const { get } = httpClient
 
   const tenantId = useGuardTenantId()
 
@@ -58,11 +60,13 @@ export const LoginWithWeComQrcode = (props: any) => {
   const isSpecialBrowser = useIsSpecialBrowser()
 
   const fetchQrcode = useCallback(async () => {
+    const device_id = httpClient.getHeaders()['x-authing-device-id']
     const query: Record<string, any> = {
       from_guard: '1',
       app_id: appId,
       guard_version: `Guard@${version}`,
-      ...(tenantId && { tenant_id: tenantId })
+      ...(tenantId && { tenant_id: tenantId }),
+      ...(device_id && { device_id: device_id })
     }
     if (config?.isHost) {
       delete query.from_guard

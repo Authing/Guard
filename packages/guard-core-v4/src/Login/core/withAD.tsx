@@ -99,7 +99,9 @@ export const LoginWithAD = (props: LoginWithADProps) => {
 
   const appId = useGuardAppId()
 
-  const { responseIntercept } = useGuardHttpClient()
+  const httpClient = useGuardHttpClient()
+
+  const { responseIntercept } = httpClient
 
   const { t } = useTranslation()
 
@@ -172,7 +174,8 @@ export const LoginWithAD = (props: LoginWithADProps) => {
           'x-authing-userpool-id': publicConfig.userPoolId,
           'x-authing-app-id': appId,
           'x-authing-sdk-version': version,
-          'x-authing-request-from': `Guard@${version}`
+          'x-authing-request-from': `Guard@${version}`,
+          'x-authing-device-id': httpClient.getHeaders()['x-authing-device-id']
         }
       })
 

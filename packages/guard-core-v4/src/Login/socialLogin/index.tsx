@@ -19,6 +19,7 @@ import './style.less'
 import { useMediaSize, SocialConnectionEvent } from '../../_utils/hooks'
 
 import {
+  useGuardHttpClient,
   useGuardPublicConfig,
   useGuardTenantId,
   useIsSpecialBrowser
@@ -63,7 +64,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
 }) => {
   const noLoginMethods = !config?.loginMethods?.length
 
-  const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
+  const httpClient = useGuardHttpClient()
 
   const publicConfig = useGuardPublicConfig()
 
@@ -95,10 +96,13 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
 
     const version = getVersion()
 
+    const device_id = httpClient.getHeaders()['x-authing-device-id']
+
     const query: Record<string, any> = {
       from_guard: '1',
       app_id: appId,
-      guard_version: `Guard@${version}`
+      guard_version: `Guard@${version}`,
+      ...(device_id && { device_id: device_id })
     }
 
     if (tenantId) {
