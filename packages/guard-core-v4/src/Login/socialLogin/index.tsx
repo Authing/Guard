@@ -40,6 +40,7 @@ import { ApplicationConfig, SocialConnectionItem } from '../../Type/application'
 import { StoreInstance } from '../../Guard/core/hooks/useMultipleAccounts'
 
 import { PasskeyButton } from './PasskeyButton'
+import { useDeviceId } from '../../Guard/core/hooks/useDeviceId'
 export interface SocialLoginProps {
   appId: string
   config: GuardLocalConfig
@@ -64,7 +65,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
 }) => {
   const noLoginMethods = !config?.loginMethods?.length
 
-  const httpClient = useGuardHttpClient()
+  const deviceId = useDeviceId()
 
   const publicConfig = useGuardPublicConfig()
 
@@ -96,13 +97,11 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
 
     const version = getVersion()
 
-    const device_id = httpClient.getHeaders()['x-authing-device-id']
-
     const query: Record<string, any> = {
       from_guard: '1',
       app_id: appId,
       guard_version: `Guard@${version}`,
-      ...(device_id && { device_id: device_id })
+      ...(deviceId && { device_id: deviceId })
     }
 
     if (tenantId) {

@@ -48,6 +48,7 @@ import { ErrorCode } from '../../_utils/GuardErrorCode'
 import { getCaptchaUrl } from '../../_utils/getCaptchaUrl'
 
 import { GraphicVerifyCode } from './withPassword/GraphicVerifyCode'
+import { useDeviceId } from '../../Guard/core/hooks/useDeviceId'
 
 const { useEffect, useRef, useState } = React
 
@@ -99,9 +100,9 @@ export const LoginWithAD = (props: LoginWithADProps) => {
 
   const appId = useGuardAppId()
 
-  const httpClient = useGuardHttpClient()
+  const deviceId = useDeviceId()
 
-  const { responseIntercept } = httpClient
+  const { responseIntercept } = useGuardHttpClient()
 
   const { t } = useTranslation()
 
@@ -109,16 +110,7 @@ export const LoginWithAD = (props: LoginWithADProps) => {
 
   let client = useGuardAuthClient()
 
-  // const { post } = useGuardHttpClient()
-
   const [form] = Form.useForm()
-
-  // useLoginAccountBackFill({
-  //   form,
-  //   way: 'ad',
-  //   formKey: 'account',
-  //   backfillData,
-  // })
 
   let submitButtonRef = useRef<any>(null)
 
@@ -175,7 +167,7 @@ export const LoginWithAD = (props: LoginWithADProps) => {
           'x-authing-app-id': appId,
           'x-authing-sdk-version': version,
           'x-authing-request-from': `Guard@${version}`,
-          'x-authing-device-id': httpClient.getHeaders()['x-authing-device-id']
+          ...(deviceId && { 'x-authing-device-id': deviceId })
         }
       })
 

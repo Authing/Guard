@@ -28,6 +28,7 @@ import { SocialConnectionEvent } from '../../../_utils/hooks'
 
 import { i18n } from '../../../_utils/locales'
 import { baseLoginPathMapping, loginUrlFieldMapping } from '../../interface'
+import { useDeviceId } from '../../../Guard/core/hooks/useDeviceId'
 
 const { useCallback } = React
 
@@ -35,7 +36,7 @@ export const IdpButton = (props: any) => {
   // TODO: 能不能加个类型
   const { i, appId, appHost, isHost } = props
 
-  const httpClient = useGuardHttpClient()
+  const deviceId = useDeviceId()
 
   const { t } = useTranslation()
 
@@ -46,14 +47,12 @@ export const IdpButton = (props: any) => {
   const isSpecialBrowser = useIsSpecialBrowser()
 
   const renderBtn = useCallback(() => {
-    const device_id = httpClient.getHeaders()['x-authing-device-id']
-
     const query: Record<string, any> = {
       from_guard: '1',
       app_id: appId,
       guard_version: `Guard@${version}`,
       ...(tenantId && { tenant_id: tenantId }),
-      ...(device_id && { device_id: device_id })
+      ...(deviceId && { device_id: deviceId })
     }
 
     if (isHost) {
@@ -162,6 +161,6 @@ export const IdpButton = (props: any) => {
         </GuardButton>
       )
     }
-  }, [appId, i, t, isHost, appHost, tenantId])
+  }, [appId, i, t, isHost, appHost, tenantId, deviceId])
   return renderBtn()
 }

@@ -27,6 +27,7 @@ import { i18n } from '../../_utils/locales'
 import { useGuardAuthClient } from '../../Guard/authClient'
 
 import { getVersion } from '../../_utils/getVersion'
+import { useDeviceId } from '../../Guard/core/hooks/useDeviceId'
 
 const version = getVersion()
 
@@ -41,10 +42,8 @@ export const LoginWithWeComQrcode = (props: any) => {
 
   const [loading, setLoading] = useState(true)
 
-  const httpClient = useGuardHttpClient()
-
-  const { get } = httpClient
-
+  const { get } = useGuardHttpClient()
+  const deviceId = useDeviceId()
   const tenantId = useGuardTenantId()
 
   const appId = useGuardAppId()
@@ -60,13 +59,12 @@ export const LoginWithWeComQrcode = (props: any) => {
   const isSpecialBrowser = useIsSpecialBrowser()
 
   const fetchQrcode = useCallback(async () => {
-    const device_id = httpClient.getHeaders()['x-authing-device-id']
     const query: Record<string, any> = {
       from_guard: '1',
       app_id: appId,
       guard_version: `Guard@${version}`,
       ...(tenantId && { tenant_id: tenantId }),
-      ...(device_id && { device_id: device_id })
+      ...(deviceId && { device_id: deviceId })
     }
     if (config?.isHost) {
       delete query.from_guard
@@ -103,15 +101,14 @@ export const LoginWithWeComQrcode = (props: any) => {
         wwInstance.frame.contentWindow.postMessage('ask_usePostMessage', '*')
     }
   }, [
-    QRConfig.agentId,
-    QRConfig.corpId,
-    QRConfig.redirectUrl,
+    QRConfig,
     WwLogin,
     appId,
     config?.isHost,
     id,
     publicConfig?.cdnBase,
-    tenantId
+    tenantId,
+    deviceId
   ])
 
   useEffect(() => {
