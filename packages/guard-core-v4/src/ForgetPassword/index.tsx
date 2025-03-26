@@ -34,6 +34,7 @@ import { usePasswordErrorText } from '../_utils/useErrorText'
 import { ApiCode } from '../_utils/responseManagement/interface'
 
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
+import { CheckRules } from '../ValidatorRules/CheckRules'
 
 const { useRef, useState } = React
 
@@ -55,6 +56,7 @@ export const GuardForgetPassword: React.FC = () => {
   const { changeModule } = useGuardModule()
   const [controlShow, setControlShow] = useState(true)
   const [policyStrength, setPolicyStrength] = useState(0)
+  const [ruleResults, setRuleResults] = useState<any>([])
   const [customPasswordStrength, setCustomPasswordStrength] = useState({})
   const [phoneOrEmailText, setPhoneOrEmailText] = useState('')
   const { getPassWordUnsafeText, setPasswordErrorTextShow } =
@@ -140,7 +142,8 @@ export const GuardForgetPassword: React.FC = () => {
       customPasswordStrength,
       'onChange',
       t('login.resetPassword.pleaseInputPassword') as string,
-      userId
+      userId,
+      setRuleResults
     )
     return rule
   }
@@ -219,14 +222,13 @@ export const GuardForgetPassword: React.FC = () => {
           autoComplete="off"
         >
           <Form.Item
-            className="authing-g2-input-form-password"
+            className="authing-g2-input-form"
             name="password"
-            rules={
-              // {
-              //   required: true,
-              //   message: t('login.resetPassword.pleaseInputPassword'),
-              // },
-              rules()
+            rules={rules()}
+            help={
+              ruleResults.length > 0 ? (
+                <CheckRules ruleResults={ruleResults} />
+              ) : undefined
             }
           >
             <InputPasswordForget
@@ -242,7 +244,7 @@ export const GuardForgetPassword: React.FC = () => {
             />
           </Form.Item>
           <Form.Item
-            className="authing-g2-input-form-password-repeat"
+            className="authing-g2-input-form"
             name="repeatPassword"
             validateFirst={true}
             rules={[

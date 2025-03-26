@@ -321,7 +321,8 @@ export const getPasswordValidate = (
   strength: PasswordStrength = PasswordStrength.NoCheck,
   customPasswordStrength: any = {},
   fieldRequiredRuleMessage?: string,
-  userId?: string
+  userId?: string,
+  setRuleResults?: any
 ): Rule[] => {
   const { post } = getGuardHttp()
 
@@ -433,6 +434,7 @@ export const getPasswordValidate = (
         validateTrigger: 'onBlur',
         async validator(r, v) {
           if (!v || v?.length === 0) {
+            setRuleResults([])
             return Promise.reject(i18n.t('login.inputPwd'))
           } else {
             const res = await post('/api/v2/password/user-action/check', {
@@ -441,8 +443,10 @@ export const getPasswordValidate = (
             })
             if (res?.code === 200) {
               if (res?.data?.valid) {
+                setRuleResults([])
                 return Promise.resolve(true)
               } else {
+                setRuleResults(res?.data?.ruleResults || [])
                 return Promise.reject(res?.data?.message)
               }
             } else {
@@ -462,7 +466,8 @@ export const getPasswordValidateRules = (
   customPasswordStrength: any = {},
   customValidateTrigger?: string,
   fieldRequiredRuleMessage?: string,
-  userId?: string
+  userId?: string,
+  setRuleResults?: any
 ): Rule[] => {
   const { post } = getGuardHttp()
 
@@ -566,6 +571,7 @@ export const getPasswordValidateRules = (
         validateTrigger: customValidateTrigger,
         async validator(r, v) {
           if (!v || v?.length === 0) {
+            setRuleResults([])
             return Promise.reject(i18n.t('login.inputPwd'))
           } else {
             const res = await post('/api/v2/password/user-action/check', {
@@ -574,8 +580,10 @@ export const getPasswordValidateRules = (
             })
             if (res?.code === 200) {
               if (res?.data?.valid) {
+                setRuleResults([])
                 return Promise.resolve(true)
               } else {
+                setRuleResults(res?.data?.ruleResults || [])
                 return Promise.reject(res?.data?.message)
               }
             } else {

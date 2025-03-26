@@ -1,0 +1,91 @@
+.g2-errror-check-rules {
+  color: #545968;
+  margin-top: 12px;
+  font-size: 14px;
+  padding: 12px;
+  border-radius: 4px;
+  border: 1px solid #eeeff1;
+  .g2-error-check-sub-rule {
+    margin-left: 36px;
+  }
+  .g2-error-check-rule-item {
+    display: flex;
+    align-items: flex-start;
+    line-height: 24px;
+    .g2-error-check-rule-icon {
+      position: relative;
+      color: #dfe1e5;
+      &.valid {
+        svg {
+          animation: valid 0.1s forwards;
+          animation-delay: 0.9s;
+        }
+        &::after {
+          content: '';
+          position: absolute;
+          top: 6.5px;
+          left: 1px;
+          animation: l11 1s forwards;
+          aspect-ratio: 1;
+          border-radius: 50%;
+          width: 12px;
+        }
+      }
+    }
+    .g2-error-check-rule-message {
+      margin-left: 8px;
+    }
+  }
+}
+
+@keyframes valid {
+  0% {
+    color: #89d1a7;
+  }
+  100% {
+    color: #89d1a7;
+  }
+}
+
+@keyframes l11 {
+  0% {
+    background: conic-gradient(#89d1a7 0, #dfe1e5 0);
+    opacity: 1;
+  }
+  12.5% {
+    background: conic-gradient(#89d1a7 45deg, #dfe1e5 46deg);
+    opacity: 1;
+  }
+  25% {
+    background: conic-gradient(#89d1a7 90deg, #dfe1e5 91deg);
+    opacity: 1;
+  }
+  37.5% {
+    background: conic-gradient(#89d1a7 135deg, #dfe1e5 136deg);
+    opacity: 1;
+  }
+  50% {
+    background: conic-gradient(#89d1a7 180deg, #dfe1e5 181deg);
+    opacity: 1;
+  }
+  62.5% {
+    background: conic-gradient(#89d1a7 225deg, #dfe1e5 226deg);
+    opacity: 1;
+  }
+  75% {
+    background: conic-gradient(#89d1a7 270deg, #dfe1e5 271deg);
+    opacity: 1;
+  }
+  87.5% {
+    background: conic-gradient(#89d1a7 315deg, #dfe1e5 316deg);
+    opacity: 1;
+  }
+  99% {
+    background: conic-gradient(#89d1a7 360deg, #dfe1e5 360deg);
+    opacity: 1;
+  }
+  100% {
+    background: conic-gradient(#89d1a7 360deg, #dfe1e5 360deg);
+    opacity: 0;
+  }
+}

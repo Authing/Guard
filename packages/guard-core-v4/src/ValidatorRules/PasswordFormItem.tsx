@@ -5,6 +5,7 @@ import { React } from 'shim-react'
 import { getPasswordValidate } from '../_utils'
 
 import { useGuardInitData, useGuardPublicConfig } from '../_utils/context'
+import { CheckRules } from './CheckRules'
 
 export interface PasswordFormItemProps extends FormItemProps {}
 
@@ -14,6 +15,8 @@ export interface ExPasswordFormItemProps extends PasswordFormItemProps {
 
 export const PasswordFormItem: React.FC<ExPasswordFormItemProps> = props => {
   const { rules, fieldRequiredRuleMessage, ...fromItemProos } = props
+
+  const [ruleResults, setRuleResults] = React.useState<any>([])
 
   const publicConfig = useGuardPublicConfig()
   const initData = useGuardInitData<any>()
@@ -39,11 +42,17 @@ export const PasswordFormItem: React.FC<ExPasswordFormItemProps> = props => {
           passwordStrength,
           customPasswordStrength,
           fieldRequiredRuleMessage,
-          userId
+          userId,
+          setRuleResults
         ) ?? []),
         ...(rules ?? [])
       ]}
       {...fromItemProos}
+      help={
+        ruleResults.length > 0 ? (
+          <CheckRules ruleResults={ruleResults} />
+        ) : undefined
+      }
     />
   ) : (
     <Form.Item {...props} />

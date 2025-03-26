@@ -131,5 +131,7 @@
     "successTip": "密碼重置成功",
     "backLogin": "秒後將自動跳轉登入頁"
   },
-  "wecomScanLogin": "企業微信掃碼登入"
+  "wecomScanLogin": "企業微信掃碼登入",
+  "passwordRuleTips": "您的密碼必須包含:",
+  "characterTypes": "需要包含以下至少 {{x}} 种字符类型"
 }

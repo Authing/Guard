@@ -22,6 +22,7 @@ import { ApiCode } from '../../_utils/responseManagement/interface'
 import { useGuardView } from '../../Guard/core/hooks/useGuardView'
 import { InputPasswordForget } from '../../ForgetPassword/InputPassword'
 import { GuardModuleType } from '../../Guard'
+import { CheckRules } from '../../ValidatorRules/CheckRules'
 
 const { useRef } = React
 export const GuardResetPassword = () => {
@@ -32,6 +33,8 @@ export const GuardResetPassword = () => {
   const publicConfig = useGuardPublicConfig()
 
   const authClient = useGuardAuthClient()
+
+  const [ruleResults, setRuleResults] = React.useState<any>([])
 
   const config = useGuardFinallyConfig()
 
@@ -123,7 +126,7 @@ export const GuardResetPassword = () => {
           autoComplete="off"
         >
           <Form.Item
-            className="authing-g2-input-form-password"
+            className="authing-g2-input-form"
             name="password"
             validateTrigger={['onBlur']}
             rules={[
@@ -131,6 +134,8 @@ export const GuardResetPassword = () => {
                 validateTrigger: 'onBlur',
                 async validator(r, v) {
                   if (!v || v?.length === 0) {
+                    setRuleResults([])
+
                     return Promise.reject(t('login.inputPwd'))
                   } else {
                     const res = await post(
@@ -142,8 +147,10 @@ export const GuardResetPassword = () => {
                     )
                     if (res?.code === 200) {
                       if (res?.data?.valid) {
+                        setRuleResults([])
                         return Promise.resolve(true)
                       } else {
+                        setRuleResults(res?.data?.ruleResults || [])
                         return Promise.reject(res?.data?.message)
                       }
                     } else {
@@ -153,6 +160,11 @@ export const GuardResetPassword = () => {
                 }
               }
             ]}
+            help={
+              ruleResults.length > 0 ? (
+                <CheckRules ruleResults={ruleResults} />
+              ) : undefined
+            }
           >
             <InputPasswordForget
               className="authing-g2-input"
@@ -167,7 +179,7 @@ export const GuardResetPassword = () => {
             />
           </Form.Item>
           <Form.Item
-            className="authing-g2-input-form-password-repeat"
+            className="authing-g2-input-form"
             name="repeatPassword"
             validateFirst={true}
             rules={[
