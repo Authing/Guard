@@ -12,6 +12,7 @@ import { IconFont } from '../../../IconFont'
 import { useTranslation } from 'react-i18next'
 import { requestClient } from '../../../_utils/http'
 import { getVersion, i18n } from '../../../_utils'
+import { useDeviceId } from '../../../Guard/core/hooks/useDeviceId'
 
 interface LoginWithPasskeyProps {
   onLoginSuccess: any
@@ -30,9 +31,8 @@ export const PasskeyButton = (props: LoginWithPasskeyProps) => {
   const { host } = useGuardFinallyConfig()
   const appId = useGuardAppId()
   const version = getVersion()
-  const httpClient = useGuardHttpClient()
-
-  const { responseIntercept } = httpClient
+  const { responseIntercept } = useGuardHttpClient()
+  const deviceId = useDeviceId()
 
   const { t } = useTranslation()
 
@@ -69,7 +69,7 @@ export const PasskeyButton = (props: LoginWithPasskeyProps) => {
           'x-authing-app-id': appId,
           'x-authing-sdk-version': version,
           'x-authing-request-from': `Guard@${version}`,
-          'x-authing-device-id': httpClient.getHeaders()['x-authing-device-id']
+          ...(deviceId && { 'x-authing-device-id': deviceId })
         }
       })
       const initializeJson = await initializeRes.json()
@@ -103,7 +103,7 @@ export const PasskeyButton = (props: LoginWithPasskeyProps) => {
           'x-authing-app-id': appId,
           'x-authing-sdk-version': version,
           'x-authing-request-from': `Guard@${version}`,
-          'x-authing-device-id': httpClient.getHeaders()['x-authing-device-id']
+          ...(deviceId && { 'x-authing-device-id': deviceId })
         }
       })
       const finalizeJson = await finalizeRes.json()

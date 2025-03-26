@@ -22,6 +22,7 @@ import {
 import { useGuardAuthClient } from '../../Guard/authClient'
 
 import { getVersion } from '../../_utils/getVersion'
+import { useDeviceId } from '../../Guard/core/hooks/useDeviceId'
 
 const version = getVersion()
 
@@ -34,9 +35,9 @@ export const LoginWithDingTalkQrcode = (props: any) => {
 
   const [loading, setLoading] = useState(true)
 
-  const httpClient = useGuardHttpClient()
+  const { get } = useGuardHttpClient()
 
-  const { get } = httpClient
+  const deviceId = useDeviceId()
 
   const tenantId = useGuardTenantId()
 
@@ -51,14 +52,13 @@ export const LoginWithDingTalkQrcode = (props: any) => {
   const isSpecialBrowser = useIsSpecialBrowser()
 
   const fetchQrcode = useCallback(async () => {
-    const device_id = httpClient.getHeaders()['x-authing-device-id']
     const query: Record<string, any> = {
       from_guard: '1',
       embedded: '1',
       app_id: appId,
       guard_version: `Guard@${version}`,
       ...(tenantId && { tenant_id: tenantId }),
-      ...(device_id && { device_id: device_id })
+      ...(deviceId && { device_id: deviceId })
     }
     if (config?.isHost) {
       delete query.from_guard
@@ -150,7 +150,7 @@ export const LoginWithDingTalkQrcode = (props: any) => {
         setLoading(false)
       }, 500)
     }
-  }, [DTLogin, QRConfig, appId, config?.isHost, tenantId])
+  }, [DTLogin, QRConfig, appId, config?.isHost, tenantId, deviceId])
 
   useEffect(() => {
     fetchQrcode()
