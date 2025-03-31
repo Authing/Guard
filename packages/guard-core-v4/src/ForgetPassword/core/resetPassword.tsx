@@ -221,12 +221,12 @@ export const ResetPassword = (props: ResetPasswordProps) => {
         <FormItemIdentify
           name="identify"
           className="authing-g2-input-form"
-          methods={['email-code', 'phone-code']}
+          methods={['phone-code']}
           currentMethod={InputMethodMap[codeMethod]}
           checkExist={true}
         >
           <InputIdentify
-            methods={['email-code', 'phone-code']}
+            methods={['phone-code']}
             className="authing-g2-input"
             autoComplete="off"
             autoFocus={!isPhoneMedia}
@@ -235,11 +235,11 @@ export const ResetPassword = (props: ResetPasswordProps) => {
             onChange={(e: any) => {
               let v = e.target.value
               setIdentify(v)
-              if (validate('email', v)) {
-                setCodeMethod('email')
-              } else {
-                setCodeMethod('phone')
-              }
+              // if (validate('email', v)) {
+              //   setCodeMethod('email')
+              // } else {
+              setCodeMethod('phone')
+              // }
             }}
             prefix={
               <IconFont
