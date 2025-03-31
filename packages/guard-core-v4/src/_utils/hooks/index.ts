@@ -174,8 +174,7 @@ export const parsePhone = (
     }) as PhoneValidResult
 
     countryCode = parsePhone.countryCode as string
-
-    phoneNumber = parsePhone.phoneNumber.split(countryCode)[1]
+    phoneNumber = fieldValue
   } else if (phone(fieldValue).isValid) {
     // 处理 +86 19294229909 情况
     const parsePhone = phone(fieldValue) as PhoneValidResult
