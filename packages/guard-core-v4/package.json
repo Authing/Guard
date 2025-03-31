@@ -26,7 +26,7 @@
     "i18next-browser-languagedetector": "^7.0.1",
     "input-otp": "^1.2.4",
     "moment": "^2.29.4",
-    "phone": "^3.1.12",
+    "phone": "^3.1.58",
     "qrcode.react": "^3.1.0",
     "qs": "^6.9.4",
     "query-string": "^7.0.0",
