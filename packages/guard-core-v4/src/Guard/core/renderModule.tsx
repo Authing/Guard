@@ -66,6 +66,8 @@ import { GuardIdentityBindingAskView } from '../../IdentityBindingAsk'
 
 import '../styles.less'
 
+import '../genauth.less'
+
 import { updateFlowHandle } from '../../_utils/flowHandleStorage'
 
 import { GuardUnlockView } from '../../SelfUnlock'
