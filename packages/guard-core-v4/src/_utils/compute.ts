@@ -1,7 +1,5 @@
 import { RegisterSortMethods, RegisterMethods } from '../Type'
 
-import UAParser from 'ua-parser-js'
-
 import qs from 'qs'
 
 // 拼接请求链接
@@ -103,12 +101,6 @@ export const isWeWorkBuiltInBrowser = () => {
 }
 // 特殊浏览器 后续可能会增加
 
-export const isEdgeBrowser = () => {
-  const parser = UAParser()
-
-  return parser.browser.name === 'Edge'
-}
-
 export const isWeiboBrowser = () => {
   if (typeof navigator === 'undefined') {
     return null
@@ -161,6 +153,53 @@ export const isLenovoNetdisk = () => {
   return /ldclient/i.test(navigator.userAgent)
 }
 
+export const isChromeBrowser = () => {
+  if (typeof navigator === 'undefined') {
+    return null
+  }
+  return (
+    /Chrome/i.test(navigator.userAgent) && !/Edg/i.test(navigator.userAgent)
+  )
+}
+
+export const isSafariBrowser = () => {
+  if (typeof navigator === 'undefined') {
+    return null
+  }
+  return (
+    /Safari/i.test(navigator.userAgent) && !/Chrome/i.test(navigator.userAgent)
+  )
+}
+
+export const isFirefoxBrowser = () => {
+  if (typeof navigator === 'undefined') {
+    return null
+  }
+  return /Firefox/i.test(navigator.userAgent)
+}
+export const isOperaBrowser = () => {
+  if (typeof navigator === 'undefined') {
+    return null
+  }
+  return /Opera/i.test(navigator.userAgent) || /OPR/i.test(navigator.userAgent)
+}
+export const isIEBrowser = () => {
+  if (typeof navigator === 'undefined') {
+    return null
+  }
+  return (
+    /MSIE/i.test(navigator.userAgent) ||
+    /Trident/i.test(navigator.userAgent) ||
+    /rv:11/i.test(navigator.userAgent)
+  )
+}
+export const isEdgeBrowser = () => {
+  if (typeof navigator === 'undefined') {
+    return null
+  }
+  return /Edg/i.test(navigator.userAgent)
+}
+
 /* 利用浏览器的 UA 判断是否为不支持弹窗的特殊浏览器 */
 export const computeIsSpecialBrowser = (
   specialBrowserSymbol: string[] = []
@@ -192,7 +231,7 @@ export const computeIsSpecialBrowser = (
 
   // 3. 利用 ua-parser-js 进一步判断，筛选出很可能不是特殊浏览器的 UA
   // 由于一些特殊浏览器也可能会被误判为非特殊，所以需要首先经过第 1, 2 步筛选
-  const parser = UAParser()
+  // const parser = UAParser()
   const nonSpecialBrowsers = [
     'Chrome',
     'Firefox',
@@ -201,10 +240,29 @@ export const computeIsSpecialBrowser = (
     'IE',
     'Edge'
   ]
-  if (nonSpecialBrowsers.includes(parser.browser.name ?? '')) {
-    return false
+  // if (nonSpecialBrowsers.includes(parser.browser.name ?? '')) {
+  //   return false
+  // }
+
+  // 检查 userAgent 字符串是否包含任何非特殊浏览器的名称
+  for (const browser of nonSpecialBrowsers) {
+    // 针对不同浏览器的特定检测逻辑
+    if (browser === 'Chrome' && isChromeBrowser()) {
+      return false
+    } else if (browser === 'Firefox' && isFirefoxBrowser()) {
+      return false
+    } else if (browser === 'Safari' && isSafariBrowser()) {
+      return false
+    } else if (browser === 'Opera' && isOperaBrowser()) {
+      return false
+    } else if (browser === 'IE' && isIEBrowser()) {
+      return false
+    } else if (browser === 'Edge' && isEdgeBrowser()) {
+      return false
+    }
   }
 
+  // 如果不是任何一个非特殊浏览器，则返回 true
   // 4. 可能有一些 UA 没有任何特征，这种情况下一律默认为特殊浏览器
   return true
 }
