@@ -50,10 +50,6 @@ export const popupCenter = (
       resizable=no,
       location=no,
       status=no
-      width=${w / systemZoom},
-      height=${h / systemZoom},
-      top=${top},
-      left=${left}
     `
   )
 
