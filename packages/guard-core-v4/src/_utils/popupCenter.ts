@@ -49,7 +49,9 @@ export const popupCenter = (
       scrollbars=no,
       resizable=no,
       location=no,
-      status=no
+      status=no,
+      width=${guardWindow.screen.availWidth},
+      height=${guardWindow.screen.availHeight},
     `
   )
 
