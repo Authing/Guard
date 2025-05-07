@@ -447,4 +447,6 @@ export interface ApplicationConfig {
 
   /** 特殊浏览器匹配字符串 */
   specialBrowserSymbols?: string[]
+  /** 密码策略 message 提示 */
+  passwordCheckMessage?: string
 }

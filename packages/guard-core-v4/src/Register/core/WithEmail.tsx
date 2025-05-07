@@ -525,6 +525,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
           name="password"
           className="authing-g2-input-form"
           validateFirst={true}
+          help={publicConfig?.passwordCheckMessage ?? undefined}
         >
           <InputPassword
             className="authing-g2-input"
