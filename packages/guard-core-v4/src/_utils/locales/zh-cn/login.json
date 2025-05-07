@@ -134,5 +134,7 @@
   "wecomScanLogin": "企业微信扫码登录",
   "tenantCreateSuccess": "创建成功，请联系运营人员配置域名",
   "tenantAppDomain": "租户应用域名：",
-  "tenantConsoleDomain": "租户后台域名："
+  "tenantConsoleDomain": "租户后台域名：",
+  "createTenantModalTitle": "创建成功！您的企业管理后台地址为：",
+  "tenantSaveHint": "请注意保存，后续可通过登录企业管理后台进行企业管理"
 }

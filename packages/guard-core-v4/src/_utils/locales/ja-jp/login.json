@@ -134,5 +134,7 @@
   "wecomScanLogin": "エンタープライズ WeChat ログイン",
   "tenantCreateSuccess": "作成に成功しました。ドメイン名を構成するにはオペレーターに連絡してください。",
   "tenantAppDomain": "テナント アプリケーション ドメイン名:",
-  "tenantConsoleDomain": "テナントのバックエンド ドメイン名:"
+  "tenantConsoleDomain": "テナントのバックエンド ドメイン名:",
+  "createTenantModalTitle": "正常に作成されました！ 経営管理バックオフィスの住所は以下の通りです：",
+  "tenantSaveHint": "経営管理バックオフィスにログインすることで、事業の保存やその後の管理ができることにご注意ください。"
 }

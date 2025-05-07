@@ -134,5 +134,7 @@
   "wecomScanLogin": "企業微信掃碼登入",
   "tenantCreateSuccess": "建立成功，請聯絡營運人員配置網域名稱",
   "tenantAppDomain": "租用戶應用網域：",
-  "tenantConsoleDomain": "租用戶後台網域："
+  "tenantConsoleDomain": "租用戶後台網域：",
+  "createTenantModalTitle": "创建成功！您的企业管理后台地址为：",
+  "tenantSaveHint": "请注意保存，后续可通过登录企业管理后台进行企业管理"
 }

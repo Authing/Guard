@@ -134,5 +134,7 @@
   "wecomScanLogin": "Enterprise WeChat scan code to log in",
   "tenantCreateSuccess": "Created successfully, please contact the operator to configure the domain name",
   "tenantAppDomain": "Tenant application domain:",
-  "tenantConsoleDomain": "Tenant backend domain:"
+  "tenantConsoleDomain": "Tenant backend domain:",
+  "createTenantModalTitle": "Created successfully! The address of your business administration back office is:",
+  "tenantSaveHint": "Please note that you can save and subsequently manage your business by logging in to your business administration back office."
 }

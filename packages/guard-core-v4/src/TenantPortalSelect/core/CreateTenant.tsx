@@ -54,24 +54,17 @@ export const CreateTenantView: React.FC<CreateTenantProps> = ({ onBack }) => {
       } else {
         http.setTenantId('') //使用前重置，防止其他环境设置污染，便于状态可控
       }
-      // 调用加入接口
-      const {
-        isFlowEnd: end,
-        onGuardHandling,
-        data: res
-      } = await http.authFlow(moduleName, null, () =>
+
+      // 创建租户成功后终止流程，弹出提示框，用户关闭提示框后返回登录界面
+      if (tenantInfo?.tenantId) {
         Modal.info({
-          title: t('login.tenantCreateSuccess'),
+          icon: null,
+          className: 'g2-tenant-modal-wrapper',
+          title: t('login.createTenantModalTitle'),
           content: (
             <div>
-              <p>
-                {t('login.tenantConsoleDomain')}
-                {tenantInfo.consoleHost}
-              </p>
-              <p>
-                {t('login.tenantAppDomain')}
-                {tenantInfo.host}
-              </p>
+              <p>{tenantInfo.consoleHost}</p>
+              <p>{t('login.tenantSaveHint')}</p>
             </div>
           ),
           onOk() {
@@ -80,11 +73,34 @@ export const CreateTenantView: React.FC<CreateTenantProps> = ({ onBack }) => {
             changeModule?.(GuardModuleType.LOGIN)
           }
         })
-      )
-      if (end) {
-        setTimeout(() => events?.onLogin?.(res, authClient)) // 让选择事件先行，登录成功宏任务异步，方便异步并发
       } else {
-        onGuardHandling?.()
+        const {
+          isFlowEnd: end,
+          onGuardHandling,
+          data: res
+        } = await http.authFlow(moduleName, null, () =>
+          Modal.info({
+            icon: null,
+            className: 'g2-tenant-modal-wrapper',
+            title: t('login.createTenantModalTitle'),
+            content: (
+              <div>
+                <p>{tenantInfo.consoleHost}</p>
+                <p>{t('login.tenantSaveHint')}</p>
+              </div>
+            ),
+            onOk() {
+              http.setTenantId('')
+              http.setBaseUrl(prevBaseUrl)
+              changeModule?.(GuardModuleType.LOGIN)
+            }
+          })
+        )
+        if (end) {
+          setTimeout(() => events?.onLogin?.(res, authClient)) // 让选择事件先行，登录成功宏任务异步，方便异步并发
+        } else {
+          onGuardHandling?.()
+        }
       }
     } else {
       onGuardHandling?.()
