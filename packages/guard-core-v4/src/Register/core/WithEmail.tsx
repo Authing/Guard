@@ -557,6 +557,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
           ]}
           className="authing-g2-input-form"
           validateFirst={true}
+          noCheckSecond
         >
           <InputPassword
             className="authing-g2-input"

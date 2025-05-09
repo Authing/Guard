@@ -10,10 +10,16 @@ export interface PasswordFormItemProps extends FormItemProps {}
 
 export interface ExPasswordFormItemProps extends PasswordFormItemProps {
   fieldRequiredRuleMessage?: string
+  noCheckSecond?: boolean
 }
 
 export const PasswordFormItem: React.FC<ExPasswordFormItemProps> = props => {
-  const { rules, fieldRequiredRuleMessage, ...fromItemProos } = props
+  const {
+    rules,
+    fieldRequiredRuleMessage,
+    noCheckSecond = false,
+    ...fromItemProos
+  } = props
 
   const publicConfig = useGuardPublicConfig()
   const initData = useGuardInitData<any>()
@@ -35,12 +41,14 @@ export const PasswordFormItem: React.FC<ExPasswordFormItemProps> = props => {
       validateFirst={true}
       name="password"
       rules={[
-        ...(getPasswordValidate(
-          passwordStrength,
-          customPasswordStrength,
-          fieldRequiredRuleMessage,
-          userId
-        ) ?? []),
+        ...(noCheckSecond
+          ? []
+          : getPasswordValidate(
+              passwordStrength,
+              customPasswordStrength,
+              fieldRequiredRuleMessage,
+              userId
+            ) ?? []),
         ...(rules ?? [])
       ]}
       {...fromItemProos}
