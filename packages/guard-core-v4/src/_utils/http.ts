@@ -29,7 +29,7 @@ export interface AuthingGuardResponse<T = any> extends AuthingResponse<T> {
 }
 
 const timeoutAction = (cancel: CancelTokenSource['cancel']) => {
-  const timer = 10
+  const timer = 60
   return new Promise(resolve => {
     setTimeout(() => {
       const response = {
