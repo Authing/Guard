@@ -19,6 +19,7 @@ import { VerifyCodeInput } from '../VerifyCodeInput'
 import { IconFont } from '../../IconFont'
 
 import { MfaBusinessAction, useMfaBusinessRequest } from '../businessRequest'
+import { useGuardPublicConfig } from 'src/_utils'
 
 const { useRef } = React
 
@@ -65,6 +66,8 @@ export const VerifyNingtonMFATotp: React.FC<VerifyNingtonMFATotpProps> = ({
 }) => {
   const { t } = useTranslation()
 
+  const publicConfig = useGuardPublicConfig()
+
   const [form] = Form.useForm()
 
   const submitButtonRef = useRef<any>(null)
@@ -109,7 +112,7 @@ export const VerifyNingtonMFATotp: React.FC<VerifyNingtonMFATotpProps> = ({
       >
         <VerifyCodeFormItem codeLength={4}>
           <VerifyCodeInput
-            length={4}
+            length={publicConfig?.otpCodeLength ?? 4}
             showDivider={false}
             gutter={'10px'}
             onFinish={onFinish}

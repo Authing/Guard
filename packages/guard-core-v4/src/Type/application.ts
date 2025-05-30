@@ -436,4 +436,5 @@ export interface ApplicationConfig {
       switch: 'OFF' | 'ON' | 'CONDON' //ON,COND_ON
     }
   }
+  otpCodeLength?: number
 }
