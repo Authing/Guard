@@ -19,7 +19,7 @@
   "author": "https://github.com/authing",
   "license": "MIT",
   "dependencies": {
-    "@authing/guard-shim-react": "^4.5.20-nington.20",
+    "@authing/guard-shim-react": "4.5.20-nington.20",
     "@authing/native-js-ui-components": "^4.5.20-nington.20",
     "react": "^16.13.1"
   },
