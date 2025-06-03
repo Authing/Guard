@@ -19,7 +19,7 @@ import { VerifyCodeInput } from '../VerifyCodeInput'
 import { IconFont } from '../../IconFont'
 
 import { MfaBusinessAction, useMfaBusinessRequest } from '../businessRequest'
-import { useGuardPublicConfig } from 'src/_utils'
+import { useGuardPublicConfig } from '../../_utils'
 
 const { useRef } = React
 
