@@ -68,7 +68,7 @@ export const GuardNewSubmitSuccessView: React.FC = () => {
       <div className="g2-view-tabs g2-questions-send-success-pageWrap">
         <ImagePro
           className="plate-submit-success"
-          src={`${cdnBase}/questions-send-ok.png`}
+          src={`${cdnBase}/success-empty.png`}
           alt=""
           width={157}
           height={120}
