@@ -19,6 +19,6 @@
   "author": "https://github.com/authing",
   "license": "MIT",
   "dependencies": {
-    "@authing/guard-shim-react18": "^4.5.36-cxmt.1"
+    "@authing/guard-shim-react18": "4.5.36-cxmt.1"
   }
 }
