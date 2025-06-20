@@ -48,6 +48,8 @@ const { useMemo, useRef, useCallback } = React
 export const GuardIdentityBindingViewV2: React.FC<any> = () => {
   const initData = useGuardInitData<GuardIdentityBindingInitData>()
 
+  const { changeModule } = useGuardModule()
+
   const { post } = getGuardHttp()
 
   const config = useGuardFinallyConfig()
@@ -103,6 +105,11 @@ export const GuardIdentityBindingViewV2: React.FC<any> = () => {
       console.log(res, 'res')
     } else {
       // 不存在
+      changeModule?.(GuardModuleType.IDENTITY_BINDING_VERIFCATION, {
+        type: 'phone',
+        methods: ['password', 'code'],
+        source: GuardModuleType.IDENTITY_BINDING_ASK
+      })
     }
   }, [])
 

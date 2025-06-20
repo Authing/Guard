@@ -19,6 +19,7 @@ export enum GuardModuleType {
   IDENTITY_BINDING_ASK = 'identityBindingAsk', // 身份源绑定 问询页
   IDENTITY_BINDING = 'identityBinding', // 身份源绑定页
   IDENTITY_BINDING_NO_ASK = 'identityBindingNoAsk', // 身份源绑定页不问询
+  IDENTITY_BINDING_VERIFCATION = 'identityBindingVerifcation', // 身份源绑定已有账号验证
   SELF_UNLOCK = 'selfUnlock', // 自助解锁页
   FLOW_SELECT_ACCOUNT = 'flowSelectAccount', // 选择登录账号
   /** 多租户门户选择页 */
@@ -33,7 +34,7 @@ export enum GuardModuleType {
   INVITE_EXPIRE = 'inviteExpire', // 邀请链接过期
   INVITE_PAGE_EXPIRE = 'invitePageExpire', // 页面过期
   INVITE_SUCCESS = 'inviteSuccess', // 邀请成功
-  RESET_PASSWORD = 'resetPassword'
+  RESET_PASSWORD = 'resetPassword' // 重置密码
 }
 export interface GuardModuleAction {
   action: string
