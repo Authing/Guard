@@ -83,10 +83,12 @@ export const GuardIdentityBindingAskView: React.FC = () => {
   }, [])
 
   const bindingAccount = () => {
+    // 旧版
     changeModule?.(GuardModuleType.IDENTITY_BINDING, {
       ...initData,
       source: GuardModuleType.IDENTITY_BINDING_ASK
     })
+    // 新版
   }
 
   return (

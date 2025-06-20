@@ -87,6 +87,7 @@ import { GuardInviteCompleteView } from '../../Invitation/Complete'
 import { GuardInviteExpireView } from '../../Invitation/Error'
 import { GuardInviteSuccessView } from '../../Invitation/Success'
 import { GuardResetPassword } from '../../ChangePassword/core/resetPassword'
+import { GuardIdentityBindingViewV2 } from '../../IdentityBindingV2'
 const { useEffect, useMemo } = React
 
 const PREFIX_CLS = 'authing-ant'
@@ -141,7 +142,7 @@ export const RenderModule: React.FC<{
     ),
     // 身份源绑定
     [GuardModuleType.IDENTITY_BINDING]: (key: string) => (
-      <GuardIdentityBindingView key={key} />
+      <GuardIdentityBindingViewV2 key={key} />
     ),
     // 身份源绑定 跳过询问页面
     [GuardModuleType.IDENTITY_BINDING_NO_ASK]: (key: string) => (

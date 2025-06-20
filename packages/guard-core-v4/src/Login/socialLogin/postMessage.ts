@@ -52,7 +52,7 @@ export const usePostMessage = () => {
       code: authingCode,
       flowHandle
     })
-
+    console.log(res, 'res')
     return res
   }
 
