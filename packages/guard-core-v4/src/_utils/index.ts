@@ -900,6 +900,39 @@ export const isDingTalkOrigin = (origin: string) => {
   return origin === 'https://login.dingtalk.com'
 }
 
+export function validateJSON(str: string) {
+  if (typeof str !== 'string') {
+    return {
+      valid: false,
+      error: '输入不是字符串',
+      data: null
+    }
+  }
+
+  if (str.trim() === '') {
+    return {
+      valid: false,
+      error: '空字符串',
+      data: null
+    }
+  }
+
+  try {
+    const data = JSON.parse(str)
+    return {
+      valid: true,
+      error: null,
+      data: data
+    }
+  } catch (error: any) {
+    return {
+      valid: false,
+      error: error,
+      data: null
+    }
+  }
+}
+
 export * from './popupCenter'
 
 export * from './clipboard'

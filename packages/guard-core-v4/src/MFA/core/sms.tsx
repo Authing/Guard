@@ -24,7 +24,7 @@ import { InputNumber } from '../../InputNumber'
 
 import { IconFont } from '../../IconFont'
 
-import { phoneDesensitization } from '../../_utils'
+import { phoneDesensitization, validateJSON } from '../../_utils'
 
 import { useGuardPublicConfig } from '../../_utils/context'
 
@@ -246,9 +246,14 @@ export const VerifyMFASms: React.FC<VerifyMFASmsProps> = ({
         message.error(t('login.sendCodeTimeout'))
         return false
       }
+      console.log(e)
       try {
-        const errorMessage = JSON.parse(e.message)
-        message.error(errorMessage.message)
+        const res = validateJSON(e.message)
+        if (res.valid) {
+          message.error(res.data.message)
+        } else {
+          message.error(e?.message ?? e)
+        }
       } catch (_) {
         message.error(e)
       }

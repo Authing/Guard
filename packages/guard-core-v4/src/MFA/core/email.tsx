@@ -18,7 +18,7 @@ import { VerifyCodeFormItem } from '../VerifyCodeInput/VerifyCodeFormItem'
 
 import { IconFont } from '../../IconFont'
 
-import { mailDesensitization } from '../../_utils'
+import { mailDesensitization, validateJSON } from '../../_utils'
 
 import { useGuardPublicConfig } from '../../_utils/context'
 
@@ -153,8 +153,12 @@ export const VerifyMFAEmail: React.FC<VerifyMFAEmailProps> = ({
         return false
       }
       try {
-        const errorMessage = JSON.parse(e.message)
-        message.error(errorMessage.message)
+        const res = validateJSON(e.message)
+        if (res.valid) {
+          message.error(res.data.message)
+        } else {
+          message.error(e?.message ?? e)
+        }
       } catch (_) {
         message.error(e)
       }
