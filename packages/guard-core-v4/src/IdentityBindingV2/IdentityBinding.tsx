@@ -42,6 +42,7 @@ import './styles.less'
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
 import SubmitButton from '../SubmitButton'
 import { getGuardHttp } from '../_utils'
+import { IconFont } from '../IconFont'
 
 const { useMemo, useRef, useCallback } = React
 
@@ -95,7 +96,10 @@ export const GuardIdentityBindingViewV2: React.FC<any> = () => {
 
   const onNextHandle = useCallback(async values => {
     console.log(values, 'onFinish')
-    const { code, data } = await post('/api/v2/users/check', values)
+    const { account } = values
+    const { code, data } = await post('/api/v2/users/check', {
+      account
+    })
     // 是否存在账号
     if (code === 200 && data.result !== -1) {
       // 存在
@@ -107,8 +111,10 @@ export const GuardIdentityBindingViewV2: React.FC<any> = () => {
       // 不存在
       changeModule?.(GuardModuleType.IDENTITY_BINDING_VERIFCATION, {
         type: 'phone',
-        methods: ['password', 'code'],
-        source: GuardModuleType.IDENTITY_BINDING_ASK
+        account: account,
+        methods: ['password'],
+        source: GuardModuleType.IDENTITY_BINDING_ASK,
+        phoneCountryCode: data?.phoneCountryCode || '+86'
       })
     }
   }, [])
@@ -149,6 +155,12 @@ export const GuardIdentityBindingViewV2: React.FC<any> = () => {
               className="authing-g2-input"
               autoComplete="off"
               placeholder={placeholder}
+              prefix={
+                <IconFont
+                  type="authing-a-user-line1"
+                  style={{ color: '#878A95' }}
+                />
+              }
             />
           </Form.Item>
 

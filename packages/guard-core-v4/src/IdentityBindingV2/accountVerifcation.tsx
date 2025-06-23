@@ -21,7 +21,12 @@ import './styles.less'
 
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
 import SubmitButton from '../SubmitButton'
-import { fieldRequiredRule, getGuardHttp } from '../_utils'
+import {
+  fieldRequiredRule,
+  getGuardHttp,
+  mailDesensitization,
+  phoneDesensitization
+} from '../_utils'
 import { VerifyCodeFormItem } from '../MFA/VerifyCodeInput/VerifyCodeFormItem'
 import { VerifyCodeInput } from '../MFA/VerifyCodeInput'
 import { SendCodeBtn } from '../SendCode/SendCodeBtn'
@@ -230,58 +235,103 @@ export const GuardIdentityAccountVerifcation: React.FC<any> = () => {
   // 渲染密码表单
   const renderPasswordForm = useCallback(
     () => (
-      <Form {...commonFormProps}>
-        <Form.Item
-          validateTrigger={FORM_CONFIG.validateTrigger}
-          className={FORM_CONFIG.className}
-          name="password"
-          rules={fieldRequiredRule(t('common.password'))}
-        >
-          <InputPassword
-            autoComplete="off"
-            className="authing-g2-input"
-            size="large"
-            placeholder={t('login.inputPwd')}
-            prefix={
-              <IconFont
-                type="authing-a-lock-line1"
-                style={{ color: '#878A95' }}
-              />
-            }
+      <>
+        <Form {...commonFormProps}>
+          <Form.Item
+            validateTrigger={FORM_CONFIG.validateTrigger}
+            className={FORM_CONFIG.className}
+            name="password"
+            rules={fieldRequiredRule(t('common.password'))}
+          >
+            <InputPassword
+              autoComplete="off"
+              className="authing-g2-input"
+              size="large"
+              placeholder={t('login.inputPwd')}
+              prefix={
+                <IconFont
+                  type="authing-a-lock-line1"
+                  style={{ color: '#878A95' }}
+                />
+              }
+            />
+          </Form.Item>
+          <SubmitButton
+            {...FORM_CONFIG.submitButtonProps}
+            ref={submitButtonRef}
           />
-        </Form.Item>
-        <SubmitButton
-          {...FORM_CONFIG.submitButtonProps}
-          ref={submitButtonRef}
-        />
-      </Form>
+        </Form>
+      </>
+    ),
+    [commonFormProps, submitButtonRef, t]
+  )
+  const renderPasswordFormBySingl = useCallback(
+    () => (
+      <>
+        <div className="g2-view-identity-binding-v2-header">
+          <div className="g2-view-identity-binding-content-logo">
+            <img src={config?.logo} alt="" className="logo" />
+          </div>
+          <div className="g2-view-identity-binding-content-desc">
+            <span>{'请跟随步骤完成账号绑定'}</span>
+          </div>
+          <div className="g2-view-identity-binding-content-title">
+            <span>{'绑定已有账号'}</span>
+          </div>
+        </div>
+        <div className="g2-identity-binding-verifcation-content">
+          {renderPasswordForm()}
+        </div>
+      </>
     ),
     [commonFormProps, submitButtonRef, t]
   )
 
+  const renderTips = useCallback(
+    type => {
+      const smsTips = `${
+        isInternationSms ? initData?.phoneCountryCode : ''
+      } ${phoneDesensitization(initData.account)}`
+      const emailTips = mailDesensitization(initData.account)
+      return sent
+        ? `${t('login.verifyCodeSended')} ${
+            type === 'phone' ? smsTips : emailTips
+          }`
+        : t('common.SmsMfaCheck')
+    },
+    [isInternationSms, sent, t, initData]
+  )
   // 渲染验证码输入表单（单独的验证码组件）
   const renderVerifyCodeForm = useCallback(
-    () => (
-      <Form {...commonFormProps}>
-        <VerifyCodeFormItem
-          codeLength={codeLength}
-          ruleKeyword={t('common.captchaCode') as string}
-        >
-          <VerifyCodeInput length={codeLength} onFinish={onFinish} />
-        </VerifyCodeFormItem>
+    type => (
+      <>
+        <div className="g2-view-identity-binding-v2-header">
+          <h3 className="authing-g2-mfa-title">{'绑定已有账号'}</h3>
+          <p className="authing-g2-mfa-tips">{renderTips(type)}</p>
+        </div>
+        <div className="g2-identity-binding-verifcation-content">
+          <Form {...commonFormProps}>
+            <VerifyCodeFormItem
+              codeLength={codeLength}
+              ruleKeyword={t('common.captchaCode') as string}
+            >
+              <VerifyCodeInput length={codeLength} onFinish={onFinish} />
+            </VerifyCodeFormItem>
 
-        <SendCodeBtn
-          btnRef={sendCodeRef}
-          beforeSend={() => sendVerifyCode()}
-          type="link"
-          setSent={setSent}
-        />
+            <SendCodeBtn
+              btnRef={sendCodeRef}
+              beforeSend={() => sendVerifyCode()}
+              type="link"
+              setSent={setSent}
+            />
 
-        <SubmitButton
-          {...FORM_CONFIG.submitButtonProps}
-          ref={submitButtonRef}
-        />
-      </Form>
+            <SubmitButton
+              {...FORM_CONFIG.submitButtonProps}
+              ref={submitButtonRef}
+            />
+          </Form>
+        </div>
+      </>
     ),
     [
       commonFormProps,
@@ -298,19 +348,34 @@ export const GuardIdentityAccountVerifcation: React.FC<any> = () => {
   // 渲染标签页
   const renderTabs = useCallback(
     () => (
-      <Tabs destroyInactiveTabPane={true}>
-        <Tabs.TabPane {...TAB_CONFIG.code}>{renderCodeForm()}</Tabs.TabPane>
-        <Tabs.TabPane {...TAB_CONFIG.password}>
-          {renderPasswordForm()}
-        </Tabs.TabPane>
-      </Tabs>
+      <>
+        <div className="g2-view-identity-binding-v2-header">
+          <div className="g2-view-identity-binding-content-logo">
+            <img src={config?.logo} alt="" className="logo" />
+          </div>
+          <div className="g2-view-identity-binding-content-desc">
+            <span>{'请跟随步骤完成账号绑定'}</span>
+          </div>
+          <div className="g2-view-identity-binding-content-title">
+            <span>{'绑定已有账号'}</span>
+          </div>
+        </div>
+        <div className="g2-identity-binding-verifcation-content">
+          <Tabs destroyInactiveTabPane={true}>
+            <Tabs.TabPane {...TAB_CONFIG.code}>{renderCodeForm()}</Tabs.TabPane>
+            <Tabs.TabPane {...TAB_CONFIG.password}>
+              {renderPasswordForm()}
+            </Tabs.TabPane>
+          </Tabs>
+        </div>
+      </>
     ),
     [renderCodeForm, renderPasswordForm]
   )
 
   //主渲染逻辑
   const renderView = useCallback(() => {
-    const { methods } = initData
+    const { methods, type } = initData
     const hasMultipleMethods = methods.length > 1
     const hasPassword = methods.includes('password')
     const hasCode = methods.includes('code')
@@ -322,11 +387,11 @@ export const GuardIdentityAccountVerifcation: React.FC<any> = () => {
 
     // 单一验证方式
     if (hasPassword) {
-      return renderPasswordForm()
+      return renderPasswordFormBySingl()
     }
 
     if (hasCode) {
-      return renderVerifyCodeForm()
+      return renderVerifyCodeForm(type)
     }
 
     // 默认情况或无匹配方法
@@ -336,131 +401,7 @@ export const GuardIdentityAccountVerifcation: React.FC<any> = () => {
   return (
     <div className="g2-view-container g2-view-identity-binding-v2">
       {renderBack}
-
-      <div className="g2-view-identity-binding-content">
-        <div className="g2-view-identity-binding-content-logo">
-          <img src={config?.logo} alt="" className="logo" />
-        </div>
-        <div className="g2-view-identity-binding-content-desc">
-          <span>{'请跟随步骤完成账号绑定'}</span>
-        </div>
-        <div className="g2-view-identity-binding-content-title">
-          <span>{'绑定已有账号'}</span>
-        </div>
-
-        <div className="g2-identity-binding-verifcation-content">
-          {/* <Form
-            // form={form}
-            onFinish={onFinish}
-            onFinishFailed={() => submitButtonRef.current.onError()}
-          >
-            <VerifyCodeFormItem
-              codeLength={codeLength}
-              ruleKeyword={t('common.captchaCode') as string}
-            >
-              <VerifyCodeInput length={codeLength} onFinish={onFinish} />
-            </VerifyCodeFormItem>
-
-            <SendCodeBtn
-              btnRef={sendCodeRef}
-              beforeSend={() => sendVerifyCode()}
-              type="link"
-              setSent={setSent}
-            />
-
-            <SubmitButton
-              text={'确认绑定'}
-              ref={submitButtonRef}
-              className="g2-mfa-submit-button"
-            />
-          </Form> */}
-
-          {/* <Form
-            onFinish={onFinish}
-            onFinishFailed={() => submitButtonRef.current.onError()}
-          >
-            <Form.Item
-              validateTrigger={['onBlur', 'onChange']}
-              className="authing-g2-input-form"
-              name="password"
-              rules={fieldRequiredRule(t('common.password'))}
-            >
-              <InputPassword
-                autoComplete="off"
-                className="authing-g2-input"
-                size="large"
-                placeholder={t('login.inputPwd')}
-                prefix={
-                  <IconFont
-                    type="authing-a-lock-line1"
-                    style={{ color: '#878A95' }}
-                  />
-                }
-              />
-            </Form.Item>
-            <SubmitButton
-              text={'确认绑定'}
-              ref={submitButtonRef}
-              className="g2-mfa-submit-button"
-            />
-          </Form> */}
-
-          {/* <Tabs destroyInactiveTabPane={true}>
-            <Tabs.TabPane key="code" tab="验证码">
-              <Form
-                onFinish={onFinish}
-                onFinishFailed={() => submitButtonRef.current.onError()}
-              >
-                <Form.Item
-                  validateTrigger={['onBlur', 'onChange']}
-                  className="authing-g2-input-form"
-                  name="code"
-                  rules={[...fieldRequiredRule(t('common.captchaCode'))]}
-                >
-                  <SendCode />
-                </Form.Item>
-                <SubmitButton
-                  text={'确认绑定'}
-                  ref={submitButtonRef}
-                  className="g2-mfa-submit-button"
-                />
-              </Form>
-            </Tabs.TabPane>
-            <Tabs.TabPane key="password" tab="密码">
-              <Form
-                onFinish={onFinish}
-                onFinishFailed={() => submitButtonRef.current.onError()}
-              >
-                <Form.Item
-                  validateTrigger={['onBlur', 'onChange']}
-                  className="authing-g2-input-form"
-                  name="password"
-                  rules={fieldRequiredRule(t('common.password'))}
-                >
-                  <InputPassword
-                    autoComplete="off"
-                    className="authing-g2-input"
-                    size="large"
-                    placeholder={t('login.inputPwd')}
-                    prefix={
-                      <IconFont
-                        type="authing-a-lock-line1"
-                        style={{ color: '#878A95' }}
-                      />
-                    }
-                  />
-                </Form.Item>
-                <SubmitButton
-                  text={'确认绑定'}
-                  ref={submitButtonRef}
-                  className="g2-mfa-submit-button"
-                />
-              </Form>
-            </Tabs.TabPane>
-          </Tabs> */}
-          {renderView()}
-        </div>
-      </div>
+      <div className="g2-view-identity-binding-content">{renderView()}</div>
     </div>
   )
 }

@@ -54,7 +54,9 @@ interface AuthConfig {
 }
 
 export interface GuardIdentityAccountVerifcationInitData extends AuthConfig {
+  account: string
   source?: GuardModuleType
+  phoneCountryCode?: string
 }
 const authConfig: Record<
   AuthResult,
