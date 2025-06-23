@@ -3,6 +3,7 @@ import { React } from 'shim-react'
 import { BackCustom, BackLogin } from '../Back'
 import { GuardModuleType } from '../Guard'
 import {
+  phoneDesensitization,
   useGuardFinallyConfig,
   useGuardInitData,
   useGuardModule
@@ -43,11 +44,13 @@ export const GuardIdentityAccountCreateSelect = () => {
           <div className="g2-view-identity-binding-content-logo">
             <img src={config?.logo} alt="" className="logo" />
           </div>
-          <div className="g2-view-identity-binding-content-desc">
-            <span>{'请跟随步骤完成账号绑定'}</span>
-          </div>
           <div className="g2-view-identity-binding-content-title">
-            <span>{'绑定已有账号'}</span>
+            <span>{'使用当前手机号创建？'}</span>
+          </div>
+          <div className="g2-view-identity-binding-content-desc">
+            <span>{`已获取到您的手机号为 ${phoneDesensitization(
+              initData.account
+            )}`}</span>
           </div>
         </div>
 
@@ -57,8 +60,9 @@ export const GuardIdentityAccountCreateSelect = () => {
             className="authing-g2-submit-button"
             onClick={() => {
               changeModule?.(GuardModuleType.IDENTITY_BINDING_VERIFCATION, {
-                type: 'phone',
-                account: '111',
+                flowType: 'create',
+                type: initData.type,
+                account: initData.account,
                 methods: ['code'],
                 source: GuardModuleType.IDENTITY_BINDING_ASK,
                 phoneCountryCode: '+86'
@@ -71,12 +75,24 @@ export const GuardIdentityAccountCreateSelect = () => {
             className="authing-g2-ghost-button"
             onClick={() => {
               changeModule?.(GuardModuleType.IDENTITY_BINDING, {
-                ...initData,
+                flowType: 'create',
+                methods: ['phone-code', 'email-code'],
                 source: GuardModuleType.IDENTITY_BINDING_ASK
               })
             }}
           >
             {'不，我要使用其他账号'}
+          </GuardButton>
+          <GuardButton
+            className="authing-g2-ghost-button"
+            onClick={() => {
+              changeModule?.(GuardModuleType.IDENTITY_BINDING, {
+                ...initData,
+                source: GuardModuleType.IDENTITY_BINDING_ASK
+              })
+            }}
+          >
+            {'直接创建'}
           </GuardButton>
         </div>
       </div>

@@ -110,6 +110,7 @@ export const GuardIdentityBindingViewV2: React.FC<any> = () => {
     } else {
       // 不存在
       changeModule?.(GuardModuleType.IDENTITY_BINDING_VERIFCATION, {
+        flowType: initData.flowType,
         type: 'phone',
         account: account,
         methods: ['password'],
@@ -128,7 +129,9 @@ export const GuardIdentityBindingViewV2: React.FC<any> = () => {
           <img src={config?.logo} alt="" className="logo" />
         </div>
         <div className="g2-view-identity-binding-content-title">
-          <span>{'绑定已有账号'}</span>
+          <span>
+            {initData.flowType === 'create' ? '创建新账号' : '绑定已有账号'}
+          </span>
         </div>
         <div className="g2-view-identity-binding-content-desc">
           <span>{'请跟随步骤完成账号绑定,完善您的账号信息'}</span>

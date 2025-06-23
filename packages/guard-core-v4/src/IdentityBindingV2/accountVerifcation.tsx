@@ -41,16 +41,6 @@ import { SendCodeByEmail } from '../SendCode/SendCodeByEmail'
 const { useMemo, useRef, useCallback, useState } = React
 
 // 提取常量
-const FORM_CONFIG = {
-  onFinishFailed: (submitButtonRef: any) => () =>
-    submitButtonRef.current?.onError(),
-  validateTrigger: ['onBlur', 'onChange'],
-  className: 'authing-g2-input-form',
-  submitButtonProps: {
-    text: '确认绑定',
-    className: 'g2-mfa-submit-button'
-  }
-}
 
 const TAB_CONFIG = {
   code: { key: 'code', tab: '验证码' },
@@ -139,6 +129,19 @@ export const GuardIdentityAccountVerifcation: React.FC<any> = () => {
     sendCodeRef.current?.click()
   })
 
+  const FORM_CONFIG = useMemo(() => {
+    return {
+      onFinishFailed: (submitButtonRef: any) => () =>
+        submitButtonRef.current?.onError(),
+      validateTrigger: ['onBlur', 'onChange'],
+      className: 'authing-g2-input-form',
+      submitButtonProps: {
+        text: initData.flowType === 'create' ? '确认' : '确认绑定',
+        className: 'g2-mfa-submit-button'
+      },
+      title: initData.flowType === 'create' ? '创建新账号' : '绑定已有账号'
+    }
+  }, [])
   // 提取通用表单配置
   const commonFormProps = useMemo(
     () => ({
@@ -265,7 +268,7 @@ export const GuardIdentityAccountVerifcation: React.FC<any> = () => {
     ),
     [commonFormProps, submitButtonRef, t]
   )
-  const renderPasswordFormBySingl = useCallback(
+  const renderPasswordFormBySingle = useCallback(
     () => (
       <>
         <div className="g2-view-identity-binding-v2-header">
@@ -276,7 +279,7 @@ export const GuardIdentityAccountVerifcation: React.FC<any> = () => {
             <span>{'请跟随步骤完成账号绑定'}</span>
           </div>
           <div className="g2-view-identity-binding-content-title">
-            <span>{'绑定已有账号'}</span>
+            <span>{FORM_CONFIG.title}</span>
           </div>
         </div>
         <div className="g2-identity-binding-verifcation-content">
@@ -306,7 +309,7 @@ export const GuardIdentityAccountVerifcation: React.FC<any> = () => {
     type => (
       <>
         <div className="g2-view-identity-binding-v2-header">
-          <h3 className="authing-g2-mfa-title">{'绑定已有账号'}</h3>
+          <h3 className="authing-g2-mfa-title">{FORM_CONFIG.title}</h3>
           <p className="authing-g2-mfa-tips">{renderTips(type)}</p>
         </div>
         <div className="g2-identity-binding-verifcation-content">
@@ -387,7 +390,7 @@ export const GuardIdentityAccountVerifcation: React.FC<any> = () => {
 
     // 单一验证方式
     if (hasPassword) {
-      return renderPasswordFormBySingl()
+      return renderPasswordFormBySingle()
     }
 
     if (hasCode) {

@@ -70,6 +70,8 @@ export const GuardIdentityBindingAskView: React.FC = () => {
     if (true) {
       changeModule?.(GuardModuleType.IDENTITY_BINDING_CREATE, {
         ...initData,
+        type: 'phone',
+        account: '18296442676',
         source: GuardModuleType.IDENTITY_BINDING_ASK
       })
     } else {
