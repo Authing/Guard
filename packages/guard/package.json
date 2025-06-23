@@ -1,6 +1,6 @@
 {
   "name": "@authing/guard",
-  "version": "5.3.5-fehorizon.11",
+  "version": "5.3.5-fehorizon.13",
   "description": "Guard for JS",
   "module": "dist/esm/guard.min.js",
   "types": "dist/typings/index.d.ts",
