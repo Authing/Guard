@@ -66,29 +66,35 @@ export const GuardIdentityBindingAskView: React.FC = () => {
   }
 
   const [createLoading, createAccount] = useAsyncFn(async () => {
-    spinChange(true)
-    const { code, onGuardHandling, data, isFlowEnd } = await authFlow(
-      IdentityBindingAction.CreateUser
-    )
-
-    spinChange(false)
-
-    if (isFlowEnd) {
-      onCreate(data)
+    // 判断身份源信息是否有敏感信息 手机号 或 邮箱
+    if (true) {
+      changeModule?.(GuardModuleType.IDENTITY_BINDING_CREATE, {
+        ...initData,
+        source: GuardModuleType.IDENTITY_BINDING_ASK
+      })
     } else {
-      onCreateError(code, data)
+      spinChange(true)
+      const { code, onGuardHandling, data, isFlowEnd } = await authFlow(
+        IdentityBindingAction.CreateUser
+      )
 
-      onGuardHandling?.()
+      spinChange(false)
+
+      if (isFlowEnd) {
+        onCreate(data)
+      } else {
+        onCreateError(code, data)
+
+        onGuardHandling?.()
+      }
     }
   }, [])
 
   const bindingAccount = () => {
-    // 旧版
     changeModule?.(GuardModuleType.IDENTITY_BINDING, {
       ...initData,
       source: GuardModuleType.IDENTITY_BINDING_ASK
     })
-    // 新版
   }
 
   return (

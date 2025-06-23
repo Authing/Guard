@@ -131,7 +131,7 @@ export const GuardIdentityBindingViewV2: React.FC<any> = () => {
           <span>{'绑定已有账号'}</span>
         </div>
         <div className="g2-view-identity-binding-content-desc">
-          <span>{'请跟随步骤完成账号绑定'}</span>
+          <span>{'请跟随步骤完成账号绑定,完善您的账号信息'}</span>
         </div>
 
         <Form

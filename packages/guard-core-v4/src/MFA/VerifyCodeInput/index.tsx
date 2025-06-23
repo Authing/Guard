@@ -48,6 +48,7 @@ export const VerifyCodeInput: React.FC<VerifyCodeInputProps> = ({
   return (
     <div className="authing-g2-code-input" {...rest}>
       <OTPInput
+        autoFocus
         value={value}
         onChange={onChange}
         maxLength={length}

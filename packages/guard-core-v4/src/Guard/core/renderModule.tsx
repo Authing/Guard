@@ -89,6 +89,7 @@ import { GuardInviteSuccessView } from '../../Invitation/Success'
 import { GuardResetPassword } from '../../ChangePassword/core/resetPassword'
 import { GuardIdentityBindingViewV2 } from '../../IdentityBindingV2'
 import { GuardIdentityAccountVerifcation } from '../../IdentityBindingV2/accountVerifcation'
+import { GuardIdentityAccountCreateSelect } from '../../IdentityBindingV2/accountCreateSelect'
 const { useEffect, useMemo } = React
 
 const PREFIX_CLS = 'authing-ant'
@@ -155,6 +156,9 @@ export const RenderModule: React.FC<{
     ),
     [GuardModuleType.IDENTITY_BINDING_VERIFCATION]: (key: string) => (
       <GuardIdentityAccountVerifcation key={key} />
+    ),
+    [GuardModuleType.IDENTITY_BINDING_CREATE]: (key: string) => (
+      <GuardIdentityAccountCreateSelect key={key} />
     ),
     // MFA
     [GuardModuleType.MFA]: (key: string) => <GuardMFAView key={key} />,
