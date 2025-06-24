@@ -57,7 +57,7 @@ export const GuardIdentityAccountVerifcation: React.FC<any> = () => {
 
   const config = useGuardFinallyConfig()
 
-  const { backModule, changeModule } = useGuardModule()
+  const { changeModule } = useGuardModule()
 
   const [form] = Form.useForm()
 
@@ -80,17 +80,6 @@ export const GuardIdentityAccountVerifcation: React.FC<any> = () => {
     publicConfig?.internationalSmsConfig?.enabled || false
 
   const [sent, setSent] = useState<boolean>(false)
-
-  const renderBack = useMemo(() => {
-    if (initData.source === GuardModuleType.IDENTITY_BINDING_ASK)
-      return (
-        <BackCustom onBack={() => backModule?.()}>
-          {t('common.back')}
-        </BackCustom>
-      )
-
-    return <BackLogin />
-  }, [backModule, initData.source, t])
 
   const sendVerifyCode = async () => {
     try {
@@ -449,7 +438,9 @@ export const GuardIdentityAccountVerifcation: React.FC<any> = () => {
 
   return (
     <div className="g2-view-container g2-view-identity-binding-v2">
-      {renderBack}
+      <BackCustom onBack={() => initData?.backHandle?.()}>
+        {t('common.back')}
+      </BackCustom>
       <div className="g2-view-identity-binding-content">{renderView()}</div>
     </div>
   )

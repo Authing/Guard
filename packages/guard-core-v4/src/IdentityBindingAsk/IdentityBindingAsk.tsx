@@ -72,7 +72,9 @@ export const GuardIdentityBindingAskView: React.FC = () => {
         ...initData,
         type: 'phone',
         account: '18296442676',
-        source: GuardModuleType.IDENTITY_BINDING_ASK
+        backHandle: () => {
+          changeModule?.(GuardModuleType.IDENTITY_BINDING_ASK, initData)
+        }
       })
     } else {
       spinChange(true)
@@ -95,7 +97,9 @@ export const GuardIdentityBindingAskView: React.FC = () => {
   const bindingAccount = () => {
     changeModule?.(GuardModuleType.IDENTITY_BINDING, {
       ...initData,
-      source: GuardModuleType.IDENTITY_BINDING_ASK
+      backHandle: () => {
+        changeModule?.(GuardModuleType.IDENTITY_BINDING_ASK, initData)
+      }
     })
   }
 

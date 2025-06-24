@@ -56,8 +56,6 @@ export const GuardIdentityBindingViewV2: React.FC<any> = () => {
 
   const config = useGuardFinallyConfig()
 
-  const { backModule } = useGuardModule()
-
   const submitButtonRef = useRef<any>(null)
 
   useGuardView()
@@ -69,17 +67,6 @@ export const GuardIdentityBindingViewV2: React.FC<any> = () => {
   // 是否开启了国际化短信功能
   const isInternationSms =
     publicConfig?.internationalSmsConfig?.enabled || false
-
-  const renderBack = useMemo(() => {
-    if (initData.source === GuardModuleType.IDENTITY_BINDING_ASK)
-      return (
-        <BackCustom onBack={() => backModule?.()}>
-          {t('common.back')}
-        </BackCustom>
-      )
-
-    return <BackLogin />
-  }, [backModule, initData.source, t])
 
   const placeholder = useMemo(() => {
     let holder = []
@@ -126,7 +113,10 @@ export const GuardIdentityBindingViewV2: React.FC<any> = () => {
         account: _account,
         methods: ['code'],
         source: GuardModuleType.IDENTITY_BINDING_ASK,
-        phoneCountryCode: phoneCountryCode || '+86'
+        phoneCountryCode: phoneCountryCode || '+86',
+        backHandle: () => {
+          changeModule?.(GuardModuleType.IDENTITY_BINDING_ASK, initData)
+        }
       })
     } else {
       const { code, data } = await post('/api/v2/users/check', {
@@ -146,8 +136,10 @@ export const GuardIdentityBindingViewV2: React.FC<any> = () => {
           type: 'phone',
           account: account,
           methods: ['password'],
-          source: GuardModuleType.IDENTITY_BINDING_ASK,
-          phoneCountryCode: data?.phoneCountryCode || '+86'
+          phoneCountryCode: data?.phoneCountryCode || '+86',
+          backHandle: () => {
+            changeModule?.(GuardModuleType.IDENTITY_BINDING_ASK, initData)
+          }
         })
       }
     }
@@ -155,7 +147,9 @@ export const GuardIdentityBindingViewV2: React.FC<any> = () => {
 
   return (
     <div className="g2-view-container g2-view-identity-binding-v2">
-      {renderBack}
+      <BackCustom onBack={() => initData?.backHandle?.()}>
+        {t('common.back')}
+      </BackCustom>
 
       <div className="g2-view-identity-binding-content">
         <div className="g2-view-identity-binding-content-logo">

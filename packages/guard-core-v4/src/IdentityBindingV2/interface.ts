@@ -122,6 +122,8 @@ export interface GuardIdentityBindingInitData {
   readonly source?: GuardModuleType
   /** 流程类型 */
   readonly flowType?: FlowType
+  /** 流程返回钩子 */
+  readonly backHandle: () => void
 }
 
 /**
@@ -164,6 +166,8 @@ export interface GuardIdentityAccountVerificationInitData extends AuthConfig {
   readonly phoneCountryCode?: string
   /** 流程类型 */
   readonly flowType?: FlowType
+  /** 流程返回钩子 */
+  readonly backHandle: () => void
 }
 
 // ============================================================================

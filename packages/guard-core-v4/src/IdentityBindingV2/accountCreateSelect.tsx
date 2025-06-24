@@ -65,7 +65,8 @@ export const GuardIdentityAccountCreateSelect = () => {
                 account: initData.account,
                 methods: ['code'],
                 source: GuardModuleType.IDENTITY_BINDING_ASK,
-                phoneCountryCode: '+86'
+                phoneCountryCode: '+86',
+                backHandle: initData.backHandle
               })
             }}
           >
@@ -77,7 +78,8 @@ export const GuardIdentityAccountCreateSelect = () => {
               changeModule?.(GuardModuleType.IDENTITY_BINDING, {
                 flowType: 'create',
                 methods: ['phone-code', 'email-code'],
-                source: GuardModuleType.IDENTITY_BINDING_ASK
+                source: GuardModuleType.IDENTITY_BINDING_ASK,
+                backHandle: initData.backHandle
               })
             }}
           >
