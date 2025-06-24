@@ -41,8 +41,9 @@ import './styles.less'
 
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
 import SubmitButton from '../SubmitButton'
-import { getGuardHttp } from '../_utils'
+import { getGuardHttp, parsePhone, validate } from '../_utils'
 import { IconFont } from '../IconFont'
+import phone from 'phone'
 
 const { useMemo, useRef, useCallback } = React
 
@@ -65,6 +66,10 @@ export const GuardIdentityBindingViewV2: React.FC<any> = () => {
 
   const publicConfig = useGuardPublicConfig()
 
+  // 是否开启了国际化短信功能
+  const isInternationSms =
+    publicConfig?.internationalSmsConfig?.enabled || false
+
   const renderBack = useMemo(() => {
     if (initData.source === GuardModuleType.IDENTITY_BINDING_ASK)
       return (
@@ -84,39 +89,67 @@ export const GuardIdentityBindingViewV2: React.FC<any> = () => {
     if (
       initData.methods.some(m => ['phone-password', 'phone-code'].includes(m))
     ) {
-      holder.push('手机号')
+      initData.flowType === 'create' && isInternationSms
+        ? holder.push(t('common.areaCodePhone'))
+        : holder.push(t('common.phoneNumber'))
     }
     if (
       initData.methods.some(m => ['email-password', 'email-code'].includes(m))
     ) {
-      holder.push('邮箱')
+      holder.push(t('common.email'))
     }
     return holder.length > 0 ? `请输入${holder.join('/')}` : undefined
   }, [])
 
   const onNextHandle = useCallback(async values => {
-    console.log(values, 'onFinish')
     const { account } = values
-    const { code, data } = await post('/api/v2/users/check', {
-      account
-    })
-    // 是否存在账号
-    if (code === 200 && data.result !== -1) {
-      // 存在
-      // 整合绑定的方式
-      // result: -1(不存在),1phone,2email,3username, phoneCountryCode
-      const res = optimizeAuthMethodsTypeSafe(data.result, initData.methods)
-      console.log(res, 'res')
-    } else {
-      // 不存在
+
+    if (initData.flowType === 'create') {
+      let type: 'email' | 'phone' = 'phone'
+      let _account = account
+      let phoneCountryCode: string | undefined = '+86'
+      if (validate('email', account)) {
+        // 邮箱
+        type = 'email'
+      } else {
+        type = 'phone'
+        const { phoneNumber: phone, countryCode } = parsePhone(
+          isInternationSms,
+          account
+        )
+        _account = phone
+        phoneCountryCode = countryCode
+      }
       changeModule?.(GuardModuleType.IDENTITY_BINDING_VERIFCATION, {
         flowType: initData.flowType,
-        type: 'phone',
-        account: account,
-        methods: ['password'],
+        type,
+        account: _account,
+        methods: ['code'],
         source: GuardModuleType.IDENTITY_BINDING_ASK,
-        phoneCountryCode: data?.phoneCountryCode || '+86'
+        phoneCountryCode: phoneCountryCode || '+86'
       })
+    } else {
+      const { code, data } = await post('/api/v2/users/check', {
+        account
+      })
+      // 是否存在账号
+      if (code === 200 && data.result !== -1) {
+        // 存在
+        // 整合绑定的方式
+        // result: -1(不存在),1phone,2email,3username, phoneCountryCode
+        const res = optimizeAuthMethodsTypeSafe(data.result, initData.methods)
+        console.log(res, 'res')
+      } else {
+        // 不存在
+        changeModule?.(GuardModuleType.IDENTITY_BINDING_VERIFCATION, {
+          flowType: initData.flowType,
+          type: 'phone',
+          account: account,
+          methods: ['password'],
+          source: GuardModuleType.IDENTITY_BINDING_ASK,
+          phoneCountryCode: data?.phoneCountryCode || '+86'
+        })
+      }
     }
   }, [])
 
@@ -143,13 +176,35 @@ export const GuardIdentityBindingViewV2: React.FC<any> = () => {
           onFinish={onNextHandle}
           onFinishFailed={() => submitButtonRef.current.onError()}
           autoComplete="off"
-          // form={form}
           className="authing-g2-form-required-item-icon-after"
-          // onValuesChange={formValuesChange}
         >
           <Form.Item
             name="account"
-            rules={[{ required: true, message: '账号未填写' }]}
+            validateTrigger={['onBlur', 'onChange']}
+            validateFirst={true}
+            rules={[
+              {
+                required: true,
+                message: '账号未填写',
+                validateTrigger: 'onChange',
+                whitespace: true
+              },
+              {
+                validateTrigger: 'onBlur',
+                validator: async (_: any, value: any) => {
+                  if (
+                    !value ||
+                    initData.flowType !== 'create' ||
+                    validate('email', value) ||
+                    !isInternationSms
+                  ) {
+                    return Promise.resolve()
+                  }
+                  if (phone(value).isValid) return Promise.resolve()
+                  return Promise.reject(t('common.i18nCheckErrorMessage'))
+                }
+              }
+            ]}
             className="authing-g2-input-form"
           >
             <Input
