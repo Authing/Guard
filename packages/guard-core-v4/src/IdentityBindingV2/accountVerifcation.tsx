@@ -15,7 +15,7 @@ import {
   useGuardPublicConfig
 } from '../_utils/context'
 
-import { GuardIdentityAccountVerifcationInitData } from './interface'
+import { GuardIdentityAccountVerificationInitData } from './interface'
 
 import './styles.less'
 
@@ -51,13 +51,13 @@ const TAB_CONFIG = {
  * @description 用户身份源绑定已有账号流程中验证账号的视图 不建议向外暴露使用
  */
 export const GuardIdentityAccountVerifcation: React.FC<any> = () => {
-  const initData = useGuardInitData<GuardIdentityAccountVerifcationInitData>()
+  const initData = useGuardInitData<GuardIdentityAccountVerificationInitData>()
 
   const { post } = getGuardHttp()
 
   const config = useGuardFinallyConfig()
 
-  const { backModule } = useGuardModule()
+  const { backModule, changeModule } = useGuardModule()
 
   const [form] = Form.useForm()
 
@@ -94,12 +94,35 @@ export const GuardIdentityAccountVerifcation: React.FC<any> = () => {
 
   const sendVerifyCode = async () => {
     try {
-      // await authClient.sendSmsCode(
-      //   userPhone ? userPhone : phoneNumber,
-      //   phoneCountryCode ? phoneCountryCode : countryCode,
-      //   SceneType.SCENE_TYPE_MFA_VERIFY
-      // )
-      return true
+      if (initData.type === 'email') {
+        const {
+          code,
+          message: tips,
+          apiCode
+        } = await post('/api/v2/email/send', {
+          email: initData.account,
+          scene: EmailScene.MFA_VERIFY_CODE
+        })
+        if (apiCode === 2080) {
+          // 一分钟只能发一次邮箱验证码的提示信息，特殊处理
+          message.error(tips)
+          return false
+        }
+        if (code === 200) {
+          setSent(true)
+          return true
+        } else {
+          message.error(t('login.sendCodeTimeout'))
+          return false
+        }
+      } else {
+        await authClient.sendSmsCode(
+          initData.account,
+          initData.phoneCountryCode,
+          SceneType.SCENE_TYPE_MFA_VERIFY
+        )
+        return true
+      }
     } catch (e: any) {
       if (e.code === 'ECONNABORTED') {
         message.error(t('login.sendCodeTimeout'))
@@ -116,13 +139,35 @@ export const GuardIdentityAccountVerifcation: React.FC<any> = () => {
   }
 
   const onFinish = useCallback(async values => {
-    const res = await post('/api/v2/users/check', values)
+    changeModule?.(GuardModuleType.IDENTITY_BINDING_RESULT, {
+      title: '手机号不存在',
+      desc: '请再次确认您的手机号码,您可以',
+      actions: [
+        {
+          title: '重新填写',
+          callback: () => {
+            changeModule?.(GuardModuleType.IDENTITY_BINDING_VERIFCATION, {
+              ...initData
+            })
+          }
+        },
+        {
+          title: '创建新账号',
+          callback: () => {
+            changeModule?.(GuardModuleType.IDENTITY_BINDING_VERIFCATION, {
+              ...initData
+            })
+          }
+        }
+      ]
+    })
+    // const res = await post('/api/v2/users/check', values)
     // 是否存在账号
-    if (res.code === 200) {
-      // 存在
-    } else {
-      // 不存在
-    }
+    // if (res.code === 200) {
+    //   // 存在
+    // } else {
+    //   // 不存在
+    // }
   }, [])
 
   useEffectOnce(() => {
@@ -295,6 +340,7 @@ export const GuardIdentityAccountVerifcation: React.FC<any> = () => {
       const smsTips = `${
         isInternationSms ? initData?.phoneCountryCode : ''
       } ${phoneDesensitization(initData.account)}`
+
       const emailTips = mailDesensitization(initData.account)
       return sent
         ? `${t('login.verifyCodeSended')} ${

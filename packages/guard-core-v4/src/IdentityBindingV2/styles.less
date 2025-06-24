@@ -5,7 +5,37 @@
     flex-direction: column;
     padding: 0 38px;
     margin-top: 16px;
-
+    .binding-result-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      margin-bottom: 32px;
+      .binding-result-img {
+        margin: 16px 0px;
+        .g2-icon {
+          width: 178px;
+          height: 120px;
+        }
+      }
+      .title {
+        color: #282d3c;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        & + .desc {
+          margin-top: 8px;
+        }
+      }
+      .desc {
+        color: #545968;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+      }
+    }
     .g2-view-identity-binding-content-logo {
       img {
         width: 42px;

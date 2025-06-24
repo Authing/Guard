@@ -21,6 +21,7 @@ export enum GuardModuleType {
   IDENTITY_BINDING_NO_ASK = 'identityBindingNoAsk', // 身份源绑定页不问询
   IDENTITY_BINDING_VERIFCATION = 'identityBindingVerifcation', // 身份源绑定已有账号验证
   IDENTITY_BINDING_CREATE = 'identityBindingCreate', //身份源创建新账号
+  IDENTITY_BINDING_RESULT = 'identityBindingResult', // 身份源绑定结果
   SELF_UNLOCK = 'selfUnlock', // 自助解锁页
   FLOW_SELECT_ACCOUNT = 'flowSelectAccount', // 选择登录账号
   /** 多租户门户选择页 */

@@ -200,7 +200,14 @@ export const GuardIdentityBindingViewV2: React.FC<any> = () => {
                   ) {
                     return Promise.resolve()
                   }
-                  if (phone(value).isValid) return Promise.resolve()
+                  if (
+                    phone(value).isValid ||
+                    phone(value, {
+                      country:
+                        publicConfig.internationalSmsConfig?.defaultISOType
+                    })
+                  )
+                    return Promise.resolve()
                   return Promise.reject(t('common.i18nCheckErrorMessage'))
                 }
               }

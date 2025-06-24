@@ -259,3 +259,12 @@ export function optimizeAuthMethodsTypeSafe(
  */
 export type GuardIdentityAccountVerifcationInitData =
   GuardIdentityAccountVerificationInitData
+
+export interface GuardIdentityBindingResultInitData {
+  readonly actions: Array<{
+    title: string
+    callback: () => void
+  }>
+  readonly title?: string
+  readonly desc?: string
+}
