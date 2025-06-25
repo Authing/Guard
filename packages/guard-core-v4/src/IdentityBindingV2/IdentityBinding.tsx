@@ -68,10 +68,12 @@ export const GuardIdentityBindingViewV2: React.FC<any> = () => {
   const isInternationSms =
     publicConfig?.internationalSmsConfig?.enabled || false
 
-  const placeholder = useMemo(() => {
+  const methodsConfig = useMemo(() => {
     let holder = []
+    let matchFields = []
     if (initData.methods.includes('username-password')) {
       holder.push('用户名')
+      matchFields.push(3)
     }
     if (
       initData.methods.some(m => ['phone-password', 'phone-code'].includes(m))
@@ -79,13 +81,18 @@ export const GuardIdentityBindingViewV2: React.FC<any> = () => {
       initData.flowType === 'create' && isInternationSms
         ? holder.push(t('common.areaCodePhone'))
         : holder.push(t('common.phoneNumber'))
+      matchFields.push(1)
     }
     if (
       initData.methods.some(m => ['email-password', 'email-code'].includes(m))
     ) {
       holder.push(t('common.email'))
+      matchFields.push(2)
     }
-    return holder.length > 0 ? `请输入${holder.join('/')}` : undefined
+    return {
+      placeholder: holder.length > 0 ? `请输入${holder.join('/')}` : undefined,
+      matchFields
+    }
   }, [])
 
   const onNextHandle = useCallback(async values => {
@@ -120,26 +127,48 @@ export const GuardIdentityBindingViewV2: React.FC<any> = () => {
       })
     } else {
       const { code, data } = await post('/api/v2/users/check', {
-        account
+        account,
+        matchFields: methodsConfig.matchFields
       })
       // 是否存在账号
       if (code === 200 && data.result !== -1) {
         // 存在
         // 整合绑定的方式
         // result: -1(不存在),1phone,2email,3username, phoneCountryCode
-        const res = optimizeAuthMethodsTypeSafe(data.result, initData.methods)
-        console.log(res, 'res')
-      } else {
-        // 不存在
+        const { type, methods } = optimizeAuthMethodsTypeSafe(
+          data.result,
+          initData.methods
+        )
         changeModule?.(GuardModuleType.IDENTITY_BINDING_VERIFCATION, {
           flowType: initData.flowType,
-          type: 'phone',
+          type,
           account: account,
-          methods: ['password'],
+          methods,
           phoneCountryCode: data?.phoneCountryCode || '+86',
           backHandle: () => {
             changeModule?.(GuardModuleType.IDENTITY_BINDING_ASK, initData)
           }
+        })
+      } else {
+        // 不存在
+        changeModule?.(GuardModuleType.IDENTITY_BINDING_RESULT, {
+          title: '账号不存在',
+          actions: [
+            {
+              title: '重新填写',
+              callback: () => {
+                changeModule?.(GuardModuleType.IDENTITY_BINDING, {
+                  ...initData
+                })
+              }
+            },
+            {
+              title: '使用其他方式登录',
+              callback: () => {
+                changeModule?.(GuardModuleType.LOGIN)
+              }
+            }
+          ]
         })
       }
     }
@@ -213,7 +242,7 @@ export const GuardIdentityBindingViewV2: React.FC<any> = () => {
               size="large"
               className="authing-g2-input"
               autoComplete="off"
-              placeholder={placeholder}
+              placeholder={methodsConfig.placeholder}
               prefix={
                 <IconFont
                   type="authing-a-user-line1"

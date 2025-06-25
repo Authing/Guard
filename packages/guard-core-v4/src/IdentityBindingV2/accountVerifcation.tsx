@@ -9,6 +9,8 @@ import { GuardModuleType } from '../Guard'
 import { BackCustom, BackLogin } from '../Back'
 
 import {
+  useGuardButtonState,
+  useGuardEvents,
   useGuardFinallyConfig,
   useGuardInitData,
   useGuardModule,
@@ -22,6 +24,7 @@ import './styles.less'
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
 import SubmitButton from '../SubmitButton'
 import {
+  CodeAction,
   fieldRequiredRule,
   getGuardHttp,
   mailDesensitization,
@@ -37,6 +40,10 @@ import { IconFont } from '../IconFont'
 import { SendCodeByPhone } from '../SendCode/SendCodeByPhone'
 import { EmailScene, SceneType } from 'authing-js-sdk'
 import { SendCodeByEmail } from '../SendCode/SendCodeByEmail'
+import {
+  IdentityBindingBusinessAction,
+  useIdentityBindingBusinessRequest
+} from './businessRequest'
 
 const { useMemo, useRef, useCallback, useState } = React
 
@@ -65,6 +72,8 @@ export const GuardIdentityAccountVerifcation: React.FC<any> = () => {
 
   const sendCodeRef = useRef<HTMLButtonElement>(null)
 
+  const [tabMethods, setTabMethods] = useState<keyof typeof TAB_CONFIG>('code')
+
   const authClient = useGuardAuthClient()
 
   useGuardView()
@@ -73,6 +82,10 @@ export const GuardIdentityAccountVerifcation: React.FC<any> = () => {
 
   const publicConfig = useGuardPublicConfig()
 
+  const { spinChange } = useGuardButtonState()
+
+  const { publicKey } = config
+
   const codeLength = publicConfig?.verifyCodeLength || 4
 
   // 是否开启了国际化短信功能
@@ -80,6 +93,61 @@ export const GuardIdentityAccountVerifcation: React.FC<any> = () => {
     publicConfig?.internationalSmsConfig?.enabled || false
 
   const [sent, setSent] = useState<boolean>(false)
+
+  const events = useGuardEvents()
+
+  const bindType = 'bind'
+  const phoneCodeRequest =
+    useIdentityBindingBusinessRequest(bindType)[
+      IdentityBindingBusinessAction.PhoneCode
+    ]
+  const emailCodeRequest =
+    useIdentityBindingBusinessRequest(bindType)[
+      IdentityBindingBusinessAction.EmailCode
+    ]
+  const PasswordRequest =
+    useIdentityBindingBusinessRequest(bindType)[
+      IdentityBindingBusinessAction.Password
+    ]
+
+  const bindMethodsMap = {
+    phone: async (data: any) => {
+      const { account, code, phoneCountryCode } = data
+
+      const options: any = {
+        phone: account,
+        code
+      }
+
+      if (isInternationSms) {
+        options.phoneCountryCode = phoneCountryCode
+      }
+      return await phoneCodeRequest(options)
+    },
+    email: async (data: any) => {
+      const { account, code } = data
+      const options: any = {
+        email: account,
+        code
+      }
+      return await emailCodeRequest(options)
+    },
+    password: async (data: any) => {
+      const { account, password } = data
+
+      const encrypt = authClient.options.encryptFunction
+
+      const captchaCode = data.captchaCode && data.captchaCode.trim()
+
+      const encryptPassword = await encrypt!(password, publicKey!)
+
+      return await PasswordRequest({
+        account,
+        password: encryptPassword,
+        captchaCode
+      })
+    }
+  }
 
   const sendVerifyCode = async () => {
     try {
@@ -127,36 +195,65 @@ export const GuardIdentityAccountVerifcation: React.FC<any> = () => {
     }
   }
 
-  const onFinish = useCallback(async values => {
-    changeModule?.(GuardModuleType.IDENTITY_BINDING_RESULT, {
-      title: '手机号不存在',
-      desc: '请再次确认您的手机号码,您可以',
-      actions: [
-        {
-          title: '重新填写',
-          callback: () => {
-            changeModule?.(GuardModuleType.IDENTITY_BINDING_VERIFCATION, {
-              ...initData
-            })
-          }
-        },
-        {
-          title: '创建新账号',
-          callback: () => {
-            changeModule?.(GuardModuleType.IDENTITY_BINDING_VERIFCATION, {
-              ...initData
-            })
-          }
-        }
-      ]
+  const onLoginSuccess = (data: any) => {
+    events?.onBinding?.(data, authClient!) // 绑定成功
+
+    events?.onLogin?.(data, authClient!) // 登录成功
+  }
+
+  const onLoginFailed = (code: number, data: any, message?: string) => {
+    events?.onBindingError?.({
+      code,
+      data,
+      message
     })
-    // const res = await post('/api/v2/users/check', values)
-    // 是否存在账号
-    // if (res.code === 200) {
-    //   // 存在
-    // } else {
-    //   // 不存在
-    // }
+    events?.onLoginError?.({
+      code,
+      data,
+      message
+    })
+  }
+
+  const onFinish = useCallback(async values => {
+    console.log(values, initData, 'value')
+    const { methods } = initData
+    const hasMultipleMethods = methods.length > 1
+    const hasPassword = methods.includes('password')
+    const hasCode = methods.includes('code')
+    let type = ''
+    submitButtonRef.current?.onSpin(true)
+    if (hasMultipleMethods) {
+      // 有一种以上的方式
+      if (tabMethods === 'password') {
+        type = 'password'
+      } else {
+        type = initData.type
+      }
+    } else {
+      if (hasPassword) {
+        type = 'password'
+      } else if (hasCode) {
+        type = initData.type
+      }
+    }
+
+    const res = await bindMethodsMap[type as keyof typeof bindMethodsMap]?.({
+      ...values,
+      account: initData.account,
+      phoneCountryCode: initData.phoneCountryCode
+    })
+
+    const { code, apiCode, data, onGuardHandling, message: tips } = res
+
+    submitButtonRef.current?.onSpin(false)
+    if (code === 200) {
+      onLoginSuccess(data)
+    } else {
+      const handMode = onGuardHandling?.()
+      // 向上层抛出错误 执行绑定失败钩子
+      handMode === CodeAction.RENDER_MESSAGE &&
+        onLoginFailed(apiCode ?? code, data, tips)
+    }
   }, [])
 
   useEffectOnce(() => {
@@ -351,6 +448,7 @@ export const GuardIdentityAccountVerifcation: React.FC<any> = () => {
           <Form {...commonFormProps}>
             <VerifyCodeFormItem
               codeLength={codeLength}
+              name={'code'}
               ruleKeyword={t('common.captchaCode') as string}
             >
               <VerifyCodeInput length={codeLength} onFinish={onFinish} />
@@ -399,7 +497,11 @@ export const GuardIdentityAccountVerifcation: React.FC<any> = () => {
           </div>
         </div>
         <div className="g2-identity-binding-verifcation-content">
-          <Tabs destroyInactiveTabPane={true}>
+          <Tabs
+            destroyInactiveTabPane={true}
+            accessKey={tabMethods}
+            onChange={(value: any) => setTabMethods(value)}
+          >
             <Tabs.TabPane {...TAB_CONFIG.code}>{renderCodeForm()}</Tabs.TabPane>
             <Tabs.TabPane {...TAB_CONFIG.password}>
               {renderPasswordForm()}

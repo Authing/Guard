@@ -67,7 +67,7 @@ export const GuardIdentityBindingAskView: React.FC = () => {
 
   const [createLoading, createAccount] = useAsyncFn(async () => {
     // 判断身份源信息是否有敏感信息 手机号 或 邮箱
-    if (true) {
+    if (initData?.phone || initData?.email) {
       changeModule?.(GuardModuleType.IDENTITY_BINDING_CREATE, {
         ...initData,
         type: 'phone',

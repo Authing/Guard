@@ -4,16 +4,20 @@ import { BackCustom, BackLogin } from '../Back'
 import { GuardModuleType } from '../Guard'
 import {
   phoneDesensitization,
+  useGuardEvents,
   useGuardFinallyConfig,
+  useGuardHttp,
   useGuardInitData,
   useGuardModule
 } from '../_utils'
 import { GuardButton } from '../GuardButton'
 import './styles.less'
+import { useCallback } from 'react'
+import { IdentityBindingAction } from './businessRequest'
+import { useGuardAuthClient } from '../Guard/authClient'
 
 const { useMemo } = React
 /**
- *
  * @description 用户身份源询问绑定选择创建账号时 用户用于选择创建方式的选择页
  */
 export const GuardIdentityAccountCreateSelect = () => {
@@ -25,6 +29,29 @@ export const GuardIdentityAccountCreateSelect = () => {
 
   const { backModule, changeModule } = useGuardModule()
 
+  const { authFlow } = useGuardHttp()
+
+  const authClient = useGuardAuthClient()
+
+  const events = useGuardEvents()
+
+  const onCreate = (data: any) => {
+    events?.onLogin?.(data, authClient)
+
+    events?.onCreate?.(data, authClient)
+  }
+
+  const onCreateError = (code: any, data: any) => {
+    events?.onCreateError?.({
+      code,
+      data
+    })
+    events?.onLoginError?.({
+      code,
+      data
+    })
+  }
+
   const renderBack = useMemo(() => {
     if (initData.source === GuardModuleType.IDENTITY_BINDING_ASK)
       return (
@@ -35,6 +62,20 @@ export const GuardIdentityAccountCreateSelect = () => {
 
     return <BackLogin />
   }, [backModule, initData.source, t])
+
+  const createAccount = useCallback(async () => {
+    const { code, onGuardHandling, data, isFlowEnd } = await authFlow(
+      IdentityBindingAction.CreateUser
+    )
+
+    if (isFlowEnd) {
+      onCreate(data)
+    } else {
+      onCreateError(code, data)
+
+      onGuardHandling?.()
+    }
+  }, [])
 
   return (
     <div className="g2-view-identity-binding-v2 g2-view-container">
@@ -64,7 +105,6 @@ export const GuardIdentityAccountCreateSelect = () => {
                 type: initData.type,
                 account: initData.account,
                 methods: ['code'],
-                source: GuardModuleType.IDENTITY_BINDING_ASK,
                 phoneCountryCode: '+86',
                 backHandle: initData.backHandle
               })
@@ -75,10 +115,10 @@ export const GuardIdentityAccountCreateSelect = () => {
           <GuardButton
             className="authing-g2-ghost-button"
             onClick={() => {
+              // 只允许使用 手机验证码或邮箱验证码进行账号创建
               changeModule?.(GuardModuleType.IDENTITY_BINDING, {
                 flowType: 'create',
                 methods: ['phone-code', 'email-code'],
-                source: GuardModuleType.IDENTITY_BINDING_ASK,
                 backHandle: initData.backHandle
               })
             }}
@@ -87,12 +127,7 @@ export const GuardIdentityAccountCreateSelect = () => {
           </GuardButton>
           <GuardButton
             className="authing-g2-ghost-button"
-            onClick={() => {
-              changeModule?.(GuardModuleType.IDENTITY_BINDING, {
-                ...initData,
-                source: GuardModuleType.IDENTITY_BINDING_ASK
-              })
-            }}
+            onClick={createAccount}
           >
             {'直接创建'}
           </GuardButton>

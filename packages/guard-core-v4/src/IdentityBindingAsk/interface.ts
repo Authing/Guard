@@ -21,7 +21,8 @@ export interface GuardIdentityBindingAskProps
 export interface GuardIdentityBindingAskInitData {
   methods: 'email' | 'username' | 'phone' | 'phone-code' | 'email-code'
   // 从第三方身份源带来的基础信息
-  userInfo?: any
+  phone?: string
+  email?: string
 }
 
 export interface GuardIdentityBindingAskViewProps
