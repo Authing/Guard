@@ -193,7 +193,12 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
         email = email ?? account
         if (enabledMailPwdRegisterValid) {
           emailToken = values?.code
+          profile = {
+            email: email
+          }
         }
+        // 移除 account 字段
+        account = undefined
       }
 
       // 注册使用的详情信息
