@@ -116,7 +116,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
     !config.autoRegister && publicConfig?.enabledPPRegisterValid
 
   const enabledMailPwdRegisterValid =
-    true || (!config.autoRegister && publicConfig?.enabledMailPwdRegisterValid)
+    !config.autoRegister && publicConfig?.enabledMailPwdRegisterValid
 
   const verifyCodeLength = publicConfig?.verifyCodeLength ?? 4
 
