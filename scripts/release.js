@@ -34,11 +34,11 @@ function callShell(args) {
     cd ../../
     cd packages/native-js-ui-components && npm ci && npm install --save-exact @authing/guard-shim-react@${version} && npm run build:lib && ${releaseType}
     cd ../../
-    cd packages/ng-ui-components && npm ci && npm install --save-exact @authing/native-js-ui-components@${version} && npm run build:lib && ${releaseType}
-    cd ../../
     cd packages/react-ui-components && npm ci && npm install --save-exact @authing/guard-shim-react@${version} && npm run build:lib && ${releaseType}
     cd ../../
     cd packages/react18-ui-components && npm ci && npm install --save-exact @authing/guard-shim-react18@${version} && npm run build:lib && ${releaseType}
+    cd ../../
+    cd packages/ng-ui-components && npm ci && npm install --save-exact @authing/native-js-ui-components@${version} && npm run build:lib && ${releaseType}
     cd ../../
     cd packages/vue-ui-components && npm ci && npm install --save-exact @authing/native-js-ui-components@${version} && npm run build:lib && ${releaseType}
     cd ../../
