@@ -54,6 +54,10 @@ import { SendCodeByPhone } from '../../SendCode/SendCodeByPhone'
 
 import { GraphicVerifyCode } from '../../Login/core/withPassword/GraphicVerifyCode'
 
+import { SendCodeByEmail } from '../../SendCode/SendCodeByEmail'
+
+import { EmailScene } from '../../Type'
+
 const { useRef, useState, useCallback, useMemo, useEffect } = React
 
 export interface RegisterWithEmailProps {
@@ -87,6 +91,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
   const isChangeComplete = useIsChangeComplete(
     (method || 'email').split('-')[0]
   )
+
   const { changeModule } = useGuardModule()
   const { post } = useGuardHttpClient()
 
@@ -109,6 +114,9 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
 
   const enabledPPRegisterValid =
     !config.autoRegister && publicConfig?.enabledPPRegisterValid
+
+  const enabledMailPwdRegisterValid =
+    true || (!config.autoRegister && publicConfig?.enabledMailPwdRegisterValid)
 
   const verifyCodeLength = publicConfig?.verifyCodeLength ?? 4
 
@@ -163,6 +171,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
 
       let phoneCountryCode
       let phoneToken
+      let emailToken
       let profile
 
       if (method === 'phone-password') {
@@ -178,6 +187,12 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
           profile = {
             phone: phoneNumber
           }
+        }
+      }
+      if (method === 'email-password') {
+        email = email ?? account
+        if (enabledMailPwdRegisterValid) {
+          emailToken = values?.code
         }
       }
 
@@ -201,6 +216,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
           : undefined,
         context: JSON.stringify(context),
         phoneToken,
+        emailToken,
         agreementIds: agreements.length
           ? acceptedAgreementIds.current
           : undefined
@@ -429,35 +445,72 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
       )
     }
     return (
-      <CustomFormItem.CustomName
-        method={method?.split('-')[0]}
-        key={method}
-        name="account"
-        className="authing-g2-input-form"
-        validateFirst={true}
-        form={form}
-        checkRepeat={true}
-        required={true}
-      >
-        <Input
-          maxLength={50}
-          autoFocus={!isPhoneMedia}
-          className="authing-g2-input"
-          autoComplete="off"
-          size="large"
-          placeholder={
-            t('login.inputAccount', {
-              text: label
-            }) as string
-          }
-          prefix={
-            <IconFont
-              type="authing-a-user-line1"
-              style={{ color: '#878A95' }}
-            />
-          }
-        ></Input>
-      </CustomFormItem.CustomName>
+      <>
+        <CustomFormItem.CustomName
+          method={method?.split('-')[0]}
+          key={method}
+          name="account"
+          className="authing-g2-input-form"
+          validateFirst={true}
+          form={form}
+          checkRepeat={true}
+          required={true}
+        >
+          <Input
+            maxLength={50}
+            autoFocus={!isPhoneMedia}
+            className="authing-g2-input"
+            autoComplete="off"
+            size="large"
+            placeholder={
+              t('login.inputAccount', {
+                text: label
+              }) as string
+            }
+            prefix={
+              <IconFont
+                type="authing-a-user-line1"
+                style={{ color: '#878A95' }}
+              />
+            }
+          ></Input>
+        </CustomFormItem.CustomName>
+        {method === 'email-password' && enabledMailPwdRegisterValid && (
+          <>
+            <Form.Item
+              key="code"
+              name="code"
+              validateTrigger={['onBlur', 'onChange']}
+              rules={fieldRequiredRule(t('common.captchaCode'))}
+              className="authing-g2-input-form"
+            >
+              <SendCodeByEmail
+                className="authing-g2-input g2-send-code-input"
+                autoComplete="off"
+                size="large"
+                placeholder={
+                  t('common.inputFourVerifyCode', {
+                    length: verifyCodeLength
+                  }) as string
+                }
+                prefix={
+                  <IconFont
+                    type="authing-a-shield-check-line1"
+                    style={{ color: '#878A95' }}
+                  />
+                }
+                scene={EmailScene.REGISTER_VERIFY_CODE}
+                maxLength={verifyCodeLength}
+                fieldName="account"
+                form={form}
+                onSendCodeBefore={async () => {
+                  await form.validateFields(['account'])
+                }}
+              />
+            </Form.Item>
+          </>
+        )}
+      </>
     )
   }, [
     PhoneAccount,

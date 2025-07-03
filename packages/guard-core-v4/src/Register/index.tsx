@@ -134,7 +134,7 @@ export const GuardRegisterView: React.FC = () => {
 
   const tabMapping: Record<
     string,
-    { component: React.ReactNode; name: string }
+    { render: (props: any) => React.ReactNode; name: string }
   > = useMemo(() => {
     let verifyCodeLogin = ''
     if (verifyRegisterMethods.length > 1) {
@@ -150,11 +150,15 @@ export const GuardRegisterView: React.FC = () => {
     }
     return {
       [RegisterSortMethods.Email]: {
-        component: <RegisterWithEmail {...registerContextProps} />,
+        render: (_props: any) => (
+          <RegisterWithEmail {...registerContextProps} {..._props} />
+        ),
         name: t('common.EmailRegister')
       },
       [RegisterSortMethods.Phone]: {
-        component: <RegisterWithCode {...registerContextProps} />,
+        render: (_props: any) => (
+          <RegisterWithCode {...registerContextProps} {..._props} />
+        ),
         name: verifyCodeLogin
       }
     }
@@ -209,7 +213,10 @@ export const GuardRegisterView: React.FC = () => {
           tab={tab?.name || t('common.registerTab', { text: name })}
           key={method}
         >
-          {tab?.component || (
+          {tab?.render?.({
+            label: name,
+            method
+          }) || (
             <RegisterWithEmail
               label={name}
               method={method}
