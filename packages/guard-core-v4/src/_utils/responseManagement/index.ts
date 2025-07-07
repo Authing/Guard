@@ -50,6 +50,10 @@ export const errorCodeInterceptor: (
       return callBack(CodeAction.CHANGE_MODULE, res)
     }
   } else if (hundreds === 4 || hundreds === 6) {
+    // 单独处理一下 为了不影响老版本的 guard
+    if (apiCode === ApiCode.EMAIL_NOT_VERIFIED) {
+      return callBack(CodeAction.CHANGE_MODULE, res)
+    }
     return callBack(CodeAction.RENDER_MESSAGE, res)
   }
 

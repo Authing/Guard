@@ -44,7 +44,8 @@ export enum ApiCode {
   SELECT_ACCOUNT_2_LOGIN = 2930,
   RESET_ACCOUNT_NAME = 1108, // 用户名重复
   INVITE_EXPIRE = 4032, // 链接过期
-  INVITE_PAGE_EXPIRE = 4033
+  INVITE_PAGE_EXPIRE = 4033,
+  EMAIL_NOT_VERIFIED = 2042 // 未验证邮箱登录时验证
 }
 
 export const ChangeModuleApiCodeMapping: Record<string, GuardModuleType> = {
@@ -65,5 +66,6 @@ export const ChangeModuleApiCodeMapping: Record<string, GuardModuleType> = {
   [ApiCode.SELECT_ACCOUNT_2_LOGIN]: GuardModuleType.SELECT_ACCOUNT_2_LOGIN,
   [ApiCode.TENANT_PORTAL]: GuardModuleType.TENANT_PORTAL,
   [ApiCode.INVITE_EXPIRE]: GuardModuleType.INVITE_EXPIRE,
-  [ApiCode.INVITE_PAGE_EXPIRE]: GuardModuleType.INVITE_PAGE_EXPIRE
+  [ApiCode.INVITE_PAGE_EXPIRE]: GuardModuleType.INVITE_PAGE_EXPIRE,
+  [ApiCode.EMAIL_NOT_VERIFIED]: GuardModuleType.VALIDITYVERIFY
 }

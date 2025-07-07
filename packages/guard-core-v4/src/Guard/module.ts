@@ -33,7 +33,8 @@ export enum GuardModuleType {
   INVITE_EXPIRE = 'inviteExpire', // 邀请链接过期
   INVITE_PAGE_EXPIRE = 'invitePageExpire', // 页面过期
   INVITE_SUCCESS = 'inviteSuccess', // 邀请成功
-  RESET_PASSWORD = 'resetPassword'
+  RESET_PASSWORD = 'resetPassword',
+  VALIDITYVERIFY = 'validityVerify' // 邮箱验证页
 }
 export interface GuardModuleAction {
   action: string

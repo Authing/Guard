@@ -87,6 +87,7 @@ import { GuardInviteCompleteView } from '../../Invitation/Complete'
 import { GuardInviteExpireView } from '../../Invitation/Error'
 import { GuardInviteSuccessView } from '../../Invitation/Success'
 import { GuardResetPassword } from '../../ChangePassword/core/resetPassword'
+import { GuardValidityVerifyView } from '../../ValidityVerify'
 const { useEffect, useMemo } = React
 
 const PREFIX_CLS = 'authing-ant'
@@ -192,6 +193,10 @@ export const RenderModule: React.FC<{
     // 提交成功
     [GuardModuleType.SUBMIT_SUCCESS]: (key: string) => (
       <GuardSubmitSuccessView key={key} />
+    ),
+    // 密码登录验证邮箱
+    [GuardModuleType.VALIDITYVERIFY]: (key: string) => (
+      <GuardValidityVerifyView key={key} />
     ),
     // 注册信息补全
     [GuardModuleType.REGISTER_COMPLETE_INFO]: (key: string) => (
