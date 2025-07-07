@@ -5,6 +5,7 @@ import { IG2Config, IG2Events, IG2FCViewProps } from '../Type'
 export interface ValidityVerifyInitData {
   email?: string
   ticket?: string
+  frequency?: number
 }
 
 export interface GuardSubmitSuccessViewProps extends IG2FCViewProps {

@@ -133,5 +133,13 @@
   },
   "wecomScanLogin": "企业微信扫码登录",
   "passwordRuleTips": "你的密码需要满足如下要求:",
-  "characterTypes": "需要包含以下至少 {{x}} 种字符类型"
+  "characterTypes": "需要包含以下至少 {{x}} 种字符类型",
+  "verifyEmailCheck": "验证链接已发送到你的邮箱中,请在邮箱中确认",
+  "verifyEmailSuccess": "邮箱验证成功！",
+  "verifyEmailConstruct": "验证邮箱 {{email}}",
+  "verifyEmailResend": "未收到? 重新发送",
+  "verifyEmailResendCountdown": "{{time}}s 后可重新发送",
+  "verifyEmailExpired": "验证链接已过期, ",
+  "verifyEmailExpiredAction": "重新登录",
+  "verifyEmailSuccessAction": "已成功注册, 正在为你自动登录..."
 }

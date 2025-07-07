@@ -133,5 +133,13 @@
   },
   "wecomScanLogin": "Enterprise WeChat scan code to log in",
   "passwordRuleTips": "Password requirements:",
-  "characterTypes": "Include at least {{x}} character types"
+  "characterTypes": "Include at least {{x}} character types",
+  "verifyEmailCheck": "The verification link has been sent to your mailbox, please confirm it in your mailbox",
+  "verifyEmailSuccess": "Email verification successful!",
+  "verifyEmailConstruct": "Verify Email {{email}}",
+  "verifyEmailResend": "Not received? Resend",
+  "verifyEmailResendCountdown": "{{time}}s You can resend it later",
+  "verifyEmailExpired": "Verification link has expired.",
+  "verifyEmailExpiredAction": "Re-login",
+  "verifyEmailSuccessAction": "Successfully registered, logging you in..."
 }

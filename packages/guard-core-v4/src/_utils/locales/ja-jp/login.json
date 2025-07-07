@@ -133,6 +133,13 @@
   },
   "wecomScanLogin": "エンタープライズ WeChat ログイン",
   "passwordRuleTips": "パスワードには、以下を含める必要があります：",
-  "characterTypes": "Include at least {{x}} character types"
-
+  "characterTypes": "以下の文字タイプを少なくとも{{x}}個含める必要があります",
+  "verifyEmailCheck": "確認リンクがメールボックスに送信されました。メールボックスで確認してください",
+  "verifyEmailSuccess": "メール認証に成功しました!",
+  "verifyEmailConstruct": "メールを確認する {{email}}",
+  "verifyEmailResend": "未收到? 重新发送",
+  "verifyEmailResendCountdown": "{{time}}s 后可重新发送",
+  "verifyEmailExpired": "確認リンクが期限切れです。",
+  "verifyEmailExpiredAction": "再ログイン",
+  "verifyEmailSuccessAction": "正常に登録されました。自動的にログインします..."
 }
