@@ -18,6 +18,7 @@ export interface SendCodeProps extends ButtonProps {
   btnRef?: React.RefObject<HTMLButtonElement>
   setSent?: (value: boolean) => void
   sendDesc?: string
+  retryDesc?: (time: number) => string
 }
 
 const useSentCounter = (effect: any) => {
@@ -63,6 +64,7 @@ export const SendCodeBtn: React.FC<SendCodeProps> = props => {
     beforeSend,
     btnRef,
     setSent,
+    retryDesc,
     ...buttonProps
   } = props
   const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
@@ -103,7 +105,8 @@ export const SendCodeBtn: React.FC<SendCodeProps> = props => {
         <span>
           {enabled
             ? sendDesc
-            : t('common.retryAfterTime', {
+            : retryDesc?.(countDown) ??
+              t('common.retryAfterTime', {
                 time: countDown
               })}
         </span>
