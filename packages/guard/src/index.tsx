@@ -339,7 +339,8 @@ export class Guard {
       state = getRandom(),
       nonce = getRandom(),
       responseMode = 'query',
-      responseType = 'code'
+      responseType = 'code',
+      redirectUri
     } = options
 
     const authClient = await this.getAuthClient()
@@ -369,7 +370,9 @@ export class Guard {
       codeChallengeMethod,
       scope,
       redirectUri:
-        this.options.redirectUri || publicConfig.oidcConfig.redirect_uris[0],
+        redirectUri ||
+        this.options.redirectUri ||
+        publicConfig.oidcConfig.redirect_uris[0],
       state,
       nonce,
       responseMode,

@@ -90,6 +90,7 @@ export interface StartWithRedirectOptions {
     | 'none'
   responseMode?: 'query' | 'fragment' | 'form_post'
   nonce?: string
+  redirectUri?: string
 }
 
 export interface LogoutParams {
