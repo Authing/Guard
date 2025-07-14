@@ -386,12 +386,13 @@ export class Guard {
     window.location.href = url
   }
 
-  async handleRedirectCallback() {
+  async handleRedirectCallback(options: any = {}) {
     const { code, codeChallenge } = this.getCodeAndCodeChallenge()
 
     const { id_token, access_token } = await this.getAccessTokenByCode(
       code,
-      codeChallenge
+      codeChallenge,
+      options
     )
 
     await this.setTokenCache(access_token, id_token)
