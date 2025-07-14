@@ -15,6 +15,7 @@ import { useGuardAuthClient } from '../Guard/authClient'
 import {
   useGuardEvents,
   useGuardFinallyConfig,
+  useGuardInitData,
   useGuardModule,
   useGuardPublicConfig
 } from '../_utils/context'
@@ -35,6 +36,8 @@ import { ApiCode } from '../_utils/responseManagement/interface'
 
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
 import { CheckRules } from '../ValidatorRules/CheckRules'
+import { useEffect } from 'react'
+import { init } from 'i18next'
 
 const { useRef, useState } = React
 
@@ -44,6 +47,8 @@ export const GuardForgetPassword: React.FC = () => {
   const events = useGuardEvents()
 
   const publicConfig = useGuardPublicConfig()
+
+  const initData = useGuardInitData<any>()
 
   const authClient = useGuardAuthClient()
 
@@ -59,6 +64,7 @@ export const GuardForgetPassword: React.FC = () => {
   const [ruleResults, setRuleResults] = useState<any>([])
   const [customPasswordStrength, setCustomPasswordStrength] = useState({})
   const [phoneOrEmailText, setPhoneOrEmailText] = useState('')
+
   const { getPassWordUnsafeText, setPasswordErrorTextShow } =
     usePasswordErrorText()
 
@@ -147,16 +153,17 @@ export const GuardForgetPassword: React.FC = () => {
     )
     return rule
   }
-  // const onSend = (type: 'phone' | 'email') => {
-  //   if (type === 'phone') events?.onPwdPhoneSend?.(authClient)
-  //   if (type === 'email') events?.onPwdEmailSend?.(authClient)
-  // }
-  // const onSendError = (type: 'phone' | 'email', error: any) => {
-  //   if (type === 'phone')
-  //     events?.onPwdPhoneSendError?.(error as CommonMessage, authClient)
-  //   if (type === 'email')
-  //     events?.onPwdEmailSendError?.(error as CommonMessage, authClient)
-  // }
+  useEffect(() => {
+    if (initData) {
+      setResetToken(initData.resetPasswordToken ?? '')
+      setUserId(initData.userId ?? '')
+      setControlShow(initData.controlShow ?? true)
+      setPhoneOrEmailText(initData.phoneOrEmailText ?? '')
+      setPolicyStrength(initData.policyStrength ?? 0)
+      setCustomPasswordStrength(initData.customPasswordStrength ?? {})
+    }
+  }, [initData])
+  console.log(controlShow, 'controlShow')
 
   return controlShow ? (
     <div className="g2-view-container g2-forget-password g2-password-reset-pageWrap g2-password-reset-step1">
@@ -205,11 +212,13 @@ export const GuardForgetPassword: React.FC = () => {
           className="icon"
         />
         <div className="title">{t('login.resetPwd')}</div>
-        <div className="title-explain">
-          {t('login.resetPassword.resetPasswordText2', {
-            account: phoneOrEmailText
-          })}
-        </div>
+        {phoneOrEmailText && (
+          <div className="title-explain">
+            {t('login.resetPassword.resetPasswordText2', {
+              account: phoneOrEmailText
+            })}
+          </div>
+        )}
       </div>
       <div className="g2-view-tabs">
         <Form
@@ -292,14 +301,16 @@ export const GuardForgetPassword: React.FC = () => {
           </Form.Item>
         </Form>
       </div>
-      <div className="g2-tips-line">
-        <div
-          className="link-like back-to-login"
-          onClick={() => setControlShow(true)}
-        >
-          {t('login.resetPassword.back')}
+      {!initData?.noBack && (
+        <div className="g2-tips-line">
+          <div
+            className="link-like back-to-login"
+            onClick={() => setControlShow(true)}
+          >
+            {t('login.resetPassword.back')}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }
