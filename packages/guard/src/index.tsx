@@ -154,7 +154,7 @@ export class Guard {
     return JSON.parse(publicConfig)
   }
 
-  async getAuthClient(): Promise<AuthenticationClient> {
+  async getAuthClient(options: any = {}): Promise<AuthenticationClient> {
     let publicConfig = {} as any
 
     try {
@@ -166,7 +166,6 @@ export class Guard {
     const requestHostname = await this.getRequestHost()
 
     const _authClientOptions = Object.assign(
-      {},
       {
         appId: this.options.appId,
         secret: this.options.secret,
@@ -178,6 +177,9 @@ export class Guard {
           publicConfig.oidcConfig.token_endpoint_auth_method || 'none',
         introspectionEndPointAuthMethod:
           publicConfig.oidcConfig.introspection_endpoint_auth_method || 'none'
+      },
+      {
+        ...options
       }
     )
 
@@ -343,7 +345,9 @@ export class Guard {
       redirectUri
     } = options
 
-    const authClient = await this.getAuthClient()
+    const authClient = await this.getAuthClient({
+      redirectUri
+    })
 
     // 生成一个 code_verifier
     const codeChallenge = authClient.generateCodeChallenge()
@@ -393,8 +397,12 @@ export class Guard {
     await this.setTokenCache(access_token, id_token)
   }
 
-  private async getAccessTokenByCode(code: string, codeChallenge: string) {
-    const authClient = await this.getAuthClient()
+  private async getAccessTokenByCode(
+    code: string,
+    codeChallenge: string,
+    options: any = {}
+  ) {
+    const authClient = await this.getAuthClient(options)
 
     return await authClient.getAccessTokenByCode(code, {
       codeVerifier: codeChallenge
