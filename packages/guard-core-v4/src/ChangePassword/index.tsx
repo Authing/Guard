@@ -11,7 +11,8 @@ import { ImagePro } from '../ImagePro'
 import {
   useGuardFinallyConfig,
   useGuardInitData,
-  useGuardModule
+  useGuardModule,
+  useGuardPublicConfig
 } from '../_utils/context'
 
 import { CompletePassword } from './core/completePassword'
@@ -23,7 +24,10 @@ import { RotateReset } from './core/rotateReset'
 import { PasswordNotSafeReset } from './core/PasswordNotSafeReset'
 
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
+
 import { ForcedModifyPwdCycleUnit } from '../Type'
+
+import { i18n } from '../_utils'
 
 const { useMemo } = React
 
@@ -33,8 +37,9 @@ export const GuardChangePassword: React.FC<{
   title: string
   explain: string
   children: ReactNode
+  logo?: string
 }> = props => {
-  const { title, explain, children } = props
+  const { title, explain, children, logo } = props
 
   const config = useGuardFinallyConfig()
 
@@ -52,7 +57,7 @@ export const GuardChangePassword: React.FC<{
     <div className="g2-view-container g2-change-password">
       <div className="g2-view-header">
         <ImagePro
-          src={config?.logo as string}
+          src={logo ?? (config?.logo as string)}
           size={48}
           borderRadius={4}
           alt=""
@@ -123,6 +128,10 @@ export const GuardForcedPasswordResetView: React.FC = () => {
 
   const { changeModule } = useGuardModule()
 
+  const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
+
+  const publicConfig = useGuardPublicConfig()
+
   const initData = useGuardInitData<{
     forcedCycle: number
     forcedCycleUnit: ForcedModifyPwdCycleUnit
@@ -137,26 +146,63 @@ export const GuardForcedPasswordResetView: React.FC = () => {
 
   const coreForm = <RotateReset onReset={onReset} />
 
-  const modifyPwdText = useMemo(() => {
+  const modifyNotice = useMemo(() => {
     switch (initData?.forcedCycleUnit) {
       case ForcedModifyPwdCycleUnit.Day:
-        return t('user.modifyPwdTextDay', {
-          number: initData.forcedCycle
-        })
+        return {
+          text: t('user.modifyPwdTextDay', {
+            number: initData.forcedCycle
+          }),
+          unit: t('common.day')
+        }
       case ForcedModifyPwdCycleUnit.Year:
-        return t('user.modifyPwdTextYear', {
-          number: initData.forcedCycle
-        })
+        return {
+          text: t('user.modifyPwdTextYear', {
+            number: initData.forcedCycle
+          }),
+          unit: t('common.year')
+        }
       case ForcedModifyPwdCycleUnit.Month:
       default:
-        return t('user.modifyPwdTextMonth', {
-          number: initData.forcedCycle
-        })
+        return {
+          text: t('user.modifyPwdTextMonth', {
+            number: initData.forcedCycle
+          }),
+          unit: t('common.month')
+        }
     }
   }, [initData])
 
+  const title = useMemo(() => {
+    const text = publicConfig?.noticePwdTipsConfig?.title
+    return (
+      (text?.i18n?.[resolvedLanguage].enabled
+        ? text?.i18n?.[resolvedLanguage]?.value
+        : text?.default) ?? t('user.modifyPwd')
+    )
+  }, [publicConfig, resolvedLanguage])
+
+  const explain = useMemo(() => {
+    const text = publicConfig?.noticePwdTipsConfig?.desc
+    let brandText = text?.i18n?.[resolvedLanguage].enabled
+      ? text?.i18n?.[resolvedLanguage]?.value
+      : text?.default
+
+    if (brandText) {
+      brandText = brandText.replaceAll(
+        '{time}',
+        `${initData.forcedCycle} ${modifyNotice.unit} `
+      )
+    }
+    return brandText ?? modifyNotice.text
+  }, [publicConfig, resolvedLanguage])
+
   return (
-    <GuardChangePassword title={t('user.modifyPwd')} explain={modifyPwdText}>
+    <GuardChangePassword
+      title={title}
+      explain={explain}
+      logo={publicConfig?.noticePwdCustomLogo}
+    >
       {coreForm}
     </GuardChangePassword>
   )
@@ -167,27 +213,40 @@ export const GuardNoticePasswordResetView: React.FC = () => {
 
   const { changeModule } = useGuardModule()
 
+  const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
+
+  const publicConfig = useGuardPublicConfig()
+
   const initData = useGuardInitData<{
     forcedCycle: number
     forcedCycleUnit: ForcedModifyPwdCycleUnit
     onFinishCallBack: any
   }>()
 
-  const modifyNoticePwdText = useMemo(() => {
+  const modifyNotice = useMemo(() => {
     switch (initData?.forcedCycleUnit) {
       case ForcedModifyPwdCycleUnit.Day:
-        return t('user.modifyNoticePwdTextDay', {
-          number: initData.forcedCycle
-        })
+        return {
+          text: t('user.modifyNoticePwdTextDay', {
+            number: initData.forcedCycle
+          }),
+          unit: t('common.day')
+        }
       case ForcedModifyPwdCycleUnit.Year:
-        return t('user.modifyNoticePwdTextYear', {
-          number: initData.forcedCycle
-        })
+        return {
+          text: t('user.modifyNoticePwdTextYear', {
+            number: initData.forcedCycle
+          }),
+          unit: t('common.year')
+        }
       case ForcedModifyPwdCycleUnit.Month:
       default:
-        return t('user.modifyNoticePwdTextMonth', {
-          number: initData.forcedCycle
-        })
+        return {
+          text: t('user.modifyNoticePwdTextMonth', {
+            number: initData.forcedCycle
+          }),
+          unit: t('common.month')
+        }
     }
   }, [initData])
 
@@ -204,11 +263,35 @@ export const GuardNoticePasswordResetView: React.FC = () => {
       onFinishCallBack={initData.onFinishCallBack}
     />
   )
+  const title = useMemo(() => {
+    const text = publicConfig?.noticePwdTipsConfig?.title
+    return (
+      (text?.i18n?.[resolvedLanguage].enabled
+        ? text?.i18n?.[resolvedLanguage]?.value
+        : text?.default) ?? t('user.modifyPwd')
+    )
+  }, [publicConfig, resolvedLanguage])
+
+  const explain = useMemo(() => {
+    const text = publicConfig?.noticePwdTipsConfig?.desc
+    let brandText = text?.i18n?.[resolvedLanguage].enabled
+      ? text?.i18n?.[resolvedLanguage]?.value
+      : text?.default
+
+    if (brandText) {
+      brandText = brandText.replaceAll(
+        '{time}',
+        `${initData.forcedCycle} ${modifyNotice.unit} `
+      )
+    }
+    return brandText ?? modifyNotice.text
+  }, [publicConfig, resolvedLanguage])
 
   return (
     <GuardChangePassword
-      title={t('user.modifyPwd')}
-      explain={modifyNoticePwdText}
+      title={title}
+      explain={explain}
+      logo={publicConfig?.noticePwdCustomLogo}
     >
       {coreForm}
     </GuardChangePassword>

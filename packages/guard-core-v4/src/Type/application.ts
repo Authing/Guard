@@ -254,6 +254,15 @@ interface LoginTypeI18nProps {
     }
   }
 }
+interface I18nLang {
+  default: string
+  i18n: {
+    [lang: string]: {
+      value: string
+      enabled: boolean
+    }
+  }
+}
 
 export interface ApplicationConfig {
   id: string
@@ -448,4 +457,14 @@ export interface ApplicationConfig {
 
   /** 特殊浏览器匹配字符串 */
   specialBrowserSymbols?: string[]
+
+  resetPwdTipsConfig?: {
+    title: I18nLang
+    desc: I18nLang
+  }
+  noticePwdTipsConfig?: {
+    title: I18nLang
+    desc: I18nLang
+  }
+  noticePwdCustomLogo?: string
 }

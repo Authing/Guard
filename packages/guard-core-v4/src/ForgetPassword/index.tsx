@@ -28,18 +28,17 @@ import SubmitButton from '../SubmitButton'
 
 import { getGuardHttp } from '../_utils/guardHttp'
 
-import { getPasswordValidateRules, PasswordStrength } from '../_utils'
+import { getPasswordValidateRules, i18n, PasswordStrength } from '../_utils'
 
 import { usePasswordErrorText } from '../_utils/useErrorText'
 
 import { ApiCode } from '../_utils/responseManagement/interface'
 
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
-import { CheckRules } from '../ValidatorRules/CheckRules'
-import { useEffect } from 'react'
-import { init } from 'i18next'
 
-const { useRef, useState } = React
+import { CheckRules } from '../ValidatorRules/CheckRules'
+
+const { useRef, useState, useMemo, useEffect } = React
 
 export const GuardForgetPassword: React.FC = () => {
   const { t } = useTranslation()
@@ -53,6 +52,8 @@ export const GuardForgetPassword: React.FC = () => {
   const authClient = useGuardAuthClient()
 
   const config = useGuardFinallyConfig()
+
+  const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
 
   useGuardView()
 
@@ -163,7 +164,25 @@ export const GuardForgetPassword: React.FC = () => {
       setCustomPasswordStrength(initData.customPasswordStrength ?? {})
     }
   }, [initData])
-  console.log(controlShow, 'controlShow')
+
+  const title = useMemo(() => {
+    const text = publicConfig?.resetPwdTipsConfig?.title
+    return (
+      (text?.i18n?.[resolvedLanguage].enabled
+        ? text?.i18n?.[resolvedLanguage]?.value
+        : text?.default) ?? t('login.resetPwd')
+    )
+  }, [publicConfig, resolvedLanguage])
+
+  const explain = useMemo(() => {
+    const text = publicConfig?.resetPwdTipsConfig?.desc
+
+    return (
+      (text?.i18n?.[resolvedLanguage].enabled
+        ? text?.i18n?.[resolvedLanguage]?.value
+        : text?.default) ?? t('login.resetPassword.resetPasswordText1')
+    )
+  }, [publicConfig, resolvedLanguage])
 
   return controlShow ? (
     <div className="g2-view-container g2-forget-password g2-password-reset-pageWrap g2-password-reset-step1">
@@ -175,10 +194,8 @@ export const GuardForgetPassword: React.FC = () => {
           alt=""
           className="icon"
         />
-        <div className="title">{t('login.resetPwd')}</div>
-        <div className="title-explain">
-          {t('login.resetPassword.resetPasswordText1')}
-        </div>
+        <div className="title">{title}</div>
+        <div className="title-explain">{explain}</div>
       </div>
       <div className="g2-view-tabs">
         <ResetPassword
