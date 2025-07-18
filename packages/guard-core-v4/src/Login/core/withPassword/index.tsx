@@ -74,6 +74,7 @@ import { useLoginAccountBackFill } from '../../hooks/useLoginMultiple'
 import { getCaptchaUrl } from '../../../_utils/getCaptchaUrl'
 import { getGuardWindow } from '../../../Guard/core/useAppendConfig'
 import qs from 'qs'
+import { signRequestParams } from '../../../_utils/signRequestParams'
 
 const { useCallback, useEffect, useMemo, useRef, useState } = React
 
@@ -224,7 +225,7 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
           ? acceptedAgreementIds.current
           : undefined
       }
-      const res = await post(url, body)
+      const res = await post(url, signRequestParams(body))
 
       return res
     },
