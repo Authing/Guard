@@ -215,7 +215,8 @@
     "cookies": "Cookie Policy",
     "title": "EY China Client Center",
     "emailLogin": "Login with your email and password",
-    "internationPhoneInput": "Only numbers can be filled in the input box. Please do not repeatedly fill in area codes, etc."
+    "internationPhoneInput": "Only numbers can be filled in the input box. Please do not repeatedly fill in area codes, etc.",
+    "mfaSmsHints": "Not receive SMS？Please try email or mobile token verification"
   },
   "inputCode": "Please enter the verification code",
 

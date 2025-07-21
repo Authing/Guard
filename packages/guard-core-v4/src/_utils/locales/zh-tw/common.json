@@ -212,7 +212,8 @@
     "userPrivacy": "隱私權聲明",
     "title": "安永中國客戶中心",
     "emailLogin": "信箱登入",
-    "internationPhoneInput": "輸入框內僅能填寫數字，請勿重複填寫區號等"
+    "internationPhoneInput": "輸入框內僅能填寫數字，請勿重複填寫區號等",
+    "mfaSmsHints": "如未收到短信，請使用電子郵件或手機令牌"
   },
   "inputCode": "請輸入驗證碼",
 

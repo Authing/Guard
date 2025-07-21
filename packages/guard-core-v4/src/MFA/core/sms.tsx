@@ -295,7 +295,10 @@ export const VerifyMFASms: React.FC<VerifyMFASmsProps> = ({
   return (
     <>
       <h3 className="authing-g2-mfa-title">{t('common.mfaCertification')}</h3>
-      <p className="authing-g2-mfa-tips">{tips}</p>
+      <div className="authing-g2-mfa-tips">
+        <p>{tips}</p>
+        <p>{t('common.ey.mfaSmsHints')}</p>
+      </div>
       <Form
         form={form}
         onFinish={onFinish}

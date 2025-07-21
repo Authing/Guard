@@ -31,13 +31,26 @@ export const EyGuardProtocolView = () => {
     const cnProtocol = {
       [ProtocolType.PRIVACY]: (
         <section className="protocol" ref={protocolRef}>
+          <div className="sub_text">版本：1.1</div>
           <div className="sub_text">
-            日期：2023 年 10 月 9 日 <br />
-            版本：1.0
+            尊敬的用户：
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            为了更好地在您使用“安永中国客户中心”服务过程中保障您的个人信息权益，我们对《安永中国客户中心隐私政策》进行了调整，主要更新内容包括：
+            <br />
+            1、对安永中国客户中心所收集数据的存储期限进行补充说明
+            <div className="sub_right">
+              隐私政策更新日期：<span>2025/07/10</span>
+            </div>
+            <div className="sub_right">
+              隐私政策生效日期：<span>2025/07/25</span>
+            </div>
           </div>
+          <h5>提示条款</h5>
           <div className="sub_text">
             必须阅读并同意此隐私声明，才能访问安永中国客户中心
           </div>
+
           <h5>隐私声明–安永中国客户中心</h5>
           <div className="sub_text">
             <em>安永华明会计师事务所（特殊普通合伙）</em> (以下简称
@@ -60,7 +73,39 @@ export const EyGuardProtocolView = () => {
           <div className="sub_text">个人信息的处理目的、处理方式及保存期限</div>
 
           <h5>安永出于以下目的及方式处理您的个人信息：</h5>
+          <div className="table">
+            <div className="table-row_privacy table-header">
+              <div className="table-cell">具体场景</div>
+              <div className="table-cell">处理目的</div>
+              <div className="table-cell">处理方式</div>
+              <div className="table-cell">个人信息种类</div>
+            </div>
+            <div
+              style={{
+                height: 16
+              }}
+            ></div>
+            <div className="table-container">
+              <div className="table-row_privacy">
+                <div className="table-cell">授权用户注册</div>
+                <div className="table-cell">用户身份识别</div>
+                <div className="table-cell">
+                  通过您的电子邮箱或手机号码向您发送授权用户身份认证验证信息
+                </div>
+                <div className="table-cell">
+                  姓名、电子邮箱、手机号码（选填）
+                </div>
+              </div>
+            </div>
+          </div>
+          <h5>个人信息保存期限：</h5>
           <div className="sub_text">
+            安永将按照所提供服务的性质需要保存您的个人信息。在保存期限结束时，您的个人信息将被删除。但是，在服务终止后，安永将根据适用的法律、专业标准以及内部档案要求保留与个人信息相关的必要文件。
+          </div>
+          <div className="sub_text">
+            若您长期未登录，在满12个月时系统将会向您发送提醒；当未登录时长达到13个月，系统将对您的账号实行禁用的操作；当未登录时长达到14个月时，系统将会对您的账号实施物理删除操作。
+          </div>
+          {/* <div className="sub_text">
             <ul>
               <li>
                 安永将通过您的电子邮箱或手机号码向您发送授权用户身份认证验证信息，以便您可以进一步完成授权用户注册并登录系统。
@@ -74,7 +119,7 @@ export const EyGuardProtocolView = () => {
 
           <div className="sub_text">
             安永将按照所提供服务的性质需要保存您的个人信息。在保存期限结束时，您的个人信息将被删除。但是，在服务终止后，安永将根据适用的法律、专业标准以及内部档案要求保留与个人信息相关的必要文件。
-          </div>
+          </div> */}
           <h5>明确同意向其他数据处理者提供个人信息</h5>
           <div className="sub_text">
             安永将需要向中国境内云服务供应商（阿里云计算有限公司）提供您的个人信息邮箱或手机号码，用于通过系统向您发送身份认证验证信息。
@@ -646,9 +691,23 @@ export const EyGuardProtocolView = () => {
     const enProtocol = {
       [ProtocolType.PRIVACY]: (
         <section className="protocol" ref={protocolRef}>
+          <div className="sub_text">Version：1.1</div>
           <div className="sub_text">
-            Date: Oct 9, 2023 <br />
-            Version: 1.0
+            Dear User：
+            <br />
+            &nbsp;&nbsp;&nbsp;&nbsp; To better protect your personal information
+            rights while you use the EY China Client Center services, we have
+            made adjustments to the EY China Client Center Privacy Notice. The
+            main updates include:
+            <br />
+            1.Additional explanations regarding the storage period for data
+            collected by the EY China Client Center.
+            <div className="sub_right">
+              Privacy Notice Update Date：<span>July 10，2025</span>
+            </div>
+            <div className="sub_right">
+              Privacy Notice Effective Date：<span>July 25，2025</span>
+            </div>
           </div>
           <div className="sub_text">
             You must read and consent the Privacy Notice in order to access the
@@ -682,9 +741,54 @@ export const EyGuardProtocolView = () => {
           </div>
           <h5>
             EY processes your personal information for the following purposes
-            and methods:
+            and in the following manners:
           </h5>
+
+          <div className="table">
+            <div className="table-row_privacy table-header">
+              <div className="table-cell">Specific Scenario</div>
+              <div className="table-cell">Processing Purpose</div>
+              <div className="table-cell">Processing Method</div>
+              <div className="table-cell">Types of Personal Information</div>
+            </div>
+            <div
+              style={{
+                height: 16
+              }}
+            ></div>
+            <div className="table-container">
+              <div className="table-row_privacy">
+                <div className="table-cell">Authorized User Registration</div>
+                <div className="table-cell">User Identity Verification</div>
+                <div className="table-cell">
+                  Sending authorization user identity verification information
+                  to you via your email address or phone number
+                </div>
+                <div className="table-cell">
+                  Name, Email Address, Phone Number (optional)
+                </div>
+              </div>
+            </div>
+          </div>
+          <h5>Personal Information Retention Period:</h5>
           <div className="sub_text">
+            EY will retain your personal information for as long as necessary
+            based on the nature of the services provided. At the end of the
+            retention period, your personal information will be deleted.
+            However, after the service has terminated, EY will retain necessary
+            documents related to your personal information in accordance with
+            applicable laws, professional standards, and internal archiving
+            requirements.
+          </div>
+          <div className="sub_text">
+            If you do not log in for an extended period, the system will send
+            you a reminder after 12 months. If you have not logged in for 13
+            months, the system will disable your account. If you have not logged
+            in for 14 months, the system will perform a physical deletion of
+            your account.
+          </div>
+
+          {/* <div className="sub_text">
             <ul>
               <li>
                 Account data of users in the system will be used to authorize
@@ -710,7 +814,7 @@ export const EyGuardProtocolView = () => {
             of the service, EY will retain the necessary documents related to
             personal information in accordance with applicable laws,
             professional standards, and internal record requirements.
-          </div>
+          </div> */}
 
           <h5>
             Explicit consent to provide personal information to other data

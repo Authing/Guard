@@ -215,7 +215,8 @@
     "cookies": "Cookie 政策",
     "title": "安永中国客户中心",
     "emailLogin": "邮箱登录",
-    "internationPhoneInput": "输入框内仅能填写数字，请勿重复填写区号等"
+    "internationPhoneInput": "输入框内仅能填写数字，请勿重复填写区号等",
+    "mfaSmsHints": "如未收到短信，请使用电子邮箱或手机令牌"
   },
   "noTenant": "暂无已加入的租户",
   "joinTenant": "加入租户",
