@@ -23,6 +23,7 @@ export interface GuardLocalConfig
    * @description 是否调用 eventsMapping 中的事件
    */
   openEventsMapping?: boolean
+  autoFocus?: boolean
 }
 
 let defaultConfig: GuardLocalConfig = {

@@ -6,7 +6,7 @@ import CustomFormItem from '../../ValidatorRules'
 
 import { InputPassword } from '../../InputPassword'
 
-import { useMediaSize } from '../../_utils/hooks'
+import { useAutoFocus } from '../../_utils/hooks'
 
 import { IconFont } from '../../IconFont'
 
@@ -42,7 +42,7 @@ export const CompletePassword: React.FC = () => {
 
   const [form] = Form.useForm()
 
-  const { isPhoneMedia } = useMediaSize()
+  const { autoFocus } = useAutoFocus()
 
   const { post } = getGuardHttp()
   const {
@@ -184,7 +184,7 @@ export const CompletePassword: React.FC = () => {
           required={true}
         >
           <InputPassword
-            autoFocus={!isPhoneMedia}
+            autoFocus={autoFocus}
             className="authing-g2-input"
             size="large"
             placeholder={t('login.inputPwd')}

@@ -23,7 +23,7 @@ import {
   SocialConnectionItem,
   SocialConnectionProvider
 } from '../../Type/application'
-import { useIsSpecialBrowser } from '..'
+import { useGuardFinallyConfig, useIsSpecialBrowser } from '..'
 export interface PhoneValidResult {
   isValid: boolean
   phoneNumber: string
@@ -109,6 +109,16 @@ export const useMediaSize = () => {
 
   return {
     isPhoneMedia
+  }
+}
+
+export const useAutoFocus = () => {
+  const { autoFocus } = useGuardFinallyConfig()
+  const isPhoneMedia = useMediaQuery({
+    maxWidth: 450
+  })
+  return {
+    autoFocus: autoFocus ?? !isPhoneMedia
   }
 }
 // shaking 抖动

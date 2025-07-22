@@ -22,7 +22,7 @@ import { FormItemIdentify } from '../../Login/core/withVerifyCode/FormItemIdenti
 
 import { InputIdentify } from '../../Login/core/withVerifyCode/inputIdentify'
 
-import { parsePhone, useMediaSize } from '../../_utils/hooks'
+import { parsePhone, useAutoFocus } from '../../_utils/hooks'
 
 import { EmailScene } from '../../Type'
 
@@ -52,7 +52,8 @@ export const SelfUnlock = ({
   let [identify, setIdentify] = useState('')
   let [codeMethod, setCodeMethod] = useState<'phone' | 'email'>('phone')
   let submitButtonRef = useRef<any>(null)
-  const { isPhoneMedia } = useMediaSize()
+  const { autoFocus } = useAutoFocus()
+
   let authClient = useGuardAuthClient()
   const events = useGuardEvents()
 
@@ -225,7 +226,7 @@ export const SelfUnlock = ({
             methods={['email-code', 'phone-code']}
             className="authing-g2-input"
             autoComplete="off"
-            autoFocus={!isPhoneMedia}
+            autoFocus={autoFocus}
             size="large"
             value={identify}
             onChange={(e: any) => {

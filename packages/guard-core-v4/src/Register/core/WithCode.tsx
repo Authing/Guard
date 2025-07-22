@@ -23,7 +23,7 @@ import { SendCodeByPhone } from '../../SendCode/SendCodeByPhone'
 
 import { InputInternationPhone } from '../../Login/core/withVerifyCode/InputInternationPhone'
 
-import { parsePhone, useMediaSize } from '../../_utils/hooks'
+import { parsePhone, useAutoFocus } from '../../_utils/hooks'
 
 import { useIsChangeComplete } from '../utils'
 
@@ -92,7 +92,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
 
   const config = useGuardFinallyConfig()
 
-  const { isPhoneMedia } = useMediaSize()
+  const { autoFocus } = useAutoFocus()
 
   const authClient = useGuardAuthClient()
 
@@ -706,12 +706,12 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
           required={true}
         >
           {isOnlyInternationSms ? (
-            <AreaCodePhoneAccount autoFocus={!isPhoneMedia} />
+            <AreaCodePhoneAccount autoFocus={autoFocus} />
           ) : (
             <InputIdentify
               className="authing-g2-input"
               size="large"
-              autoFocus={!isPhoneMedia}
+              autoFocus={autoFocus}
               value={identify}
               methods={methods}
               onChange={(e: any) => {

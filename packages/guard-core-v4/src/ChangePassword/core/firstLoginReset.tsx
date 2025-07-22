@@ -24,7 +24,7 @@ import { authFlow, ChangePasswordBusinessAction } from '../businessRequest'
 
 import { ApiCode } from '../../_utils/responseManagement/interface'
 
-import { useMediaSize } from '../../_utils/hooks'
+import { useAutoFocus } from '../../_utils/hooks'
 
 import { usePasswordErrorText } from '../../_utils/useErrorText'
 
@@ -61,7 +61,7 @@ export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({
 
   const encrypt = client.options.encryptFunction
 
-  const { isPhoneMedia } = useMediaSize()
+  const { autoFocus } = useAutoFocus()
 
   let submitButtonRef = useRef<any>(null)
   const { getPassWordUnsafeText, setPasswordErrorTextShow } =
@@ -143,7 +143,7 @@ export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({
           required={true}
         >
           <InputPassword
-            autoFocus={!isPhoneMedia}
+            autoFocus={autoFocus}
             className="authing-g2-input"
             size="large"
             placeholder={t('login.inputNewPwd')}

@@ -37,7 +37,7 @@ import { AuthingGuardResponse, AuthingResponse } from '../../../_utils/http'
 
 import { CodeAction } from '../../../_utils/responseManagement/interface'
 
-import { useMediaSize } from '../../../_utils/hooks'
+import { useAutoFocus } from '../../../_utils/hooks'
 
 import {
   useGuardAppId,
@@ -142,7 +142,8 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
   const [acceptedAgreements, setAcceptedAgreements] = useState(false)
   const acceptedAgreementIds = useRef<(string | number)[]>([])
 
-  const { isPhoneMedia } = useMediaSize()
+  const { autoFocus } = useAutoFocus()
+
   const [validated, setValidated] = useState(true)
 
   let { t, i18n } = useTranslation()
@@ -503,7 +504,7 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
             className="authing-g2-input"
             autoComplete="off"
             size="large"
-            autoFocus={!isPhoneMedia}
+            autoFocus={autoFocus}
             prefix={
               <IconFont
                 type="authing-a-user-line1"

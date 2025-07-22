@@ -40,7 +40,7 @@ import {
 
 import { GuardModuleType } from '../../Guard'
 
-import { parsePhone, useMediaSize } from '../../_utils/hooks'
+import { parsePhone, useAutoFocus } from '../../_utils/hooks'
 
 import { ApiCode } from '../../_utils/responseManagement/interface'
 
@@ -84,7 +84,8 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
 }) => {
   const { t } = useTranslation()
   const submitButtonRef = useRef<any>(null)
-  const { isPhoneMedia } = useMediaSize()
+  const { autoFocus } = useAutoFocus()
+
   const authClient = useGuardAuthClient()
   const [form] = Form.useForm()
   const config = useGuardFinallyConfig()
@@ -412,7 +413,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
             required={true}
             areaCode={areaCode}
           >
-            <PhoneAccount autoFocus={!isPhoneMedia} />
+            <PhoneAccount autoFocus={autoFocus} />
           </CustomFormItem.Phone>
           {enabledPPRegisterValid && (
             <>
@@ -463,7 +464,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
         >
           <Input
             maxLength={50}
-            autoFocus={!isPhoneMedia}
+            autoFocus={autoFocus}
             className="authing-g2-input"
             autoComplete="off"
             size="large"
@@ -520,7 +521,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
   }, [
     PhoneAccount,
     method,
-    isPhoneMedia,
+    autoFocus,
     areaCode,
     label,
     t,
@@ -568,7 +569,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
             required={true}
           >
             <Input
-              autoFocus={!isPhoneMedia}
+              autoFocus={autoFocus}
               className="authing-g2-input"
               autoComplete="off"
               size="large"

@@ -28,7 +28,7 @@ import { getGuardHttp } from '../../_utils/guardHttp'
 
 import { EmailScene } from '../../Type'
 
-import { useMediaSize } from '../../_utils/hooks'
+import { useAutoFocus } from '../../_utils/hooks'
 
 import {
   Agreement,
@@ -70,7 +70,7 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
 
   const submitButtonRef = useRef<any>(null)
 
-  const { isPhoneMedia } = useMediaSize()
+  const { autoFocus } = useAutoFocus()
 
   const authClient = useGuardAuthClient()
 
@@ -272,7 +272,7 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
           required={true}
         >
           <Input
-            autoFocus={!isPhoneMedia}
+            autoFocus={autoFocus}
             className="authing-g2-input"
             autoComplete="off"
             size="large"

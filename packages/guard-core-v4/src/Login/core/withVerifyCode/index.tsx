@@ -39,7 +39,7 @@ import './styles.less'
 
 import { InputInternationPhone } from './InputInternationPhone'
 
-import { parsePhone, useMediaSize } from '../../../_utils/hooks'
+import { parsePhone, useAutoFocus } from '../../../_utils/hooks'
 
 import { EmailScene, InputMethod } from '../../../Type'
 
@@ -90,7 +90,7 @@ const LoginWithVerifyCode = (props: any) => {
 
   const { post } = useGuardHttpClient()
 
-  const { isPhoneMedia } = useMediaSize()
+  const { autoFocus } = useAutoFocus()
 
   // 是否开启了国际化短信功能
   const isInternationSms =
@@ -532,7 +532,7 @@ const LoginWithVerifyCode = (props: any) => {
             <InputIdentify
               className="authing-g2-input"
               size="large"
-              autoFocus={!isPhoneMedia}
+              autoFocus={autoFocus}
               value={identify}
               methods={isOnlyEmailCode ? ['email-code'] : methods}
               onChange={e => {

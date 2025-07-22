@@ -22,7 +22,7 @@ import { SendCodeByPhone } from '../../SendCode/SendCodeByPhone'
 
 import { InputInternationPhone } from '../../Login/core/withVerifyCode/InputInternationPhone'
 
-import { parsePhone, useMediaSize } from '../../_utils/hooks'
+import { parsePhone, useAutoFocus } from '../../_utils/hooks'
 
 import { useIsChangeComplete } from '../utils'
 
@@ -62,7 +62,7 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
 
   const needPassword = config.passwordLoginMethods?.includes('phone-password')
 
-  const { isPhoneMedia } = useMediaSize()
+  const { autoFocus } = useAutoFocus()
 
   const authClient = useGuardAuthClient()
 
@@ -358,7 +358,7 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
           required={true}
           areaCode={areaCode}
         >
-          <PhoenAccount autoFocus={!isPhoneMedia} />
+          <PhoenAccount autoFocus={autoFocus} />
         </CustomFormItem.Phone>
         <Form.Item
           key="code"

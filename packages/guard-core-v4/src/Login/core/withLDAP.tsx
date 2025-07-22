@@ -20,7 +20,7 @@ import { useGuardHttpClient } from '../../_utils/context'
 
 import { CodeAction } from '../../_utils/responseManagement/interface'
 
-import { useMediaSize } from '../../_utils/hooks'
+import { useAutoFocus } from '../../_utils/hooks'
 
 import { Agreement, LoginMethods } from '../../Type/application'
 
@@ -83,7 +83,7 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
     (string | number)[]
   >([])
 
-  const { isPhoneMedia } = useMediaSize()
+  const { autoFocus } = useAutoFocus()
 
   const [validated, setValidated] = useState(false)
   // let client = useGuardAuthClient()
@@ -227,7 +227,7 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
           rules={fieldRequiredRule(t('common.account'))}
         >
           <Input
-            autoFocus={!isPhoneMedia}
+            autoFocus={autoFocus}
             className="authing-g2-input"
             autoComplete="off"
             size="large"

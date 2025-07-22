@@ -4,7 +4,7 @@ import { Form, Input, message } from 'shim-antd'
 
 import { IconFont } from '../../../IconFont'
 
-import { useMediaSize } from '../../../_utils/hooks'
+import { useAutoFocus } from '../../../_utils/hooks'
 
 import SubmitButton from '../../../SubmitButton'
 
@@ -53,7 +53,7 @@ export function BeforeLogin(props: BeforeLoginProps) {
     agreements
   } = props
 
-  const { isPhoneMedia } = useMediaSize()
+  const { autoFocus } = useAutoFocus()
 
   const { t } = useTranslation()
 
@@ -183,7 +183,7 @@ export function BeforeLogin(props: BeforeLoginProps) {
             className="authing-g2-input"
             autoComplete="off"
             size="large"
-            autoFocus={!isPhoneMedia}
+            autoFocus={autoFocus}
             placeholder={placeholder}
             prefix={
               <IconFont

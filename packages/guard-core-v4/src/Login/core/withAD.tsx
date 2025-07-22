@@ -35,7 +35,7 @@ import {
   useRobotVerify
 } from '../../_utils/context'
 
-import { useMediaSize } from '../../_utils/hooks'
+import { useAutoFocus } from '../../_utils/hooks'
 
 import { requestClient } from '../../_utils/http'
 
@@ -106,7 +106,7 @@ export const LoginWithAD = (props: LoginWithADProps) => {
 
   const { t } = useTranslation()
 
-  const { isPhoneMedia } = useMediaSize()
+  const { autoFocus } = useAutoFocus()
 
   let client = useGuardAuthClient()
 
@@ -286,7 +286,7 @@ export const LoginWithAD = (props: LoginWithADProps) => {
               rules={fieldRequiredRule(t('common.account'))}
             >
               <Input
-                autoFocus={!isPhoneMedia}
+                autoFocus={autoFocus}
                 className="authing-g2-input"
                 autoComplete="off"
                 size="large"
