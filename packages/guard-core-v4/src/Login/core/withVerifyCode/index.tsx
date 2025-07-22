@@ -527,7 +527,7 @@ const LoginWithVerifyCode = (props: any) => {
           areaCode={areaCode}
         >
           {isOnlyInternationSms ? (
-            <AreaCodePhoneAccount autoFocus={!isPhoneMedia} />
+            <AreaCodePhoneAccount autoFocus={autoFocus} />
           ) : (
             <InputIdentify
               className="authing-g2-input"
