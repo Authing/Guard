@@ -33,6 +33,15 @@ export const EyGuardProtocolView = () => {
         <section className="protocol" ref={protocolRef}>
           <div className="sub_text">版本：1.1</div>
           <div className="sub_text">
+            <a
+              href="https://ossb1.auth.ey.com.cn/DOC/%E9%9A%90%E7%A7%81%E5%A3%B0%E6%98%8E_CN-1.pdf"
+              target="_blank"
+              rel="noreferrer"
+            >
+              历史版本：1.0
+            </a>
+          </div>
+          <div className="sub_text">
             尊敬的用户：
             <br />
             &nbsp;&nbsp;&nbsp;&nbsp;
@@ -692,6 +701,15 @@ export const EyGuardProtocolView = () => {
       [ProtocolType.PRIVACY]: (
         <section className="protocol" ref={protocolRef}>
           <div className="sub_text">Version：1.1</div>
+          <div className="sub_text">
+            <a
+              href="https://ossb1.auth.ey.com.cn/DOC/%E9%9A%90%E7%A7%81%E5%A3%B0%E6%98%8E_EN-1.pdf"
+              target="_blank"
+              rel="noreferrer"
+            >
+              History Version: 1.0
+            </a>
+          </div>
           <div className="sub_text">
             Dear User：
             <br />
