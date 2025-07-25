@@ -132,10 +132,10 @@ export const GuardForcedPasswordResetView: React.FC = () => {
 
   const publicConfig = useGuardPublicConfig()
 
-  const initData = useGuardInitData<{
-    forcedCycle: number
-    forcedCycleUnit: ForcedModifyPwdCycleUnit
-  }>()
+  // const initData = useGuardInitData<{
+  //   forcedCycle: number
+  //   forcedCycleUnit: ForcedModifyPwdCycleUnit
+  // }>()
 
   const onReset = () => {
     message.success(t('common.updatePsswordSuccess'))
@@ -146,32 +146,32 @@ export const GuardForcedPasswordResetView: React.FC = () => {
 
   const coreForm = <RotateReset onReset={onReset} />
 
-  const modifyNotice = useMemo(() => {
-    switch (initData?.forcedCycleUnit) {
-      case ForcedModifyPwdCycleUnit.Day:
-        return {
-          text: t('user.modifyPwdTextDay', {
-            number: initData.forcedCycle
-          }),
-          unit: t('common.day')
-        }
-      case ForcedModifyPwdCycleUnit.Year:
-        return {
-          text: t('user.modifyPwdTextYear', {
-            number: initData.forcedCycle
-          }),
-          unit: t('common.year')
-        }
-      case ForcedModifyPwdCycleUnit.Month:
-      default:
-        return {
-          text: t('user.modifyPwdTextMonth', {
-            number: initData.forcedCycle
-          }),
-          unit: t('common.month')
-        }
-    }
-  }, [initData])
+  // const modifyNotice = useMemo(() => {
+  //   switch (initData?.forcedCycleUnit) {
+  //     case ForcedModifyPwdCycleUnit.Day:
+  //       return {
+  //         text: t('user.modifyPwdTextDay', {
+  //           number: initData.forcedCycle
+  //         }),
+  //         unit: t('common.day')
+  //       }
+  //     case ForcedModifyPwdCycleUnit.Year:
+  //       return {
+  //         text: t('user.modifyPwdTextYear', {
+  //           number: initData.forcedCycle
+  //         }),
+  //         unit: t('common.year')
+  //       }
+  //     case ForcedModifyPwdCycleUnit.Month:
+  //     default:
+  //       return {
+  //         text: t('user.modifyPwdTextMonth', {
+  //           number: initData.forcedCycle
+  //         }),
+  //         unit: t('common.month')
+  //       }
+  //   }
+  // }, [initData])
 
   const title = useMemo(() => {
     const text = publicConfig?.noticePwdTipsConfig?.title
@@ -188,13 +188,13 @@ export const GuardForcedPasswordResetView: React.FC = () => {
       ? text?.i18n?.[resolvedLanguage]?.value
       : text?.default
 
-    if (brandText) {
-      brandText = brandText.replaceAll(
-        '{time}',
-        `${initData.forcedCycle} ${modifyNotice.unit} `
-      )
-    }
-    return brandText ?? modifyNotice.text
+    // if (brandText) {
+    //   brandText = brandText.replaceAll(
+    //     '{time}',
+    //     `${initData.forcedCycle} ${modifyNotice.unit} `
+    //   )
+    // }
+    return brandText ?? t('user.passwordExpired')
   }, [publicConfig, resolvedLanguage])
 
   return (
@@ -213,42 +213,13 @@ export const GuardNoticePasswordResetView: React.FC = () => {
 
   const { changeModule } = useGuardModule()
 
-  const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
-
   const publicConfig = useGuardPublicConfig()
 
   const initData = useGuardInitData<{
-    forcedCycle: number
-    forcedCycleUnit: ForcedModifyPwdCycleUnit
+    title?: string
+    explain?: string
     onFinishCallBack: any
   }>()
-
-  const modifyNotice = useMemo(() => {
-    switch (initData?.forcedCycleUnit) {
-      case ForcedModifyPwdCycleUnit.Day:
-        return {
-          text: t('user.modifyNoticePwdTextDay', {
-            number: initData.forcedCycle
-          }),
-          unit: t('common.day')
-        }
-      case ForcedModifyPwdCycleUnit.Year:
-        return {
-          text: t('user.modifyNoticePwdTextYear', {
-            number: initData.forcedCycle
-          }),
-          unit: t('common.year')
-        }
-      case ForcedModifyPwdCycleUnit.Month:
-      default:
-        return {
-          text: t('user.modifyNoticePwdTextMonth', {
-            number: initData.forcedCycle
-          }),
-          unit: t('common.month')
-        }
-    }
-  }, [initData])
 
   const onReset = () => {
     message.success(t('common.updatePsswordSuccess'))
@@ -263,34 +234,11 @@ export const GuardNoticePasswordResetView: React.FC = () => {
       onFinishCallBack={initData.onFinishCallBack}
     />
   )
-  const title = useMemo(() => {
-    const text = publicConfig?.noticePwdTipsConfig?.title
-    return (
-      (text?.i18n?.[resolvedLanguage].enabled
-        ? text?.i18n?.[resolvedLanguage]?.value
-        : text?.default) ?? t('user.modifyPwd')
-    )
-  }, [publicConfig, resolvedLanguage])
-
-  const explain = useMemo(() => {
-    const text = publicConfig?.noticePwdTipsConfig?.desc
-    let brandText = text?.i18n?.[resolvedLanguage].enabled
-      ? text?.i18n?.[resolvedLanguage]?.value
-      : text?.default
-
-    if (brandText) {
-      brandText = brandText.replaceAll(
-        '{time}',
-        `${initData.forcedCycle} ${modifyNotice.unit} `
-      )
-    }
-    return brandText ?? modifyNotice.text
-  }, [publicConfig, resolvedLanguage])
 
   return (
     <GuardChangePassword
-      title={title}
-      explain={explain}
+      title={initData?.title ?? t('user.modifyPwd')}
+      explain={initData?.explain ?? t('user.passwordExpiredByDay')}
       logo={publicConfig?.noticePwdCustomLogo}
     >
       {coreForm}

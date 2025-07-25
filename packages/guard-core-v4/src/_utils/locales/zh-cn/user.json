@@ -6,6 +6,8 @@
   "inputNewPwd": "请输入新密码",
   "inputOldPwd": "请输入原登录密码",
   "modifyPwd": "修改密码",
+  "passwordExpired": "你的密码已失效，为了不影响你的正常使用，请修改密码。",
+  "passwordExpiredByDay": "你的密码将在 1 天后失效，为了不影响你的正常使用，请修改密码",
   "modifyPwdTextDay": "你的密码连续使用超过 {{number}} 天，可能存在风险。请重新设置密码。",
   "modifyPwdTextMonth": "你的密码连续使用超过 {{number}} 个月，可能存在风险。请重新设置密码。",
   "modifyPwdTextYear": "你的密码连续使用超过 {{number}} 年，可能存在风险。请重新设置密码。",

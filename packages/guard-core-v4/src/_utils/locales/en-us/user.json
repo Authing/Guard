@@ -4,6 +4,8 @@
   "inputOldPwd": "Enter a old Password",
   "mfaBind": "MFA Binding",
   "modifyPwd": "Change Password",
+  "passwordExpired": "Your password has expired. In order not to affect your normal use, please change your password.",
+  "passwordExpiredByDay": "Your password will expire in 1 day. In order not to affect your normal use, please change your password.",
   "nextStep": "Next",
   "numberSafteyCode": "Digital Security Code",
   "error": "Error～",
