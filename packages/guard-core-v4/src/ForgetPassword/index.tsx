@@ -228,7 +228,7 @@ export const GuardForgetPassword: React.FC = () => {
           alt=""
           className="icon"
         />
-        <div className="title">{t('login.resetPwd')}</div>
+        <div className="title">{title}</div>
         {phoneOrEmailText && (
           <div className="title-explain">
             {t('login.resetPassword.resetPasswordText2', {
