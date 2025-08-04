@@ -45,7 +45,7 @@ export const GuardResetPassword = () => {
 
   const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
 
-  const logo = publicConfig?.resetPwdCustomLogo || config?.logo
+  const logo = publicConfig?.resetPwdLinkCustomLogo || config?.logo
   /**
    * initData
    */
