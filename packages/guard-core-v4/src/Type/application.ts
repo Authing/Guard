@@ -467,4 +467,10 @@ export interface ApplicationConfig {
     desc: I18nLang
   }
   noticePwdCustomLogo?: string
+
+  resetPwdLinkCustomLogo?: string
+  resetPwdLinkTipsConfig?: {
+    title: I18nLang
+    desc: I18nLang
+  }
 }

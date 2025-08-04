@@ -23,8 +23,9 @@ import { useGuardView } from '../../Guard/core/hooks/useGuardView'
 import { InputPasswordForget } from '../../ForgetPassword/InputPassword'
 import { GuardModuleType } from '../../Guard'
 import { CheckRules } from '../../ValidatorRules/CheckRules'
+import { i18n } from '../../_utils'
 
-const { useRef } = React
+const { useRef, useMemo } = React
 export const GuardResetPassword = () => {
   const { t } = useTranslation()
 
@@ -41,6 +42,8 @@ export const GuardResetPassword = () => {
   const { changeModule } = useGuardModule()
 
   useGuardView()
+
+  const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
 
   const logo = publicConfig?.resetPwdCustomLogo || config?.logo
   /**
@@ -96,6 +99,23 @@ export const GuardResetPassword = () => {
       })
   }
 
+  const title = useMemo(() => {
+    const text = publicConfig?.resetPwdLinkTipsConfig?.title
+    return (
+      (text?.i18n?.[resolvedLanguage].enabled
+        ? text?.i18n?.[resolvedLanguage]?.value
+        : text?.default) ?? t('login.resetPwd')
+    )
+  }, [publicConfig, resolvedLanguage])
+
+  const explain = useMemo(() => {
+    const text = publicConfig?.resetPwdLinkTipsConfig?.desc
+
+    return text?.i18n?.[resolvedLanguage].enabled
+      ? text?.i18n?.[resolvedLanguage]?.value
+      : text?.default
+  }, [publicConfig, resolvedLanguage])
+
   return (
     <div className="g2-view-container g2-forget-password g2-password-reset-pageWrap g2-password-reset-step2">
       <div className="g2-view-header">
@@ -106,14 +126,15 @@ export const GuardResetPassword = () => {
           alt=""
           className="icon"
         />
-        <div className="title">{t('login.resetPwd')}</div>
-        {account && (
-          <div className="title-explain">
-            {t('login.resetPassword.resetPasswordText2', {
-              account
-            })}
-          </div>
-        )}
+        <div className="title">{title}</div>
+        {explain ??
+          (account && (
+            <div className="title-explain">
+              {t('login.resetPassword.resetPasswordText2', {
+                account
+              })}
+            </div>
+          ))}
       </div>
       <div className="g2-view-tabs">
         <Form
