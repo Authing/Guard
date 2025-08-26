@@ -120,14 +120,14 @@ export const EyGuardInviteCompleteView = () => {
         <div className="content">
           <div className="title">{t('common.ey.completeInfo')}</div>
           <div className="title-explain">
-            {registerInfoFillMsg
-              ? registerInfoFillMsg
-              : t('common.ey.completeInfoDesc')}
-
-            <Trans i18nKey="common.completeInfoDesc">
-              为了您的账号及登录安全，我们推荐您绑定自己的常用手机号码来进行短信验证码认证。您也可以选择点击“下一步”按钮
-              <strong>跳过此界面</strong>
-            </Trans>
+            {registerInfoFillMsg ? (
+              registerInfoFillMsg
+            ) : (
+              <Trans i18nKey="common.ey.completeInfoDesc">
+                为了您的账号及登录安全，我们推荐您绑定自己的常用手机号码来进行短信验证码认证。您也可以选择点击“下一步”按钮
+                <strong>跳过此界面</strong>
+              </Trans>
+            )}
           </div>
         </div>
       </div>
