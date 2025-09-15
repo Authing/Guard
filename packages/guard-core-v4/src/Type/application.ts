@@ -450,5 +450,5 @@ export interface ApplicationConfig {
   /**
    * 开启延迟校验用户是否存在功能
    */
-  delayUserFind?: boolean
+  enabledCheckSendUser?: boolean
 }

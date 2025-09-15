@@ -173,8 +173,8 @@ export const GuardApplicationView = () => {
                 fieldName="email"
                 form={form}
                 onSendCodeBefore={async () => {
-                  // delayUserFind 开启时，由 onFinish 统一校验
-                  if (!publicConfig.delayUserFind) {
+                  // enabledCheckSendUser 开启时，由 onFinish 统一校验
+                  if (!publicConfig.enabledCheckSendUser) {
                     await form.validateFields(['email'])
                   } else {
                     Promise.resolve(true)

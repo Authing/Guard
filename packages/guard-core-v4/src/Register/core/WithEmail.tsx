@@ -314,8 +314,8 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
             maxLength={verifyCodeLength}
             codeFieldName={'captchaCode'}
             onSendCodeBefore={async () => {
-              // delayUserFind 开启时，由 onFinish 统一校验
-              if (!publicConfig?.delayUserFind) {
+              // enabledCheckSendUser 开启时，由 onFinish 统一校验
+              if (!publicConfig?.enabledCheckSendUser) {
                 await form.validateFields(['account'])
               }
               await form.validateFields(['captchaCode'])
@@ -347,8 +347,8 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
             }
             codeFieldName={'captchaCode'}
             onSendCodeBefore={async () => {
-              // delayUserFind 开启时，由 onFinish 统一校验
-              if (!publicConfig?.delayUserFind) {
+              // enabledCheckSendUser 开启时，由 onFinish 统一校验
+              if (!publicConfig?.enabledCheckSendUser) {
                 await form.validateFields(['account'])
               }
               await form.validateFields(['captchaCode'])

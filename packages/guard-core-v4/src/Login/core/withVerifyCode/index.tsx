@@ -182,8 +182,8 @@ const LoginWithVerifyCode = (props: any) => {
             scene={SceneType.SCENE_TYPE_LOGIN}
             maxLength={verifyCodeLength}
             onSendCodeBefore={async () => {
-              // delayUserFind 开启时，由 onFinish 统一校验
-              if (!publicConfig.delayUserFind) {
+              // enabledCheckSendUser 开启时，由 onFinish 统一校验
+              if (!publicConfig.enabledCheckSendUser) {
                 await form.validateFields(['identify'])
               }
               await form.validateFields(['captchaCode'])
@@ -221,8 +221,8 @@ const LoginWithVerifyCode = (props: any) => {
               data={identify}
               codeFieldName={'captchaCode'}
               onSendCodeBefore={async () => {
-                // delayUserFind 开启时，由 onFinish 统一校验
-                if (!publicConfig.delayUserFind) {
+                // enabledCheckSendUser 开启时，由 onFinish 统一校验
+                if (!publicConfig.enabledCheckSendUser) {
                   await form.validateFields(['identify'])
                 }
                 await form.validateFields(['captchaCode'])
@@ -253,8 +253,8 @@ const LoginWithVerifyCode = (props: any) => {
               maxLength={verifyCodeLength}
               data={identify}
               onSendCodeBefore={async () => {
-                // delayUserFind 开启时，由 onFinish 统一校验
-                if (!publicConfig.delayUserFind) {
+                // enabledCheckSendUser 开启时，由 onFinish 统一校验
+                if (!publicConfig.enabledCheckSendUser) {
                   await form.validateFields(['identify'])
                 } else {
                   Promise.resolve(true)
