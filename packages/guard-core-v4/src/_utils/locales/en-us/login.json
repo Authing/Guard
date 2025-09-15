@@ -19,7 +19,7 @@
   "mfaAfterReset": "If you do not have a recovery code, please contact the administrator",
   "noEmpty": "Please enter a {{label}}",
   "rememberedSecret": "This key has been safely recorded",
-  "resetPwd": "Reset password",
+  "resetPwd": "Reset Password",
   "selfUnlock": "self unlock",
   "selfUnlockText": "Your account has been locked, please enter the verification code and password to unlock it by yourself.",
   "thridAccLogin": "Or sign in with",
