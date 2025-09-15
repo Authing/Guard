@@ -172,7 +172,14 @@ export const GuardApplicationView = () => {
                 scene={EmailScene.VERIFY_CODE}
                 fieldName="email"
                 form={form}
-                onSendCodeBefore={() => form.validateFields(['email'])}
+                onSendCodeBefore={async () => {
+                  // delayUserFind 开启时，由 onFinish 统一校验
+                  if (!publicConfig.delayUserFind) {
+                    await form.validateFields(['email'])
+                  } else {
+                    Promise.resolve(true)
+                  }
+                }}
               />
             </Form.Item>
             <Form.Item className="authing-g2-sumbit-form">

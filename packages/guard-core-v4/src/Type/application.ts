@@ -467,4 +467,9 @@ export interface ApplicationConfig {
     desc: I18nLang
   }
   noticePwdCustomLogo?: string
+
+  /**
+   * 开启延迟校验用户是否存在功能
+   */
+  delayUserFind?: boolean
 }
