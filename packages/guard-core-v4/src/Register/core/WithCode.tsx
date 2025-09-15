@@ -573,8 +573,8 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             scene={SceneType.SCENE_TYPE_REGISTER}
             maxLength={verifyCodeLength}
             onSendCodeBefore={async () => {
-              // enabledCheckSendUser 开启时，由 onFinish 统一校验
-              if (!publicConfig?.enabledCheckSendUser) {
+              // closeCheckSendUser 开启时，由 onFinish 统一校验
+              if (!publicConfig?.closeCheckSendUser) {
                 await form.validateFields(['identify'])
               }
               await form.validateFields(['captchaCode'])
@@ -610,8 +610,8 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
               data={identify}
               captchaCode={captchaCode}
               onSendCodeBefore={async () => {
-                // enabledCheckSendUser 开启时，由 onFinish 统一校验
-                if (!publicConfig?.enabledCheckSendUser) {
+                // closeCheckSendUser 开启时，由 onFinish 统一校验
+                if (!publicConfig?.closeCheckSendUser) {
                   await form.validateFields(['identify'])
                 }
                 await form.validateFields(['captchaCode'])
@@ -640,8 +640,8 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
               maxLength={verifyCodeLength}
               data={identify}
               onSendCodeBefore={async () => {
-                // enabledCheckSendUser 开启时，由 onFinish 统一校验
-                if (!publicConfig?.enabledCheckSendUser) {
+                // closeCheckSendUser 开启时，由 onFinish 统一校验
+                if (!publicConfig?.closeCheckSendUser) {
                   await form.validateFields(['identify'])
                 } else {
                   Promise.resolve(true)

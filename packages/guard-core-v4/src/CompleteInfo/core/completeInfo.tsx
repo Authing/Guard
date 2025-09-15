@@ -331,8 +331,8 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
               fieldName="phone"
               form={form}
               onSendCodeBefore={async () => {
-                // enabledCheckSendUser 开启时，由 onFinish 统一校验
-                if (!config.enabledCheckSendUser) {
+                // closeCheckSendUser 开启时，由 onFinish 统一校验
+                if (!config.closeCheckSendUser) {
                   await form.validateFields(['phone'])
                 } else {
                   Promise.resolve(true)
@@ -386,8 +386,8 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
               fieldName="email"
               form={form}
               onSendCodeBefore={async () => {
-                // enabledCheckSendUser 开启时，由 onFinish 统一校验
-                if (!config.enabledCheckSendUser) {
+                // closeCheckSendUser 开启时，由 onFinish 统一校验
+                if (!config.closeCheckSendUser) {
                   await form.validateFields(['email'])
                 } else {
                   Promise.resolve(true)
