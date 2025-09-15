@@ -173,8 +173,8 @@ export const ResetPassword = (props: ResetPasswordProps) => {
               maxLength={verifyCodeLength}
               data={identify}
               onSendCodeBefore={async () => {
-                // delayUserFind 开启时，由 onFinish 统一校验
-                if (!props.publicConfig.delayUserFind) {
+                // enabledCheckSendUser 开启时，由 onFinish 统一校验
+                if (!props.publicConfig.enabledCheckSendUser) {
                   await form.validateFields(['identify'])
                 } else {
                   Promise.resolve(true)
@@ -201,8 +201,8 @@ export const ResetPassword = (props: ResetPasswordProps) => {
               maxLength={verifyCodeLength}
               data={identify}
               onSendCodeBefore={async () => {
-                // delayUserFind 开启时，由 onFinish 统一校验
-                if (!props.publicConfig.delayUserFind) {
+                // enabledCheckSendUser 开启时，由 onFinish 统一校验
+                if (!props.publicConfig.enabledCheckSendUser) {
                   await form.validateFields(['identify'])
                 } else {
                   Promise.resolve(true)
