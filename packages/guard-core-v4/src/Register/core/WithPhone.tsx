@@ -292,8 +292,8 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
             scene={SceneType.SCENE_TYPE_REGISTER}
             maxLength={verifyCodeLength}
             onSendCodeBefore={async () => {
-              // enabledCheckSendUser 开启时，由 onFinish 统一校验
-              if (!publicConfig?.enabledCheckSendUser) {
+              // closeCheckSendUser 开启时，由 onFinish 统一校验
+              if (!publicConfig?.closeCheckSendUser) {
                 await form.validateFields(['phone'])
               } else {
                 Promise.resolve(true)
@@ -322,8 +322,8 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
               />
             }
             onSendCodeBefore={async () => {
-              // enabledCheckSendUser 开启时，由 onFinish 统一校验
-              if (!publicConfig?.enabledCheckSendUser) {
+              // closeCheckSendUser 开启时，由 onFinish 统一校验
+              if (!publicConfig?.closeCheckSendUser) {
                 await form.validateFields(['phone'])
               } else {
                 Promise.resolve(true)
