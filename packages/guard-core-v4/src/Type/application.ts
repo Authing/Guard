@@ -446,4 +446,9 @@ export interface ApplicationConfig {
 
   /** 特殊浏览器匹配字符串 */
   specialBrowserSymbols?: string[]
+
+  /**
+   * 开启延迟校验用户是否存在功能
+   */
+  delayUserFind?: boolean
 }

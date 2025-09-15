@@ -330,7 +330,14 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
               maxLength={verifyCodeLength}
               fieldName="phone"
               form={form}
-              onSendCodeBefore={() => form.validateFields(['phone'])}
+              onSendCodeBefore={async () => {
+                // delayUserFind 开启时，由 onFinish 统一校验
+                if (!config.delayUserFind) {
+                  await form.validateFields(['phone'])
+                } else {
+                  Promise.resolve(true)
+                }
+              }}
             />
           </Form.Item>
         </>
@@ -378,7 +385,14 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
               scene={EmailScene.INFORMATION_COMPLETION_VERIFY_CODE}
               fieldName="email"
               form={form}
-              onSendCodeBefore={() => form.validateFields(['email'])}
+              onSendCodeBefore={async () => {
+                // delayUserFind 开启时，由 onFinish 统一校验
+                if (!config.delayUserFind) {
+                  await form.validateFields(['email'])
+                } else {
+                  Promise.resolve(true)
+                }
+              }}
             />
           </Form.Item>
         </>

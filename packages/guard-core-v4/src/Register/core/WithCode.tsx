@@ -573,7 +573,10 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             scene={SceneType.SCENE_TYPE_REGISTER}
             maxLength={verifyCodeLength}
             onSendCodeBefore={async () => {
-              await form.validateFields(['identify'])
+              // delayUserFind 开启时，由 onFinish 统一校验
+              if (!publicConfig?.delayUserFind) {
+                await form.validateFields(['identify'])
+              }
               await form.validateFields(['captchaCode'])
             }}
             onSendCodeAfter={() =>
@@ -607,7 +610,10 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
               data={identify}
               captchaCode={captchaCode}
               onSendCodeBefore={async () => {
-                await form.validateFields(['identify'])
+                // delayUserFind 开启时，由 onFinish 统一校验
+                if (!publicConfig?.delayUserFind) {
+                  await form.validateFields(['identify'])
+                }
                 await form.validateFields(['captchaCode'])
               }}
               onSendCodeAfter={() =>
@@ -634,7 +640,12 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
               maxLength={verifyCodeLength}
               data={identify}
               onSendCodeBefore={async () => {
-                await form.validateFields(['identify'])
+                // delayUserFind 开启时，由 onFinish 统一校验
+                if (!publicConfig?.delayUserFind) {
+                  await form.validateFields(['identify'])
+                } else {
+                  Promise.resolve(true)
+                }
               }}
             />
           )}

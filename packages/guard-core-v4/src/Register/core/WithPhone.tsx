@@ -292,7 +292,12 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
             scene={SceneType.SCENE_TYPE_REGISTER}
             maxLength={verifyCodeLength}
             onSendCodeBefore={async () => {
-              await form.validateFields(['phone'])
+              // delayUserFind 开启时，由 onFinish 统一校验
+              if (!publicConfig?.delayUserFind) {
+                await form.validateFields(['phone'])
+              } else {
+                Promise.resolve(true)
+              }
             }}
           />
         )
@@ -317,7 +322,12 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
               />
             }
             onSendCodeBefore={async () => {
-              await form.validateFields(['phone'])
+              // delayUserFind 开启时，由 onFinish 统一校验
+              if (!publicConfig?.delayUserFind) {
+                await form.validateFields(['phone'])
+              } else {
+                Promise.resolve(true)
+              }
             }}
           />
         )
