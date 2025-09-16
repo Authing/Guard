@@ -119,7 +119,6 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
       }
 
       try {
-        await form.validateFields()
         setValidated(true)
 
         if (agreements?.length && !acceptedAgreements) {
