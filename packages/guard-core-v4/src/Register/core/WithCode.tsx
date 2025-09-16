@@ -193,8 +193,6 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
         }
       }
       try {
-        await form.validateFields()
-
         setValidated(true)
 
         if (agreements?.length && !acceptedAgreements) {
@@ -403,7 +401,6 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
       }
 
       try {
-        await form.validateFields()
         setValidated(true)
 
         if (agreements?.length && !acceptedAgreements) {

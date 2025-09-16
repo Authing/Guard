@@ -94,7 +94,6 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
     async (values: any) => {
       try {
         submitButtonRef.current?.onSpin(true)
-        await form.validateFields()
 
         setValidated(true)
 
