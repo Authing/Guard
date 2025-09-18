@@ -232,5 +232,8 @@
   "inviteSuccess": "已成功加入，敬请查收邮件。请根据邮件内的信息完成登录。",
   "day": "天",
   "month": "个月",
-  "year": "年"
+  "year": "年",
+  "emailorcodeError": "邮箱或验证码错误",
+  "phoneorcodeError": "手机号或验证码错误",
+  "usernameError": "用户名错误"
 }
