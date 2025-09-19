@@ -22,6 +22,7 @@ import {
 import { useGuardAuthClient } from '../../Guard/authClient'
 
 import { getVersion } from '../../_utils/getVersion'
+import { useRef } from 'react'
 
 const version = getVersion()
 
@@ -47,6 +48,8 @@ export const LoginWithDingTalkQrcode = (props: any) => {
   const config = useGuardFinallyConfig()
 
   const isSpecialBrowser = useIsSpecialBrowser()
+
+  const callbackProcess = useRef<boolean>(false)
 
   const fetchQrcode = useCallback(async () => {
     const query: Record<string, any> = {
@@ -91,6 +94,8 @@ export const LoginWithDingTalkQrcode = (props: any) => {
         prompt: 'consent'
       },
       async (loginResult: any) => {
+        if (callbackProcess.current) return
+        callbackProcess.current = true
         const { authCode } = loginResult
         // 这里可以直接进行重定向
         // window.location.href = redirectUrl
@@ -106,6 +111,7 @@ export const LoginWithDingTalkQrcode = (props: any) => {
               authClient
             )
             if (!isContinue) {
+              callbackProcess.current = false
               return
             }
           }
@@ -117,6 +123,7 @@ export const LoginWithDingTalkQrcode = (props: any) => {
               query
             )}&code=${authCode}`
           )
+
           if (res.code === 200) {
             props.multipleInstance &&
               props.multipleInstance.setLoginWay(
@@ -133,10 +140,13 @@ export const LoginWithDingTalkQrcode = (props: any) => {
           }
         } catch (e: any) {
           message.error(e.message)
+        } finally {
+          callbackProcess.current = false
         }
       },
       (errorMsg: any) => {
         // 这里一般需要展示登录失败的具体原因
+        callbackProcess.current = false
         console.log(errorMsg)
       }
     )

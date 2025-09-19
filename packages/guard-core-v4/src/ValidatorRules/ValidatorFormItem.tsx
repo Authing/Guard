@@ -152,7 +152,7 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
     rules.push(formatRules)
 
     // 是否校验重复
-    if (checkRepeat || checkExist) {
+    if ((checkRepeat || checkExist) && !publicConfig.closeCheckSendUser) {
       rules.push({
         validator: checkRepeatFn,
         validateTrigger: []

@@ -146,7 +146,6 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
         }
       }
 
-      // await form.validateFields()
       setValidated(true)
 
       if (agreements?.length && !acceptedAgreements) {
@@ -314,7 +313,10 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
             maxLength={verifyCodeLength}
             codeFieldName={'captchaCode'}
             onSendCodeBefore={async () => {
-              await form.validateFields(['account'])
+              // closeCheckSendUser 开启时，由 onFinish 统一校验
+              if (!publicConfig?.closeCheckSendUser) {
+                await form.validateFields(['account'])
+              }
               await form.validateFields(['captchaCode'])
             }}
           />
@@ -341,7 +343,10 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
             }
             codeFieldName={'captchaCode'}
             onSendCodeBefore={async () => {
-              await form.validateFields(['account'])
+              // closeCheckSendUser 开启时，由 onFinish 统一校验
+              if (!publicConfig?.closeCheckSendUser) {
+                await form.validateFields(['account'])
+              }
               await form.validateFields(['captchaCode'])
             }}
           />
@@ -480,9 +485,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
         name="emailRegister"
         autoComplete="off"
         onSubmitCapture={() => submitButtonRef.current.onSpin(true)}
-        onFinish={(values: any) => {
-          onFinish(values)
-        }}
+        onFinish={onFinish}
         onFinishFailed={() => submitButtonRef.current.onError()}
         onValuesChange={(_: any, values: any) => {
           if (values['password'] && values['new-password']) {
