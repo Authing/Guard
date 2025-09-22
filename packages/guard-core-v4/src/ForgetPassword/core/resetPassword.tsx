@@ -4,7 +4,13 @@ import { useTranslation } from 'react-i18next'
 
 import { Form, message } from 'shim-antd'
 
-import { fieldRequiredRule, getCaptchaUrl, useCaptchaCheck, useGuardFinallyConfig, validate } from '../../_utils'
+import {
+  fieldRequiredRule,
+  getCaptchaUrl,
+  useCaptchaCheck,
+  useGuardFinallyConfig,
+  validate
+} from '../../_utils'
 
 import SubmitButton from '../../SubmitButton'
 
@@ -83,7 +89,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
     // let identify = form.getFieldsValue().identify
     // let code = form.getFieldsValue().code
     // let tempPassword = values.password
-    let context = new Promise(() => { })
+    let context = new Promise(() => {})
     // const newPassword = await authClient.options?.encryptFunction?.(
     //   tempPassword,
     //   publicKey
@@ -216,7 +222,15 @@ export const ResetPassword = (props: ResetPasswordProps) => {
         </>
       )
     },
-    [codeMethod, form, identify, isInternationSms, t, verifyCodeLength, captchaCode]
+    [
+      codeMethod,
+      form,
+      identify,
+      isInternationSms,
+      t,
+      verifyCodeLength,
+      captchaCode
+    ]
   )
 
   useEffect(() => {
@@ -334,4 +348,3 @@ export const ResetPassword = (props: ResetPasswordProps) => {
     </div>
   )
 }
-
