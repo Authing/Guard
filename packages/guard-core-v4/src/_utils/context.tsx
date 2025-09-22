@@ -192,7 +192,7 @@ export interface IGuardContextProvider {
 
 const GuardButtonContext = React.createContext<IGuardContextProvider>({
   spin: false,
-  spinChange: () => {}
+  spinChange: () => { }
 })
 
 export const useGuardButtonContext = () => {
@@ -296,8 +296,8 @@ export const useRobotVerify = () => {
 }
 
 /** 当前应用是否开启人机验证策略 */
-export const useCaptchaCheck = (sence: 'login' | 'register') => {
-  const { loginSmsConfig, registerSmsConfig } = useGuardPublicConfig()
+export const useCaptchaCheck = (sence: 'login' | 'register' | 'forget-password') => {
+  const { loginSmsConfig, registerSmsConfig, forgetPasswordSmsConfig } = useGuardPublicConfig()
   let openCaptchaCheck = false
   switch (sence) {
     case 'login':
@@ -305,6 +305,10 @@ export const useCaptchaCheck = (sence: 'login' | 'register') => {
       break
     case 'register':
       openCaptchaCheck = registerSmsConfig?.robot?.switch === 'ON'
+      break
+    case 'forget-password':
+      openCaptchaCheck = forgetPasswordSmsConfig?.robot?.switch === 'ON'
+      break
   }
   return openCaptchaCheck
 }
