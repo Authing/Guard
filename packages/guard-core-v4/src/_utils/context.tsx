@@ -299,7 +299,8 @@ export const useRobotVerify = () => {
 export const useCaptchaCheck = (
   sence: 'login' | 'register' | 'forget-password'
 ) => {
-  const { loginSmsConfig, registerSmsConfig, forgetPasswordSmsConfig } = useGuardPublicConfig()
+  const { loginSmsConfig, registerSmsConfig, forgetPasswordSmsConfig } =
+    useGuardPublicConfig()
   let openCaptchaCheck = false
   switch (sence) {
     case 'login':
