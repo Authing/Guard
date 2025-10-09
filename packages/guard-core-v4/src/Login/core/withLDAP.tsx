@@ -30,6 +30,7 @@ import {
 } from '../../Guard/core/hooks/useMultipleAccounts'
 
 import { useLoginAccountBackFill } from '../hooks/useLoginMultiple'
+import { useGuardAuthClient } from '../../Guard/authClient'
 
 const { useRef, useState } = React
 
@@ -95,6 +96,7 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
   const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
   const captchaUrl = `${props.host}/api/v2/security/captcha`
   const getCaptchaUrl = () => `${captchaUrl}?r=${+new Date()}`
+  let client = useGuardAuthClient()
 
   const onFinish = async (values: any) => {
     setValidated(true)
@@ -122,6 +124,10 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
     let username = values.account && values.account.trim()
     let password = values.password
 
+    const encrypt = client.options.encryptFunction
+
+    const encryptPassword = await encrypt!(password, props.publicKey)
+
     try {
       const {
         code,
@@ -130,7 +136,7 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
         message: tips
       } = await post('/api/v2/ldap/verify-user', {
         username,
-        password,
+        password: encryptPassword,
         agreementIds: agreements.length ? acceptedAgreementIds : undefined
       })
 
