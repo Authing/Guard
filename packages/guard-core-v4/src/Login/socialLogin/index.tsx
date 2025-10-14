@@ -25,7 +25,7 @@ import {
   useIsSpecialBrowser
 } from '../../_utils/context'
 
-import { IdpButton } from './IdpButton'
+import { IdpButton, MoreIdpButton } from './IdpButton'
 
 import { getVersion } from '../../_utils'
 
@@ -41,6 +41,9 @@ import { StoreInstance } from '../../Guard/core/hooks/useMultipleAccounts'
 
 import { PasskeyButton } from './PasskeyButton'
 import { useDeviceId } from '../../Guard/core/hooks/useDeviceId'
+import { cloneDeep } from 'lodash'
+
+const { useMemo } = React
 export interface SocialLoginProps {
   appId: string
   config: GuardLocalConfig
@@ -55,13 +58,16 @@ export interface SocialLoginProps {
   multipleInstance?: StoreInstance
 }
 
+const idpMax = 2
+
 export const SocialLogin: React.FC<SocialLoginProps> = ({
   appId,
   config,
   enterpriseConnectionObjs,
   socialConnectionObjs,
   onLoginSuccess,
-  onLoginFailed
+  onLoginFailed,
+  multipleInstance
 }) => {
   const noLoginMethods = !config?.loginMethods?.length
 
@@ -78,6 +84,84 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
   const tenantId = useGuardTenantId()
 
   const isSpecialBrowser = useIsSpecialBrowser()
+
+  console.log(
+    multipleInstance?.getSocialLoginWays(),
+    multipleInstance,
+    '多账号实例'
+  )
+
+  const renderIdpButtons = useMemo(() => {
+    // 是否有「置顶上次登录身份源」需求
+    const socialLoginWays = multipleInstance?.getSocialLoginWays() || []
+    const lastLoginSocial = socialLoginWays.sort(
+      (a, b) => Number(b._updateTime) - Number(a._updateTime)
+    )
+    const sortedEnterprise: (ApplicationConfig['identityProviders'][number] & {
+      _isLastLogin?: boolean
+    })[] = cloneDeep(enterpriseConnectionObjs)
+    // 让 enterpriseConnectionObjs 根据 lastLoginSocial 进行排序
+    if (lastLoginSocial.length) {
+      const orderMap = new Map(
+        lastLoginSocial.map((item, index) => [item.qrCodeId, index])
+      )
+      sortedEnterprise.sort((a, b) => {
+        // 重置状态
+        a._isLastLogin = false
+        b._isLastLogin = false
+
+        const aIndex = orderMap.get(a.id) ?? 0
+        const bIndex = orderMap.get(b.id) ?? 0
+        return aIndex - bIndex
+      })
+
+      if (
+        lastLoginSocial.some(item => item.qrCodeId === sortedEnterprise[0].id)
+      ) {
+        // 排序后的第一个身份源是否被记录过
+        sortedEnterprise[0]._isLastLogin = true
+      }
+    }
+
+    console.log(sortedEnterprise, 'sortedEnterprise')
+
+    if (sortedEnterprise.length <= idpMax) {
+      // 全部展示
+      return sortedEnterprise.map((i: any) => {
+        return (
+          <IdpButton
+            key={i.identifier}
+            i={i}
+            appId={appId}
+            appHost={config?.host}
+            userPoolId={userPoolId}
+            isHost={config?.isHost}
+            isLastLogin={i._isLastLogin}
+          />
+        )
+      })
+    } else {
+      // 只展示前两个，后面加个更多
+      const idps = sortedEnterprise.slice(0, idpMax)
+      const moreIdps = sortedEnterprise.slice(idpMax)
+      console.log(sortedEnterprise, idps, moreIdps, 'moreIdps')
+      const renderIdps = idps.map((i: any) => {
+        return (
+          <IdpButton
+            key={i.identifier}
+            i={i}
+            appId={appId}
+            appHost={config?.host}
+            userPoolId={userPoolId}
+            isHost={config?.isHost}
+            isLastLogin={i._isLastLogin}
+          />
+        )
+      })
+      renderIdps.push(<MoreIdpButton idps={moreIdps} />)
+      return renderIdps
+    }
+  }, [])
 
   const idpButtons = enterpriseConnectionObjs.map((i: any) => {
     return (
@@ -245,7 +329,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
         </div>
       )}
       <div className="g2-social-login-list g2-enterprise-connection-space">
-        {idpButtons}
+        {renderIdpButtons}
       </div>
     </>
   ) : null

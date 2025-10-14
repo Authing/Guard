@@ -195,6 +195,7 @@ class MultipleAccount {
   private memberState: boolean
   /**
    * 二维码登录时的ID
+   *「loginWay = "social"」社会化身份源登录时 其 id 表示为「唯一标识」
    */
   private qrCodeId?: string
   /**
@@ -215,6 +216,10 @@ class MultipleAccount {
    * 是否开启国际化短信
    */
   private isInternationSms?: boolean
+  /**
+   * 社会化登录列表 主要是为了做「置顶上次登录」
+   */
+  private socialLoginWays?: User[] = []
 
   constructor() {
     // 二级别Tab
@@ -233,6 +238,7 @@ class MultipleAccount {
     this.memberState = false
     this.firstBackFillData = undefined
     this.serverSideLoginMethods = []
+    this.socialLoginWays = []
   }
 
   /**
@@ -381,6 +387,8 @@ class MultipleAccount {
     const serverSideLoginMethods = this.serverSideLoginMethods
     const result = Object.create(null)
 
+    console.log(currentStore, 'currentStore')
+
     for (const [key, value] of Object.entries(currentStore)) {
       // 1. 过滤 Server 关闭的账号
       const passMethod = this.validateMethod(value, serverSideLoginMethods)
@@ -389,7 +397,15 @@ class MultipleAccount {
       if (passMsm && passMethod) {
         result[key] = cloneDeep(value)
       }
+
+      if (
+        value?.way === 'social' &&
+        !this.socialLoginWays?.find(i => i.id === value.id)
+      ) {
+        this.socialLoginWays?.push(value)
+      }
     }
+    console.log(this.socialLoginWays, 'socialLoginWays')
     return result
   }
 
@@ -444,6 +460,7 @@ class MultipleAccount {
     this.tabStatus = tab
     this.loginWay = way
     this.qrCodeId = id
+    debugger
     // 国际化短信的区号
     if (internation) {
       const { phoneCountryCode, areaCode } = internation
@@ -461,6 +478,7 @@ class MultipleAccount {
       'way' | 'tab' | 'phoneCountryCode'
     > // 添加扩展字段登录名
   ) => {
+    debugger
     // 排除 ad 登录方式
     if (!user || !this.loginWay || !this.tabStatus || this.loginWay === 'ad') {
       console.log('User or LoginWay does not exist.')
@@ -702,6 +720,8 @@ class MultipleAccount {
    */
   getStore = () => {
     return {
+      // 当前仓库信息
+      getSocialLoginWays: () => this.socialLoginWays,
       initStore: this.initStore,
       // 当前登录方式
       setLoginWay: this.setLoginWay,

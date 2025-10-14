@@ -1,4 +1,4 @@
-import { Avatar, message } from 'shim-antd'
+import { Avatar, message, Input } from 'shim-antd'
 
 import qs from 'qs'
 
@@ -27,14 +27,24 @@ import {
 import { SocialConnectionEvent } from '../../../_utils/hooks'
 
 import { i18n } from '../../../_utils/locales'
+
 import { baseLoginPathMapping, loginUrlFieldMapping } from '../../interface'
+
 import { useDeviceId } from '../../../Guard/core/hooks/useDeviceId'
 
-const { useCallback } = React
+import classNames from 'classnames'
+
+import {
+  useGuardAppId,
+  useGuardPublicConfig,
+  useGuardFinallyConfig
+} from '../../../_utils/context'
+
+const { useCallback, useState, useEffect } = React
 
 export const IdpButton = (props: any) => {
   // TODO: 能不能加个类型
-  const { i, appId, appHost, isHost } = props
+  const { i, appId, appHost, isHost, isLastLogin } = props
 
   const deviceId = useDeviceId()
 
@@ -115,6 +125,7 @@ export const IdpButton = (props: any) => {
           {t('login.loginBy', {
             name: i.displayName
           })}
+          {isLastLogin && <div className="last-login-tag">上次使用</div>}
         </GuardButton>
       )
     } else {
@@ -158,9 +169,193 @@ export const IdpButton = (props: any) => {
           {t('login.loginBy', {
             name: i.displayName
           })}
+          {isLastLogin && <div className="last-login-tag">上次使用</div>}
         </GuardButton>
       )
     }
   }, [appId, i, t, isHost, appHost, tenantId, deviceId])
   return renderBtn()
+}
+
+export const MoreIdpButton = (props: any) => {
+  const { idps } = props
+
+  console.log(idps, 'moreIdps')
+
+  const appId = useGuardAppId()
+
+  const config = useGuardFinallyConfig()
+
+  const publicConfig = useGuardPublicConfig()
+
+  const userPoolId = publicConfig?.userPoolId
+
+  const [open, setOpen] = useState(false)
+
+  // 点击非 g2-guard-more-idp-wrapper 区域关闭弹窗
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement
+      if (!target.closest('.g2-guard-more-idp-wrapper')) {
+        setOpen(false)
+      }
+    }
+
+    if (open) {
+      document.addEventListener('click', handleClickOutside)
+    } else {
+      document.removeEventListener('click', handleClickOutside)
+    }
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [open])
+
+  return (
+    <>
+      <GuardButton
+        className="g2-guard-third-login-btn"
+        block
+        size="large"
+        onClick={() => setOpen(true)}
+      >
+        {'更多'}
+      </GuardButton>
+      <section className={classNames('g2-guard-more-idp-wrapper', { open })}>
+        <div className="g2-guard-more-idp-container">
+          <div className="g2-guard-more-idp-ops">
+            <div className="g2-guard-more-idp-header">
+              <div>{'更多企业登录方式'}</div>
+              <div
+                className="g2-guard-more-idp-header-arrow-icon"
+                onClick={() => setOpen(false)}
+              >
+                <IconFont type="authing-arrow-down-s-line" />
+              </div>
+            </div>
+            <div>
+              <Input.Search
+                enterButton={false}
+                prefix={<IconFont type="authing-search-line" />}
+                addonAfter={false}
+                addonBefore={false}
+                className="g2-guard-search-input authing-g2-input"
+                placeholder="搜索"
+                onSearch={value => {
+                  console.log(value, 'search value')
+                }}
+              />
+            </div>
+            <div className="g2-guard-tag-list">
+              {/* tags */}
+              <div
+                className={classNames('g2-guard-tag-item', {
+                  active: true
+                })}
+              >
+                全部
+              </div>
+              <div
+                className={classNames('g2-guard-tag-item', {
+                  active: false
+                })}
+              >
+                教育
+              </div>
+              <div
+                className={classNames('g2-guard-tag-item', {
+                  active: false
+                })}
+              >
+                教育
+              </div>{' '}
+              <div
+                className={classNames('g2-guard-tag-item', {
+                  active: false
+                })}
+              >
+                教育
+              </div>{' '}
+              <div
+                className={classNames('g2-guard-tag-item', {
+                  active: false
+                })}
+              >
+                教育
+              </div>{' '}
+              <div
+                className={classNames('g2-guard-tag-item', {
+                  active: false
+                })}
+              >
+                教育
+              </div>{' '}
+              <div
+                className={classNames('g2-guard-tag-item', {
+                  active: false
+                })}
+              >
+                教育
+              </div>{' '}
+              <div
+                className={classNames('g2-guard-tag-item', {
+                  active: false
+                })}
+              >
+                教育
+              </div>{' '}
+              <div
+                className={classNames('g2-guard-tag-item', {
+                  active: false
+                })}
+              >
+                教育
+              </div>{' '}
+              <div
+                className={classNames('g2-guard-tag-item', {
+                  active: false
+                })}
+              >
+                教育
+              </div>{' '}
+              <div
+                className={classNames('g2-guard-tag-item', {
+                  active: false
+                })}
+              >
+                教育
+              </div>
+            </div>
+          </div>
+          <div className="g2-guard-more-idp-list">
+            {/* idp 列表 */}
+            {idps.map((i: any) => {
+              return (
+                <IdpButton
+                  key={i.identifier}
+                  i={i}
+                  appId={appId}
+                  appHost={config?.host}
+                  userPoolId={userPoolId}
+                  isHost={config?.isHost}
+                />
+              )
+            })}
+            {idps.map((i: any) => {
+              return (
+                <IdpButton
+                  key={i.identifier}
+                  i={i}
+                  appId={appId}
+                  appHost={config?.host}
+                  userPoolId={userPoolId}
+                  isHost={config?.isHost}
+                />
+              )
+            })}
+          </div>
+        </div>
+      </section>
+    </>
+  )
 }

@@ -230,6 +230,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     referMultipleState
   } = useLoginMultiple(setLoginWay)
 
+  console.log(multipleInstance, 'multipleInstance')
+
   const [canLoop, setCanLoop] = useState(false) // 允许轮询
 
   const client = useGuardAuthClient()
@@ -1022,14 +1024,20 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       }
       const res = onMessage(evt)
 
-      if (!res) return
+      console.log(
+        'guard login view receive post message: ',
+        multipleInstance,
+        evt,
+        res
+      )
 
-      // 更新本次登录方式
-      multipleInstance && multipleInstance.setLoginWay('input', 'social')
+      if (!res) return
 
       const { code, data, onGuardHandling, message } = res
 
       if (code === 200) {
+        // 更新本次登录方式 event.connectionId
+        multipleInstance && multipleInstance.setLoginWay('input', 'social')
         onLoginSuccess(data)
       } else {
         const handMode = onGuardHandling?.()

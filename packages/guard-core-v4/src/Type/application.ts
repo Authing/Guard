@@ -329,6 +329,7 @@ export interface ApplicationConfig {
     protocol: Protocol
     displayName: string
     logo: string
+    id: string
     config:
       | ISamlConnectionConfig
       | OIDCConnectionConfig

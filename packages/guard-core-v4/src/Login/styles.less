@@ -196,3 +196,137 @@ div.g2-multiple-wrapper {
 [id*='dingtalk_qrcode_wrapper-'] {
   transform: scale(0.8);
 }
+.last-login-tag {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 9;
+  display: flex;
+  padding: 2px 4px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px 0 0 4px;
+  background: #e8f2ff;
+  color: #153fbf;
+  text-align: center;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px; /* 150% */
+}
+
+.g2-guard-more-idp-wrapper {
+  position: fixed;
+  z-index: 99;
+  bottom: 0px;
+  width: 100%;
+  height: 0px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 -8px 24px -4px rgba(4, 24, 115, 0.12);
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+  &.open {
+    height: calc(100% - 208px);
+  }
+  .g2-guard-more-idp-container {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    .g2-guard-more-idp-list {
+      flex: 1;
+      overflow: overlay;
+      margin-top: 8px;
+    }
+  }
+}
+.g2-guard-more-idp-ops {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+.g2-guard-more-idp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #282d3c;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  line-height: 24px;
+  .g2-guard-more-idp-header-arrow-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+  }
+}
+.g2-guard-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.g2-guard-tag-item {
+  display: flex;
+  padding: 0 8px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  background-color: #f7f8fa;
+  color: #4e5969;
+  cursor: pointer;
+  &.active {
+    background: #e8f2ff;
+    color: #215ae5;
+  }
+}
+
+.g2-guard-search-input {
+  .authing-ant-input-affix-wrapper {
+    display: flex;
+    border-radius: 4px !important;
+    background: #f7f8fa;
+    box-shadow: none !important;
+    border: 1px solid #f7f8fa;
+    cursor: pointer;
+    padding: 1px 8px;
+  }
+
+  input::placeholder {
+    color: #86909c;
+  }
+
+  &:focus {
+    background-color: #ffffff;
+    border-color: #618eff;
+  }
+
+  &:hover {
+    border-color: #e5e6eb;
+    background-color: #e5e6eb;
+  }
+
+  .ant-input-prefix span {
+    font-size: 16px;
+    color: #8a92a6;
+  }
+
+  input.ant-input {
+    background-color: inherit;
+    transition: none;
+    cursor: pointer;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .authing-ant-input-group-addon,
+  .ant-input-search-icon {
+    display: none;
+  }
+}
