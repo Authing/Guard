@@ -4,7 +4,13 @@ import { useTranslation } from 'react-i18next'
 
 import { Form, message } from 'shim-antd'
 
-import { fieldRequiredRule, validate } from '../../_utils'
+import {
+  fieldRequiredRule,
+  getCaptchaUrl,
+  useCaptchaCheck,
+  useGuardFinallyConfig,
+  validate
+} from '../../_utils'
 
 import SubmitButton from '../../SubmitButton'
 
@@ -26,7 +32,9 @@ import { EmailScene } from '../../Type'
 
 import { getGuardHttp } from '../../_utils/guardHttp'
 
-const { useCallback, useRef, useState } = React
+import { GraphicVerifyCode } from '../../Login/core/withPassword/GraphicVerifyCode'
+
+const { useCallback, useRef, useState, useEffect } = React
 
 // import { useGuardEvents, useGuardPublicConfig } from '../../_utils/context'
 export enum InputMethodMap {
@@ -48,14 +56,20 @@ interface ResetPasswordProps {
 }
 
 export const ResetPassword = (props: ResetPasswordProps) => {
+  const config = useGuardFinallyConfig()
+
   const { t } = useTranslation()
   let [form] = Form.useForm()
   let [identify, setIdentify] = useState('')
   let [codeMethod, setCodeMethod] = useState<'phone' | 'email'>('phone')
   let submitButtonRef = useRef<any>(null)
   const { autoFocus } = useAutoFocus()
-
   const { post } = getGuardHttp()
+
+  const captchaCheck = useCaptchaCheck('forget-password')
+  const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
+  const [captchaCode, setCaptchaCode] = useState('')
+
   // let authClient = useGuardAuthClient()
   // const events = useGuardEvents()
   // const { publicKey } = useGuardPublicConfig()
@@ -169,6 +183,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
                   style={{ color: '#878A95' }}
                 />
               }
+              captchaCode={captchaCode}
               scene={SceneType.SCENE_TYPE_RESET}
               maxLength={verifyCodeLength}
               data={identify}
@@ -176,10 +191,12 @@ export const ResetPassword = (props: ResetPasswordProps) => {
                 // closeCheckSendUser 开启时，由 onFinish 统一校验
                 if (!props.publicConfig.closeCheckSendUser) {
                   await form.validateFields(['identify'])
-                } else {
-                  Promise.resolve(true)
                 }
+                await form.validateFields(['captchaCode'])
               }}
+              onSendCodeAfter={() =>
+                setVerifyCodeUrl(getCaptchaUrl(config.host!))
+              }
             />
           )}
           {codeMethod === 'email' && (
@@ -213,8 +230,29 @@ export const ResetPassword = (props: ResetPasswordProps) => {
         </>
       )
     },
-    [codeMethod, form, identify, isInternationSms, t, verifyCodeLength]
+    [
+      codeMethod,
+      form,
+      identify,
+      isInternationSms,
+      t,
+      verifyCodeLength,
+      captchaCode
+    ]
   )
+
+  useEffect(() => {
+    // 方法发生变化时，图像验证码数据应该清空
+    if (captchaCheck) {
+      form?.setFieldsValue({ captchaCode: undefined })
+    }
+  }, [form, codeMethod, captchaCheck])
+
+  useEffect(() => {
+    if (captchaCheck) {
+      setVerifyCodeUrl(getCaptchaUrl(config.host!))
+    }
+  }, [captchaCheck, config?.host])
 
   return (
     // .map((item, index) => (index === 0 ? `「${item}」` : item))
@@ -260,6 +298,26 @@ export const ResetPassword = (props: ResetPasswordProps) => {
             }
           />
         </FormItemIdentify>
+
+        {captchaCheck && codeMethod === 'phone' && (
+          <Form.Item
+            className="authing-g2-input-form"
+            validateTrigger={['onBlur', 'onChange']}
+            name="captchaCode"
+            rules={fieldRequiredRule(t('common.captchaCode'))}
+          >
+            <GraphicVerifyCode
+              className="authing-g2-input"
+              size="large"
+              placeholder={t('login.inputCaptchaCode') as string}
+              verifyCodeUrl={verifyCodeUrl}
+              changeCode={() => setVerifyCodeUrl(getCaptchaUrl(config.host!))}
+              onChange={(e: any) => {
+                setCaptchaCode(e.target.value)
+              }}
+            />
+          </Form.Item>
+        )}
 
         <Form.Item
           validateTrigger={['onBlur', 'onChange']}
