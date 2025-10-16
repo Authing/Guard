@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 
 import { Form, message } from 'shim-antd'
 
-import { fieldRequiredRule, validate } from '../../_utils'
+import { fieldRequiredRule, useGuardPublicConfig, validate } from '../../_utils'
 
 import SubmitButton from '../../SubmitButton'
 
@@ -55,6 +55,9 @@ export const ResetPassword = (props: ResetPasswordProps) => {
   let submitButtonRef = useRef<any>(null)
   const { isPhoneMedia } = useMediaSize()
   const { post } = getGuardHttp()
+
+  const publicConfig = useGuardPublicConfig()
+
   // let authClient = useGuardAuthClient()
   // const events = useGuardEvents()
   // const { publicKey } = useGuardPublicConfig()
@@ -173,7 +176,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
               data={identify}
               onSendCodeBefore={async () => {
                 // closeCheckSendUser 开启时，由 onFinish 统一校验
-                if (!props.publicConfig?.closeCheckSendUser) {
+                if (!publicConfig?.closeCheckSendUser) {
                   await form.validateFields(['identify'])
                 } else {
                   Promise.resolve(true)
@@ -201,7 +204,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
               data={identify}
               onSendCodeBefore={async () => {
                 // closeCheckSendUser 开启时，由 onFinish 统一校验
-                if (!props.publicConfig?.closeCheckSendUser) {
+                if (!publicConfig?.closeCheckSendUser) {
                   await form.validateFields(['identify'])
                 } else {
                   Promise.resolve(true)
