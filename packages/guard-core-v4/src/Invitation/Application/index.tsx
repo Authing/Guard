@@ -174,7 +174,7 @@ export const GuardApplicationView = () => {
                 form={form}
                 onSendCodeBefore={async () => {
                   // closeCheckSendUser 开启时，由 onFinish 统一校验
-                  if (!publicConfig.closeCheckSendUser) {
+                  if (!publicConfig?.closeCheckSendUser) {
                     await form.validateFields(['email'])
                   } else {
                     Promise.resolve(true)
