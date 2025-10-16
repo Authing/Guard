@@ -173,7 +173,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
               data={identify}
               onSendCodeBefore={async () => {
                 // closeCheckSendUser 开启时，由 onFinish 统一校验
-                if (!props.publicConfig.closeCheckSendUser) {
+                if (!props.publicConfig?.closeCheckSendUser) {
                   await form.validateFields(['identify'])
                 } else {
                   Promise.resolve(true)
@@ -201,7 +201,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
               data={identify}
               onSendCodeBefore={async () => {
                 // closeCheckSendUser 开启时，由 onFinish 统一校验
-                if (!props.publicConfig.closeCheckSendUser) {
+                if (!props.publicConfig?.closeCheckSendUser) {
                   await form.validateFields(['identify'])
                 } else {
                   Promise.resolve(true)
