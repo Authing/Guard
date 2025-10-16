@@ -170,31 +170,31 @@ export const parsePhone = (
   fieldValue: string,
   areaCode = 'CN'
 ) => {
-  let countryCode = undefined
-
-  let phoneNumber = fieldValue
-  // 未开启国家化短信
   if (!isInternationSms) {
-    return { phoneNumber, countryCode: undefined }
-  }
-  // 处理 类似 192*******9 情况
-  if (phone(fieldValue, { country: areaCode }).isValid) {
-    const parsePhone = phone(fieldValue, {
-      country: areaCode
-    }) as PhoneValidResult
-
-    countryCode = parsePhone.countryCode as string
-    phoneNumber = fieldValue
-  } else if (phone(fieldValue).isValid) {
-    // 处理 +86 19294229909 情况
-    const parsePhone = phone(fieldValue) as PhoneValidResult
-
-    countryCode = parsePhone.countryCode as string
-
-    phoneNumber = parsePhone.phoneNumber.split(countryCode)[1]
+    return { phoneNumber: fieldValue, countryCode: undefined }
   }
 
-  return { countryCode, phoneNumber }
+  // 尝试用指定区号解析
+  let parseResult = phone(fieldValue, { country: areaCode })
+
+  if (parseResult.isValid) {
+    const countryCode = parseResult.countryCode as string
+    const phoneNumber = parseResult.phoneNumber.split(countryCode)[1]
+    return { countryCode, phoneNumber }
+  }
+
+  // 尝试国际格式解析（如 +86 192...）
+  parseResult = phone(fieldValue)
+
+  if (parseResult.isValid) {
+    const countryCode = parseResult.countryCode as string
+    const phoneNumber = parseResult.phoneNumber.split(countryCode)[1]
+
+    return { countryCode, phoneNumber }
+  }
+
+  // 都不匹配则返回原值
+  return { phoneNumber: fieldValue, countryCode: undefined }
 }
 
 export enum SocialConnectionEvent {
