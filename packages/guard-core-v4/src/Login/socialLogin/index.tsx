@@ -58,8 +58,6 @@ export interface SocialLoginProps {
   multipleInstance?: StoreInstance
 }
 
-const idpMax = 2
-
 export const SocialLogin: React.FC<SocialLoginProps> = ({
   appId,
   config,
@@ -76,6 +74,12 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
   const publicConfig = useGuardPublicConfig()
 
   const userPoolId = publicConfig?.userPoolId
+
+  const { maxConns, topLastUsed } = publicConfig.ssoPageComponentDisplay
+    ?.idpLayout ?? {
+    maxConns: 10,
+    topLastUsed: false
+  }
 
   const { t } = useTranslation()
 
@@ -125,12 +129,13 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
 
     console.log(sortedEnterprise, 'sortedEnterprise')
 
-    if (sortedEnterprise.length <= idpMax) {
+    if (sortedEnterprise.length <= maxConns) {
       // 全部展示
-      return sortedEnterprise.map((i: any) => {
+      return sortedEnterprise.map(i => {
         return (
           <IdpButton
             key={i.identifier}
+            status={i.tagsStatus}
             i={i}
             appId={appId}
             appHost={config?.host}
@@ -142,8 +147,8 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
       })
     } else {
       // 只展示前两个，后面加个更多
-      const idps = sortedEnterprise.slice(0, idpMax)
-      const moreIdps = sortedEnterprise.slice(idpMax)
+      const idps = sortedEnterprise.slice(0, maxConns)
+      const moreIdps = sortedEnterprise.slice(maxConns)
       console.log(sortedEnterprise, idps, moreIdps, 'moreIdps')
       const renderIdps = idps.map((i: any) => {
         return (
@@ -163,18 +168,18 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
     }
   }, [])
 
-  const idpButtons = enterpriseConnectionObjs.map((i: any) => {
-    return (
-      <IdpButton
-        key={i.identifier}
-        i={i}
-        appId={appId}
-        appHost={config?.host}
-        userPoolId={userPoolId}
-        isHost={config?.isHost}
-      />
-    )
-  })
+  // const idpButtons = enterpriseConnectionObjs.map((i: any) => {
+  //   return (
+  //     <IdpButton
+  //       key={i.identifier}
+  //       i={i}
+  //       appId={appId}
+  //       appHost={config?.host}
+  //       userPoolId={userPoolId}
+  //       isHost={config?.isHost}
+  //     />
+  //   )
+  // })
 
   const socialLoginButtons = socialConnectionObjs.map((item: any) => {
     let iconType = `authing-${item.provider.replace(/:/g, '-')}`

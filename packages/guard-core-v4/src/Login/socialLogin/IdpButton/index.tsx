@@ -12,19 +12,15 @@ import { GuardButton } from '../../../GuardButton'
 
 import { IconFont } from '../../../IconFont'
 
-import { Protocol } from '../../../Type/application'
+import { ApplicationConfig, Protocol } from '../../../Type/application'
 
 import { getVersion } from '../../../_utils'
 
 import { popupCenter } from '../../../_utils'
 
-import {
-  useGuardHttpClient,
-  useGuardTenantId,
-  useIsSpecialBrowser
-} from '../../../_utils/context'
+import { useGuardTenantId, useIsSpecialBrowser } from '../../../_utils/context'
 
-import { SocialConnectionEvent } from '../../../_utils/hooks'
+import { SocialConnectionEvent, useDebounce } from '../../../_utils/hooks'
 
 import { i18n } from '../../../_utils/locales'
 
@@ -40,11 +36,13 @@ import {
   useGuardFinallyConfig
 } from '../../../_utils/context'
 
-const { useCallback, useState, useEffect } = React
+const { useCallback, useState, useEffect, useMemo } = React
+
+const allSymbol = Symbol('all')
 
 export const IdpButton = (props: any) => {
   // TODO: 能不能加个类型
-  const { i, appId, appHost, isHost, isLastLogin } = props
+  const { i, appId, appHost, isHost, isLastLogin, status = true } = props
 
   const deviceId = useDeviceId()
 
@@ -125,6 +123,12 @@ export const IdpButton = (props: any) => {
           {t('login.loginBy', {
             name: i.displayName
           })}
+          {!status && (
+            <IconFont
+              type="authing-error-warning-line1"
+              style={{ color: '#FB9926', fontSize: 16, marginLeft: 8 }}
+            />
+          )}
           {isLastLogin && <div className="last-login-tag">上次使用</div>}
         </GuardButton>
       )
@@ -169,6 +173,12 @@ export const IdpButton = (props: any) => {
           {t('login.loginBy', {
             name: i.displayName
           })}
+          {!status && (
+            <IconFont
+              type="authing-error-warning-line1"
+              style={{ color: '#FB9926', fontSize: 16, marginLeft: 8 }}
+            />
+          )}
           {isLastLogin && <div className="last-login-tag">上次使用</div>}
         </GuardButton>
       )
@@ -177,10 +187,10 @@ export const IdpButton = (props: any) => {
   return renderBtn()
 }
 
-export const MoreIdpButton = (props: any) => {
+export const MoreIdpButton = (props: {
+  idps: ApplicationConfig['identityProviders']
+}) => {
   const { idps } = props
-
-  console.log(idps, 'moreIdps')
 
   const appId = useGuardAppId()
 
@@ -188,9 +198,32 @@ export const MoreIdpButton = (props: any) => {
 
   const publicConfig = useGuardPublicConfig()
 
+  const [filterTag, setFilterTag] = useState<any>(allSymbol)
+
+  const [filterKey, setFilterKey] = useState<string>('')
+
   const userPoolId = publicConfig?.userPoolId
 
   const [open, setOpen] = useState(false)
+
+  const tagsSet = useMemo(() => {
+    return [...new Set(idps.flatMap(item => item.tags || []))]
+  }, [])
+
+  const renderIdps = useMemo(() => {
+    return idps.filter(idp => {
+      // 检查 tag 过滤
+      const matchTag =
+        filterTag === allSymbol || idp.tags?.some(tag => tag === filterTag)
+      // 检查关键词过滤
+      const matchKey = idp.displayName.includes(filterKey)
+      return matchTag && matchKey
+    })
+  }, [filterTag, idps, filterKey])
+
+  const handleSearch = useDebounce((value: string) => {
+    setFilterKey(value)
+  }, 500)
 
   // 点击非 g2-guard-more-idp-wrapper 区域关闭弹窗
   useEffect(() => {
@@ -241,97 +274,39 @@ export const MoreIdpButton = (props: any) => {
                 addonBefore={false}
                 className="g2-guard-search-input authing-g2-input"
                 placeholder="搜索"
-                onSearch={value => {
-                  console.log(value, 'search value')
-                }}
+                onChange={e => handleSearch(e.target.value)}
               />
             </div>
             <div className="g2-guard-tag-list">
               {/* tags */}
               <div
                 className={classNames('g2-guard-tag-item', {
-                  active: true
+                  active: filterTag === allSymbol
                 })}
+                onClick={() => setFilterTag(allSymbol)}
               >
                 全部
               </div>
-              <div
-                className={classNames('g2-guard-tag-item', {
-                  active: false
-                })}
-              >
-                教育
-              </div>
-              <div
-                className={classNames('g2-guard-tag-item', {
-                  active: false
-                })}
-              >
-                教育
-              </div>{' '}
-              <div
-                className={classNames('g2-guard-tag-item', {
-                  active: false
-                })}
-              >
-                教育
-              </div>{' '}
-              <div
-                className={classNames('g2-guard-tag-item', {
-                  active: false
-                })}
-              >
-                教育
-              </div>{' '}
-              <div
-                className={classNames('g2-guard-tag-item', {
-                  active: false
-                })}
-              >
-                教育
-              </div>{' '}
-              <div
-                className={classNames('g2-guard-tag-item', {
-                  active: false
-                })}
-              >
-                教育
-              </div>{' '}
-              <div
-                className={classNames('g2-guard-tag-item', {
-                  active: false
-                })}
-              >
-                教育
-              </div>{' '}
-              <div
-                className={classNames('g2-guard-tag-item', {
-                  active: false
-                })}
-              >
-                教育
-              </div>{' '}
-              <div
-                className={classNames('g2-guard-tag-item', {
-                  active: false
-                })}
-              >
-                教育
-              </div>{' '}
-              <div
-                className={classNames('g2-guard-tag-item', {
-                  active: false
-                })}
-              >
-                教育
-              </div>
+              {tagsSet.map(tags => {
+                return (
+                  <div
+                    className={classNames('g2-guard-tag-item', {
+                      active: filterTag === tags
+                    })}
+                    onClick={() => setFilterTag(tags)}
+                  >
+                    {tags}
+                  </div>
+                )
+              })}
             </div>
           </div>
           <div className="g2-guard-more-idp-list">
             {/* idp 列表 */}
-            {idps.map((i: any) => {
+            {renderIdps.map(i => {
               return (
                 <IdpButton
+                  status={i.tagsStatus}
                   key={i.identifier}
                   i={i}
                   appId={appId}
@@ -341,18 +316,9 @@ export const MoreIdpButton = (props: any) => {
                 />
               )
             })}
-            {idps.map((i: any) => {
-              return (
-                <IdpButton
-                  key={i.identifier}
-                  i={i}
-                  appId={appId}
-                  appHost={config?.host}
-                  userPoolId={userPoolId}
-                  isHost={config?.isHost}
-                />
-              )
-            })}
+            {filterKey && renderIdps.length === 0 && (
+              <div className="g2-tags-empty-filter">{`没有找到 “${filterKey}” 相关身份源`}</div>
+            )}
           </div>
         </div>
       </section>

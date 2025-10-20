@@ -338,6 +338,8 @@ export interface ApplicationConfig {
       | IOAuthConnectionConfig
     /** 是否开启内嵌模式 */
     embedded?: boolean
+    tags?: string[]
+    tagsStatus?: boolean
   }[]
 
   ssoPageComponentDisplay: {
@@ -361,6 +363,11 @@ export interface ApplicationConfig {
       verifyCode?: LoginTypeI18nProps
       ad?: LoginTypeI18nProps
       ldap?: LoginTypeI18nProps
+    }
+    idpLayout?: {
+      maxConns: number
+      topLastUsed: boolean
+      customMoreI18n: I18nLang
     }
   }
 
