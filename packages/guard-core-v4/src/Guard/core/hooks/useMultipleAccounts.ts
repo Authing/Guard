@@ -460,7 +460,6 @@ class MultipleAccount {
     this.tabStatus = tab
     this.loginWay = way
     this.qrCodeId = id
-    debugger
     // 国际化短信的区号
     if (internation) {
       const { phoneCountryCode, areaCode } = internation
@@ -478,7 +477,6 @@ class MultipleAccount {
       'way' | 'tab' | 'phoneCountryCode'
     > // 添加扩展字段登录名
   ) => {
-    debugger
     // 排除 ad 登录方式
     if (!user || !this.loginWay || !this.tabStatus || this.loginWay === 'ad') {
       console.log('User or LoginWay does not exist.')

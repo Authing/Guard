@@ -1037,7 +1037,12 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
 
       if (code === 200) {
         // 更新本次登录方式 event.connectionId
-        multipleInstance && multipleInstance.setLoginWay('input', 'social')
+        multipleInstance &&
+          multipleInstance.setLoginWay(
+            'input',
+            'social',
+            evt.data?.event?.connectionId
+          )
         onLoginSuccess(data)
       } else {
         const handMode = onGuardHandling?.()
