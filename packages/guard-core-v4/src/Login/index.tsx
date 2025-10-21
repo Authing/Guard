@@ -91,6 +91,7 @@ import { LoginWithDingTalkQrcode } from './core/withDingTalkQrcode'
 import { LoginWithZjQrcode } from './core/withZjQrcode'
 import { supported } from '@github/webauthn-json'
 import { PasskeyButton } from './socialLogin/PasskeyButton'
+import { LAST_USED_IDP } from '../Guard/core/hooks/useMultipleAccounts'
 
 const { useEffect, useLayoutEffect, useState, useRef, useMemo, useCallback } =
   React
@@ -1054,14 +1055,16 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
 
       const { code, data, onGuardHandling, message } = res
 
+      // 更新本次登录方式 event.connectionId
+      multipleInstance && multipleInstance.setLoginWay('input', 'social')
+      // 保存身份源登录的方式
+      localStorage.setItem(
+        LAST_USED_IDP,
+        JSON.stringify({
+          connectionId: evt.data?.event?.connectionId
+        })
+      )
       if (code === 200) {
-        // 更新本次登录方式 event.connectionId
-        multipleInstance &&
-          multipleInstance.setLoginWay(
-            'input',
-            'social',
-            evt.data?.event?.connectionId
-          )
         onLoginSuccess(data)
       } else {
         const handMode = onGuardHandling?.()

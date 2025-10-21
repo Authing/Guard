@@ -23,6 +23,8 @@ const { useCallback, useEffect, useMemo, useState } = React
 
 const MULTIPLE_ACCOUNT_KEY = '__authing__multiple_accounts'
 
+export const LAST_USED_IDP = '__authing_last_used_idp__'
+
 // 多账号计算 way 方式
 const MULTIPLE_ACCOUNT_LISTS: LoginWay[] = [
   'email',
