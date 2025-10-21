@@ -105,7 +105,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
       _isLastLogin?: boolean
     })[] = cloneDeep(enterpriseConnectionObjs)
     // 让 enterpriseConnectionObjs 根据 lastLoginSocial 进行排序
-    if (lastLoginSocial.length) {
+    if (lastLoginSocial.length && topLastUsed) {
       const orderMap = new Map(
         lastLoginSocial.map((item, index) => [item.qrCodeId, index])
       )
@@ -126,8 +126,6 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
         sortedEnterprise[0]._isLastLogin = true
       }
     }
-
-    console.log(sortedEnterprise, 'sortedEnterprise')
 
     if (sortedEnterprise.length <= maxConns) {
       // 全部展示

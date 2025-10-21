@@ -235,5 +235,10 @@
   "year": "年",
   "emailorcodeError": "邮箱或验证码错误",
   "phoneorcodeError": "手机号或验证码错误",
-  "usernameError": "用户名错误"
+  "usernameError": "用户名错误",
+  "more": "更多",
+  "moreIdps": "更多企业登录方式",
+  "all": "全部",
+  "noFindIdps": "没有找到 '{{0}}' 相关身份源",
+  "lastUsed":"上次使用"
 }

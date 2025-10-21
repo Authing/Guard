@@ -235,5 +235,10 @@
   "year": "年",
   "emailorcodeError": "メールアドレスまたは確認コードが間違っています",
   "phoneorcodeError": "電話番号または確認コードが間違っています",
-  "usernameError": "ユーザー名が間違っています"
+  "usernameError": "ユーザー名が間違っています",
+  "more": "もっと",
+  "moreIdps": "ログインするその他の方法",
+  "all": "全て",
+  "noFindIdps": "'{{0}}' の ID ソースが見つかりません",
+  "lastUsed": "最後に使用"
 }

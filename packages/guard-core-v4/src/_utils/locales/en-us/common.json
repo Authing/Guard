@@ -235,5 +235,10 @@
   "year": "years",
   "emailorcodeError": "Email address or verification code is incorrect",
   "phoneorcodeError": "Phone number or verification code is incorrect",
-  "usernameError": "Username is incorrect"
+  "usernameError": "Username is incorrect",
+  "more": "More",
+  "moreIdps": "More enterprise login methods",
+  "all": "all",
+  "noFindIdps": "No relevant identity sources found for '{{0}}'",
+  "lastUsed": "last used"
 }

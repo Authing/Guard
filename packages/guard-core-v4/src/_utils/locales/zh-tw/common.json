@@ -233,5 +233,10 @@
   "year": "年",
   "emailorcodeError": "郵件信箱或驗證碼錯誤",
   "phoneorcodeError": "手機號碼或驗證碼錯誤",
-  "usernameError": "用戶名錯誤"
+  "usernameError": "用戶名錯誤",
+  "more": "更多",
+  "moreIdps": "更多企業登入方式",
+  "all": "全部",
+  "noFindIdps": "没有找到 ‘{{0}}’ 相关身份源",
+  "lastUsed": "上次使用"
 }

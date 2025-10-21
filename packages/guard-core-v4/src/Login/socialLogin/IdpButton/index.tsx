@@ -129,7 +129,9 @@ export const IdpButton = (props: any) => {
               style={{ color: '#FB9926', fontSize: 16, marginLeft: 8 }}
             />
           )}
-          {isLastLogin && <div className="last-login-tag">上次使用</div>}
+          {isLastLogin && (
+            <div className="last-login-tag">{t('common.lastUsed')}</div>
+          )}
         </GuardButton>
       )
     } else {
@@ -179,7 +181,9 @@ export const IdpButton = (props: any) => {
               style={{ color: '#FB9926', fontSize: 16, marginLeft: 8 }}
             />
           )}
-          {isLastLogin && <div className="last-login-tag">上次使用</div>}
+          {isLastLogin && (
+            <div className="last-login-tag">{t('common.lastUsed')}</div>
+          )}
         </GuardButton>
       )
     }
@@ -192,11 +196,18 @@ export const MoreIdpButton = (props: {
 }) => {
   const { idps } = props
 
+  const { t } = useTranslation()
+
+  const resolvedLanguage = i18n.resolvedLanguage ?? i18n.language
+
   const appId = useGuardAppId()
 
   const config = useGuardFinallyConfig()
 
   const publicConfig = useGuardPublicConfig()
+
+  const customMoreI18n =
+    publicConfig.ssoPageComponentDisplay?.idpLayout?.customMoreI18n
 
   const [filterTag, setFilterTag] = useState<any>(allSymbol)
 
@@ -225,6 +236,14 @@ export const MoreIdpButton = (props: {
     setFilterKey(value)
   }, 500)
 
+  const more = useMemo(() => {
+    return (
+      (customMoreI18n?.i18n?.[resolvedLanguage].enabled
+        ? customMoreI18n?.i18n?.[resolvedLanguage]?.value
+        : customMoreI18n?.default) ?? t('common.more')
+    )
+  }, [customMoreI18n, resolvedLanguage])
+
   // 点击非 g2-guard-more-idp-wrapper 区域关闭弹窗
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -252,13 +271,13 @@ export const MoreIdpButton = (props: {
         size="large"
         onClick={() => setOpen(true)}
       >
-        {'更多'}
+        {more}
       </GuardButton>
       <section className={classNames('g2-guard-more-idp-wrapper', { open })}>
         <div className="g2-guard-more-idp-container">
           <div className="g2-guard-more-idp-ops">
             <div className="g2-guard-more-idp-header">
-              <div>{'更多企业登录方式'}</div>
+              <div>{t('common.moreIdps')}</div>
               <div
                 className="g2-guard-more-idp-header-arrow-icon"
                 onClick={() => setOpen(false)}
@@ -285,7 +304,7 @@ export const MoreIdpButton = (props: {
                 })}
                 onClick={() => setFilterTag(allSymbol)}
               >
-                全部
+                {t('common.all')}
               </div>
               {tagsSet.map(tags => {
                 return (
@@ -317,7 +336,9 @@ export const MoreIdpButton = (props: {
               )
             })}
             {filterKey && renderIdps.length === 0 && (
-              <div className="g2-tags-empty-filter">{`没有找到 “${filterKey}” 相关身份源`}</div>
+              <div className="g2-tags-empty-filter">
+                {t('common.noFindIdps', [filterKey])}
+              </div>
             )}
           </div>
         </div>
