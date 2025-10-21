@@ -9,6 +9,7 @@ import {
   getCaptchaUrl,
   useCaptchaCheck,
   useGuardFinallyConfig,
+  useGuardPublicConfig,
   validate
 } from '../../_utils'
 
@@ -69,6 +70,8 @@ export const ResetPassword = (props: ResetPasswordProps) => {
   const captchaCheck = useCaptchaCheck('forget-password')
   const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
   const [captchaCode, setCaptchaCode] = useState('')
+
+  const publicConfig = useGuardPublicConfig()
 
   // let authClient = useGuardAuthClient()
   // const events = useGuardEvents()
@@ -188,7 +191,10 @@ export const ResetPassword = (props: ResetPasswordProps) => {
               maxLength={verifyCodeLength}
               data={identify}
               onSendCodeBefore={async () => {
-                await form.validateFields(['identify'])
+                // closeCheckSendUser 开启时，由 onFinish 统一校验
+                if (!publicConfig?.closeCheckSendUser) {
+                  await form.validateFields(['identify'])
+                }
                 await form.validateFields(['captchaCode'])
               }}
               onSendCodeAfter={() =>
@@ -215,7 +221,12 @@ export const ResetPassword = (props: ResetPasswordProps) => {
               maxLength={verifyCodeLength}
               data={identify}
               onSendCodeBefore={async () => {
-                await form.validateFields(['identify'])
+                // closeCheckSendUser 开启时，由 onFinish 统一校验
+                if (!publicConfig?.closeCheckSendUser) {
+                  await form.validateFields(['identify'])
+                } else {
+                  Promise.resolve(true)
+                }
               }}
             />
           )}

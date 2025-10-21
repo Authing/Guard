@@ -83,3 +83,5 @@ export const loginUrlFieldMapping: Partial<Record<Protocol, string>> = {
   [Protocol.AZURE_AD]: 'authorizationUrl',
   [Protocol.AD_KERBEROS]: 'authorizationUrl'
 }
+
+export type ValidateStatus = undefined | 'validating'

@@ -182,7 +182,10 @@ const LoginWithVerifyCode = (props: any) => {
             scene={SceneType.SCENE_TYPE_LOGIN}
             maxLength={verifyCodeLength}
             onSendCodeBefore={async () => {
-              await form.validateFields(['identify'])
+              // closeCheckSendUser 开启时，由 onFinish 统一校验
+              if (!publicConfig?.closeCheckSendUser) {
+                await form.validateFields(['identify'])
+              }
               await form.validateFields(['captchaCode'])
             }}
             onSendCodeAfter={() => {
@@ -218,7 +221,10 @@ const LoginWithVerifyCode = (props: any) => {
               data={identify}
               codeFieldName={'captchaCode'}
               onSendCodeBefore={async () => {
-                await form.validateFields(['identify'])
+                // closeCheckSendUser 开启时，由 onFinish 统一校验
+                if (!publicConfig?.closeCheckSendUser) {
+                  await form.validateFields(['identify'])
+                }
                 await form.validateFields(['captchaCode'])
               }}
               onSendCodeAfter={() => {
@@ -247,7 +253,12 @@ const LoginWithVerifyCode = (props: any) => {
               maxLength={verifyCodeLength}
               data={identify}
               onSendCodeBefore={async () => {
-                await form.validateFields(['identify'])
+                // closeCheckSendUser 开启时，由 onFinish 统一校验
+                if (!publicConfig?.closeCheckSendUser) {
+                  await form.validateFields(['identify'])
+                } else {
+                  Promise.resolve(true)
+                }
               }}
             />
           )}

@@ -481,6 +481,11 @@ export interface ApplicationConfig {
   }
   noticePwdCustomLogo?: string
 
+  /**
+   * 开启延迟校验用户是否存在功能
+   */
+  closeCheckSendUser?: boolean
+
   resetPwdLinkCustomLogo?: string
   resetPwdLinkTipsConfig?: {
     title: I18nLang

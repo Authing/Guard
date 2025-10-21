@@ -1,4 +1,4 @@
-import { Form } from 'shim-antd'
+import { Form, message } from 'shim-antd'
 
 import { React } from 'shim-react'
 
@@ -17,8 +17,9 @@ import { useGuardPhoneRegex, useGuardPublicConfig } from '../_utils/context'
 import { phone } from 'phone'
 
 import { useCheckRepeat } from './useCheckRepeat'
+import { ValidateStatus } from '../Login/interface'
 
-const { useMemo } = React
+const { useMemo, useState } = React
 
 const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
   const {
@@ -34,6 +35,7 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
   const publicConfig = useGuardPublicConfig()
   const { get } = useGuardHttp()
   const { t } = useTranslation()
+  const [validateStatus, setValidateStatus] = useState<ValidateStatus>()
 
   const checkInternationalSms = useMemo(() => {
     return (
@@ -52,6 +54,7 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
         checkRepeatErrorMessage: t('common.checkEmail'),
         formatErrorMessage: t('common.emailFormatError'),
         checkExistErrorMessage: t('common.noFindEmail'),
+        delayFindErrorMessage: t('common.emailorcodeError'),
         pattern: VALIDATE_PATTERN.email
       }
     else if (method === 'username') {
@@ -60,6 +63,7 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
         checkRepeatErrorMessage: t('common.checkUserName'),
         checkExistErrorMessage: t('common.noFindUsername'),
         formatErrorMessage: t('common.usernameFormatError'),
+        delayFindErrorMessage: t('common.usernameError'),
         pattern: VALIDATE_PATTERN.username
       }
     } else if (method === 'phone') {
@@ -68,6 +72,7 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
         checkRepeatErrorMessage: t('common.checkPhone'),
         checkExistErrorMessage: t('common.noFindPhone'),
         formatErrorMessage: t('common.phoneFormateError'),
+        delayFindErrorMessage: t('common.phoneorcodeError'),
         pattern:
           !isCheckPattern && publicConfig.internationalSmsConfig?.enabled
             ? /^[0-9]*$/
@@ -100,18 +105,37 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
       userPoolId: publicConfig?.userPoolId,
       key: value,
       type: method
-    }).then(({ data }) => {
-      if (checkExist) {
-        Boolean(data)
-          ? resolve(true)
-          : reject(methodContent.checkExistErrorMessage)
-      }
-      if (checkRepeat) {
-        Boolean(data)
-          ? reject(methodContent.checkRepeatErrorMessage)
-          : resolve(true)
-      }
     })
+      .then(({ data }) => {
+        if (checkExist) {
+          if (Boolean(data)) {
+            resolve(true)
+          } else {
+            // 对该场景 主要是阻止表单 onfinish 执行 但不要触发 form error
+            if (publicConfig?.closeCheckSendUser) {
+              setValidateStatus('validating')
+              message.error(methodContent.delayFindErrorMessage)
+            } else {
+              reject(methodContent.checkExistErrorMessage)
+            }
+          }
+        }
+        if (checkRepeat) {
+          if (Boolean(data)) {
+            if (publicConfig?.closeCheckSendUser) {
+              setValidateStatus('validating')
+              message.error(methodContent.delayFindErrorMessage)
+            } else {
+              reject(methodContent.checkRepeatErrorMessage)
+            }
+          } else {
+            resolve(true)
+          }
+        }
+      })
+      .finally(() => {
+        setValidateStatus(undefined)
+      })
   }
 
   const checkRepeatFn = useCheckRepeat(checkRepeatRet)
@@ -174,6 +198,7 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
       validateTrigger={['onBlur', 'onChange']}
       rules={[...rules, ...(formItemProps?.rules ?? [])]}
       name={name ?? method}
+      validateStatus={validateStatus}
       {...formItemProps}
     />
   )
