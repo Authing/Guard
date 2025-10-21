@@ -138,7 +138,6 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
     } else {
       // 只展示前两个，后面加个更多
       const idps = sortedEnterprise.slice(0, maxConns)
-      const moreIdps = sortedEnterprise.slice(maxConns)
       const renderIdps = idps.map((i: any) => {
         return (
           <IdpButton
@@ -153,7 +152,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
           />
         )
       })
-      renderIdps.push(<MoreIdpButton idps={moreIdps} />)
+      renderIdps.push(<MoreIdpButton idps={sortedEnterprise} />)
       return renderIdps
     }
   }, [])

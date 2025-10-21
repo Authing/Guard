@@ -80,7 +80,7 @@
   "moreWays": "更多登入",
   "noEmpty": "請填入 {{label}}",
   "noLoginMethodsDesc": "未配置登入方式",
-  "otherLoginWay": "其他登入方式",
+  "otherLoginWay": "企业登录方式",
   "otherVerifyWay": "其他驗證方式",
   "pwdLogin": "帳號",
   "bindPwdLogin": "帳號",

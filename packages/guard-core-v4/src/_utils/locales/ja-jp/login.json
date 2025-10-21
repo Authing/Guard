@@ -76,7 +76,7 @@
   "verifyCodeSended": "認証コードが送信され",
   "inputEmailCode": "メールアドレス認証を入力してください",
   "otherVerifyWay": "その他の検証方法",
-  "otherLoginWay": "その他の登録方法",
+  "otherLoginWay": "OR",
   "clickSent": "認証コードの送信をクリックする",
   "reSent": "認証コードの再送をクリックしてください",
   "bindPhoneInfo": "携帯番号を入力して結びつけてください",
@@ -134,5 +134,4 @@
   "wecomScanLogin": "エンタープライズ WeChat ログイン",
   "passwordRuleTips": "パスワードには、以下を含める必要があります：",
   "characterTypes": "Include at least {{x}} character types"
-
 }

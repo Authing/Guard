@@ -76,7 +76,7 @@
   "verifyCodeSended": "验证码已发送至",
   "inputEmailCode": "请输入邮箱验证码",
   "otherVerifyWay": "其他验证方式",
-  "otherLoginWay": "其他登录方式",
+  "otherLoginWay": "企业登录方式",
   "clickSent": "点击发送验证码",
   "reSent": "点击重发验证码",
   "bindPhoneInfo": "请输入手机号进行绑定",
