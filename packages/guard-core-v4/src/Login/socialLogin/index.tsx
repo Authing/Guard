@@ -359,19 +359,19 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
       )
     )
 
-  const otherLogin = (
-    <div
-      className="g2-social-login-list"
-      style={{
-        marginTop: -8
-      }}
-    >
-      <PasskeyButton
-        onLoginSuccess={onLoginSuccess}
-        onLoginFailed={onLoginFailed}
-      />
-    </div>
-  )
+  // const otherLogin = (
+  //   <div
+  //     className="g2-social-login-list"
+  //     style={{
+  //       marginTop: -8
+  //     }}
+  //   >
+  //     <PasskeyButton
+  //       onLoginSuccess={onLoginSuccess}
+  //       onLoginFailed={onLoginFailed}
+  //     />
+  //   </div>
+  // )
 
   return (
     <>
@@ -389,7 +389,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
         className="g2-guard-full-width-space"
       >
         {!publicConfig?.ssoPageComponentDisplay.idpBtns || idp}
-        {otherLogin}
+        {/* {otherLogin} */}
         {!publicConfig?.ssoPageComponentDisplay.socialLoginBtns || socialLogin}
       </Space>
     </>

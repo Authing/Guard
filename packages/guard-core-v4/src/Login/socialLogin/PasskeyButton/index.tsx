@@ -45,13 +45,13 @@ export const PasskeyButton = (props: LoginWithPasskeyProps) => {
     return controller.signal
   }
 
-  const isShowPasskey = useCallback(() => {
-    if (!publicConfig.passkeyEnabled) {
-      return false
-    }
+  // const isShowPasskey = useCallback(() => {
+  //   if (!publicConfig.passkeyEnabled) {
+  //     return false
+  //   }
 
-    return supported()
-  }, [publicConfig])
+  //   return supported()
+  // }, [publicConfig])
 
   const handleLogin = async () => {
     setLoading(true)
@@ -126,23 +126,21 @@ export const PasskeyButton = (props: LoginWithPasskeyProps) => {
 
   return (
     <>
-      {isShowPasskey() && (
-        <GuardButton
-          className="g2-guard-third-login-btn"
-          block
-          loading={loading}
-          size="large"
-          onClick={handleLogin}
-          icon={
-            <IconFont
-              type="authing-slideshow-3-line"
-              style={{ fontSize: 16, marginRight: 8, color: '#215AE5' }}
-            />
-          }
-        >
-          {t('login.loginWithPasskey')}
-        </GuardButton>
-      )}
+      <GuardButton
+        className="g2-guard-third-login-btn"
+        block
+        loading={loading}
+        size="large"
+        onClick={handleLogin}
+        icon={
+          <IconFont
+            type="authing-slideshow-3-line"
+            style={{ fontSize: 16, marginRight: 8, color: '#215AE5' }}
+          />
+        }
+      >
+        {t('login.loginWithPasskey')}
+      </GuardButton>
     </>
   )
 }

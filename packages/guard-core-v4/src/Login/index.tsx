@@ -89,6 +89,8 @@ import { getGuardWindow } from '../Guard/core/useAppendConfig'
 
 import { LoginWithDingTalkQrcode } from './core/withDingTalkQrcode'
 import { LoginWithZjQrcode } from './core/withZjQrcode'
+import { supported } from '@github/webauthn-json'
+import { PasskeyButton } from './socialLogin/PasskeyButton'
 
 const { useEffect, useLayoutEffect, useState, useRef, useMemo, useCallback } =
   React
@@ -99,7 +101,8 @@ const inputWays = [
   LoginMethods.AD,
   LoginMethods.LDAP,
   LoginMethods.AuthingOtpPush,
-  LoginMethods.EmailCode
+  LoginMethods.EmailCode,
+  LoginMethods.Passkey
 ]
 const qrcodeWays = [
   LoginMethods.AppQr,
@@ -867,6 +870,17 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     )
   }, [ms, onLoginSuccess, t, backfillData, multipleInstance, agreements])
 
+  const PasskeyTab = useMemo(() => {
+    return (
+      <Tabs.TabPane key={'passkey'} tab={'Passkey'}>
+        <PasskeyButton
+          onLoginSuccess={onLoginSuccess}
+          onLoginFailed={onLoginFailed}
+        />
+      </Tabs.TabPane>
+    )
+  }, [ms, onLoginSuccess, t, backfillData, multipleInstance, agreements])
+
   // const PasskeyTab = useMemo(
   //   () =>
   //     ms?.includes(LoginMethods.Passkey) && (
@@ -884,7 +898,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       [LoginMethods.PhoneCode]: CodeTab,
       [LoginMethods.LDAP]: LdapTab,
       [LoginMethods.AD]: ADTab,
-      [LoginMethods.AuthingOtpPush]: AuthingOtpPushTab
+      [LoginMethods.AuthingOtpPush]: AuthingOtpPushTab,
+      [LoginMethods.Passkey]: PasskeyTab
     }
   }, [PasswordTab, CodeTab, LdapTab, ADTab, AuthingOtpPushTab])
 
@@ -911,10 +926,14 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
               | LoginMethods.AuthingOtpPush
           ]
       )
+      if (publicConfig.passkeyEnabled && supported()) {
+        tabs.push(PasskeyTab)
+      }
       return tabs
     }
     return null
   }, [config.defaultLoginMethod, ms, tabMap])
+  console.log(GeneralLoginComponent, 'GeneralLoginComponent')
 
   const QrCodeTabMap = useMemo(() => {
     return {
@@ -1065,6 +1084,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       guardWindow?.removeEventListener('message', onPostMessage)
     }
   }, [onLoginFailed, multipleInstance, onLoginSuccess, onMessage])
+
+  console.log(loginWay, 'loginWay')
 
   return (
     <div className="g2-view-container g2-view-login">
