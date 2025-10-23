@@ -856,8 +856,9 @@ export const getPasswordIdentify = (identity: string): string => {
 }
 
 export const getCurrentLng = () => {
-  if (Object.keys(LngTextMapping).includes(resolvedLanguage)) {
-    return resolvedLanguage as Lang
+  const composeLang = i18n.resolvedLanguage || i18n.language
+  if (Object.keys(LngTextMapping).includes(composeLang)) {
+    return composeLang as Lang
   } else {
     return i18n?.languages?.[i18n?.languages?.length - 1] as Lang
   }
