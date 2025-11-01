@@ -57,11 +57,14 @@ interface AssociateFaceContent {
   mfaToken?: string
 }
 
-type BindPasskeyContent = PublicKeyCredentialWithAttestationJSON
+type BindPasskeyContent = PublicKeyCredentialWithAttestationJSON & {
+  mfaToken?: string
+}
 
 interface VerifyPasskeyContent {
   credential: PublicKeyCredentialWithAssertionJSON
   ticket: string
+  mfaToken?: string
 }
 
 interface GetPasskeyBindChallengeParams {

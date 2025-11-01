@@ -64,7 +64,10 @@ const BindPasskey: React.FC<BindPasskeyProps> = props => {
 
       const attestation = await registerPasskey(challenge.data!)
       const { isFlowEnd, data, onGuardHandling } =
-        (await businessRequest(attestation!)) || {}
+        (await businessRequest({
+          ...attestation!,
+          mfaToken
+        })) || {}
 
       if (isFlowEnd) {
         mfaLogin(200, data)
@@ -147,7 +150,9 @@ const VerifyPasskey: React.FC<VerifyPasskeyProps> = props => {
       const { isFlowEnd, data, onGuardHandling } =
         (await businessRequest({
           credential: attestation!,
-          ticket: challenge.data?.ticket || ''
+          ticket: challenge.data?.ticket || '',
+          mfaToken
+
         })) || {}
 
       if (isFlowEnd) {
