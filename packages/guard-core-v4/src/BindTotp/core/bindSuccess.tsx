@@ -41,7 +41,7 @@ export const BindSuccess: React.FC<BindSuccessProps> = ({ secret, onBind }) => {
     if (isAuthFlow) {
       const { data, isFlowEnd, onGuardHandling } = await authFlow(
         BindTotpBusinessAction.ConfirmTotpRecoveryCode,
-        {mfaToken:initData}
+        { mfaToken: initData?.mfaToken }
       )
       submitButtonRef.current?.onSpin(false)
       if (isFlowEnd) {
