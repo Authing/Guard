@@ -152,7 +152,6 @@ const VerifyPasskey: React.FC<VerifyPasskeyProps> = props => {
           credential: attestation!,
           ticket: challenge.data?.ticket || '',
           mfaToken
-
         })) || {}
 
       if (isFlowEnd) {
