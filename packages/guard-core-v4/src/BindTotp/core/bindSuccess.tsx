@@ -6,9 +6,11 @@ import { useTranslation } from 'react-i18next'
 
 import SubmitButton from '../../SubmitButton'
 
-import { useGuardIsAuthFlow } from '../../_utils/context'
+import { useGuardIsAuthFlow, useGuardInitData } from '../../_utils/context'
 
 import { authFlow, BindTotpBusinessAction } from '../businessRequest'
+
+import { GuardMFAInitData } from '../../MFA/interface'
 
 const { useRef } = React
 
@@ -22,6 +24,8 @@ export interface BindSuccessProps {
 export const BindSuccess: React.FC<BindSuccessProps> = ({ secret, onBind }) => {
   // const [isSaved, setIsSaved] = useState(false)
   const submitButtonRef = useRef<any>(null)
+
+  const initData = useGuardInitData<GuardMFAInitData>()
 
   const [form] = Form.useForm()
 
@@ -37,7 +41,7 @@ export const BindSuccess: React.FC<BindSuccessProps> = ({ secret, onBind }) => {
     if (isAuthFlow) {
       const { data, isFlowEnd, onGuardHandling } = await authFlow(
         BindTotpBusinessAction.ConfirmTotpRecoveryCode,
-        {}
+        {mfaToken:initData}
       )
       submitButtonRef.current?.onSpin(false)
       if (isFlowEnd) {
