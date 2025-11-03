@@ -31,6 +31,7 @@ interface BindPasskeyProps {
 interface VerifyPasskeyProps {
   mfaToken: string
   mfaLogin: (code: any, data: any, message?: string) => void
+  mfaConfigsMap: Map<MFAType, boolean>
 }
 
 export type MFAPasskeyProps = BindPasskeyProps &
@@ -121,10 +122,15 @@ const BindPasskey: React.FC<BindPasskeyProps> = props => {
 }
 
 const VerifyPasskey: React.FC<VerifyPasskeyProps> = props => {
-  const { mfaToken, mfaLogin } = props
-  const submitButtonRef = React.useRef<any>(null)
-  const businessRequest =
+  const { mfaToken, mfaLogin, mfaConfigsMap } = props
+  const verifyButtonRef = React.useRef<any>(null)
+  const bindButtonRef = React.useRef<any>(null)
+
+  const verifyBusinessRequest =
     useMfaBusinessRequest()[MfaBusinessAction.PasskeyVerify]
+
+  const bindBusinessRequest =
+    useMfaBusinessRequest()[MfaBusinessAction.PasskeyBind]
 
   let { t } = useTranslation()
 
@@ -132,7 +138,7 @@ const VerifyPasskey: React.FC<VerifyPasskeyProps> = props => {
   const cdnBase = publicConfig?.cdnBase
 
   const handleVerifyPasskey = React.useCallback(async () => {
-    submitButtonRef.current?.onSpin(true)
+    verifyButtonRef.current?.onSpin(true)
     try {
       const challenge = await GetPasskeyVerifyChallenge({
         mfaToken
@@ -145,7 +151,7 @@ const VerifyPasskey: React.FC<VerifyPasskeyProps> = props => {
 
       const attestation = await verifyPasskey(challenge.data!)
       const { isFlowEnd, data, onGuardHandling } =
-        (await businessRequest({
+        (await verifyBusinessRequest({
           credential: attestation!,
           ticket: challenge.data?.ticket || ''
         })) || {}
@@ -153,20 +159,44 @@ const VerifyPasskey: React.FC<VerifyPasskeyProps> = props => {
       if (isFlowEnd) {
         mfaLogin(200, data)
       } else {
-        submitButtonRef.current?.onError()
+        verifyButtonRef.current?.onError()
         onGuardHandling?.()
       }
     } catch (e) {
       console.warn('verify passkey flow error: ', e)
     } finally {
-      submitButtonRef.current?.onSpin(false)
+      verifyButtonRef.current?.onSpin(false)
     }
   }, [])
 
-  // 首次进入页面立即开始验证
-  React.useEffect(() => {
-    handleVerifyPasskey()
-  }, [])
+  const handleBindPasskey = React.useCallback(async () => {
+    bindButtonRef.current?.onSpin(true)
+    try {
+      const challenge = await GetPasskeyBindChallenge({
+        mfaToken
+      })
+
+      if (challenge.statusCode !== 200) {
+        message.error(challenge.message)
+        return
+      }
+
+      const attestation = await registerPasskey(challenge.data!)
+      const { isFlowEnd, data, onGuardHandling } =
+        (await bindBusinessRequest(attestation!)) || {}
+
+      if (isFlowEnd) {
+        mfaLogin(200, data)
+      } else {
+        bindButtonRef.current?.onError()
+        onGuardHandling?.()
+      }
+    } catch (e) {
+      console.warn('register passkey flow error: ', e)
+    } finally {
+      bindButtonRef.current?.onSpin(false)
+    }
+  }, [mfaToken, mfaLogin, bindBusinessRequest])
 
   return (
     <>
@@ -186,8 +216,17 @@ const VerifyPasskey: React.FC<VerifyPasskeyProps> = props => {
         text={t('common.reVerify')!}
         className="bind-passkey-btn"
         htmlType="button"
-        ref={submitButtonRef}
+        ref={verifyButtonRef}
       />
+      {!mfaConfigsMap.get(MFAType.PASSKEY) && (
+        <SubmitButton
+          onClick={handleBindPasskey}
+          text={t('common.bindPasskey')!}
+          className="bind-passkey-btn"
+          htmlType="button"
+          ref={bindButtonRef}
+        />
+      )}
     </>
   )
 }
@@ -195,7 +234,11 @@ const VerifyPasskey: React.FC<VerifyPasskeyProps> = props => {
 export const MFAPasskey: React.FC<MFAPasskeyProps> = props => {
   const { passkeyEnabled, mfaLogin, mfaToken, mfaConfigsMap } = props
   return passkeyEnabled ? (
-    <VerifyPasskey mfaLogin={mfaLogin} mfaToken={mfaToken} />
+    <VerifyPasskey
+      mfaLogin={mfaLogin}
+      mfaToken={mfaToken}
+      mfaConfigsMap={mfaConfigsMap}
+    />
   ) : (
     <BindPasskey
       mfaLogin={mfaLogin}
