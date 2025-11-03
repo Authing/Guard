@@ -224,6 +224,7 @@ const VerifyPasskey: React.FC<VerifyPasskeyProps> = props => {
           text={t('common.bindPasskey')!}
           className="bind-passkey-btn"
           htmlType="button"
+          style={{ marginTop: 16 }}
           ref={bindButtonRef}
         />
       )}
