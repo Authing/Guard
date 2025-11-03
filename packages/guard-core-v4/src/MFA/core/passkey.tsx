@@ -163,11 +163,6 @@ const VerifyPasskey: React.FC<VerifyPasskeyProps> = props => {
     }
   }, [])
 
-  // 首次进入页面立即开始验证
-  React.useEffect(() => {
-    handleVerifyPasskey()
-  }, [])
-
   return (
     <>
       <h3 className="authing-g2-mfa-title">{t('common.passkeyVerifyTitle')}</h3>
