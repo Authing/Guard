@@ -9,6 +9,7 @@ import {
   getCaptchaUrl,
   useCaptchaCheck,
   useGuardFinallyConfig,
+  useGuardPublicConfig,
   validate
 } from '../../_utils'
 
@@ -57,6 +58,8 @@ interface ResetPasswordProps {
 
 export const ResetPassword = (props: ResetPasswordProps) => {
   const config = useGuardFinallyConfig()
+
+  const publicConfig = useGuardPublicConfig()
 
   const { t } = useTranslation()
   let [form] = Form.useForm()
@@ -189,7 +192,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
               data={identify}
               onSendCodeBefore={async () => {
                 // closeCheckSendUser 开启时，由 onFinish 统一校验
-                if (!props.publicConfig.closeCheckSendUser) {
+                if (!publicConfig.closeCheckSendUser) {
                   await form.validateFields(['identify'])
                   await form.validateFields(['captchaCode'])
                 } else {
@@ -221,7 +224,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
               data={identify}
               onSendCodeBefore={async () => {
                 // closeCheckSendUser 开启时，由 onFinish 统一校验
-                if (!props.publicConfig.closeCheckSendUser) {
+                if (!publicConfig.closeCheckSendUser) {
                   await form.validateFields(['identify'])
                 } else {
                   Promise.resolve(true)
