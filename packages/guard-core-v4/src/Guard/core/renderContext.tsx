@@ -423,7 +423,7 @@ export const RenderContext: React.FC<{
       defaultLanguageConfig,
       tenantInstance
     ]
-
+    console.log('renderContext line: 426', list)
     return !list.includes(undefined) && !list.includes(false)
   }, [
     appId,
@@ -460,6 +460,7 @@ export const RenderContext: React.FC<{
 
   // TODO 触发 onLoad 事件
   useEffect(() => {
+    console.log('renderContext line: 463', error, contextLoaded)
     if (!contextLoaded || error) return
 
     events?.onLoad?.(authClint!)
