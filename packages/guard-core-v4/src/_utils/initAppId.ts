@@ -20,6 +20,12 @@ export const useInitAppId = (
   const globalAuthClient = useGlobalAuthClient()
 
   const appId = useMemo(() => {
+    console.log(
+      'useInitAppId line: 23',
+      propsAppid,
+      propsAuthClient?.options?.appId,
+      globalAuthClient?.options?.appId
+    )
     if (propsAppid) {
       return propsAppid
     } else if (propsAuthClient && propsAuthClient.options.appId) {

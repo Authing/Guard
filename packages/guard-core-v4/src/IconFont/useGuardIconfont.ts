@@ -23,6 +23,7 @@ export const useGuardIconfont = (cdnBase?: string, setError?: any) => {
 
       setLoaded(true)
     } catch (error: any) {
+      console.log('useGuardIconfont line: 26', error)
       setError?.(error)
     }
   }, [cdnBase, setError])

@@ -205,6 +205,7 @@ export const useFetchConsoleConfig = (
             await requestGuardPageConfig(appId, httpClient)
           ])
         } catch (error) {
+          console.log('useFetchConsoleConfig line: 208', error)
           setError(error)
         }
       }

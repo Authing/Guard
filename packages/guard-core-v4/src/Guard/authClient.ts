@@ -95,6 +95,7 @@ export const useInitGuardAuthClient = (props: {
 
         return
       } catch (error) {
+        console.log('useInitGuardAuthClient line: 98', error)
         setError(error)
       }
     }
@@ -107,6 +108,7 @@ export const useInitGuardAuthClient = (props: {
 
         return
       } catch (error) {
+        console.log('useInitGuardAuthClient line: 110', error)
         setError(error)
       }
     }
@@ -127,6 +129,7 @@ export const useInitGuardAuthClient = (props: {
 
       setClient(authClient)
     } catch (error) {
+      console.log('useInitGuardAuthClient line: 132', error)
       setError(error)
     }
   }, [appId, config, globalClient, props?.authClient, setError, tenantId])
