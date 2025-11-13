@@ -56,6 +56,7 @@ import {
 import { getCaptchaUrl } from '../../_utils/getCaptchaUrl'
 
 import { GraphicVerifyCode } from '../../Login/core/withPassword/GraphicVerifyCode'
+import { registerSkipMethod } from '../../CompleteInfo/businessRequest'
 
 const { useCallback, useEffect, useRef, useState } = React
 
@@ -69,6 +70,8 @@ export interface RegisterWithCodeProps {
   registeContext?: any
   methods: any[]
 }
+
+const openAccountType = true
 
 /**
  * 手机 Code 注册
@@ -212,20 +215,6 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
           areaCode
         )
 
-        // 注册
-        // const options: any = {
-        //   context,
-        //   generateToken: true,
-        //   // 托管模式下注册携带query上自定义参数login_page_context
-        //   params: config?.isHost
-        //     ? getUserRegisterParams(['login_page_context'])
-        //     : undefined,
-        // }
-
-        // if (isInternationSms) {
-        //   options.phoneCountryCode = phoneCountryCode
-        // }
-
         const registerContent = {
           phone: phoneNumber,
           code,
@@ -284,8 +273,8 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             return
           }
         } else {
-          // 看看是否要跳转到 信息补全
-          if (isPhoneChangeComplete) {
+          // 看看是否要跳转到 信息补全 或 账号选择
+          if (isPhoneChangeComplete || openAccountType) {
             // 判断验证码是否正确
             const {
               statusCode: checkCode,
@@ -297,14 +286,27 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             })
 
             if (checkCode === 200 && valid) {
-              changeModule?.(GuardModuleType.REGISTER_COMPLETE_INFO, {
-                businessRequestName: 'registerByPhoneCode',
-                content: {
-                  ...registerContent
-                },
-                onRegisterSuccess: onRegisterSuccessIntercept,
-                onRegisterFailed
-              })
+              if (openAccountType) {
+                changeModule?.(GuardModuleType.REGISTER_ACCOUNT_TYPE_SELECT, {
+                  businessRequestName: 'registerByPhoneCode',
+                  content: {
+                    ...registerContent
+                  },
+                  isChangeComplete: isPhoneChangeComplete,
+                  onRegisterSuccess: onRegisterSuccessIntercept,
+                  onRegisterFailed
+                })
+              }
+              if (isPhoneChangeComplete) {
+                changeModule?.(GuardModuleType.REGISTER_COMPLETE_INFO, {
+                  businessRequestName: 'registerByPhoneCode',
+                  content: {
+                    ...registerContent
+                  },
+                  onRegisterSuccess: onRegisterSuccessIntercept,
+                  onRegisterFailed
+                })
+              }
               return
             } else {
               submitButtonRef.current.onError()
@@ -321,7 +323,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             statusCode,
             apiCode,
             message: errMessage
-          } = await post('/api/v2/register-phone-code', {
+          } = await registerSkipMethod('registerByPhoneCode', {
             ...registerContent,
             postUserInfoPipeline: false
           })
@@ -489,13 +491,23 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             }
           }
           // 注册
+          // const {
+          //   statusCode,
+          //   data,
+          //   apiCode,
+          //   onGuardHandling,
+          //   message: registerMessage
+          // } = await post('/api/v2/register-email-code', {
+          //   ...registerContent,
+          //   postUserInfoPipeline: false
+          // })
           const {
             statusCode,
             data,
             apiCode,
             onGuardHandling,
             message: registerMessage
-          } = await post('/api/v2/register-email-code', {
+          } = await registerSkipMethod('registerByEmailCode', {
             ...registerContent,
             postUserInfoPipeline: false
           })

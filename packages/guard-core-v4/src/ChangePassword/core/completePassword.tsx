@@ -45,6 +45,7 @@ export const CompletePassword: React.FC = () => {
   const { autoFocus } = useAutoFocus()
 
   const { post } = getGuardHttp()
+
   const {
     businessRequestName,
     content,
@@ -70,6 +71,21 @@ export const CompletePassword: React.FC = () => {
       const password = await encrypt!(values.password, publicKey)
 
       submitButtonRef.current?.onSpin(true)
+
+      if (true) {
+        // todo 是否开启了区分账号类型
+        changeModule?.(GuardModuleType.REGISTER_ACCOUNT_TYPE_SELECT, {
+          businessRequestName,
+          content: {
+            ...content,
+            password
+          },
+          isChangeComplete,
+          onRegisterSuccess,
+          onRegisterFailed
+        })
+        return
+      }
 
       if (isChangeComplete) {
         // 需要进行信息补全
@@ -137,18 +153,6 @@ export const CompletePassword: React.FC = () => {
           }
         } catch (error: any) {
           submitButtonRef.current?.onSpin(false)
-          // const { code, message: errorMessage, data } = error
-          // if (code === ApiCode.UNSAFE_PASSWORD_TIP) {
-          //   setPasswordErrorTextShow(true)
-          // }
-          // submitButtonRef.current.onError()
-          // message.error(errorMessage)
-          // onRegisterFailed(code, data, errorMessage)
-          // events?.onRegisterError?.({
-          //   code,
-          //   data,
-          //   message,
-          // })
         }
       }
     },

@@ -25,8 +25,6 @@ import { PasswordNotSafeReset } from './core/PasswordNotSafeReset'
 
 import { useGuardView } from '../Guard/core/hooks/useGuardView'
 
-import { ForcedModifyPwdCycleUnit } from '../Type'
-
 import { i18n } from '../_utils'
 
 const { useMemo } = React
