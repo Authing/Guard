@@ -58,7 +58,7 @@ export const CompletePassword: React.FC = () => {
 
   const { changeModule } = useGuardModule()
   // 密码加密公钥
-  const { publicKey } = useGuardPublicConfig()
+  const { publicKey, enableAccountTypeSelect } = useGuardPublicConfig()
 
   let client = useGuardAuthClient()
 
@@ -72,7 +72,7 @@ export const CompletePassword: React.FC = () => {
 
       submitButtonRef.current?.onSpin(true)
 
-      if (true) {
+      if (enableAccountTypeSelect) {
         // todo 是否开启了区分账号类型
         changeModule?.(GuardModuleType.REGISTER_ACCOUNT_TYPE_SELECT, {
           businessRequestName,
@@ -167,6 +167,7 @@ export const CompletePassword: React.FC = () => {
       onRegisterSuccess,
       post,
       publicKey,
+      enableAccountTypeSelect,
       setPasswordErrorTextShow
     ]
   )

@@ -71,8 +71,6 @@ export interface RegisterWithCodeProps {
   methods: any[]
 }
 
-const openAccountType = true
-
 /**
  * 手机 Code 注册
  * @param param0
@@ -119,6 +117,8 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
   )
 
   const verifyCodeLength = publicConfig?.verifyCodeLength ?? 4
+
+  const enableAccountTypeSelect = publicConfig?.enableAccountTypeSelect ?? false
 
   const [currentMethod, setCurrentMethod] = useState(methods[0])
 
@@ -274,7 +274,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
           }
         } else {
           // 看看是否要跳转到 信息补全 或 账号选择
-          if (isPhoneChangeComplete || openAccountType) {
+          if (isPhoneChangeComplete || enableAccountTypeSelect) {
             // 判断验证码是否正确
             const {
               statusCode: checkCode,
@@ -286,7 +286,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             })
 
             if (checkCode === 200 && valid) {
-              if (openAccountType) {
+              if (enableAccountTypeSelect) {
                 changeModule?.(GuardModuleType.REGISTER_ACCOUNT_TYPE_SELECT, {
                   businessRequestName: 'registerByPhoneCode',
                   content: {
@@ -465,7 +465,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
           }
         } else {
           // 看看是否要跳转到 信息补全
-          if (isEmailChangeComplete) {
+          if (isEmailChangeComplete || enableAccountTypeSelect) {
             // 判断验证码是否正确
             const {
               statusCode: checkCode,
@@ -475,14 +475,27 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
               emailCode: code
             })
             if (checkCode === 200 && valid) {
-              changeModule?.(GuardModuleType.REGISTER_COMPLETE_INFO, {
-                businessRequestName: 'registerByEmailCode', //用于判断后续使用哪个注册api
-                content: {
-                  ...registerContent
-                },
-                onRegisterSuccess: onRegisterSuccessIntercept,
-                onRegisterFailed
-              })
+              if (enableAccountTypeSelect) {
+                changeModule?.(GuardModuleType.REGISTER_ACCOUNT_TYPE_SELECT, {
+                  businessRequestName: 'registerByEmailCode',
+                  content: {
+                    ...registerContent
+                  },
+                  isChangeComplete: isEmailChangeComplete,
+                  onRegisterSuccess: onRegisterSuccessIntercept,
+                  onRegisterFailed
+                })
+              }
+              if (isEmailChangeComplete) {
+                changeModule?.(GuardModuleType.REGISTER_COMPLETE_INFO, {
+                  businessRequestName: 'registerByEmailCode', //用于判断后续使用哪个注册api
+                  content: {
+                    ...registerContent
+                  },
+                  onRegisterSuccess: onRegisterSuccessIntercept,
+                  onRegisterFailed
+                })
+              }
               return
             } else {
               submitButtonRef.current.onError()
@@ -490,17 +503,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
               return
             }
           }
-          // 注册
-          // const {
-          //   statusCode,
-          //   data,
-          //   apiCode,
-          //   onGuardHandling,
-          //   message: registerMessage
-          // } = await post('/api/v2/register-email-code', {
-          //   ...registerContent,
-          //   postUserInfoPipeline: false
-          // })
+
           const {
             statusCode,
             data,

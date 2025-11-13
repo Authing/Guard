@@ -119,13 +119,18 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
             }}
             onFinish={async values => {
               const { accountType } = values
-
               if (accountType === 'enterprise') {
                 // 企业账号
                 setFormType(1)
               } else {
                 // 私人账号 直接走后续流程
-                await flowHandle(content, step1ButtonRef.current)
+                await flowHandle(
+                  {
+                    ...content,
+                    accountType: 'personal'
+                  },
+                  step1ButtonRef.current
+                )
               }
             }}
           >
@@ -165,7 +170,8 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
               await flowHandle(
                 {
                   ...content,
-                  ...values
+                  accountType: 'enterprise',
+                  tenantEnterpriseCertification: values
                 },
                 step2ButtonRef.current
               )

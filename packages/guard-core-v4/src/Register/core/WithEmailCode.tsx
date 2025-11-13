@@ -39,7 +39,6 @@ import {
 
 const { useCallback, useRef, useState } = React
 
-// ! 废弃 🚒
 export interface RegisterWithEmailCodeProps {
   // onRegister: Function
   onRegisterSuccess: Function
@@ -49,7 +48,9 @@ export interface RegisterWithEmailCodeProps {
   publicConfig?: ApplicationConfig
   registeContext?: any
 }
-
+/**
+ * @deprecated 废弃 🚒
+ */
 export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
   onRegisterSuccess,
   onRegisterFailed,
