@@ -98,7 +98,8 @@ export const EyLoginWithWeComQrcodeNew = (props: any) => {
         lang: i18n.language.includes('zh')
           ? WWLoginLangType.zh
           : WWLoginLangType.en,
-        href: `${publicConfig?.cdnBase}/guard-assets/wecom_authing.css`
+        href: `${publicConfig?.cdnBase}/guard-assets/wecom_authing.css`,
+        disable_quick_login: true
       },
       async onLoginSuccess({ code }: any) {
         console.log({ code })
