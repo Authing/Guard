@@ -37,7 +37,7 @@ export const fallbackLng = (code = '') => {
 
   if (!code || code === 'zh') return ['zh-CN']
 
-  if (!code || code === 'ja') return ['ja-JP']
+  // if (!code || code === 'ja') return ['ja-JP']
 
   const fallbacks = []
 
@@ -46,22 +46,23 @@ export const fallbackLng = (code = '') => {
     return fallbacks
   }
 
-  if (code.startsWith('ja-')) {
-    fallbacks.push('ja-JP')
-    return fallbacks
-  }
+  // if (code.startsWith('ja-')) {
+  //   fallbacks.push('ja-JP')
+  //   return fallbacks
+  // }
 
   if (code.startsWith('zh-')) {
-    if (
-      ['zh-tw', 'zh-hk', 'zh-mo', 'zh-hant'].includes(code.toLocaleLowerCase())
-    ) {
-      fallbacks.push('zh-TW')
-    } else if (['zh-cn', 'zh-sg', 'zh-my'].includes(code.toLocaleLowerCase())) {
-      fallbacks.push('zh-CN')
-    } else {
-      fallbacks.push('zh-CN')
-    }
-
+    // if (
+    //   ['zh-tw', 'zh-hk', 'zh-mo', 'zh-hant'].includes(code.toLocaleLowerCase())
+    // ) {
+    //   fallbacks.push('zh-TW')
+    // } else
+    //   if (['zh-cn', 'zh-sg', 'zh-my'].includes(code.toLocaleLowerCase())) {
+    //   fallbacks.push('zh-CN')
+    // } else {
+    //   fallbacks.push('zh-CN')
+    // }
+    fallbacks.push('zh-CN')
     return fallbacks
   }
 
