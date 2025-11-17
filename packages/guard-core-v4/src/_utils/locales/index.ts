@@ -20,9 +20,9 @@ import { getGuardDocument } from '../guardDocument'
 
 const LanguageResources: Resource = {
   'en-US': { translation: enUsTrans },
-  'zh-CN': { translation: zhCnTrans },
-  'zh-TW': { translation: zhTwTrans },
-  'ja-JP': { translation: jaJpTrans }
+  'zh-CN': { translation: zhCnTrans }
+  // 'zh-TW': { translation: zhTwTrans },
+  // 'ja-JP': { translation: jaJpTrans }
 }
 
 export interface InitGuardI18nOptions {
