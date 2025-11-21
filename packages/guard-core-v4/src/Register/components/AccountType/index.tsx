@@ -52,7 +52,7 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
 
   const step2ButtonRef = useRef<any>(null)
 
-  const [formType, setFormType] = useState<0 | 1>(1)
+  const [formType, setFormType] = useState<0 | 1>(0)
 
   const flowHandle = useCallback(async (_content: any, btn: any) => {
     if (isChangeComplete) {
@@ -94,7 +94,7 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
               type="authing-arrow-left-s-line"
               style={{ fontSize: 24 }}
             />
-            <span>{'返回'}</span>
+            <span>{t('common.back') as string}</span>
           </GuardButton>
         )}
         <ImagePro
@@ -137,17 +137,23 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
             <Form.Item
               className="authing-g2-input-form"
               name="accountType"
-              label="账号类型"
+              label={t('common.registerAccountType.title') as string}
               initialValue={'personal'}
             >
               <Select
                 className={classnames('authing-g2-select', 'authing-g2-input')}
                 popupClassName="authing-g2-dropdown"
                 options={[
-                  { label: '个人账号', value: 'personal' },
-                  { label: '企业账号', value: 'enterprise' }
+                  {
+                    label: t('common.registerAccountType.personal') as string,
+                    value: 'personal'
+                  },
+                  {
+                    label: t('common.registerAccountType.enterprise') as string,
+                    value: 'enterprise'
+                  }
                 ]}
-                placeholder={'请选择'}
+                placeholder={t('common.pleaseSelect') as string}
               />
             </Form.Item>
 
@@ -180,12 +186,16 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
             <Form.Item
               className="authing-g2-input-form"
               name="businessName"
-              label="企业名称"
+              label={t('common.registerAccountType.enterpriseName') as string}
               rules={[
                 {
                   required: true,
                   validateTrigger: 'onBlur',
-                  message: t('login.noEmpty', { label: '企业名称' }) as string
+                  message: t('login.noEmpty', {
+                    label: t(
+                      'common.registerAccountType.enterpriseName'
+                    ) as string
+                  }) as string
                 }
               ]}
             >
@@ -199,13 +209,19 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
             <Form.Item
               className="authing-g2-input-form"
               name="businessRegistrationName"
-              label="工商登记名称"
+              label={
+                t(
+                  'common.registerAccountType.businessRegistrationName'
+                ) as string
+              }
               rules={[
                 {
                   required: true,
                   validateTrigger: 'onBlur',
                   message: t('login.noEmpty', {
-                    label: '工商登记名称'
+                    label: t(
+                      'common.registerAccountType.businessRegistrationName'
+                    ) as string
                   }) as string
                 }
               ]}
@@ -220,13 +236,17 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
             <Form.Item
               className="authing-g2-input-form"
               name="unifiedSocialCredit"
-              label="统一社会信用代码"
+              label={
+                t('common.registerAccountType.unifiedSocialCredit') as string
+              }
               rules={[
                 {
                   required: true,
                   validateTrigger: 'onBlur',
                   message: t('login.noEmpty', {
-                    label: '统一社会信用代码'
+                    label: t(
+                      'common.registerAccountType.unifiedSocialCredit'
+                    ) as string
                   }) as string
                 }
               ]}
@@ -241,13 +261,19 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
             <Form.Item
               className="authing-g2-input-form"
               name="legalRepresentativeName"
-              label="法人姓名"
+              label={
+                t(
+                  'common.registerAccountType.legalRepresentativeName'
+                ) as string
+              }
               rules={[
                 {
                   required: true,
                   validateTrigger: 'onBlur',
                   message: t('login.noEmpty', {
-                    label: '法人姓名'
+                    label: t(
+                      'common.registerAccountType.legalRepresentativeName'
+                    ) as string
                   }) as string
                 }
               ]}
@@ -262,13 +288,19 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
             <Form.Item
               className="authing-g2-input-form"
               name="nationalIdentificationNumber"
-              label="法人身份证号"
+              label={
+                t(
+                  'common.registerAccountType.nationalIdentificationNumber'
+                ) as string
+              }
               rules={[
                 {
                   required: true,
                   validateTrigger: 'onBlur',
                   message: t('login.noEmpty', {
-                    label: '法人身份证号'
+                    label: t(
+                      'common.registerAccountType.nationalIdentificationNumber'
+                    ) as string
                   }) as string
                 }
               ]}

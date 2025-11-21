@@ -92,6 +92,7 @@
   "phoneVerifyCode": "短信驗證碼",
   "pleaseRecordKey": "請記錄密鑰",
   "pleaseSelectDate": "請選擇日期",
+  "pleaseSelect": "請選擇",
   "problem": {
     "form": {
       "phone": "聯絡方式",
@@ -177,6 +178,16 @@
   "del": "移除",
   "qrcode": "二維碼",
   "registerCompletePasswordDesc": "為了保障賬號安全，請設置您的密碼。",
+  "registerAccountType": {
+    "title": "帳號類型",
+    "personal": "個人賬號",
+    "enterprise": "企業賬號",
+    "enterpriseName": "企業名稱",
+    "businessRegistrationName": "工商登記名稱",
+    "unifiedSocialCredit": "統一社會信用代碼",
+    "legalRepresentativeName": "法人姓名",
+    "nationalIdentificationNumber": "法人身份證號"
+  },
   "mfaCertification": "多因素認證",
   "emailMfaCheck": "請輸入電子郵箱驗證碼",
   "SmsMfaCheck": "請輸入短信驗證碼",
