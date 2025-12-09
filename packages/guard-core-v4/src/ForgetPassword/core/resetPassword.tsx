@@ -7,7 +7,8 @@ import { Form, message } from 'shim-antd'
 import {
   fieldRequiredRule,
   getCaptchaUrl,
-  useCaptchaCheck,
+  useSmsCaptchaCheck,
+  useEmailCaptchaCheck,
   useGuardFinallyConfig,
   useGuardPublicConfig,
   validate
@@ -67,7 +68,9 @@ export const ResetPassword = (props: ResetPasswordProps) => {
   const { autoFocus } = useAutoFocus()
   const { post } = getGuardHttp()
 
-  const captchaCheck = useCaptchaCheck('forget-password')
+  const smsCaptchaCheck = useSmsCaptchaCheck('forget-password')
+  const emailCaptchaCheck = useEmailCaptchaCheck('forget-password')
+
   const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
   const [captchaCode, setCaptchaCode] = useState('')
 
@@ -120,12 +123,6 @@ export const ResetPassword = (props: ResetPasswordProps) => {
         // newPassword,
         phoneCountryCode
       })
-      // context = client.resetPasswordByPhoneCode(
-      //   phoneNumber,
-      //   code,
-      //   newPassword,
-      //   countryCode
-      // )
     }
 
     context
@@ -134,7 +131,13 @@ export const ResetPassword = (props: ResetPasswordProps) => {
         submitButtonRef.current?.onSpin(false)
         if (code !== 200) {
           // 刷新图形验证码
-          captchaCheck && setVerifyCodeUrl(getCaptchaUrl(config.host!))
+          if (
+            (codeMethod === 'phone' && smsCaptchaCheck) ||
+            (codeMethod === 'email' && emailCaptchaCheck)
+          ) {
+            setVerifyCodeUrl(getCaptchaUrl(config.host!))
+          }
+
           message.error(r?.message)
           return
         }
@@ -220,15 +223,18 @@ export const ResetPassword = (props: ResetPasswordProps) => {
                 />
               }
               scene={EmailScene.RESET_PASSWORD_VERIFY_CODE}
+              captchaCode={captchaCode}
               maxLength={verifyCodeLength}
               data={identify}
               onSendCodeBefore={async () => {
                 // closeCheckSendUser 开启时，由 onFinish 统一校验
                 if (!publicConfig?.closeCheckSendUser) {
                   await form.validateFields(['identify'])
-                } else {
-                  Promise.resolve(true)
                 }
+                await form.validateFields(['captchaCode'])
+              }}
+              onSendCodeError={() => {
+                setVerifyCodeUrl(getCaptchaUrl(config.host!))
               }}
             />
           )}
@@ -248,20 +254,18 @@ export const ResetPassword = (props: ResetPasswordProps) => {
 
   useEffect(() => {
     // 方法发生变化时，图像验证码数据应该清空
-    if (captchaCheck) {
+    if (smsCaptchaCheck || emailCaptchaCheck) {
       form?.setFieldsValue({ captchaCode: undefined })
     }
-  }, [form, codeMethod, captchaCheck])
+  }, [form, codeMethod, smsCaptchaCheck, emailCaptchaCheck])
 
   useEffect(() => {
-    if (captchaCheck) {
+    if (smsCaptchaCheck || emailCaptchaCheck) {
       setVerifyCodeUrl(getCaptchaUrl(config.host!))
     }
-  }, [captchaCheck, config?.host])
+  }, [smsCaptchaCheck, emailCaptchaCheck, config?.host])
 
   return (
-    // .map((item, index) => (index === 0 ? `「${item}」` : item))
-
     <div className="authing-g2-login-phone-code">
       <Form
         name="rePassword"
@@ -304,7 +308,8 @@ export const ResetPassword = (props: ResetPasswordProps) => {
           />
         </FormItemIdentify>
 
-        {captchaCheck && codeMethod === 'phone' && (
+        {((smsCaptchaCheck && codeMethod === 'phone') ||
+          (codeMethod === 'email' && emailCaptchaCheck)) && (
           <Form.Item
             className="authing-g2-input-form"
             validateTrigger={['onBlur', 'onChange']}

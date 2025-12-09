@@ -468,6 +468,24 @@ export interface ApplicationConfig {
     }
   }
 
+  /** 注册阶段邮件安全配置 */
+  registerEmailConfig?: {
+    robot: {
+      switch: 'OFF' | 'ON' | 'CONDON' //ON,COND_ON
+    }
+  }
+  /** 登录阶段邮件安全配置 */
+  loginEmailConfig?: {
+    robot: {
+      switch: 'OFF' | 'ON' | 'CONDON' //ON,COND_ON
+    }
+  }
+  forgetPasswordEmailConfig?: {
+    robot: {
+      switch: 'OFF' | 'ON' | 'CONDON' //ON,COND_ON
+    }
+  }
+
   /** 特殊浏览器匹配字符串 */
   specialBrowserSymbols?: string[]
 
