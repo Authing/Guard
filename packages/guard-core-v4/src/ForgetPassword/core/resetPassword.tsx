@@ -133,6 +133,8 @@ export const ResetPassword = (props: ResetPasswordProps) => {
         const { code } = r
         submitButtonRef.current?.onSpin(false)
         if (code !== 200) {
+          // 刷新图形验证码
+          captchaCheck && setVerifyCodeUrl(getCaptchaUrl(config.host!))
           message.error(r?.message)
           return
         }
@@ -197,9 +199,9 @@ export const ResetPassword = (props: ResetPasswordProps) => {
                 }
                 await form.validateFields(['captchaCode'])
               }}
-              onSendCodeAfter={() =>
+              onSendCodeError={() => {
                 setVerifyCodeUrl(getCaptchaUrl(config.host!))
-              }
+              }}
             />
           )}
           {codeMethod === 'email' && (

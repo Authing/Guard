@@ -279,6 +279,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             })
             return
           } else {
+            captchaCheck && setVerifyCodeUrl(getCaptchaUrl(config.host!))
             submitButtonRef.current.onError()
             message.error(checkMessage)
             return
@@ -307,6 +308,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
               })
               return
             } else {
+              captchaCheck && setVerifyCodeUrl(getCaptchaUrl(config.host!))
               submitButtonRef.current.onError()
               message.error(checkMessage)
               return
@@ -329,6 +331,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             submitButtonRef.current?.onSpin(false)
             onRegisterSuccessIntercept(data)
           } else {
+            captchaCheck && setVerifyCodeUrl(getCaptchaUrl(config.host!))
             submitButtonRef.current.onError()
             message.error(errMessage)
             !needPassword && onRegisterFailed(apiCode, data, errMessage)
@@ -576,9 +579,9 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
               }
               await form.validateFields(['captchaCode'])
             }}
-            onSendCodeAfter={() =>
+            onSendCodeError={() => {
               setVerifyCodeUrl(getCaptchaUrl(config.host!))
-            }
+            }}
           />
         )
       }
@@ -613,9 +616,9 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
                 }
                 await form.validateFields(['captchaCode'])
               }}
-              onSendCodeAfter={() =>
+              onSendCodeError={() => {
                 setVerifyCodeUrl(getCaptchaUrl(config.host!))
-              }
+              }}
             />
           )}
           {currentMethod === InputMethod.EmailCode && (

@@ -188,7 +188,7 @@ const LoginWithVerifyCode = (props: any) => {
               }
               await form.validateFields(['captchaCode'])
             }}
-            onSendCodeAfter={() => {
+            onSendCodeError={() => {
               setVerifyCodeUrl(getCaptchaUrl(config.host!))
             }}
           />
@@ -227,7 +227,7 @@ const LoginWithVerifyCode = (props: any) => {
                 }
                 await form.validateFields(['captchaCode'])
               }}
-              onSendCodeAfter={() => {
+              onSendCodeError={() => {
                 setVerifyCodeUrl(getCaptchaUrl(config.host!))
               }}
             />
@@ -341,6 +341,9 @@ const LoginWithVerifyCode = (props: any) => {
       // props.onLogin(200, data)
       onLoginSuccess(data)
     } else {
+      // 刷新图形验证码
+      captchaCheck && setVerifyCodeUrl(getCaptchaUrl(config.host!))
+
       const handMode = onGuardHandling?.()
       // 向上层抛出错误
       handMode === CodeAction.RENDER_MESSAGE && onLoginFailed(code, data, tips)

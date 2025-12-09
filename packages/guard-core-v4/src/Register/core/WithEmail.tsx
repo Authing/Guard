@@ -234,6 +234,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
           account: email || account
         })
       }
+      // TODO 这部分应该补全 src/Register/core/WithCode.tsx#L294 一样的前置校验逻辑
       if (isChangeComplete) {
         changeModule?.(GuardModuleType.REGISTER_COMPLETE_INFO, {
           businessRequestName: method || 'registerByEmail',
@@ -260,6 +261,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
       if (statusCode === 200) {
         onRegisterSuccessIntercept(data)
       } else {
+        captchaCheck && setVerifyCodeUrl(getCaptchaUrl(config.host!))
         if (apiCode === ApiCode.UNSAFE_PASSWORD_TIP) {
           setPasswordErrorTextShow(true)
         }
@@ -341,9 +343,9 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
               }
               await form.validateFields(['captchaCode'])
             }}
-            onSendCodeAfter={() =>
+            onSendCodeError={() => {
               setVerifyCodeUrl(getCaptchaUrl(config.host!))
-            }
+            }}
           />
         )
       } else {
@@ -374,9 +376,9 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
               }
               await form.validateFields(['captchaCode'])
             }}
-            onSendCodeAfter={() =>
+            onSendCodeError={() => {
               setVerifyCodeUrl(getCaptchaUrl(config.host!))
-            }
+            }}
           />
         )
       }
