@@ -577,19 +577,19 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
       try {
         // 对特殊字段提前进行 precheck 不然直接调用注册接口失败也会导致上一步验证码失效
         // 用户名 check
-        if (fieldKeys.includes('username')) {
-          const { data: checkResult, code: checkCode } = await get(
-            '/api/v2/users/is-user-exists',
-            {
-              username: values.username
-            }
-          )
-          // checkResult 为 true 时 代表用户名已存在 直接报message 并且不调用注册接口
-          if (checkCode === 200 && checkResult) {
-            message.error(t('common.userNameIsExists'))
-            return
-          }
-        }
+        // if (fieldKeys.includes('username')) {
+        //   const { data: checkResult, code: checkCode } = await get(
+        //     '/api/v2/users/is-user-exists',
+        //     {
+        //       username: values.username
+        //     }
+        //   )
+        //   // checkResult 为 true 时 代表用户名已存在 直接报message 并且不调用注册接口
+        //   if (checkCode === 200 && checkResult) {
+        //     message.error(t('common.userNameIsExists'))
+        //     return
+        //   }
+        // }
         // 手机验证码check
         if (fieldKeys.includes('phone')) {
           const options: any = {

@@ -100,35 +100,24 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
       )
       checkValue = phoneNumber
     }
+    let sc = 1
+    checkExist && (sc = 1)
+    checkRepeat && (sc = 2)
     get<boolean>('/api/v2/users/find', {
       userPoolId: publicConfig?.userPoolId,
       key: checkValue,
-      type: FindMethodConversion[currentMethod]
+      type: FindMethodConversion[currentMethod],
+      sc
     })
-      .then(({ data }) => {
-        if (checkExist) {
-          if (Boolean(data)) {
-            resolve(true)
+      .then(({ code, message: errorMessage }) => {
+        if (code === 200) {
+          resolve(true)
+        } else {
+          if (publicConfig?.closeCheckSendUser) {
+            setValidateStatus('validating')
+            message.error(errorMessage)
           } else {
-            // 对该场景 主要是阻止表单 onfinish 执行 但不要触发 form error
-            if (publicConfig?.closeCheckSendUser) {
-              setValidateStatus('validating')
-              message.error(methodContent.delayFindErrorMessage)
-            } else {
-              reject(methodContent.checkExistErrorMessage)
-            }
-          }
-        }
-        if (checkRepeat) {
-          if (Boolean(data)) {
-            if (publicConfig?.closeCheckSendUser) {
-              setValidateStatus('validating')
-              message.error(methodContent.delayFindErrorMessage)
-            } else {
-              reject(methodContent.checkRepeatErrorMessage)
-            }
-          } else {
-            resolve(true)
+            reject(errorMessage)
           }
         }
       })
