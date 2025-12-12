@@ -22,7 +22,8 @@ import { SceneType } from 'authing-js-sdk'
 import { SendCodeByPhone } from '../../../SendCode/SendCodeByPhone'
 
 import {
-  useCaptchaCheck,
+  useSmsCaptchaCheck,
+  useEmailCaptchaCheck,
   useGuardFinallyConfig,
   useGuardHttpClient,
   useGuardInitData,
@@ -116,7 +117,8 @@ const LoginWithVerifyCode = (props: any) => {
     publicConfig?.internationalSmsConfig?.defaultISOType || 'CN'
   )
 
-  const captchaCheck = useCaptchaCheck('login')
+  const smsCaptchaCheck = useSmsCaptchaCheck('login')
+  const emailCaptchaCheck = useEmailCaptchaCheck('login')
   const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
 
   let [form] = Form.useForm()
@@ -188,7 +190,7 @@ const LoginWithVerifyCode = (props: any) => {
               }
               await form.validateFields(['captchaCode'])
             }}
-            onSendCodeAfter={() => {
+            onSendCodeError={() => {
               setVerifyCodeUrl(getCaptchaUrl(config.host!))
             }}
           />
@@ -227,7 +229,7 @@ const LoginWithVerifyCode = (props: any) => {
                 }
                 await form.validateFields(['captchaCode'])
               }}
-              onSendCodeAfter={() => {
+              onSendCodeError={() => {
                 setVerifyCodeUrl(getCaptchaUrl(config.host!))
               }}
             />
@@ -252,13 +254,16 @@ const LoginWithVerifyCode = (props: any) => {
               scene={EmailScene.LOGIN_VERIFY_CODE}
               maxLength={verifyCodeLength}
               data={identify}
+              codeFieldName={'captchaCode'}
               onSendCodeBefore={async () => {
                 // closeCheckSendUser 开启时，由 onFinish 统一校验
                 if (!publicConfig?.closeCheckSendUser) {
                   await form.validateFields(['identify'])
-                } else {
-                  Promise.resolve(true)
                 }
+                await form.validateFields(['captchaCode'])
+              }}
+              onSendCodeError={() => {
+                setVerifyCodeUrl(getCaptchaUrl(config.host!))
               }}
             />
           )}
@@ -297,17 +302,17 @@ const LoginWithVerifyCode = (props: any) => {
 
   useEffect(() => {
     /** 如果是国外用户池，那么有图形验证码，需要请求图片 */
-    if (captchaCheck) {
+    if (smsCaptchaCheck || emailCaptchaCheck) {
       setVerifyCodeUrl(getCaptchaUrl(config.host!))
     }
-  }, [captchaCheck, config?.host])
+  }, [smsCaptchaCheck, emailCaptchaCheck, config?.host])
 
   useEffect(() => {
     // 方法发生变化时，图像验证码数据应该清空
-    if (captchaCheck) {
+    if (smsCaptchaCheck || emailCaptchaCheck) {
       form?.setFieldsValue({ captchaCode: undefined })
     }
-  }, [form, currentMethod, captchaCheck])
+  }, [form, currentMethod, smsCaptchaCheck, emailCaptchaCheck])
 
   const loginByPhoneCode = async (values: any) => {
     let keyValueArray = getUserRegisterParams() || []
@@ -341,6 +346,8 @@ const LoginWithVerifyCode = (props: any) => {
       // props.onLogin(200, data)
       onLoginSuccess(data)
     } else {
+      // 刷新图形验证码
+      smsCaptchaCheck && setVerifyCodeUrl(getCaptchaUrl(config.host!))
       const handMode = onGuardHandling?.()
       // 向上层抛出错误
       handMode === CodeAction.RENDER_MESSAGE && onLoginFailed(code, data, tips)
@@ -376,6 +383,8 @@ const LoginWithVerifyCode = (props: any) => {
       // props.onLogin(200, data)
       onLoginSuccess(data)
     } else {
+      // 刷新图形验证码
+      emailCaptchaCheck && setVerifyCodeUrl(getCaptchaUrl(config.host!))
       const handMode = onGuardHandling?.()
       // 向上层抛出错误
       handMode === CodeAction.RENDER_MESSAGE && onLoginFailed(code, data, tips)
@@ -565,7 +574,8 @@ const LoginWithVerifyCode = (props: any) => {
         </FormItemIdentify>
 
         {/* 图形验证码 国外用户池并且是手机号 */}
-        {captchaCheck && currentMethod === InputMethod.PhoneCode && (
+        {((smsCaptchaCheck && currentMethod === InputMethod.PhoneCode) ||
+          (emailCaptchaCheck && currentMethod === InputMethod.EmailCode)) && (
           <Form.Item
             className="authing-g2-input-form"
             validateTrigger={['onBlur', 'onChange']}

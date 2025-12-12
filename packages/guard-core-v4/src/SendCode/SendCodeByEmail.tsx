@@ -27,16 +27,29 @@ export interface SendCodeByEmailProps extends InputProps {
   fieldName?: string
   autoSubmit?: boolean //验证码输入完毕是否自动提交
   scene: EmailScene
+  captchaCode?: string
+  onSendCodeError?: any
+  codeFieldName?: string
 }
 
 export const SendCodeByEmail: React.FC<SendCodeByEmailProps> = props => {
-  const { scene, data, form, onSendCodeBefore, fieldName, ...remainProps } =
-    props
+  const {
+    scene,
+    data,
+    form,
+    onSendCodeBefore,
+    fieldName,
+    captchaCode,
+    onSendCodeError,
+    codeFieldName,
+    ...remainProps
+  } = props
   const { t } = useTranslation()
   const events = useGuardEvents()
   const authClient = useGuardAuthClient()
   const { post } = getGuardHttp()
-  const sendEmail = async (email: string) => {
+
+  const sendEmail = async (email: string, captchaCode?: string) => {
     if (!email) {
       message.error(t('login.inputEmail'))
       return {
@@ -64,7 +77,8 @@ export const SendCodeByEmail: React.FC<SendCodeByEmailProps> = props => {
         apiCode
       } = await post('/api/v2/email/send', {
         email,
-        scene
+        scene,
+        captchaCode
       })
       if (apiCode === 2080) {
         // 一分钟只能发一次邮箱验证码的提示信息，特殊处理
@@ -91,10 +105,7 @@ export const SendCodeByEmail: React.FC<SendCodeByEmailProps> = props => {
           }
         }
       }
-      // await await authClient.sendEmail(email, scene)
-      // onSend?.()
     } catch (error) {
-      // onError?.(error)
       return {
         status: false,
         error: {
@@ -111,15 +122,22 @@ export const SendCodeByEmail: React.FC<SendCodeByEmailProps> = props => {
         return onSendCodeBefore()
           .then(async (b: any) => {
             let email = form ? form.getFieldValue(fieldName || 'email') : data
-            const { status, error } = await sendEmail(email)
+
+            const code = form
+              ? form?.getFieldValue(codeFieldName || 'captchaCode')
+              : captchaCode
+
+            const { status, error } = await sendEmail(email, code)
             if (status) {
               events?.onEmailSend?.(authClient, scene)
             } else {
+              onSendCodeError?.(error)
               events?.onEmailSendError?.(error, authClient, scene)
             }
             return status
           })
           .catch((e: any) => {
+            onSendCodeError?.(e)
             events?.onEmailSendError?.(e, authClient, scene)
             return false
           })
