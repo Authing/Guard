@@ -28,7 +28,8 @@ import { parsePhone, useAutoFocus } from '../../_utils/hooks'
 import { useIsChangeComplete } from '../utils'
 
 import {
-  useCaptchaCheck,
+  useSmsCaptchaCheck,
+  useEmailCaptchaCheck,
   useGuardFinallyConfig,
   useGuardModule
 } from '../../_utils/context'
@@ -127,7 +128,8 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
   const isInternationSms =
     publicConfig?.internationalSmsConfig?.enabled || false
 
-  const captchaCheck = useCaptchaCheck('register')
+  const smsCaptchaCheck = useSmsCaptchaCheck('register')
+  const emailCaptchaCheck = useEmailCaptchaCheck('register')
   const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
 
   useEffect(() => {
@@ -144,17 +146,17 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
 
   useEffect(() => {
     /** 如果是国外用户池，那么有图形验证码，需要请求图片 */
-    if (captchaCheck) {
+    if (smsCaptchaCheck || emailCaptchaCheck) {
       setVerifyCodeUrl(getCaptchaUrl(config.host!))
     }
-  }, [captchaCheck, config?.host])
+  }, [smsCaptchaCheck, emailCaptchaCheck, config?.host])
 
   useEffect(() => {
     // 方法发生变化时，图像验证码数据应该清空
-    if (captchaCheck) {
+    if (smsCaptchaCheck || emailCaptchaCheck) {
       form?.setFieldsValue({ captchaCode: undefined })
     }
-  }, [form, currentMethod, captchaCheck])
+  }, [form, currentMethod, smsCaptchaCheck, emailCaptchaCheck])
 
   const registerByPhoneCode = useCallback(
     async (values: any) => {
@@ -279,6 +281,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             })
             return
           } else {
+            smsCaptchaCheck && setVerifyCodeUrl(getCaptchaUrl(config.host!))
             submitButtonRef.current.onError()
             message.error(checkMessage)
             return
@@ -307,6 +310,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
               })
               return
             } else {
+              smsCaptchaCheck && setVerifyCodeUrl(getCaptchaUrl(config.host!))
               submitButtonRef.current.onError()
               message.error(checkMessage)
               return
@@ -329,6 +333,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             submitButtonRef.current?.onSpin(false)
             onRegisterSuccessIntercept(data)
           } else {
+            smsCaptchaCheck && setVerifyCodeUrl(getCaptchaUrl(config.host!))
             submitButtonRef.current.onError()
             message.error(errMessage)
             !needPassword && onRegisterFailed(apiCode, data, errMessage)
@@ -457,6 +462,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             })
             return
           } else {
+            emailCaptchaCheck && setVerifyCodeUrl(getCaptchaUrl(config.host!))
             submitButtonRef.current.onError()
             message.error(checkMessage)
             return
@@ -483,6 +489,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
               })
               return
             } else {
+              emailCaptchaCheck && setVerifyCodeUrl(getCaptchaUrl(config.host!))
               submitButtonRef.current.onError()
               message.error(checkMessage)
               return
@@ -503,6 +510,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
           if (statusCode === 200) {
             onRegisterSuccessIntercept(data)
           } else {
+            emailCaptchaCheck && setVerifyCodeUrl(getCaptchaUrl(config.host!))
             onGuardHandling?.()
             onRegisterFailed(apiCode, data, registerMessage)
           }
@@ -576,9 +584,9 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
               }
               await form.validateFields(['captchaCode'])
             }}
-            onSendCodeAfter={() =>
+            onSendCodeError={() => {
               setVerifyCodeUrl(getCaptchaUrl(config.host!))
-            }
+            }}
           />
         )
       }
@@ -613,9 +621,9 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
                 }
                 await form.validateFields(['captchaCode'])
               }}
-              onSendCodeAfter={() =>
+              onSendCodeError={() => {
                 setVerifyCodeUrl(getCaptchaUrl(config.host!))
-              }
+              }}
             />
           )}
           {currentMethod === InputMethod.EmailCode && (
@@ -636,13 +644,16 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
               scene={EmailScene.REGISTER_VERIFY_CODE}
               maxLength={verifyCodeLength}
               data={identify}
+              captchaCode={captchaCode}
               onSendCodeBefore={async () => {
                 // closeCheckSendUser 开启时，由 onFinish 统一校验
                 if (!publicConfig?.closeCheckSendUser) {
                   await form.validateFields(['identify'])
-                } else {
-                  Promise.resolve(true)
                 }
+                await form.validateFields(['captchaCode'])
+              }}
+              onSendCodeError={() => {
+                setVerifyCodeUrl(getCaptchaUrl(config.host!))
               }}
             />
           )}
@@ -743,7 +754,8 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
           )}
         </FormItemIdentify>
         {/* 图形验证码 国外用户池并且是手机号 */}
-        {captchaCheck && currentMethod === InputMethod.PhoneCode && (
+        {((smsCaptchaCheck && currentMethod === InputMethod.PhoneCode) ||
+          (emailCaptchaCheck && currentMethod === InputMethod.EmailCode)) && (
           <Form.Item
             className="authing-g2-input-form"
             validateTrigger={['onBlur', 'onChange']}

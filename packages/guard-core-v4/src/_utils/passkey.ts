@@ -20,7 +20,10 @@ export const verifyPasskey = async (
   challenge: CredentialRequestOptionsJSON
 ) => {
   try {
-    const attestation = await getWebauthnCredential(challenge)
+    const attestation = await getWebauthnCredential({
+      mediation: 'required',
+      ...challenge
+    })
     return attestation
   } catch (error) {
     console.warn('browser verify passkey error: ', error)

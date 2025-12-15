@@ -25,6 +25,7 @@ export interface SendCodeByPhoneProps extends InputProps {
   form?: any
   onSendCodeBefore?: any // 点击的时候先做这个
   onSendCodeAfter?: any
+  onSendCodeError?: any
   fieldName?: string
   autoSubmit?: boolean //验证码输入完毕是否自动提交
   scene: SceneType
@@ -46,6 +47,7 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
     isInternationSms = false,
     codeFieldName,
     captchaCode,
+    onSendCodeError,
     ...remainProps
   } = props
   const { t } = useTranslation()
@@ -146,12 +148,14 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
               if (status) {
                 events?.onPhoneSend?.(authClient, scene)
               } else {
+                onSendCodeError?.(error)
                 events?.onPhoneSendError?.(error, authClient, scene)
               }
               return status
             })
             .catch((e: any) => {
               onSendCodeAfter?.()
+              onSendCodeError?.(e)
               events?.onPhoneSendError?.(e, authClient, scene)
               return false
             })

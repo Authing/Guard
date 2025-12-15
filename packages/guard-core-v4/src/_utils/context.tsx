@@ -295,8 +295,8 @@ export const useRobotVerify = () => {
   return customSecurityEnabled ? appRobotVerify : userpoolRobotVerify
 }
 
-/** 当前应用是否开启人机验证策略 */
-export const useCaptchaCheck = (
+/** 当前应用短信是否开启人机验证策略 */
+export const useSmsCaptchaCheck = (
   sence: 'login' | 'register' | 'forget-password'
 ) => {
   const { loginSmsConfig, registerSmsConfig, forgetPasswordSmsConfig } =
@@ -314,4 +314,25 @@ export const useCaptchaCheck = (
       break
   }
   return openCaptchaCheck
+}
+
+/** 当前应用邮件是否开启人机验证策略 */
+export const useEmailCaptchaCheck = (
+  sence: 'login' | 'register' | 'forget-password'
+) => {
+  const { loginEmailConfig, registerEmailConfig, forgetPasswordEmailConfig } =
+    useGuardPublicConfig()
+  let openCaptchaCheck = false
+  switch (sence) {
+    case 'login':
+      openCaptchaCheck = loginEmailConfig?.robot?.switch === 'ON'
+      break
+    case 'register':
+      openCaptchaCheck = registerEmailConfig?.robot?.switch === 'ON'
+      break
+    case 'forget-password':
+      openCaptchaCheck = forgetPasswordEmailConfig?.robot?.switch === 'ON'
+      break
+  }
+  return true
 }
