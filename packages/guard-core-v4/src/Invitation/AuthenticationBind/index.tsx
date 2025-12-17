@@ -230,22 +230,25 @@ export const GuardAuthenticationView = () => {
           form={form}
           onFinish={onFinishHandle}
           onFinishFailed={() => submitButtonRef.current?.onError()}
-          onValuesChange={v => {
-            const codes: string[] = v.code
-            if (
-              codes.filter(code => Boolean(code)).length >= verifyCodeLength
-            ) {
-              setDisabled(false)
-            } else {
-              setDisabled(true)
-            }
-          }}
+          // onValuesChange={v => {
+          //   const codes: string[] = v.code
+          //   if (
+          //     codes.filter(code => Boolean(code)).length >= verifyCodeLength
+          //   ) {
+          //     setDisabled(false)
+          //   } else {
+          //     setDisabled(true)
+          //   }
+          // }}
         >
           <VerifyCodeFormItem codeLength={verifyCodeLength} name="code">
             <VerifyCodeInput
               length={verifyCodeLength}
               showDivider={true}
               gutter={'10px'}
+              onFinish={() => {
+                setDisabled(false)
+              }}
             />
           </VerifyCodeFormItem>
           <div className="resend_container">
