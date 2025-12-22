@@ -19,7 +19,7 @@
   "author": "https://github.com/authing",
   "license": "MIT",
   "dependencies": {
-    "@authing/native-js-ui-components": "^4.5.49",
+    "@authing/native-js-ui-components": "4.5.49",
     "vue": "^3.2.20"
   },
   "devDependencies": {
