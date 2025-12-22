@@ -334,5 +334,5 @@ export const useEmailCaptchaCheck = (
       openCaptchaCheck = forgetPasswordEmailConfig?.robot?.switch === 'ON'
       break
   }
-  return true
+  return openCaptchaCheck
 }
