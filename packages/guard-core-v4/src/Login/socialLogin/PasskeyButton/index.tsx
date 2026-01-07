@@ -11,7 +11,7 @@ import { GuardButton } from '../../../GuardButton'
 import { IconFont } from '../../../IconFont'
 import { useTranslation } from 'react-i18next'
 import { requestClient } from '../../../_utils/http'
-import { getVersion, i18n } from '../../../_utils'
+import { CodeAction, getVersion, i18n } from '../../../_utils'
 import { useDeviceId } from '../../../Guard/core/hooks/useDeviceId'
 
 interface LoginWithPasskeyProps {
@@ -110,10 +110,13 @@ export const PasskeyButton = (props: LoginWithPasskeyProps) => {
       const {
         statusCode: code2,
         data: tokenSet,
-        message: tips2
+        message: tips2,
+        onGuardHandling
       } = responseIntercept(finalizeJson)
       if (code2 !== 200) {
-        onLoginFailed(code2, undefined, tips2)
+        const handMode = onGuardHandling?.()
+        handMode === CodeAction.RENDER_MESSAGE &&
+          onLoginFailed(code2, undefined, tips2)
         return
       }
       onLoginSuccess(tokenSet)
