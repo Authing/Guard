@@ -22,6 +22,8 @@ import {
 
 import { getPhoneInLoginPageContext } from '..'
 
+import { supported } from '@github/webauthn-json'
+
 const { useCallback, useEffect, useMemo, useState } = React
 
 const publicConfigMap: Record<string, ApplicationConfig> = {}
@@ -131,6 +133,8 @@ const mergedPublicConfig = (
   const phone = getPhoneInLoginPageContext()
   const defaultLoginMethod = phone && LoginMethods.PhoneCode
 
+  const hasPasskey = publicConfig.passkeyEnabled && supported()
+
   const mergedPublicConfig: GuardLocalConfig = {
     ...config,
     title: config.title ?? publicConfig.name,
@@ -177,6 +181,9 @@ const mergedPublicConfig = (
     loginHint: config.loginHint
   }
 
+  if (hasPasskey) {
+    mergedPublicConfig.loginMethods?.push(LoginMethods.Passkey)
+  }
   return mergedPublicConfig
 }
 

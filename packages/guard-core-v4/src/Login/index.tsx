@@ -882,16 +882,6 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     )
   }, [ms, onLoginSuccess, t, backfillData, multipleInstance, agreements])
 
-  // const PasskeyTab = useMemo(
-  //   () =>
-  //     ms?.includes(LoginMethods.Passkey) && (
-  //       <Tabs.TabPane key={LoginMethods.Passkey} tab={'Passkey'}>
-  //         <LoginWithPasskey />
-  //       </Tabs.TabPane>
-  //     ),
-  //   [ms]
-  // )
-
   // 登录方式对应 tab Component
   const tabMap = useMemo(() => {
     return {
@@ -911,7 +901,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         LoginMethods.PhoneCode,
         LoginMethods.LDAP,
         LoginMethods.AD,
-        LoginMethods.AuthingOtpPush
+        LoginMethods.AuthingOtpPush,
+        LoginMethods.Passkey
       ].includes(tabName)
     )
     if (total) {
@@ -925,11 +916,12 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
               | LoginMethods.LDAP
               | LoginMethods.AD
               | LoginMethods.AuthingOtpPush
+              | LoginMethods.Passkey
           ]
       )
-      if (publicConfig.passkeyEnabled && supported()) {
-        tabs.push(PasskeyTab)
-      }
+      // if (publicConfig.passkeyEnabled && supported()) {
+      //   tabs.push(PasskeyTab)
+      // }
       return tabs
     }
     return null

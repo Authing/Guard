@@ -76,10 +76,14 @@ export const PasskeyButton = (props: LoginWithPasskeyProps) => {
       const {
         statusCode,
         data: challenge,
-        message: tips
+        message: tips,
+        onGuardHandling: onInitGuardHandling
       } = responseIntercept(initializeJson)
+
       if (statusCode !== 200) {
-        onLoginFailed(statusCode, undefined, tips)
+        const handMode = onInitGuardHandling?.()
+        handMode === CodeAction.RENDER_MESSAGE &&
+          onLoginFailed(statusCode, undefined, tips)
         return
       }
 
@@ -111,10 +115,10 @@ export const PasskeyButton = (props: LoginWithPasskeyProps) => {
         statusCode: code2,
         data: tokenSet,
         message: tips2,
-        onGuardHandling
+        onGuardHandling: onFinishGuardHandling
       } = responseIntercept(finalizeJson)
       if (code2 !== 200) {
-        const handMode = onGuardHandling?.()
+        const handMode = onFinishGuardHandling?.()
         handMode === CodeAction.RENDER_MESSAGE &&
           onLoginFailed(code2, undefined, tips2)
         return
