@@ -123,6 +123,8 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
 
   const verifyCodeLength = publicConfig?.verifyCodeLength ?? 4
 
+  const enableAccountTypeSelect = publicConfig?.enableAccountTypeSelect ?? false
+
   const { getPassWordUnsafeText, setPasswordErrorTextShow } =
     usePasswordErrorText()
   const [, onFinish] = useAsyncFn(
@@ -236,7 +238,20 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
           account: email || account
         })
       }
-      // TODO 这部分应该补全 src/Register/core/WithCode.tsx#L294 一样的前置校验逻辑
+      // 账号类型选择
+      if (enableAccountTypeSelect) {
+        changeModule?.(GuardModuleType.REGISTER_ACCOUNT_TYPE_SELECT, {
+          businessRequestName: method || 'registerByEmail',
+          content: {
+            ...registerContent
+          },
+          isChangeComplete,
+          onRegisterSuccess: onRegisterSuccessIntercept,
+          onRegisterFailed
+        })
+        return
+      }
+      // 信息补全
       if (isChangeComplete) {
         changeModule?.(GuardModuleType.REGISTER_COMPLETE_INFO, {
           businessRequestName: method || 'registerByEmail',
@@ -246,7 +261,6 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
           onRegisterSuccess: onRegisterSuccessIntercept,
           onRegisterFailed
         })
-
         return
       }
 

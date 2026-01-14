@@ -1,4 +1,4 @@
-import { Guard, User, GuardLocalConfig } from './src/index'
+import { Guard, User, GuardLocalConfig, GuardModuleType } from './src/index'
 
 import { React, render } from 'shim-react'
 

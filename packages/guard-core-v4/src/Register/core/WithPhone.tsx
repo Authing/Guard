@@ -47,6 +47,9 @@ export interface RegisterWithPhoneProps {
   registeContext?: any
 }
 
+/**
+ * @deprecated 废弃 🚒
+ */
 export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
   onRegisterSuccess,
   onRegisterFailed,

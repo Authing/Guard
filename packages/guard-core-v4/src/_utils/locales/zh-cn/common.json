@@ -24,6 +24,7 @@
   "emailLabel": "邮箱",
   "phoneLabel": "手机号",
   "pleaseSelectDate": "请选择日期",
+  "pleaseSelect": "请选择",
   "bindEmail": "绑定邮箱",
   "email": "邮箱",
   "inputFourVerifyCode": "请输入 {{length}} 位验证码",
@@ -179,6 +180,16 @@
   "del": "移除",
   "qrcode": "二维码",
   "registerCompletePasswordDesc": "为了保障账号安全，请设置你的密码。",
+  "registerAccountType": {
+    "title": "账号类型",
+    "personal": "个人账号",
+    "enterprise": "企业账号",
+    "enterpriseName": "企业名称",
+    "businessRegistrationName": "工商登记名称",
+    "unifiedSocialCredit": "统一社会信用代码",
+    "legalRepresentativeName": "法人姓名",
+    "nationalIdentificationNumber": "法人身份证号"
+  },
   "mfaCertification": "多因素认证",
   "emailMfaCheck": "请输入电子邮箱验证码",
   "SmsMfaCheck": "请输入短信验证码",
@@ -241,5 +252,5 @@
   "moreIdps": "更多企业登录方式",
   "all": "全部",
   "noFindIdps": "没有找到 '{{0}}' 相关身份源",
-  "lastUsed":"上次使用"
+  "lastUsed": "上次使用"
 }
