@@ -87,6 +87,7 @@ import { GuardInviteCompleteView } from '../../Invitation/Complete'
 import { GuardInviteExpireView } from '../../Invitation/Error'
 import { GuardInviteSuccessView } from '../../Invitation/Success'
 import { GuardResetPassword } from '../../ChangePassword/core/resetPassword'
+import { GuardRegisterAccountTypeView } from '../../Register/components/AccountType'
 const { useEffect, useMemo } = React
 
 const PREFIX_CLS = 'authing-ant'
@@ -240,7 +241,10 @@ export const RenderModule: React.FC<{
     [GuardModuleType.INVITE_SUCCESS]: key => (
       <GuardInviteSuccessView key={key} />
     ),
-    [GuardModuleType.RESET_PASSWORD]: key => <GuardResetPassword key={key} />
+    [GuardModuleType.RESET_PASSWORD]: key => <GuardResetPassword key={key} />,
+    [GuardModuleType.REGISTER_ACCOUNT_TYPE_SELECT]: key => (
+      <GuardRegisterAccountTypeView key={key} />
+    )
   }
 
   // 初始化 请求拦截器 （Error Code）

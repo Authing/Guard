@@ -403,6 +403,8 @@ export interface ApplicationConfig {
   enabledMailPwdRegisterValid?: boolean
   /** 是否开启邮箱域名匹配登录 */
   enabledMatchEmailDomain?: boolean
+  /** 注册是否开启账号类型选择 */
+  enableAccountTypeSelect?: boolean
   /**
    * 登录注册排序
    */
