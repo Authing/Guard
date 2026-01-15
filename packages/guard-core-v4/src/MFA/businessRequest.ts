@@ -170,7 +170,9 @@ export const GetPasskeyBindChallenge = async (
 
   return await post(
     '/api/v3/webauthn/mfa-bind/initialize',
-    {},
+    {
+      ignoreExcludeCredentials: true
+    },
     {
       headers: {
         authorization: `Bearer ${mfaToken}`
