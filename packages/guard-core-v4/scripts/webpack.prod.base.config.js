@@ -21,7 +21,7 @@ module.exports = function webpackProdBaseConfigFn({ reactVersion = '16' }) {
           parallel: true,
           terserOptions: {
             compress: {
-              drop_console: true
+              drop_console: false
             },
             format: {
               comments: true

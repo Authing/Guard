@@ -182,6 +182,7 @@ const VerifyPasskey: React.FC<VerifyPasskeyProps> = props => {
       }
 
       const attestation = await registerPasskey(challenge.data!)
+      console.log(attestation, 'attestation')
       const { isFlowEnd, data, onGuardHandling } =
         (await bindBusinessRequest(attestation!)) || {}
 

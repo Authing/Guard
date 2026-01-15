@@ -9,7 +9,9 @@ export const registerPasskey = async (
   challenge: CredentialCreationOptionsJSON
 ) => {
   try {
+    console.log(challenge, 'challenge')
     const attestation = await createWebauthnCredential(challenge)
+    console.log(attestation, challenge, 'registerPasskey')
     return attestation
   } catch (error) {
     console.warn('browser register passkey error: ', error)
