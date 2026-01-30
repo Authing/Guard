@@ -92,7 +92,9 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
   const renderIdpButtons = useMemo(() => {
     // 是否有「置顶上次登录身份源」需求
     const lastLoginSocial = JSON.parse(
-      localStorage.getItem(LAST_USED_IDP) ?? '{}'
+      localStorage.getItem(`${LAST_USED_IDP}_${appId}`) ??
+        localStorage.getItem(LAST_USED_IDP) ??
+        '{}'
     )
 
     const lastConnectionId = lastLoginSocial.connectionId
@@ -113,7 +115,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
           : 0
       })
 
-      if (sortedEnterprise[0].id === lastConnectionId) {
+      if (sortedEnterprise[0] && sortedEnterprise[0].id === lastConnectionId) {
         // 排序后的第一个身份源是否被记录过
         sortedEnterprise[0]._isLastLogin = true
       }

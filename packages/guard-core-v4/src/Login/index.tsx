@@ -1051,7 +1051,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       multipleInstance && multipleInstance.setLoginWay('input', 'social')
       // 保存身份源登录的方式
       localStorage.setItem(
-        LAST_USED_IDP,
+        `${LAST_USED_IDP}_${appId}`,
         JSON.stringify({
           connectionId: evt.data?.event?.connectionId
         })

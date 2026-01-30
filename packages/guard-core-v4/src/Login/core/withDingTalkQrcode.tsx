@@ -33,6 +33,7 @@ export const LoginWithDingTalkQrcode = (props: any) => {
   const { QRConfig, id } = props
 
   const DTLogin = window.DTFrameLogin
+  const DTListen = Symbol.for('DTListen' + id)
 
   const [loading, setLoading] = useState(true)
 
@@ -60,6 +61,7 @@ export const LoginWithDingTalkQrcode = (props: any) => {
       embedded: '1',
       app_id: appId,
       guard_version: `Guard@${version}`,
+      client_id: QRConfig.clientId,
       ...(tenantId && { tenant_id: tenantId }),
       ...(deviceId && { device_id: deviceId })
     }
@@ -98,6 +100,7 @@ export const LoginWithDingTalkQrcode = (props: any) => {
         prompt: 'consent'
       },
       async (loginResult: any) => {
+        console.log('DingTalk QR Code loginResult:', loginResult)
         if (callbackProcess.current) return
         callbackProcess.current = true
         const { authCode } = loginResult
@@ -152,6 +155,26 @@ export const LoginWithDingTalkQrcode = (props: any) => {
         // 这里一般需要展示登录失败的具体原因
         callbackProcess.current = false
         console.log(errorMsg)
+      },
+      (context: any) => {
+        const { r, n, o } = context
+        window[DTListen] = window[DTListen] ? window[DTListen] + 1 : 1
+        if (window[DTListen] && window[DTListen] > 1) return
+        window.addEventListener('message', function (e) {
+          const t = e.data
+          const i = e.origin
+          const searchParams = new URLSearchParams(t.redirectUrl || '')
+          const clientId = searchParams.get('client_id')
+          if (clientId !== QRConfig.clientId) return
+          if (/login.dingtalk.com/.test(i) && t)
+            if (t.success && t.redirectUrl) {
+              const u = t.redirectUrl
+              const c = r(u, 'authCode') || ''
+              const d = r(u, 'state') || ''
+              const s = r(u, 'error') || ''
+              c ? n && n({ redirectUrl: u, authCode: c, state: d }) : o && o(s)
+            } else o && o(t.errorMsg)
+        })
       }
     )
     // frame 页面二维码加载完毕
@@ -164,6 +187,7 @@ export const LoginWithDingTalkQrcode = (props: any) => {
 
   useEffect(() => {
     fetchQrcode()
+    return () => {}
   }, [fetchQrcode])
 
   return (
