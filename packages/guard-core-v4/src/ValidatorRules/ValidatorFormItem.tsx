@@ -176,21 +176,18 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
     rules.push(formatRules)
 
     // 是否校验重复
-    if (checkRepeat || checkExist) {
-      rules.push({
-        validator: checkRepeatFn,
-        validateTrigger: []
-      })
-    }
+    // if (checkRepeat || checkExist) {
+    //   rules.push({
+    //     validator: checkRepeatFn,
+    //     validateTrigger: []
+    //   })
+    // }
 
     return rules
   }, [
     required,
     methodContent.field,
-    formatRules,
-    checkRepeat,
-    checkExist,
-    checkRepeatFn
+    formatRules
   ])
   return (
     <Form.Item
