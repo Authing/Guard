@@ -184,9 +184,7 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
     // }
 
     return rules
-  }, [
-    required, methodContent.field, formatRules
-  ])
+  }, [required, methodContent.field, formatRules])
   return (
     <Form.Item
       validateFirst={true}
