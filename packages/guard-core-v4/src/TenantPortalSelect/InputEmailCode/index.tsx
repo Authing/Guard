@@ -47,7 +47,7 @@ export const InputEmailCode: React.FC<Props> = ({
         setSent(true)
         return true
       } else {
-        message.error(t('login.sendCodeTimeout'))
+        message.error(tips || t('login.sendCodeTimeout'))
         return false
       }
     } catch (e: any) {

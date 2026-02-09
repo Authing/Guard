@@ -96,12 +96,12 @@ export const SendCodeByEmail: React.FC<SendCodeByEmailProps> = props => {
           status: true
         }
       } else {
-        message.error(t('login.sendCodeTimeout'))
+        message.error(tips || t('login.sendCodeTimeout'))
         return {
           status: false,
           error: {
             code,
-            message: t('login.sendCodeTimeout')
+            message: tips || t('login.sendCodeTimeout')
           }
         }
       }
