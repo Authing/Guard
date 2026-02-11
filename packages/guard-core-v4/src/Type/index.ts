@@ -92,6 +92,11 @@ export enum InputMethod {
   PhoneCode = 'phone-code'
 }
 
+export enum MFAInputMethod {
+  PhoneMfa = 'phone-mfa',
+  EmailMfa = 'email-mfa'
+}
+
 export enum GuardPageSene {
   Global = 'global'
 }
