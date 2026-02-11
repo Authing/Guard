@@ -23,6 +23,8 @@ export interface LoginConfig extends IG2Config {
   disableRegister?: boolean
   defaultLoginMethod?: LoginMethods
   loginMethods?: LoginMethods[]
+  defaultLoginTab?: LoginMethods
+  loginTabs?: LoginMethods[]
   passwordLoginMethods?: string[]
   socialConnections?: SocialConnectionProvider[]
   socialConnectionsBtnShape?: 'default' | 'button' | 'icon'

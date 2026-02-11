@@ -56,6 +56,8 @@ import {
 
 import { LoginWithVerifyCode, SpecifyCodeMethods } from './core/withVerifyCode'
 
+import { LoginWithMFA } from './core/withMFA'
+
 import { useMediaSize, useMethod } from '../_utils/hooks'
 
 import { getGuardDocument } from '../_utils/guardDocument'
@@ -68,6 +70,7 @@ import { GuardButton } from '../GuardButton'
 
 import {
   LoginMethods,
+  MfaLoginMethods,
   QrCodeItem,
   QrcodeTabsSettings,
   SocialConnectionItem,
@@ -103,7 +106,8 @@ const inputWays = [
   LoginMethods.LDAP,
   LoginMethods.AuthingOtpPush,
   LoginMethods.EmailCode,
-  LoginMethods.Passkey
+  LoginMethods.Passkey,
+  LoginMethods.MFA
 ]
 const qrcodeWays = [
   LoginMethods.AppQr,
@@ -163,6 +167,10 @@ const useDisables = (data: any) => {
     // TODO P0 需求暂时先取消掉
     // disableResetPwd = true
     disableRegister = true
+  }
+  // 免密登录禁止忘记密码
+  if (loginWay === LoginMethods.MFA) {
+    disableResetPwd = true
   }
   if (autoRegister === true) {
     disableRegister = true
@@ -417,6 +425,15 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     [publicConfig?.verifyCodeTabConfig?.enabledLoginMethods]
   )
 
+  const mfaLoginMethods = useMemo<MfaLoginMethods[]>(
+    () =>
+      publicConfig?.mfaTabConfig?.validLoginMethods ?? [
+        'phone-mfa',
+        'email-mfa'
+      ],
+    [publicConfig?.mfaTabConfig?.validLoginMethods]
+  )
+
   const [socialConnectionObjs, enterpriseConnectionObjs, isNoMethod] =
     useMethod({ config, publicConfig })
   const noLoginMethods = !config?.loginMethods?.length
@@ -474,7 +491,8 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     password: passwordI18n,
     verifyCode: verifyCodeI18n,
     ad: adI18n,
-    ldap: ldapI18n
+    ldap: ldapI18n,
+    mfa: mfaI18n
   } = publicConfig?.ssoPageComponentDisplay?.loginMethodsI18nDisplaySettings ||
   {}
 
@@ -736,6 +754,48 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     ]
   )
 
+  const MFATab = useMemo(
+    () =>
+      ms?.includes(LoginMethods.MFA) && (
+        <Tabs.TabPane
+          key={LoginMethods.MFA}
+          tab={computedTabName(
+            mfaI18n?.tab?.i18n?.[resolvedLanguage] ||
+              mfaI18n?.tab?.default ||
+              t('login.mfaLogin')
+          )}
+        >
+          <LoginWithMFA
+            autoRegister={config?.autoRegister}
+            onBeforeLogin={onBeforeLogin}
+            onLoginSuccess={onLoginSuccess}
+            onLoginFailed={onLoginFailed}
+            saveIdentify={saveIdentify}
+            agreements={agreements}
+            methods={mfaLoginMethods}
+            backfillData={backfillData}
+            multipleInstance={multipleInstance}
+            loginHint={config?.loginHint}
+          />
+        </Tabs.TabPane>
+      ),
+    [
+      agreements,
+      backfillData,
+      config?.autoRegister,
+      config?.loginHint,
+      mfaI18n,
+      ms,
+      multipleInstance,
+      onBeforeLogin,
+      onLoginFailed,
+      onLoginSuccess,
+      resolvedLanguage,
+      saveIdentify,
+      t
+    ]
+  )
+
   const WxMiniQrTab = useCallback(
     (item: QrCodeItem) => {
       return (
@@ -899,10 +959,11 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       [LoginMethods.PhoneCode]: CodeTab,
       [LoginMethods.LDAP]: LdapTab,
       [LoginMethods.AD]: ADTab,
+      [LoginMethods.MFA]: MFATab,
       [LoginMethods.AuthingOtpPush]: AuthingOtpPushTab,
       [LoginMethods.Passkey]: PasskeyTab
     }
-  }, [PasswordTab, CodeTab, LdapTab, ADTab, AuthingOtpPushTab])
+  }, [PasswordTab, CodeTab, LdapTab, ADTab, MFATab, AuthingOtpPushTab])
 
   const GeneralLoginComponent = useMemo(() => {
     const total = ms?.filter(tabName =>
@@ -911,6 +972,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         LoginMethods.PhoneCode,
         LoginMethods.LDAP,
         LoginMethods.AD,
+        LoginMethods.MFA,
         LoginMethods.AuthingOtpPush
       ].includes(tabName)
     )
@@ -924,6 +986,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
               | LoginMethods.PhoneCode
               | LoginMethods.LDAP
               | LoginMethods.AD
+              | LoginMethods.MFA
               | LoginMethods.AuthingOtpPush
           ]
       )

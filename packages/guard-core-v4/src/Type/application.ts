@@ -20,7 +20,8 @@ export enum LoginMethods {
   WECHATWORKAGENCYQRCONNECT = 'wechatwork-agency-qrcode', // 代开发形式的内部应用
   DingTalkQrcode = 'dingtalk-qrcode', //钉钉扫码
   Passkey = 'passkey', // passkey
-  ZJZWFWQrcode = 'zjzwfw-qrcode' // 浙江政务钉
+  ZJZWFWQrcode = 'zjzwfw-qrcode', // 浙江政务钉
+  MFA = 'mfa' // 免密登录
 }
 
 export enum OIDCConnectionMode {
@@ -220,6 +221,12 @@ export interface ApplicationVerifyCodeTabConfig {
   validLoginMethods?: string[]
 }
 
+// 免密登录支持
+export interface ApplicationMfaTabConfig {
+  // enabledLoginMethods: MfaLoginMethods[]
+  validLoginMethods?: MfaLoginMethods[]
+}
+
 export interface Agreement {
   id: number
   title: string
@@ -236,6 +243,8 @@ export type PasswordLoginMethods =
 export type VerifyLoginMethods = 'email-code' | 'phone-code'
 
 export type ComplateFiledsPlace = 'register' | 'login'
+
+export type MfaLoginMethods = 'email-mfa' | 'phone-mfa'
 
 export interface TabFieldsI18nItem {
   key: string
@@ -363,6 +372,7 @@ export interface ApplicationConfig {
       verifyCode?: LoginTypeI18nProps
       ad?: LoginTypeI18nProps
       ldap?: LoginTypeI18nProps
+      mfa?: LoginTypeI18nProps
     }
     idpLayout?: {
       maxConns: number
@@ -375,6 +385,7 @@ export interface ApplicationConfig {
   oidcConfig: OidcClientMetadata
   passwordTabConfig: ApplicationPasswordTabConfig
   verifyCodeTabConfig?: ApplicationVerifyCodeTabConfig
+  mfaTabConfig?: ApplicationMfaTabConfig
 
   agreementEnabled: boolean
   agreements: Agreement[]

@@ -133,5 +133,6 @@
   },
   "wecomScanLogin": "企业微信扫码登录",
   "passwordRuleTips": "你的密码需要满足如下要求:",
-  "characterTypes": "需要包含以下至少 {{x}} 种字符类型"
+  "characterTypes": "需要包含以下至少 {{x}} 种字符类型",
+  "mfaLogin": "免密登录"
 }
