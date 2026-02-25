@@ -55,7 +55,6 @@ export const InputIdentify: React.FC<InputIdentifyProps> = props => {
       text: methods
         ?.map(item => verifyCodeMethodsText[item])
         .filter(Boolean)
-        .sort((a, b) => a.sort - b.sort)
         .map(item => item.t)
         .join(' / ')
     })
