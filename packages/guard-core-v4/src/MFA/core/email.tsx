@@ -142,7 +142,7 @@ export const VerifyMFAEmail: React.FC<VerifyMFAEmailProps> = ({
         setSent(true)
         return true
       } else {
-        message.error(t('login.sendCodeTimeout'))
+        message.error(tips || t('login.sendCodeTimeout'))
         return false
       }
       // await authClient.sendEmail(email!, EmailScene.MFA_VERIFY_CODE)
