@@ -47,7 +47,7 @@ export const GuardComponent = memo((props: GuardProps) => {
       onLogin: (...args: Parameters<NonNullable<GuardProps['onLogin']>>) => {
         const [userInfo] = args
         const userId = (userInfo as { id?: string } | undefined)?.id
-        userId && window.sensors_sw?.login?.(userId)
+        userId && window.sensors_sw?.login?.('authing_' + userId)
         onLogin?.(...args)
       }
     } as GuardProps
