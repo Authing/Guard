@@ -5,7 +5,7 @@ import { React, render } from 'shim-react'
 import * as facePlugin from 'face-api.js'
 
 const App = () => {
-  const appId = '6653ef9b657f212d2dfc72f3'
+  const appId = ''
   // const deviceId = '6486be0f60e50cb92678a468' //如要使用必须使用开启元数据对的 用户池 测试
 
   const config: Partial<GuardLocalConfig> = {
