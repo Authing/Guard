@@ -1,4 +1,7 @@
 declare interface Window {
+  sensors_sw?: {
+    login?: (distinctId: string) => void
+  }
   $$guard: {
     viewContext?: {
       changeModule?: (

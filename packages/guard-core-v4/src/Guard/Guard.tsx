@@ -16,7 +16,7 @@ import { getDocumentNode, GuardPropsFilter } from '../_utils'
 
 import { initGuardDocument } from '../_utils/guardDocument'
 
-const { memo, useEffect, useRef, useState } = React
+const { memo, useEffect, useMemo, useRef, useState } = React
 
 export interface GuardProps extends GuardEvents, IG2FCProps {
   config?: Partial<GuardLocalConfig>
@@ -39,6 +39,20 @@ export const GuardComponent = memo((props: GuardProps) => {
 
   const [guardWindowMount, mounted] = useState<boolean>(false)
 
+  const guardPropsWithOnLoginInterceptor = useMemo(() => {
+    const { onLogin, ...restProps } = props
+
+    return {
+      ...restProps,
+      onLogin: (...args: Parameters<NonNullable<GuardProps['onLogin']>>) => {
+        const [userInfo] = args
+        const userId = (userInfo as { id?: string } | undefined)?.id
+        userId && window.sensors_sw?.login?.(userId)
+        onLogin?.(...args)
+      }
+    } as GuardProps
+  }, [props])
+
   // 锁定 Guard 中 window 指向
   useEffect(() => {
     if (!ref?.current) return
@@ -50,6 +64,25 @@ export const GuardComponent = memo((props: GuardProps) => {
     mounted(true)
   }, [])
 
+  useEffect(() => {
+    if (!ref?.current) return
+    // 如果 config.host 最后以斜杠结尾 则不拼接斜杠
+
+    const AUTOTRACK_SCRIPT_URL =
+      'https://files.id.zjedu.gov.cn/authing-user-portal/sw.webjs.sdk/autotrack.js'
+    const guardDocument = getDocumentNode(ref.current)
+    const hasLoadedScript =
+      guardDocument.querySelector(`script[src="${AUTOTRACK_SCRIPT_URL}"]`) ||
+      window.sensors_sw
+
+    if (hasLoadedScript) return
+
+    const scriptNode = guardDocument.createElement('script')
+    scriptNode.src = AUTOTRACK_SCRIPT_URL
+    scriptNode.async = true
+    guardDocument.head.appendChild(scriptNode)
+  }, [])
+
   // 首页 init 数据
   const initState: ModuleState = {
     moduleName: config?.defaultScenes ?? GuardModuleType.LOGIN,
@@ -59,7 +92,10 @@ export const GuardComponent = memo((props: GuardProps) => {
   return (
     <div ref={ref}>
       {guardWindowMount && (
-        <GuardCore guardProps={props} initState={initState} />
+        <GuardCore
+          guardProps={guardPropsWithOnLoginInterceptor}
+          initState={initState}
+        />
       )}
     </div>
   )
