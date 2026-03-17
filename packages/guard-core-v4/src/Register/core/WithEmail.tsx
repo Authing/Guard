@@ -12,7 +12,6 @@ import { useGuardAuthClient } from '../../Guard/authClient'
 
 import {
   fieldRequiredRule,
-  getCaptchaUrl,
   getDeviceName,
   getUserRegisterParams
 } from '../../_utils'
@@ -53,11 +52,10 @@ import { InputInternationPhone } from '../../Login/core/withVerifyCode/InputInte
 
 import { SendCodeByPhone } from '../../SendCode/SendCodeByPhone'
 
-import { GraphicVerifyCode } from '../../Login/core/withPassword/GraphicVerifyCode'
-
 import { SendCodeByEmail } from '../../SendCode/SendCodeByEmail'
 
 import { EmailScene } from '../../Type'
+import { openTencentCaptcha } from '../../_utils/tencentCaptcha'
 
 const { useRef, useState, useCallback, useMemo, useEffect } = React
 
@@ -105,8 +103,6 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
   const acceptedAgreementIds = useRef<(string | number)[]>([])
 
   const [validated, setValidated] = useState(false)
-
-  const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
 
   // 区号 默认
   const [areaCode, setAreaCode] = useState(
@@ -277,10 +273,6 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
       if (statusCode === 200) {
         onRegisterSuccessIntercept(data)
       } else {
-        // 更新图形验证码
-        if (smsCaptchaCheck || emailCaptchaCheck) {
-          setVerifyCodeUrl(getCaptchaUrl(config.host!))
-        }
         if (apiCode === ApiCode.UNSAFE_PASSWORD_TIP) {
           setPasswordErrorTextShow(true)
         }
@@ -330,6 +322,17 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
     [areaCode, form, publicConfig, t]
   )
 
+  const verifyTencentCaptcha = useCallback(async () => {
+    const result = await openTencentCaptcha()
+    if (!result) {
+      throw new Error('captcha_cancelled')
+    }
+    form.setFieldsValue({
+      ticket: result.ticket,
+      randstr: result.randstr
+    })
+  }, [form])
+
   const SendCode = useCallback(
     (props: any) => {
       if (isInternationSms) {
@@ -354,16 +357,12 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
             }
             scene={SceneType.SCENE_TYPE_REGISTER}
             maxLength={verifyCodeLength}
-            codeFieldName={'captchaCode'}
             onSendCodeBefore={async () => {
               // closeCheckSendUser 开启时，由 onFinish 统一校验
               if (!publicConfig?.closeCheckSendUser) {
                 await form.validateFields(['account'])
               }
-              await form.validateFields(['captchaCode'])
-            }}
-            onSendCodeError={() => {
-              setVerifyCodeUrl(getCaptchaUrl(config.host!))
+              await verifyTencentCaptcha()
             }}
           />
         )
@@ -387,35 +386,32 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
                 style={{ color: '#878A95' }}
               />
             }
-            codeFieldName={'captchaCode'}
             onSendCodeBefore={async () => {
               // closeCheckSendUser 开启时，由 onFinish 统一校验
               if (!publicConfig?.closeCheckSendUser) {
                 await form.validateFields(['account'])
               }
-              await form.validateFields(['captchaCode'])
-            }}
-            onSendCodeError={() => {
-              setVerifyCodeUrl(getCaptchaUrl(config.host!))
+              await verifyTencentCaptcha()
             }}
           />
         )
       }
     },
-    [areaCode, form, isInternationSms, t, verifyCodeLength]
+    [
+      areaCode,
+      form,
+      isInternationSms,
+      publicConfig?.closeCheckSendUser,
+      t,
+      verifyCodeLength,
+      verifyTencentCaptcha
+    ]
   )
-
-  useEffect(() => {
-    /** 如果是国外用户池，那么有图形验证码，需要请求图片 */
-    if (smsCaptchaCheck || emailCaptchaCheck) {
-      setVerifyCodeUrl(getCaptchaUrl(config.host!))
-    }
-  }, [smsCaptchaCheck, emailCaptchaCheck, config?.host])
 
   useEffect(() => {
     // 方法发生变化时，图像验证码数据应该清空
     if (smsCaptchaCheck || emailCaptchaCheck) {
-      form?.setFieldsValue({ captchaCode: undefined })
+      form?.setFieldsValue({ ticket: undefined, randstr: undefined })
     }
   }, [form, smsCaptchaCheck, emailCaptchaCheck])
 
@@ -443,25 +439,6 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
           </CustomFormItem.Phone>
           {enabledPPRegisterValid && (
             <>
-              {/* 图形验证码 短信安全 */}
-              {smsCaptchaCheck && (
-                <Form.Item
-                  className="authing-g2-input-form"
-                  validateTrigger={['onBlur', 'onChange']}
-                  name="captchaCode"
-                  rules={fieldRequiredRule(t('common.captchaCode'))}
-                >
-                  <GraphicVerifyCode
-                    className="authing-g2-input"
-                    size="large"
-                    placeholder={t('login.inputCaptchaCode') as string}
-                    verifyCodeUrl={verifyCodeUrl}
-                    changeCode={() =>
-                      setVerifyCodeUrl(getCaptchaUrl(config.host!))
-                    }
-                  />
-                </Form.Item>
-              )}
               <Form.Item
                 key="code"
                 name="code"
@@ -509,25 +486,6 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
         </CustomFormItem.CustomName>
         {method === 'email-password' && enabledMailPwdRegisterValid && (
           <>
-            {/* 图形验证码 邮件安全 */}
-            {emailCaptchaCheck && (
-              <Form.Item
-                className="authing-g2-input-form"
-                validateTrigger={['onBlur', 'onChange']}
-                name="captchaCode"
-                rules={fieldRequiredRule(t('common.captchaCode'))}
-              >
-                <GraphicVerifyCode
-                  className="authing-g2-input"
-                  size="large"
-                  placeholder={t('login.inputCaptchaCode') as string}
-                  verifyCodeUrl={verifyCodeUrl}
-                  changeCode={() =>
-                    setVerifyCodeUrl(getCaptchaUrl(config.host!))
-                  }
-                />
-              </Form.Item>
-            )}
             <Form.Item
               key="code"
               name="code"
@@ -553,17 +511,13 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
                 scene={EmailScene.REGISTER_VERIFY_CODE}
                 maxLength={verifyCodeLength}
                 fieldName="account"
-                codeFieldName={'captchaCode'}
                 form={form}
                 onSendCodeBefore={async () => {
                   // closeCheckSendUser 开启时，由 onFinish 统一校验
                   if (!publicConfig?.closeCheckSendUser) {
                     await form.validateFields(['account'])
                   }
-                  await form.validateFields(['captchaCode'])
-                }}
-                onSendCodeError={() => {
-                  setVerifyCodeUrl(getCaptchaUrl(config.host!))
+                  await verifyTencentCaptcha()
                 }}
               />
             </Form.Item>
@@ -579,8 +533,8 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
     label,
     t,
     form,
-    verifyCodeUrl,
-    publicConfig?.internationalSmsConfig?.enabled
+    publicConfig?.internationalSmsConfig?.enabled,
+    verifyTencentCaptcha
   ])
 
   const onAgreementsChange = (

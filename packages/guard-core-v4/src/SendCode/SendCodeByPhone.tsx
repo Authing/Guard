@@ -31,8 +31,10 @@ export interface SendCodeByPhoneProps extends InputProps {
   scene: SceneType
   areaCode?: string //国际区号
   isInternationSms?: boolean //是否是国际短信
-  codeFieldName?: string
-  captchaCode?: string
+  ticketFieldName?: string
+  randStrFieldName?: string
+  ticket?: string
+  randstr?: string
 }
 
 export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
@@ -45,8 +47,10 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
     onSendCodeAfter,
     fieldName,
     isInternationSms = false,
-    codeFieldName,
-    captchaCode,
+    ticketFieldName,
+    randStrFieldName,
+    ticket,
+    randstr,
     onSendCodeError,
     ...remainProps
   } = props
@@ -60,7 +64,8 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
   const sendPhone = async (
     phone: string,
     countryCode?: string,
-    captchaCode?: string
+    ticket?: string,
+    randstr?: string
   ) => {
     try {
       // await authClient.sendSmsCode(phone, countryCode, scene)
@@ -74,7 +79,8 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
         phone,
         phoneCountryCode: countryCode,
         scene,
-        captchaCode
+        ticket,
+        randstr
       })
       const { code, statusCode, message: msg } = data
       // 200 表示请求成功，不报错
@@ -135,14 +141,18 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
                 areaCode
               )
 
-              const code = form
-                ? form?.getFieldValue(codeFieldName || 'captchaCode')
-                : captchaCode
+              const captchaTicket = form
+                ? form?.getFieldValue(ticketFieldName || 'ticket')
+                : ticket
+              const captchaRandStr = form
+                ? form?.getFieldValue(randStrFieldName || 'randstr')
+                : randstr
 
               const { status, error } = await sendPhone(
                 phoneNumber,
                 countryCode,
-                code
+                captchaTicket,
+                captchaRandStr
               )
               onSendCodeAfter?.()
               if (status) {

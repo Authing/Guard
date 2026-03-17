@@ -1,4 +1,4 @@
-import { Form, Input, message } from 'shim-antd'
+import { Button, Form, Input, message } from 'shim-antd'
 
 import { LoginMethods } from 'authing-js-sdk'
 
@@ -45,9 +45,7 @@ import { CodeAction } from '../../_utils/responseManagement/interface'
 
 import { ErrorCode } from '../../_utils/GuardErrorCode'
 
-import { getCaptchaUrl } from '../../_utils/getCaptchaUrl'
-
-import { GraphicVerifyCode } from './withPassword/GraphicVerifyCode'
+import { openTencentCaptcha } from '../../_utils/tencentCaptcha'
 import { useDeviceId } from '../../Guard/core/hooks/useDeviceId'
 
 const { useEffect, useRef, useState } = React
@@ -92,7 +90,8 @@ export const LoginWithAD = (props: LoginWithADProps) => {
   const [showCaptcha, setShowCaptcha] = useState(
     robotVerify === 'always_enable'
   )
-  const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
+  const [captchaTicket, setCaptchaTicket] = useState('')
+  const [captchaRandStr, setCaptchaRandStr] = useState('')
 
   const publicConfig = useGuardPublicConfig()
 
@@ -113,6 +112,15 @@ export const LoginWithAD = (props: LoginWithADProps) => {
   const [form] = Form.useForm()
 
   let submitButtonRef = useRef<any>(null)
+  const verifyTencentCaptcha = async () => {
+    const result = await openTencentCaptcha()
+    if (!result) {
+      return null
+    }
+    setCaptchaTicket(result.ticket)
+    setCaptchaRandStr(result.randstr)
+    return result
+  }
 
   const onFinish = async (values: any) => {
     setValidated(true)
@@ -120,6 +128,20 @@ export const LoginWithAD = (props: LoginWithADProps) => {
       submitButtonRef.current?.onError()
       return
     }
+    let captchaResult: { ticket: string; randstr: string } | null =
+      captchaTicket && captchaRandStr
+        ? { ticket: captchaTicket, randstr: captchaRandStr }
+        : null
+    if (showCaptcha) {
+      if (!captchaResult) {
+        captchaResult = await verifyTencentCaptcha()
+      }
+      if (!captchaResult) {
+        submitButtonRef.current?.onError()
+        return
+      }
+    }
+
     // onBeforeLogin
     submitButtonRef.current?.onSpin(true)
     let loginInfo = {
@@ -127,7 +149,8 @@ export const LoginWithAD = (props: LoginWithADProps) => {
       data: {
         identity: values.account,
         password: values.password,
-        captchaCode: values.captchaCode
+        ticket: captchaResult?.ticket,
+        randstr: captchaResult?.randstr
       }
     }
     let context = await props.onBeforeLogin(loginInfo)
@@ -139,8 +162,6 @@ export const LoginWithAD = (props: LoginWithADProps) => {
     // onLogin
     let username = values.account && values.account.trim()
     let password = values.password
-    let captchaCode = values.captchaCode
-
     const encrypt = client.options.encryptFunction
 
     const encryptPassword = await encrypt!(password, props.publicKey)
@@ -156,7 +177,8 @@ export const LoginWithAD = (props: LoginWithADProps) => {
         body: JSON.stringify({
           username,
           password: encryptPassword,
-          captchaCode,
+          ticket: captchaResult?.ticket,
+          randstr: captchaResult?.randstr,
           agreementIds: agreements.length ? acceptedAgreementIds : undefined
         }),
         credentials: 'include',
@@ -190,9 +212,10 @@ export const LoginWithAD = (props: LoginWithADProps) => {
         onLoginSuccess(data)
       } else {
         // 需要「图形验证码」并且是第一次，就发一次，后面存在的时候会在点击登录，表单校验通过后，不论对错都要重新请求验证码
-        if (apiCode === ErrorCode.INPUT_CAPTCHACODE && !verifyCodeUrl) {
-          setVerifyCodeUrl(getCaptchaUrl(host))
+        if (apiCode === ErrorCode.INPUT_CAPTCHACODE && !showCaptcha) {
           setShowCaptcha(true)
+          setCaptchaTicket('')
+          setCaptchaRandStr('')
         }
 
         const handMode = onGuardHandling?.()
@@ -209,9 +232,9 @@ export const LoginWithAD = (props: LoginWithADProps) => {
         console.log(error)
       }
     } finally {
-      // 图形验证码出现后，不管是「图形验证码」错了，还是「账号」「密码」错了，都要重新发验证码
-      if (verifyCodeUrl) {
-        setVerifyCodeUrl(getCaptchaUrl(host))
+      if (showCaptcha) {
+        setCaptchaTicket('')
+        setCaptchaRandStr('')
       }
     }
 
@@ -263,10 +286,11 @@ export const LoginWithAD = (props: LoginWithADProps) => {
 
   useEffect(() => {
     setShowCaptcha(robotVerify === 'always_enable')
-    if (robotVerify === 'always_enable') {
-      setVerifyCodeUrl(getCaptchaUrl(host))
+    if (robotVerify !== 'always_enable') {
+      setCaptchaTicket('')
+      setCaptchaRandStr('')
     }
-  }, [robotVerify, host])
+  }, [robotVerify])
 
   return (
     <div className="authing-g2-login-ad">
@@ -328,19 +352,15 @@ export const LoginWithAD = (props: LoginWithADProps) => {
             </Form.Item>
             {/* 图形验证码 */}
             {showCaptcha && (
-              <Form.Item
-                className="authing-g2-input-form"
-                validateTrigger={['onBlur', 'onChange']}
-                name="captchaCode"
-                rules={fieldRequiredRule(t('common.captchaCode'))}
-              >
-                <GraphicVerifyCode
+              <Form.Item className="authing-g2-input-form">
+                <Button
                   className="authing-g2-input"
                   size="large"
-                  placeholder={t('login.inputCaptchaCode') as string}
-                  verifyCodeUrl={verifyCodeUrl}
-                  changeCode={() => setVerifyCodeUrl(getCaptchaUrl(host))}
-                />
+                  block
+                  onClick={verifyTencentCaptcha}
+                >
+                  {t('common.verify')}
+                </Button>
               </Form.Item>
             )}
             {Boolean(agreements?.length) && (

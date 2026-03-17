@@ -1,6 +1,6 @@
 import { React } from 'shim-react'
 
-import { Form } from 'shim-antd'
+import { Button, Form } from 'shim-antd'
 
 import { useTranslation } from 'react-i18next'
 
@@ -24,8 +24,6 @@ import SubmitButton from '../../../SubmitButton'
 import { FormItemAccount } from './FormItemAccount'
 
 import { InputAccount } from './InputAccount'
-
-import { GraphicVerifyCode } from './GraphicVerifyCode'
 
 import { IconFont } from '../../../IconFont'
 
@@ -71,8 +69,8 @@ import {
 
 import { useLoginAccountBackFill } from '../../hooks/useLoginMultiple'
 
-import { getCaptchaUrl } from '../../../_utils/getCaptchaUrl'
 import { getGuardWindow } from '../../../Guard/core/useAppendConfig'
+import { openTencentCaptcha } from '../../../_utils/tencentCaptcha'
 import qs from 'qs'
 
 const { useCallback, useEffect, useMemo, useRef, useState } = React
@@ -160,7 +158,8 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
   const [showCaptcha, setShowCaptcha] = useState(
     robotVerify === 'always_enable'
   )
-  const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
+  const [captchaTicket, setCaptchaTicket] = useState('')
+  const [captchaRandStr, setCaptchaRandStr] = useState('')
   const [remainCount, setRemainCount] = useState(0)
   const [accountLock, setAccountLock] = useState(false)
 
@@ -191,6 +190,16 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
     [passwordLoginMethods.length]
   )
 
+  const verifyTencentCaptcha = useCallback(async () => {
+    const result = await openTencentCaptcha()
+    if (!result) {
+      return null
+    }
+    setCaptchaTicket(result.ticket)
+    setCaptchaRandStr(result.randstr)
+    return result
+  }, [])
+
   const loginRequest = useCallback(
     async (loginInfo: any): Promise<AuthingGuardResponse> => {
       if (!!props.onLoginRequest) {
@@ -205,7 +214,8 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
         : '/api/v2/login/account'
       let account = loginData.identity && loginData.identity.trim()
       let password = loginData.password
-      let captchaCode = loginData.captchaCode && loginData.captchaCode.trim()
+      let ticket = loginData.ticket && loginData.ticket.trim()
+      let randstr = loginData.randstr && loginData.randstr.trim()
 
       let keyValueArray = getUserRegisterParams() || []
 
@@ -217,7 +227,8 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
       let body = {
         account: account,
         password: await encrypt!(password, props.publicKey),
-        captchaCode,
+        ticket,
+        randstr,
         customData: config?.isHost ? customData : undefined,
         autoRegister: props.autoRegister,
         withCustomData: false,
@@ -314,6 +325,20 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
 
     setAccountLock(false)
 
+    let captchaResult: { ticket: string; randstr: string } | null =
+      captchaTicket && captchaRandStr
+        ? { ticket: captchaTicket, randstr: captchaRandStr }
+        : null
+    if (showCaptcha) {
+      if (!captchaResult) {
+        captchaResult = await verifyTencentCaptcha()
+      }
+      if (!captchaResult) {
+        submitButtonRef?.current?.onError()
+        return
+      }
+    }
+
     // onBeforeLogin
     submitButtonRef?.current?.onSpin(true)
     let loginInfo = {
@@ -321,7 +346,8 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
       data: {
         identity: values.account,
         password: values.password,
-        captchaCode: values.captchaCode
+        ticket: captchaResult?.ticket,
+        randstr: captchaResult?.randstr
       }
     }
     let context = await props.onBeforeLogin?.(loginInfo)
@@ -350,9 +376,9 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
     } catch (e) {
       throw e
     } finally {
-      // 图形验证码出现后，不管是「图形验证码」错了，还是「账号」「密码」错了，都要重新发验证码
-      if (verifyCodeUrl) {
-        setVerifyCodeUrl(getCaptchaUrl(props.host!))
+      if (showCaptcha) {
+        setCaptchaTicket('')
+        setCaptchaRandStr('')
       }
     }
   }
@@ -369,9 +395,10 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
       onLoginSuccess(data, msg)
     } else {
       // 需要「图形验证码」并且是第一次，就发一次，后面存在的时候会在点击登录，表单校验通过后，不论对错都要重新请求验证码
-      if (apiCode === ErrorCode.INPUT_CAPTCHACODE && !verifyCodeUrl) {
-        setVerifyCodeUrl(getCaptchaUrl(props.host!))
+      if (apiCode === ErrorCode.INPUT_CAPTCHACODE && !showCaptcha) {
         setShowCaptcha(true)
+        setCaptchaTicket('')
+        setCaptchaRandStr('')
       }
 
       if (apiCode === ErrorCode.PASSWORD_ERROR) {
@@ -410,10 +437,7 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
 
   useEffect(() => {
     setShowCaptcha(robotVerify === 'always_enable')
-    if (robotVerify === 'always_enable') {
-      setVerifyCodeUrl(getCaptchaUrl(props.host!))
-    }
-  }, [robotVerify, props.host])
+  }, [robotVerify])
 
   const submitText = useMemo(() => {
     if (props.submitButText) return props.submitButText
@@ -544,21 +568,16 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
             />
           </Form.Item>
         )}
-        {/* 图形验证码 */}
         {showCaptcha && !matchEmailDomain && (
-          <Form.Item
-            className="authing-g2-input-form"
-            validateTrigger={['onBlur', 'onChange']}
-            name="captchaCode"
-            rules={fieldRequiredRule(t('common.captchaCode'))}
-          >
-            <GraphicVerifyCode
+          <Form.Item className="authing-g2-input-form">
+            <Button
               className="authing-g2-input"
               size="large"
-              placeholder={t('login.inputCaptchaCode') as string}
-              verifyCodeUrl={verifyCodeUrl}
-              changeCode={() => setVerifyCodeUrl(getCaptchaUrl(props.host!))}
-            />
+              block
+              onClick={verifyTencentCaptcha}
+            >
+              {t('common.verify')}
+            </Button>
           </Form.Item>
         )}
         {remainCount !== 0 && !accountLock && (

@@ -2,7 +2,7 @@ import { React } from 'shim-react'
 
 import { useTranslation } from 'react-i18next'
 
-import { Form, Input, message } from 'shim-antd'
+import { Button, Form, Input, message } from 'shim-antd'
 
 import { ErrorCode } from '../../_utils/GuardErrorCode'
 
@@ -31,6 +31,7 @@ import {
 
 import { useLoginAccountBackFill } from '../hooks/useLoginMultiple'
 import { useGuardAuthClient } from '../../Guard/authClient'
+import { openTencentCaptcha } from '../../_utils/tencentCaptcha'
 
 const { useRef, useState } = React
 
@@ -93,10 +94,18 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
   let submitButtonRef = useRef<any>(null)
 
   const [showCaptcha, setShowCaptcha] = useState(false)
-  const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
-  const captchaUrl = `${props.host}/api/v2/security/captcha`
-  const getCaptchaUrl = () => `${captchaUrl}?r=${+new Date()}`
+  const [captchaTicket, setCaptchaTicket] = useState('')
+  const [captchaRandStr, setCaptchaRandStr] = useState('')
   let client = useGuardAuthClient()
+  const verifyTencentCaptcha = async () => {
+    const result = await openTencentCaptcha()
+    if (!result) {
+      return null
+    }
+    setCaptchaTicket(result.ticket)
+    setCaptchaRandStr(result.randstr)
+    return result
+  }
 
   const onFinish = async (values: any) => {
     setValidated(true)
@@ -104,6 +113,20 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
       submitButtonRef.current?.onError()
       return
     }
+    let captchaResult: { ticket: string; randstr: string } | null =
+      captchaTicket && captchaRandStr
+        ? { ticket: captchaTicket, randstr: captchaRandStr }
+        : null
+    if (showCaptcha) {
+      if (!captchaResult) {
+        captchaResult = await verifyTencentCaptcha()
+      }
+      if (!captchaResult) {
+        submitButtonRef.current?.onError()
+        return
+      }
+    }
+
     // onBeforeLogin
     submitButtonRef.current?.onSpin(true)
     let loginInfo = {
@@ -111,7 +134,8 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
       data: {
         identity: values.account,
         password: values.password,
-        captchaCode: values.captchaCode
+        ticket: captchaResult?.ticket,
+        randstr: captchaResult?.randstr
       }
     }
     let context = await props.onBeforeLogin(loginInfo)
@@ -137,6 +161,8 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
       } = await post('/api/v2/ldap/verify-user', {
         username,
         password: encryptPassword,
+        ticket: captchaResult?.ticket,
+        randstr: captchaResult?.randstr,
         agreementIds: agreements.length ? acceptedAgreementIds : undefined
       })
 
@@ -150,8 +176,9 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
         onLoginSuccess(data)
       } else {
         if (code === ErrorCode.INPUT_CAPTCHACODE) {
-          setVerifyCodeUrl(getCaptchaUrl())
           setShowCaptcha(true)
+          setCaptchaTicket('')
+          setCaptchaRandStr('')
         }
         const handMode = onGuardHandling?.()
         // 向上层抛出错误
@@ -165,6 +192,11 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
         onLoginFailed(2333, {}, JSON.stringify(error))
       } else {
         console.log(error)
+      }
+    } finally {
+      if (showCaptcha) {
+        setCaptchaTicket('')
+        setCaptchaRandStr('')
       }
     }
 
@@ -266,28 +298,15 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
           />
         </Form.Item>
         {showCaptcha && (
-          <Form.Item
-            validateTrigger={['onBlur', 'onChange']}
-            className="authing-g2-input-form"
-            name="captchaCode"
-            rules={[
-              { required: true, message: t('login.inputCaptchaCode') as string }
-            ]}
-          >
-            <Input
-              className="authing-g2-input add-after"
+          <Form.Item className="authing-g2-input-form">
+            <Button
+              className="authing-g2-input"
               size="large"
-              placeholder={t('login.inputCaptchaCode') as string}
-              addonAfter={
-                <img
-                  className="g2-captcha-code-image"
-                  src={verifyCodeUrl}
-                  alt={t('login.captchaCode') as string}
-                  style={{ height: '2em', cursor: 'pointer' }}
-                  onClick={() => setVerifyCodeUrl(getCaptchaUrl())}
-                />
-              }
-            />
+              block
+              onClick={verifyTencentCaptcha}
+            >
+              {t('common.verify')}
+            </Button>
           </Form.Item>
         )}
         {Boolean(agreements?.length) && (

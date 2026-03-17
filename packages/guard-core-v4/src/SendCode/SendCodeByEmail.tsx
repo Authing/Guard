@@ -27,9 +27,11 @@ export interface SendCodeByEmailProps extends InputProps {
   fieldName?: string
   autoSubmit?: boolean //验证码输入完毕是否自动提交
   scene: EmailScene
-  captchaCode?: string
+  ticket?: string
+  randstr?: string
   onSendCodeError?: any
-  codeFieldName?: string
+  ticketFieldName?: string
+  randStrFieldName?: string
 }
 
 export const SendCodeByEmail: React.FC<SendCodeByEmailProps> = props => {
@@ -39,9 +41,11 @@ export const SendCodeByEmail: React.FC<SendCodeByEmailProps> = props => {
     form,
     onSendCodeBefore,
     fieldName,
-    captchaCode,
+    ticket,
+    randstr,
     onSendCodeError,
-    codeFieldName,
+    ticketFieldName,
+    randStrFieldName,
     ...remainProps
   } = props
   const { t } = useTranslation()
@@ -49,7 +53,11 @@ export const SendCodeByEmail: React.FC<SendCodeByEmailProps> = props => {
   const authClient = useGuardAuthClient()
   const { post } = getGuardHttp()
 
-  const sendEmail = async (email: string, captchaCode?: string) => {
+  const sendEmail = async (
+    email: string,
+    ticket?: string,
+    randstr?: string
+  ) => {
     if (!email) {
       message.error(t('login.inputEmail'))
       return {
@@ -78,7 +86,8 @@ export const SendCodeByEmail: React.FC<SendCodeByEmailProps> = props => {
       } = await post('/api/v2/email/send', {
         email,
         scene,
-        captchaCode
+        ticket,
+        randstr
       })
       if (apiCode === 2080) {
         // 一分钟只能发一次邮箱验证码的提示信息，特殊处理
@@ -123,11 +132,18 @@ export const SendCodeByEmail: React.FC<SendCodeByEmailProps> = props => {
           .then(async (b: any) => {
             let email = form ? form.getFieldValue(fieldName || 'email') : data
 
-            const code = form
-              ? form?.getFieldValue(codeFieldName || 'captchaCode')
-              : captchaCode
+            const captchaTicket = form
+              ? form?.getFieldValue(ticketFieldName || 'ticket')
+              : ticket
+            const captchaRandStr = form
+              ? form?.getFieldValue(randStrFieldName || 'randstr')
+              : randstr
 
-            const { status, error } = await sendEmail(email, code)
+            const { status, error } = await sendEmail(
+              email,
+              captchaTicket,
+              captchaRandStr
+            )
             if (status) {
               events?.onEmailSend?.(authClient, scene)
             } else {

@@ -51,10 +51,7 @@ import { GuardLoginInitData } from '../../interface'
 import { LoginMethods, RegisterMethods } from '../../../Type/application'
 
 import { useLoginAccountBackFill } from '../../hooks/useLoginMultiple'
-
-import { GraphicVerifyCode } from '../withPassword/GraphicVerifyCode'
-
-import { getCaptchaUrl } from '../../../_utils/getCaptchaUrl'
+import { openTencentCaptcha } from '../../../_utils/tencentCaptcha'
 
 export enum SpecifyCodeMethods {
   Phone = 'phone',
@@ -119,7 +116,6 @@ const LoginWithVerifyCode = (props: any) => {
 
   const smsCaptchaCheck = useSmsCaptchaCheck('login')
   const emailCaptchaCheck = useEmailCaptchaCheck('login')
-  const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
 
   let [form] = Form.useForm()
 
@@ -158,6 +154,16 @@ const LoginWithVerifyCode = (props: any) => {
 
   let submitButtonRef = useRef<any>(null)
   const { t } = useTranslation()
+  const verifyTencentCaptcha = useCallback(async () => {
+    const result = await openTencentCaptcha()
+    if (!result) {
+      throw new Error('captcha_cancelled')
+    }
+    form.setFieldsValue({
+      ticket: result.ticket,
+      randstr: result.randstr
+    })
+  }, [form])
 
   const SendCode = useCallback(
     (props: any) => {
@@ -188,10 +194,7 @@ const LoginWithVerifyCode = (props: any) => {
               if (!publicConfig?.closeCheckSendUser) {
                 await form.validateFields(['identify'])
               }
-              await form.validateFields(['captchaCode'])
-            }}
-            onSendCodeError={() => {
-              setVerifyCodeUrl(getCaptchaUrl(config.host!))
+              await verifyTencentCaptcha()
             }}
           />
         )
@@ -221,16 +224,12 @@ const LoginWithVerifyCode = (props: any) => {
               form={form}
               fieldName={'identify'}
               data={identify}
-              codeFieldName={'captchaCode'}
               onSendCodeBefore={async () => {
                 // closeCheckSendUser 开启时，由 onFinish 统一校验
                 if (!publicConfig?.closeCheckSendUser) {
                   await form.validateFields(['identify'])
                 }
-                await form.validateFields(['captchaCode'])
-              }}
-              onSendCodeError={() => {
-                setVerifyCodeUrl(getCaptchaUrl(config.host!))
+                await verifyTencentCaptcha()
               }}
             />
           )}
@@ -254,16 +253,12 @@ const LoginWithVerifyCode = (props: any) => {
               scene={EmailScene.LOGIN_VERIFY_CODE}
               maxLength={verifyCodeLength}
               data={identify}
-              codeFieldName={'captchaCode'}
               onSendCodeBefore={async () => {
                 // closeCheckSendUser 开启时，由 onFinish 统一校验
                 if (!publicConfig?.closeCheckSendUser) {
                   await form.validateFields(['identify'])
                 }
-                await form.validateFields(['captchaCode'])
-              }}
-              onSendCodeError={() => {
-                setVerifyCodeUrl(getCaptchaUrl(config.host!))
+                await verifyTencentCaptcha()
               }}
             />
           )}
@@ -278,7 +273,8 @@ const LoginWithVerifyCode = (props: any) => {
       isInternationSms,
       isOnlyInternationSms,
       t,
-      verifyCodeLength
+      verifyCodeLength,
+      verifyTencentCaptcha
     ]
   )
 
@@ -301,16 +297,9 @@ const LoginWithVerifyCode = (props: any) => {
   }, [publicConfig, methods, specifyCodeMethod])
 
   useEffect(() => {
-    /** 如果是国外用户池，那么有图形验证码，需要请求图片 */
-    if (smsCaptchaCheck || emailCaptchaCheck) {
-      setVerifyCodeUrl(getCaptchaUrl(config.host!))
-    }
-  }, [smsCaptchaCheck, emailCaptchaCheck, config?.host])
-
-  useEffect(() => {
     // 方法发生变化时，图像验证码数据应该清空
     if (smsCaptchaCheck || emailCaptchaCheck) {
-      form?.setFieldsValue({ captchaCode: undefined })
+      form?.setFieldsValue({ ticket: undefined, randstr: undefined })
     }
   }, [form, currentMethod, smsCaptchaCheck, emailCaptchaCheck])
 
@@ -346,8 +335,6 @@ const LoginWithVerifyCode = (props: any) => {
       // props.onLogin(200, data)
       onLoginSuccess(data)
     } else {
-      // 刷新图形验证码
-      smsCaptchaCheck && setVerifyCodeUrl(getCaptchaUrl(config.host!))
       const handMode = onGuardHandling?.()
       // 向上层抛出错误
       handMode === CodeAction.RENDER_MESSAGE && onLoginFailed(code, data, tips)
@@ -383,8 +370,6 @@ const LoginWithVerifyCode = (props: any) => {
       // props.onLogin(200, data)
       onLoginSuccess(data)
     } else {
-      // 刷新图形验证码
-      emailCaptchaCheck && setVerifyCodeUrl(getCaptchaUrl(config.host!))
       const handMode = onGuardHandling?.()
       // 向上层抛出错误
       handMode === CodeAction.RENDER_MESSAGE && onLoginFailed(code, data, tips)
@@ -573,24 +558,6 @@ const LoginWithVerifyCode = (props: any) => {
           )}
         </FormItemIdentify>
 
-        {/* 图形验证码 国外用户池并且是手机号 */}
-        {((smsCaptchaCheck && currentMethod === InputMethod.PhoneCode) ||
-          (emailCaptchaCheck && currentMethod === InputMethod.EmailCode)) && (
-          <Form.Item
-            className="authing-g2-input-form"
-            validateTrigger={['onBlur', 'onChange']}
-            name="captchaCode"
-            rules={fieldRequiredRule(t('common.captchaCode'))}
-          >
-            <GraphicVerifyCode
-              className="authing-g2-input"
-              size="large"
-              placeholder={t('login.inputCaptchaCode') as string}
-              verifyCodeUrl={verifyCodeUrl}
-              changeCode={() => setVerifyCodeUrl(getCaptchaUrl(config.host!))}
-            />
-          </Form.Item>
-        )}
         <Form.Item
           validateTrigger={['onBlur', 'onChange']}
           className="authing-g2-input-form"

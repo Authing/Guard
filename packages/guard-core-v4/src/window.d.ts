@@ -17,4 +17,11 @@ declare interface Window {
       unCheckAllAgreements: () => void
     }
   }
+  TencentCaptcha: new (
+    appId: string,
+    callback: (res: any) => void,
+    options?: Record<string, any>
+  ) => {
+    show: () => void
+  }
 }
