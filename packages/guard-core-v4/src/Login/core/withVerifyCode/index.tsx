@@ -39,7 +39,11 @@ import './styles.less'
 
 import { InputInternationPhone } from './InputInternationPhone'
 
-import { parsePhone, useAutoFocus } from '../../../_utils/hooks'
+import {
+  parsePhone,
+  useAutoFocus,
+  useTencentCaptcha
+} from '../../../_utils/hooks'
 
 import { EmailScene, InputMethod } from '../../../Type'
 
@@ -116,10 +120,21 @@ const LoginWithVerifyCode = (props: any) => {
     publicConfig?.internationalSmsConfig?.defaultISOType || 'CN'
   )
 
-  const captchaCheck = useCaptchaCheck('login')
+  const { captchaCheck, type, appId } = useCaptchaCheck('login')
+  const isTencentCaptcha = captchaCheck && type === 'Tencent'
   const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
 
   let [form] = Form.useForm()
+  const { setTencentCaptchaFields, resetTencentCaptchaFields } =
+    useTencentCaptcha({
+      enabled: isTencentCaptcha && currentMethod === InputMethod.PhoneCode,
+      appId,
+      form
+    })
+
+  const handleTencentCaptchaBeforeSend = useCallback(async () => {
+    await setTencentCaptchaFields()
+  }, [setTencentCaptchaFields])
 
   const changeMethod = useCallback(
     (v: string) => {
@@ -183,10 +198,16 @@ const LoginWithVerifyCode = (props: any) => {
             maxLength={verifyCodeLength}
             onSendCodeBefore={async () => {
               await form.validateFields(['identify'])
+              if (isTencentCaptcha) {
+                await handleTencentCaptchaBeforeSend()
+                return
+              }
               await form.validateFields(['captchaCode'])
             }}
             onSendCodeAfter={() => {
-              setVerifyCodeUrl(getCaptchaUrl(config.host!))
+              if (!isTencentCaptcha) {
+                setVerifyCodeUrl(getCaptchaUrl(config.host!))
+              }
             }}
           />
         )
@@ -219,10 +240,16 @@ const LoginWithVerifyCode = (props: any) => {
               codeFieldName={'captchaCode'}
               onSendCodeBefore={async () => {
                 await form.validateFields(['identify'])
+                if (isTencentCaptcha) {
+                  await handleTencentCaptchaBeforeSend()
+                  return
+                }
                 await form.validateFields(['captchaCode'])
               }}
               onSendCodeAfter={() => {
-                setVerifyCodeUrl(getCaptchaUrl(config.host!))
+                if (!isTencentCaptcha) {
+                  setVerifyCodeUrl(getCaptchaUrl(config.host!))
+                }
               }}
             />
           )}
@@ -261,6 +288,8 @@ const LoginWithVerifyCode = (props: any) => {
       identify,
       isInternationSms,
       isOnlyInternationSms,
+      isTencentCaptcha,
+      handleTencentCaptchaBeforeSend,
       t,
       verifyCodeLength
     ]
@@ -286,17 +315,20 @@ const LoginWithVerifyCode = (props: any) => {
 
   useEffect(() => {
     /** 如果是国外用户池，那么有图形验证码，需要请求图片 */
-    if (captchaCheck) {
+    if (captchaCheck && !isTencentCaptcha) {
       setVerifyCodeUrl(getCaptchaUrl(config.host!))
     }
-  }, [captchaCheck, config?.host])
+  }, [captchaCheck, config?.host, isTencentCaptcha])
 
   useEffect(() => {
     // 方法发生变化时，图像验证码数据应该清空
     if (captchaCheck) {
-      form?.setFieldsValue({ captchaCode: undefined })
+      resetTencentCaptchaFields()
+      form?.setFieldsValue({
+        captchaCode: undefined
+      })
     }
-  }, [form, currentMethod, captchaCheck])
+  }, [form, currentMethod, captchaCheck, resetTencentCaptchaFields])
 
   const loginByPhoneCode = async (values: any) => {
     let keyValueArray = getUserRegisterParams() || []
@@ -554,22 +586,35 @@ const LoginWithVerifyCode = (props: any) => {
         </FormItemIdentify>
 
         {/* 图形验证码 国外用户池并且是手机号 */}
-        {captchaCheck && currentMethod === InputMethod.PhoneCode && (
-          <Form.Item
-            className="authing-g2-input-form"
-            validateTrigger={['onBlur', 'onChange']}
-            name="captchaCode"
-            rules={fieldRequiredRule(t('common.captchaCode'))}
-          >
-            <GraphicVerifyCode
-              className="authing-g2-input"
-              size="large"
-              placeholder={t('login.inputCaptchaCode') as string}
-              verifyCodeUrl={verifyCodeUrl}
-              changeCode={() => setVerifyCodeUrl(getCaptchaUrl(config.host!))}
-            />
-          </Form.Item>
+        {isTencentCaptcha && (
+          <>
+            <Form.Item name="ticket" hidden>
+              <input type="hidden" />
+            </Form.Item>
+            <Form.Item name="randstr" hidden>
+              <input type="hidden" />
+            </Form.Item>
+          </>
         )}
+
+        {captchaCheck &&
+          !isTencentCaptcha &&
+          currentMethod === InputMethod.PhoneCode && (
+            <Form.Item
+              className="authing-g2-input-form"
+              validateTrigger={['onBlur', 'onChange']}
+              name="captchaCode"
+              rules={fieldRequiredRule(t('common.captchaCode'))}
+            >
+              <GraphicVerifyCode
+                className="authing-g2-input"
+                size="large"
+                placeholder={t('login.inputCaptchaCode') as string}
+                verifyCodeUrl={verifyCodeUrl}
+                changeCode={() => setVerifyCodeUrl(getCaptchaUrl(config.host!))}
+              />
+            </Form.Item>
+          )}
         <Form.Item
           validateTrigger={['onBlur', 'onChange']}
           className="authing-g2-input-form"

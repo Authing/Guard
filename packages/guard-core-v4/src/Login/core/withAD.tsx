@@ -35,7 +35,7 @@ import {
   useRobotVerify
 } from '../../_utils/context'
 
-import { useAutoFocus } from '../../_utils/hooks'
+import { useAutoFocus, useTencentCaptcha } from '../../_utils/hooks'
 
 import { requestClient } from '../../_utils/http'
 
@@ -50,7 +50,7 @@ import { getCaptchaUrl } from '../../_utils/getCaptchaUrl'
 import { GraphicVerifyCode } from './withPassword/GraphicVerifyCode'
 import { useDeviceId } from '../../Guard/core/hooks/useDeviceId'
 
-const { useEffect, useRef, useState } = React
+const { useCallback, useEffect, useRef, useState } = React
 
 interface LoginWithADProps {
   // configs
@@ -87,7 +87,8 @@ export const LoginWithAD = (props: LoginWithADProps) => {
 
   const [validated, setValidated] = useState(false)
 
-  const robotVerify = useRobotVerify()
+  const { robotVerify, robotVerifyService } = useRobotVerify()
+  const isTencentCaptcha = robotVerifyService?.type === 'Tencent'
 
   const [showCaptcha, setShowCaptcha] = useState(
     robotVerify === 'always_enable'
@@ -111,8 +112,20 @@ export const LoginWithAD = (props: LoginWithADProps) => {
   let client = useGuardAuthClient()
 
   const [form] = Form.useForm()
+  const { setTencentCaptchaFields, resetTencentCaptchaFields } =
+    useTencentCaptcha({
+      enabled: showCaptcha && isTencentCaptcha,
+      appId: robotVerifyService?.appId,
+      form
+    })
 
   let submitButtonRef = useRef<any>(null)
+
+  const handleTencentCaptchaBeforeSubmit = useCallback(async () => {
+    if (showCaptcha && isTencentCaptcha) {
+      await setTencentCaptchaFields()
+    }
+  }, [isTencentCaptcha, setTencentCaptchaFields, showCaptcha])
 
   const onFinish = async (values: any) => {
     setValidated(true)
@@ -122,12 +135,21 @@ export const LoginWithAD = (props: LoginWithADProps) => {
     }
     // onBeforeLogin
     submitButtonRef.current?.onSpin(true)
+    if (showCaptcha && isTencentCaptcha) {
+      await handleTencentCaptchaBeforeSubmit()
+      values = {
+        ...values,
+        ...form.getFieldsValue(['ticket', 'randstr'])
+      }
+    }
     let loginInfo = {
       type: LoginMethods.AD,
       data: {
         identity: values.account,
         password: values.password,
-        captchaCode: values.captchaCode
+        captchaCode: values.captchaCode,
+        ticket: values.ticket,
+        randstr: values.randstr
       }
     }
     let context = await props.onBeforeLogin(loginInfo)
@@ -140,6 +162,8 @@ export const LoginWithAD = (props: LoginWithADProps) => {
     let username = values.account && values.account.trim()
     let password = values.password
     let captchaCode = values.captchaCode
+    let ticket = values.ticket
+    let randstr = values.randstr
 
     const encrypt = client.options.encryptFunction
 
@@ -157,6 +181,8 @@ export const LoginWithAD = (props: LoginWithADProps) => {
           username,
           password: encryptPassword,
           captchaCode,
+          ticket,
+          randstr,
           agreementIds: agreements.length ? acceptedAgreementIds : undefined
         }),
         credentials: 'include',
@@ -191,7 +217,9 @@ export const LoginWithAD = (props: LoginWithADProps) => {
       } else {
         // 需要「图形验证码」并且是第一次，就发一次，后面存在的时候会在点击登录，表单校验通过后，不论对错都要重新请求验证码
         if (apiCode === ErrorCode.INPUT_CAPTCHACODE && !verifyCodeUrl) {
-          setVerifyCodeUrl(getCaptchaUrl(host))
+          if (!isTencentCaptcha) {
+            setVerifyCodeUrl(getCaptchaUrl(host))
+          }
           setShowCaptcha(true)
         }
 
@@ -210,7 +238,7 @@ export const LoginWithAD = (props: LoginWithADProps) => {
       }
     } finally {
       // 图形验证码出现后，不管是「图形验证码」错了，还是「账号」「密码」错了，都要重新发验证码
-      if (verifyCodeUrl) {
+      if (verifyCodeUrl && !isTencentCaptcha) {
         setVerifyCodeUrl(getCaptchaUrl(host))
       }
     }
@@ -264,9 +292,18 @@ export const LoginWithAD = (props: LoginWithADProps) => {
   useEffect(() => {
     setShowCaptcha(robotVerify === 'always_enable')
     if (robotVerify === 'always_enable') {
-      setVerifyCodeUrl(getCaptchaUrl(host))
+      if (!isTencentCaptcha) {
+        setVerifyCodeUrl(getCaptchaUrl(host))
+      }
     }
-  }, [robotVerify, host])
+  }, [robotVerify, host, isTencentCaptcha])
+
+  useEffect(() => {
+    resetTencentCaptchaFields()
+    form?.setFieldsValue({
+      captchaCode: undefined
+    })
+  }, [form, resetTencentCaptchaFields, showCaptcha, isTencentCaptcha])
 
   return (
     <div className="authing-g2-login-ad">
@@ -327,21 +364,35 @@ export const LoginWithAD = (props: LoginWithADProps) => {
               />
             </Form.Item>
             {/* 图形验证码 */}
+            {showCaptcha && isTencentCaptcha && (
+              <>
+                <Form.Item name="ticket" hidden>
+                  <input type="hidden" />
+                </Form.Item>
+                <Form.Item name="randstr" hidden>
+                  <input type="hidden" />
+                </Form.Item>
+              </>
+            )}
             {showCaptcha && (
-              <Form.Item
-                className="authing-g2-input-form"
-                validateTrigger={['onBlur', 'onChange']}
-                name="captchaCode"
-                rules={fieldRequiredRule(t('common.captchaCode'))}
-              >
-                <GraphicVerifyCode
-                  className="authing-g2-input"
-                  size="large"
-                  placeholder={t('login.inputCaptchaCode') as string}
-                  verifyCodeUrl={verifyCodeUrl}
-                  changeCode={() => setVerifyCodeUrl(getCaptchaUrl(host))}
-                />
-              </Form.Item>
+              <>
+                {!isTencentCaptcha && (
+                  <Form.Item
+                    className="authing-g2-input-form"
+                    validateTrigger={['onBlur', 'onChange']}
+                    name="captchaCode"
+                    rules={fieldRequiredRule(t('common.captchaCode'))}
+                  >
+                    <GraphicVerifyCode
+                      className="authing-g2-input"
+                      size="large"
+                      placeholder={t('login.inputCaptchaCode') as string}
+                      verifyCodeUrl={verifyCodeUrl}
+                      changeCode={() => setVerifyCodeUrl(getCaptchaUrl(host))}
+                    />
+                  </Form.Item>
+                )}
+              </>
             )}
             {Boolean(agreements?.length) && (
               <Agreements

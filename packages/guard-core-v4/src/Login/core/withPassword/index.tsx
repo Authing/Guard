@@ -37,7 +37,7 @@ import { AuthingGuardResponse, AuthingResponse } from '../../../_utils/http'
 
 import { CodeAction } from '../../../_utils/responseManagement/interface'
 
-import { useAutoFocus } from '../../../_utils/hooks'
+import { useAutoFocus, useTencentCaptcha } from '../../../_utils/hooks'
 
 import {
   useGuardAppId,
@@ -153,7 +153,8 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
   const publicConfig = useGuardPublicConfig()
   const config = useGuardFinallyConfig()
   const defaultLanguageConfig = useGuardDefaultLanguage()
-  const robotVerify = useRobotVerify()
+  const { robotVerify, robotVerifyService } = useRobotVerify()
+  const isTencentCaptcha = robotVerifyService?.type === 'Tencent'
 
   let submitButtonRef = useRef<any>(null)
 
@@ -177,6 +178,12 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
   }, [publicConfig, isEmail, matchRes])
 
   const encrypt = client.options.encryptFunction
+  const { setTencentCaptchaFields, resetTencentCaptchaFields } =
+    useTencentCaptcha({
+      enabled: showCaptcha && !matchEmailDomain && isTencentCaptcha,
+      appId: robotVerifyService?.appId,
+      form
+    })
 
   const changeMethod = useCallback(
     (v: string) => {
@@ -206,6 +213,8 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
       let account = loginData.identity && loginData.identity.trim()
       let password = loginData.password
       let captchaCode = loginData.captchaCode && loginData.captchaCode.trim()
+      let ticket = loginData.ticket
+      let randstr = loginData.randstr
 
       let keyValueArray = getUserRegisterParams() || []
 
@@ -218,6 +227,8 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
         account: account,
         password: await encrypt!(password, props.publicKey),
         captchaCode,
+        ticket,
+        randstr,
         customData: config?.isHost ? customData : undefined,
         autoRegister: props.autoRegister,
         withCustomData: false,
@@ -316,12 +327,26 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
 
     // onBeforeLogin
     submitButtonRef?.current?.onSpin(true)
+    if (showCaptcha && !matchEmailDomain && isTencentCaptcha) {
+      try {
+        await setTencentCaptchaFields()
+        values = {
+          ...values,
+          ...form.getFieldsValue(['ticket', 'randstr'])
+        }
+      } catch (error) {
+        submitButtonRef?.current?.onSpin(false)
+        return
+      }
+    }
     let loginInfo = {
       type: LoginMethods.Password,
       data: {
         identity: values.account,
         password: values.password,
-        captchaCode: values.captchaCode
+        captchaCode: values.captchaCode,
+        ticket: values.ticket,
+        randstr: values.randstr
       }
     }
     let context = await props.onBeforeLogin?.(loginInfo)
@@ -351,7 +376,7 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
       throw e
     } finally {
       // 图形验证码出现后，不管是「图形验证码」错了，还是「账号」「密码」错了，都要重新发验证码
-      if (verifyCodeUrl) {
+      if (verifyCodeUrl && !isTencentCaptcha) {
         setVerifyCodeUrl(getCaptchaUrl(props.host!))
       }
     }
@@ -370,7 +395,9 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
     } else {
       // 需要「图形验证码」并且是第一次，就发一次，后面存在的时候会在点击登录，表单校验通过后，不论对错都要重新请求验证码
       if (apiCode === ErrorCode.INPUT_CAPTCHACODE && !verifyCodeUrl) {
-        setVerifyCodeUrl(getCaptchaUrl(props.host!))
+        if (!isTencentCaptcha) {
+          setVerifyCodeUrl(getCaptchaUrl(props.host!))
+        }
         setShowCaptcha(true)
       }
 
@@ -410,10 +437,23 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
 
   useEffect(() => {
     setShowCaptcha(robotVerify === 'always_enable')
-    if (robotVerify === 'always_enable') {
+    if (robotVerify === 'always_enable' && !isTencentCaptcha) {
       setVerifyCodeUrl(getCaptchaUrl(props.host!))
     }
-  }, [robotVerify, props.host])
+  }, [robotVerify, props.host, isTencentCaptcha])
+
+  useEffect(() => {
+    resetTencentCaptchaFields()
+    form?.setFieldsValue({
+      captchaCode: undefined
+    })
+  }, [
+    form,
+    resetTencentCaptchaFields,
+    showCaptcha,
+    matchEmailDomain,
+    isTencentCaptcha
+  ])
 
   const submitText = useMemo(() => {
     if (props.submitButText) return props.submitButText
@@ -544,8 +584,18 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
             />
           </Form.Item>
         )}
+        {showCaptcha && !matchEmailDomain && isTencentCaptcha && (
+          <>
+            <Form.Item name="ticket" hidden>
+              <input type="hidden" />
+            </Form.Item>
+            <Form.Item name="randstr" hidden>
+              <input type="hidden" />
+            </Form.Item>
+          </>
+        )}
         {/* 图形验证码 */}
-        {showCaptcha && !matchEmailDomain && (
+        {showCaptcha && !matchEmailDomain && !isTencentCaptcha && (
           <Form.Item
             className="authing-g2-input-form"
             validateTrigger={['onBlur', 'onChange']}

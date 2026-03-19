@@ -447,11 +447,19 @@ export interface ApplicationConfig {
     robot: {
       switch: 'OFF' | 'ON' | 'CONDON' //ON,COND_ON
     }
+    robotVerifyService: {
+      type: 'Authing' | 'Tencent'
+      appId: string
+    }
   }
   /** 登录阶段短信安全配置 */
   loginSmsConfig?: {
     robot: {
       switch: 'OFF' | 'ON' | 'CONDON' //ON,COND_ON
+    }
+    robotVerifyService: {
+      type: 'Authing' | 'Tencent'
+      appId: string
     }
   }
 
@@ -472,5 +480,9 @@ export interface ApplicationConfig {
   resetPwdLinkTipsConfig?: {
     title: I18nLang
     desc: I18nLang
+  }
+  robotVerifyService?: {
+    type: 'Authing' | 'Tencent'
+    appId: string
   }
 }

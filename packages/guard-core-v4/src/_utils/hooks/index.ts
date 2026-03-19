@@ -24,6 +24,7 @@ import {
   SocialConnectionProvider
 } from '../../Type/application'
 import { useGuardFinallyConfig, useIsSpecialBrowser } from '..'
+export * from './useTencentCaptcha'
 export interface PhoneValidResult {
   isValid: boolean
   phoneNumber: string

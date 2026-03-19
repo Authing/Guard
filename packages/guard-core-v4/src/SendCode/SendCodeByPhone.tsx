@@ -58,7 +58,9 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
   const sendPhone = async (
     phone: string,
     countryCode?: string,
-    captchaCode?: string
+    captchaCode?: string,
+    ticket?: string,
+    randstr?: string
   ) => {
     try {
       // await authClient.sendSmsCode(phone, countryCode, scene)
@@ -72,7 +74,9 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
         phone,
         phoneCountryCode: countryCode,
         scene,
-        captchaCode
+        captchaCode,
+        ticket,
+        randstr
       })
       const { code, statusCode, message: msg } = data
       // 200 表示请求成功，不报错
@@ -136,11 +140,15 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
               const code = form
                 ? form?.getFieldValue(codeFieldName || 'captchaCode')
                 : captchaCode
+              const ticket = form?.getFieldValue('ticket')
+              const randstr = form?.getFieldValue('randstr')
 
               const { status, error } = await sendPhone(
                 phoneNumber,
                 countryCode,
-                code
+                code,
+                ticket,
+                randstr
               )
               onSendCodeAfter?.()
               if (status) {

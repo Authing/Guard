@@ -289,22 +289,39 @@ export const useGuardTenantProvider = () =>
 
 /** 当前人机验证策略 */
 export const useRobotVerify = () => {
-  const { customSecurityEnabled, appRobotVerify, userpoolRobotVerify } =
-    useGuardPublicConfig()
+  const {
+    customSecurityEnabled,
+    appRobotVerify,
+    userpoolRobotVerify,
+    robotVerifyService
+  } = useGuardPublicConfig()
 
-  return customSecurityEnabled ? appRobotVerify : userpoolRobotVerify
+  return {
+    robotVerify: customSecurityEnabled ? appRobotVerify : userpoolRobotVerify,
+    robotVerifyService
+  }
 }
 
 /** 当前应用是否开启人机验证策略 */
 export const useCaptchaCheck = (sence: 'login' | 'register') => {
   const { loginSmsConfig, registerSmsConfig } = useGuardPublicConfig()
   let openCaptchaCheck = false
+  let type = 'Authing'
+  let appId = ''
   switch (sence) {
     case 'login':
       openCaptchaCheck = loginSmsConfig?.robot?.switch === 'ON'
+      type = loginSmsConfig?.robotVerifyService?.type ?? 'Authing'
+      appId = loginSmsConfig?.robotVerifyService?.appId ?? ''
       break
     case 'register':
       openCaptchaCheck = registerSmsConfig?.robot?.switch === 'ON'
+      type = registerSmsConfig?.robotVerifyService?.type ?? 'Authing'
+      appId = registerSmsConfig?.robotVerifyService?.appId ?? ''
   }
-  return openCaptchaCheck
+  return {
+    captchaCheck: openCaptchaCheck,
+    type,
+    appId
+  }
 }

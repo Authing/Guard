@@ -96,7 +96,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
   const { changeModule } = useGuardModule()
   const { post } = useGuardHttpClient()
 
-  const captchaCheck = useCaptchaCheck('register')
+  const { captchaCheck, type } = useCaptchaCheck('register')
 
   const [acceptedAgreements, setAcceptedAgreements] = useState(false)
 

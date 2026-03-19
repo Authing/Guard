@@ -23,7 +23,7 @@ import { SendCodeByPhone } from '../../SendCode/SendCodeByPhone'
 
 import { InputInternationPhone } from '../../Login/core/withVerifyCode/InputInternationPhone'
 
-import { parsePhone, useAutoFocus } from '../../_utils/hooks'
+import { parsePhone, useAutoFocus, useTencentCaptcha } from '../../_utils/hooks'
 
 import { useIsChangeComplete } from '../utils'
 
@@ -120,15 +120,21 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
   const [currentMethod, setCurrentMethod] = useState(methods[0])
 
   const [identify, setIdentify] = useState('')
-  const [captchaCode, setCaptchaCode] = useState('')
   // 是否仅开启国际化短信
   const [isOnlyInternationSms, setInternationSms] = useState(false)
   // 是否开启了国际化短信功能
   const isInternationSms =
     publicConfig?.internationalSmsConfig?.enabled || false
 
-  const captchaCheck = useCaptchaCheck('register')
+  const { captchaCheck, type, appId } = useCaptchaCheck('register')
+  const isTencentCaptcha = captchaCheck && type === 'Tencent'
   const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
+  const { setTencentCaptchaFields, resetTencentCaptchaFields } =
+    useTencentCaptcha({
+      enabled: isTencentCaptcha && currentMethod === InputMethod.PhoneCode,
+      appId,
+      form
+    })
 
   useEffect(() => {
     // 开启国际化配置且登录方式为手机号码时
@@ -144,17 +150,22 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
 
   useEffect(() => {
     /** 如果是国外用户池，那么有图形验证码，需要请求图片 */
-    if (captchaCheck) {
+    if (captchaCheck && !isTencentCaptcha) {
       setVerifyCodeUrl(getCaptchaUrl(config.host!))
     }
-  }, [captchaCheck, config?.host])
+  }, [captchaCheck, config?.host, isTencentCaptcha])
 
   useEffect(() => {
     // 方法发生变化时，图像验证码数据应该清空
     if (captchaCheck) {
+      resetTencentCaptchaFields()
       form?.setFieldsValue({ captchaCode: undefined })
     }
-  }, [form, currentMethod, captchaCheck])
+  }, [form, currentMethod, captchaCheck, resetTencentCaptchaFields])
+
+  const handleTencentCaptchaBeforeSend = useCallback(async () => {
+    await setTencentCaptchaFields()
+  }, [setTencentCaptchaFields])
 
   const registerByPhoneCode = useCallback(
     async (values: any) => {
@@ -574,11 +585,17 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             maxLength={verifyCodeLength}
             onSendCodeBefore={async () => {
               await form.validateFields(['identify'])
+              if (isTencentCaptcha) {
+                await handleTencentCaptchaBeforeSend()
+                return
+              }
               await form.validateFields(['captchaCode'])
             }}
-            onSendCodeAfter={() =>
-              setVerifyCodeUrl(getCaptchaUrl(config.host!))
-            }
+            onSendCodeAfter={() => {
+              if (!isTencentCaptcha) {
+                setVerifyCodeUrl(getCaptchaUrl(config.host!))
+              }
+            }}
           />
         )
       }
@@ -604,15 +621,23 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
               }
               scene={SceneType.SCENE_TYPE_REGISTER}
               maxLength={verifyCodeLength}
+              form={form}
+              fieldName={'identify'}
               data={identify}
-              captchaCode={captchaCode}
+              codeFieldName={'captchaCode'}
               onSendCodeBefore={async () => {
                 await form.validateFields(['identify'])
+                if (isTencentCaptcha) {
+                  await handleTencentCaptchaBeforeSend()
+                  return
+                }
                 await form.validateFields(['captchaCode'])
               }}
-              onSendCodeAfter={() =>
-                setVerifyCodeUrl(getCaptchaUrl(config.host!))
-              }
+              onSendCodeAfter={() => {
+                if (!isTencentCaptcha) {
+                  setVerifyCodeUrl(getCaptchaUrl(config.host!))
+                }
+              }}
             />
           )}
           {currentMethod === InputMethod.EmailCode && (
@@ -648,9 +673,10 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
       identify,
       isInternationSms,
       isOnlyInternationSms,
+      isTencentCaptcha,
+      handleTencentCaptchaBeforeSend,
       t,
-      verifyCodeLength,
-      captchaCode
+      verifyCodeLength
     ]
   )
 
@@ -734,26 +760,36 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             />
           )}
         </FormItemIdentify>
-        {/* 图形验证码 国外用户池并且是手机号 */}
-        {captchaCheck && currentMethod === InputMethod.PhoneCode && (
-          <Form.Item
-            className="authing-g2-input-form"
-            validateTrigger={['onBlur', 'onChange']}
-            name="captchaCode"
-            rules={fieldRequiredRule(t('common.captchaCode'))}
-          >
-            <GraphicVerifyCode
-              className="authing-g2-input"
-              size="large"
-              placeholder={t('login.inputCaptchaCode') as string}
-              verifyCodeUrl={verifyCodeUrl}
-              changeCode={() => setVerifyCodeUrl(getCaptchaUrl(config.host!))}
-              onChange={(e: any) => {
-                setCaptchaCode(e.target.value)
-              }}
-            />
-          </Form.Item>
+        {isTencentCaptcha && (
+          <>
+            <Form.Item name="ticket" hidden>
+              <input type="hidden" />
+            </Form.Item>
+            <Form.Item name="randstr" hidden>
+              <input type="hidden" />
+            </Form.Item>
+          </>
         )}
+
+        {/* 图形验证码 国外用户池并且是手机号 */}
+        {captchaCheck &&
+          !isTencentCaptcha &&
+          currentMethod === InputMethod.PhoneCode && (
+            <Form.Item
+              className="authing-g2-input-form"
+              validateTrigger={['onBlur', 'onChange']}
+              name="captchaCode"
+              rules={fieldRequiredRule(t('common.captchaCode'))}
+            >
+              <GraphicVerifyCode
+                className="authing-g2-input"
+                size="large"
+                placeholder={t('login.inputCaptchaCode') as string}
+                verifyCodeUrl={verifyCodeUrl}
+                changeCode={() => setVerifyCodeUrl(getCaptchaUrl(config.host!))}
+              />
+            </Form.Item>
+          )}
 
         <Form.Item
           key="code"
