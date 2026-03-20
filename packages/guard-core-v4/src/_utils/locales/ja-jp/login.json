@@ -121,7 +121,7 @@
     "nextStep": "次のステップ",
     "reset": "パスワードをリセット",
     "back": "戻る",
-    "resetPasswordText1": "認証コードを受け取るために登録した携帯電話番号/メールボックスを入力してください。パスワードをリセットします。",
+    "resetPasswordText1": "確認コードを受け取るため、登録した{{text}}を入力してください。パスワードをリセットします。",
     "resetPasswordText2": "あなたはリセットしています {{account}} のパスワード。",
     "input": "インプット{{text}}",
     "inputFourVerifyCode": "入力してください {{length}} ビット認証コード",

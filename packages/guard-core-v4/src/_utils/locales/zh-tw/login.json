@@ -121,7 +121,7 @@
     "nextStep": "下一步",
     "reset": "重置密碼",
     "back": "返回",
-    "resetPasswordText1": "請輸入你注册的手機號/郵箱用於接收驗證碼，我們將為你重置密碼。",
+    "resetPasswordText1": "請輸入你註冊的{{text}}用於接收驗證碼，我們將為你重置密碼。",
     "resetPasswordText2": "你正在重置 {{account}} 的密碼。",
     "input": "輸入{{text}}",
     "inputFourVerifyCode": "請輸入 {{length}} 位數驗證碼",
