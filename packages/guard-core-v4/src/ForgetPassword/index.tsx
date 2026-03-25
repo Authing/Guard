@@ -176,18 +176,12 @@ export const GuardForgetPassword: React.FC = () => {
 
   const explain = useMemo(() => {
     const text = publicConfig?.resetPwdTipsConfig?.desc
-    const defaultExplainText =
-      publicConfig?.resetPwdSelectEmailPhone === 'email'
-        ? t('common.emailLabel')
-        : publicConfig?.resetPwdSelectEmailPhone === 'phone'
-        ? t('common.phone')
-        : t('common.phoneOrEmail')
     return (
       (text?.i18n?.[resolvedLanguage].enabled
         ? text?.i18n?.[resolvedLanguage]?.value
         : text?.default) ??
       t('login.resetPassword.resetPasswordText1', {
-        text: defaultExplainText
+        text: t('common.phoneOrEmail')
       })
     )
   }, [publicConfig, resolvedLanguage, t])
