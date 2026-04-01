@@ -511,4 +511,5 @@ export interface ApplicationConfig {
     title: I18nLang
     desc: I18nLang
   }
+  resetPwdSelectEmailPhone?: 'email' | 'phone' | 'email_and_phone'
 }

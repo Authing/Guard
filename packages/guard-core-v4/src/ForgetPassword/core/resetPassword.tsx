@@ -32,11 +32,13 @@ import { parsePhone, useAutoFocus } from '../../_utils/hooks'
 
 import { EmailScene } from '../../Type'
 
+import { VerifyLoginMethods } from '../../Type/application'
+
 import { getGuardHttp } from '../../_utils/guardHttp'
 
 import { GraphicVerifyCode } from '../../Login/core/withPassword/GraphicVerifyCode'
 
-const { useCallback, useRef, useState, useEffect } = React
+const { useCallback, useRef, useState, useEffect, useMemo } = React
 
 // import { useGuardEvents, useGuardPublicConfig } from '../../_utils/context'
 export enum InputMethodMap {
@@ -63,7 +65,6 @@ export const ResetPassword = (props: ResetPasswordProps) => {
   const { t } = useTranslation()
   let [form] = Form.useForm()
   let [identify, setIdentify] = useState('')
-  let [codeMethod, setCodeMethod] = useState<'phone' | 'email'>('phone')
   let submitButtonRef = useRef<any>(null)
   const { autoFocus } = useAutoFocus()
   const { post } = getGuardHttp()
@@ -75,6 +76,27 @@ export const ResetPassword = (props: ResetPasswordProps) => {
   const [captchaCode, setCaptchaCode] = useState('')
 
   const publicConfig = useGuardPublicConfig()
+
+  const identifyMethods = useMemo<VerifyLoginMethods[]>(() => {
+    switch (publicConfig?.resetPwdSelectEmailPhone) {
+      case 'email':
+        return ['email-code']
+      case 'phone':
+        return ['phone-code']
+      default:
+        return ['email-code', 'phone-code']
+    }
+  }, [publicConfig?.resetPwdSelectEmailPhone])
+
+  const defaultCodeMethod = useMemo<'phone' | 'email'>(() => {
+    return identifyMethods.length === 1 && identifyMethods[0] === 'email-code'
+      ? 'email'
+      : 'phone'
+  }, [identifyMethods])
+
+  let [codeMethod, setCodeMethod] = useState<'phone' | 'email'>(
+    defaultCodeMethod
+  )
 
   // let authClient = useGuardAuthClient()
   // const events = useGuardEvents()
@@ -253,6 +275,10 @@ export const ResetPassword = (props: ResetPasswordProps) => {
   )
 
   useEffect(() => {
+    setCodeMethod(defaultCodeMethod)
+  }, [defaultCodeMethod])
+
+  useEffect(() => {
     // 方法发生变化时，图像验证码数据应该清空
     if (smsCaptchaCheck || emailCaptchaCheck) {
       form?.setFieldsValue({ captchaCode: undefined })
@@ -279,12 +305,12 @@ export const ResetPassword = (props: ResetPasswordProps) => {
         <FormItemIdentify
           name="identify"
           className="authing-g2-input-form"
-          methods={['email-code', 'phone-code']}
+          methods={identifyMethods}
           currentMethod={InputMethodMap[codeMethod]}
           checkExist={true}
         >
           <InputIdentify
-            methods={['email-code', 'phone-code']}
+            methods={identifyMethods}
             className="authing-g2-input"
             autoComplete="off"
             autoFocus={autoFocus}
@@ -293,7 +319,9 @@ export const ResetPassword = (props: ResetPasswordProps) => {
             onChange={(e: any) => {
               let v = e.target.value
               setIdentify(v)
-              if (validate('email', v)) {
+              if (identifyMethods.length === 1) {
+                setCodeMethod(defaultCodeMethod)
+              } else if (validate('email', v)) {
                 setCodeMethod('email')
               } else {
                 setCodeMethod('phone')

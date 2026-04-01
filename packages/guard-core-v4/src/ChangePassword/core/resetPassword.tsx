@@ -110,11 +110,15 @@ export const GuardResetPassword = () => {
 
   const explain = useMemo(() => {
     const text = publicConfig?.resetPwdLinkTipsConfig?.desc
-
-    return text?.i18n?.[resolvedLanguage].enabled
-      ? text?.i18n?.[resolvedLanguage]?.value
-      : text?.default
-  }, [publicConfig, resolvedLanguage])
+    return (
+      (text?.i18n?.[resolvedLanguage].enabled
+        ? text?.i18n?.[resolvedLanguage]?.value
+        : text?.default) ??
+      t('login.resetPassword.resetPasswordText1', {
+        text: t('common.phoneOrEmail')
+      })
+    )
+  }, [publicConfig, resolvedLanguage, t])
 
   return (
     <div className="g2-view-container g2-forget-password g2-password-reset-pageWrap g2-password-reset-step2">
@@ -127,14 +131,7 @@ export const GuardResetPassword = () => {
           className="icon"
         />
         <div className="title">{title}</div>
-        {explain ??
-          (account && (
-            <div className="title-explain">
-              {t('login.resetPassword.resetPasswordText2', {
-                account
-              })}
-            </div>
-          ))}
+        <div className="title-explain">{explain}</div>
       </div>
       <div className="g2-view-tabs">
         <Form
