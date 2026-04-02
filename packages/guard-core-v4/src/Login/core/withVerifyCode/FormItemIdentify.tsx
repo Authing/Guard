@@ -151,15 +151,15 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
     rules.push(formatRules)
 
     // 是否校验重复
-    if ((checkRepeat || checkExist) && !publicConfig.closeCheckSendUser) {
-      rules.push({
-        validator: checkRepeatFn,
-        validateTrigger: []
-      })
-    }
+    // if ((checkRepeat || checkExist) && !publicConfig.closeCheckSendUser) {
+    //   rules.push({
+    //     validator: checkRepeatFn,
+    //     validateTrigger: []
+    //   })
+    // }
 
     return rules
-  }, [t, formatRules, checkRepeat, checkExist, checkRepeatFn])
+  }, [t, formatRules])
   // TODO 未来抽离
   const renderTemplate = useMemo(() => {
     if (methods.length !== 1)
