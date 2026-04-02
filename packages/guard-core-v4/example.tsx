@@ -5,10 +5,11 @@ import { React, render } from 'shim-react'
 import * as facePlugin from 'face-api.js'
 
 const App = () => {
-  const appId = 'AUTHING_APP_ID'
+  const appId = '69c113a6e5d9c193bf080268'
   // const deviceId = '6486be0f60e50cb92678a468' //如要使用必须使用开启元数据对的 用户池 测试
 
   const config: Partial<GuardLocalConfig> = {
+    host: 'http://console.authing.localhost:3000/'
 
   }
 

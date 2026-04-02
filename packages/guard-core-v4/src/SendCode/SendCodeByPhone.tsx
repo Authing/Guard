@@ -24,6 +24,8 @@ export interface SendCodeByPhoneProps extends InputProps {
   data?: string
   form?: any
   onSendCodeBefore?: any // 点击的时候先做这个
+  onSendCodeError?: () => void
+  onSendCodeAfter?: () => void
   fieldName?: string
   autoSubmit?: boolean //验证码输入完毕是否自动提交
   scene: SceneType
@@ -40,6 +42,8 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
     form,
     areaCode,
     onSendCodeBefore,
+    onSendCodeError,
+    onSendCodeAfter,
     fieldName,
     isInternationSms = false,
     codeFieldName,
@@ -66,7 +70,7 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
        * post 方法：packages/react-components/components/_utils/http.ts
        * 响应拦截：packages/react-components/components/_utils/responseManagement/index.ts
        */
-      const data = await post('/api/v2/sms/send', {
+      const data = await post('/v2/api/send-reset-password-code', {
         phone,
         phoneCountryCode: countryCode,
         scene,
@@ -143,6 +147,7 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
               if (status) {
                 events?.onPhoneSend?.(authClient, scene)
               } else {
+                onSendCodeError?.()
                 events?.onPhoneSendError?.(error, authClient, scene)
               }
               return status

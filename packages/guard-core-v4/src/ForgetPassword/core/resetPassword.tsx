@@ -190,6 +190,9 @@ export const ResetPassword = (props: ResetPasswordProps) => {
               scene={SceneType.SCENE_TYPE_RESET}
               maxLength={verifyCodeLength}
               data={identify}
+              onSendCodeError={() =>
+                setVerifyCodeUrl(getCaptchaUrl(config.host!))
+              }
               onSendCodeBefore={async () => {
                 // closeCheckSendUser 开启时，由 onFinish 统一校验
                 if (!publicConfig.closeCheckSendUser) {
