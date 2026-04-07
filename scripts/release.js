@@ -25,8 +25,31 @@ function parseArgs() {
 function callShell(args) {
   const { type, version } = args
   const releaseType = type === 'alpha' ? RELEASE_ALPHA : RELEASE_OFFICIAL
+  const packageNames = [
+    'guard-shim-react',
+    'guard-shim-react18',
+    'native-js-ui-components',
+    'react-ui-components',
+    'react18-ui-components',
+    'ng-ui-components',
+    'vue-ui-components',
+  ]
+
+  if (!version) {
+    console.error('missing required argument: version')
+    process.exit(1)
+  }
+
+  if (type !== 'alpha' && type !== 'official') {
+    console.error('invalid type, expected: alpha | official')
+    process.exit(1)
+  }
 
   const commands = [
+    ...packageNames.map(
+      packageName =>
+        `cd packages/${packageName} && npm version ${version} --no-git-tag-version`
+    ),
     `cd packages/guard-shim-react && ${releaseType}`,
     `cd packages/guard-shim-react18 && ${releaseType}`,
     `cd packages/native-js-ui-components && npm ci && npm install --save-exact @authing/guard-shim-react@${version} && npm run build:lib && ${releaseType}`,
