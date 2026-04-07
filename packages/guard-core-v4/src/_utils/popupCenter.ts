@@ -59,3 +59,63 @@ export const popupCenter = (
 
   newWindow?.focus()
 }
+
+export const larkPopupCenter = (
+  url: string,
+  { w, h }: { w: number; h: number } = { w: 585, h: 649 }
+) => {
+  // 飞书授权页在部分视口下首屏较长，优先提高高度，避免按钮落到可视区域下方
+  const LARK_SAFE_HEIGHT = 760
+  h = Math.max(h, LARK_SAFE_HEIGHT)
+
+  const guardWindow = getGuardWindow()
+
+  if (!guardWindow) return
+
+  const document = guardWindow.document
+
+  // Fixes dual-screen position                             Most browsers      Firefox
+  const dualScreenLeft =
+    guardWindow.screenLeft !== undefined
+      ? guardWindow.screenLeft
+      : guardWindow.screenX
+  const dualScreenTop =
+    guardWindow.screenTop !== undefined
+      ? guardWindow.screenTop
+      : guardWindow.screenY
+
+  const width = guardWindow.innerWidth
+    ? guardWindow.innerWidth
+    : document.documentElement.clientWidth
+    ? document.documentElement.clientWidth
+    : guardWindow.screen.width
+
+  const height = guardWindow.innerHeight
+    ? guardWindow.innerHeight
+    : document.documentElement.clientHeight
+    ? document.documentElement.clientHeight
+    : guardWindow.screen.height
+
+  const systemZoom = width / guardWindow.screen.availWidth
+  const left = (width - w) / 2 / systemZoom + dualScreenLeft
+  const top = (height - h) / 2 / systemZoom + dualScreenTop
+
+  const newWindow = guardWindow.open(
+    url,
+    '_blank',
+    `
+      toolbar=no,
+      menubar=no,
+      scrollbars=no,
+      resizable=no,
+      location=no,
+      status=no,
+      width=${w / systemZoom},
+      height=${h / systemZoom},
+      top=${top},
+      left=${left}
+    `
+  )
+
+  newWindow?.focus()
+}

@@ -16,7 +16,7 @@ import { ApplicationConfig, Protocol } from '../../../Type/application'
 
 import { getVersion } from '../../../_utils'
 
-import { popupCenter } from '../../../_utils'
+import { popupCenter, larkPopupCenter } from '../../../_utils'
 
 import { useGuardTenantId, useIsSpecialBrowser } from '../../../_utils/context'
 
@@ -101,7 +101,11 @@ export const IdpButton = (props: any) => {
           if (query.redirected) {
             window.location.replace(initUrl)
           } else {
-            popupCenter(initUrl)
+            if (i.provider === 'lark-internal') {
+              larkPopupCenter(initUrl)
+            } else {
+              popupCenter(initUrl)
+            }
           }
         }
       }
