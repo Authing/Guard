@@ -48,7 +48,7 @@ function callShell(args) {
   const commands = [
     ...packageNames.map(
       packageName =>
-        `cd packages/${packageName} && npm version ${version} --no-git-tag-version`
+        `cd packages/${packageName} && npm version ${version} --no-git-tag-version --allow-same-version`
     ),
     `cd packages/guard-shim-react && ${releaseType}`,
     `cd packages/guard-shim-react18 && ${releaseType}`,
