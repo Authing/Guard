@@ -26,28 +26,36 @@ function callShell(args) {
   const { type, version } = args
   const releaseType = type === 'alpha' ? RELEASE_ALPHA : RELEASE_OFFICIAL
 
-  shelljs.exec(
-    `
-    cd packages/guard-shim-react && ${releaseType}
-    cd ../../
-    cd packages/guard-shim-react18 && ${releaseType}
-    cd ../../
-    cd packages/native-js-ui-components && npm ci && npm install --save-exact @authing/guard-shim-react@${version} && npm run build:lib && ${releaseType}
-    cd ../../
-    cd packages/react-ui-components && npm ci && npm install --save-exact @authing/guard-shim-react@${version} && npm run build:lib && ${releaseType}
-    cd ../../
-    cd packages/react18-ui-components && npm ci && npm install --save-exact @authing/guard-shim-react18@${version} && npm run build:lib && ${releaseType}
-    cd ../../
-    cd packages/ng-ui-components && npm ci && npm install --save-exact @authing/native-js-ui-components@${version} && npm run build:lib && ${releaseType}
-    cd ../../
-    cd packages/vue-ui-components && npm ci && npm install --save-exact @authing/native-js-ui-components@${version} && npm run build:lib && ${releaseType}
-    cd ../../
-    git commit -a -m "release: ${version} :rocket:"
-  `,
-    error => {
-      if (error) {
-        console.error('release:alpha error: ', error)
-      }
+  const commands = [
+    `cd packages/guard-shim-react && ${releaseType}`,
+    `cd packages/guard-shim-react18 && ${releaseType}`,
+    `cd packages/native-js-ui-components && npm ci && npm install --save-exact @authing/guard-shim-react@${version} && npm run build:lib && ${releaseType}`,
+    `cd packages/react-ui-components && npm ci && npm install --save-exact @authing/guard-shim-react@${version} && npm run build:lib && ${releaseType}`,
+    `cd packages/react18-ui-components && npm ci && npm install --save-exact @authing/guard-shim-react18@${version} && npm run build:lib && ${releaseType}`,
+    `cd packages/ng-ui-components && npm ci && npm install --save-exact @authing/native-js-ui-components@${version} && npm run build:lib && ${releaseType}`,
+    `cd packages/vue-ui-components && npm ci && npm install --save-exact @authing/native-js-ui-components@${version} && npm run build:lib && ${releaseType}`,
+  ]
+
+  shelljs.set('-e')
+
+  try {
+    commands.forEach(command => {
+      shelljs.exec(command)
+    })
+
+    const commitResult = shelljs.exec(`git commit -a -m "release: ${version} :rocket:"`, {
+      silent: true,
+    })
+
+    if (commitResult.code !== 0) {
+      console.log('release note: no changes to commit')
+    } else {
+      console.log('release note: commit created')
     }
-  )
+
+    console.log(`release:${type} successfully 🚀`)
+  } catch (error) {
+    console.error(`release:${type} failed`, error)
+    process.exit(1)
+  }
 }
