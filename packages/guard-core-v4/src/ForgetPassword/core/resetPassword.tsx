@@ -20,13 +20,19 @@ import { FormItemIdentify } from '../../Login/core/withVerifyCode/FormItemIdenti
 
 import { InputIdentify } from './inputIdentify'
 
-import { parsePhone, useAutoFocus } from '../../_utils/hooks'
+import { parsePhone, useAutoFocus, useTencentCaptcha } from '../../_utils/hooks'
 
 import { EmailScene } from '../../Type'
 
 import { getGuardHttp } from '../../_utils/guardHttp'
 
-const { useCallback, useRef, useState } = React
+import { useCaptchaCheck, useGuardFinallyConfig } from '../../_utils/context'
+
+import { GraphicVerifyCode } from '../../Login/core/withPassword/GraphicVerifyCode'
+
+import { getCaptchaUrl } from '../../_utils/getCaptchaUrl'
+
+const { useCallback, useEffect, useRef, useState } = React
 
 // import { useGuardEvents, useGuardPublicConfig } from '../../_utils/context'
 export enum InputMethodMap {
@@ -54,6 +60,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
   let [codeMethod, setCodeMethod] = useState<'phone' | 'email'>('phone')
   let submitButtonRef = useRef<any>(null)
   const { autoFocus } = useAutoFocus()
+  const config = useGuardFinallyConfig()
 
   const { post } = getGuardHttp()
   // let authClient = useGuardAuthClient()
@@ -63,6 +70,39 @@ export const ResetPassword = (props: ResetPasswordProps) => {
   // 是否开启了国际化短信功能
   const isInternationSms =
     props.publicConfig.internationalSmsConfig?.enabled || false
+
+  // 腾讯验证码相关
+  const { captchaCheck, type, appId } = useCaptchaCheck('forget-password')
+  const isTencentCaptcha = captchaCheck && type === 'Tencent'
+  const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
+
+  const { setTencentCaptchaFields, resetTencentCaptchaFields } =
+    useTencentCaptcha({
+      enabled: isTencentCaptcha && codeMethod === 'phone',
+      appId,
+      form
+    })
+
+  const handleTencentCaptchaBeforeSend = useCallback(async () => {
+    await setTencentCaptchaFields()
+  }, [setTencentCaptchaFields])
+
+  useEffect(() => {
+    /** 如果是国外用户池，那么有图形验证码，需要请求图片 */
+    if (captchaCheck && !isTencentCaptcha) {
+      setVerifyCodeUrl(getCaptchaUrl(config.host!))
+    }
+  }, [captchaCheck, config?.host, isTencentCaptcha])
+
+  useEffect(() => {
+    // 方法发生变化时，图像验证码数据应该清空
+    if (captchaCheck) {
+      resetTencentCaptchaFields()
+      form?.setFieldsValue({
+        captchaCode: undefined
+      })
+    }
+  }, [form, codeMethod, captchaCheck, resetTencentCaptchaFields])
   // const {
   //   // getPassWordUnsafeText,
   //   setPasswordErrorTextShow,
@@ -172,8 +212,21 @@ export const ResetPassword = (props: ResetPasswordProps) => {
               scene={SceneType.SCENE_TYPE_RESET}
               maxLength={verifyCodeLength}
               data={identify}
+              form={form}
+              fieldName={'identify'}
+              codeFieldName={'captchaCode'}
               onSendCodeBefore={async () => {
                 await form.validateFields(['identify'])
+                if (isTencentCaptcha) {
+                  await handleTencentCaptchaBeforeSend()
+                  return
+                }
+                await form.validateFields(['captchaCode'])
+              }}
+              onSendCodeAfter={() => {
+                if (!isTencentCaptcha) {
+                  setVerifyCodeUrl(getCaptchaUrl(config.host!))
+                }
               }}
             />
           )}
@@ -195,6 +248,8 @@ export const ResetPassword = (props: ResetPasswordProps) => {
               scene={EmailScene.RESET_PASSWORD_VERIFY_CODE}
               maxLength={verifyCodeLength}
               data={identify}
+              form={form}
+              fieldName={'identify'}
               onSendCodeBefore={async () => {
                 await form.validateFields(['identify'])
               }}
@@ -203,7 +258,17 @@ export const ResetPassword = (props: ResetPasswordProps) => {
         </>
       )
     },
-    [codeMethod, form, identify, isInternationSms, t, verifyCodeLength]
+    [
+      codeMethod,
+      form,
+      identify,
+      isInternationSms,
+      isTencentCaptcha,
+      handleTencentCaptchaBeforeSend,
+      t,
+      verifyCodeLength,
+      config?.host
+    ]
   )
 
   return (
@@ -250,6 +315,36 @@ export const ResetPassword = (props: ResetPasswordProps) => {
             }
           />
         </FormItemIdentify>
+
+        {/* 腾讯验证码隐藏字段 */}
+        {isTencentCaptcha && (
+          <>
+            <Form.Item name="ticket" hidden>
+              <input type="hidden" />
+            </Form.Item>
+            <Form.Item name="randstr" hidden>
+              <input type="hidden" />
+            </Form.Item>
+          </>
+        )}
+
+        {/* 图形验证码 国外用户池并且是手机号 */}
+        {captchaCheck && !isTencentCaptcha && codeMethod === 'phone' && (
+          <Form.Item
+            className="authing-g2-input-form"
+            validateTrigger={['onBlur', 'onChange']}
+            name="captchaCode"
+            rules={fieldRequiredRule(t('common.captchaCode'))}
+          >
+            <GraphicVerifyCode
+              className="authing-g2-input"
+              size="large"
+              placeholder={t('login.inputCaptchaCode') as string}
+              verifyCodeUrl={verifyCodeUrl}
+              changeCode={() => setVerifyCodeUrl(getCaptchaUrl(config.host!))}
+            />
+          </Form.Item>
+        )}
 
         <Form.Item
           validateTrigger={['onBlur', 'onChange']}

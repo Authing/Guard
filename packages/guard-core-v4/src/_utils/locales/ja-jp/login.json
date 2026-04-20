@@ -129,7 +129,9 @@
     "confirmNewPwd": "新しいパスワードを確認してください",
     "successTipMsg": "新しいパスワードを使用してログインを続けることができます",
     "successTip": "パスワードのリセットに成功しました",
-    "backLogin": "秒ログインページが自動的にジャンプされます"
+    "backLogin": "秒ログインページが自動的にジャンプされます",
+    "passwordRuleTooltipPrefix": "詳細はこちら:",
+    "passwordRuleLinkText": "パスワードルール"
   },
   "wecomScanLogin": "エンタープライズ WeChat ログイン",
   "passwordRuleTips": "パスワードには、以下を含める必要があります：",

@@ -462,6 +462,16 @@ export interface ApplicationConfig {
       appId: string
     }
   }
+  /** 忘记密码阶段短信安全配置 */
+  forgetPasswordSmsConfig?: {
+    robot: {
+      switch: 'OFF' | 'ON' | 'CONDON' //ON,COND_ON
+    }
+    robotVerifyService: {
+      type: 'Authing' | 'Tencent'
+      appId: string
+    }
+  }
 
   /** 特殊浏览器匹配字符串 */
   specialBrowserSymbols?: string[]

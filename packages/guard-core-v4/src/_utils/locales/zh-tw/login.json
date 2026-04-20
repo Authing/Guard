@@ -129,7 +129,9 @@
     "confirmNewPwd": "請確認新密碼",
     "successTipMsg": "你可以使用新密碼繼續登入",
     "successTip": "密碼重置成功",
-    "backLogin": "秒後將自動跳轉登入頁"
+    "backLogin": "秒後將自動跳轉登入頁",
+    "passwordRuleTooltipPrefix": "詳情參考:",
+    "passwordRuleLinkText": "密碼規則"
   },
   "wecomScanLogin": "企業微信掃碼登入",
   "passwordRuleTips": "您的密碼必須包含:",

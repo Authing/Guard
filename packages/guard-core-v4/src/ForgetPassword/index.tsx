@@ -2,7 +2,7 @@ import { React } from 'shim-react'
 
 import { useTranslation } from 'react-i18next'
 
-import { Form, message } from 'shim-antd'
+import { Form, message, Tooltip } from 'shim-antd'
 
 import { GuardModuleType } from '../Guard/module'
 
@@ -184,6 +184,22 @@ export const GuardForgetPassword: React.FC = () => {
     )
   }, [publicConfig, resolvedLanguage])
 
+  const passwordRuleTooltip = (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <span>{t('login.resetPassword.passwordRuleTooltipPrefix')}</span>
+      <a
+        href="https://carizon.feishu.cn/wiki/DRHqwGgXRiteCTkhaHlcUIKwnHg"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ textDecoration: 'underline', color: 'inherit' }}
+      >
+        {t('login.resetPassword.passwordRuleLinkText')}
+      </a>
+    </div>
+  )
+
+  const [iconHover, setIconHover] = useState(false)
+
   return controlShow ? (
     <div className="g2-view-container g2-forget-password g2-password-reset-pageWrap g2-password-reset-step1">
       <div className="g2-view-header">
@@ -194,7 +210,12 @@ export const GuardForgetPassword: React.FC = () => {
           alt=""
           className="icon"
         />
-        <div className="title">{title}</div>
+        <div
+          className="title"
+          style={{ display: 'flex', alignItems: 'center', gap: 8 }}
+        >
+          {title}
+        </div>
         <div className="title-explain">{explain}</div>
       </div>
       <div className="g2-view-tabs">
@@ -228,7 +249,29 @@ export const GuardForgetPassword: React.FC = () => {
           alt=""
           className="icon"
         />
-        <div className="title">{title}</div>
+        <div
+          className="title"
+          style={{ display: 'flex', alignItems: 'center', gap: 8 }}
+        >
+          {title}
+          <Tooltip title={passwordRuleTooltip}>
+            <span
+              style={{ display: 'inline-flex' }}
+              onMouseEnter={() => setIconHover(true)}
+              onMouseLeave={() => setIconHover(false)}
+            >
+              <IconFont
+                type="authing-a-question-line1"
+                style={{
+                  color: iconHover ? '#215ae5' : '#878A95',
+                  cursor: 'pointer',
+                  fontSize: 16,
+                  transition: 'color 0.2s'
+                }}
+              />
+            </span>
+          </Tooltip>
+        </div>
         {phoneOrEmailText && (
           <div className="title-explain">
             {t('login.resetPassword.resetPasswordText2', {

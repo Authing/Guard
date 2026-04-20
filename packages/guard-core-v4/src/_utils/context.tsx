@@ -303,8 +303,11 @@ export const useRobotVerify = () => {
 }
 
 /** 当前应用是否开启人机验证策略 */
-export const useCaptchaCheck = (sence: 'login' | 'register') => {
-  const { loginSmsConfig, registerSmsConfig } = useGuardPublicConfig()
+export const useCaptchaCheck = (
+  sence: 'login' | 'register' | 'forget-password'
+) => {
+  const { loginSmsConfig, registerSmsConfig, forgetPasswordSmsConfig } =
+    useGuardPublicConfig()
   let openCaptchaCheck = false
   let type = 'Authing'
   let appId = ''
@@ -318,6 +321,11 @@ export const useCaptchaCheck = (sence: 'login' | 'register') => {
       openCaptchaCheck = registerSmsConfig?.robot?.switch === 'ON'
       type = registerSmsConfig?.robotVerifyService?.type ?? 'Authing'
       appId = registerSmsConfig?.robotVerifyService?.appId ?? ''
+      break
+    case 'forget-password':
+      openCaptchaCheck = forgetPasswordSmsConfig?.robot?.switch === 'ON'
+      type = forgetPasswordSmsConfig?.robotVerifyService?.type ?? 'Authing'
+      appId = forgetPasswordSmsConfig?.robotVerifyService?.appId ?? ''
   }
   return {
     captchaCheck: openCaptchaCheck,
