@@ -5,11 +5,11 @@ import { React, render } from 'shim-react'
 import * as facePlugin from 'face-api.js'
 
 const App = () => {
-  const appId = '698be07b67f44cc479ce5f60'
+  const appId = '69e71acd77df0381523a8fbd'
   // const deviceId = 'DEVICE_ID' //如要使用必须使用开启元数据对的 用户池 测试
 
   const config: Partial<GuardLocalConfig> = {
-    host: 'https://loginmfa.hydra.authing-inc.co'
+    host: 'http://xfyx1vgn6xhg-demo.authing.localhost:3000'
   }
 
   const onLogin = (userInfo: User) => {

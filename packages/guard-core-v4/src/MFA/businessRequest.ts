@@ -16,7 +16,11 @@ export enum MfaBusinessAction {
   VerifyFace = 'verify-face',
   AssociateFace = 'associate-face',
   PasskeyBind = 'passkey-bind',
-  PasskeyVerify = 'passkey-verify'
+  PasskeyVerify = 'passkey-verify',
+  // AWS 活体检测相关
+  GetFaceLivenessSession = 'get-face-liveness-session',
+  GetFaceLivenessResult = 'get-face-liveness-result',
+  VerifyFaceLiveness = 'verify-face-liveness'
 }
 
 export const authFlow = async (action: MfaBusinessAction, content: any) => {
@@ -54,6 +58,21 @@ interface AssociateFaceContent {
   photoA: string
   photoB: string
   isExternalPhoto?: boolean
+  mfaToken?: string
+}
+
+// AWS 活体检测相关接口
+interface GetFaceLivenessSessionContent {
+  mfaToken?: string
+}
+
+interface GetFaceLivenessResultContent {
+  sessionId: string
+  mfaToken?: string
+}
+
+interface VerifyFaceLivenessContent {
+  sessionId: string
   mfaToken?: string
 }
 
@@ -165,6 +184,71 @@ export const AssociateFace = async (content: AssociateFaceContent) => {
   )
 }
 
+// ============================================
+// AWS 活体检测接口
+// ============================================
+
+/**
+ * 获取 AWS 活体检测 Session
+ * POST /api/v2/mfa/face/liveness/session
+ */
+export const GetFaceLivenessSession = async (
+  content: GetFaceLivenessSessionContent
+) => {
+  const { mfaToken } = content
+  const { post } = getGuardHttp()
+
+  return await post(
+    '/api/v2/mfa/face/liveness/session',
+    {},
+    {
+      headers: {
+        authorization: `Bearer ${mfaToken}`
+      }
+    }
+  )
+}
+
+/**
+ * 获取 AWS 活体检测结果
+ * GET /api/v2/mfa/face/liveness/result?sessionId=xxx
+ */
+export const GetFaceLivenessResult = async (
+  content: GetFaceLivenessResultContent
+) => {
+  const { sessionId, mfaToken } = content
+  const { get } = getGuardHttp()
+
+  return await get(
+    '/api/v2/mfa/face/liveness/result',
+    { sessionId },
+    {
+      headers: {
+        authorization: `Bearer ${mfaToken}`
+      }
+    }
+  )
+}
+
+/**
+ * AWS 临时凭证接口（占位）
+ * GET /api/credentials
+ * TODO: 后端需要实现此接口
+ */
+export const GetAwsCredentials = async () => {
+  const { get } = getGuardHttp()
+
+  try {
+    const res = await get('/api/credentials')
+    return res
+  } catch (error) {
+    console.error('[GetAwsCredentials] Error:', error)
+    throw new Error(
+      'AWS 临时凭证接口暂未实现。请后端实现 GET /api/credentials 接口'
+    )
+  }
+}
+
 export const GetPasskeyBindChallenge = async (
   content: GetPasskeyBindChallengeParams
 ): Promise<AuthingGuardResponse<CredentialCreationOptionsJSON>> => {
@@ -260,6 +344,19 @@ export const useMfaBusinessRequest = () => {
 
       // return AssociateFace(content)
       return null
+    },
+
+    // AWS 活体检测接口（直接走 HTTP，不走 authFlow）
+    [MfaBusinessAction.GetFaceLivenessSession]: (
+      content: GetFaceLivenessSessionContent
+    ) => {
+      return GetFaceLivenessSession(content)
+    },
+
+    [MfaBusinessAction.GetFaceLivenessResult]: (
+      content: GetFaceLivenessResultContent
+    ) => {
+      return GetFaceLivenessResult(content)
     }
   }
 
