@@ -157,25 +157,25 @@ export const MFAFace = (props: any) => {
       )
     }
 
-    if (!livenessSessionId) {
-      return (
-        <div style={{ textAlign: 'center', padding: '2rem' }}>
-          <p>无法创建检测会话</p>
-          <SubmitButton
-            onClick={createLivenessSession}
-            text="重试"
-            className="mfa-face"
-          />
-        </div>
-      )
-    }
+    // if (!livenessSessionId) {
+    //   return (
+    //     <div style={{ textAlign: 'center', padding: '2rem' }}>
+    //       <p>无法创建检测会话</p>
+    //       <SubmitButton
+    //         onClick={createLivenessSession}
+    //         text="重试"
+    //         className="mfa-face"
+    //       />
+    //     </div>
+    //   )
+    // }
 
     return (
       <React.Suspense
         fallback={<div className="authing-g2-loading">加载组件...</div>}
       >
         <AwsFaceLivenessDetector
-          sessionId={livenessSessionId}
+          sessionId={livenessSessionId || ''}
           region={livenessRegion}
           onAnalysisComplete={handleLivenessAnalysisComplete}
           onError={handleLivenessError}

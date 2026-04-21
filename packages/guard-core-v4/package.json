@@ -19,8 +19,11 @@
   "author": "https://github.com/authing",
   "license": "MIT",
   "dependencies": {
+    "@aws-amplify/ui-react": "^6.15.2",
+    "@aws-amplify/ui-react-liveness": "^3.6.2",
     "@github/webauthn-json": "^2.1.1",
     "authing-js-sdk": "4.23.50",
+    "aws-amplify": "^6.16.3",
     "classnames": "^2.3.1",
     "i18next": "^22.4.11",
     "i18next-browser-languagedetector": "^7.0.1",

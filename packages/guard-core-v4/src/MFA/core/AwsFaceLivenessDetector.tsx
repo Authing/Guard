@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from 'react'
 
 // ============================================
-// AWS 活体检测组件 - CDN 版本
+// AWS 活体检测组件
 // ============================================
-// 为避免 TensorFlow.js 版本冲突，使用 CDN 动态加载 AWS 组件
-//
-// 需要在 index.html 中添加以下脚本:
-// <script src="https://unpkg.com/@aws-amplify/ui-react-liveness@3.6.2/dist/index.js"></script>
-// <script src="https://unpkg.com/@aws-amplify/ui-react@6.15.2/dist/index.js"></script>
+// 使用 npm 包导入 AWS 组件
+// 注意：需要安装 @aws-amplify/ui-react-liveness 和 @aws-amplify/ui-react
 // ============================================
+
+import {
+  FaceLivenessDetectorCore,
+  AwsCredentialProvider
+} from '@aws-amplify/ui-react-liveness'
+
+import { ThemeProvider } from '@aws-amplify/ui-react'
+
+import '@aws-amplify/ui-react/styles.css'
 
 interface AwsFaceLivenessDetectorProps {
   sessionId: string
   region?: string
-  onAnalysisComplete?: () => void
+  onAnalysisComplete?: () => void | Promise<void>
   onError?: (error: any) => void
   credentials?: {
     accessKeyId: string
@@ -22,38 +28,8 @@ interface AwsFaceLivenessDetectorProps {
   }
 }
 
-// 全局类型声明
-declare global {
-  interface Window {
-    AwsAmplifyUIReactLiveness?: any
-    AwsAmplifyUIReact?: any
-  }
-}
-
 /**
- * 加载 CDN 脚本
- */
-const loadScript = (src: string): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    // 检查脚本是否已加载
-    if (document.querySelector(`script[src="${src}"]`)) {
-      resolve()
-      return
-    }
-
-    const script = document.createElement('script')
-    script.src = src
-    script.crossOrigin = 'anonymous'
-    script.onload = () => resolve()
-    script.onerror = () => reject(new Error(`Failed to load: ${src}`))
-    document.head.appendChild(script)
-  })
-}
-
-/**
- * AWS Face Liveness 检测组件 (CDN 版本)
- *
- * 使用 CDN 动态加载 AWS 组件，避免与 face-api.js 的 TensorFlow.js 版本冲突
+ * AWS Face Liveness 检测组件
  */
 export const AwsFaceLivenessDetector: React.FC<
   AwsFaceLivenessDetectorProps
@@ -68,40 +44,25 @@ export const AwsFaceLivenessDetector: React.FC<
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const loadAwsComponents = async () => {
-      try {
-        // 加载 AWS CDN 脚本
-        await Promise.all([
-          loadScript(
-            'https://unpkg.com/@aws-amplify/ui-react-liveness@3.6.2/dist/index.js'
-          ),
-          loadScript(
-            'https://unpkg.com/@aws-amplify/ui-react@6.15.2/dist/index.js'
-          )
-        ])
-
-        // 等待组件注册到全局
-        if (window.AwsAmplifyUIReactLiveness && window.AwsAmplifyUIReact) {
-          setIsLoaded(true)
-        } else {
-          throw new Error('AWS 组件加载失败')
-        }
-      } catch (e: any) {
-        console.error('Failed to load AWS components:', e)
-        setError('无法加载 AWS 活体检测组件')
-        onError?.(e)
-      }
-    }
-
-    loadAwsComponents()
-  }, [onError])
+    // 组件挂载后标记为已加载
+    setIsLoaded(true)
+  }, [])
 
   // 凭证提供者
-  const credentialProvider = async () => {
-    if (credentials) {
-      return credentials
+  const credentialProvider: AwsCredentialProvider = async () => {
+    if (credentials && credentials.accessKeyId) {
+      return {
+        accessKeyId: credentials.accessKeyId,
+        secretAccessKey: credentials.secretAccessKey,
+        sessionToken: credentials.sessionToken
+      }
     }
-    throw new Error('AWS credentials not provided')
+    // 如果没有提供凭证，返回空对象让组件使用默认方式
+    return {
+      accessKeyId: '',
+      secretAccessKey: '',
+      sessionToken: ''
+    }
   }
 
   if (error) {
@@ -131,14 +92,22 @@ export const AwsFaceLivenessDetector: React.FC<
       <div
         style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}
       >
-        <div className="authing-g2-loading">加载 AWS 组件中...</div>
+        <div className="authing-g2-loading">加载中...</div>
       </div>
     )
   }
 
-  // 使用全局变量渲染组件
-  const { FaceLivenessDetectorCore } = window.AwsAmplifyUIReactLiveness
-  const { ThemeProvider } = window.AwsAmplifyUIReact
+  // 包装 onAnalysisComplete 以符合 AWS 组件类型要求
+  const handleAnalysisComplete = async (): Promise<void> => {
+    if (onAnalysisComplete) {
+      await Promise.resolve(onAnalysisComplete())
+    }
+  }
+
+  // 包装 onError 以符合 AWS 组件类型要求
+  const handleError = (error: any): void => {
+    onError?.(error)
+  }
 
   return (
     <ThemeProvider>
@@ -146,10 +115,10 @@ export const AwsFaceLivenessDetector: React.FC<
         <FaceLivenessDetectorCore
           sessionId={sessionId}
           region={region}
-          onAnalysisComplete={onAnalysisComplete}
-          onError={onError}
+          onAnalysisComplete={handleAnalysisComplete}
+          onError={handleError}
           config={{
-            credentialProvider: credentials ? credentialProvider : undefined
+            credentialProvider
           }}
         />
       </div>
