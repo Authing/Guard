@@ -71,7 +71,7 @@ module.exports = function webpackConfigFn({ reactVersion = '16' }) {
         {
           test: /\.js$/,
           loader: 'babel-loader',
-          exclude: /node_modules[\/](?!(@aws-amplify|@aws-sdk|aws-amplify))/,
+          exclude: /node_modules[\/](?!(@aws-amplify|@aws-sdk|aws-amplify|@authing))/,
           options: {
             configFile: resolve('babel.config.js'),
             rootMode: 'upward'
