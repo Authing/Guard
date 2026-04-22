@@ -22,6 +22,9 @@
     "@aws-amplify/ui-react": "^6.15.2",
     "@aws-amplify/ui-react-liveness": "^3.6.2",
     "@github/webauthn-json": "^2.1.1",
+    "@tensorflow/tfjs-backend-cpu": "^4.22.0",
+    "@tensorflow/tfjs-backend-wasm": "^4.22.0",
+    "@tensorflow/tfjs-converter": "^4.22.0",
     "authing-js-sdk": "4.23.50",
     "aws-amplify": "^6.16.3",
     "classnames": "^2.3.1",
@@ -39,9 +42,17 @@
     "ua-parser-js": "^1.0.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
+    "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
+    "@babel/plugin-proposal-optional-chaining": "^7.21.0",
+    "@babel/preset-env": "^7.29.2",
+    "@babel/preset-react": "^7.28.5",
+    "@babel/preset-typescript": "^7.28.5",
     "@types/lodash": "^4.14.175",
     "@types/throttle-debounce": "^5.0.0",
     "@types/ua-parser-js": "^0.7.36",
+    "babel-loader": "^10.1.1",
     "face-api.js": "^0.20.0",
     "throttle-debounce": "^5.0.0",
     "url-loader": "^4.1.1"

@@ -49,20 +49,11 @@ module.exports = function webpackConfigFn({ reactVersion = '16' }) {
         ),
         // ============================================
         // TensorFlow.js 版本隔离
-        // 让所有 tfjs 包都使用 AWS 组件嵌套的 4.x 版本
         // ============================================
-        '@tensorflow/tfjs-core': resolve(
-          'node_modules/@aws-amplify/ui-react-liveness/node_modules/@tensorflow/tfjs-core'
-        ),
-        '@tensorflow/tfjs-backend-cpu': resolve(
-          'node_modules/@aws-amplify/ui-react-liveness/node_modules/@tensorflow/tfjs-backend-cpu'
-        ),
-        '@tensorflow/tfjs-backend-wasm': resolve(
-          'node_modules/@aws-amplify/ui-react-liveness/node_modules/@tensorflow/tfjs-backend-wasm'
-        ),
-        '@tensorflow/tfjs-converter': resolve(
-          'node_modules/@aws-amplify/ui-react-liveness/node_modules/@tensorflow/tfjs-converter'
-        ),
+        '@tensorflow/tfjs-core': resolve('node_modules/@tensorflow/tfjs-core'),
+        '@tensorflow/tfjs-backend-cpu': resolve('node_modules/@tensorflow/tfjs-backend-cpu'),
+        '@tensorflow/tfjs-backend-wasm': resolve('node_modules/@tensorflow/tfjs-backend-wasm'),
+        '@tensorflow/tfjs-converter': resolve('node_modules/@tensorflow/tfjs-converter'),
         // ============================================
         // AWS Amplify 兼容层
         // 解决 @aws-amplify/ui 与 aws-amplify v6 的 API 差异
@@ -79,7 +70,12 @@ module.exports = function webpackConfigFn({ reactVersion = '16' }) {
         },
         {
           test: /\.js$/,
-          loader: 'babel-loader'
+          loader: 'babel-loader',
+          exclude: /node_modules[\/](?!(@aws-amplify|@aws-sdk|aws-amplify))/,
+          options: {
+            configFile: resolve('babel.config.js'),
+            rootMode: 'upward'
+          }
         },
         {
           test: /\.css$/,

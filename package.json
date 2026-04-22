@@ -20,6 +20,12 @@
   },
   "author": "https://github.com/authing",
   "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
+    "@babel/plugin-proposal-optional-chaining": "^7.21.0",
+    "@babel/preset-env": "^7.29.2",
+    "@babel/preset-react": "^7.28.5",
+    "@babel/preset-typescript": "^7.28.5",
     "@typescript-eslint/eslint-plugin": "^5.32.0",
     "@typescript-eslint/parser": "^5.62.0",
     "ali-oss": "^6.16.0",
