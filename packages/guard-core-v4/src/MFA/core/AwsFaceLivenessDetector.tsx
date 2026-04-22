@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 // ============================================
 // AWS 活体检测组件
 // ============================================
-// 使用 @aws-sdk/client-rekognition + Cognito 临时凭证
+// 使用后端返回的 AWS 临时凭证
 // ============================================
 
 import {
@@ -13,24 +13,33 @@ import {
 
 import { ThemeProvider } from '@aws-amplify/ui-react'
 
-import { fetchAuthSession } from 'aws-amplify/auth'
-
 import '@aws-amplify/ui-react/styles.css'
 
 interface AwsFaceLivenessDetectorProps {
   sessionId: string
   region?: string
+  credentials?: {
+    AccessKeyId: string
+    SecretAccessKey: string
+    SessionToken: string
+  } | null
   onAnalysisComplete?: () => void | Promise<void>
   onError?: (error: any) => void
 }
 
 /**
  * AWS Face Liveness 检测组件
- * 使用 Cognito 获取临时 AWS 凭证，避免在前端暴露永久凭证
+ * 使用后端返回的临时 AWS 凭证
  */
 export const AwsFaceLivenessDetector: React.FC<
   AwsFaceLivenessDetectorProps
-> = ({ sessionId, region = 'us-east-1', onAnalysisComplete, onError }) => {
+> = ({
+  sessionId,
+  region = 'us-east-1',
+  credentials,
+  onAnalysisComplete,
+  onError
+}) => {
   const [isLoaded, setIsLoaded] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -39,25 +48,16 @@ export const AwsFaceLivenessDetector: React.FC<
     setIsLoaded(true)
   }, [])
 
-  // 从 Cognito 获取临时凭证
+  // 使用后端返回的凭证
   const credentialProvider: AwsCredentialProvider = async () => {
-    try {
-      const session = await fetchAuthSession()
-      const credentials = session.credentials
+    if (!credentials) {
+      throw new Error('AWS 凭证未提供')
+    }
 
-      if (!credentials) {
-        throw new Error('无法获取 AWS 临时凭证')
-      }
-
-      return {
-        accessKeyId: credentials.accessKeyId,
-        secretAccessKey: credentials.secretAccessKey,
-        sessionToken: credentials.sessionToken || ''
-      }
-    } catch (err: any) {
-      console.error('获取 Cognito 凭证失败:', err)
-      setError('认证失败，请重新登录')
-      throw err
+    return {
+      accessKeyId: credentials.AccessKeyId,
+      secretAccessKey: credentials.SecretAccessKey,
+      sessionToken: credentials.SessionToken
     }
   }
 

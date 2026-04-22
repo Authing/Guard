@@ -10,7 +10,6 @@ import { useGuardButtonState } from '../../_utils/context'
 
 import { MfaBusinessAction, useMfaBusinessRequest } from '../businessRequest'
 import { AwsFaceLivenessDetector } from './AwsFaceLivenessDetector'
-import { RekognitionClient } from '@aws-sdk/client-rekognition'
 const { useEffect, useState } = React
 
 // ============================================
@@ -50,6 +49,11 @@ export const MFAFace = (props: any) => {
     null
   )
   const [livenessRegion, setLivenessRegion] = useState<string>('')
+  const [awsCredentials, setAwsCredentials] = useState<{
+    AccessKeyId: string
+    SecretAccessKey: string
+    SessionToken: string
+  } | null>(null)
   const [isLoadingSession, setIsLoadingSession] = useState(false)
   const [livenessResult, setLivenessResult] = useState<LivenessResult | null>(
     null
@@ -68,8 +72,6 @@ export const MFAFace = (props: any) => {
     setLivenessResult(null)
 
     try {
-      // const session = await fetchAuthSession()
-      // console.log(session, 'awsCliawsCli dft')
       const result = await getLivenessSessionRequest({
         mfaToken: props.initData.mfaToken
       })
@@ -80,12 +82,10 @@ export const MFAFace = (props: any) => {
 
       setLivenessSessionId(sessionData.sessionId)
       setLivenessRegion(sessionData.region)
-      const awsCli = new RekognitionClient({
-        region: sessionData.region
-      })
-      console.log(awsCli, 'awsCliawsCliawsCliawsCli dft')
-      const credentials = await awsCli.config.credentials()
-      console.log(credentials, 'credentialscredentialscredentials dft')
+      // 保存后端返回的 AWS 临时凭证
+      if (responseData.credentials) {
+        setAwsCredentials(responseData.credentials)
+      }
     } catch (e: any) {
       console.error('Failed to create liveness session', e)
       message.error(e.message || '创建活体检测会话失败')
@@ -176,6 +176,7 @@ export const MFAFace = (props: any) => {
       <AwsFaceLivenessDetector
         sessionId={livenessSessionId || ''}
         region={livenessRegion}
+        credentials={awsCredentials}
         onAnalysisComplete={handleLivenessAnalysisComplete}
         onError={handleLivenessError}
       />
