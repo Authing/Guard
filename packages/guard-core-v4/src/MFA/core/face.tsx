@@ -13,11 +13,22 @@ import { AwsFaceLivenessDetector } from './AwsFaceLivenessDetector'
 const { useEffect, useState } = React
 
 // ============================================
+// AWS 活体检测 Credentials
+// ============================================
+interface AwsCredentials {
+  AccessKeyId: string
+  SecretAccessKey: string
+  SessionToken: string
+  Expiration?: Date
+}
+
+// ============================================
 // AWS 活体检测 Session 响应
 // ============================================
 interface LivenessSessionResponse {
   sessionId: string
   region: string
+  credentials: AwsCredentials
   expireTime?: number
 }
 
