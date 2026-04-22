@@ -9,7 +9,8 @@ import { message } from 'shim-antd'
 import { useGuardButtonState } from '../../_utils/context'
 
 import { MfaBusinessAction, useMfaBusinessRequest } from '../businessRequest'
-
+import { AwsFaceLivenessDetector } from './AwsFaceLivenessDetector'
+import { RekognitionClient } from '@aws-sdk/client-rekognition'
 const { useEffect, useState } = React
 
 // ============================================
@@ -67,6 +68,8 @@ export const MFAFace = (props: any) => {
     setLivenessResult(null)
 
     try {
+      // const session = await fetchAuthSession()
+      // console.log(session, 'awsCliawsCli dft')
       const result = await getLivenessSessionRequest({
         mfaToken: props.initData.mfaToken
       })
@@ -77,6 +80,12 @@ export const MFAFace = (props: any) => {
 
       setLivenessSessionId(sessionData.sessionId)
       setLivenessRegion(sessionData.region)
+      const awsCli = new RekognitionClient({
+        region: sessionData.region
+      })
+      console.log(awsCli, 'awsCliawsCliawsCliawsCli dft')
+      const credentials = await awsCli.config.credentials()
+      console.log(credentials, 'credentialscredentialscredentials dft')
     } catch (e: any) {
       console.error('Failed to create liveness session', e)
       message.error(e.message || '创建活体检测会话失败')
@@ -140,13 +149,6 @@ export const MFAFace = (props: any) => {
   // 渲染 AWS 活体检测组件
   // ============================================
   const renderAwsLivenessDetector = () => {
-    // 动态导入 AWS 组件（避免影响原有打包）
-    const AwsFaceLivenessDetector = React.lazy(() =>
-      import('./AwsFaceLivenessDetector').then(module => ({
-        default: module.AwsFaceLivenessDetector
-      }))
-    )
-
     if (isLoadingSession) {
       return (
         <div
@@ -157,35 +159,26 @@ export const MFAFace = (props: any) => {
       )
     }
 
-    // if (!livenessSessionId) {
-    //   return (
-    //     <div style={{ textAlign: 'center', padding: '2rem' }}>
-    //       <p>无法创建检测会话</p>
-    //       <SubmitButton
-    //         onClick={createLivenessSession}
-    //         text="重试"
-    //         className="mfa-face"
-    //       />
-    //     </div>
-    //   )
-    // }
+    if (!livenessSessionId) {
+      return (
+        <div style={{ textAlign: 'center', padding: '2rem' }}>
+          <p>无法创建检测会话</p>
+          <SubmitButton
+            onClick={createLivenessSession}
+            text="重试"
+            className="mfa-face"
+          />
+        </div>
+      )
+    }
 
     return (
-      <React.Suspense
-        fallback={<div className="authing-g2-loading">加载组件...</div>}
-      >
-        <AwsFaceLivenessDetector
-          sessionId={livenessSessionId || ''}
-          region={livenessRegion}
-          onAnalysisComplete={handleLivenessAnalysisComplete}
-          onError={handleLivenessError}
-          credentials={{
-            accessKeyId: '',
-            secretAccessKey: '',
-            sessionToken: ''
-          }}
-        />
-      </React.Suspense>
+      <AwsFaceLivenessDetector
+        sessionId={livenessSessionId || ''}
+        region={livenessRegion}
+        onAnalysisComplete={handleLivenessAnalysisComplete}
+        onError={handleLivenessError}
+      />
     )
   }
 
