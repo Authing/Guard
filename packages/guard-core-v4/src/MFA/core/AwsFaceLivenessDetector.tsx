@@ -7,6 +7,14 @@ import React, { useEffect, useState } from 'react'
 // 这样可以避免使用方遇到 chunk 加载问题
 // ============================================
 
+// 配置 TensorFlow.js WASM 后端路径
+import { setWasmPaths } from '@tensorflow/tfjs-backend-wasm'
+
+// 使用 CDN 路径加载 WASM 文件（版本需与 ui-react-liveness 依赖一致）
+setWasmPaths(
+  'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm@4.11.0/dist/'
+)
+
 import {
   FaceLivenessDetectorCore,
   AwsCredentialProvider
