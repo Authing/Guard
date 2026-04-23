@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react'
 // ============================================
 // AWS 活体检测组件
 // ============================================
-// 使用 npm 包导入 AWS 组件
-// 注意：需要安装 @aws-amplify/ui-react-liveness 和 @aws-amplify/ui-react
+// 注意：@aws-amplify/ui-react-liveness 已打包进 bundle
+// 这样可以避免使用方遇到 chunk 加载问题
 // ============================================
 
 import {
@@ -41,7 +41,7 @@ export const AwsFaceLivenessDetector: React.FC<
   credentials
 }) => {
   const [isLoaded, setIsLoaded] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [error] = useState<string | null>(null)
 
   useEffect(() => {
     // 组件挂载后标记为已加载

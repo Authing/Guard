@@ -18,11 +18,9 @@ module.exports = function webpackProdBaseConfigFn({ reactVersion = '16' }) {
     externals: [
       'react',
       'react-dom',
-      'moment',
-      // 关键：将 AWS 相关包作为 external，避免打包时产生 chunk
-      '@aws-amplify/ui-react-liveness',
-      '@aws-amplify/ui-react',
-      'aws-amplify'
+      'moment'
+      // 注意：AWS 包不再设为 external，直接打包进 bundle
+      // 这样可以避免使用方遇到 chunk 加载问题
     ],
     optimization: {
       minimize: true,
