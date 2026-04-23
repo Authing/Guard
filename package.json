@@ -2,7 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "prepare": "husky",
+    "prepare": "husky install",
     "autoinstall": "npm ci && lerna run autoinstall",
     "build:core": "cd packages/guard-core-v4 && npm run autoinstall && npm run build",
     "link": "lerna link",
