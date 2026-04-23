@@ -14,7 +14,9 @@
     "release:alpha": "npm publish --verbose --tag=alpha --access public"
   },
   "peerDependencies": {
-    "authing-js-sdk": "4.23.50"
+    "authing-js-sdk": "4.23.50",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
   },
   "author": "https://github.com/authing",
   "license": "MIT"

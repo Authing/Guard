@@ -15,9 +15,14 @@ try {
 readyGo()
 
 function readyGo () {
-  webpack(webpackConfig, (error) => {
+  webpack(webpackConfig, (error, stats) => {
     if (error) {
       console.error('build Authing Guard React 18 esm bundler error: ', error)
+      process.exit(1)
+    }
+    if (stats.hasErrors()) {
+      console.error(stats.toString('errors-only'))
+      process.exit(1)
     }
   })
 }
