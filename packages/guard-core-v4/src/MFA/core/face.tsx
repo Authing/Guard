@@ -102,7 +102,8 @@ export const MFAFace = (props: any) => {
 
       setLivenessSessionId(sessionData.sessionId)
       setLivenessRegion(sessionData.region)
-
+      // setLivenessSessionId('sessionData.sessionId')
+      // setLivenessRegion('us-east-1')
       // 保存 AWS 临时凭证
       if (sessionData.credentials) {
         console.log('[FaceLiveness] 保存临时凭证')

@@ -16,6 +16,10 @@ module.exports = function webpackProdBaseConfigFn({ reactVersion = '16' }) {
     externals: ['react', 'react-dom', 'moment'],
     optimization: {
       minimize: true,
+      // 关键：禁用代码分割，防止产生 chunk 文件
+      // 这样 @aws-amplify/ui-react-liveness 的动态导入会被内联到主包
+      splitChunks: false,
+      runtimeChunk: false,
       minimizer: [
         new TerserPlugin({
           parallel: true,
