@@ -187,7 +187,8 @@ export const MFAFace = (props: any) => {
   const handleLivenessError = async (error: any) => {
     console.error('Liveness error:', error)
     message.error(error.message || '检测过程中发生错误')
-    await createLivenessSession()
+    // await createLivenessSession()
+    setLivenessSessionId(null)
   }
 
   // ============================================
