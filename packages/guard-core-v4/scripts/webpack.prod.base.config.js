@@ -1,4 +1,5 @@
 const TerserPlugin = require('terser-webpack-plugin')
+const webpack = require('webpack')
 
 const { resolve } = require('./utils')
 
@@ -41,6 +42,12 @@ module.exports = function webpackProdBaseConfigFn({ reactVersion = '16' }) {
           }
         })
       ]
-    }
+    },
+    plugins: [
+      // 强制只生成一个 chunk，阻止动态导入产生额外 chunk
+      new webpack.optimize.LimitChunkCountPlugin({
+        maxChunks: 1
+      })
+    ]
   }
 }
