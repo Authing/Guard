@@ -84,6 +84,7 @@ export const MFAFace = (props: any) => {
     setLivenessResult(null)
 
     try {
+      console.log('[FaceLiveness] 开始触发请求')
       const result = await getLivenessSessionRequest({
         mfaToken: props.initData.mfaToken
       })
