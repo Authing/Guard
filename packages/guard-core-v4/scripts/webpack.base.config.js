@@ -48,13 +48,6 @@ module.exports = function webpackConfigFn({ reactVersion = '16' }) {
           `shim-${reactVersion === '18' ? 'antd4' : 'antd4'}`
         ),
         // ============================================
-        // TensorFlow.js 版本隔离
-        // ============================================
-        '@tensorflow/tfjs-core': resolve('node_modules/@tensorflow/tfjs-core'),
-        '@tensorflow/tfjs-backend-cpu': resolve('node_modules/@tensorflow/tfjs-backend-cpu'),
-        '@tensorflow/tfjs-backend-wasm': resolve('node_modules/@tensorflow/tfjs-backend-wasm'),
-        '@tensorflow/tfjs-converter': resolve('node_modules/@tensorflow/tfjs-converter'),
-        // ============================================
         // AWS Amplify 兼容层
         // 解决 @aws-amplify/ui 与 aws-amplify v6 的 API 差异
         // ============================================
