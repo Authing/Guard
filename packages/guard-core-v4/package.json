@@ -8,7 +8,7 @@
     "package-lock.json"
   ],
   "scripts": {
-    "autoinstall": "npm install && cd shim-antd4 && npm install && cd ../shim-antd5 && npm install && cd ../shim-react16 && npm install && cd ../shim-react18 && npm install",
+    "autoinstall": "npm ci && cd shim-antd4 && npm ci && cd ../shim-antd5 && npm ci && cd ../shim-react16 && npm ci && cd ../shim-react18 && npm ci",
     "build": "node scripts/build.js",
     "build:bundle-analyzer": "webpack --config ./scripts/webpack.bundle-analyzer.js",
     "dev": "webpack-dev-server --config scripts/webpack.dev.config.js",
