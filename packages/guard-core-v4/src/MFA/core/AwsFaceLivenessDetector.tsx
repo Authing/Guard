@@ -98,7 +98,8 @@ export const AwsFaceLivenessDetector: React.FC<
   }
 
   // 包装 onAnalysisComplete 以符合 AWS 组件类型要求
-  const handleAnalysisComplete = async (): Promise<void> => {
+  const handleAnalysisComplete = async (deviceInfo: any): Promise<void> => {
+    console.log(deviceInfo, 'handleAnalysisComplete log')
     if (onAnalysisComplete) {
       await Promise.resolve(onAnalysisComplete())
     }

@@ -25,6 +25,7 @@
     "@tensorflow/tfjs-backend-cpu": "^4.22.0",
     "@tensorflow/tfjs-backend-wasm": "^4.22.0",
     "@tensorflow/tfjs-converter": "^4.22.0",
+    "@tensorflow/tfjs-core": "^4.22.0",
     "authing-js-sdk": "4.23.50",
     "aws-amplify": "^6.16.3",
     "classnames": "^2.3.1",
