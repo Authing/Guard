@@ -26,10 +26,10 @@ jobs:
 
     steps:
 
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 16.13.1
+          node-version: 20.19.0
           registry-url: https://registry.npmjs.org/
           
       - name: before scripts
@@ -46,8 +46,8 @@ jobs:
           
       - name: install global packages
         run: |
-          npm install -g lerna@4.0.0
-          npm ci
+          npm install -g lerna@8.2.0
+          npm install
 
       - name: lint codes
         run: |

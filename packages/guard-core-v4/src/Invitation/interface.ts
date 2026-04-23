@@ -50,12 +50,10 @@ export interface GuardInviteLoginInitData extends Partial<InviteContext> {
   originContext: any
 }
 
-export interface GuardInviteCompleteInitData
-  extends Partial<GuardInviteLoginInitData> {
+export interface GuardInviteCompleteInitData extends Partial<GuardInviteLoginInitData> {
   metaData: any
 }
-export interface GuardInviteIdentityBindInitData
-  extends Partial<GuardInviteLoginInitData> {
+export interface GuardInviteIdentityBindInitData extends Partial<GuardInviteLoginInitData> {
   weComConfig: {
     QRConfig: any
     id: string

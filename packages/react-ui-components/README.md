@@ -25,8 +25,7 @@ Guard 拥有以下基本功能：
 - 兼容主流前端 UI 库：
   - 原生 JavaScript 调用；
   - Vue 组件；
-  - React 组件；
-  - Angular 组件。
+  - React 组件。
 
 ![Guard Demo](/static/images/guard-demo.jpg)
 

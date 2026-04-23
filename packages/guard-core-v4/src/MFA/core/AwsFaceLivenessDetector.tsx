@@ -31,15 +31,13 @@ interface AwsFaceLivenessDetectorProps {
 /**
  * AWS Face Liveness 检测组件
  */
-export const AwsFaceLivenessDetector: React.FC<
-  AwsFaceLivenessDetectorProps
-> = ({
+export const AwsFaceLivenessDetector = ({
   sessionId,
   region = 'us-east-1',
   onAnalysisComplete,
   onError,
   credentials
-}) => {
+}: AwsFaceLivenessDetectorProps) => {
   const [isLoaded, setIsLoaded] = useState(false)
   const [error] = useState<string | null>(null)
 

@@ -6,8 +6,8 @@
   "module": "lib/index.min.js",
   "types": "lib/typings/index.d.ts",
   "scripts": {
-    "autoinstall": "npm ci",
-    "build:lib": "npm ci && node scripts/build.js",
+    "autoinstall": "npm install",
+    "build:lib": "npm install && node scripts/build.js",
     "release:official": "npm publish --verbose --access public",
     "release:alpha": "npm publish --verbose --tag=alpha --access public"
   },

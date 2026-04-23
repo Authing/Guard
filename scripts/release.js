@@ -31,7 +31,6 @@ function callShell(args) {
     'native-js-ui-components',
     'react-ui-components',
     'react18-ui-components',
-    'ng-ui-components',
     'vue-ui-components',
   ]
 
@@ -53,11 +52,10 @@ function callShell(args) {
     `cd packages/guard-shim-react && ${releaseType}`,
     `cd packages/guard-shim-react18 && ${releaseType}`,
     `sleep 15`, // 等待 npm registry 同步
-    `cd packages/native-js-ui-components && npm ci && npm install --save-exact @authing/guard-shim-react@${version} && npm run build:lib && ${releaseType}`,
-    `cd packages/react-ui-components && npm ci && npm install --save-exact @authing/guard-shim-react@${version} && npm run build:lib && ${releaseType}`,
-    `cd packages/react18-ui-components && npm ci && npm install --save-exact @authing/guard-shim-react18@${version} && npm run build:lib && ${releaseType}`,
-    `cd packages/ng-ui-components && npm ci && npm install --save-exact @authing/native-js-ui-components@${version} && npm run build:lib && ${releaseType}`,
-    `cd packages/vue-ui-components && npm ci && npm install --save-exact @authing/native-js-ui-components@${version} && npm run build:lib && ${releaseType}`,
+    `cd packages/native-js-ui-components && npm install && npm install --save-exact @authing/guard-shim-react@${version} && npm run build:lib && ${releaseType}`,
+    `cd packages/react-ui-components && npm install && npm install --save-exact @authing/guard-shim-react@${version} && npm run build:lib && ${releaseType}`,
+    `cd packages/react18-ui-components && npm install && npm install --save-exact @authing/guard-shim-react18@${version} && npm run build:lib && ${releaseType}`,
+    `cd packages/vue-ui-components && npm install && npm install --save-exact @authing/native-js-ui-components@${version} && npm run build:lib && ${releaseType}`,
   ]
 
   shelljs.set('-e')

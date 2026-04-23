@@ -114,14 +114,14 @@ export const MFAFace = (props: any) => {
         })
       }
 
-      // console.log(demo, 'demodemodemodemodemodemo')
-      // setLivenessSessionId(demo.sessionId)
-      // setLivenessRegion(demo.region)
-      // setLivenessCredentials({
-      //   accessKeyId: demo.credentials.AccessKeyId,
-      //   secretAccessKey: demo.credentials.SecretAccessKey,
-      //   sessionToken: demo.credentials.SessionToken
-      // })
+      //   // console.log(demo, 'demodemodemodemodemodemo')
+      //   setLivenessSessionId(demo.sessionId)
+      //   setLivenessRegion(demo.region)
+      //   setLivenessCredentials({
+      //     accessKeyId: demo.credentials.AccessKeyId,
+      //     secretAccessKey: demo.credentials.SecretAccessKey,
+      //     sessionToken: demo.credentials.SessionToken
+      //   })
     } catch (e: any) {
       console.error('[FaceLiveness] 创建 session 失败:', e)
       message.error(e.message || '创建活体检测会话失败')

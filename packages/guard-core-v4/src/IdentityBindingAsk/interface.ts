@@ -12,8 +12,7 @@ export interface IdentityBindingAskEvents extends IG2Events {
 }
 
 export interface GuardIdentityBindingAskProps
-  extends IG2FCProps,
-    IdentityBindingAskEvents {
+  extends IG2FCProps, IdentityBindingAskEvents {
   config?: Partial<IdentityBindingAskConfig>
   initData?: any
 }
@@ -23,8 +22,7 @@ export interface GuardIdentityBindingAskInitData {
 }
 
 export interface GuardIdentityBindingAskViewProps
-  extends GuardIdentityBindingAskProps,
-    IG2FCViewProps {
+  extends GuardIdentityBindingAskProps, IG2FCViewProps {
   config: IdentityBindingAskConfig
   initData: GuardIdentityBindingAskInitData
 }

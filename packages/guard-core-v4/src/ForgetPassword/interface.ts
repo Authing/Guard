@@ -37,7 +37,6 @@ export interface ForgetPasswordProps extends IG2FCProps, ForgetPasswordEvents {
 }
 
 export interface ForgetPasswordViewProps
-  extends ForgetPasswordProps,
-    IG2FCViewProps {
+  extends ForgetPasswordProps, IG2FCViewProps {
   config: IG2Config
 }

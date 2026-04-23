@@ -5,7 +5,7 @@
   <a href="https://forum.authing.cn/" target="_blank"><img src="https://img.shields.io/badge/chat-forum-blue" /></a>
   <a href="https://docs.authing.cn/v2/reference/ui-components/" target="_blank"><img src="https://img.shields.io/badge/docs-passing-brightgreen" /></a>
   <a href="https://github.com/Authing/AuthingSSO" target="_blank"><img src="https://img.shields.io/badge/License-MIT-success" alt="License"></a>
-  <a href="javascript:;" target="_blank"><img src="https://img.shields.io/badge/node-%3E=12-green.svg" alt="Node"></a>
+  <a href="javascript:;" target="_blank"><img src="https://img.shields.io/badge/node-%3E%3D20.19.0-green.svg" alt="Node"></a>
 </div>
 
 <br />
@@ -20,14 +20,13 @@ English | [简体中文](./README-zh_CN.md)
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
 | @authing/react-ui-components     | [![npm version](https://badge.fury.io/js/@authing%2Freact-ui-components.svg)](https://www.npmjs.com/package/@authing/react-ui-components)         | [Authing React UI Components](https://docs.authing.cn/v2/reference/ui-components/react.html)                         |
 | @authing/vue-ui-components       | [![npm version](https://badge.fury.io/js/@authing%2Fvue-ui-components.svg)](https://www.npmjs.com/package/@authing/vue-ui-components)             | [Authing Vue UI Components](https://docs.authing.cn/v2/reference/ui-components/vue.html)                             |
-| @authing/ng-ui-components        | [![npm version](https://badge.fury.io/js/@authing%2Fng-ui-components.svg)](https://www.npmjs.com/package/@authing/ng-ui-components)               | [Authing Angular UI Components](https://docs.authing.cn/v2/reference/ui-components/angular.html)                     |
 | @authing/native-js-ui-components | [![npm version](https://badge.fury.io/js/@authing%2Fnative-js-ui-components.svg)](https://www.npmjs.com/package/@authing/native-js-ui-components) | [Authing Native JavaScript UI Components](https://docs.authing.cn/v2/reference/ui-components/native-javascript.html) |
 
 ## ✨ Login Component (Guard)
 
 Authing Login Component (Guard) is an embeddable login form that can be configured according to your needs and is recommended for single page applications. It allows you to easily add various social login methods so that your users can log in seamlessly and have a consistent login experience across platforms. guard shields developers from many of the underlying authentication implementation details, as well as tedious UI development.
 
-Guard can be integrated into your React, Vue.js, Angular, and native JavaScript projects, and you can quickly implement a login authentication process with this component.
+Guard can be integrated into your React, Vue.js, and native JavaScript projects, and you can quickly implement a login authentication process with this component.
 
 ![Guard Demo](./static/images/guard-demo_en.png)
 
@@ -61,7 +60,6 @@ Responsive layout, perfectly compatible with mobile and PC, while you can easily
 - [Native JavaScript](https://docs.authing.cn/v2/en/reference/ui-components/native-javascript.html)
 - [Vue Components](https://docs.authing.cn/v2/en/reference/ui-components/vue.html)
 - [React Components](https://docs.authing.cn/v2/en/reference/ui-components/react.html)
-- [Angular Components](https://docs.authing.cn/v2/en/reference/ui-components/angular.html)
 
 ## 🌴 Online Experience
 

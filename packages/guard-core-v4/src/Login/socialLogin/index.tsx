@@ -109,8 +109,8 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
         return a.id === lastConnectionId
           ? -1
           : b.id === lastConnectionId
-          ? 1
-          : 0
+            ? 1
+            : 0
       })
 
       if (sortedEnterprise[0].id === lastConnectionId) {
