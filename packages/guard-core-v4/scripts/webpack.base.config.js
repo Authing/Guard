@@ -36,6 +36,13 @@ class BuildProgressPlugin {
 
 module.exports = function webpackConfigFn({ reactVersion = '16' }) {
   return {
+    // 忽略 Less 中关于内联 JavaScript 的弃用警告（来自 antd4）
+    ignoreWarnings: [
+      {
+        module: /node_modules[\/]antd[\/].*\.less$/,
+        message: /DEPRECATED WARNING.*Inline JavaScript/
+      }
+    ],
     resolve: {
       extensions: ['.tsx', '.ts', '.js', '.json'],
       alias: {
