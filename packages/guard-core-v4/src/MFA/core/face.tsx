@@ -134,24 +134,18 @@ export const MFAFace = (props: any) => {
   /**
    * 获取活体检测结果
    */
-  const fetchLivenessResult = async () => {
+  const fetchLivenessResult = async (completeInfo?: any) => {
     if (!livenessSessionId) {
       console.log('[FaceLiveness] 没有 sessionId，跳过获取结果')
       return
     }
 
-    console.log(
-      '[FaceLiveness] 开始获取检测结果, sessionId:',
-      livenessSessionId
-    )
     spinChange(true)
-
     try {
       const result = await getLivenessResultRequest({
         sessionId: livenessSessionId,
         mfaToken: props.initData.mfaToken
       })
-      console.log('[FaceLiveness] 获取检测结果响应:', result)
 
       // 适配后端返回格式
       const responseData = result.data || result
@@ -159,11 +153,6 @@ export const MFAFace = (props: any) => {
 
       const livenessData: LivenessResult = responseData
       setLivenessResult(livenessData)
-
-      console.log('[FaceLiveness] isLive:', livenessData.isLive)
-      console.log('[FaceLiveness] confidence:', livenessData.confidence)
-      console.log('[FaceLiveness] status:', livenessData.status)
-
       // 根据结果处理登录
       if (livenessData.isLive) {
         console.log('[FaceLiveness] 活体检测通过，调用 mfaLogin')
@@ -186,8 +175,8 @@ export const MFAFace = (props: any) => {
   /**
    * 处理 AWS 活体检测完成
    */
-  const handleLivenessAnalysisComplete = async () => {
-    await fetchLivenessResult()
+  const handleLivenessAnalysisComplete = async (completeInfo?: any) => {
+    await fetchLivenessResult(completeInfo)
   }
 
   /**
@@ -246,13 +235,6 @@ export const MFAFace = (props: any) => {
 
     return (
       <div className="g2-mfa-face-result">
-        <div
-          className={`g2-mfa-face-result-badge ${
-            livenessResult.isLive ? 'success' : 'error'
-          }`}
-        >
-          {livenessResult.isLive ? '✅ 真人验证通过' : '❌ 未通过验证'}
-        </div>
         <p className="authing-g2-mfa-tips">
           置信度: {livenessResult.confidence?.toFixed?.(2) || 0}%
         </p>

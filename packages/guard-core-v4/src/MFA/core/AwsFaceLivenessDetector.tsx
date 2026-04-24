@@ -16,10 +16,45 @@ import { ThemeProvider } from '@aws-amplify/ui-react'
 
 import '@aws-amplify/ui-react/styles.css'
 
+// 覆盖 AWS 活体检测组件默认样式，移除上方空白
+const overrideStyles = `
+  /* 移除 liveness-detector-check 的 gap */
+  .liveness-detector-check.amplify-flex {
+    gap: 0 !important;
+  }
+  /* 隐藏 start screen warning，它不占用空间 */
+  .amplify-liveness-start-screen-warning {
+    display: none !important;
+  }
+  /* 针对 visibility: hidden 的元素 */
+  div[style*="visibility: hidden"] {
+    height: 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+  /* 调整椭圆框（instruction overlay）位置和大小 */
+  .amplify-liveness-instruction-overlay {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    height: 100% !important;
+    min-height: auto !important;
+    margin: 0 !important;
+  }
+  /* 调整相机模块容器，确保没有多余间距 */
+  .amplify-liveness-camera-module {
+    gap: 0 !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+`
+
 interface AwsFaceLivenessDetectorProps {
   sessionId: string
   region?: string
-  onAnalysisComplete?: () => void | Promise<void>
+  onAnalysisComplete?: (completeInfo?: any) => void | Promise<void>
   onError?: (error: any) => void
   credentials?: {
     accessKeyId: string
@@ -98,10 +133,9 @@ export const AwsFaceLivenessDetector: React.FC<
   }
 
   // 包装 onAnalysisComplete 以符合 AWS 组件类型要求
-  const handleAnalysisComplete = async (deviceInfo: any): Promise<void> => {
-    console.log(deviceInfo, 'handleAnalysisComplete log')
+  const handleAnalysisComplete = async (completeInfo: any): Promise<void> => {
     if (onAnalysisComplete) {
-      await Promise.resolve(onAnalysisComplete())
+      await Promise.resolve(onAnalysisComplete(completeInfo))
     }
   }
 
@@ -112,6 +146,7 @@ export const AwsFaceLivenessDetector: React.FC<
 
   return (
     <ThemeProvider>
+      <style>{overrideStyles}</style>
       <div style={{ width: '100%', maxWidth: 480, margin: '0 auto' }}>
         <FaceLivenessDetectorCore
           sessionId={sessionId}

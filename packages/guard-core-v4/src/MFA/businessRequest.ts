@@ -211,15 +211,15 @@ export const GetFaceLivenessSession = async (
 
 /**
  * 获取 AWS 活体检测结果
- * GET /api/v2/mfa/face/liveness/result?sessionId=xxx
+ * POST /api/v2/mfa/face/liveness/result
  */
 export const GetFaceLivenessResult = async (
   content: GetFaceLivenessResultContent
 ) => {
   const { sessionId, mfaToken } = content
-  const { get } = getGuardHttp()
+  const { post } = getGuardHttp()
 
-  return await get(
+  return await post(
     '/api/v2/mfa/face/liveness/result',
     { sessionId },
     {
