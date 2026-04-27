@@ -73,18 +73,17 @@ export type LoginWay =
  * when： 多账号页面跳转进入登录页面
  * 携带的回填数据信息
  */
-export interface BackFillMultipleState
-  extends Omit<
-    User,
-    | 'id'
-    | 'name'
-    | 'nickname'
-    | 'username'
-    | 'phone'
-    | 'email'
-    | 'photo'
-    | '_updateTime'
-  > {
+export interface BackFillMultipleState extends Omit<
+  User,
+  | 'id'
+  | 'name'
+  | 'nickname'
+  | 'username'
+  | 'phone'
+  | 'email'
+  | 'photo'
+  | '_updateTime'
+> {
   /**
    * 回填的账号名称 邮箱/用户名/手机
    */
