@@ -231,7 +231,7 @@ export const GuardAuthenticationView = () => {
           onFinish={onFinishHandle}
           onFinishFailed={() => submitButtonRef.current?.onError()}
           onValuesChange={v => {
-            const codes: string[] = v.code
+            const codes: string[] = v.code?.split?.('') ?? []
             if (
               codes.filter(code => Boolean(code)).length >= verifyCodeLength
             ) {

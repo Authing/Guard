@@ -5,11 +5,100 @@ import { React, render } from 'shim-react'
 import * as facePlugin from 'face-api.js'
 
 const App = () => {
-  const appId = '661fb64ce379d2d57d56a1b7'
+  const appId = '69ef03b6abc0362241d71058'
   // const deviceId = 'DEVICE_ID' //如要使用必须使用开启元数据对的 用户池 测试
 
   const config: Partial<GuardLocalConfig> = {
-    defaultScenes: GuardModuleType.REGISTER_ACCOUNT_TYPE_SELECT
+    host:'https://rhlfbq6ws2jb.authing.localhost',
+    defaultScenes: GuardModuleType.INVITE_AUTH,
+    defaultInitData:{
+      "enabledIdentifierVerify": true,
+      "sendVerifyCodeMethod": "priorityEmail",
+      "enabledInfoFill": true,
+      "registerInfoFillMsg": null,
+      "extendsFields": [
+          {
+              "type": "internal",
+              "name": "email",
+              "inputType": "email",
+              "show": true,
+              "required": true,
+              "allowRewrite": false,
+              "source": "preset",
+              "validateRules": [
+                  {
+                      "type": "email",
+                      "content": "",
+                      "errorMessage": "",
+                      "i18n": {}
+                  }
+              ]
+          },
+          {
+              "type": "internal",
+              "name": "phone",
+              "inputType": "phone",
+              "show": true,
+              "required": false,
+              "allowRewrite": false,
+              "source": "preset",
+              "validateRules": [
+                  {
+                      "type": "phone",
+                      "content": "",
+                      "errorMessage": "",
+                      "i18n": {}
+                  }
+              ]
+          }
+      ],
+      "extendsFieldsI18n": {
+          "phone": {
+              "en-US": {
+                  "enabled": true,
+                  "value": "Phone"
+              },
+              "zh-CN": {
+                  "enabled": true,
+                  "value": "手机号"
+              },
+              "zh-TW": {
+                  "enabled": true,
+                  "value": "手機號碼"
+              },
+              "ja-JP": {
+                  "enabled": true,
+                  "value": "携帯電話番号"
+              }
+          },
+          "email": {
+              "en-US": {
+                  "enabled": true,
+                  "value": "Email"
+              },
+              "zh-CN": {
+                  "enabled": true,
+                  "value": "邮箱"
+              },
+              "zh-TW": {
+                  "enabled": true,
+                  "value": "電子郵件"
+              },
+              "ja-JP": {
+                  "enabled": true,
+                  "value": "メール"
+              }
+          }
+      },
+      "extendsFieldsOptions": [],
+      "email": "dongfengtao@authing.com",
+      "phone": null,
+      "phoneCountryCode": "",
+      "inviteeName": "董峰涛3",
+      "verifyCodeMaxErrCount": 5,
+      "token": "nSahhKXTcKPaxXItxCV",
+      "identifier": "zpvnnga4gvv0ucafe5w6"
+  }
   }
 
   const onLogin = (userInfo: User) => {
