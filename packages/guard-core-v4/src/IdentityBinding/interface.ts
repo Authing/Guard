@@ -21,7 +21,8 @@ export interface IdentityBindingEvents extends IG2Events {
 }
 
 export interface GuardIdentityBindingProps
-  extends IG2FCProps, IdentityBindingEvents {
+  extends IG2FCProps,
+    IdentityBindingEvents {
   config?: Partial<IdentityBindingConfig>
 }
 
@@ -31,7 +32,8 @@ export interface GuardIdentityBindingInitData {
 }
 
 export interface GuardIdentityBindingViewProps
-  extends GuardIdentityBindingProps, IG2FCViewProps {
+  extends GuardIdentityBindingProps,
+    IG2FCViewProps {
   config: IdentityBindingConfig
   initData: GuardIdentityBindingInitData
 }

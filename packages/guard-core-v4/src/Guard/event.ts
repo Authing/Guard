@@ -30,8 +30,7 @@ interface OnAfterChangeModuleOptions {
 }
 
 export interface GuardEvents
-  extends
-    LoginEvents,
+  extends LoginEvents,
     RegisterEvents,
     CompleteInfoEvents,
     ForgetPasswordEvents,

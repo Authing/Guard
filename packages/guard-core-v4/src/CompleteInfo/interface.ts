@@ -132,7 +132,8 @@ export interface RegisterCompleteInfoInitData {
   onRegisterSuccess: Function
 }
 
-export interface RegisterCompletePasswordInitData extends RegisterCompleteInfoInitData {
+export interface RegisterCompletePasswordInitData
+  extends RegisterCompleteInfoInitData {
   isChangeComplete: boolean
 }
 export interface CompleteInfoRequest {

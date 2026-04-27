@@ -17,7 +17,8 @@ export interface SubmitSuccessInitData {
 }
 
 export interface GuardNewSubmitSuccessViewProps
-  extends IG2FCViewProps, SubmitSuccessEvents {
+  extends IG2FCViewProps,
+    SubmitSuccessEvents {
   config: SubmitSuccessConfig
   initData?: SubmitSuccessInitData
 }

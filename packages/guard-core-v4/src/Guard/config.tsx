@@ -11,7 +11,9 @@ import { getDefaultRegisterConfig, RegisterConfig } from '../Register/interface'
 import { ShieldSpin } from '../ShieldSpin'
 
 export interface GuardLocalConfig
-  extends RegisterConfig, LoginConfig, ForgetPasswordConfig {
+  extends RegisterConfig,
+    LoginConfig,
+    ForgetPasswordConfig {
   isSSO?: boolean
   defaultScenes?: GuardModuleType
   defaultInitData?: any

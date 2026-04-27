@@ -11,6 +11,16 @@ module.exports = {
     'plugin:prettier/recommended'
   ],
   root: true,
+  ignorePatterns: [
+    '**/node_modules/**',
+    '**/dist/**',
+    '**/*.d.ts',
+    '**/build/**',
+    'packages/guard-core-v4/example.tsx',
+    'packages/guard-core-v4/shim-*/**',
+    'packages/ng-ui-components/**',
+    '**/*.spec.ts'
+  ],
   rules: {
     'linebreak-style': [
       'error',
