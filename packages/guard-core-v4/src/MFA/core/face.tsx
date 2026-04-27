@@ -154,7 +154,7 @@ export const MFAFace = (props: any) => {
       const livenessData: LivenessResult = responseData
       setLivenessResult(livenessData)
       // 根据结果处理登录
-      if (livenessData.isLive) {
+      if (livenessData.status === 'SUCCEEDED') {
         console.log('[FaceLiveness] 活体检测通过，调用 mfaLogin')
         // 活体检测通过，调用验证接口
         props.mfaLogin(200, responseData)
