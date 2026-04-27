@@ -10,8 +10,7 @@ import './styles.less'
 
 const { useRef, useState } = React
 
-export interface ImageProProps
-  extends React.ImgHTMLAttributes<HTMLImageElement> {
+export interface ImageProProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string
   className?: string
   alt?: string
