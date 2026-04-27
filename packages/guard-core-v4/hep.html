@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="/scp/res/jssource/bootstrap/css/bootstrap.min.css">
+    <script src="/scp/res/jssource/jquery/jquery.js"></script>
+    <script src="/scp/res/jssource/jquery/jquery.json.js"></script>
+    <script src="/scp/res/jssource/bootstrap/js/bootstrap.js"></script>
+
+    <script>
+        var GlobalVar = new Object();
+        GlobalVar.contextPath = '/scp';
+    </script>
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+
+    <link rel="stylesheet" type="text/css" href="http://8.141.16.118:16682/scp/res/cssencrypt/login/login.min.css"/>
+    <script src="https://cdn.authing.co/packages/guard/5.2.0/guard.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.authing.co/packages/guard/5.2.0/guard.min.css" />
+    <style>
+        /* 登录容器样式 */
+        #authing-guard-container {
+            width: 456px;
+            min-height: 100%;
+            transform: translate(0, 0);
+        }
+        .scp_center_main {
+            width: 912px;
+        }
+        .scp_center_left, .scp_center_right {
+            width: 50%;
+        }
+        .g2-view-container {
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body style="background: #f2f6fc;">
+    <div class="scp-top_main">
+        <div class="scp_top"><b>JournalX</b><span style="font-size: 18px;color: #5b738d;">3.0</span></div>
+    </div>
+    <div class="scp_center_main" style="margin-bottom: 170px;">
+        <div class="scp_center">
+            <div class="scp_center_left">
+                <div id="authing-guard-container"></div>
+                <input type="hidden" id="appid" value="69e9815348a63edc9bc8af25">
+                <input type="hidden" id="apphost" value="https://hep-manuscripts.u2.hep.com.cn">
+            </div>
+            <div class="scp_center_right">
+                <img src="http://8.141.16.118:16682/scp/res/img/scp_login_right.jpg"/>
+            </div>
+        </div>
+    </div>
+    <div class="xiamiandidsuyfht" style="text-align: center;height: auto;color: #ccc;padding: 10px 0px;background: #666;position: fixed;bottom: 0;width: 100%;">
+        <p>
+            ©版权所有 2021-2031 北京玛格泰克科技发展有限公司 (著作权号: 2021SR0781267)
+        </p>
+    </div>
+    <script>
+        function initLoginDiv() {
+            const guard = new GuardFactory.Guard({
+                // 你可以前往 Authing 控制台的本应用详情页查看你的 APP ID
+                appId: $("#appid").val(),
+                // 如果你使用的是私有化部署的 Authing 服务，需要传入自定义 host，如:
+                host: $("#apphost").val(),
+                // 默认情况下，会使用你在 Authing 控制台中配置的第一个回调地址为此次认证使用的回调地址。
+                // 如果你配置了多个回调地址，也可以手动指定（此地址也需要加入到应用的「登录回调 URL」中）：
+                // redirectUri: "http://localhost:8080",
+
+                //可选值：'zh-CN' | 'en-US' | 'zh-TW' | 'ja-JP'
+                lang: 'zh-CN',
+                // isSSO: true,
+                // style: CSSProperties,
+                config: {
+                    title: '',
+                    logo: '',
+                    langRange: [],//['zh-CN','en-US'],
+                    socialConnectionList:[],
+                    loginMethod: 'password',
+                    loginMethodList: ['password','phone-code','emailCode'],
+                    // registerMethodList:['email','phone']
+                    contentCSS: '.g2-view-header > img {display:none}'
+                }
+            });
+
+            // 挂载 Authing Guard
+            guard.start("#authing-guard-container");
+
+            guard.on('login', (userInfo) => {
+                console.log('userInfo in login: ', userInfo)
+                // accessTokenByIdToken(userInfo)
+                // window.location.href="https://www.baidu.com"
+                window.location.href="http://8.141.16.118:16682/scp/loginByIdtoken?idtoken="+userInfo.token
+            })
+        }
+
+
+        async function accessTokenByIdToken(userInfo) {
+            const authenticationClient = await guard.getAuthClient()
+            const res = await authenticationClient.getAccessTokenByIdToken({
+                scope: 'openid',
+                // 控制台 -> 自建应用 -> 应用配置 -> 认证配置 -> 登录回调 URL
+                redirectUri: 'http://localhost:8080',
+                // 登录成功后，从用户信息中获取到的 ID Toten
+                idToken: userInfo.token
+            })
+            console.log('getAccessTokenByIdToken: ', res)
+        }
+
+        $(function(){
+            initLoginDiv();
+            var rheight = $('.scp_center_main').height();
+            $('.scp_center_left').height(rheight);
+            if(window.top != window.self){
+                window.top.location.reload();
+            }
+        })
+
+        function closeNotice(){
+            $("#noticediv").hide();
+        }
+    </script>
+</body>
+</html>
