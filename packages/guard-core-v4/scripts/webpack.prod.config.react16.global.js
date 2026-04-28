@@ -9,12 +9,12 @@ const { resolve } = require('./utils')
 const reactVersion = '16'
 
 module.exports = merge(
-  {}, 
+  {},
   webpackBaseConfigFn(
     {
       reactVersion
     }
-  ), 
+  ),
   webpackProdBaseConfigFn({
     reactVersion
   }),
@@ -26,6 +26,8 @@ module.exports = merge(
         name: 'GuardFactory',
         type: 'global'
       }
-    }
+    },
+    // 移除 externals，将 React 打包进 bundle（类似 v5.2.0）
+    externals: {}
   }
 )
