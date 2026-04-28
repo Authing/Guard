@@ -169,7 +169,7 @@ export const MFAFace = (props: any) => {
     }
 
     spinChange(false)
-    console.log('[FaceLiveness] 获取检测结果结束')
+    console.log('[FaceLiveness] 获取检测结果结束 test')
   }
 
   /**
