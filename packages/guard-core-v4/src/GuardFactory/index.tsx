@@ -92,7 +92,10 @@ export class GuardFactory {
     this.visible = !!(options.mode === GuardMode.Modal)
   }
 
-  private adaptOptions(options: GuardFactoryOptions, config: Partial<IG2Config>) {
+  private adaptOptions(
+    options: GuardFactoryOptions,
+    config: Partial<IG2Config>
+  ) {
     options.host = options.host || ''
 
     if (isDef(options.isSSO)) {
@@ -197,7 +200,8 @@ export class GuardFactory {
         appHost: requestHostname,
         tenantId: this.options.tenantId,
         redirectUri:
-          this.options.redirectUri || publicConfig.oidcConfig?.redirect_uris?.[0],
+          this.options.redirectUri ||
+          publicConfig.oidcConfig?.redirect_uris?.[0],
         tokenEndPointAuthMethod:
           publicConfig.oidcConfig?.token_endpoint_auth_method || 'none',
         introspectionEndPointAuthMethod:
@@ -592,7 +596,9 @@ export class GuardFactory {
 
     const element: ReactElement = <ReactAuthingGuard {...guardProps} />
 
-    const container = GuardFactory.getGuardContainer(this.options.config?.target)
+    const container = GuardFactory.getGuardContainer(
+      this.options.config?.target
+    )
     if (!container) {
       throw new Error('Failed to find or create guard container')
     }
