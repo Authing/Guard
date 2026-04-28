@@ -19,6 +19,7 @@ module.exports = merge(
     reactVersion
   }),
   {
+    entry: resolve('src/index.cdn.tsx'),
     output: {
       filename: 'guard.min.js',
       path: resolve('dist/global'),
@@ -27,7 +28,7 @@ module.exports = merge(
         type: 'global'
       }
     },
-    // 移除 externals，将 React 打包进 bundle（类似 v5.2.0）
+    // CDN 包需要内置 React 运行时，保持和 v5.2.0 的使用方式一致
     externals: {}
   }
 )

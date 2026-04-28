@@ -1,5 +1,4 @@
 import { React } from 'shim-react'
-import { useState } from 'react'
 import { get as getWebauthnCredential, supported } from '@github/webauthn-json'
 import {
   useGuardAppId,
@@ -18,7 +17,7 @@ interface LoginWithPasskeyProps {
   onLoginFailed: any
 }
 
-const { useCallback } = React
+const { useCallback, useState } = React
 
 export const PasskeyButton = (props: LoginWithPasskeyProps) => {
   const { onLoginFailed, onLoginSuccess } = props

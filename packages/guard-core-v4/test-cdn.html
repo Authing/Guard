@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guard CDN Local Test</title>
+    <link rel="stylesheet" href="./dist/global/guard.min.css" />
+    <style>
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #f5f7fb;
+        color: #1f2937;
+      }
+
+      .page {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+
+      .header {
+        margin-bottom: 16px;
+      }
+
+      .title {
+        margin: 0 0 8px;
+        font-size: 24px;
+        line-height: 32px;
+      }
+
+      .desc {
+        margin: 0;
+        font-size: 14px;
+        line-height: 22px;
+        color: #4b5563;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 320px minmax(0, 1fr);
+        gap: 16px;
+        align-items: start;
+      }
+
+      .panel {
+        background: #fff;
+        border: 1px solid #dbe3ef;
+        border-radius: 8px;
+        padding: 16px;
+        box-sizing: border-box;
+      }
+
+      .panel h2 {
+        margin: 0 0 12px;
+        font-size: 16px;
+        line-height: 24px;
+      }
+
+      .meta {
+        display: grid;
+        gap: 8px;
+        font-size: 13px;
+        line-height: 20px;
+      }
+
+      .meta code {
+        word-break: break-all;
+      }
+
+      .status {
+        margin-top: 12px;
+        padding: 10px 12px;
+        border-radius: 6px;
+        background: #eff6ff;
+        color: #1d4ed8;
+        font-size: 13px;
+        line-height: 20px;
+      }
+
+      .status.error {
+        background: #fef2f2;
+        color: #b91c1c;
+      }
+
+      .guard-shell {
+        min-height: 720px;
+        background: #fff;
+        border: 1px solid #dbe3ef;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      #guard-root {
+        min-height: 720px;
+      }
+
+      @media (max-width: 960px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="header">
+        <h1 class="title">Guard CDN Local Test</h1>
+        <p class="desc">
+          这个页面直接引用当前分支 build 出来的 <code>dist/global/guard.min.js</code>
+          和 <code>guard.min.css</code>，用于验证 CDN 形式是否可用。
+        </p>
+      </div>
+
+      <div class="layout">
+        <div class="panel">
+          <h2>Runtime</h2>
+          <div class="meta">
+            <div>App ID: <code id="app-id"></code></div>
+            <div>Host: <code id="host"></code></div>
+            <div>window.GuardFactory: <code id="guard-factory"></code></div>
+            <div>window.Guard: <code id="guard-class"></code></div>
+          </div>
+          <div id="status" class="status">Preparing...</div>
+        </div>
+
+        <div class="guard-shell">
+          <div id="guard-root"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./dist/global/guard.min.js"></script>
+    <script>
+      const appId = '69e9815348a63edc9bc8af25'
+      const host = 'https://hep-manuscripts.u2.hep.com.cn'
+      const statusEl = document.getElementById('status')
+
+      document.getElementById('app-id').textContent = appId
+      document.getElementById('host').textContent = host
+      document.getElementById('guard-factory').textContent = typeof window.GuardFactory
+      document.getElementById('guard-class').textContent = typeof window.Guard
+
+      const setStatus = (message, isError) => {
+        statusEl.textContent = message
+        statusEl.className = isError ? 'status error' : 'status'
+      }
+
+      window.addEventListener('error', event => {
+        setStatus(event.message || 'Unknown runtime error', true)
+      })
+
+      try {
+        if (
+          !window.GuardFactory ||
+          !window.GuardFactory.Guard ||
+          typeof window.GuardFactory.Guard !== 'function'
+        ) {
+          throw new Error('window.GuardFactory.Guard is not available')
+        }
+
+        const guard = new window.GuardFactory.Guard({
+          appId,
+          host,
+          mode: 'normal',
+          config: {
+            target: '#guard-root'
+          }
+        })
+
+        window.__guardTestInstance = guard
+
+        setStatus('Guard instance created, rendering...', false)
+
+        guard.start('#guard-root')
+          .then(() => {
+            setStatus('Guard rendered successfully and login flow is waiting.', false)
+          })
+          .catch(error => {
+            console.error(error)
+            setStatus(error.message || String(error), true)
+          })
+      } catch (error) {
+        console.error(error)
+        setStatus(error.message || String(error), true)
+      }
+    </script>
+  </body>
+</html>
