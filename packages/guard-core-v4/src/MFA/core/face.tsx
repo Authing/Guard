@@ -56,7 +56,7 @@ interface LivenessResult {
 }
 
 // TODO: Remove this bypass after the liveness backend returns stable results.
-const livenessPassThroughForTest = true
+const livenessPassThroughForTest = false
 
 /**
  * After liveness passes, continue with the original face photo flow.
