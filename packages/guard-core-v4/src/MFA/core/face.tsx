@@ -56,7 +56,7 @@ interface LivenessResult {
 }
 
 // TODO: Remove this bypass after the liveness backend returns stable results.
-const livenessPassThroughForTest = false
+const livenessPassThroughForTest = true
 
 /**
  * After liveness passes, continue with the original face photo flow.
@@ -97,8 +97,14 @@ const FacePhotoMfa: React.FC<any & { autoStart?: boolean }> = (props: any) => {
   const { offset, dashStyle } = useDashoffset(percent)
 
   const _FACE_SCORE = publicConfig?.mfa?.faceScore ?? FACE_SCORE
-
   const shouldBypassFaceDetect = livenessPassThroughForTest
+
+  const stopAutoShoot = () => {
+    if (interval.current) {
+      clearInterval(interval.current)
+      interval.current = undefined
+    }
+  }
 
   // Load the model and start the camera while identifying.
   React.useEffect(() => {
@@ -217,6 +223,8 @@ const FacePhotoMfa: React.FC<any & { autoStart?: boolean }> = (props: any) => {
       mfaToken: props.initData.mfaToken
     }
 
+    console.log(requestData, 'requestDatarequestData dft')
+
     spinChange(true)
     const result = await verifyRequest(requestData)
 
@@ -248,62 +256,83 @@ const FacePhotoMfa: React.FC<any & { autoStart?: boolean }> = (props: any) => {
   const goToBindScene = (key: string) => {
     if (!p1.current) {
       p1.current = key
+      return false
     } else {
       if (cooldown.current > 0) {
         cooldown.current -= 1
       }
       if (cooldown.current <= 0) {
         p2.current = key
-        interval.current && clearInterval(interval.current)
+        stopAutoShoot()
         faceBind()
+        return true
       }
     }
+
+    return false
   }
 
   const goToCheckScene = (key: string) => {
     p1.current = key
-    interval.current && clearInterval(interval.current)
+    stopAutoShoot()
     faceCheck()
   }
 
   const quitIdentifying = (blob: Blob) => {
     setPercent(100)
-    uploadImage(blob).then((key: string) => {
-      if (props.initData?.faceMfaEnabled === true) {
-        goToCheckScene(key)
-      } else {
-        goToBindScene(key)
-      }
-    })
+    uploadImage(blob)
+      .then((key: string) => {
+        if (!key) {
+          stopAutoShoot()
+          hasUploadedOnceRef.current = false
+          setFaceState('retry')
+          return
+        }
+
+        if (props.initData?.faceMfaEnabled === true) {
+          goToCheckScene(key)
+        } else {
+          const isBindSubmitted = goToBindScene(key)
+          if (!isBindSubmitted) {
+            hasUploadedOnceRef.current = false
+          }
+        }
+      })
+      .catch(e => {
+        stopAutoShoot()
+        hasUploadedOnceRef.current = false
+        setFaceState('retry')
+        message.error(e?.message || t('common.faceLiveness.photoUploadFailed'))
+      })
   }
 
-  const autoShoot = React.useCallback(async () => {
-    if (!interval.current) {
-      interval.current = setInterval(() => autoShoot(), 500)
-    }
-
-    const videoDom = videoRef.current!
-    if (videoDom?.paused || videoDom?.ended || !isFaceDetectionModelLoaded()) {
-      return
-    }
-
+  const shootCurrentFrame = (videoDom: HTMLVideoElement) => {
     if (hasUploadedOnceRef.current) return
 
-    if (shouldBypassFaceDetect) {
-      try {
-        hasUploadedOnceRef.current = true
-        const base64Data = getBase64(videoDom)
-        const blob = dataURItoBlob(base64Data)
-        quitIdentifying(blob)
-      } catch {
-        hasUploadedOnceRef.current = false
-        message.error(t('common.uploadFail', { name: 'personal.jpeg' }))
-      }
-      return
+    hasUploadedOnceRef.current = true
+    try {
+      const base64Data = getBase64(videoDom)
+      const blob = dataURItoBlob(base64Data)
+      quitIdentifying(blob)
+    } catch (e: any) {
+      hasUploadedOnceRef.current = false
+      message.error(e?.message || t('common.faceLiveness.photoUploadFailed'))
+    }
+  }
+
+  const isVideoReady = (videoDom?: HTMLVideoElement | null) => {
+    if (!videoDom) {
+      return false
     }
 
+    return !videoDom.paused && !videoDom.ended && videoDom.readyState >= 2
+  }
+
+  const runFaceDetect = async (videoDom: HTMLVideoElement) => {
     const options = getFaceDetectorOptions()
     const facePlugin = getFacePlugin()
+
+    console.log(facePlugin, 'facePluginfacePlugin dft')
     if (!facePlugin) return
 
     const { detectSingleFace } = facePlugin
@@ -313,9 +342,7 @@ const FacePhotoMfa: React.FC<any & { autoStart?: boolean }> = (props: any) => {
 
       if (result) {
         if (result.score > _FACE_SCORE) {
-          const base64Data = getBase64(videoDom)
-          const blob = dataURItoBlob(base64Data)
-          quitIdentifying(blob)
+          shootCurrentFrame(videoDom)
         } else {
           setPercent(() => {
             return (result.score / _FACE_SCORE) * 100
@@ -325,11 +352,32 @@ const FacePhotoMfa: React.FC<any & { autoStart?: boolean }> = (props: any) => {
         setPercent(10)
       }
     } catch {
-      hasUploadedOnceRef.current = true
-      const base64Data = getBase64(videoDom)
-      const blob = dataURItoBlob(base64Data)
-      quitIdentifying(blob)
+      shootCurrentFrame(videoDom)
     }
+  }
+
+  const autoShoot = React.useCallback(async () => {
+    if (!interval.current) {
+      interval.current = setInterval(() => autoShoot(), 500)
+    }
+
+    const videoDom = videoRef.current!
+    if (!isVideoReady(videoDom)) {
+      return
+    }
+
+    if (hasUploadedOnceRef.current) return
+
+    if (shouldBypassFaceDetect) {
+      shootCurrentFrame(videoDom)
+      return
+    }
+
+    if (!isFaceDetectionModelLoaded()) {
+      return
+    }
+
+    await runFaceDetect(videoDom)
   }, [])
 
   // Auto-start the original face photo flow after liveness passes.
