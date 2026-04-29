@@ -56,7 +56,7 @@ interface LivenessResult {
 }
 
 // TODO: Remove this bypass after the liveness backend returns stable results.
-const livenessPassThroughForTest = true
+const livenessPassThroughForTest = false
 
 const faceRetryApiCodes = [1700, 1701, 1702, 502]
 
