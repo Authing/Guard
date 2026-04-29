@@ -18,22 +18,63 @@ import '@aws-amplify/ui-react/styles.css'
 
 // 覆盖 AWS 活体检测组件默认样式，移除上方空白
 const overrideStyles = `
+  .authing-aws-face-liveness {
+    --authing-liveness-face-size: min(68vw, 300px);
+  }
+
   /* 移除 liveness-detector-check 的 gap */
-  .liveness-detector-check.amplify-flex {
+  .authing-aws-face-liveness .liveness-detector-check.amplify-flex {
     gap: 0 !important;
+    align-items: center !important;
   }
   /* 隐藏 start screen warning，它不占用空间 */
-  .amplify-liveness-start-screen-warning {
+  .authing-aws-face-liveness .amplify-liveness-start-screen-warning {
     display: none !important;
   }
   /* 针对 visibility: hidden 的元素 */
-  div[style*="visibility: hidden"] {
+  .authing-aws-face-liveness div[style*="visibility: hidden"] {
     height: 0 !important;
     min-height: 0 !important;
     overflow: hidden !important;
   }
+  /* 将 AWS 默认的矩形相机模块收成圆形取景区域 */
+  .authing-aws-face-liveness .amplify-liveness-camera-module {
+    width: var(--authing-liveness-face-size) !important;
+    height: var(--authing-liveness-face-size) !important;
+    min-height: var(--authing-liveness-face-size) !important;
+    border: 0 !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+    overflow: visible !important;
+  }
+  .authing-aws-face-liveness .amplify-liveness-video-anchor {
+    width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 50% !important;
+    overflow: hidden !important;
+    background: #f7f8fa !important;
+  }
+  .authing-aws-face-liveness .amplify-liveness-video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+  /* 隐藏 AWS 默认椭圆遮罩，避免把圆形视频再次裁成竖向椭圆 */
+  .authing-aws-face-liveness .amplify-liveness-oval-canvas {
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  .authing-aws-face-liveness .amplify-liveness-freshness-canvas {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 50% !important;
+    pointer-events: none !important;
+  }
   /* 调整椭圆框（instruction overlay）位置和大小 */
-  .amplify-liveness-instruction-overlay {
+  .authing-aws-face-liveness .amplify-liveness-instruction-overlay {
     position: absolute !important;
     top: 0 !important;
     left: 0 !important;
@@ -44,10 +85,16 @@ const overrideStyles = `
     margin: 0 !important;
   }
   /* 调整相机模块容器，确保没有多余间距 */
-  .amplify-liveness-camera-module {
+  .authing-aws-face-liveness .amplify-liveness-camera-module {
     gap: 0 !important;
     margin-top: 0 !important;
     padding-top: 0 !important;
+  }
+
+  @media (max-width: 420px) {
+    .authing-aws-face-liveness {
+      --authing-liveness-face-size: min(76vw, 300px);
+    }
   }
 `
 
@@ -147,7 +194,10 @@ export const AwsFaceLivenessDetector: React.FC<
   return (
     <ThemeProvider>
       <style>{overrideStyles}</style>
-      <div style={{ width: '100%', maxWidth: 480, margin: '0 auto' }}>
+      <div
+        className="authing-aws-face-liveness"
+        style={{ width: '100%', maxWidth: 480, margin: '0 auto' }}
+      >
         <FaceLivenessDetectorCore
           sessionId={sessionId}
           region={region}

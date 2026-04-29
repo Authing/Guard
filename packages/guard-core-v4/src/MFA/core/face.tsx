@@ -6,7 +6,26 @@ import SubmitButton from '../../SubmitButton'
 
 import { message } from 'shim-antd'
 
-import { useGuardButtonState } from '../../_utils/context'
+import { useGuardHttp } from '../../_utils/guardHttp'
+
+import {
+  FACE_SCORE,
+  devicesConstraints,
+  dataURItoBlob,
+  getCurrentFaceDetectionNet,
+  getFaceDetectorOptions,
+  isFaceDetectionModelLoaded
+} from './face_deps'
+
+import { ImagePro } from '../../ImagePro'
+
+import { faceErrorMessage } from '../../_utils/errorFace'
+
+import { MFABackStateContext } from '../context'
+
+import { getFacePlugin } from '../../_utils/facePlugin'
+
+import { useGuardButtonState, useGuardPublicConfig } from '../../_utils/context'
 
 import { MfaBusinessAction, useMfaBusinessRequest } from '../businessRequest'
 
@@ -14,9 +33,7 @@ import { AwsFaceLivenessDetector } from './AwsFaceLivenessDetector'
 
 const { useEffect, useState } = React
 
-// ============================================
-// AWS 活体检测 Session 响应
-// ============================================
+// AWS liveness session response.
 interface LivenessSessionResponse {
   sessionId: string
   region: string
@@ -29,9 +46,7 @@ interface LivenessSessionResponse {
   }
 }
 
-// ============================================
-// AWS 活体检测结果
-// ============================================
+// AWS liveness result.
 interface LivenessResult {
   isLive: boolean
   confidence: number
@@ -40,14 +55,409 @@ interface LivenessResult {
   message?: string
 }
 
+// TODO: Remove this bypass after the liveness backend returns stable results.
+const livenessPassThroughForTest = false
+
+/**
+ * After liveness passes, continue with the original face photo flow.
+ */
+const FacePhotoMfa: React.FC<any & { autoStart?: boolean }> = (props: any) => {
+  const { autoStart } = props
+  const mfaBackContext = React.useContext(MFABackStateContext)
+
+  const { postForm } = useGuardHttp()
+  const { t } = useTranslation()
+
+  const [faceState, setFaceState] = React.useState('ready')
+  const [percent, setPercent] = React.useState(0)
+
+  const mfaBusinessRequest = useMfaBusinessRequest()
+  const { spinChange } = useGuardButtonState()
+
+  const verifyRequest = mfaBusinessRequest[MfaBusinessAction.VerifyFace]
+  const bindRequest = mfaBusinessRequest[MfaBusinessAction.AssociateFace]
+
+  const videoRef = React.useRef<HTMLVideoElement>(null)
+  const canvasRef = React.useRef<HTMLCanvasElement>(null)
+  const interval = React.useRef<NodeJS.Timeout | undefined>()
+  const p1 = React.useRef<string>()
+  const p2 = React.useRef<string>()
+  const cooldown = React.useRef<number>(0)
+  const hasUploadedOnceRef = React.useRef(false)
+
+  const publicConfig = useGuardPublicConfig()
+  const cdnBase = publicConfig?.cdnBase
+
+  const useDashoffset = (percent: number) => {
+    const offset = percent * 7
+    const dashStyle: any = {}
+    return { offset, dashStyle }
+  }
+
+  const { offset, dashStyle } = useDashoffset(percent)
+
+  const _FACE_SCORE = publicConfig?.mfa?.faceScore ?? FACE_SCORE
+
+  const shouldBypassFaceDetect = livenessPassThroughForTest
+
+  // Load the model and start the camera while identifying.
+  React.useEffect(() => {
+    const currentProtocol = window.location.protocol
+    const cdnBaseWithProtocol =
+      cdnBase.startsWith('http://') || cdnBase.startsWith('https://')
+        ? cdnBase
+        : `${currentProtocol}${cdnBase}`
+
+    getCurrentFaceDetectionNet().loadFromUri(
+      `${cdnBaseWithProtocol}/face-api/v1/tiny_face_detector_model-weights_manifest.json`
+    )
+
+    if (faceState !== 'identifying') {
+      return
+    }
+
+    const devicesContext =
+      navigator.mediaDevices.getUserMedia(devicesConstraints)
+    devicesContext
+      .then(stream => {
+        if (videoRef.current) videoRef.current.srcObject = stream
+      })
+      .catch(e => {
+        const msg = faceErrorMessage(e)
+        message.error(t(msg))
+      })
+
+    return () => {
+      interval.current && clearInterval(interval.current)
+    }
+  }, [faceState, interval, props.config, cdnBase, t])
+
+  // Hide MFA method switching while the face flow is checking.
+  React.useEffect(() => {
+    if (mfaBackContext?.mfaBackState === 'check') {
+      props.setShowMethods(false)
+    } else {
+      props.setShowMethods(true)
+    }
+  }, [mfaBackContext?.mfaBackState, props])
+
+  const uploadImage = async (blob: Blob) => {
+    spinChange(true)
+    try {
+      const formData = new FormData()
+      formData.append('folder', 'photos')
+      formData.append('file', blob, 'personal.jpeg')
+
+      const url = '/api/v2/upload?folder=photos&private=true'
+      const result = await postForm<any>(url, formData)
+
+      const key = result?.data?.key
+      const uploadedUrl = result?.data?.url
+      const value = key ?? uploadedUrl
+
+      if (!value) {
+        message.error(
+          result?.data?.message || t('common.faceLiveness.photoUploadFailed')
+        )
+      }
+
+      return value
+    } finally {
+      spinChange(false)
+    }
+  }
+
+  const getBase64 = (videoDom: any) => {
+    const canvas = canvasRef.current!
+    const ctx = canvas!.getContext('2d')!
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.drawImage(videoDom, 0, 0, canvas.width, canvas.height)
+    const base64Data = canvas.toDataURL('image/jpeg', 1.0)
+    return base64Data
+  }
+
+  const faceBind = async () => {
+    const p1Val = p1.current
+    const p2Val = p2.current
+    const isExternalPhoto =
+      typeof p1Val === 'string' &&
+      typeof p2Val === 'string' &&
+      /^https?:\/\//.test(p1Val) &&
+      /^https?:\/\//.test(p2Val)
+
+    const requestData = {
+      photoA: p1Val!,
+      photoB: p2Val!,
+      isExternalPhoto,
+      mfaToken: props.initData.mfaToken
+    }
+    const result = await bindRequest(requestData)
+
+    const { isFlowEnd, onGuardHandling, apiCode, data } = result
+
+    if (isFlowEnd) {
+      props.mfaLogin(200, data)
+    } else {
+      if (apiCode === 1700 || apiCode === 1701 || apiCode === 1702) {
+        p1.current = undefined
+        p2.current = undefined
+        interval.current = undefined
+        cooldown.current = 0
+        hasUploadedOnceRef.current = false
+        setFaceState('retry')
+      } else {
+        onGuardHandling?.()
+      }
+    }
+  }
+
+  const faceCheck = async () => {
+    const requestData = {
+      photo: p1.current!,
+      mfaToken: props.initData.mfaToken
+    }
+
+    spinChange(true)
+    const result = await verifyRequest(requestData)
+
+    spinChange(false)
+
+    const { isFlowEnd, onGuardHandling, data, apiCode } = result
+
+    if (isFlowEnd) {
+      props.mfaLogin(200, data)
+    } else {
+      if (
+        apiCode === 1700 ||
+        apiCode === 1701 ||
+        apiCode === 1702 ||
+        apiCode === 502
+      ) {
+        p1.current = undefined
+        p2.current = undefined
+        interval.current = undefined
+        cooldown.current = 0
+        hasUploadedOnceRef.current = false
+        setFaceState('retry')
+      } else {
+        onGuardHandling?.()
+      }
+    }
+  }
+
+  const goToBindScene = (key: string) => {
+    if (!p1.current) {
+      p1.current = key
+    } else {
+      if (cooldown.current > 0) {
+        cooldown.current -= 1
+      }
+      if (cooldown.current <= 0) {
+        p2.current = key
+        interval.current && clearInterval(interval.current)
+        faceBind()
+      }
+    }
+  }
+
+  const goToCheckScene = (key: string) => {
+    p1.current = key
+    interval.current && clearInterval(interval.current)
+    faceCheck()
+  }
+
+  const quitIdentifying = (blob: Blob) => {
+    setPercent(100)
+    uploadImage(blob).then((key: string) => {
+      if (props.initData?.faceMfaEnabled === true) {
+        goToCheckScene(key)
+      } else {
+        goToBindScene(key)
+      }
+    })
+  }
+
+  const autoShoot = React.useCallback(async () => {
+    if (!interval.current) {
+      interval.current = setInterval(() => autoShoot(), 500)
+    }
+
+    const videoDom = videoRef.current!
+    if (videoDom?.paused || videoDom?.ended || !isFaceDetectionModelLoaded()) {
+      return
+    }
+
+    if (hasUploadedOnceRef.current) return
+
+    if (shouldBypassFaceDetect) {
+      try {
+        hasUploadedOnceRef.current = true
+        const base64Data = getBase64(videoDom)
+        const blob = dataURItoBlob(base64Data)
+        quitIdentifying(blob)
+      } catch {
+        hasUploadedOnceRef.current = false
+        message.error(t('common.uploadFail', { name: 'personal.jpeg' }))
+      }
+      return
+    }
+
+    const options = getFaceDetectorOptions()
+    const facePlugin = getFacePlugin()
+    if (!facePlugin) return
+
+    const { detectSingleFace } = facePlugin
+
+    try {
+      const result = await detectSingleFace(videoDom, options)
+
+      if (result) {
+        if (result.score > _FACE_SCORE) {
+          const base64Data = getBase64(videoDom)
+          const blob = dataURItoBlob(base64Data)
+          quitIdentifying(blob)
+        } else {
+          setPercent(() => {
+            return (result.score / _FACE_SCORE) * 100
+          })
+        }
+      } else {
+        setPercent(10)
+      }
+    } catch {
+      hasUploadedOnceRef.current = true
+      const base64Data = getBase64(videoDom)
+      const blob = dataURItoBlob(base64Data)
+      quitIdentifying(blob)
+    }
+  }, [])
+
+  // Auto-start the original face photo flow after liveness passes.
+  React.useEffect(() => {
+    if (!autoStart) return
+    if (faceState !== 'ready') return
+
+    if (navigator.mediaDevices) {
+      setPercent(0)
+      setFaceState('identifying')
+      mfaBackContext?.setMfaBackState && mfaBackContext.setMfaBackState('check')
+      autoShoot()
+    } else {
+      message.error(t('login.mediaDevicesSupport'))
+    }
+  }, [autoStart, faceState, mfaBackContext, autoShoot, t])
+
+  return (
+    <div>
+      <h3 className="authing-g2-mfa-title">{t('common.mfaCertification')}</h3>
+      {faceState === 'ready' || mfaBackContext?.mfaBackState === 'login' ? (
+        <>
+          <p className="authing-g2-mfa-tips">
+            {props.initData?.faceMfaEnabled
+              ? t('common.faceCheck')
+              : t('common.faceText2')}
+          </p>
+          <ImagePro
+            className="g2-mfa-face-image"
+            width={247}
+            height={131}
+            src={`${cdnBase}/face.png`}
+            alt=""
+          />
+
+          <SubmitButton
+            onClick={() => {
+              if (navigator.mediaDevices) {
+                setFaceState('identifying')
+                mfaBackContext?.setMfaBackState &&
+                  mfaBackContext.setMfaBackState('check')
+                autoShoot()
+              } else {
+                message.error(t('login.mediaDevicesSupport'))
+              }
+            }}
+            text={t('common.faceText3') as string}
+            className="mfa-face"
+          />
+        </>
+      ) : (
+        <p className="authing-g2-mfa-tips">{t('common.faceCheck')}</p>
+      )}
+
+      <div
+        className="g2-mfa-face-identifying"
+        style={{
+          display:
+            faceState !== 'ready' && mfaBackContext?.mfaBackState !== 'login'
+              ? 'flex'
+              : 'none'
+        }}
+      >
+        <video
+          className="video-round"
+          ref={videoRef}
+          style={{ transform: 'rotateY(180deg)' }}
+          id="inputVideo"
+          autoPlay
+          muted
+          playsInline
+        />
+        <div
+          className="video-round mesh"
+          style={{
+            display: faceState === 'retry' ? 'flex' : 'none'
+          }}
+          onClick={() => {
+            setFaceState('identifying')
+            setPercent(0)
+            hasUploadedOnceRef.current = false
+            autoShoot()
+          }}
+        >
+          {t('common.faceText4')}
+        </div>
+
+        <div className="video-round ring">
+          <svg width={240} height={240} fill="none">
+            <circle
+              className="svg-circle-running"
+              style={dashStyle}
+              strokeDasharray={700}
+              strokeDashoffset={700 - offset}
+              cx={120}
+              cy={120}
+              r={110}
+            />
+          </svg>
+        </div>
+      </div>
+
+      <canvas
+        style={{
+          width: 210,
+          height: 210,
+          opacity: 0,
+          position: 'absolute',
+          display: 'none'
+        }}
+        ref={canvasRef}
+      />
+    </div>
+  )
+}
+
 export const MFAFace = (props: any) => {
   let { t } = useTranslation()
 
+  const publicConfig = useGuardPublicConfig()
+  const cdnBase = publicConfig?.cdnBase
   const mfaBusinessRequest = useMfaBusinessRequest()
 
   const { spinChange } = useGuardButtonState()
 
-  // AWS 活体检测相关请求
+  const [isFacePhotoPhase, setIsFacePhotoPhase] = useState(false)
+
+  // AWS liveness requests.
   const getLivenessSessionRequest =
     mfaBusinessRequest[MfaBusinessAction.GetFaceLivenessSession]
   const getLivenessResultRequest =
@@ -67,76 +477,48 @@ export const MFAFace = (props: any) => {
     null
   )
 
-  // 初始化时创建 session
-  useEffect(() => {
-    createLivenessSession()
-  }, [])
+  // Create the session only after the user starts verification.
+  const [livenessStarted, setLivenessStarted] = useState(false)
 
-  /**
-   * 创建 AWS 活体检测 Session
-   */
+  useEffect(() => {
+    if (!livenessStarted) return
+    createLivenessSession()
+  }, [livenessStarted])
+
   const createLivenessSession = async () => {
-    console.log(
-      '[FaceLiveness] 开始创建 session, mfaToken:',
-      props.initData.mfaToken
-    )
     setIsLoadingSession(true)
     setLivenessResult(null)
+    setLivenessSessionId(null)
+    setLivenessCredentials(null)
 
     try {
-      console.log('[FaceLiveness] 开始触发请求')
       const result = await getLivenessSessionRequest({
         mfaToken: props.initData.mfaToken
       })
-      console.log('[FaceLiveness] 创建 session 响应:', result)
 
-      // 适配后端返回格式：可能是 result.data 或直接在 result 上
       const responseData = result.data || result
-      console.log('[FaceLiveness] 解析后的 responseData:', responseData)
 
       const sessionData: LivenessSessionResponse = responseData
 
-      console.log('[FaceLiveness] sessionId:', sessionData.sessionId)
-      console.log('[FaceLiveness] region:', sessionData.region)
-      console.log('[FaceLiveness] credentials:', sessionData.credentials)
-
       setLivenessSessionId(sessionData.sessionId)
       setLivenessRegion(sessionData.region)
-      // setLivenessSessionId('sessionData.sessionId')
-      // setLivenessRegion('us-east-1')
-      // 保存 AWS 临时凭证
+
       if (sessionData.credentials) {
-        console.log('[FaceLiveness] 保存临时凭证')
         setLivenessCredentials({
           accessKeyId: sessionData.credentials.AccessKeyId,
           secretAccessKey: sessionData.credentials.SecretAccessKey,
           sessionToken: sessionData.credentials.SessionToken
         })
       }
-
-      // console.log(demo, 'demodemodemodemodemodemo')
-      // setLivenessSessionId(demo.sessionId)
-      // setLivenessRegion(demo.region)
-      // setLivenessCredentials({
-      //   accessKeyId: demo.credentials.AccessKeyId,
-      //   secretAccessKey: demo.credentials.SecretAccessKey,
-      //   sessionToken: demo.credentials.SessionToken
-      // })
     } catch (e: any) {
-      console.error('[FaceLiveness] 创建 session 失败:', e)
-      message.error(e.message || '创建活体检测会话失败')
+      message.error(e.message || t('common.faceLiveness.createSessionFailed'))
     }
 
     setIsLoadingSession(false)
-    console.log('[FaceLiveness] 创建 session 结束')
   }
 
-  /**
-   * 获取活体检测结果
-   */
-  const fetchLivenessResult = async (completeInfo?: any) => {
+  const fetchLivenessResult = async () => {
     if (!livenessSessionId) {
-      console.log('[FaceLiveness] 没有 sessionId，跳过获取结果')
       return
     }
 
@@ -147,58 +529,54 @@ export const MFAFace = (props: any) => {
         mfaToken: props.initData.mfaToken
       })
 
-      // 适配后端返回格式
       const responseData = result.data || result
-      console.log('[FaceLiveness] 解析后的 livenessData:', responseData)
 
       const livenessData: LivenessResult = responseData
       setLivenessResult(livenessData)
-      // 根据结果处理登录：isLive 为 true 且 confidence >= 85 才算通过
-      if (livenessData.isLive && livenessData.confidence >= 85) {
-        console.log('[FaceLiveness] 活体检测通过，调用 mfaLogin')
-        // 活体检测通过，调用验证接口
-        props.mfaLogin(200, responseData)
+
+      if (livenessData.isLive) {
+        setIsFacePhotoPhase(true)
       } else {
-        console.log('[FaceLiveness] 活体检测未通过')
-        // 未通过，显示重试
-        message.error(livenessData.message || '活体检测未通过')
+        if (livenessPassThroughForTest) {
+          setIsFacePhotoPhase(true)
+          message.error(
+            livenessData.message || t('common.faceLiveness.failedBypassed')
+          )
+        } else {
+          setIsFacePhotoPhase(false)
+          message.error(livenessData.message || t('common.faceLiveness.failed'))
+        }
       }
     } catch (e: any) {
-      console.error('[FaceLiveness] 获取检测结果失败:', e)
-      message.error(e.message || '获取检测结果失败')
+      message.error(e.message || t('common.faceLiveness.fetchResultFailed'))
     }
 
     spinChange(false)
-    console.log('[FaceLiveness] 获取检测结果结束 test')
   }
 
-  /**
-   * 处理 AWS 活体检测完成
-   */
-  const handleLivenessAnalysisComplete = async (completeInfo?: any) => {
-    await fetchLivenessResult(completeInfo)
+  const handleLivenessAnalysisComplete = async () => {
+    await fetchLivenessResult()
   }
 
-  /**
-   * 处理 AWS 活体检测错误
-   */
   const handleLivenessError = async (error: any) => {
-    console.error('Liveness error:', error)
-    message.error(error.message || '检测过程中发生错误')
-    // await createLivenessSession()
+    message.error(error.message || t('common.faceLiveness.analysisError'))
     setLivenessSessionId(null)
+    setIsFacePhotoPhase(false)
   }
 
-  // ============================================
-  // 渲染 AWS 活体检测组件
-  // ============================================
+  if (isFacePhotoPhase) {
+    return <FacePhotoMfa {...props} autoStart />
+  }
+
   const renderAwsLivenessDetector = () => {
     if (isLoadingSession) {
       return (
         <div
           style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}
         >
-          <div className="authing-g2-loading">加载中...</div>
+          <div className="authing-g2-loading">
+            {t('common.faceLiveness.loading')}
+          </div>
         </div>
       )
     }
@@ -206,10 +584,10 @@ export const MFAFace = (props: any) => {
     if (!livenessSessionId) {
       return (
         <div style={{ textAlign: 'center', padding: '2rem' }}>
-          <p>无法创建检测会话</p>
+          <p>{t('common.faceLiveness.sessionUnavailable')}</p>
           <SubmitButton
             onClick={createLivenessSession}
-            text="重试"
+            text={t('common.faceLiveness.retry') as string}
             className="mfa-face"
           />
         </div>
@@ -227,51 +605,67 @@ export const MFAFace = (props: any) => {
     )
   }
 
-  // ============================================
-  // 渲染结果页面
-  // ============================================
   const renderResult = () => {
     if (!livenessResult) return null
 
     return (
       <div className="g2-mfa-face-result">
         <p className="authing-g2-mfa-tips">
-          置信度: {livenessResult.confidence?.toFixed?.(2) || 0}%
+          {t('common.faceLiveness.confidence')}:{' '}
+          {livenessResult.confidence?.toFixed?.(2) || 0}%
         </p>
-        <p className="authing-g2-mfa-tips">状态: {livenessResult.status}</p>
         {livenessResult.message && (
           <p className="authing-g2-mfa-tips">{livenessResult.message}</p>
         )}
         <SubmitButton
           onClick={() => {
             setLivenessResult(null)
+            setIsFacePhotoPhase(false)
+            setLivenessStarted(true)
             createLivenessSession()
           }}
-          text="重新检测"
+          text={t('common.faceLiveness.redetect') as string}
           className="mfa-face"
         />
       </div>
     )
   }
 
-  // ============================================
-  // 主渲染逻辑
-  // ============================================
-
   return (
     <div>
       <h3 className="authing-g2-mfa-title">{t('common.mfaCertification')}</h3>
 
-      {/* 结果展示 */}
       {livenessResult && renderResult()}
 
-      {/* AWS 活体检测 */}
-      {!livenessResult && (
+      {!livenessResult && !livenessStarted && (
+        <>
+          <p className="authing-g2-mfa-tips">{t('common.faceCheck')}</p>
+          <ImagePro
+            className="g2-mfa-face-image"
+            width={247}
+            height={131}
+            src={`${cdnBase}/face.png`}
+            alt=""
+          />
+
+          <p className="authing-g2-mfa-tips">{t('common.faceCheck')}</p>
+          <SubmitButton
+            onClick={() => {
+              setIsFacePhotoPhase(false)
+              setLivenessStarted(true)
+            }}
+            text={t('common.faceText3') as string}
+            className="mfa-face"
+          />
+        </>
+      )}
+
+      {!livenessResult && livenessStarted && (
         <>
           <p className="authing-g2-mfa-tips">
             {props.initData?.faceMfaEnabled
-              ? '请进行人脸活体检测验证'
-              : '请进行人脸活体检测绑定'}
+              ? t('common.faceLiveness.verifyTip')
+              : t('common.faceLiveness.bindTip')}
           </p>
           {renderAwsLivenessDetector()}
         </>
