@@ -56,7 +56,21 @@ interface LivenessResult {
 }
 
 // TODO: Remove this bypass after the liveness backend returns stable results.
-const livenessPassThroughForTest = false
+const livenessPassThroughForTest = true
+
+const faceRetryApiCodes = [1700, 1701, 1702, 502]
+
+const shouldRetryFaceRequest = (result?: any) => {
+  if (!result) return true
+
+  return (
+    faceRetryApiCodes.includes(result.apiCode) ||
+    faceRetryApiCodes.includes(result.code) ||
+    result.statusCode === 502 ||
+    result.code === -1 ||
+    result.code === -2
+  )
+}
 
 /**
  * After liveness passes, continue with the original face photo flow.
@@ -97,13 +111,21 @@ const FacePhotoMfa: React.FC<any & { autoStart?: boolean }> = (props: any) => {
   const { offset, dashStyle } = useDashoffset(percent)
 
   const _FACE_SCORE = publicConfig?.mfa?.faceScore ?? FACE_SCORE
-  const shouldBypassFaceDetect = livenessPassThroughForTest
 
   const stopAutoShoot = () => {
     if (interval.current) {
       clearInterval(interval.current)
       interval.current = undefined
     }
+  }
+
+  const resetFaceToRetry = () => {
+    stopAutoShoot()
+    p1.current = undefined
+    p2.current = undefined
+    cooldown.current = 0
+    hasUploadedOnceRef.current = false
+    setFaceState('retry')
   }
 
   // Load the model and start the camera while identifying.
@@ -197,23 +219,25 @@ const FacePhotoMfa: React.FC<any & { autoStart?: boolean }> = (props: any) => {
       isExternalPhoto,
       mfaToken: props.initData.mfaToken
     }
-    const result = await bindRequest(requestData)
+    try {
+      const result = await bindRequest(requestData)
 
-    const { isFlowEnd, onGuardHandling, apiCode, data } = result
+      const { isFlowEnd, onGuardHandling, data } = result
 
-    if (isFlowEnd) {
-      props.mfaLogin(200, data)
-    } else {
-      if (apiCode === 1700 || apiCode === 1701 || apiCode === 1702) {
-        p1.current = undefined
-        p2.current = undefined
-        interval.current = undefined
-        cooldown.current = 0
-        hasUploadedOnceRef.current = false
-        setFaceState('retry')
+      if (isFlowEnd) {
+        props.mfaLogin(200, data)
       } else {
-        onGuardHandling?.()
+        if (shouldRetryFaceRequest(result)) {
+          resetFaceToRetry()
+        } else if (onGuardHandling) {
+          onGuardHandling()
+        } else {
+          resetFaceToRetry()
+        }
       }
+    } catch (e: any) {
+      resetFaceToRetry()
+      message.error(e?.message || t('common.faceLiveness.photoUploadFailed'))
     }
   }
 
@@ -226,30 +250,27 @@ const FacePhotoMfa: React.FC<any & { autoStart?: boolean }> = (props: any) => {
     console.log(requestData, 'requestDatarequestData dft')
 
     spinChange(true)
-    const result = await verifyRequest(requestData)
+    try {
+      const result = await verifyRequest(requestData)
 
-    spinChange(false)
+      const { isFlowEnd, onGuardHandling, data } = result
 
-    const { isFlowEnd, onGuardHandling, data, apiCode } = result
-
-    if (isFlowEnd) {
-      props.mfaLogin(200, data)
-    } else {
-      if (
-        apiCode === 1700 ||
-        apiCode === 1701 ||
-        apiCode === 1702 ||
-        apiCode === 502
-      ) {
-        p1.current = undefined
-        p2.current = undefined
-        interval.current = undefined
-        cooldown.current = 0
-        hasUploadedOnceRef.current = false
-        setFaceState('retry')
+      if (isFlowEnd) {
+        props.mfaLogin(200, data)
       } else {
-        onGuardHandling?.()
+        if (shouldRetryFaceRequest(result)) {
+          resetFaceToRetry()
+        } else if (onGuardHandling) {
+          onGuardHandling()
+        } else {
+          resetFaceToRetry()
+        }
       }
+    } catch (e: any) {
+      resetFaceToRetry()
+      message.error(e?.message || t('common.faceLiveness.photoUploadFailed'))
+    } finally {
+      spinChange(false)
     }
   }
 
@@ -368,16 +389,13 @@ const FacePhotoMfa: React.FC<any & { autoStart?: boolean }> = (props: any) => {
 
     if (hasUploadedOnceRef.current) return
 
-    if (shouldBypassFaceDetect) {
-      shootCurrentFrame(videoDom)
-      return
-    }
+    shootCurrentFrame(videoDom)
 
-    if (!isFaceDetectionModelLoaded()) {
-      return
-    }
+    // if (!isFaceDetectionModelLoaded()) {
+    //   return
+    // }
 
-    await runFaceDetect(videoDom)
+    // await runFaceDetect(videoDom)
   }, [])
 
   // Auto-start the original face photo flow after liveness passes.
