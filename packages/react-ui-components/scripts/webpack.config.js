@@ -55,20 +55,7 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              presets: [
-                ['@babel/preset-env', { targets: '> 0.25%, not dead' }]
-              ],
-              plugins: [
-                '@babel/plugin-transform-class-properties'
-              ]
-            }
-          },
-          'ts-loader'
-        ],
+        use: 'ts-loader',
         exclude: /node_modules/
       },
       {
