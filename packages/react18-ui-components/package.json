@@ -20,5 +20,11 @@
   "license": "MIT",
   "dependencies": {
     "@authing/guard-shim-react18": "^4.5.47-bg.35"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.0",
+    "@babel/plugin-transform-class-properties": "^7.23.0",
+    "@babel/preset-env": "^7.23.0",
+    "babel-loader": "^9.1.3"
   }
 }
