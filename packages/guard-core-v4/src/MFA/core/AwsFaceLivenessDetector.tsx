@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 // ============================================
 // AWS 活体检测组件
@@ -11,6 +12,7 @@ import {
   FaceLivenessDetectorCore,
   AwsCredentialProvider
 } from '@aws-amplify/ui-react-liveness'
+import type { FaceLivenessDetectorCoreProps } from '@aws-amplify/ui-react-liveness'
 
 import { ThemeProvider } from '@aws-amplify/ui-react'
 
@@ -110,6 +112,65 @@ interface AwsFaceLivenessDetectorProps {
   }
 }
 
+type LivenessDisplayText = NonNullable<
+  FaceLivenessDetectorCoreProps['displayText']
+>
+
+const livenessDisplayTextKeys: Array<keyof LivenessDisplayText> = [
+  'cameraMinSpecificationsHeadingText',
+  'cameraMinSpecificationsMessageText',
+  'cameraNotFoundHeadingText',
+  'cameraNotFoundMessageText',
+  'a11yVideoLabelText',
+  'cancelLivenessCheckText',
+  'goodFitCaptionText',
+  'goodFitAltText',
+  'hintCenterFaceText',
+  'hintCenterFaceInstructionText',
+  'hintFaceOffCenterText',
+  'hintMoveFaceFrontOfCameraText',
+  'hintTooManyFacesText',
+  'hintFaceDetectedText',
+  'hintCanNotIdentifyText',
+  'hintTooCloseText',
+  'hintTooFarText',
+  'hintConnectingText',
+  'hintVerifyingText',
+  'hintCheckCompleteText',
+  'hintIlluminationTooBrightText',
+  'hintIlluminationTooDarkText',
+  'hintIlluminationNormalText',
+  'hintHoldFaceForFreshnessText',
+  'hintMatchIndicatorText',
+  'photosensitivityWarningBodyText',
+  'photosensitivityWarningHeadingText',
+  'photosensitivityWarningInfoText',
+  'photosensitivityWarningLabelText',
+  'retryCameraPermissionsText',
+  'recordingIndicatorText',
+  'startScreenBeginCheckText',
+  'tooFarCaptionText',
+  'tooFarAltText',
+  'waitingCameraPermissionText',
+  'errorLabelText',
+  'connectionTimeoutHeaderText',
+  'connectionTimeoutMessageText',
+  'timeoutHeaderText',
+  'timeoutMessageText',
+  'faceDistanceHeaderText',
+  'faceDistanceMessageText',
+  'multipleFacesHeaderText',
+  'multipleFacesMessageText',
+  'clientHeaderText',
+  'clientMessageText',
+  'serverHeaderText',
+  'serverMessageText',
+  'landscapeHeaderText',
+  'landscapeMessageText',
+  'portraitMessageText',
+  'tryAgainText'
+]
+
 /**
  * AWS Face Liveness 检测组件
  */
@@ -122,8 +183,22 @@ export const AwsFaceLivenessDetector: React.FC<
   onError,
   credentials
 }) => {
+  const { t } = useTranslation()
   const [isLoaded, setIsLoaded] = useState(false)
   const [error] = useState<string | null>(null)
+
+  const displayText = useMemo<LivenessDisplayText>(() => {
+    const translateDisplayText = (key: keyof LivenessDisplayText) =>
+      t(`common.faceLiveness.displayText.${String(key)}`) as string
+
+    return livenessDisplayTextKeys.reduce<LivenessDisplayText>(
+      (result, key) => ({
+        ...result,
+        [key]: translateDisplayText(key)
+      }),
+      {}
+    )
+  }, [t])
 
   useEffect(() => {
     // 组件挂载后标记为已加载
@@ -203,6 +278,7 @@ export const AwsFaceLivenessDetector: React.FC<
           region={region}
           onAnalysisComplete={handleAnalysisComplete}
           onError={handleError}
+          displayText={displayText}
           config={{
             credentialProvider
           }}

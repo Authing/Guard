@@ -252,8 +252,6 @@ const FacePhotoMfa: React.FC<any & { autoStart?: boolean }> = (props: any) => {
       mfaToken: props.initData.mfaToken
     }
 
-    console.log(requestData, 'requestDatarequestData dft')
-
     spinChange(true)
     try {
       const result = await verifyRequest(requestData)
@@ -519,6 +517,9 @@ const FacePhotoMfa: React.FC<any & { autoStart?: boolean }> = (props: any) => {
 
 export const MFAFace = (props: any) => {
   let { t } = useTranslation()
+  const { setShowMethods } = props
+
+  const mfaBackContext = React.useContext(MFABackStateContext)
 
   const publicConfig = useGuardPublicConfig()
   const cdnBase = publicConfig?.cdnBase
@@ -555,6 +556,37 @@ export const MFAFace = (props: any) => {
     if (!livenessStarted) return
     createLivenessSession()
   }, [livenessStarted])
+
+  useEffect(() => {
+    if (mfaBackContext?.mfaBackState !== 'login') return
+
+    setShowMethods(true)
+    setIsFacePhotoPhase(false)
+    setLivenessStarted(false)
+    setLivenessSessionId(null)
+    setLivenessCredentials(null)
+    setLivenessResult(null)
+    setIsLoadingSession(false)
+  }, [mfaBackContext?.mfaBackState, setShowMethods])
+
+  useEffect(() => {
+    if (livenessStarted || isFacePhotoPhase) {
+      setShowMethods(false)
+    }
+  }, [isFacePhotoPhase, livenessStarted, setShowMethods])
+
+  useEffect(() => {
+    return () => {
+      setShowMethods(true)
+    }
+  }, [setShowMethods])
+
+  const startLivenessCheck = () => {
+    setIsFacePhotoPhase(false)
+    setLivenessStarted(true)
+    setShowMethods(false)
+    mfaBackContext?.setMfaBackState && mfaBackContext.setMfaBackState('check')
+  }
 
   const createLivenessSession = async () => {
     setIsLoadingSession(true)
@@ -692,7 +724,7 @@ export const MFAFace = (props: any) => {
           onClick={() => {
             setLivenessResult(null)
             setIsFacePhotoPhase(false)
-            setLivenessStarted(true)
+            startLivenessCheck()
             createLivenessSession()
           }}
           text={t('common.faceLiveness.redetect') as string}
@@ -722,8 +754,7 @@ export const MFAFace = (props: any) => {
           <p className="authing-g2-mfa-tips">{t('common.faceCheck')}</p>
           <SubmitButton
             onClick={() => {
-              setIsFacePhotoPhase(false)
-              setLivenessStarted(true)
+              startLivenessCheck()
             }}
             text={t('common.faceText3') as string}
             className="mfa-face"
