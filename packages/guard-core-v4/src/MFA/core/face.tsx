@@ -130,18 +130,23 @@ const FacePhotoMfa: React.FC<any & { autoStart?: boolean }> = (props: any) => {
 
   // Load the model and start the camera while identifying.
   React.useEffect(() => {
+    if (faceState !== 'identifying') {
+      return
+    }
+
     const currentProtocol = window.location.protocol
     const cdnBaseWithProtocol =
       cdnBase.startsWith('http://') || cdnBase.startsWith('https://')
         ? cdnBase
         : `${currentProtocol}${cdnBase}`
 
-    getCurrentFaceDetectionNet().loadFromUri(
-      `${cdnBaseWithProtocol}/face-api/v1/tiny_face_detector_model-weights_manifest.json`
-    )
-
-    if (faceState !== 'identifying') {
-      return
+    const faceDetectionNet = getCurrentFaceDetectionNet()
+    if (faceDetectionNet?.loadFromUri) {
+      Promise.resolve(
+        faceDetectionNet.loadFromUri(
+          `${cdnBaseWithProtocol}/face-api/v1/tiny_face_detector_model-weights_manifest.json`
+        )
+      ).catch(() => undefined)
     }
 
     const devicesContext =

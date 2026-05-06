@@ -13,9 +13,9 @@ export const FACE_SCORE = 0.65
 
 export function getFaceDetectorOptions() {
   const facePlugin = getFacePlugin()
+  const { TinyFaceDetectorOptions } = facePlugin || {}
 
-  if (facePlugin) {
-    const { TinyFaceDetectorOptions } = facePlugin
+  if (TinyFaceDetectorOptions) {
     return new TinyFaceDetectorOptions({ inputSize, scoreThreshold })
   }
 }
@@ -26,12 +26,12 @@ export function getCurrentFaceDetectionNet() {
   if (facePlugin) {
     const { nets } = facePlugin
 
-    return nets.tinyFaceDetector
+    return nets?.tinyFaceDetector
   }
 }
 
 export function isFaceDetectionModelLoaded() {
-  return !!getCurrentFaceDetectionNet().params
+  return !!getCurrentFaceDetectionNet()?.params
 }
 
 export function dataURItoBlob(base64Data: any) {
