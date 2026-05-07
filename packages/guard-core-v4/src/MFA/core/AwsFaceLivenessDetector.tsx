@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 // ============================================
-// AWS 活体检测组件
+// AWS liveness detection component
 // ============================================
-// 注意：@aws-amplify/ui-react-liveness 已打包进 bundle
-// 这样可以避免使用方遇到 chunk 加载问题
+// Note: @aws-amplify/ui-react-liveness is bundled to avoid chunk loading
+// issues for consumers.
 // ============================================
 
 import {
@@ -18,28 +18,28 @@ import { ThemeProvider } from '@aws-amplify/ui-react'
 
 import '@aws-amplify/ui-react/styles.css'
 
-// 覆盖 AWS 活体检测组件默认样式，移除上方空白
+// Override AWS liveness detector styles and remove the top whitespace.
 const overrideStyles = `
   .authing-aws-face-liveness {
     --authing-liveness-face-size: min(68vw, 300px);
   }
 
-  /* 移除 liveness-detector-check 的 gap */
+  /* Remove the liveness-detector-check gap. */
   .authing-aws-face-liveness .liveness-detector-check.amplify-flex {
     gap: 0 !important;
     align-items: center !important;
   }
-  /* 隐藏 start screen warning，它不占用空间 */
+  /* Hide the start screen warning without occupying space. */
   .authing-aws-face-liveness .amplify-liveness-start-screen-warning {
     display: none !important;
   }
-  /* 针对 visibility: hidden 的元素 */
+  /* Collapse elements hidden with visibility: hidden. */
   .authing-aws-face-liveness div[style*="visibility: hidden"] {
     height: 0 !important;
     min-height: 0 !important;
     overflow: hidden !important;
   }
-  /* 将 AWS 默认的矩形相机模块收成圆形取景区域 */
+  /* Turn the default rectangular AWS camera module into a circular viewport. */
   .authing-aws-face-liveness .amplify-liveness-camera-module {
     width: var(--authing-liveness-face-size) !important;
     height: var(--authing-liveness-face-size) !important;
@@ -62,7 +62,7 @@ const overrideStyles = `
     height: 100% !important;
     object-fit: cover !important;
   }
-  /* 隐藏 AWS 默认椭圆遮罩，避免把圆形视频再次裁成竖向椭圆 */
+  /* Hide the default AWS oval mask so the circular video is not clipped again. */
   .authing-aws-face-liveness .amplify-liveness-oval-canvas {
     opacity: 0 !important;
     pointer-events: none !important;
@@ -75,7 +75,7 @@ const overrideStyles = `
     border-radius: 50% !important;
     pointer-events: none !important;
   }
-  /* 调整椭圆框（instruction overlay）位置和大小 */
+  /* Align the instruction overlay with the circular viewport. */
   .authing-aws-face-liveness .amplify-liveness-instruction-overlay {
     position: absolute !important;
     top: 0 !important;
@@ -86,7 +86,7 @@ const overrideStyles = `
     min-height: auto !important;
     margin: 0 !important;
   }
-  /* 调整相机模块容器，确保没有多余间距 */
+  /* Remove extra spacing from the camera module container. */
   .authing-aws-face-liveness .amplify-liveness-camera-module {
     gap: 0 !important;
     margin-top: 0 !important;
@@ -172,7 +172,7 @@ const livenessDisplayTextKeys: Array<keyof LivenessDisplayText> = [
 ]
 
 /**
- * AWS Face Liveness 检测组件
+ * AWS Face Liveness detector component.
  */
 export const AwsFaceLivenessDetector: React.FC<
   AwsFaceLivenessDetectorProps
@@ -186,6 +186,7 @@ export const AwsFaceLivenessDetector: React.FC<
   const { t } = useTranslation()
   const [isLoaded, setIsLoaded] = useState(false)
   const [error] = useState<string | null>(null)
+  const detectorContainerRef = React.useRef<HTMLDivElement>(null)
 
   const displayText = useMemo<LivenessDisplayText>(() => {
     const translateDisplayText = (key: keyof LivenessDisplayText) =>
@@ -201,11 +202,58 @@ export const AwsFaceLivenessDetector: React.FC<
   }, [t])
 
   useEffect(() => {
-    // 组件挂载后标记为已加载
+    // Mark the component as loaded after mount.
     setIsLoaded(true)
   }, [])
 
-  // 凭证提供者
+  useLayoutEffect(() => {
+    const container = detectorContainerRef.current
+    if (!container) return
+
+    const cameraLabel = t('common.faceLiveness.cameraLabel') as string
+    const cameraSelectA11yLabel = t(
+      'common.faceLiveness.cameraSelectA11yLabel'
+    ) as string
+
+    const syncCameraLabels = () => {
+      container
+        .querySelectorAll<HTMLLabelElement>(
+          [
+            'label[for="amplify-liveness-camera-select"]',
+            '.amplify-liveness-start-screen-camera-select__label'
+          ].join(',')
+        )
+        .forEach(label => {
+          if (label.textContent !== cameraLabel) {
+            label.textContent = cameraLabel
+          }
+        })
+
+      const select = container.querySelector<HTMLSelectElement>(
+        '#amplify-liveness-camera-select'
+      )
+      if (
+        select &&
+        select.getAttribute('aria-label') !== cameraSelectA11yLabel
+      ) {
+        select.setAttribute('aria-label', cameraSelectA11yLabel)
+      }
+    }
+
+    syncCameraLabels()
+
+    const observer = new MutationObserver(syncCameraLabels)
+    observer.observe(container, {
+      attributes: true,
+      characterData: true,
+      childList: true,
+      subtree: true
+    })
+
+    return () => observer.disconnect()
+  }, [t])
+
+  // Credential provider.
   const credentialProvider: AwsCredentialProvider = async () => {
     if (credentials && credentials.accessKeyId) {
       return {
@@ -214,7 +262,7 @@ export const AwsFaceLivenessDetector: React.FC<
         sessionToken: credentials.sessionToken
       }
     }
-    // 如果没有提供凭证，返回空对象让组件使用默认方式
+    // Return empty credentials when none are provided and let the component use its default behavior.
     return {
       accessKeyId: '',
       secretAccessKey: '',
@@ -238,7 +286,7 @@ export const AwsFaceLivenessDetector: React.FC<
             background: '#fff'
           }}
         >
-          刷新重试
+          {t('common.faceLiveness.refreshRetry')}
         </button>
       </div>
     )
@@ -249,19 +297,21 @@ export const AwsFaceLivenessDetector: React.FC<
       <div
         style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}
       >
-        <div className="authing-g2-loading">加载中...</div>
+        <div className="authing-g2-loading">
+          {t('common.faceLiveness.loading')}
+        </div>
       </div>
     )
   }
 
-  // 包装 onAnalysisComplete 以符合 AWS 组件类型要求
+  // Wrap onAnalysisComplete to match the AWS component type.
   const handleAnalysisComplete = async (completeInfo: any): Promise<void> => {
     if (onAnalysisComplete) {
       await Promise.resolve(onAnalysisComplete(completeInfo))
     }
   }
 
-  // 包装 onError 以符合 AWS 组件类型要求
+  // Wrap onError to match the AWS component type.
   const handleError = (error: any): void => {
     onError?.(error)
   }
@@ -270,6 +320,7 @@ export const AwsFaceLivenessDetector: React.FC<
     <ThemeProvider>
       <style>{overrideStyles}</style>
       <div
+        ref={detectorContainerRef}
         className="authing-aws-face-liveness"
         style={{ width: '100%', maxWidth: 480, margin: '0 auto' }}
       >
