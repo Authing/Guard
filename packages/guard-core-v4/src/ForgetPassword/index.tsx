@@ -115,12 +115,10 @@ export const GuardForgetPassword: React.FC = () => {
           return
         }
         events?.onPwdReset?.(authClient)
-        // 返回登录
         const initData = {
           title: t('common.resetSuccess'),
           message: t('common.resetSuccessMessage'),
-          needBack,
-          goBack
+          needBack: false
         }
         changeModule?.(GuardModuleType.New_SUBMIT_SUCCESS, {
           ...initData

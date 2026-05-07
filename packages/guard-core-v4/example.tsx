@@ -1,14 +1,18 @@
-import { Guard, User, GuardLocalConfig } from './src/index'
+import { Guard, User, GuardLocalConfig, GuardModuleType } from './src/index'
 
 import { React, render } from 'shim-react'
 
 import * as facePlugin from 'face-api.js'
 
 const App = () => {
-  const appId = 'AUTHING_APPID'
+  const appId = '69d4a0717cbfb2349857af67'
   // const deviceId = 'DEVICE_ID' //如要使用必须使用开启元数据对的 用户池 测试
 
-  const config: Partial<GuardLocalConfig> = {}
+  const config: Partial<GuardLocalConfig> = {
+    host: 'https://gkrk13yfmskx.authing.cn',
+    isHost: true,
+    defaultScenes: GuardModuleType.FORGET_PWD
+  }
 
   const onLogin = (userInfo: User) => {
     console.log(userInfo)
