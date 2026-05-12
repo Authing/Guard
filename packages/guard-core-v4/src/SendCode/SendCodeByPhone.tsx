@@ -70,7 +70,12 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
        * post 方法：packages/react-components/components/_utils/http.ts
        * 响应拦截：packages/react-components/components/_utils/responseManagement/index.ts
        */
-      const data = await post('/v2/api/send-reset-password-code', {
+      // 重置密码场景使用单独接口，其他场景使用通用短信发送接口
+      const url =
+        scene === SceneType.SCENE_TYPE_RESET
+          ? '/v2/api/send-reset-password-code'
+          : '/api/v2/sms/send'
+      const data = await post(url, {
         phone,
         phoneCountryCode: countryCode,
         scene,
