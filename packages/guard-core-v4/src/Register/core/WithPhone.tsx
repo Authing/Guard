@@ -258,7 +258,7 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
             prefix={
               <IconFont
                 type="authing-a-user-line1"
-                style={{ color: '#878A95' }}
+                style={{ color: '#737373' }}
               />
             }
             maxLength={11}
@@ -288,7 +288,7 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
             prefix={
               <IconFont
                 type="authing-a-shield-check-line1"
-                style={{ color: '#878A95' }}
+                style={{ color: '#737373' }}
               />
             }
             scene={SceneType.SCENE_TYPE_REGISTER}
@@ -320,7 +320,7 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
             prefix={
               <IconFont
                 type="authing-a-shield-check-line1"
-                style={{ color: '#878A95' }}
+                style={{ color: '#737373' }}
               />
             }
             onSendCodeBefore={async () => {

@@ -7,13 +7,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgba(84, 89, 104, 0.1);
+    background: rgba(28, 25, 23, 0.06);
     height: 26px;
     margin-right: 4px;
     font-size: 12px;
     padding: 0 12px;
-    border-radius: 4px;
-    color: #545968;
+    border-radius: 8px;
+    color: #44403C;
   }
   .switch-img {
     @media (any-hover: hover) {
@@ -45,7 +45,7 @@
     width: 50px;
     height: 50px;
     font-size: 50px;
-    color: #215ae5;
+    color: #EE5C2A;
     cursor: pointer;
   }
 }
@@ -84,8 +84,8 @@ div.g2-multiple-wrapper {
   left: -125px !important; //覆盖行内样式
   top: 4px !important;
   .authing-ant-popover-inner {
-    background: rgba(84, 89, 104, 0.1);
-    border-radius: 4px;
+    background: rgba(28, 25, 23, 0.06);
+    border-radius: 8px;
     box-shadow: none;
   }
   .authing-ant-popover-inner-content {
@@ -98,16 +98,16 @@ div.g2-multiple-wrapper {
     margin-right: 4px;
     font-size: 12px;
     padding: 0 12px;
-    border-radius: 4px;
-    color: #545968;
+    border-radius: 8px;
+    color: #44403C;
   }
 }
 .switch-text {
   left: -80px !important; //覆盖行内样式
   top: 4px !important;
   .authing-ant-popover-inner {
-    background: rgba(84, 89, 104, 0.1);
-    border-radius: 4px;
+    background: rgba(28, 25, 23, 0.06);
+    border-radius: 8px;
     box-shadow: none;
   }
   .authing-ant-popover-inner-content {
@@ -120,14 +120,14 @@ div.g2-multiple-wrapper {
     margin-right: 4px;
     font-size: 12px;
     padding: 0 12px;
-    border-radius: 4px;
-    color: #545968;
+    border-radius: 8px;
+    color: #44403C;
   }
 }
 .authing-ant-popover-placement-leftTop
   > .authing-ant-popover-content
   > .authing-ant-popover-arrow {
-  border-color: rgba(84, 89, 104, 0.1);
+  border-color: rgba(28, 25, 23, 0.06);
   border-width: 3px;
   background: #fff;
   width: 0px;
@@ -136,7 +136,7 @@ div.g2-multiple-wrapper {
   top: 10px;
 }
 .g2-view-message-info .authing-ant-message-notice-content {
-  background: #e8f2ff;
+  background: #FFF4ED;
 }
 
 // 清楚 tabs 前后竖条阴影
@@ -153,7 +153,7 @@ div.g2-multiple-wrapper {
     font-size: 16px;
   }
   .authing-ant-tabs-dropdown-open {
-    color: #215ae5;
+    color: #EE5C2A;
   }
 }
 .qrcode {
@@ -165,7 +165,7 @@ div.g2-multiple-wrapper {
   }
   &__again-scan {
     cursor: pointer;
-    color: #215ae5;
+    color: #EE5C2A;
   }
 }
 
@@ -174,11 +174,11 @@ div.g2-multiple-wrapper {
   font-weight: 500;
   line-height: 20px;
   padding: 2px 5px;
-  border-radius: 3px;
+  border-radius: 6px;
   margin: 4px 4px 0 0;
   border: none;
-  color: #153fbf;
-  background-color: #e8f2ff;
+  color: #C2410C;
+  background-color: #FFF4ED;
 }
 
 .wecom_container {
@@ -205,9 +205,9 @@ div.g2-multiple-wrapper {
   padding: 2px 4px;
   justify-content: center;
   align-items: center;
-  border-radius: 4px 0 0 4px;
-  background: #e8f2ff;
-  color: #153fbf;
+  border-radius: 8px 0 0 4px;
+  background: #FFF4ED;
+  color: #C2410C;
   text-align: center;
   font-size: 12px;
   font-style: normal;
@@ -221,9 +221,9 @@ div.g2-multiple-wrapper {
   bottom: 0px;
   width: 100%;
   height: 0px;
-  border-radius: 8px;
+  border-radius: 10px;
   background: #fff;
-  box-shadow: 0 -8px 24px -4px rgba(4, 24, 115, 0.12);
+  box-shadow: 0 -8px 24px -4px rgba(28, 25, 23, 0.12);
   transition: all 0.3s ease-in-out;
   overflow: hidden;
   &.open {
@@ -250,7 +250,7 @@ div.g2-multiple-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #282d3c;
+  color: #171717;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
@@ -276,44 +276,44 @@ div.g2-multiple-wrapper {
   padding: 0 8px;
   justify-content: center;
   align-items: center;
-  border-radius: 4px;
-  background-color: #f7f8fa;
-  color: #4e5969;
+  border-radius: 8px;
+  background-color: #FAFAF9;
+  color: #44403C;
   cursor: pointer;
   &.active {
-    background: #e8f2ff;
-    color: #215ae5;
+    background: #FFF4ED;
+    color: #EE5C2A;
   }
 }
 
 .g2-guard-search-input {
   .authing-ant-input-affix-wrapper {
     display: flex;
-    border-radius: 4px !important;
-    background: #f7f8fa;
+    border-radius: 8px !important;
+    background: #FAFAF9;
     box-shadow: none !important;
-    border: 1px solid #f7f8fa;
+    border: 1px solid #FAFAF9;
     cursor: pointer;
     padding: 1px 8px;
   }
 
   input::placeholder {
-    color: #86909c;
+    color: #737373;
   }
 
   &:focus {
     background-color: #ffffff;
-    border-color: #618eff;
+    border-color: #FDBA74;
   }
 
   &:hover {
-    border-color: #e5e6eb;
-    background-color: #e5e6eb;
+    border-color: #E7E5E4;
+    background-color: #E7E5E4;
   }
 
   .ant-input-prefix span {
     font-size: 16px;
-    color: #8a92a6;
+    color: #737373;
   }
 
   input.ant-input {

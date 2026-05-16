@@ -20,12 +20,12 @@ export const InputPasswordForget = React.forwardRef<
           {visible ? (
             <IconFont
               type="authing-authing-eye-fill"
-              style={{ color: '#4E5969' }}
+              style={{ color: '#44403C' }}
             />
           ) : (
             <IconFont
               type="authing-authing-eye-off-fill"
-              style={{ color: '#A9AEB8' }}
+              style={{ color: '#A1A1A1' }}
             />
           )}
         </span>

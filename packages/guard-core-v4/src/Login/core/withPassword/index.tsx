@@ -508,7 +508,7 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
             prefix={
               <IconFont
                 type="authing-a-user-line1"
-                style={{ color: '#878A95' }}
+                style={{ color: '#737373' }}
               />
             }
             // onChange={e => {
@@ -538,7 +538,7 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
               prefix={
                 <IconFont
                   type="authing-a-lock-line1"
-                  style={{ color: '#878A95' }}
+                  style={{ color: '#737373' }}
                 />
               }
             />
@@ -566,7 +566,7 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
             style={{
               marginBottom: 23,
               fontSize: 12,
-              color: '#E8353E',
+              color: '#EA4335',
               display: 'block'
             }}
           >
@@ -580,7 +580,7 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
             style={{
               marginBottom: 23,
               fontSize: 12,
-              color: '#E8353E',
+              color: '#EA4335',
               display: 'block'
             }}
           >

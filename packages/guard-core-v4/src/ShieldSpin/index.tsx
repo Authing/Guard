@@ -22,7 +22,7 @@ export const ShieldSpinLoading = (
     }
     #path-b {
       fill: none;
-      stroke: #eaebee;
+      stroke: #E7E5E4;
       stroke-width: 8;
       stroke-linecap: round;
       stroke-linejoin: round;

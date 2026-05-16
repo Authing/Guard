@@ -85,7 +85,7 @@ export const BindMFAEmail: React.FC<BindMFAEmailProps> = ({
             prefix={
               <IconFont
                 type="authing-a-mail-line3"
-                style={{ color: '#878A95' }}
+                style={{ color: '#737373' }}
               />
             }
           />

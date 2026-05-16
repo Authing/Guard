@@ -241,7 +241,7 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
             prefix={
               <IconFont
                 type="authing-a-user-line1"
-                style={{ color: '#878A95' }}
+                style={{ color: '#737373' }}
               />
             }
           />
@@ -256,11 +256,11 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
             className="authing-g2-input"
             size="large"
             placeholder={t('login.inputLdapPwd')}
-            // prefix={<LockOutlined style={{ color: '#878A95' }} />}
+            // prefix={<LockOutlined style={{ color: '#737373' }} />}
             prefix={
               <IconFont
                 type="authing-a-lock-line1"
-                style={{ color: '#878A95' }}
+                style={{ color: '#737373' }}
               />
             }
           />

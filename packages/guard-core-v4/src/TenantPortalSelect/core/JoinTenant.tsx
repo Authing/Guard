@@ -120,7 +120,7 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
             prefix: (
               <IconFont
                 type="authing-account-circle-line"
-                style={{ color: '#878A95' }}
+                style={{ color: '#737373' }}
               />
             ),
             inputClassName: 'authing-g2-input'

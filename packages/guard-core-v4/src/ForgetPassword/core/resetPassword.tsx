@@ -210,7 +210,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
               prefix={
                 <IconFont
                   type="authing-a-shield-check-line1"
-                  style={{ color: '#878A95' }}
+                  style={{ color: '#737373' }}
                 />
               }
               captchaCode={captchaCode}
@@ -241,7 +241,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
               prefix={
                 <IconFont
                   type="authing-a-shield-check-line1"
-                  style={{ color: '#878A95' }}
+                  style={{ color: '#737373' }}
                 />
               }
               scene={EmailScene.RESET_PASSWORD_VERIFY_CODE}
@@ -330,7 +330,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
             prefix={
               <IconFont
                 type="authing-a-user-line1"
-                style={{ color: '#878A95' }}
+                style={{ color: '#737373' }}
               />
             }
           />
@@ -376,7 +376,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
             prefix={
               <IconFont
                 type="authing-a-lock-line1"
-                style={{ color: '#878A95' }}
+                style={{ color: '#737373' }}
               />
             }
           />

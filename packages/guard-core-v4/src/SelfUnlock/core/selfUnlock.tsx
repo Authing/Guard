@@ -164,7 +164,7 @@ export const SelfUnlock = ({
               prefix={
                 <IconFont
                   type="authing-a-shield-check-line1"
-                  style={{ color: '#878A95' }}
+                  style={{ color: '#737373' }}
                 />
               }
               scene={SceneType.SCENE_TYPE_RESET}
@@ -187,7 +187,7 @@ export const SelfUnlock = ({
               prefix={
                 <IconFont
                   type="authing-a-shield-check-line1"
-                  style={{ color: '#878A95' }}
+                  style={{ color: '#737373' }}
                 />
               }
               scene={EmailScene.SELF_UNLOCKING_VERIFY_CODE}
@@ -241,7 +241,7 @@ export const SelfUnlock = ({
             prefix={
               <IconFont
                 type="authing-a-user-line1"
-                style={{ color: '#878A95' }}
+                style={{ color: '#737373' }}
               />
             }
           />
@@ -269,7 +269,7 @@ export const SelfUnlock = ({
               prefix={
                 <IconFont
                   type="authing-a-lock-line1"
-                  style={{ color: '#878A95' }}
+                  style={{ color: '#737373' }}
                 />
               }
             />

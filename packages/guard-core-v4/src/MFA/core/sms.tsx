@@ -98,7 +98,7 @@ export const BindMFASms: React.FC<BindMFASmsProps> = ({
             prefix={
               <IconFont
                 type="authing-a-smartphone-line1"
-                style={{ color: '#878A95' }}
+                style={{ color: '#737373' }}
               />
             }
             maxLength={20}

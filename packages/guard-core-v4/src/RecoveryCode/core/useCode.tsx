@@ -111,7 +111,7 @@ export const UseCode: React.FC<UseCodeProps> = ({ mfaToken, onSubmit }) => {
             prefix={
               <IconFont
                 type="authing-a-lock-line1"
-                style={{ color: '#878A95' }}
+                style={{ color: '#737373' }}
               />
             }
           />

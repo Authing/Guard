@@ -191,7 +191,7 @@ export const GuardResetPassword = () => {
               prefix={
                 <IconFont
                   type="authing-a-lock-line1"
-                  style={{ color: '#878A95', marginBottom: 2 }}
+                  style={{ color: '#737373', marginBottom: 2 }}
                 />
               }
             />
@@ -229,7 +229,7 @@ export const GuardResetPassword = () => {
               prefix={
                 <IconFont
                   type="authing-a-lock-line1"
-                  style={{ color: '#878A95', marginBottom: 2 }}
+                  style={{ color: '#737373', marginBottom: 2 }}
                 />
               }
             />

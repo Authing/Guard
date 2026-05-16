@@ -280,7 +280,7 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
             prefix={
               <IconFont
                 type="authing-a-user-line1"
-                style={{ color: '#878A95' }}
+                style={{ color: '#737373' }}
               />
             }
           />
@@ -305,7 +305,7 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
             prefix={
               <IconFont
                 type="authing-a-shield-check-line1"
-                style={{ color: '#878A95' }}
+                style={{ color: '#737373' }}
               />
             }
             scene={EmailScene.REGISTER_VERIFY_CODE}

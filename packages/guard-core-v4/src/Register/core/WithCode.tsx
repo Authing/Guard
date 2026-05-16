@@ -586,7 +586,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             prefix={
               <IconFont
                 type="authing-a-shield-check-line1"
-                style={{ color: '#878A95' }}
+                style={{ color: '#737373' }}
               />
             }
             isInternationSms={isInternationSms}
@@ -622,7 +622,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
               prefix={
                 <IconFont
                   type="authing-a-shield-check-line1"
-                  style={{ color: '#878A95' }}
+                  style={{ color: '#737373' }}
                 />
               }
               scene={SceneType.SCENE_TYPE_REGISTER}
@@ -653,7 +653,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
               prefix={
                 <IconFont
                   type="authing-a-shield-check-line1"
-                  style={{ color: '#878A95' }}
+                  style={{ color: '#737373' }}
                 />
               }
               scene={EmailScene.REGISTER_VERIFY_CODE}
@@ -762,7 +762,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
               prefix={
                 <IconFont
                   type="authing-a-user-line1"
-                  style={{ color: '#878A95' }}
+                  style={{ color: '#737373' }}
                 />
               }
             />

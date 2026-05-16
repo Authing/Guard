@@ -89,7 +89,7 @@ export const InputIdentify: React.FC<InputIdentifyProps> = props => {
         placeholder={placeholder}
         {...inputProps}
         prefix={
-          <IconFont type="authing-a-user-line1" style={{ color: '#878A95' }} />
+          <IconFont type="authing-a-user-line1" style={{ color: '#737373' }} />
         }
       />
     )

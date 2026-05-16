@@ -319,7 +319,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
             prefix={
               <IconFont
                 type="authing-a-user-line1"
-                style={{ color: '#878A95' }}
+                style={{ color: '#737373' }}
               />
             }
             maxLength={11}
@@ -349,7 +349,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
             prefix={
               <IconFont
                 type="authing-a-shield-check-line1"
-                style={{ color: '#878A95' }}
+                style={{ color: '#737373' }}
               />
             }
             scene={SceneType.SCENE_TYPE_REGISTER}
@@ -384,7 +384,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
             prefix={
               <IconFont
                 type="authing-a-shield-check-line1"
-                style={{ color: '#878A95' }}
+                style={{ color: '#737373' }}
               />
             }
             codeFieldName={'captchaCode'}
@@ -502,7 +502,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
             prefix={
               <IconFont
                 type="authing-a-user-line1"
-                style={{ color: '#878A95' }}
+                style={{ color: '#737373' }}
               />
             }
           ></Input>
@@ -547,7 +547,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
                 prefix={
                   <IconFont
                     type="authing-a-shield-check-line1"
-                    style={{ color: '#878A95' }}
+                    style={{ color: '#737373' }}
                   />
                 }
                 scene={EmailScene.REGISTER_VERIFY_CODE}
@@ -625,11 +625,11 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
               autoComplete="off"
               size="large"
               placeholder={t('login.inputEmail') as string}
-              // prefix={<UserOutlined style={{ color: '#878A95' }} />}
+              // prefix={<UserOutlined style={{ color: '#737373' }} />}
               prefix={
                 <IconFont
                   type="authing-a-user-line1"
-                  style={{ color: '#878A95' }}
+                  style={{ color: '#737373' }}
                 />
               }
             />
@@ -649,7 +649,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
             prefix={
               <IconFont
                 type="authing-a-lock-line1"
-                style={{ color: '#878A95' }}
+                style={{ color: '#737373' }}
               />
             }
           />
@@ -677,11 +677,11 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
             className="authing-g2-input"
             size="large"
             placeholder={t('common.passwordAgain')}
-            // prefix={<LockOutlined style={{ color: '#878A95' }} />}
+            // prefix={<LockOutlined style={{ color: '#737373' }} />}
             prefix={
               <IconFont
                 type="authing-a-lock-line1"
-                style={{ color: '#878A95' }}
+                style={{ color: '#737373' }}
               />
             }
           />
