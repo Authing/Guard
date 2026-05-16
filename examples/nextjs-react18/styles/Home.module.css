@@ -16,7 +16,7 @@
   display: flex;
   flex: 1;
   padding: 2rem 0;
-  border-top: 1px solid #eaeaea;
+  border-top: 1px solid #E7E5E4;
   justify-content: center;
   align-items: center;
 }
@@ -29,7 +29,7 @@
 }
 
 .title a {
-  color: #0070f3;
+  color: #EE5C2A;
   text-decoration: none;
 }
 
@@ -57,11 +57,11 @@
 }
 
 .code {
-  background: #fafafa;
-  border-radius: 5px;
+  background: #FAFAF9;
+  border-radius: 8px;
   padding: 0.75rem;
-  font-size: 1.1rem;
-  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+  font-size: 12px;
+  font-family: 'Fira Code Variable', 'Fira Code', Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
     Bitstream Vera Sans Mono, Courier New, monospace;
 }
 
@@ -79,7 +79,7 @@
   text-align: left;
   color: inherit;
   text-decoration: none;
-  border: 1px solid #eaeaea;
+  border: 1px solid #E7E5E4;
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
   max-width: 300px;
@@ -88,8 +88,8 @@
 .card:hover,
 .card:focus,
 .card:active {
-  color: #0070f3;
-  border-color: #0070f3;
+  color: #EE5C2A;
+  border-color: #EE5C2A;
 }
 
 .card h2 {
@@ -118,10 +118,10 @@
 @media (prefers-color-scheme: dark) {
   .card,
   .footer {
-    border-color: #222;
+    border-color: #44403C;
   }
   .code {
-    background: #111;
+    background: #171717;
   }
   .logo img {
     filter: invert(1);
