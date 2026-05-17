@@ -1462,43 +1462,40 @@ input {
     flex: 1 1 auto;
     min-width: 0;
     max-width: 100%;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-    -ms-overflow-style: none;
-    overscroll-behavior-x: contain;
-    touch-action: pan-x;
-
-    &::-webkit-scrollbar {
-      display: none;
-      width: 0;
-      height: 0;
-    }
+    overflow: hidden;
   }
 
   .authing-ant-tabs-nav-list {
     display: flex;
     align-items: center;
     position: relative;
-    column-gap: 28px;
-    width: max-content;
-    min-width: 100%;
-    max-width: none;
-    overflow: visible !important;
+    min-width: 0;
     padding-bottom: 0;
   }
 
-  .authing-ant-tabs-nav-operations,
+  .authing-ant-tabs-nav-operations {
+    flex: 0 0 auto;
+  }
+
   .authing-ant-tabs-nav-more {
-    display: none !important;
+    color: var(--guard-primary);
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 38px;
+    padding: 0 0 0 8px;
+    transition: color 0.2s ease;
+
+    &:hover,
+    &.authing-ant-dropdown-open {
+      color: var(--guard-primary-hover);
+    }
   }
 
   .authing-ant-tabs-tab {
     flex: 0 0 auto;
-    min-width: 74px;
+    min-width: 0;
     height: 38px;
-    margin: 0 !important;
+    margin: 0 28px 0 0 !important;
     padding: 0 !important;
     border-radius: 0;
     background: transparent;
