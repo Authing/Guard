@@ -1443,17 +1443,18 @@ input {
 
 .g2-view-container .g2-view-tabs:not(.hidden_tab) {
   .authing-ant-tabs > .authing-ant-tabs-nav {
-    align-items: stretch;
+    display: flex;
     width: 100%;
+    max-width: 100%;
     margin: 0 0 14px;
-    padding: 4px;
-    background: var(--guard-bg-subtle);
-    border: 1px solid var(--guard-border);
-    border-radius: var(--guard-radius-lg);
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
     box-sizing: border-box;
 
     &::before {
-      display: none;
+      border-bottom-color: var(--guard-border);
     }
   }
 
@@ -1461,35 +1462,31 @@ input {
     flex: 1 1 auto;
     min-width: 0;
     max-width: 100%;
-    overflow: hidden !important;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-x: contain;
-
-    &::before,
-    &::after {
-      display: none !important;
-    }
-  }
-
-  .authing-ant-tabs-nav-list {
-    display: flex;
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
     overflow-x: auto !important;
-    overflow-y: hidden;
-    padding-bottom: 0;
+    overflow-y: hidden !important;
     scrollbar-width: none;
-    touch-action: pan-x;
-    transform: none !important;
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: none;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x;
 
     &::-webkit-scrollbar {
       display: none;
       width: 0;
       height: 0;
     }
+  }
+
+  .authing-ant-tabs-nav-list {
+    display: flex;
+    align-items: center;
+    position: relative;
+    column-gap: 28px;
+    width: max-content;
+    min-width: 100%;
+    max-width: none;
+    overflow: visible !important;
+    padding-bottom: 0;
   }
 
   .authing-ant-tabs-nav-operations,
@@ -1500,23 +1497,21 @@ input {
   .authing-ant-tabs-tab {
     flex: 0 0 auto;
     min-width: 74px;
-    height: 30px;
+    height: 38px;
     margin: 0 !important;
-    padding: 0 16px !important;
-    border-radius: var(--guard-radius-md);
+    padding: 0 !important;
+    border-radius: 0;
+    background: transparent;
     color: var(--guard-text-secondary);
     cursor: pointer;
     font-size: 14px;
     line-height: 20px;
+    position: relative;
     transition: all 0.2s ease;
     white-space: nowrap;
-
-    & + .authing-ant-tabs-tab {
-      margin-left: 6px !important;
-    }
+    z-index: 1;
 
     &:hover {
-      background: #FFFFFF;
       color: var(--guard-primary);
     }
   }
@@ -1527,8 +1522,8 @@ input {
   }
 
   .authing-ant-tabs-tab.authing-ant-tabs-tab-active {
-    background: #FFFFFF;
-    box-shadow: 0 1px 2px rgba(28, 25, 23, 0.08);
+    background: transparent;
+    box-shadow: none;
 
     .authing-ant-tabs-tab-btn {
       color: var(--guard-primary);
@@ -1537,52 +1532,18 @@ input {
   }
 
   .authing-ant-tabs-ink-bar {
-    display: none;
-  }
-
-  .authing-ant-tabs-nav-wrap-ping-right,
-  .authing-ant-tabs-nav-wrap-ping-left {
-    position: relative;
-  }
-
-  .authing-ant-tabs-nav-wrap-ping-right::after,
-  .authing-ant-tabs-nav-wrap-ping-left::before {
-    display: block !important;
-    position: absolute;
-    top: 0;
-    bottom: 5px;
-    z-index: 2;
-    width: 34px;
+    display: block;
+    height: 2px;
+    bottom: 0;
+    z-index: 1;
+    background: var(--guard-primary);
+    border-radius: 999px;
+    box-shadow: none;
     pointer-events: none;
-    color: var(--guard-primary);
-    font-size: 18px;
-    line-height: 30px;
-    text-align: center;
-    animation: authingTabsScrollHint 1.4s ease-in-out infinite;
-  }
-
-  .authing-ant-tabs-nav-wrap-ping-right::after {
-    content: '›';
-    right: 0;
-    background: linear-gradient(90deg, rgba(245, 245, 244, 0), var(--guard-bg-subtle) 60%);
-  }
-
-  .authing-ant-tabs-nav-wrap-ping-left::before {
-    content: '‹';
-    left: 0;
-    background: linear-gradient(270deg, rgba(245, 245, 244, 0), var(--guard-bg-subtle) 60%);
-  }
-}
-
-@keyframes authingTabsScrollHint {
-  0%,
-  100% {
-    opacity: 0.45;
-    transform: translateX(0);
-  }
-  50% {
-    opacity: 1;
-    transform: translateX(2px);
+    transition:
+      left 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+      width 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
   }
 }
 
