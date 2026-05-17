@@ -65,6 +65,9 @@
 }
 
 .g2-social-login-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   user-select: none;
   text-align: center;
   font-size: 14px;
@@ -73,9 +76,10 @@
 
 .g2-social-login-title::before,
 .g2-social-login-title::after {
-  content: '——';
-  color: #E7E5E4;
-  margin: 0 11px;
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #E7E5E4;
 }
 
 .g2-social-login-list {

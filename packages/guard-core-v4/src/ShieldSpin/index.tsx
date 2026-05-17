@@ -12,24 +12,24 @@ export const ShieldSpinLoading = (
   <style>
     #path-f {
       fill: none;
-      stroke: #0080ff;
+      stroke: var(--guard-primary, #EE5C2A);
       stroke-width: 8.2;
       stroke-dasharray: 100 220;
-      animation: dash 40s infinite linear forwards;
+      animation: dash 1.6s infinite linear forwards;
       stroke-linecap: round;
       stroke-linejoin: round;
 
     }
     #path-b {
       fill: none;
-      stroke: #E7E5E4;
+      stroke: var(--guard-border, #E7E5E4);
       stroke-width: 8;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
     @keyframes dash {
       to {
-        stroke-dashoffset: 12000;
+        stroke-dashoffset: 320;
       }
     }
   </style>
