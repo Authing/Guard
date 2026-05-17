@@ -1440,3 +1440,192 @@ input {
 *[class*='authing-'].authing-ant-btn-link.guard-button-link-like:hover {
   color: var(--guard-primary-hover);
 }
+
+.g2-view-container .g2-view-tabs:not(.hidden_tab) {
+  .authing-ant-tabs > .authing-ant-tabs-nav {
+    align-items: stretch;
+    width: 100%;
+    margin: 0 0 14px;
+    padding: 4px;
+    background: var(--guard-bg-subtle);
+    border: 1px solid var(--guard-border);
+    border-radius: var(--guard-radius-lg);
+    box-sizing: border-box;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  .authing-ant-tabs-nav-wrap {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+
+    &::before,
+    &::after {
+      display: none !important;
+    }
+  }
+
+  .authing-ant-tabs-nav-list {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto !important;
+    overflow-y: hidden;
+    padding-bottom: 0;
+    scrollbar-width: none;
+    touch-action: pan-x;
+    transform: none !important;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+  }
+
+  .authing-ant-tabs-nav-operations,
+  .authing-ant-tabs-nav-more {
+    display: none !important;
+  }
+
+  .authing-ant-tabs-tab {
+    flex: 0 0 auto;
+    min-width: 74px;
+    height: 30px;
+    margin: 0 !important;
+    padding: 0 16px !important;
+    border-radius: var(--guard-radius-md);
+    color: var(--guard-text-secondary);
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 20px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+
+    & + .authing-ant-tabs-tab {
+      margin-left: 6px !important;
+    }
+
+    &:hover {
+      background: #FFFFFF;
+      color: var(--guard-primary);
+    }
+  }
+
+  .authing-ant-tabs-tab-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .authing-ant-tabs-tab.authing-ant-tabs-tab-active {
+    background: #FFFFFF;
+    box-shadow: 0 1px 2px rgba(28, 25, 23, 0.08);
+
+    .authing-ant-tabs-tab-btn {
+      color: var(--guard-primary);
+      font-weight: 500;
+    }
+  }
+
+  .authing-ant-tabs-ink-bar {
+    display: none;
+  }
+
+  .authing-ant-tabs-nav-wrap-ping-right,
+  .authing-ant-tabs-nav-wrap-ping-left {
+    position: relative;
+  }
+
+  .authing-ant-tabs-nav-wrap-ping-right::after,
+  .authing-ant-tabs-nav-wrap-ping-left::before {
+    display: block !important;
+    position: absolute;
+    top: 0;
+    bottom: 5px;
+    z-index: 2;
+    width: 34px;
+    pointer-events: none;
+    color: var(--guard-primary);
+    font-size: 18px;
+    line-height: 30px;
+    text-align: center;
+    animation: authingTabsScrollHint 1.4s ease-in-out infinite;
+  }
+
+  .authing-ant-tabs-nav-wrap-ping-right::after {
+    content: '›';
+    right: 0;
+    background: linear-gradient(90deg, rgba(245, 245, 244, 0), var(--guard-bg-subtle) 60%);
+  }
+
+  .authing-ant-tabs-nav-wrap-ping-left::before {
+    content: '‹';
+    left: 0;
+    background: linear-gradient(270deg, rgba(245, 245, 244, 0), var(--guard-bg-subtle) 60%);
+  }
+}
+
+@keyframes authingTabsScrollHint {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: translateX(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(2px);
+  }
+}
+
+.g2-view-container .g2-view-tabs.hidden_tab {
+  .authing-ant-tabs > .authing-ant-tabs-nav {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+  }
+}
+
+.g2-view-container .authing-g2-send-code-btn,
+.g2-password-reset-pageWrap .authing-g2-send-code-btn,
+*[class*='authing-'].authing-ant-btn.authing-g2-send-code-btn {
+  background: #FFFFFF;
+  border-color: var(--guard-primary);
+  color: var(--guard-primary);
+  font-weight: 500;
+}
+
+.g2-view-container .authing-g2-send-code-btn:hover,
+.g2-view-container .authing-g2-send-code-btn:focus,
+.g2-password-reset-pageWrap .authing-g2-send-code-btn:hover,
+.g2-password-reset-pageWrap .authing-g2-send-code-btn:focus,
+*[class*='authing-'].authing-ant-btn.authing-g2-send-code-btn:hover,
+*[class*='authing-'].authing-ant-btn.authing-g2-send-code-btn:focus {
+  background: var(--guard-primary-soft);
+  border-color: var(--guard-primary);
+  color: var(--guard-primary);
+  box-shadow: 0 0 0 3px var(--guard-focus-ring);
+}
+
+.g2-view-container .authing-g2-send-code-btn[disabled],
+.g2-view-container .authing-g2-send-code-btn[disabled]:hover,
+.g2-password-reset-pageWrap .authing-g2-send-code-btn[disabled],
+.g2-password-reset-pageWrap .authing-g2-send-code-btn[disabled]:hover,
+*[class*='authing-'].authing-ant-btn.authing-g2-send-code-btn[disabled],
+*[class*='authing-'].authing-ant-btn.authing-g2-send-code-btn[disabled]:hover {
+  background: var(--guard-bg-subtle);
+  border-color: var(--guard-border);
+  color: var(--guard-text-placeholder);
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 1;
+}
