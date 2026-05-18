@@ -5,11 +5,11 @@ import { React, render } from 'shim-react'
 import * as facePlugin from 'face-api.js'
 
 const App = () => {
-  const appId = '6a05ae8b19939653407afb45'
+  const appId = '6a09db1f7d43839aed4075cc'
   // const deviceId = 'DEVICE_ID' //如要使用必须使用开启元数据对的 用户池 测试
 
   const config: Partial<GuardLocalConfig> = {
-    host:'http://test-2.genauth.localhost:3000/',
+    host:'http://asdsa.genauth.localhost:3000/',
     defaultScenes: GuardModuleType.REGISTER
   }
 

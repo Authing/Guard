@@ -26,6 +26,7 @@
   --guard-radius-sm: 6px;
   --guard-radius-md: 8px;
   --guard-radius-lg: 10px;
+  --guard-radius-xl: 12px;
   --guard-focus-ring: rgba(238, 92, 42, 0.2);
   --guard-danger-ring: rgba(234, 67, 53, 0.2);
 
@@ -243,7 +244,7 @@
     }
     box-shadow: none;
     width: calc(100% - 4px);
-    border-radius: 8px;
+    border-radius: var(--guard-radius-xl);
     height: 42px;
     margin: 0 2px;
     &.shaking {
@@ -349,7 +350,7 @@
       background: #E7E5E4;
     }
     border: 1px solid #F5F5F4;
-    border-radius: 8px;
+    border-radius: var(--guard-radius-xl);
     .authing-ant-select-selector {
       outline: 0;
       border-color: #F5F5F4;
@@ -374,7 +375,7 @@
   .authing-ant-form-item-control-input-content {
     .authing-g2-textarea {
       background: #FAFAF9;
-      border-radius: 8px;
+      border-radius: var(--guard-radius-xl);
       border: 1px solid #FAFAF9;
       transition:
         all 0.3s linear,
@@ -473,7 +474,7 @@
 .authing-g2-input {
   border: 1px solid #F5F5F4;
   // height: 46px;
-  border-radius: 8px;
+  border-radius: var(--guard-radius-xl);
   background: #F5F5F4;
 
   &:hover {
@@ -531,7 +532,7 @@
     .authing-ant-input-group {
       .authing-ant-input,
       .authing-ant-input-group-addon {
-        border-radius: 8px;
+        border-radius: var(--guard-radius-xl);
         height: 46px;
       }
     }
@@ -981,10 +982,10 @@ input {
       font-size: 14px;
       height: 48px;
     }
-    border-radius: 8px;
+    border-radius: var(--guard-radius-xl);
     &:focus {
       border: 1px solid #EE5C2A !important;
-      border-radius: 8px;
+      border-radius: var(--guard-radius-xl);
       border-color: #EE5C2A;
       background: #fff;
     }
@@ -1006,7 +1007,7 @@ input {
     line-height: 18px;
     color: #1C1917;
     border: 1px solid #D6D3D1;
-    border-radius: 8px;
+    border-radius: var(--guard-radius-xl);
     height: 46px;
     @media only screen and (max-width: 450px) {
       height: 48px;
@@ -1220,7 +1221,7 @@ input {
       height: 48px;
     }
     background: #EE5C2A;
-    border-radius: 8px;
+    border-radius: var(--guard-radius-xl);
     margin-bottom: 16px;
   }
   .success-page-timer-tip {
@@ -1294,7 +1295,7 @@ input {
   height: 42px;
   background: var(--guard-primary);
   border-color: var(--guard-primary);
-  border-radius: var(--guard-radius-md);
+  border-radius: var(--guard-radius-xl);
   box-shadow: none;
   color: var(--guard-text-inverse);
   cursor: pointer;
@@ -1346,7 +1347,7 @@ input {
   font-family: var(--guard-font-family);
   font-size: 14px;
   color: var(--guard-text-primary);
-  border-radius: var(--guard-radius-md);
+  border-radius: var(--guard-radius-xl);
 }
 
 .g2-view-container .authing-g2-input,
