@@ -26,7 +26,7 @@
   --guard-radius-sm: 6px;
   --guard-radius-md: 8px;
   --guard-radius-lg: 10px;
-  --guard-radius-xl: 12px;
+  --guard-radius-xl: 14px;
   --guard-focus-ring: rgba(238, 92, 42, 0.2);
   --guard-danger-ring: rgba(234, 67, 53, 0.2);
 
@@ -120,7 +120,7 @@
   min-height: 540px;
   box-sizing: border-box;
   padding: 16px;
-  border-radius: 10px;
+  border-radius: var(--guard-radius-xl);
   position: relative;
 
   &.g2-view-register {
@@ -647,7 +647,7 @@
   justify-content: center;
   align-items: center;
   border: 1px solid rgba(231, 229, 228, 0.7);
-  border-radius: var(--guard-radius-lg);
+  border-radius: var(--guard-radius-xl);
   box-shadow: 0 24px 70px -36px rgba(28, 25, 23, 0.22);
   box-sizing: border-box;
 }
@@ -743,7 +743,7 @@
     @media only screen and (max-width: 450px) {
       width: 100%;
     }
-    border-radius: 10px;
+    border-radius: var(--guard-radius-xl);
     margin: auto;
   }
   .authing-ant-modal-body {
@@ -908,7 +908,7 @@ input {
     width: 100%;
   }
   background: #ffffff;
-  border-radius: 10px;
+  border-radius: var(--guard-radius-xl);
   box-shadow: none;
   // min-height: 464px;
 }
@@ -1515,11 +1515,35 @@ input {
     &:hover {
       color: var(--guard-primary);
     }
+
+    &:focus,
+    &:focus-visible,
+    &:active {
+      color: var(--guard-primary);
+      outline: none !important;
+      box-shadow: none !important;
+    }
   }
 
   .authing-ant-tabs-tab-btn {
     width: 100%;
+    border-radius: var(--guard-radius-sm);
+    outline: none !important;
+    box-shadow: none;
     text-align: center;
+
+    &:focus,
+    &:active {
+      color: var(--guard-primary);
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    &:focus-visible {
+      color: var(--guard-primary);
+      outline: none !important;
+      box-shadow: 0 0 0 3px var(--guard-focus-ring) !important;
+    }
   }
 
   .authing-ant-tabs-tab.authing-ant-tabs-tab-active {
