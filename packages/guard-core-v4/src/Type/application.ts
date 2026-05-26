@@ -20,6 +20,7 @@ export enum LoginMethods {
   WECHATWORKAGENCYQRCONNECT = 'wechatwork-agency-qrcode', // 代开发形式的内部应用
   DingTalkQrcode = 'dingtalk-qrcode', //钉钉扫码
   Passkey = 'passkey', // passkey
+  FaceLogin = 'face-login',
   ZJZWFWQrcode = 'zjzwfw-qrcode' // 浙江政务钉
 }
 
@@ -423,6 +424,8 @@ export interface ApplicationConfig {
   enableVerifyDomainInJoinTenant: boolean
 
   passkeyEnabled: boolean
+
+  enableFaceLogin?: boolean
 
   defaultAppId: string // 默认应用
 

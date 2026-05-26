@@ -84,6 +84,55 @@
   padding: 0 35px;
 }
 
+.authing-ant-btn.g2-guard-third-login-btn.g2-face-login-btn-error {
+  background: #fff1f0;
+  border: 1px solid #ff4d4f;
+  box-shadow: 0 0 0 4px rgba(245, 63, 63, 0.12);
+  color: #1d2129;
+  animation: g2-face-login-retry-pulse 1.6s ease-in-out infinite;
+
+  .g2-icon {
+    animation: g2-face-login-retry-nudge 1.6s ease-in-out infinite;
+  }
+
+  &:hover {
+    background: #ffe4e1;
+    box-shadow: 0 0 0 5px rgba(245, 63, 63, 0.18);
+  }
+}
+
+.authing-ant-btn.g2-guard-third-login-btn.g2-face-login-btn-success {
+  background: #e8fff0;
+  color: #1d2129;
+
+  &:hover {
+    background: #dcfae7;
+  }
+}
+
+@keyframes g2-face-login-retry-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 4px rgba(245, 63, 63, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 0 7px rgba(245, 63, 63, 0.18);
+  }
+}
+
+@keyframes g2-face-login-retry-nudge {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  45% {
+    transform: translateX(-2px);
+  }
+  60% {
+    transform: translateX(2px);
+  }
+}
+
 .authing-ant-avatar > img {
   display: block;
   width: 100%;

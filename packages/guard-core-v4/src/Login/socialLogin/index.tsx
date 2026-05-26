@@ -40,6 +40,7 @@ import { ApplicationConfig, SocialConnectionItem } from '../../Type/application'
 import { StoreInstance } from '../../Guard/core/hooks/useMultipleAccounts'
 
 import { PasskeyButton } from './PasskeyButton'
+import { FaceLoginButton } from './FaceLoginButton'
 import { useDeviceId } from '../../Guard/core/hooks/useDeviceId'
 export interface SocialLoginProps {
   appId: string
@@ -280,6 +281,10 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
       }}
     >
       <PasskeyButton
+        onLoginSuccess={onLoginSuccess}
+        onLoginFailed={onLoginFailed}
+      />
+      <FaceLoginButton
         onLoginSuccess={onLoginSuccess}
         onLoginFailed={onLoginFailed}
       />
