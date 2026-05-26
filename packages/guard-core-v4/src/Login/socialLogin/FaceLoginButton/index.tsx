@@ -1,4 +1,3 @@
-import { message } from 'shim-antd'
 import { React } from 'shim-react'
 import { useTranslation } from 'react-i18next'
 import { useGuardAuthClient } from '../../../Guard/authClient'
@@ -6,6 +5,7 @@ import { useDeviceId } from '../../../Guard/core/hooks/useDeviceId'
 import { getGuardWindow } from '../../../Guard/core/useAppendConfig'
 import { GuardButton } from '../../../GuardButton'
 import { IconFont } from '../../../IconFont'
+import { ShieldSpin } from '../../../ShieldSpin'
 import { LoginMethods } from '../../../Type/application'
 import {
   useGuardAppId,
@@ -21,6 +21,7 @@ interface FaceLoginButtonProps {
 
 interface FaceLoginPublicConfig {
   enableFaceLogin?: boolean
+  enable_face_login?: boolean
 }
 
 interface FaceLivenessInitData {
@@ -63,15 +64,12 @@ interface FaceLoginFeedback {
   message: string
 }
 
-const { useCallback, useState } = React
+const { useCallback, useEffect, useRef, useState } = React
 
-const FACE_LOGIN_POPUP_WIDTH = 585
-const FACE_LOGIN_POPUP_HEIGHT = 649
-const FACE_LOGIN_POLL_INTERVAL = 800
-const FACE_LOGIN_POPUP_TIMEOUT = 5 * 60 * 1000
+const FACE_LOGIN_TYPE = '1'
 
 const isFaceLoginEnabled = (publicConfig: FaceLoginPublicConfig) =>
-  Boolean(publicConfig?.enableFaceLogin)
+  Boolean(publicConfig?.enableFaceLogin || publicConfig?.enable_face_login)
 
 const getResponseCode = (res: any) => res?.statusCode ?? res?.code
 
@@ -85,9 +83,6 @@ const getResponseData = <T,>(res: any): T => {
     ...res.data
   }
 }
-
-const getInitLivenessTicket = (data?: FaceLivenessInitData) =>
-  data?.raw?.data?.token || data?.token
 
 const getInitCheckUrl = (data?: FaceLivenessInitData) =>
   data?.raw?.data?.checkUrl || data?.checkUrl
@@ -109,79 +104,84 @@ const isSuccessResponse = (res: any) => {
   return code === 200 || (code === undefined && !res?.message && !res?.messages)
 }
 
-const openLivenessWindow = (url: string) => {
-  const guardWindow = getGuardWindow()
+const getCurrentGuardWindow = () => getGuardWindow() || window
 
-  if (!guardWindow) return
+const getFaceLoginCallbackParams = () => {
+  const currentWindow = getCurrentGuardWindow()
+  const currentUrl = new URL(currentWindow.location.href)
+  const hashSearchIndex = currentUrl.hash.indexOf('?')
+  const hashParams =
+    hashSearchIndex > -1
+      ? new URLSearchParams(currentUrl.hash.slice(hashSearchIndex + 1))
+      : undefined
 
-  const document = guardWindow.document
-  const dualScreenLeft =
-    guardWindow.screenLeft !== undefined
-      ? guardWindow.screenLeft
-      : guardWindow.screenX
-  const dualScreenTop =
-    guardWindow.screenTop !== undefined
-      ? guardWindow.screenTop
-      : guardWindow.screenY
-  const width =
-    guardWindow.innerWidth ||
-    document.documentElement.clientWidth ||
-    guardWindow.screen.width
-  const height =
-    guardWindow.innerHeight ||
-    document.documentElement.clientHeight ||
-    guardWindow.screen.height
-  const systemZoom = width / guardWindow.screen.availWidth
-  const left =
-    (width - FACE_LOGIN_POPUP_WIDTH) / 2 / systemZoom + dualScreenLeft
-  const top =
-    (height - FACE_LOGIN_POPUP_HEIGHT) / 2 / systemZoom + dualScreenTop
-  const newWindow = guardWindow.open(
-    url,
-    '_blank',
-    `
-      toolbar=no,
-      menubar=no,
-      scrollbars=yes,
-      resizable=yes,
-      location=no,
-      status=no,
-      width=${FACE_LOGIN_POPUP_WIDTH},
-      height=${FACE_LOGIN_POPUP_HEIGHT},
-      top=${top},
-      left=${left},
-    `
-  )
-
-  newWindow?.focus()
-
-  return newWindow
+  return {
+    faceType:
+      currentUrl.searchParams.get('faceType') || hashParams?.get('faceType'),
+    token: currentUrl.searchParams.get('token') || hashParams?.get('token')
+  }
 }
 
-const waitForLivenessWindowClosed = (popup: Window) =>
-  new Promise<void>((resolve, reject) => {
-    const guardWindow = getGuardWindow()
-    const timerWindow = guardWindow || window
-    const startedAt = Date.now()
-    const timer = timerWindow.setInterval(() => {
-      if (popup.closed) {
-        timerWindow.clearInterval(timer)
-        resolve()
-        return
-      }
+const getFaceLoginReturnUrl = () => {
+  const currentWindow = getCurrentGuardWindow()
+  const returnUrl = new URL(currentWindow.location.href)
 
-      if (Date.now() - startedAt > FACE_LOGIN_POPUP_TIMEOUT) {
-        timerWindow.clearInterval(timer)
-        popup.close()
-        reject(new Error('FACE_LOGIN_TIMEOUT'))
-      }
-    }, FACE_LOGIN_POLL_INTERVAL)
-  })
+  returnUrl.searchParams.set('faceType', FACE_LOGIN_TYPE)
+  returnUrl.searchParams.delete('token')
+
+  const hashSearchIndex = returnUrl.hash.indexOf('?')
+  if (hashSearchIndex > -1) {
+    const hashPath = returnUrl.hash.slice(0, hashSearchIndex)
+    const hashParams = new URLSearchParams(
+      returnUrl.hash.slice(hashSearchIndex + 1)
+    )
+
+    hashParams.delete('faceType')
+    hashParams.delete('token')
+
+    const hashSearch = hashParams.toString()
+    returnUrl.hash = hashSearch ? `${hashPath}?${hashSearch}` : hashPath
+  }
+
+  return returnUrl.toString()
+}
+
+const clearFaceLoginCallbackParams = () => {
+  const currentWindow = getCurrentGuardWindow()
+
+  if (!currentWindow?.history?.replaceState) return
+
+  const currentUrl = new URL(currentWindow.location.href)
+  currentUrl.searchParams.delete('faceType')
+  currentUrl.searchParams.delete('token')
+
+  const hashSearchIndex = currentUrl.hash.indexOf('?')
+  if (hashSearchIndex > -1) {
+    const hashPath = currentUrl.hash.slice(0, hashSearchIndex)
+    const hashParams = new URLSearchParams(
+      currentUrl.hash.slice(hashSearchIndex + 1)
+    )
+
+    hashParams.delete('faceType')
+    hashParams.delete('token')
+
+    const hashSearch = hashParams.toString()
+    currentUrl.hash = hashSearch ? `${hashPath}?${hashSearch}` : hashPath
+  }
+
+  currentWindow.history.replaceState(
+    currentWindow.history.state,
+    currentWindow.document?.title || '',
+    currentUrl.toString()
+  )
+}
 
 export const FaceLoginButton = (props: FaceLoginButtonProps) => {
   const { onLoginFailed, onLoginSuccess } = props
   const [loading, setLoading] = useState<boolean>(false)
+  const [pageLoading, setPageLoading] = useState<boolean>(false)
   const [feedback, setFeedback] = useState<FaceLoginFeedback>()
+  const faceLoginCallbackHandledRef = useRef<boolean>(false)
   const { t } = useTranslation()
   const publicConfig = useGuardPublicConfig() as FaceLoginPublicConfig
   const { post } = useGuardHttpClient()
@@ -198,6 +198,136 @@ export const FaceLoginButton = (props: FaceLoginButtonProps) => {
     return isFaceLoginEnabled(publicConfig)
   }, [publicConfig])
 
+  const handleLivenessResult = useCallback(
+    async (livenessTicket: string, withPageLoading = false) => {
+      if (withPageLoading) {
+        setPageLoading(true)
+      }
+
+      try {
+        const resultRes = await post<FaceLivenessResultData>(
+          '/api/v3/custom/face-login/liveness/result',
+          {
+            appId,
+            livenessTicket
+          }
+        )
+        const resultData = getResponseData<FaceLivenessResultData>(resultRes)
+        const resultMessage = getResponseMessage(resultRes, resultData)
+
+        if (
+          !isSuccessResponse(resultRes) ||
+          resultData?.success === false ||
+          resultData?.passed === false ||
+          !resultData?.passed ||
+          !resultData?.faceImageBase64
+        ) {
+          const errorMessage = resultMessage || t('login.faceLoginFailed')
+
+          setFeedback({
+            status: 'error',
+            message: errorMessage
+          })
+          onLoginFailed(
+            getResponseCode(resultRes) || 500,
+            resultData,
+            errorMessage
+          )
+          return
+        }
+
+        setFeedback({
+          status: 'success',
+          message: resultMessage || t('login.faceLoginSuccess')
+        })
+
+        if (events?.onBeforeLogin) {
+          const isContinue = await events.onBeforeLogin(
+            {
+              type: LoginMethods.FaceLogin,
+              data: resultData
+            },
+            authClient
+          )
+          if (!isContinue) {
+            return
+          }
+        }
+
+        const signInRes = await post<FaceSignInData>(
+          '/api/v3/custom/face-login/sign-in',
+          {
+            appId,
+            faceImageBase64: resultData.faceImageBase64,
+            livenessTicket: resultData.livenessToken || livenessTicket,
+            ...(deviceId && { deviceInfo: { deviceId } })
+          }
+        )
+        const signInData = getResponseData<FaceSignInData>(signInRes)
+
+        if (!isSuccessResponse(signInRes) || signInData?.status !== 'SUCCESS') {
+          const errorMessage =
+            getResponseMessage(signInRes, signInData) ||
+            (signInData?.status === 'NEED_BIND'
+              ? t('login.faceLoginNeedBind')
+              : t('login.faceLoginFailed'))
+
+          setFeedback({
+            status: 'error',
+            message: errorMessage
+          })
+          onLoginFailed(
+            getResponseCode(signInRes) || 500,
+            signInData,
+            errorMessage
+          )
+          return
+        }
+
+        onLoginSuccess(signInData)
+      } catch (error: any) {
+        const errorMessage = error.message || t('login.faceLoginFailed')
+
+        setFeedback({
+          status: 'error',
+          message: errorMessage
+        })
+        onLoginFailed(500, undefined, errorMessage)
+      } finally {
+        if (withPageLoading) {
+          setPageLoading(false)
+        }
+      }
+    },
+    [
+      appId,
+      authClient,
+      deviceId,
+      events,
+      onLoginFailed,
+      onLoginSuccess,
+      post,
+      t
+    ]
+  )
+
+  useEffect(() => {
+    const { faceType, token } = getFaceLoginCallbackParams()
+
+    if (
+      !isFaceLoginEnabled(publicConfig) ||
+      faceType !== FACE_LOGIN_TYPE ||
+      !token ||
+      faceLoginCallbackHandledRef.current
+    ) {
+      return
+    }
+
+    faceLoginCallbackHandledRef.current = true
+    clearFaceLoginCallbackParams()
+    handleLivenessResult(token, true)
+  }, [handleLivenessResult, publicConfig])
+
   const handleLogin = async () => {
     setLoading(true)
     setFeedback(undefined)
@@ -207,14 +337,14 @@ export const FaceLoginButton = (props: FaceLoginButtonProps) => {
         '/api/v3/custom/face-login/liveness/init',
         {
           appId,
-          title: t('login.faceLoginLivenessTitle')
+          title: t('login.faceLoginLivenessTitle'),
+          returnUrl: getFaceLoginReturnUrl()
         }
       )
       const initData = getResponseData<FaceLivenessInitData>(initRes)
-      const livenessTicket = getInitLivenessTicket(initData)
       const checkUrl = getInitCheckUrl(initData)
 
-      if (!isSuccessResponse(initRes) || !livenessTicket || !checkUrl) {
+      if (!isSuccessResponse(initRes) || !checkUrl) {
         const errorMessage =
           getResponseMessage(initRes, initData) || t('login.faceLoginFailed')
 
@@ -226,94 +356,7 @@ export const FaceLoginButton = (props: FaceLoginButtonProps) => {
         return
       }
 
-      const popup = openLivenessWindow(checkUrl)
-      if (!popup) {
-        message.error(t('login.faceLoginPopupBlocked'))
-        return
-      }
-
-      await waitForLivenessWindowClosed(popup)
-
-      const resultRes = await post<FaceLivenessResultData>(
-        '/api/v3/custom/face-login/liveness/result',
-        {
-          appId,
-          livenessTicket
-        }
-      )
-      const resultData = getResponseData<FaceLivenessResultData>(resultRes)
-      const resultMessage = getResponseMessage(resultRes, resultData)
-
-      if (
-        !isSuccessResponse(resultRes) ||
-        resultData?.success === false ||
-        resultData?.passed === false ||
-        !resultData?.passed ||
-        !resultData?.faceImageBase64
-      ) {
-        const errorMessage = resultMessage || t('login.faceLoginFailed')
-
-        setFeedback({
-          status: 'error',
-          message: errorMessage
-        })
-        onLoginFailed(
-          getResponseCode(resultRes) || 500,
-          resultData,
-          errorMessage
-        )
-        return
-      }
-
-      setFeedback({
-        status: 'success',
-        message: resultMessage || t('login.faceLoginSuccess')
-      })
-
-      if (events?.onBeforeLogin) {
-        const isContinue = await events.onBeforeLogin(
-          {
-            type: LoginMethods.FaceLogin,
-            data: resultData
-          },
-          authClient
-        )
-        if (!isContinue) {
-          return
-        }
-      }
-
-      const signInRes = await post<FaceSignInData>(
-        '/api/v3/custom/face-login/sign-in',
-        {
-          appId,
-          faceImageBase64: resultData.faceImageBase64,
-          livenessTicket: resultData.livenessToken || livenessTicket,
-          ...(deviceId && { deviceInfo: { deviceId } })
-        }
-      )
-      const signInData = getResponseData<FaceSignInData>(signInRes)
-
-      if (!isSuccessResponse(signInRes) || signInData?.status !== 'SUCCESS') {
-        const errorMessage =
-          getResponseMessage(signInRes, signInData) ||
-          (signInData?.status === 'NEED_BIND'
-            ? t('login.faceLoginNeedBind')
-            : t('login.faceLoginFailed'))
-
-        setFeedback({
-          status: 'error',
-          message: errorMessage
-        })
-        onLoginFailed(
-          getResponseCode(signInRes) || 500,
-          signInData,
-          errorMessage
-        )
-        return
-      }
-
-      onLoginSuccess(signInData)
+      getCurrentGuardWindow().location.replace(checkUrl)
     } catch (error: any) {
       const errorMessage = error.message || t('login.faceLoginFailed')
 
@@ -353,6 +396,11 @@ export const FaceLoginButton = (props: FaceLoginButtonProps) => {
 
   return (
     <>
+      {pageLoading && (
+        <div className="g2-face-login-page-loading">
+          <ShieldSpin size={64} />
+        </div>
+      )}
       {faceLoginVisible && (
         <GuardButton
           className={faceLoginButtonClassName}
