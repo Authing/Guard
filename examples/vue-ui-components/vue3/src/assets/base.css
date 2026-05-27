@@ -1,29 +1,29 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
   --vt-c-white: #ffffff;
-  --vt-c-white-soft: #FAFAF9;
-  --vt-c-white-mute: #F5F5F4;
+  --vt-c-white-soft: #FFFFFF;
+  --vt-c-white-mute: #F5F5F7;
 
-  --vt-c-black: #171717;
-  --vt-c-black-soft: #1C1917;
-  --vt-c-black-mute: #44403C;
+  --vt-c-black: #1C1C1E;
+  --vt-c-black-soft: #1C1C1E;
+  --vt-c-black-mute: #3A3A3C;
 
-  --vt-c-indigo: #1C1917;
+  --vt-c-indigo: #1C1C1E;
 
-  --vt-c-divider-light-1: rgba(28, 25, 23, 0.24);
-  --vt-c-divider-light-2: rgba(28, 25, 23, 0.12);
-  --vt-c-divider-dark-1: rgba(245, 245, 244, 0.65);
-  --vt-c-divider-dark-2: rgba(245, 245, 244, 0.48);
+  --vt-c-divider-light-1: rgba(28, 28, 30, 0.24);
+  --vt-c-divider-light-2: rgba(28, 28, 30, 0.12);
+  --vt-c-divider-dark-1: rgba(245, 245, 247, 0.65);
+  --vt-c-divider-dark-2: rgba(245, 245, 247, 0.48);
 
   --vt-c-text-light-1: var(--vt-c-indigo);
-  --vt-c-text-light-2: #737373;
+  --vt-c-text-light-2: #6B7280;
   --vt-c-text-dark-1: var(--vt-c-white);
-  --vt-c-text-dark-2: rgba(245, 245, 244, 0.72);
+  --vt-c-text-dark-2: rgba(245, 245, 247, 0.72);
 }
 
 /* semantic color variables for this project */
 :root {
-  --color-background: var(--vt-c-white);
+  --color-background: #F5F5F7;
   --color-background-soft: var(--vt-c-white-soft);
   --color-background-mute: var(--vt-c-white-mute);
 
@@ -38,19 +38,20 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-background: var(--vt-c-black);
-    --color-background-soft: var(--vt-c-black-soft);
-    --color-background-mute: var(--vt-c-black-mute);
+    --color-background: #F5F5F7;
+    --color-background-soft: var(--vt-c-white-soft);
+    --color-background-mute: var(--vt-c-white-mute);
 
-    --color-border: var(--vt-c-divider-dark-2);
-    --color-border-hover: var(--vt-c-divider-dark-1);
+    --color-border: var(--vt-c-divider-light-2);
+    --color-border-hover: var(--vt-c-divider-light-1);
 
-    --color-heading: var(--vt-c-text-dark-1);
-    --color-text: var(--vt-c-text-dark-2);
+    --color-heading: var(--vt-c-text-light-1);
+    --color-text: var(--vt-c-text-light-1);
   }
 }
 
 body {
+  position: relative;
   min-height: 100vh;
   color: var(--color-text);
   background: var(--color-background);
@@ -62,4 +63,16 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  background-image:
+    linear-gradient(to right, rgba(28, 28, 30, 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(28, 28, 30, 0.025) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
 }

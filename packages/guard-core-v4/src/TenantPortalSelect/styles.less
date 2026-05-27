@@ -6,20 +6,20 @@
   border-radius: 6px;
   margin: 4px 4px 0 0;
   border: none;
-  color: #C2410C;
-  background-color: #FFF4ED;
+  color: #1F3FBB;
+  background-color: #E7EEFF;
 }
 .authing-gaurd-select-extra {
   display: flex;
   align-items: center;
-  color: #EE5C2A;
+  color: #2F54EB;
   span {
     font-size: 14px;
   }
   &-icon {
     font-size: 16px;
     transform: rotateZ(180deg);
-    color: #EE5C2A;
+    color: #2F54EB;
   }
 }
 
@@ -30,7 +30,7 @@
   }
   .authing-guard-select-list-item:hover {
     .authing-ant-list-item-meta-title {
-      color: #EE5C2A;
+      color: #2F54EB;
     }
   }
   .authing-ant-list-item-meta-avatar {
@@ -53,14 +53,14 @@
     padding-right: 5px;
     font-weight: 500;
     &.blue {
-      background: #FFF4ED;
-      color: #C2410C;
+      background: #E7EEFF;
+      color: #1F3FBB;
     }
   }
 }
 .g2-error-content-tenant {
   .g2-error-message-text {
-    color: #737373;
+    color: #6B7280;
   }
 }
 
@@ -71,26 +71,26 @@
   align-items: center;
   justify-content: center;
   font-size: 16px;
-  color: #1C1917;
-  background: #F5F5F4;
-  border-radius: 8px;
+  color: #1C1C1E;
+  background: #F5F5F7;
+  border-radius: var(--guard-radius-control);
   cursor: pointer;
   &-icon {
     display: flex;
     width: 24px;
     height: 24px;
-    // background: #F5F5F4;
-    border-radius: 8px;
+    // background: #F5F5F7;
+    border-radius: var(--guard-radius-control);
     align-items: center;
     justify-content: center;
     margin-right: 8px;
     .g2-icon {
       font-size: 24px;
-      color: #44403C;
+      color: #3A3A3C;
     }
   }
   &:hover {
-    background: #E7E5E4;
+    background: #EBEBED;
   }
 
 }
@@ -101,7 +101,7 @@
     padding: 0 38px;
     .authing-g2-join-title {
       margin: 40px 0 8px;
-      color: #171717;
+      color: #1C1C1E;
       font-size: 18px;
       font-weight: 600;
       line-height: 24px;
@@ -110,7 +110,7 @@
     .authing-g2-join-description {
       margin-bottom: 32px;
       text-align: center;
-      color: #44403C;
+      color: #3A3A3C;
     }
     .authing-g2-join-button {
       margin-top: 16px;
@@ -122,34 +122,34 @@
   }
   .authing-ant-input-group-addon {
     border: none;
-    border-right: 1px solid #E7E5E4;
-    color: #737373;
+    border-right: 1px solid #D1D1D6;
+    color: #6B7280;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
   }
   .authing-g2-input-group {
     padding: 0;
     input {
-      background: #F5F5F4;
-      border: 1px solid #F5F5F4;
-      border-radius: 12px;
+      background: #F5F5F7;
+      border: 1px solid #F5F5F7;
+      border-radius: var(--guard-radius-control);
       &:hover {
-        background-color: #E7E5E4 !important;
+        background-color: #EBEBED !important;
       }
       &:focus {
         background: #ffffff !important;
-        border-color: #FDBA74;
+        border-color: #2F54EB;
       }
       &::placeholder,
       &::-webkit-input-placeholder {
         // color: #a7a7a7;
-        color: #A1A1A1;
+        color: #9CA3AF;
         font-size: 14px;
       }
     }
     &-email .authing-ant-input-group-addon {
       border-right: none;
-      border-left: 1px solid #E7E5E4;
+      border-left: 1px solid #D1D1D6;
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
       border-top-right-radius: 4px;
@@ -160,7 +160,7 @@
     flex-direction: row-reverse;
   }
   .authing-ant-form-item-label>label {
-    color: #44403C;
+    color: #3A3A3C;
   }
   .authing-join-send-btn {
     display: block;
@@ -170,12 +170,12 @@
     border-radius: 8px;
     padding: 16px;
     display: flex;
-    background: #FFF4ED;
-    color: #1C1917;
+    background: #E7EEFF;
+    color: #1C1C1E;
     line-height: 22px;
     &-icon {
       margin: 3px 8px 0 0;
-      color: #EE5C2A;
+      color: #2F54EB;
       font-size: 16px;
     }
     span {
@@ -190,7 +190,7 @@
 
 .authing-create-button {
   position: absolute;
-  color: #737373;
+  color: #6B7280;
   text-align: center;
   bottom: -38px;
   width: 100%;
@@ -198,7 +198,7 @@
   z-index: 9999;
   span {
     cursor: pointer;
-    color: #EE5C2A;
+    color: #2F54EB;
   }
 }
 .authing-visitor-button {
@@ -206,14 +206,14 @@
   padding: 6px 12px;
   right: 0;
   top: -56px;
-  color: #EE5C2A;
-  border: 1px solid #EE5C2A;
-  border-radius: 8px;
+  color: #2F54EB;
+  border: 1px solid #2F54EB;
+  border-radius: var(--guard-radius-control);
   background: #fff;
   cursor: pointer;
-  box-shadow: 0px 4px 20px -4px rgba(28, 25, 23, 0.06);
+  box-shadow: 0px 4px 20px -4px rgba(28, 28, 30, 0.06);
   &:hover {
-    background: #FFF4ED;
+    background: #E7EEFF;
   }
 }
 .g2-view-tenant {
@@ -235,7 +235,7 @@
     }
 
     &::-webkit-scrollbar-thumb {
-      background: #D6D3D1;
+      background: #EBEBED;
       border-radius: 20px;
     }
 

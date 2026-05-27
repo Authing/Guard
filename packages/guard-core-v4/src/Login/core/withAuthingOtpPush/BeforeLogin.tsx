@@ -188,7 +188,7 @@ export function BeforeLogin(props: BeforeLoginProps) {
             prefix={
               <IconFont
                 type="authing-a-user-line1"
-                style={{ color: '#737373' }}
+                style={{ color: '#6B7280' }}
               />
             }
           />

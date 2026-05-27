@@ -34,7 +34,7 @@ export function PendingLogin(props: PendingLoginProps) {
             style={{
               width: '348px',
               height: '44px',
-              background: '#F5F5F4',
+              background: '#F5F5F7',
               borderRadius: '4px',
               border: 'none'
             }}

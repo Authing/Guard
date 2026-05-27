@@ -192,7 +192,7 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
             prefix={
               <IconFont
                 type="authing-a-user-line1"
-                style={{ color: '#737373' }}
+                style={{ color: '#6B7280' }}
               />
             }
           />
@@ -285,7 +285,7 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
                         style={{
                           padding: 6,
                           borderRadius: 2,
-                          border: '1px solid #D6D3D1'
+                          border: '1px solid #D1D1D6'
                         }}
                       >
                         <Progress

@@ -16,7 +16,7 @@
   display: flex;
   flex: 1;
   padding: 2rem 0;
-  border-top: 1px solid #E7E5E4;
+  border-top: 1px solid #D1D1D6;
   justify-content: center;
   align-items: center;
 }
@@ -29,7 +29,7 @@
 }
 
 .title a {
-  color: #EE5C2A;
+  color: #2F54EB;
   text-decoration: none;
 }
 
@@ -57,7 +57,7 @@
 }
 
 .code {
-  background: #FAFAF9;
+  background: #F5F5F7;
   border-radius: 8px;
   padding: 0.75rem;
   font-size: 12px;
@@ -79,7 +79,7 @@
   text-align: left;
   color: inherit;
   text-decoration: none;
-  border: 1px solid #E7E5E4;
+  border: 1px solid #D1D1D6;
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
   max-width: 300px;
@@ -88,8 +88,8 @@
 .card:hover,
 .card:focus,
 .card:active {
-  color: #EE5C2A;
-  border-color: #EE5C2A;
+  color: #2F54EB;
+  border-color: #2F54EB;
 }
 
 .card h2 {
@@ -118,12 +118,12 @@
 @media (prefers-color-scheme: dark) {
   .card,
   .footer {
-    border-color: #44403C;
+    border-color: #D1D1D6;
   }
   .code {
-    background: #171717;
+    background: #F5F5F7;
   }
   .logo img {
-    filter: invert(1);
+    filter: none;
   }
 }

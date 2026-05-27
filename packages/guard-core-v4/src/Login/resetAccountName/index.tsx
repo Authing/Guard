@@ -74,7 +74,7 @@ export const ResetAccountName: React.FC = () => {
             prefix={
               <IconFont
                 type="authing-a-user-line1"
-                style={{ color: '#737373' }}
+                style={{ color: '#6B7280' }}
               />
             }
             placeholder={i18n.t('login.inputUsername') as string}

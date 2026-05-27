@@ -10,27 +10,27 @@ export const ShieldSpinLoading = (
   const svgString = `<svg width="100%" height="100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="overflow: visible;">
           <defs>
             <style>
-              #ring-outer { fill: none; stroke: rgba(251,108,43,0.12); stroke-width: 2; }
+              #ring-outer { fill: none; stroke: rgba(47,84,235,0.12); stroke-width: 2; }
               .orbit-dot {
-                fill: #fb6c2b;
+                fill: #2F54EB;
                 transform-origin: 50px 50px;
                 animation: orbitSpin 1.6s linear infinite;
               }
               .orbit-dot2 {
-                fill: rgba(251,108,43,0.45);
+                fill: rgba(47,84,235,0.45);
                 transform-origin: 50px 50px;
                 animation: orbitSpin 1.6s linear infinite;
                 animation-delay: -0.8s;
               }
               .orbit-dot3 {
-                fill: rgba(251,108,43,0.2);
+                fill: rgba(47,84,235,0.20);
                 transform-origin: 50px 50px;
                 animation: orbitSpin 1.6s linear infinite;
                 animation-delay: -0.4s;
               }
               .arc-sweep {
                 fill: none;
-                stroke: #fb6c2b;
+                stroke: #2F54EB;
                 stroke-width: 2;
                 stroke-dasharray: 50 158;
                 stroke-linecap: round;
@@ -39,7 +39,7 @@ export const ShieldSpinLoading = (
               }
               .arc-sweep2 {
                 fill: none;
-                stroke: rgba(251,108,43,0.25);
+                stroke: rgba(47,84,235,0.25);
                 stroke-width: 1.5;
                 stroke-dasharray: 90 118;
                 stroke-linecap: round;
@@ -47,7 +47,7 @@ export const ShieldSpinLoading = (
                 animation: arcSpin 2.4s linear infinite reverse;
               }
               #core-pulse {
-                fill: #fb6c2b;
+                fill: #2F54EB;
                 animation: corePulse 1.6s ease-in-out infinite;
               }
               @keyframes orbitSpin {
@@ -64,7 +64,7 @@ export const ShieldSpinLoading = (
           </defs>
 
           <circle id="ring-outer" cx="50" cy="50" r="38"/>
-          <circle cx="50" cy="50" r="26" fill="none" stroke="rgba(251,108,43,0.07)" stroke-width="1.5"/>
+          <circle cx="50" cy="50" r="26" fill="none" stroke="rgba(47,84,235,0.07)" stroke-width="1.5"/>
           <circle class="arc-sweep2" cx="50" cy="50" r="26"/>
           <circle class="arc-sweep" cx="50" cy="50" r="38"/>
           <circle id="core-pulse" cx="50" cy="50" r="4"/>

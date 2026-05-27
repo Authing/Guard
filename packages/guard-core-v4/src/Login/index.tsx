@@ -1223,7 +1223,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
                             </GuardButton>
                             {(errorNumber >= 2 || accountLock) && (
                               <span
-                                style={{ margin: '0 4px', color: '#E7E5E4' }}
+                                style={{ margin: '0 4px', color: '#D1D1D6' }}
                               >
                                 丨
                               </span>

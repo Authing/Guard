@@ -2,8 +2,31 @@ html,
 body {
   padding: 0;
   margin: 0;
+  min-height: 100vh;
+  color: #1C1C1E;
+  background: transparent;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+html {
+  background-color: #F5F5F7;
+}
+
+body {
+  position: relative;
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  background-image:
+    linear-gradient(to right, rgba(28, 28, 30, 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(28, 28, 30, 0.025) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
 }
 
 a {
@@ -17,10 +40,10 @@ a {
 
 @media (prefers-color-scheme: dark) {
   html {
-    color-scheme: dark;
+    color-scheme: light;
   }
   body {
-    color: white;
-    background: black;
+    color: #1C1C1E;
+    background: transparent;
   }
 }

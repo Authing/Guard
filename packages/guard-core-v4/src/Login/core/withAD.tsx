@@ -298,7 +298,7 @@ export const LoginWithAD = (props: LoginWithADProps) => {
                 prefix={
                   <IconFont
                     type="authing-a-user-line1"
-                    style={{ color: '#737373' }}
+                    style={{ color: '#6B7280' }}
                   />
                 }
               />
@@ -321,7 +321,7 @@ export const LoginWithAD = (props: LoginWithADProps) => {
                 prefix={
                   <IconFont
                     type="authing-a-lock-line1"
-                    style={{ color: '#737373' }}
+                    style={{ color: '#6B7280' }}
                   />
                 }
               />

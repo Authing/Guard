@@ -135,7 +135,7 @@ export const RotateReset = (props: RotateResetProps) => {
             prefix={
               <IconFont
                 type="authing-a-lock-line1"
-                style={{ color: '#737373' }}
+                style={{ color: '#6B7280' }}
               />
             }
           />
@@ -151,7 +151,7 @@ export const RotateReset = (props: RotateResetProps) => {
             prefix={
               <IconFont
                 type="authing-a-lock-line1"
-                style={{ color: '#737373' }}
+                style={{ color: '#6B7280' }}
               />
             }
           />
@@ -181,7 +181,7 @@ export const RotateReset = (props: RotateResetProps) => {
             prefix={
               <IconFont
                 type="authing-a-lock-line1"
-                style={{ color: '#737373' }}
+                style={{ color: '#6B7280' }}
               />
             }
           />

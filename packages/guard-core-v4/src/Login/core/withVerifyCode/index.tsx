@@ -177,7 +177,7 @@ const LoginWithVerifyCode = (props: any) => {
             prefix={
               <IconFont
                 type="authing-a-shield-check-line1"
-                style={{ color: '#737373' }}
+                style={{ color: '#6B7280' }}
               />
             }
             isInternationSms={isInternationSms}
@@ -213,7 +213,7 @@ const LoginWithVerifyCode = (props: any) => {
               prefix={
                 <IconFont
                   type="authing-a-shield-check-line1"
-                  style={{ color: '#737373' }}
+                  style={{ color: '#6B7280' }}
                 />
               }
               scene={SceneType.SCENE_TYPE_LOGIN}
@@ -246,7 +246,7 @@ const LoginWithVerifyCode = (props: any) => {
               prefix={
                 <IconFont
                   type="authing-a-shield-check-line1"
-                  style={{ color: '#737373' }}
+                  style={{ color: '#6B7280' }}
                 />
               }
               form={form}
@@ -566,7 +566,7 @@ const LoginWithVerifyCode = (props: any) => {
               prefix={
                 <IconFont
                   type="authing-a-user-line1"
-                  style={{ color: '#737373' }}
+                  style={{ color: '#6B7280' }}
                 />
               }
             />

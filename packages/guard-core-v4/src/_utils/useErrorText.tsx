@@ -19,7 +19,7 @@ export const usePasswordErrorText = () => {
               style={{
                 marginBottom: 23,
                 fontSize: 12,
-                color: '#EA4335',
+                color: '#DC2626',
                 display: 'block'
               }}
             >

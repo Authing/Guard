@@ -77,7 +77,7 @@ const SelectPanel: React.FC<SelectPanelProps> = props => {
         element: (
           <div className="g2-multiple__icon--add-line">
             <IconFont
-              style={{ fontSize: 24, color: '#44403C' }}
+              style={{ fontSize: 24, color: '#3A3A3C' }}
               type="authing-add-line"
             ></IconFont>
           </div>

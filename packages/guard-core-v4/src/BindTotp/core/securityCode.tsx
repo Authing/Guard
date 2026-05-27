@@ -109,7 +109,7 @@ export const SecurityCode: React.FC<SecurityCodeProps> = ({
         {t('common.usePhoneOpen')}（{t('common.noValidator')}{' '}
         <span
           style={{
-            color: '#EE5C2A',
+            color: '#2F54EB',
             cursor: 'pointer'
           }}
           onClick={onJump}
