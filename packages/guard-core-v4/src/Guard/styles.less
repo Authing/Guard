@@ -24,7 +24,6 @@
   --guard-bg-strong: #EBEBED;
   --guard-border: #D1D1D6;
   --guard-border-strong: #D1D1D6;
-  --guard-grid-line: rgba(28, 28, 30, 0.025);
   --guard-radius-tag: 2px;
   --guard-radius-control: 2px;
   --guard-radius-surface: 6px;
@@ -96,11 +95,6 @@
 // 🤢 这部分完全是因为user-portal dom结构很难做到针对使用guard页面做样式优化
 .genauth-guard-layout {
   padding: 24px 0;
-  background-color: var(--guard-bg-subtle);
-  background-image:
-    linear-gradient(to right, var(--guard-grid-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--guard-grid-line) 1px, transparent 1px);
-  background-size: 24px 24px;
 }
 
 // pad 端 居中
