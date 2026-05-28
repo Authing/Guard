@@ -23,11 +23,11 @@ export const SendPhoneCode = (props: SendPhoneCodeProps) => {
   const { phone } = useGuardInitData<Record<'phone', string>>()
 
   return (
-    <div className="authing-g2-login-phone-code">
+    <div className="genauth-g2-login-phone-code">
       <SendCodeByPhone
         {...props}
         isInternationSms={isInternationSms}
-        className="authing-g2-input g2-send-code-input"
+        className="genauth-g2-input g2-send-code-input"
         autoComplete="off"
         size="large"
         placeholder={

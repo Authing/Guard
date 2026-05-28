@@ -65,7 +65,7 @@ const SubmitButton = (props: SubmitButtonProps, ref: any) => {
       loading={spin}
       disabled={buttonSpin ? true : props?.disabled ?? spin}
       onClick={props.onClick ? props.onClick : () => {}}
-      className={`authing-g2-submit-button ${propsCls} ${shakingCls}`}
+      className={`genauth-g2-submit-button ${propsCls} ${shakingCls}`}
     >
       {props.text}
     </GuardButton>

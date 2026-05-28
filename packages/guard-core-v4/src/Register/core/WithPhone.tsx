@@ -238,7 +238,7 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
         return (
           <InputInternationPhone
             {...props}
-            className="authing-g2-input"
+            className="genauth-g2-input"
             size="large"
             areaCode={areaCode}
             onAreaCodeChange={(value: string) => {
@@ -252,7 +252,7 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
         return (
           <InputNumber
             {...props}
-            className="authing-g2-input"
+            className="genauth-g2-input"
             size="large"
             placeholder={t('login.inputPhone')}
             prefix={
@@ -278,7 +278,7 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
             isInternationSms={isInternationSms}
             form={form}
             fieldName="phone"
-            className="authing-g2-input g2-send-code-input"
+            className="genauth-g2-input g2-send-code-input"
             autoComplete="off"
             size="large"
             placeholder={t('common.inputFourVerifyCode', {
@@ -309,7 +309,7 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
             {...props}
             form={form}
             fieldName="phone"
-            className="authing-g2-input g2-send-code-input"
+            className="genauth-g2-input g2-send-code-input"
             autoComplete="off"
             size="large"
             placeholder={t('common.inputFourVerifyCode', {
@@ -347,7 +347,7 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
   }
 
   return (
-    <div className="authing-g2-register-email">
+    <div className="genauth-g2-register-email">
       <Form
         form={form}
         name="emailRegister"
@@ -361,8 +361,8 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
           name="phone"
           className={
             publicConfig?.internationalSmsConfig?.enabled
-              ? 'authing-g2-input-form remove-padding'
-              : 'authing-g2-input-form'
+              ? 'genauth-g2-input-form remove-padding'
+              : 'genauth-g2-input-form'
           }
           validateFirst={true}
           form={form}
@@ -377,7 +377,7 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
           name="code"
           validateTrigger={['onBlur', 'onChange']}
           rules={fieldRequiredRule(t('common.captchaCode'))}
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           validateFirst={true}
         >
           <SendCode />
@@ -389,7 +389,7 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
             showError={validated}
           />
         )}
-        <Form.Item className="authing-g2-sumbit-form">
+        <Form.Item className="genauth-g2-sumbit-form">
           <SubmitButton
             text={t('common.register') as string}
             ref={submitButtonRef}

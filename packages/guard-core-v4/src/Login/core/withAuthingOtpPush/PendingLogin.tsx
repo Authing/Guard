@@ -28,7 +28,7 @@ export function PendingLogin(props: PendingLoginProps) {
         <div>{t('login.otpLoginPendingText')}</div>
       </div>
       <Form>
-        <Form.Item className="authing-g2-sumbit-form">
+        <Form.Item className="genauth-g2-sumbit-form">
           <Button
             block
             style={{

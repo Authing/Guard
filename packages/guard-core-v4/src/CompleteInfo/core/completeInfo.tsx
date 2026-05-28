@@ -119,7 +119,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
         return (
           <InputInternationPhone
             {...props}
-            className="authing-g2-input"
+            className="genauth-g2-input"
             size="large"
             areaCode={areaCode}
             onAreaCodeChange={(value: string) => {
@@ -134,7 +134,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
         return (
           <InputNumber
             {...props}
-            className="authing-g2-input"
+            className="genauth-g2-input"
             autoComplete="off"
             key="internal-phone:phone123"
             type="tel"
@@ -155,8 +155,8 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
       gender: props => (
         <Select
           key={props.key}
-          className={classnames('authing-g2-select', 'authing-g2-input')}
-          popupClassName="authing-g2-dropdown"
+          className={classnames('genauth-g2-select', 'genauth-g2-input')}
+          popupClassName="genauth-g2-dropdown"
           options={[
             { label: i18n.t('common.man'), value: 'M' },
             { label: i18n.t('common.female'), value: 'F' }
@@ -166,8 +166,8 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
       country: props => (
         <Select
           key={props.key}
-          className={classnames('authing-g2-select', 'authing-g2-input')}
-          popupClassName="authing-g2-dropdown"
+          className={classnames('genauth-g2-select', 'genauth-g2-input')}
+          popupClassName="genauth-g2-dropdown"
           options={countryList}
           showSearch
           filterOption={filterOption}
@@ -178,13 +178,13 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
         <InputNumber
           key={props.key}
           style={{ width: '100%' }}
-          className="authing-g2-input"
+          className="genauth-g2-input"
         />
       ),
       date: props => (
         <MomentPicker
           key={props.key}
-          className="authing-g2-input"
+          className="genauth-g2-input"
           style={{ width: '100%' }}
           placeholder={i18n.t('common.pleaseSelectDate')}
         />
@@ -192,7 +192,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
       datetime: props => (
         <MomentPicker
           key={props.key}
-          className="authing-g2-input"
+          className="genauth-g2-input"
           style={{ width: '100%' }}
           placeholder={i18n.t('common.pleaseSelectDate')}
         />
@@ -200,8 +200,8 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
       select: (props: any) => (
         <Select
           key={props.key}
-          className={classnames('authing-g2-select', 'authing-g2-input')}
-          popupClassName="authing-g2-dropdown"
+          className={classnames('genauth-g2-select', 'genauth-g2-input')}
+          popupClassName="genauth-g2-dropdown"
           showSearch
           options={props.options}
           filterOption={filterOption}
@@ -210,8 +210,8 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
       dropdown: (props: any) => (
         <Select
           key={props.key}
-          className={classnames('authing-g2-select', 'authing-g2-input')}
-          popupClassName="authing-g2-dropdown"
+          className={classnames('genauth-g2-select', 'genauth-g2-input')}
+          popupClassName="genauth-g2-dropdown"
           showSearch
           options={props.options}
           filterOption={filterOption}
@@ -220,8 +220,8 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
       boolean: props => (
         <Select
           key={props.key}
-          className={classnames('authing-g2-select', 'authing-g2-input')}
-          popupClassName="authing-g2-dropdown"
+          className={classnames('genauth-g2-select', 'genauth-g2-input')}
+          popupClassName="genauth-g2-dropdown"
           options={[
             { label: i18n.t('common.yes'), value: true as any },
             { label: i18n.t('common.no'), value: false as any }
@@ -233,7 +233,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
           key={props.key}
           type="text"
           size="large"
-          className="authing-g2-input"
+          className="genauth-g2-input"
           autoComplete="off"
         />
       ),
@@ -242,15 +242,15 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
           key={props.key}
           type="text"
           size="large"
-          className="authing-g2-input"
+          className="genauth-g2-input"
           autoComplete="off"
         />
       ),
       textarea: props => (
         <Input.TextArea
           key={props.key}
-          // className="authing-g2-textarea"
-          className={classnames('authing-g2-textarea', 'authing-g2-input')}
+          // className="genauth-g2-textarea"
+          className={classnames('genauth-g2-textarea', 'genauth-g2-input')}
           maxLength={200}
           rows={4}
           style={{
@@ -269,7 +269,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
       username: (props: any) => (
         <CustomFormItem.UserName
           validateFirst={true}
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           name="username"
           key={props.key}
           label={props.label ?? i18n.t('common.username')}
@@ -277,7 +277,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
           checkRepeat={true}
         >
           <Input
-            className="authing-g2-input"
+            className="genauth-g2-input"
             autoComplete="username"
             key="internal-username:asdf"
             size="large"
@@ -292,8 +292,8 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
             validateFirst={true}
             className={
               isInternationSms
-                ? 'authing-g2-input-form remove-padding'
-                : 'authing-g2-input-form'
+                ? 'genauth-g2-input-form remove-padding'
+                : 'genauth-g2-input-form'
             }
             name="phone"
             key="internal-phone:phone"
@@ -306,7 +306,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
           </CustomFormItem.Phone>
           <Form.Item
             validateTrigger={['onBlur', 'onChange']}
-            className="authing-g2-input-form"
+            className="genauth-g2-input-form"
             name="phoneCode"
             key="internal-phone:code"
             rules={
@@ -318,7 +318,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
             <SendCodeByPhone
               isInternationSms={isInternationSms}
               areaCode={areaCode}
-              className="authing-g2-input g2-send-code-input"
+              className="genauth-g2-input g2-send-code-input"
               autoComplete="one-time-code"
               size="large"
               placeholder={
@@ -345,7 +345,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
       email: (props: { required?: boolean; label?: string }) => (
         <>
           <CustomFormItem.Email
-            className="authing-g2-input-form"
+            className="genauth-g2-input-form"
             name="email"
             checkRepeat={true}
             label={props.label ?? i18n.t('common.email')}
@@ -354,7 +354,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
             validateFirst={true}
           >
             <Input
-              className="authing-g2-input"
+              className="genauth-g2-input"
               autoComplete="email"
               size="large"
               placeholder={t('login.inputEmail') as string}
@@ -362,7 +362,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
           </CustomFormItem.Email>
           <Form.Item
             validateTrigger={['onBlur', 'onChange']}
-            className="authing-g2-input-form"
+            className="genauth-g2-input-form"
             name="emailCode"
             key="internal email:code1432"
             rules={
@@ -372,7 +372,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
             }
           >
             <SendCodeByEmail
-              className="authing-g2-input g2-send-code-input"
+              className="genauth-g2-input g2-send-code-input"
               autoComplete="one-time-code"
               size="large"
               placeholder={
@@ -496,7 +496,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
         const userFormItem = (children: React.ReactNode) => (
           <Form.Item
             validateTrigger={['onBlur', 'onChange']}
-            className="authing-g2-input-form"
+            className="genauth-g2-input-form"
             rules={generateRules(metaData) as any}
             key={metaData.name}
             name={metaData.name}
@@ -523,7 +523,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
           )
         }
         return userFormItem(
-          <Input type="text" className="authing-g2-input" autoComplete="off" />
+          <Input type="text" className="genauth-g2-input" autoComplete="off" />
         )
       }
     },
@@ -644,11 +644,11 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
       form={form}
       onFinish={onFinish}
       onFinishFailed={() => submitButtonRef.current.onError()}
-      className="authing-g2-completeInfo-form authing-g2-form-required-item-icon-after"
+      className="genauth-g2-completeInfo-form genauth-g2-form-required-item-icon-after"
     >
       {formFieldsV2}
 
-      <Form.Item className="authing-g2-sumbit-form">
+      <Form.Item className="genauth-g2-sumbit-form">
         <SubmitButton
           text={t('common.problem.form.submit') as string}
           ref={submitButtonRef}

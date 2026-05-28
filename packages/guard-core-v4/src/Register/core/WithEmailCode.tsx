@@ -253,7 +253,7 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
   }
 
   return (
-    <div className="authing-g2-register-email">
+    <div className="genauth-g2-register-email">
       <Form
         form={form}
         name="emailRegister"
@@ -265,7 +265,7 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
         <CustomFormItem.Email
           key="email"
           name="email"
-          className={'authing-g2-input-form'}
+          className={'genauth-g2-input-form'}
           validateFirst={true}
           form={form}
           checkRepeat={true}
@@ -273,7 +273,7 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
         >
           <Input
             autoFocus={autoFocus}
-            className="authing-g2-input"
+            className="genauth-g2-input"
             autoComplete="off"
             size="large"
             placeholder={t('login.inputEmail') as string}
@@ -290,11 +290,11 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
           name="code"
           validateTrigger={['onBlur', 'onChange']}
           rules={fieldRequiredRule(t('common.captchaCode'))}
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           validateFirst={true}
         >
           <SendCodeByEmail
-            className="authing-g2-input g2-send-code-input"
+            className="genauth-g2-input g2-send-code-input"
             autoComplete="off"
             size="large"
             placeholder={
@@ -329,7 +329,7 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
             showError={validated}
           />
         )}
-        <Form.Item className="authing-g2-sumbit-form">
+        <Form.Item className="genauth-g2-sumbit-form">
           <SubmitButton
             text={t('common.register') as string}
             ref={submitButtonRef}

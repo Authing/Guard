@@ -42,18 +42,18 @@ export const CopyAbleText = (props: CopyTextProps) => {
 
   return (
     <div
-      className={getClassnames(['authing-copy-text', className])}
+      className={getClassnames(['genauth-copy-text', className])}
       ref={divRef}
     >
       {children}
       {copied ? (
         <CheckOutlined
-          className="authing-data-tips authing-data-tips__top authing-guard-pointer authing-copy-text-icon authing-copy-text-icon__success"
+          className="genauth-data-tips genauth-data-tips__top genauth-guard-pointer genauth-copy-text-icon genauth-copy-text-icon__success"
           data-tips={t('common.copied')}
         />
       ) : (
         <CopyOutlined
-          className="authing-data-tips authing-data-tips__top authing-guard-pointer authing-copy-text-icon"
+          className="genauth-data-tips genauth-data-tips__top genauth-guard-pointer genauth-copy-text-icon"
           data-tips={t('common.copy')}
           onClick={handleCopy}
         />

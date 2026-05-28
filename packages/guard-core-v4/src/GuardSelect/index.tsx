@@ -50,7 +50,7 @@ export const GuardSelect = <D extends GuardSelectItem = any>(
       split={false}
       size="small"
       {...listProps}
-      className={classNames(listProps.className, 'authing-guard-select-list')}
+      className={classNames(listProps.className, 'genauth-guard-select-list')}
       dataSource={dataSource}
       renderItem={(item, i) => (
         // @ts-ignore
@@ -59,7 +59,7 @@ export const GuardSelect = <D extends GuardSelectItem = any>(
           extra={item?.extra}
           key={i}
           onClick={() => onSelect?.(item, i)}
-          className={classNames('authing-guard-select-list-item')}
+          className={classNames('genauth-guard-select-list-item')}
           style={dataSource?.length !== i + 1 ? { marginBottom: gap } : {}}
         >
           <List.Item.Meta

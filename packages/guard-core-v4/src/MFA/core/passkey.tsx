@@ -82,11 +82,11 @@ const BindPasskey: React.FC<BindPasskeyProps> = props => {
 
   return (
     <>
-      <h3 className="authing-g2-mfa-title">{t('common.cratePasskeyTitle')}</h3>
+      <h3 className="genauth-g2-mfa-title">{t('common.cratePasskeyTitle')}</h3>
 
       {!mfaConfigsMap.get(MFAType.PASSKEY) ? (
         <>
-          <p className="authing-g2-mfa-tips">{t('common.cratePasskeyTips')}</p>
+          <p className="genauth-g2-mfa-tips">{t('common.cratePasskeyTips')}</p>
           <ImagePro
             // className="g2-mfa-passkey-empty-image"
             width={215}
@@ -106,7 +106,7 @@ const BindPasskey: React.FC<BindPasskeyProps> = props => {
         </>
       ) : (
         <>
-          <p className="authing-g2-mfa-tips">
+          <p className="genauth-g2-mfa-tips">
             {t('common.onBindPasskeyTitle')}
           </p>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -200,8 +200,8 @@ const VerifyPasskey: React.FC<VerifyPasskeyProps> = props => {
 
   return (
     <>
-      <h3 className="authing-g2-mfa-title">{t('common.passkeyVerifyTitle')}</h3>
-      <p className="authing-g2-mfa-tips">{t('common.passkeyVerifyTips')}</p>
+      <h3 className="genauth-g2-mfa-title">{t('common.passkeyVerifyTitle')}</h3>
+      <p className="genauth-g2-mfa-tips">{t('common.passkeyVerifyTips')}</p>
       <ImagePro
         // className="g2-mfa-passkey-empty-image"
         width={215}

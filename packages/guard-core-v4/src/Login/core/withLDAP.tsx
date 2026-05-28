@@ -218,7 +218,7 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
   }
 
   return (
-    <div className="authing-g2-login-ldap">
+    <div className="genauth-g2-login-ldap">
       <Form
         form={form}
         name="passworLogin"
@@ -228,13 +228,13 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
       >
         <Form.Item
           validateTrigger={['onBlur', 'onChange']}
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           name="account"
           rules={fieldRequiredRule(t('common.account'))}
         >
           <Input
             autoFocus={autoFocus}
-            className="authing-g2-input"
+            className="genauth-g2-input"
             autoComplete="off"
             size="large"
             placeholder={t('login.inputLdapUsername') as string}
@@ -248,12 +248,12 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
         </Form.Item>
         <Form.Item
           validateTrigger={['onBlur', 'onChange']}
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           name="password"
           rules={fieldRequiredRule(t('common.password'))}
         >
           <InputPassword
-            className="authing-g2-input"
+            className="genauth-g2-input"
             size="large"
             placeholder={t('login.inputLdapPwd')}
             // prefix={<LockOutlined style={{ color: '#6B7280' }} />}
@@ -268,14 +268,14 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
         {showCaptcha && (
           <Form.Item
             validateTrigger={['onBlur', 'onChange']}
-            className="authing-g2-input-form"
+            className="genauth-g2-input-form"
             name="captchaCode"
             rules={[
               { required: true, message: t('login.inputCaptchaCode') as string }
             ]}
           >
             <Input
-              className="authing-g2-input add-after"
+              className="genauth-g2-input add-after"
               size="large"
               placeholder={t('login.inputCaptchaCode') as string}
               addonAfter={
@@ -297,7 +297,7 @@ export const LoginWithLDAP = (props: LoginWithLDAPProps) => {
             showError={validated}
           />
         )}
-        <Form.Item className="authing-g2-sumbit-form">
+        <Form.Item className="genauth-g2-sumbit-form">
           <SubmitButton
             // disabled={
             //   !!agreements.find((item) => item.required && !acceptedAgreements)

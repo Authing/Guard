@@ -1,7 +1,7 @@
 :root,
-.authing-guard-layout,
-.authing-g2-render-module,
-.authing-g2-render-module-modal,
+.genauth-guard-layout,
+.genauth-g2-render-module,
+.genauth-g2-render-module-modal,
 .g2-view-container,
 .g2-password-reset-pageWrap,
 .g2-view-container-submit-success {
@@ -44,37 +44,37 @@
   text-rendering: optimizeLegibility;
 }
 
-.authing-guard-layout ::selection,
-.authing-g2-render-module ::selection,
-.authing-g2-render-module-modal ::selection {
+.genauth-guard-layout ::selection,
+.genauth-g2-render-module ::selection,
+.genauth-g2-render-module-modal ::selection {
   background: color-mix(in oklch, var(--guard-primary), transparent 70%);
 }
 
-.authing-guard-layout input::selection,
-.authing-guard-layout textarea::selection,
-.authing-g2-render-module input::selection,
-.authing-g2-render-module textarea::selection,
-.authing-g2-render-module-modal input::selection,
-.authing-g2-render-module-modal textarea::selection {
+.genauth-guard-layout input::selection,
+.genauth-guard-layout textarea::selection,
+.genauth-g2-render-module input::selection,
+.genauth-g2-render-module textarea::selection,
+.genauth-g2-render-module-modal input::selection,
+.genauth-g2-render-module-modal textarea::selection {
   background: #284BD6;
   color: #FFFFFF;
 }
 
-.authing-guard-layout ::-webkit-scrollbar,
-.authing-g2-render-module ::-webkit-scrollbar,
-.authing-g2-render-module-modal ::-webkit-scrollbar {
+.genauth-guard-layout ::-webkit-scrollbar,
+.genauth-g2-render-module ::-webkit-scrollbar,
+.genauth-g2-render-module-modal ::-webkit-scrollbar {
   width: 4px;
   height: 4px;
 }
 
-.authing-guard-layout ::-webkit-scrollbar-thumb,
-.authing-g2-render-module ::-webkit-scrollbar-thumb,
-.authing-g2-render-module-modal ::-webkit-scrollbar-thumb {
+.genauth-guard-layout ::-webkit-scrollbar-thumb,
+.genauth-g2-render-module ::-webkit-scrollbar-thumb,
+.genauth-g2-render-module-modal ::-webkit-scrollbar-thumb {
   background: var(--guard-border-strong);
   border-radius: 2px;
 }
 
-.authing-g2-render-module-normal {
+.genauth-g2-render-module-normal {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -82,10 +82,10 @@
 }
 
 @media only screen and (max-width: 450px) {
-  .authing-g2-render-module {
+  .genauth-g2-render-module {
     width: 100%;
   }
-  .authing-g2-render-module-modal {
+  .genauth-g2-render-module-modal {
     width: 100%;
   }
   .g2-view-container {
@@ -94,7 +94,7 @@
   }
 }
 // 🤢 这部分完全是因为user-portal dom结构很难做到针对使用guard页面做样式优化
-.authing-guard-layout {
+.genauth-guard-layout {
   padding: 24px 0;
   background-color: var(--guard-bg-subtle);
   background-image:
@@ -105,14 +105,14 @@
 
 // pad 端 居中
 @media only screen and (max-width: 600px) {
-  body .authing-guard-layout {
+  body .genauth-guard-layout {
     align-items: center !important;
   }
 }
 
 // 移动端去掉padding
 @media only screen and (max-width: 450px) {
-  .authing-guard-layout {
+  .genauth-guard-layout {
     padding: 0;
   }
 }
@@ -124,11 +124,11 @@
   background: #ffffff;
   display: flex;
   flex-direction: column;
-  width: 456px;
-  @media only screen and (max-width: 450px) {
+  width: 410px;
+  @media only screen and (max-width: 410px) {
     width: 100%;
   }
-  min-height: 540px;
+  min-height: 560px;
   box-sizing: border-box;
   padding: 16px;
   border-radius: var(--guard-radius-xl);
@@ -222,23 +222,23 @@
       padding-right: 8px;
     }
     &.hidden_tab {
-      .authing-ant-tabs-nav-wrap {
+      .genauth-ant-tabs-nav-wrap {
         display: none;
       }
-      .authing-ant-tabs-content-holder {
+      .genauth-ant-tabs-content-holder {
         min-height: 240px;
         display: flex;
-        .authing-ant-tabs-content {
+        .genauth-ant-tabs-content {
           flex: 1;
           align-items: center;
         }
       }
 
-      .authing-ant-tabs-nav::before {
+      .genauth-ant-tabs-nav::before {
         display: none;
       }
     }
-    .authing-ant-tabs-tab {
+    .genauth-ant-tabs-tab {
       user-select: none;
       color: #6B7280;
       &:hover {
@@ -247,7 +247,7 @@
     }
   }
 
-  .authing-g2-submit-button {
+  .genauth-g2-submit-button {
     &[disabled] {
       background: #2F54EB;
       border-color: #2F54EB;
@@ -286,14 +286,14 @@
   }
 }
 
-.authing-g2-button-group {
+.genauth-g2-button-group {
   background: #EBEBED;
   border-radius: var(--guard-radius-control);
   padding: 4px 2px;
   margin-bottom: 16px;
   width: fit-content;
 
-  .authing-ant-radio-button-wrapper {
+  .genauth-ant-radio-button-wrapper {
     margin: 0 2px;
     border-radius: var(--guard-radius-tag);
     color: #3A3A3C;
@@ -301,7 +301,7 @@
     border: none;
     background: none;
     height: auto;
-    &.authing-ant-radio-button-wrapper-checked {
+    &.genauth-ant-radio-button-wrapper-checked {
       color: #2F54EB;
       background: #ffffff;
     }
@@ -311,7 +311,7 @@
   }
 }
 
-.authing-g2-input-form {
+.genauth-g2-input-form {
   padding: 0 2px;
   padding-bottom: 16px;
   margin-bottom: 0px;
@@ -321,7 +321,7 @@
   .label-title {
     padding: 0 0 8px;
   }
-  // .authing-ant-form-item-explain {
+  // .genauth-ant-form-item-explain {
   //   // display: none;
   //   transition: 0.2s all;
   //   position: absolute;
@@ -335,34 +335,34 @@
   //   box-shadow: #D1D1D6;
   // }
 }
-.authing-g2-dropdown {
+.genauth-g2-dropdown {
   border-radius: var(--guard-radius-control);
   padding: 6px;
   border: 1px solid #D1D1D6;
 
-  .authing-ant-select-item {
+  .genauth-ant-select-item {
     border-radius: var(--guard-radius-tag);
   }
-  .authing-ant-select-item-option-selected:not(
-      .authing-ant-select-item-option-disabled
+  .genauth-ant-select-item-option-selected:not(
+      .genauth-ant-select-item-option-disabled
     ) {
     background: #F5F5F7;
   }
-  .authing-ant-select-item-option-active:not(
-      .authing-ant-select-item-option-disabled
+  .genauth-ant-select-item-option-active:not(
+      .genauth-ant-select-item-option-disabled
     ) {
     background: #F5F5F7;
   }
 }
-.authing-g2-input-form {
-  .authing-g2-select {
+.genauth-g2-input-form {
+  .genauth-g2-select {
     &:hover {
       border-color: #D1D1D6;
       background: #EBEBED;
     }
     border: 1px solid #F5F5F7;
     border-radius: var(--guard-radius-control);
-    .authing-ant-select-selector {
+    .genauth-ant-select-selector {
       outline: 0;
       border-color: #F5F5F7;
       height: 100%;
@@ -373,18 +373,18 @@
       }
     }
     // focus
-    &.authing-ant-select-focused {
+    &.genauth-ant-select-focused {
       // border-color: #2F54EB;
       border-right-width: 1px;
       outline: 0;
       box-shadow: 0 0 0 2px rgba(47, 84, 235, 0.16);
-      .authing-ant-select-selector {
+      .genauth-ant-select-selector {
         background: #fff;
       }
     }
   }
-  .authing-ant-form-item-control-input-content {
-    .authing-g2-textarea {
+  .genauth-ant-form-item-control-input-content {
+    .genauth-g2-textarea {
       background: #F5F5F7;
       border-radius: var(--guard-radius-control);
       border: 1px solid #F5F5F7;
@@ -393,44 +393,44 @@
         height 0s;
     }
   }
-  .authing-g2-textarea {
+  .genauth-g2-textarea {
     &::placeholder {
       color: #6B7280;
     }
   }
 
-  // .authing-ant-select:not(.authing-ant-select-customize-input)
-  //   .authing-ant-select-selector {
+  // .genauth-ant-select:not(.genauth-ant-select-customize-input)
+  //   .genauth-ant-select-selector {
   //   border-color: #F5F5F7;
   // }
-  &.authing-ant-form-item-has-error {
+  &.genauth-ant-form-item-has-error {
     textarea,
     textarea:hover,
     textarea:focus {
       border-color: #DC2626 !important;
     }
-    .authing-g2-select {
+    .genauth-g2-select {
       // &:hover {
       //   border-color: #D1D1D6 !important;
       //   background: #EBEBED;
       // }
       // focus
-      &.authing-ant-select-focused {
-        // .authing-ant-select-selector {
+      &.genauth-ant-select-focused {
+        // .genauth-ant-select-selector {
         //   border-color: #D1D1D6 !important;
         // }
         // border-color: #DC2626;
         border-right-width: 1px;
         outline: 0;
         box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.16);
-        .authing-ant-select-selector {
+        .genauth-ant-select-selector {
           background: #fff;
         }
       }
     }
   }
 }
-.authing-g2-sumbit-form {
+.genauth-g2-sumbit-form {
   margin-bottom: 12px;
 }
 @keyframes authingShake {
@@ -455,21 +455,21 @@
     transform: translate3d(3px, 0, 0);
   }
 }
-.authing-agreements-error {
-  .authing-agreements-item {
+.genauth-agreements-error {
+  .genauth-agreements-item {
     &.shaking {
       animation: authingShake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     }
   }
 }
-.authing-ant-form-item-has-error {
-  .authing-g2-input {
+.genauth-ant-form-item-has-error {
+  .genauth-g2-input {
     &.shaking {
       animation: authingShake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     }
     // animation-iteration-count: infinite;
   }
-  .authing-g2-code-input {
+  .genauth-g2-code-input {
     &.shaking {
       animation: authingShake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     }
@@ -482,7 +482,7 @@
     }
   }
 }
-.authing-g2-input {
+.genauth-g2-input {
   border: 1px solid #F5F5F7;
   // height: 46px;
   border-radius: var(--guard-radius-control);
@@ -513,17 +513,17 @@
   }
 
   // affix-wrapper 特殊处理 hover
-  &.authing-ant-input-affix-wrapper:hover {
+  &.genauth-ant-input-affix-wrapper:hover {
     border-color: #D1D1D6;
     background: #EBEBED;
     // border-color: #2F54EB;
-    .authing-ant-input {
+    .genauth-ant-input {
       background: #EBEBED;
     }
   }
 
   // focus
-  &.authing-ant-input-affix-wrapper-focused {
+  &.genauth-ant-input-affix-wrapper-focused {
     background: #ffffff !important;
     border-color: #2F54EB;
     input {
@@ -540,9 +540,9 @@
   // 适配图形验证码
   &.add-after {
     border: none;
-    .authing-ant-input-group {
-      .authing-ant-input,
-      .authing-ant-input-group-addon {
+    .genauth-ant-input-group {
+      .genauth-ant-input,
+      .genauth-ant-input-group-addon {
         border-radius: var(--guard-radius-control);
         height: 46px;
       }
@@ -550,12 +550,12 @@
   }
 
   // 适配数字输入框
-  &.authing-ant-input-number {
+  &.genauth-ant-input-number {
     width: 100%;
     input {
       padding: 1.4em 0.5em !important;
     }
-    .authing-ant-input-number-handler-wrap {
+    .genauth-ant-input-number-handler-wrap {
       display: none;
     }
   }
@@ -568,7 +568,7 @@
   display: flex;
   justify-content: space-between;
 
-  .authing-ant-input {
+  .genauth-ant-input {
     width: 55%;
 
     &:hover {
@@ -584,18 +584,18 @@
 }
 
 // input error 的情况
-.authing-ant-form-item-has-error {
-  .authing-ant-input-affix-wrapper:hover {
+.genauth-ant-form-item-has-error {
+  .genauth-ant-input-affix-wrapper:hover {
     border-color: #DC2626 !important;
   }
 
   // focus
-  .authing-ant-input-affix-wrapper-focused {
+  .genauth-ant-input-affix-wrapper-focused {
     border-color: #DC2626 !important;
   }
 }
 
-.authing-g2-send-code {
+.genauth-g2-send-code {
   color: #2F54EB;
   cursor: pointer;
   &.sending {
@@ -647,7 +647,7 @@
   }
 }
 .g2-init-setting-loading {
-  width: 456px;
+  width: 410px;
   background: var(--guard-bg);
 
   @media only screen and (max-width: 450px) {
@@ -663,15 +663,15 @@
 }
 
 .g2-questions {
-  .authing-ant-upload-list-picture-card-container {
+  .genauth-ant-upload-list-picture-card-container {
     height: 56px;
     width: 56px;
-    .authing-ant-upload-list-item-list-type-picture-card {
+    .genauth-ant-upload-list-item-list-type-picture-card {
       padding: 4px;
     }
   }
-  // authing-ant-upload authing-ant-upload-select
-  .authing-ant-upload-select-picture-card {
+  // genauth-ant-upload genauth-ant-upload-select
+  .genauth-ant-upload-select-picture-card {
     border-radius: 8px;
     height: 56px;
     width: 56px;
@@ -683,7 +683,7 @@
       background: #EBEBED;
     }
   }
-  .authing-g2-questions-upload-self {
+  .genauth-g2-questions-upload-self {
     .anticon-plus {
       font-size: 18px;
       color: #3A3A3C;
@@ -743,23 +743,23 @@
     }
   }
 }
-.authing-g2-render-module-modal {
-  width: 456px;
+.genauth-g2-render-module-modal {
+  width: 410px;
   @media only screen and (max-width: 450px) {
     width: 100%;
   }
-  .authing-ant-modal-content {
-    width: 456px;
+  .genauth-ant-modal-content {
+    width: 410px;
     @media only screen and (max-width: 450px) {
       width: 100%;
     }
     border-radius: var(--guard-radius-xl);
     margin: auto;
   }
-  .authing-ant-modal-body {
+  .genauth-ant-modal-body {
     padding: 0;
   }
-  .authing-ant-modal-close {
+  .genauth-ant-modal-close {
     left: 0;
     border-radius: var(--guard-radius-control);
     transform: scale(0.5);
@@ -777,7 +777,7 @@
       margin-top: 10px;
     }
   }
-  .authing-ant-modal-footer {
+  .genauth-ant-modal-footer {
     display: none;
   }
 }
@@ -796,20 +796,20 @@
   }
 }
 
-*[class*='authing-'].authing-ant-input-prefix {
+*[class*='genauth-'].genauth-ant-input-prefix {
   margin-right: 0px;
 }
 
 // form 必填 icon 后置
-.authing-g2-form-required-item-icon-after {
-  label.authing-ant-form-item-required:not(
-      .authing-ant-form-item-required-mark-optional
+.genauth-g2-form-required-item-icon-after {
+  label.genauth-ant-form-item-required:not(
+      .genauth-ant-form-item-required-mark-optional
     )::before {
     display: none;
   }
 
-  label.authing-ant-form-item-required:not(
-      .authing-ant-form-item-required-mark-optional
+  label.genauth-ant-form-item-required:not(
+      .genauth-ant-form-item-required-mark-optional
     )::after {
     display: inline-block;
     margin-right: 4px;
@@ -821,19 +821,19 @@
     content: '*';
   }
 }
-.authing-ant-tabs {
+.genauth-ant-tabs {
   overflow: visible;
 }
 
-.authing-ant-tabs {
+.genauth-ant-tabs {
   overflow: visible;
 }
 
-.authing-ant-tabs-tab.authing-ant-tabs-tab-active .authing-ant-tabs-tab-btn {
+.genauth-ant-tabs-tab.genauth-ant-tabs-tab-active .genauth-ant-tabs-tab-btn {
   font-weight: 400;
 }
 
-.authing-g2-questions-textarea {
+.genauth-g2-questions-textarea {
   > textarea {
     resize: none;
     background: #F5F5F7;
@@ -851,9 +851,9 @@
   }
 }
 
-.authing-g2-question-option {
+.genauth-g2-question-option {
   background: none;
-  &.authing-g2-question-option-active {
+  &.genauth-g2-question-option-active {
     color: #2F54EB;
   }
   &:hover {
@@ -864,8 +864,8 @@
 //   font-weight: normal !important;
 // }
 
-.authing-g2-completeInfo-form {
-  .authing-ant-form-item-has-error {
+.genauth-g2-completeInfo-form {
+  .genauth-ant-form-item-has-error {
     input:hover {
       border-color: #DC2626;
     }
@@ -873,25 +873,25 @@
   input:hover {
     border-color: #D1D1D6;
   }
-  .authing-g2-input {
+  .genauth-g2-input {
     &:hover {
       border-color: #D1D1D6;
     }
-    &.authing-ant-picker-focused {
+    &.genauth-ant-picker-focused {
       background: #fff;
     }
-    &.authing-ant-input-affix-wrapper-focused {
+    &.genauth-ant-input-affix-wrapper-focused {
       border-color: #2F54EB;
     }
   }
 }
 
-.authing-g2-input-form .authing-g2-select .authing-ant-select-selector {
+.genauth-g2-input-form .genauth-g2-select .genauth-ant-select-selector {
   padding: 3px 11px;
-  .authing-ant-select-selection-item {
+  .genauth-ant-select-selection-item {
     line-height: 30px;
   }
-  .authing-ant-select-selection-search {
+  .genauth-ant-select-selection-search {
     display: flex;
     align-items: center;
   }
@@ -900,7 +900,7 @@ input:-internal-autofill-selected {
   box-shadow: unset !important;
 }
 
-.authing-g2-input.authing-ant-input-lg,
+.genauth-g2-input.genauth-ant-input-lg,
 input {
   font-size: 14px;
   line-height: 27px;
@@ -913,7 +913,7 @@ input {
   // justify-self: center;
   // padding: 60px 54px 80px;
   // padding: 16px 16px 64px 16px;
-  width: 456px;
+  width: 410px;
   @media only screen and (max-width: 450px) {
     width: 100%;
   }
@@ -941,23 +941,23 @@ input {
   // min-height: 512px;
   .g2-view-tabs {
     width: 100%;
-    // .authing-g2-input-form {
+    // .genauth-g2-input-form {
     //   padding: 0;
     // }
-    .authing-g2-input-form-sendCode {
+    .genauth-g2-input-form-sendCode {
       margin-bottom: 32px;
     }
-    // .authing-g2-input-form-sendCode .g2-send-code-input {
+    // .genauth-g2-input-form-sendCode .g2-send-code-input {
     //   margin-left: 2px;
     // }
-    .authing-g2-input-form-password {
+    .genauth-g2-input-form-password {
       margin-bottom: 16px;
     }
-    .authing-g2-input-form-password-repeat {
+    .genauth-g2-input-form-password-repeat {
       margin-bottom: 32px;
     }
   }
-  *[class*='authing-'].authing-ant-input-affix-wrapper-lg {
+  *[class*='genauth-'].genauth-ant-input-affix-wrapper-lg {
     padding: 7.5px 11px;
     @media only screen and (max-width: 450px) {
       padding: 9px 11px;
@@ -985,7 +985,7 @@ input {
     color: #3A3A3C;
     margin-bottom: 16px;
   }
-  .authing-g2-input {
+  .genauth-g2-input {
     height: 46px;
     line-height: 46px;
     @media only screen and (max-width: 450px) {
@@ -1000,15 +1000,15 @@ input {
       background: #fff;
     }
   }
-  *[class*='authing-'].authing-ant-input-affix-wrapper:focus,
-  *[class*='authing-'].authing-ant-input-affix-wrapper-focused {
+  *[class*='genauth-'].genauth-ant-input-affix-wrapper:focus,
+  *[class*='genauth-'].genauth-ant-input-affix-wrapper-focused {
     -webkit-box-shadow: none;
     box-shadow: none;
   }
-  *[class*='authing-'].authing-ant-input-affix-wrapper-focused:hover {
+  *[class*='genauth-'].genauth-ant-input-affix-wrapper-focused:hover {
     border-color: #2F54EB;
   }
-  .authing-g2-send-code-btn {
+  .genauth-g2-send-code-btn {
     width: 100%;
     font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
     font-style: normal;
@@ -1023,7 +1023,7 @@ input {
       height: 48px;
     }
   }
-  .authing-g2-send-code-btn span {
+  .genauth-g2-send-code-btn span {
     font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
     font-style: normal;
     font-weight: 400;
@@ -1031,29 +1031,29 @@ input {
     line-height: 18px;
     // color: #1C1C1E;
   }
-  // .authing-g2-send-code-btn span:hover {
+  // .genauth-g2-send-code-btn span:hover {
   //   color: #284BD6;
   // }
-  .authing-g2-send-code-btn:hover {
+  .genauth-g2-send-code-btn:hover {
     color: #284BD6;
     border-color: #284BD6;
     // & span {
     //   color: #284BD6;
     // }
   }
-  *[class*='authing-'].authing-g2-send-code-btn[disabled] {
+  *[class*='genauth-'].genauth-g2-send-code-btn[disabled] {
     color: #3A3A3C;
     background: rgba(255, 255, 255, 0.2);
     // opacity: .5;
   }
-  .authing-g2-send-code-btn[disabled] {
+  .genauth-g2-send-code-btn[disabled] {
     filter: none;
   }
-  *[class*='authing-'].authing-g2-send-code-btn[disabled]:hover {
+  *[class*='genauth-'].genauth-g2-send-code-btn[disabled]:hover {
     color: #3A3A3C;
     border: 1px solid #D1D1D6;
   }
-  .authing-g2-submit-button {
+  .genauth-g2-submit-button {
     width: 100%;
     margin-left: 0;
     margin-right: 0;
@@ -1068,7 +1068,7 @@ input {
 .g2-submit-success {
   padding: 0;
 }
-.authing-ant-btn-loading-icon span {
+.genauth-ant-btn-loading-icon span {
   color: #2F54EB;
 }
 // .g2-view-container-password {
@@ -1101,10 +1101,10 @@ input {
 //   .g2-view-tabs {
 //     padding: 0;
 //     width: 348px;
-//     // .authing-ant-form-item-control {
+//     // .genauth-ant-form-item-control {
 //     //   margin-bottom: 16px;
 //     // }
-//     .authing-ant-form-item {
+//     .genauth-ant-form-item {
 //       margin-bottom: 16px;
 //     }
 //     .reset-password-button {
@@ -1116,7 +1116,7 @@ input {
 //       margin-top: 16px;
 //       margin-bottom: -4px;
 //     }
-//     .authing-g2-input-form-sendCode {
+//     .genauth-g2-input-form-sendCode {
 //       margin-bottom: 32px;
 //     }
 //   }
@@ -1141,7 +1141,7 @@ input {
 //       width: 352px;
 //     }
 //   }
-//   .authing-g2-send-code-btn {
+//   .genauth-g2-send-code-btn {
 //     font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
 //     font-style: normal;
 //     font-weight: 400;
@@ -1155,14 +1155,14 @@ input {
 //       height: 48px;
 //     }
 //   }
-//   // .authing-g2-send-code-btn:focus {
+//   // .genauth-g2-send-code-btn:focus {
 //   //   color: #284BD6;
 //   // }
-//   .authing-g2-send-code-btn:hover {
+//   .genauth-g2-send-code-btn:hover {
 //     color: #284BD6;
 //     border-color: #284BD6;
 //   }
-//   .authing-g2-input {
+//   .genauth-g2-input {
 //     // background: #F5F5F7;
 //     height: 46px;
 //     @media only screen and (max-width: 450px) {
@@ -1176,11 +1176,11 @@ input {
 //       background: #fff;
 //     }
 //   }
-//   *[class*="authing-"].authing-ant-input-affix-wrapper:focus, *[class*="authing-"].authing-ant-input-affix-wrapper-focused {
+//   *[class*="genauth-"].genauth-ant-input-affix-wrapper:focus, *[class*="genauth-"].genauth-ant-input-affix-wrapper-focused {
 //     -webkit-box-shadow: none;
 //     box-shadow: none
 //   }
-//   *[class*="authing-"].authing-ant-input-affix-wrapper-focused:hover {
+//   *[class*="genauth-"].genauth-ant-input-affix-wrapper-focused:hover {
 //     border-color: #2F54EB;
 //   }
 // }
@@ -1188,8 +1188,8 @@ input {
   display: flex;
   flex-direction: column;
   // align-items: flex-start;
-  width: 456px;
-  @media only screen and (max-width: 450px) {
+  width: 410px;
+  @media only screen and (max-width: 405px) {
     width: 100%;
   }
   min-height: 464px;
@@ -1223,7 +1223,7 @@ input {
     color: #6B7280;
     margin-bottom: 40px;
   }
-  *[class*='authing-'].authing-g2-submit-button {
+  *[class*='genauth-'].genauth-g2-submit-button {
     padding: 10px 147px;
     width: 100%;
     height: 44px;
@@ -1246,8 +1246,8 @@ input {
 
 .g2-view-container .g2-view-header .title,
 .g2-password-reset-pageWrap .title,
-.g2-view-container .authing-g2-mfa-title,
-.g2-view-container .authing-g2-join-title,
+.g2-view-container .genauth-g2-mfa-title,
+.g2-view-container .genauth-g2-join-title,
 .g2-view-container-submit-success .success-page-title,
 .g2-questions-send-success-page .title {
   color: var(--guard-text-heading);
@@ -1261,8 +1261,8 @@ input {
 .g2-view-container .g2-view-header .title-description,
 .g2-view-container .g2-view-header .title-explain,
 .g2-password-reset-pageWrap .title-explain,
-.g2-view-container .authing-g2-mfa-tips,
-.g2-view-container .authing-g2-join-description,
+.g2-view-container .genauth-g2-mfa-tips,
+.g2-view-container .genauth-g2-join-description,
 .g2-view-container-submit-success .success-page-message,
 .g2-questions-send-success-page .message,
 .g2-questions-send-success-page .timer-tip {
@@ -1274,9 +1274,9 @@ input {
   letter-spacing: 0;
 }
 
-.g2-view-container .authing-header-tag.authing-ant-tag,
+.g2-view-container .genauth-header-tag.genauth-ant-tag,
 .g2-view-container .last-login-tag,
-.g2-view-container .authing-tag.blue {
+.g2-view-container .genauth-tag.blue {
   background: var(--guard-primary-soft);
   color: var(--guard-primary-active);
   border-radius: var(--guard-radius-sm);
@@ -1284,24 +1284,24 @@ input {
   font-weight: 500;
 }
 
-.g2-view-container .authing-ant-tabs-tab {
+.g2-view-container .genauth-ant-tabs-tab {
   color: var(--guard-text-secondary);
   font-size: 14px;
 }
 
-.g2-view-container .authing-ant-tabs-tab:hover,
-.g2-view-container .authing-ant-tabs-tab.authing-ant-tabs-tab-active .authing-ant-tabs-tab-btn {
+.g2-view-container .genauth-ant-tabs-tab:hover,
+.g2-view-container .genauth-ant-tabs-tab.genauth-ant-tabs-tab-active .genauth-ant-tabs-tab-btn {
   color: var(--guard-primary);
 }
 
-.g2-view-container .authing-ant-tabs-ink-bar {
+.g2-view-container .genauth-ant-tabs-ink-bar {
   background: var(--guard-primary);
 }
 
-.g2-view-container .authing-g2-submit-button,
-.g2-password-reset-pageWrap .authing-g2-submit-button,
-.g2-view-container-submit-success .authing-g2-submit-button,
-*[class*='authing-'].authing-ant-btn-primary {
+.g2-view-container .genauth-g2-submit-button,
+.g2-password-reset-pageWrap .genauth-g2-submit-button,
+.g2-view-container-submit-success .genauth-g2-submit-button,
+*[class*='genauth-'].genauth-ant-btn-primary {
   height: 42px;
   background: var(--guard-primary);
   border-color: var(--guard-primary);
@@ -1315,28 +1315,28 @@ input {
   transition: all 0.2s ease;
 }
 
-.g2-view-container .authing-g2-submit-button:hover,
-.g2-password-reset-pageWrap .authing-g2-submit-button:hover,
-.g2-view-container-submit-success .authing-g2-submit-button:hover,
-*[class*='authing-'].authing-ant-btn-primary:hover,
-*[class*='authing-'].authing-ant-btn-primary:focus {
+.g2-view-container .genauth-g2-submit-button:hover,
+.g2-password-reset-pageWrap .genauth-g2-submit-button:hover,
+.g2-view-container-submit-success .genauth-g2-submit-button:hover,
+*[class*='genauth-'].genauth-ant-btn-primary:hover,
+*[class*='genauth-'].genauth-ant-btn-primary:focus {
   background: var(--guard-primary-hover);
   border-color: var(--guard-primary-hover);
   color: var(--guard-text-inverse);
 }
 
-.g2-view-container .authing-g2-submit-button:active,
-.g2-password-reset-pageWrap .authing-g2-submit-button:active,
-.g2-view-container-submit-success .authing-g2-submit-button:active,
-*[class*='authing-'].authing-ant-btn-primary:active {
+.g2-view-container .genauth-g2-submit-button:active,
+.g2-password-reset-pageWrap .genauth-g2-submit-button:active,
+.g2-view-container-submit-success .genauth-g2-submit-button:active,
+*[class*='genauth-'].genauth-ant-btn-primary:active {
   background: var(--guard-primary-active);
   border-color: var(--guard-primary-active);
 }
 
-.g2-view-container .authing-g2-submit-button[disabled],
-.g2-password-reset-pageWrap .authing-g2-submit-button[disabled],
-.g2-view-container-submit-success .authing-g2-submit-button[disabled],
-*[class*='authing-'].authing-ant-btn-primary[disabled] {
+.g2-view-container .genauth-g2-submit-button[disabled],
+.g2-password-reset-pageWrap .genauth-g2-submit-button[disabled],
+.g2-view-container-submit-success .genauth-g2-submit-button[disabled],
+*[class*='genauth-'].genauth-ant-btn-primary[disabled] {
   background: #2F54EB;
   border-color: #2F54EB;
   color: var(--guard-text-inverse);
@@ -1344,13 +1344,13 @@ input {
   opacity: 0.5;
 }
 
-.g2-view-container .authing-g2-input,
-.g2-password-reset-pageWrap .authing-g2-input,
-.g2-view-container .authing-g2-textarea,
-.g2-view-container .authing-g2-code-input,
-.g2-view-container .authing-g2-select,
-.g2-view-container .authing-g2-select .authing-ant-select-selector,
-.g2-view-container .authing-ant-picker,
+.g2-view-container .genauth-g2-input,
+.g2-password-reset-pageWrap .genauth-g2-input,
+.g2-view-container .genauth-g2-textarea,
+.g2-view-container .genauth-g2-code-input,
+.g2-view-container .genauth-g2-select,
+.g2-view-container .genauth-g2-select .genauth-ant-select-selector,
+.g2-view-container .genauth-ant-picker,
 .g2-view-container textarea,
 .g2-view-container input {
   caret-color: #284BD6;
@@ -1360,46 +1360,46 @@ input {
   border-radius: var(--guard-radius-control);
 }
 
-.g2-view-container .authing-g2-input,
-.g2-password-reset-pageWrap .authing-g2-input,
-.g2-view-container .authing-g2-textarea,
-.g2-view-container .authing-g2-code-input,
-.g2-view-container .authing-g2-select,
-.g2-view-container .authing-g2-select .authing-ant-select-selector,
-.g2-view-container .authing-ant-picker {
+.g2-view-container .genauth-g2-input,
+.g2-password-reset-pageWrap .genauth-g2-input,
+.g2-view-container .genauth-g2-textarea,
+.g2-view-container .genauth-g2-code-input,
+.g2-view-container .genauth-g2-select,
+.g2-view-container .genauth-g2-select .genauth-ant-select-selector,
+.g2-view-container .genauth-ant-picker {
   background: var(--guard-bg-subtle);
   border-color: var(--guard-bg-subtle);
   transition: all 0.2s ease;
 }
 
-.g2-view-container .authing-g2-input:hover,
-.g2-password-reset-pageWrap .authing-g2-input:hover,
-.g2-view-container .authing-g2-textarea:hover,
-.g2-view-container .authing-g2-code-input:hover,
-.g2-view-container .authing-g2-select:hover,
-.g2-view-container .authing-g2-select:hover .authing-ant-select-selector,
-.g2-view-container .authing-ant-picker:hover {
+.g2-view-container .genauth-g2-input:hover,
+.g2-password-reset-pageWrap .genauth-g2-input:hover,
+.g2-view-container .genauth-g2-textarea:hover,
+.g2-view-container .genauth-g2-code-input:hover,
+.g2-view-container .genauth-g2-select:hover,
+.g2-view-container .genauth-g2-select:hover .genauth-ant-select-selector,
+.g2-view-container .genauth-ant-picker:hover {
   background: var(--guard-border);
   border-color: var(--guard-border);
 }
 
-.g2-view-container .authing-g2-input:focus,
-.g2-password-reset-pageWrap .authing-g2-input:focus,
-.g2-view-container .authing-g2-textarea:focus,
-.g2-view-container .authing-g2-code-input:focus,
-.g2-view-container .authing-g2-select.authing-ant-select-focused,
-.g2-view-container .authing-g2-select.authing-ant-select-focused .authing-ant-select-selector,
-.g2-view-container .authing-ant-input-affix-wrapper-focused,
-.g2-view-container .authing-ant-picker-focused {
+.g2-view-container .genauth-g2-input:focus,
+.g2-password-reset-pageWrap .genauth-g2-input:focus,
+.g2-view-container .genauth-g2-textarea:focus,
+.g2-view-container .genauth-g2-code-input:focus,
+.g2-view-container .genauth-g2-select.genauth-ant-select-focused,
+.g2-view-container .genauth-g2-select.genauth-ant-select-focused .genauth-ant-select-selector,
+.g2-view-container .genauth-ant-input-affix-wrapper-focused,
+.g2-view-container .genauth-ant-picker-focused {
   background: var(--guard-bg);
   border-color: var(--guard-primary) !important;
   box-shadow: 0 0 0 3px var(--guard-focus-ring);
 }
 
-.g2-view-container .authing-ant-form-item-has-error .authing-g2-input,
-.g2-view-container .authing-ant-form-item-has-error .authing-g2-code-input,
-.g2-view-container .authing-ant-form-item-has-error .authing-g2-select,
-.g2-view-container .authing-ant-form-item-has-error textarea {
+.g2-view-container .genauth-ant-form-item-has-error .genauth-g2-input,
+.g2-view-container .genauth-ant-form-item-has-error .genauth-g2-code-input,
+.g2-view-container .genauth-ant-form-item-has-error .genauth-g2-select,
+.g2-view-container .genauth-ant-form-item-has-error textarea {
   border-color: var(--guard-danger) !important;
   box-shadow: 0 0 0 3px var(--guard-danger-ring);
 }
@@ -1412,9 +1412,9 @@ input {
   font-size: 14px;
 }
 
-.authing-g2-dropdown,
-.authing-ant-dropdown-menu,
-.authing-ant-select-dropdown {
+.genauth-g2-dropdown,
+.genauth-ant-dropdown-menu,
+.genauth-ant-select-dropdown {
   border: 1px solid var(--guard-border);
   border-radius: var(--guard-radius-md);
   box-shadow: 0 12px 32px -20px rgba(28, 28, 30, 0.24);
@@ -1422,41 +1422,41 @@ input {
   padding: 4px;
 }
 
-.authing-ant-dropdown-menu-item,
-.authing-ant-select-item {
+.genauth-ant-dropdown-menu-item,
+.genauth-ant-select-item {
   border-radius: var(--guard-radius-sm);
   cursor: pointer;
   font-size: 14px;
   padding: 6px 8px;
 }
 
-.authing-ant-dropdown-menu-item:hover,
-.authing-ant-select-item-option-active:not(.authing-ant-select-item-option-disabled),
-.authing-ant-select-item-option-selected:not(.authing-ant-select-item-option-disabled) {
+.genauth-ant-dropdown-menu-item:hover,
+.genauth-ant-select-item-option-active:not(.genauth-ant-select-item-option-disabled),
+.genauth-ant-select-item-option-selected:not(.genauth-ant-select-item-option-disabled) {
   background: var(--guard-bg-subtle);
   color: var(--guard-text-heading);
 }
 
 .g2-view-container .link-like,
-.g2-view-container .authing-g2-send-code,
+.g2-view-container .genauth-g2-send-code,
 .g2-view-container .qrcode__again-scan,
-.g2-view-container .authing-create-button span,
-.g2-view-container .authing-gaurd-select-extra,
-*[class*='authing-'].authing-ant-btn-link.guard-button-link-like {
+.g2-view-container .genauth-create-button span,
+.g2-view-container .genauth-gaurd-select-extra,
+*[class*='genauth-'].genauth-ant-btn-link.guard-button-link-like {
   color: var(--guard-primary);
 }
 
 .g2-view-container .link-like:hover,
-.g2-view-container .authing-g2-send-code:hover,
+.g2-view-container .genauth-g2-send-code:hover,
 .g2-view-container .qrcode__again-scan:hover,
-.g2-view-container .authing-create-button span:hover,
-.g2-view-container .authing-gaurd-select-extra:hover,
-*[class*='authing-'].authing-ant-btn-link.guard-button-link-like:hover {
+.g2-view-container .genauth-create-button span:hover,
+.g2-view-container .genauth-gaurd-select-extra:hover,
+*[class*='genauth-'].genauth-ant-btn-link.guard-button-link-like:hover {
   color: var(--guard-primary-hover);
 }
 
 .g2-view-container .g2-view-tabs:not(.hidden_tab) {
-  .authing-ant-tabs > .authing-ant-tabs-nav {
+  .genauth-ant-tabs > .genauth-ant-tabs-nav {
     display: flex;
     width: 100%;
     max-width: 100%;
@@ -1472,14 +1472,14 @@ input {
     }
   }
 
-  .authing-ant-tabs-nav-wrap {
+  .genauth-ant-tabs-nav-wrap {
     flex: 1 1 auto;
     min-width: 0;
     max-width: 100%;
     overflow: hidden;
   }
 
-  .authing-ant-tabs-nav-list {
+  .genauth-ant-tabs-nav-list {
     display: flex;
     align-items: center;
     position: relative;
@@ -1487,11 +1487,11 @@ input {
     padding-bottom: 0;
   }
 
-  .authing-ant-tabs-nav-operations {
+  .genauth-ant-tabs-nav-operations {
     flex: 0 0 auto;
   }
 
-  .authing-ant-tabs-nav-more {
+  .genauth-ant-tabs-nav-more {
     color: var(--guard-primary);
     cursor: pointer;
     font-size: 16px;
@@ -1500,12 +1500,12 @@ input {
     transition: color 0.2s ease;
 
     &:hover,
-    &.authing-ant-dropdown-open {
+    &.genauth-ant-dropdown-open {
       color: var(--guard-primary-hover);
     }
   }
 
-  .authing-ant-tabs-tab {
+  .genauth-ant-tabs-tab {
     flex: 0 0 auto;
     min-width: 0;
     height: 38px;
@@ -1535,7 +1535,7 @@ input {
     }
   }
 
-  .authing-ant-tabs-tab-btn {
+  .genauth-ant-tabs-tab-btn {
     width: 100%;
     border-radius: var(--guard-radius-sm);
     outline: none !important;
@@ -1556,17 +1556,17 @@ input {
     }
   }
 
-  .authing-ant-tabs-tab.authing-ant-tabs-tab-active {
+  .genauth-ant-tabs-tab.genauth-ant-tabs-tab-active {
     background: transparent;
     box-shadow: none;
 
-    .authing-ant-tabs-tab-btn {
+    .genauth-ant-tabs-tab-btn {
       color: var(--guard-primary);
       font-weight: 500;
     }
   }
 
-  .authing-ant-tabs-ink-bar {
+  .genauth-ant-tabs-ink-bar {
     display: block;
     height: 4px;
     bottom: -1px;
@@ -1589,7 +1589,7 @@ input {
 }
 
 .g2-view-container .g2-view-tabs.hidden_tab {
-  .authing-ant-tabs > .authing-ant-tabs-nav {
+  .genauth-ant-tabs > .genauth-ant-tabs-nav {
     margin: 0;
     padding: 0;
     background: transparent;
@@ -1597,33 +1597,33 @@ input {
   }
 }
 
-.g2-view-container .authing-g2-send-code-btn,
-.g2-password-reset-pageWrap .authing-g2-send-code-btn,
-*[class*='authing-'].authing-ant-btn.authing-g2-send-code-btn {
+.g2-view-container .genauth-g2-send-code-btn,
+.g2-password-reset-pageWrap .genauth-g2-send-code-btn,
+*[class*='genauth-'].genauth-ant-btn.genauth-g2-send-code-btn {
   background: #FFFFFF;
   border-color: var(--guard-primary);
   color: var(--guard-primary);
   font-weight: 500;
 }
 
-.g2-view-container .authing-g2-send-code-btn:hover,
-.g2-view-container .authing-g2-send-code-btn:focus,
-.g2-password-reset-pageWrap .authing-g2-send-code-btn:hover,
-.g2-password-reset-pageWrap .authing-g2-send-code-btn:focus,
-*[class*='authing-'].authing-ant-btn.authing-g2-send-code-btn:hover,
-*[class*='authing-'].authing-ant-btn.authing-g2-send-code-btn:focus {
+.g2-view-container .genauth-g2-send-code-btn:hover,
+.g2-view-container .genauth-g2-send-code-btn:focus,
+.g2-password-reset-pageWrap .genauth-g2-send-code-btn:hover,
+.g2-password-reset-pageWrap .genauth-g2-send-code-btn:focus,
+*[class*='genauth-'].genauth-ant-btn.genauth-g2-send-code-btn:hover,
+*[class*='genauth-'].genauth-ant-btn.genauth-g2-send-code-btn:focus {
   background: var(--guard-primary-soft);
   border-color: var(--guard-primary);
   color: var(--guard-primary);
   box-shadow: 0 0 0 3px var(--guard-focus-ring);
 }
 
-.g2-view-container .authing-g2-send-code-btn[disabled],
-.g2-view-container .authing-g2-send-code-btn[disabled]:hover,
-.g2-password-reset-pageWrap .authing-g2-send-code-btn[disabled],
-.g2-password-reset-pageWrap .authing-g2-send-code-btn[disabled]:hover,
-*[class*='authing-'].authing-ant-btn.authing-g2-send-code-btn[disabled],
-*[class*='authing-'].authing-ant-btn.authing-g2-send-code-btn[disabled]:hover {
+.g2-view-container .genauth-g2-send-code-btn[disabled],
+.g2-view-container .genauth-g2-send-code-btn[disabled]:hover,
+.g2-password-reset-pageWrap .genauth-g2-send-code-btn[disabled],
+.g2-password-reset-pageWrap .genauth-g2-send-code-btn[disabled]:hover,
+*[class*='genauth-'].genauth-ant-btn.genauth-g2-send-code-btn[disabled],
+*[class*='genauth-'].genauth-ant-btn.genauth-g2-send-code-btn[disabled]:hover {
   background: var(--guard-bg-subtle);
   border-color: var(--guard-border);
   color: var(--guard-text-placeholder);

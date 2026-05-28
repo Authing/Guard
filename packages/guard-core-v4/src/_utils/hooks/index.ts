@@ -124,12 +124,12 @@ export const useAutoFocus = () => {
 // shaking 抖动
 export const useShaking = () => {
   // form input
-  const inputs = document.getElementsByClassName('authing-g2-input')
+  const inputs = document.getElementsByClassName('genauth-g2-input')
   // 必选协议
   const agreements = document.getElementsByClassName(
-    'authing-agreements-item-invalid'
+    'genauth-agreements-item-invalid'
   )
-  const saftyCode = document.getElementsByClassName('authing-g2-code-input')
+  const saftyCode = document.getElementsByClassName('genauth-g2-code-input')
 
   const bindTotpSecretSave = document.getElementsByClassName(
     'g2-mfa-bindTotp-secretSave'

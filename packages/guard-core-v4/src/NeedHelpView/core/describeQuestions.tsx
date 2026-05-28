@@ -150,7 +150,7 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
   }
 
   return (
-    <div className="authing-g2-describe-questions authing-g2-form-required-item-icon-after">
+    <div className="genauth-g2-describe-questions genauth-g2-form-required-item-icon-after">
       <Form
         name="resetPassword"
         layout="vertical"
@@ -163,7 +163,7 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
       >
         <Form.Item
           validateTrigger={['onBlur', 'onChange']}
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           name="identify"
           label={t('common.problem.form.phone')}
           validateFirst={true}
@@ -185,7 +185,7 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
           ]}
         >
           <Input
-            className="authing-g2-input"
+            className="genauth-g2-input"
             autoComplete="off"
             size="large"
             placeholder={t('login.inputPhoneOrEmail') as string}
@@ -199,13 +199,13 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
         </Form.Item>
         <Form.Item
           validateTrigger={['onBlur', 'onChange']}
-          className="authing-g2-input-form "
+          className="genauth-g2-input-form "
           label={t('common.problem.form.question')}
           name="questionPicker"
           initialValue={typeProblem}
         >
           <Select
-            className="authing-g2-select"
+            className="genauth-g2-select"
             onChange={(value: number) => {
               setTypeProblem(value)
             }}
@@ -215,9 +215,9 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
               <Select.Option
                 key={value}
                 value={value}
-                className={`authing-g2-question-option ${
+                className={`genauth-g2-question-option ${
                   typeProblem === value
-                    ? 'authing-g2-question-option-active'
+                    ? 'genauth-g2-question-option-active'
                     : ''
                 }`}
               >
@@ -226,7 +226,7 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
             ))}
           </Select>
         </Form.Item>
-        <div className="authing-g2-input-form">
+        <div className="genauth-g2-input-form">
           {textMap?.map((item: any, index: any) => (
             <div key={index}>{item}</div>
           ))}
@@ -234,12 +234,12 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
 
         <Form.Item
           validateTrigger={['onBlur', 'onChange']}
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           name="description"
           label={t('common.problem.form.questionDescript')}
         >
           <Input.TextArea
-            className="authing-g2-questions-textarea"
+            className="genauth-g2-questions-textarea"
             maxLength={200}
             showCount
             rows={4}
@@ -249,7 +249,7 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
           />
         </Form.Item>
 
-        <div className="authing-g2-input-form">
+        <div className="genauth-g2-input-form">
           <div className="label-title">
             {t('common.problem.form.questionClip')}
           </div>
@@ -258,7 +258,7 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
               action={`${props.host}/api/v2/upload?folder=photos`}
               listType="picture-card"
               accept="image/png, image/jpeg, image/jpg"
-              className="authing-g2-questions-upload-self"
+              className="genauth-g2-questions-upload-self"
               fileList={fileList}
               onPreview={handlePreview}
               onChange={(e: any) => {
@@ -310,7 +310,7 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
           </div>
         </div>
 
-        <Form.Item className="authing-g2-sumbit-form submit-form">
+        <Form.Item className="genauth-g2-sumbit-form submit-form">
           <SubmitButton
             className="forget-password"
             text={t('common.problem.form.submit') as string}

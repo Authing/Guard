@@ -17,13 +17,13 @@ interface VerifyCodeInputProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const InputCursor = () => {
-  return <div className="authing-g2-otp-input-cursor"></div>
+  return <div className="genauth-g2-otp-input-cursor"></div>
 }
 const SoltInput = (solt: SlotProps & { style: any }) => {
   return (
     <div
       style={solt.style}
-      className={classNames('authing-g2-code-input-item', {
+      className={classNames('genauth-g2-code-input-item', {
         focus: solt.isActive
       })}
     >
@@ -46,14 +46,14 @@ export const VerifyCodeInput: React.FC<VerifyCodeInputProps> = ({
   ...rest
 }) => {
   return (
-    <div className="authing-g2-code-input" {...rest}>
+    <div className="genauth-g2-code-input" {...rest}>
       <OTPInput
         value={value}
         onChange={onChange}
         maxLength={length}
         onComplete={onFinish}
         render={({ slots }) => (
-          <div className="authing-g2-otp-wrapper">
+          <div className="genauth-g2-otp-wrapper">
             {slots.map((slot, idx) => (
               <>
                 <SoltInput
@@ -64,7 +64,7 @@ export const VerifyCodeInput: React.FC<VerifyCodeInputProps> = ({
                   }}
                 />
                 {showDivider && idx === Math.floor(length / 2 - 1) && (
-                  <Divider className="authing-g2-code-input-divider" />
+                  <Divider className="genauth-g2-code-input-divider" />
                 )}
               </>
             ))}

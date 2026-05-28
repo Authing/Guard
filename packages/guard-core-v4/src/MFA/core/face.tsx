@@ -290,10 +290,10 @@ export const MFAFace = (props: any) => {
 
   return (
     <div>
-      <h3 className="authing-g2-mfa-title">{t('common.mfaCertification')}</h3>
+      <h3 className="genauth-g2-mfa-title">{t('common.mfaCertification')}</h3>
       {faceState === 'ready' || mfaBackContext?.mfaBackState === 'login' ? (
         <>
-          <p className="authing-g2-mfa-tips">
+          <p className="genauth-g2-mfa-tips">
             {props.initData?.faceMfaEnabled
               ? t('common.faceCheck')
               : t('common.faceText2')}
@@ -324,7 +324,7 @@ export const MFAFace = (props: any) => {
           />
         </>
       ) : (
-        <p className="authing-g2-mfa-tips">{t('common.faceCheck')}</p>
+        <p className="genauth-g2-mfa-tips">{t('common.faceCheck')}</p>
       )}
 
       <div

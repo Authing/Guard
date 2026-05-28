@@ -144,7 +144,7 @@ export const GuardResetPassword = () => {
           autoComplete="off"
         >
           <Form.Item
-            className="authing-g2-input-form"
+            className="genauth-g2-input-form"
             name="password"
             validateTrigger={['onBlur']}
             rules={[
@@ -185,7 +185,7 @@ export const GuardResetPassword = () => {
             }
           >
             <InputPasswordForget
-              className="authing-g2-input"
+              className="genauth-g2-input"
               size="large"
               placeholder={t('login.resetPassword.inputNewPwd') as string}
               prefix={
@@ -197,7 +197,7 @@ export const GuardResetPassword = () => {
             />
           </Form.Item>
           <Form.Item
-            className="authing-g2-input-form"
+            className="genauth-g2-input-form"
             name="repeatPassword"
             validateFirst={true}
             rules={[
@@ -223,7 +223,7 @@ export const GuardResetPassword = () => {
             ]}
           >
             <InputPasswordForget
-              className="authing-g2-input"
+              className="genauth-g2-input"
               size="large"
               placeholder={t('login.resetPassword.confirmNewPwd') as string}
               prefix={
@@ -235,7 +235,7 @@ export const GuardResetPassword = () => {
             />
           </Form.Item>
           {getPassWordUnsafeText()}
-          <Form.Item className="authing-g2-sumbit-form submit-form">
+          <Form.Item className="genauth-g2-sumbit-form submit-form">
             <SubmitButton
               className="reset-password-button"
               text={t('login.resetPassword.reset') as string}

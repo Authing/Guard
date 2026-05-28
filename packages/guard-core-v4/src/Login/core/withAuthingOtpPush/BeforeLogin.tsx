@@ -180,7 +180,7 @@ export function BeforeLogin(props: BeforeLoginProps) {
       <Form onFinish={onFinish} form={form}>
         <Form.Item name="account">
           <Input
-            className="authing-g2-input"
+            className="genauth-g2-input"
             autoComplete="off"
             size="large"
             autoFocus={autoFocus}
@@ -200,7 +200,7 @@ export function BeforeLogin(props: BeforeLoginProps) {
             onChange={onAgreementsChange}
           />
         )}
-        <Form.Item className="authing-g2-sumbit-form">
+        <Form.Item className="genauth-g2-sumbit-form">
           <SubmitButton
             text={t('login.loginText') as string}
             htmlType="submit"

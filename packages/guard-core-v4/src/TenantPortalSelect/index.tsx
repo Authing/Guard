@@ -88,7 +88,7 @@ export const GuardTenantPortalSelectView = () => {
         title: it.isUserPool ? (
           <>
             {it.tenantName!}
-            <Tag className="authing-tag blue">{t('common.visitor')}</Tag>
+            <Tag className="genauth-tag blue">{t('common.visitor')}</Tag>
           </>
         ) : (
           it.tenantName!
@@ -102,11 +102,11 @@ export const GuardTenantPortalSelectView = () => {
           }
         },
         extra: (
-          <div className="authing-gaurd-select-extra">
+          <div className="genauth-gaurd-select-extra">
             <span>{t('common.enter')}</span>
             <IconFont
               type="authing-arrow-left-s-line" // 没有右箭头，使用左箭头旋转
-              className="authing-gaurd-select-extra-icon"
+              className="genauth-gaurd-select-extra-icon"
             />
           </div>
         )
@@ -167,7 +167,7 @@ export const GuardTenantPortalSelectView = () => {
                 }}
               />
               <ActionButton
-                className="authing-tenant-join"
+                className="genauth-tenant-join"
                 onClick={() => {
                   setActive('join')
                 }}

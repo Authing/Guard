@@ -66,8 +66,8 @@ export const Agreements: React.FC<AgreementsProps> = ({
   return (
     <div
       className={getClassnames([
-        'authing-agreements',
-        showError && 'authing-agreements-error'
+        'genauth-agreements',
+        showError && 'genauth-agreements-error'
       ])}
     >
       {agreements.map(item => {
@@ -76,10 +76,10 @@ export const Agreements: React.FC<AgreementsProps> = ({
             key={item.id}
             style={{ ...style }}
             className={getClassnames([
-              'authing-agreements-item',
+              'genauth-agreements-item',
               item.required &&
                 !acceptList.includes(item.id) &&
-                'authing-agreements-item-invalid'
+                'genauth-agreements-item-invalid'
             ])}
             onClick={(e: any) => {
               e.persist()
@@ -90,11 +90,11 @@ export const Agreements: React.FC<AgreementsProps> = ({
           >
             <Space align="start" size={5}>
               <Checkbox
-                className="authing-agreements-checkbox"
+                className="genauth-agreements-checkbox"
                 checked={acceptList.includes(item.id)}
               />
               <div
-                className="authing-agreements-item-content"
+                className="genauth-agreements-item-content"
                 dangerouslySetInnerHTML={{
                   __html: item.title
                 }}

@@ -477,7 +477,7 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
   }
 
   return (
-    <div className="authing-g2-login-password">
+    <div className="genauth-g2-login-password">
       <Form
         name="passworLogin"
         onFinish={onFinish}
@@ -488,7 +488,7 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
       >
         <FormItemAccount
           name="account"
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           validPasswordLoginMethods={
             publicConfig?.passwordTabConfig?.validLoginMethods || []
           }
@@ -501,7 +501,7 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
           // 开启国际化手机号场景且只有手机号情况下 不应再根据区号去验证手机号
         >
           <InputAccount
-            className="authing-g2-input"
+            className="genauth-g2-input"
             autoComplete="off"
             size="large"
             autoFocus={autoFocus}
@@ -528,11 +528,11 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
           <Form.Item
             name="password"
             validateTrigger={['onBlur', 'onChange']}
-            className="authing-g2-input-form"
+            className="genauth-g2-input-form"
             rules={fieldRequiredRule(t('common.password'))}
           >
             <InputPassword
-              className="authing-g2-input"
+              className="genauth-g2-input"
               size="large"
               placeholder={t('login.inputLoginPwd')}
               prefix={
@@ -547,13 +547,13 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
         {/* 图形验证码 */}
         {showCaptcha && !matchEmailDomain && (
           <Form.Item
-            className="authing-g2-input-form"
+            className="genauth-g2-input-form"
             validateTrigger={['onBlur', 'onChange']}
             name="captchaCode"
             rules={fieldRequiredRule(t('common.captchaCode'))}
           >
             <GraphicVerifyCode
-              className="authing-g2-input"
+              className="genauth-g2-input"
               size="large"
               placeholder={t('login.inputCaptchaCode') as string}
               verifyCodeUrl={verifyCodeUrl}
@@ -595,7 +595,7 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
             showError={validated}
           />
         )}
-        <Form.Item className="authing-g2-sumbit-form">
+        <Form.Item className="genauth-g2-sumbit-form">
           <SubmitButton
             // TODO 产品还没想好 暂时不上
             // disabled={

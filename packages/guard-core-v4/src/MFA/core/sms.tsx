@@ -77,7 +77,7 @@ export const BindMFASms: React.FC<BindMFASmsProps> = ({
         return (
           <InputInternationPhone
             {...props}
-            className="authing-g2-input"
+            className="genauth-g2-input"
             size="large"
             areaCode={areaCode}
             onAreaCodeChange={(value: string) => {
@@ -91,7 +91,7 @@ export const BindMFASms: React.FC<BindMFASmsProps> = ({
         return (
           <InputNumber
             {...props}
-            className="authing-g2-input"
+            className="genauth-g2-input"
             autoComplete="off"
             size="large"
             placeholder={t('login.inputPhone')}
@@ -110,8 +110,8 @@ export const BindMFASms: React.FC<BindMFASmsProps> = ({
   )
   return (
     <>
-      <h3 className="authing-g2-mfa-title">{t('common.mfaCertification')}</h3>
-      <p className="authing-g2-mfa-tips">
+      <h3 className="genauth-g2-mfa-title">{t('common.mfaCertification')}</h3>
+      <p className="genauth-g2-mfa-tips">
         {mfaConfigsMap.get(MFAType.SMS)
           ? t('login.bindWarning')
           : t('login.bindPhoneInfo')}
@@ -126,8 +126,8 @@ export const BindMFASms: React.FC<BindMFASmsProps> = ({
           <CustomFormItem.Phone
             className={
               isInternationSms
-                ? 'authing-g2-input-form remove-padding'
-                : 'authing-g2-input-form'
+                ? 'genauth-g2-input-form remove-padding'
+                : 'genauth-g2-input-form'
             }
             name="phone"
             form={form}
@@ -258,8 +258,8 @@ export const VerifyMFASms: React.FC<VerifyMFASmsProps> = ({
 
   return (
     <>
-      <h3 className="authing-g2-mfa-title">{t('common.mfaCertification')}</h3>
-      <p className="authing-g2-mfa-tips">{tips}</p>
+      <h3 className="genauth-g2-mfa-title">{t('common.mfaCertification')}</h3>
+      <p className="genauth-g2-mfa-tips">{tips}</p>
       <Form
         form={form}
         onFinish={onFinish}

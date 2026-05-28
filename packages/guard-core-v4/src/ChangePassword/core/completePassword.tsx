@@ -173,7 +173,7 @@ export const CompletePassword: React.FC = () => {
   )
 
   return (
-    <div className="authing-g2-login-phone-code">
+    <div className="genauth-g2-login-phone-code">
       <Form
         name="resetPassword"
         form={form}
@@ -184,13 +184,13 @@ export const CompletePassword: React.FC = () => {
         autoComplete="off"
       >
         <CustomFormItem.Password
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           name="password"
           required={true}
         >
           <InputPassword
             autoFocus={autoFocus}
-            className="authing-g2-input"
+            className="genauth-g2-input"
             size="large"
             placeholder={t('login.inputPwd')}
             prefix={
@@ -203,7 +203,7 @@ export const CompletePassword: React.FC = () => {
         </CustomFormItem.Password>
         <Form.Item
           validateTrigger={['onBlur', 'onChange']}
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           name="password2"
           rules={[
             {
@@ -221,7 +221,7 @@ export const CompletePassword: React.FC = () => {
           ]}
         >
           <InputPassword
-            className="authing-g2-input"
+            className="genauth-g2-input"
             size="large"
             placeholder={t('login.inputPwdAgain')}
             prefix={
@@ -233,7 +233,7 @@ export const CompletePassword: React.FC = () => {
           />
         </Form.Item>
         {getPassWordUnsafeText()}
-        <Form.Item className="authing-g2-sumbit-form submit-form">
+        <Form.Item className="genauth-g2-sumbit-form submit-form">
           <SubmitButton
             className="forget-password"
             text={t('common.confirm') as string}

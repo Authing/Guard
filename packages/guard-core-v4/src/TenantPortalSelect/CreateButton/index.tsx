@@ -13,7 +13,7 @@ export const CreateButton: React.FC<TenantButtonProps> = ({
   const { t } = useTranslation()
   return (
     <div
-      className={classNames('authing-create-button', className)}
+      className={classNames('genauth-create-button', className)}
       onClick={onClick}
       style={style}
     >

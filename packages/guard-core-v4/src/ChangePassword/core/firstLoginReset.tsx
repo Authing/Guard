@@ -116,7 +116,7 @@ export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({
   }
 
   return (
-    <div className="authing-g2-login-phone-code">
+    <div className="genauth-g2-login-phone-code">
       <Form
         name="resetPassword"
         form={form}
@@ -130,7 +130,7 @@ export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({
           initData?.phone && (
             <Form.Item
               validateTrigger={['onBlur', 'onChange']}
-              className="authing-g2-input-form"
+              className="genauth-g2-input-form"
               name="code"
               rules={[...fieldRequiredRule(t('common.captchaCode'))]}
             >
@@ -138,13 +138,13 @@ export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({
             </Form.Item>
           )}
         <CustomFormItem.Password
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           name="password"
           required={true}
         >
           <InputPassword
             autoFocus={autoFocus}
-            className="authing-g2-input"
+            className="genauth-g2-input"
             size="large"
             placeholder={t('login.inputNewPwd')}
             prefix={
@@ -157,7 +157,7 @@ export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({
         </CustomFormItem.Password>
         <Form.Item
           validateTrigger={['onBlur', 'onChange']}
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           name="password2"
           rules={[
             {
@@ -175,7 +175,7 @@ export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({
           ]}
         >
           <InputPassword
-            className="authing-g2-input"
+            className="genauth-g2-input"
             size="large"
             placeholder={t('login.inputPwdAgain')}
             prefix={
@@ -187,7 +187,7 @@ export const FirstLoginReset: React.FC<FirstLoginResetProps> = ({
           />
         </Form.Item>
         {getPassWordUnsafeText()}
-        <Form.Item className="authing-g2-sumbit-form submit-form">
+        <Form.Item className="genauth-g2-sumbit-form submit-form">
           <SubmitButton
             className="forget-password"
             text={t('common.confirm') as string}

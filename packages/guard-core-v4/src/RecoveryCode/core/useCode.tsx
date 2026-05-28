@@ -85,8 +85,8 @@ export const UseCode: React.FC<UseCodeProps> = ({ mfaToken, onSubmit }) => {
 
   return (
     <>
-      <p className="authing-g2-mfa-title">{t('common.useRecoverCode')}</p>
-      <p className="authing-g2-mfa-tips">{t('login.mfaAfterReset')}</p>
+      <p className="genauth-g2-mfa-title">{t('common.useRecoverCode')}</p>
+      <p className="genauth-g2-mfa-tips">{t('login.mfaAfterReset')}</p>
       <Form
         form={form}
         onFinish={onFinish}
@@ -94,7 +94,7 @@ export const UseCode: React.FC<UseCodeProps> = ({ mfaToken, onSubmit }) => {
       >
         <Form.Item
           validateTrigger={['onBlur', 'onChange']}
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           name="recoveryCode"
           rules={[
             {
@@ -104,7 +104,7 @@ export const UseCode: React.FC<UseCodeProps> = ({ mfaToken, onSubmit }) => {
           ]}
         >
           <Input
-            className="authing-g2-input"
+            className="genauth-g2-input"
             autoComplete="off"
             size="large"
             placeholder={t('login.inputRecoverCode') as string}
@@ -117,7 +117,7 @@ export const UseCode: React.FC<UseCodeProps> = ({ mfaToken, onSubmit }) => {
           />
         </Form.Item>
 
-        <Form.Item className="authing-g2-sumbit-form submit-form">
+        <Form.Item className="genauth-g2-sumbit-form submit-form">
           <SubmitButton
             text={t('common.sure') as string}
             ref={submitButtonRef}

@@ -74,7 +74,7 @@ export const CreateTenantView: React.FC<CreateTenantProps> = ({ onBack }) => {
     <div className="g2-view-container g2-view-join">
       {renderBack}
       <div className="g2-join-content">
-        <p className="authing-g2-join-title">{t('common.createTenant')}</p>
+        <p className="genauth-g2-join-title">{t('common.createTenant')}</p>
         <Form
           layout="vertical"
           form={form}
@@ -83,26 +83,26 @@ export const CreateTenantView: React.FC<CreateTenantProps> = ({ onBack }) => {
           onFinishFailed={() => submitButtonRef.current?.onError()}
         >
           <Form.Item
-            className="authing-g2-input-form"
+            className="genauth-g2-input-form"
             name="name"
             label={t('common.tenantName') as string}
             required
             rules={[{ required: true }]}
           >
             <Input
-              className="authing-g2-input"
+              className="genauth-g2-input"
               autoComplete="off"
               size="large"
               placeholder={t('common.pleaseInput') as string}
             />
           </Form.Item>
           <Form.Item
-            className="authing-g2-input-form"
+            className="genauth-g2-input-form"
             name="enterpriseDomains"
             label={t('common.tenantEmail')}
           >
             <Input
-              className="authing-g2-input-group"
+              className="genauth-g2-input-group"
               autoComplete="off"
               size="large"
               placeholder={t('common.pleaseInput') as string}
@@ -110,12 +110,12 @@ export const CreateTenantView: React.FC<CreateTenantProps> = ({ onBack }) => {
             />
           </Form.Item>
           <Form.Item
-            className="authing-g2-input-form"
+            className="genauth-g2-input-form"
             name="description"
             label={t('common.tenantDesc')}
           >
             <Input.TextArea
-              className="authing-g2-input"
+              className="genauth-g2-input"
               autoComplete="off"
               size="large"
               placeholder={t('common.pleaseInput') as string}
@@ -125,7 +125,7 @@ export const CreateTenantView: React.FC<CreateTenantProps> = ({ onBack }) => {
           <SubmitButton
             text={t('common.sure') as string}
             ref={submitButtonRef}
-            className="authing-g2-join-button"
+            className="genauth-g2-join-button"
           />
         </Form>
       </div>

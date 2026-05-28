@@ -1169,7 +1169,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
               {tags?.map?.((it, i) => (
                 // @ts-ignore
                 <Tag
-                  className="authing-header-tag"
+                  className="genauth-header-tag"
                   style={{
                     color: it?.color,
                     backgroundColor: it?.backgroundColor

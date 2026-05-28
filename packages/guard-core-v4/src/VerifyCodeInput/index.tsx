@@ -57,12 +57,12 @@ export const VerifyCodeInput: React.FC<VerifyCodeInputProps> = ({
   }
 
   return (
-    <div className="authing-code-input">
+    <div className="genauth-code-input">
       {new Array(length).fill(0).map((_, index) => (
         <Fragment key={index}>
           <Input
             ref={(el: any) => (inputRef.current[index] = el)}
-            className="authing-code-input-item"
+            className="genauth-code-input-item"
             size="large"
             autoFocus={index === 0}
             onKeyDown={(evt: any) => handleKeyDown(evt, index)}
@@ -70,7 +70,7 @@ export const VerifyCodeInput: React.FC<VerifyCodeInputProps> = ({
             onChange={(evt: any) => handleChange(evt.target.value, index)}
           />
           {index === Math.floor(length / 2 - 1) && (
-            <Divider className="authing-code-input-divider" />
+            <Divider className="genauth-code-input-divider" />
           )}
         </Fragment>
       ))}

@@ -110,7 +110,7 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
         {/*账号选择 */}
         {formType === 0 && (
           <Form
-            className="authing-g2-completeInfo-form authing-g2-form-required-item-icon-after"
+            className="genauth-g2-completeInfo-form genauth-g2-form-required-item-icon-after"
             layout="vertical"
             form={form}
             onSubmitCapture={() => {}}
@@ -135,14 +135,14 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
             }}
           >
             <Form.Item
-              className="authing-g2-input-form"
+              className="genauth-g2-input-form"
               name="accountType"
               label={t('common.registerAccountType.title') as string}
               initialValue={'personal'}
             >
               <Select
-                className={classnames('authing-g2-select', 'authing-g2-input')}
-                popupClassName="authing-g2-dropdown"
+                className={classnames('genauth-g2-select', 'genauth-g2-input')}
+                popupClassName="genauth-g2-dropdown"
                 options={[
                   {
                     label: t('common.registerAccountType.personal') as string,
@@ -165,7 +165,7 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
         )}
         {formType === 1 && (
           <Form
-            className="authing-g2-completeInfo-form authing-g2-form-required-item-icon-after"
+            className="genauth-g2-completeInfo-form genauth-g2-form-required-item-icon-after"
             layout="vertical"
             form={form}
             onSubmitCapture={() => {}}
@@ -184,7 +184,7 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
             }}
           >
             <Form.Item
-              className="authing-g2-input-form"
+              className="genauth-g2-input-form"
               name="businessName"
               label={t('common.registerAccountType.enterpriseName') as string}
               rules={[
@@ -202,12 +202,12 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
               <Input
                 type="text"
                 size="large"
-                className="authing-g2-input"
+                className="genauth-g2-input"
                 autoComplete="off"
               />
             </Form.Item>
             <Form.Item
-              className="authing-g2-input-form"
+              className="genauth-g2-input-form"
               name="businessRegistrationName"
               label={
                 t(
@@ -229,12 +229,12 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
               <Input
                 type="text"
                 size="large"
-                className="authing-g2-input"
+                className="genauth-g2-input"
                 autoComplete="off"
               />
             </Form.Item>
             <Form.Item
-              className="authing-g2-input-form"
+              className="genauth-g2-input-form"
               name="unifiedSocialCredit"
               label={
                 t('common.registerAccountType.unifiedSocialCredit') as string
@@ -254,12 +254,12 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
               <Input
                 type="text"
                 size="large"
-                className="authing-g2-input"
+                className="genauth-g2-input"
                 autoComplete="off"
               />
             </Form.Item>
             <Form.Item
-              className="authing-g2-input-form"
+              className="genauth-g2-input-form"
               name="legalRepresentativeName"
               label={
                 t(
@@ -281,12 +281,12 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
               <Input
                 type="text"
                 size="large"
-                className="authing-g2-input"
+                className="genauth-g2-input"
                 autoComplete="off"
               />
             </Form.Item>
             <Form.Item
-              className="authing-g2-input-form"
+              className="genauth-g2-input-form"
               name="nationalIdentificationNumber"
               label={
                 t(
@@ -308,7 +308,7 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
               <Input
                 type="text"
                 size="large"
-                className="authing-g2-input"
+                className="genauth-g2-input"
                 autoComplete="off"
               />
             </Form.Item>

@@ -15,11 +15,11 @@ export const ActionButton: React.FC<TenantButtonProps> = ({
   const { t } = useTranslation()
   return (
     <div
-      className={classNames('authing-add-button', className)}
+      className={classNames('genauth-add-button', className)}
       onClick={onClick}
       style={style}
     >
-      <span className="authing-add-button-icon">
+      <span className="genauth-add-button-icon">
         <IconFont type={icon} />
       </span>
       {text}

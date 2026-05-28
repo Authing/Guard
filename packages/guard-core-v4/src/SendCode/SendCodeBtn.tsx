@@ -91,7 +91,7 @@ export const SendCodeBtn: React.FC<SendCodeProps> = props => {
     <Button
       {...buttonProps}
       className={`${
-        buttonProps.type ?? 'authing-g2-send-code-btn g2-loading-btn-center'
+        buttonProps.type ?? 'genauth-g2-send-code-btn g2-loading-btn-center'
       } ${resolvedLanguage === 'ja-JP' ? 'send-code-btn-jp' : ''}`}
       disabled={disabled}
       loading={loading}

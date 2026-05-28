@@ -269,7 +269,7 @@ export const LoginWithAD = (props: LoginWithADProps) => {
   }, [robotVerify, host])
 
   return (
-    <div className="authing-g2-login-ad">
+    <div className="genauth-g2-login-ad">
       <Form
         form={form}
         name="adLogin"
@@ -280,14 +280,14 @@ export const LoginWithAD = (props: LoginWithADProps) => {
         {publicConfig?.ssoPageComponentDisplay.userPasswordInput && (
           <>
             <Form.Item
-              className="authing-g2-input-form"
+              className="genauth-g2-input-form"
               name="account"
               validateTrigger={['onBlur', 'onChange']}
               rules={fieldRequiredRule(t('common.account'))}
             >
               <Input
                 autoFocus={autoFocus}
-                className="authing-g2-input"
+                className="genauth-g2-input"
                 autoComplete="off"
                 size="large"
                 placeholder={
@@ -305,13 +305,13 @@ export const LoginWithAD = (props: LoginWithADProps) => {
             </Form.Item>
             <Form.Item
               validateTrigger={['onBlur', 'onChange']}
-              className="authing-g2-input-form"
+              className="genauth-g2-input-form"
               name="password"
               rules={fieldRequiredRule(t('common.password'))}
             >
               <InputPassword
                 autoComplete="off"
-                className="authing-g2-input"
+                className="genauth-g2-input"
                 size="large"
                 placeholder={
                   publicConfig?.mergeAdAndAccountPasswordLogin
@@ -329,13 +329,13 @@ export const LoginWithAD = (props: LoginWithADProps) => {
             {/* 图形验证码 */}
             {showCaptcha && (
               <Form.Item
-                className="authing-g2-input-form"
+                className="genauth-g2-input-form"
                 validateTrigger={['onBlur', 'onChange']}
                 name="captchaCode"
                 rules={fieldRequiredRule(t('common.captchaCode'))}
               >
                 <GraphicVerifyCode
-                  className="authing-g2-input"
+                  className="genauth-g2-input"
                   size="large"
                   placeholder={t('login.inputCaptchaCode') as string}
                   verifyCodeUrl={verifyCodeUrl}
@@ -350,7 +350,7 @@ export const LoginWithAD = (props: LoginWithADProps) => {
                 showError={validated}
               />
             )}
-            <Form.Item className="authing-g2-sumbit-form">
+            <Form.Item className="genauth-g2-sumbit-form">
               <SubmitButton
                 // disabled={
                 //   !!agreements.find(

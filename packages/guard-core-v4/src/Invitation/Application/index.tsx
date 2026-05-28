@@ -119,24 +119,24 @@ export const GuardApplicationView = () => {
             onFinishFailed={() => submitButtonRef.current.onError()}
             autoComplete="off"
             form={form}
-            className="authing-g2-form-required-item-icon-after"
+            className="genauth-g2-form-required-item-icon-after"
             // onValuesChange={formValuesChange}
           >
             <Form.Item
               name="name"
               label={t('common.name')}
               rules={[{ required: true }]}
-              className="authing-g2-input-form"
+              className="genauth-g2-input-form"
             >
               <Input
                 type="text"
                 size="large"
-                className="authing-g2-input"
+                className="genauth-g2-input"
                 autoComplete="off"
               />
             </Form.Item>
             <CustomFormItem.Email
-              className="authing-g2-input-form"
+              className="genauth-g2-input-form"
               name="email"
               checkRepeat={true}
               label={i18n.t('common.email')}
@@ -145,7 +145,7 @@ export const GuardApplicationView = () => {
               required
             >
               <Input
-                className="authing-g2-input"
+                className="genauth-g2-input"
                 autoComplete="email"
                 size="large"
                 placeholder={t('login.inputEmail') as string}
@@ -153,13 +153,13 @@ export const GuardApplicationView = () => {
             </CustomFormItem.Email>
             <Form.Item
               validateTrigger={['onBlur', 'onChange']}
-              className="authing-g2-input-form"
+              className="genauth-g2-input-form"
               name="emailCode"
               key="internal email:code1432"
               rules={fieldRequiredRule(t('common.captchaCode'))}
             >
               <SendCodeByEmail
-                className="authing-g2-input g2-send-code-input"
+                className="genauth-g2-input g2-send-code-input"
                 autoComplete="one-time-code"
                 size="large"
                 placeholder={
@@ -182,7 +182,7 @@ export const GuardApplicationView = () => {
                 }}
               />
             </Form.Item>
-            <Form.Item className="authing-g2-sumbit-form">
+            <Form.Item className="genauth-g2-sumbit-form">
               <SubmitButton
                 text={t('common.applyJoin') as string}
                 className="password"

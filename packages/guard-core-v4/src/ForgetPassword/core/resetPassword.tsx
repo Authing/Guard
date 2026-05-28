@@ -201,7 +201,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
             <SendCodeByPhone
               {...props}
               isInternationSms={isInternationSms}
-              className="authing-g2-input g2-send-code-input"
+              className="genauth-g2-input g2-send-code-input"
               autoComplete="off"
               size="large"
               placeholder={t('login.resetPassword.inputFourVerifyCode', {
@@ -232,7 +232,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
           {codeMethod === 'email' && (
             <SendCodeByEmail
               {...props}
-              className="authing-g2-input g2-send-code-input"
+              className="genauth-g2-input g2-send-code-input"
               autoComplete="off"
               size="large"
               placeholder={t('login.resetPassword.inputFourVerifyCode', {
@@ -292,7 +292,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
   }, [smsCaptchaCheck, emailCaptchaCheck, config?.host])
 
   return (
-    <div className="authing-g2-login-phone-code">
+    <div className="genauth-g2-login-phone-code">
       <Form
         name="rePassword"
         form={form}
@@ -304,14 +304,14 @@ export const ResetPassword = (props: ResetPasswordProps) => {
       >
         <FormItemIdentify
           name="identify"
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           methods={identifyMethods}
           currentMethod={InputMethodMap[codeMethod]}
           checkExist={true}
         >
           <InputIdentify
             methods={identifyMethods}
-            className="authing-g2-input"
+            className="genauth-g2-input"
             autoComplete="off"
             autoFocus={autoFocus}
             size="large"
@@ -339,13 +339,13 @@ export const ResetPassword = (props: ResetPasswordProps) => {
         {((smsCaptchaCheck && codeMethod === 'phone') ||
           (codeMethod === 'email' && emailCaptchaCheck)) && (
           <Form.Item
-            className="authing-g2-input-form"
+            className="genauth-g2-input-form"
             validateTrigger={['onBlur', 'onChange']}
             name="captchaCode"
             rules={fieldRequiredRule(t('common.captchaCode'))}
           >
             <GraphicVerifyCode
-              className="authing-g2-input"
+              className="genauth-g2-input"
               size="large"
               placeholder={t('login.inputCaptchaCode') as string}
               verifyCodeUrl={verifyCodeUrl}
@@ -359,18 +359,18 @@ export const ResetPassword = (props: ResetPasswordProps) => {
 
         <Form.Item
           validateTrigger={['onBlur', 'onChange']}
-          className="authing-g2-input-form-sendCode"
+          className="genauth-g2-input-form-sendCode"
           name="code"
           rules={[...fieldRequiredRule(t('common.captchaCode'))]}
         >
           <SendCode />
         </Form.Item>
         {/* <CustomFormItem.Password
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           name="password"
         >
           <InputPassword
-            className="authing-g2-input"
+            className="genauth-g2-input"
             size="large"
             placeholder={t('user.inputNewPwd')}
             prefix={
@@ -383,7 +383,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
         </CustomFormItem.Password> */}
         {/* // 这个密码记得加上 */}
         {/* {getPassWordUnsafeText()} */}
-        <Form.Item className="authing-g2-sumbit-form submit-form">
+        <Form.Item className="genauth-g2-sumbit-form submit-form">
           <SubmitButton
             className="validater-account-btn"
             text={t('login.resetPassword.nextStep') as string}

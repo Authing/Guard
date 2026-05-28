@@ -90,7 +90,7 @@ import { GuardResetPassword } from '../../ChangePassword/core/resetPassword'
 import { GuardRegisterAccountTypeView } from '../../Register/components/AccountType'
 const { useEffect, useMemo } = React
 
-const PREFIX_CLS = 'authing-ant'
+const PREFIX_CLS = 'genauth-ant'
 
 message.config({
   prefixCls: `${PREFIX_CLS}-message`
@@ -336,7 +336,7 @@ export const RenderModule: React.FC<{
     >
       {defaultMergedConfig.mode === GuardMode.Modal ? (
         <Modal
-          className="authing-g2-render-module-modal"
+          className="genauth-g2-render-module-modal"
           closeIcon={
             <IconFont type="authing-close-line" className="g2-modal-close" />
           }
@@ -347,15 +347,15 @@ export const RenderModule: React.FC<{
           maskClosable={false} // 点击蒙层，是否允许关闭
           getContainer={defaultMergedConfig.target ?? false}
         >
-          <div className="authing-g2-render-module">{renderGuardContent}</div>
+          <div className="genauth-g2-render-module">{renderGuardContent}</div>
         </Modal>
       ) : (
         <div
           style={defaultMergedConfig.style}
-          className={`authing-g2-render-module ${
+          className={`genauth-g2-render-module ${
             defaultMergedConfig.__internalRequest__
               ? ''
-              : 'authing-g2-render-module-normal'
+              : 'genauth-g2-render-module-normal'
           }`}
         >
           {renderGuardContent}

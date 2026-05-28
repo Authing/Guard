@@ -33,7 +33,7 @@ export const GuardFace = (props: GuardFaceProps) => {
       <div className="title-description">{description}</div>
       {tags?.map?.((tag, i) => (
         // @ts-ignore
-        <Tag key={i} className="authing-header-tag" {...tag} />
+        <Tag key={i} className="genauth-header-tag" {...tag} />
       ))}
     </div>
   )

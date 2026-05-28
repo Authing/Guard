@@ -69,7 +69,7 @@ export const ResetAccountName: React.FC = () => {
       >
         <CustomFormItem.UserName>
           <Input
-            className="authing-g2-input"
+            className="genauth-g2-input"
             size="large"
             prefix={
               <IconFont
@@ -80,7 +80,7 @@ export const ResetAccountName: React.FC = () => {
             placeholder={i18n.t('login.inputUsername') as string}
           />
         </CustomFormItem.UserName>
-        <Form.Item className="authing-g2-sumbit-form">
+        <Form.Item className="genauth-g2-sumbit-form">
           <SubmitButton
             text={i18n.t('common.sure') as string}
             className="password"

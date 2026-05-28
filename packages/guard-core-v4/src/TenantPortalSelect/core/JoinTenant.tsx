@@ -123,7 +123,7 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
                 style={{ color: '#6B7280' }}
               />
             ),
-            inputClassName: 'authing-g2-input'
+            inputClassName: 'genauth-g2-input'
           }
         ],
         onNext: () => {
@@ -149,7 +149,7 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
             ],
             addonAfter: `@${tenantInfo?.enterpriseDomains?.[0]}`,
             inputClassName:
-              'authing-g2-input-group authing-g2-input-group-email'
+              'genauth-g2-input-group genauth-g2-input-group-email'
           }
         ],
         onNext: () => {
@@ -171,10 +171,10 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
           {
             type: 'custom',
             customComponent: (
-              <div className="authing-warning-tips">
+              <div className="genauth-warning-tips">
                 <IconFont
                   type="authing-information-fill"
-                  className="authing-warning-tips-icon"
+                  className="genauth-warning-tips-icon"
                 />
                 <span>{t('common.domainNotFound')}</span>
               </div>
@@ -261,8 +261,8 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
     <div className="g2-view-container g2-view-join">
       {renderBack}
       <div className="g2-join-content">
-        <p className="authing-g2-join-title">{currStep?.title}</p>
-        <p className="authing-g2-join-description">{currStep?.description}</p>
+        <p className="genauth-g2-join-title">{currStep?.title}</p>
+        <p className="genauth-g2-join-description">{currStep?.description}</p>
         <Form
           form={form}
           onFinish={currStep?.onNext}
@@ -271,7 +271,7 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
         >
           {currStep?.formFields?.map?.((formItem: any) => (
             <Form.Item
-              className="authing-g2-input-form"
+              className="genauth-g2-input-form"
               name={formItem?.name}
               rules={formItem?.rules}
               noStyle={formItem?.noStyle}
@@ -283,7 +283,7 @@ export const JoinTenantView: React.FC<JoinTenantProps> = ({ onBack }) => {
             <SubmitButton
               text={t('common.sure') as string}
               ref={submitButtonRef}
-              className="authing-g2-join-button"
+              className="genauth-g2-join-button"
             />
           )}
         </Form>

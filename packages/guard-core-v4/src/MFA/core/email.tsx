@@ -62,8 +62,8 @@ export const BindMFAEmail: React.FC<BindMFAEmailProps> = ({
   }
   return (
     <>
-      <p className="authing-g2-mfa-title">{t('common.mfaCertification')}</p>
-      <p className="authing-g2-mfa-tips">{t('common.bindEmailDoc')}</p>
+      <p className="genauth-g2-mfa-title">{t('common.mfaCertification')}</p>
+      <p className="genauth-g2-mfa-tips">{t('common.bindEmailDoc')}</p>
       <Form
         form={form}
         onSubmitCapture={() => submitButtonRef.current.onSpin(true)}
@@ -71,14 +71,14 @@ export const BindMFAEmail: React.FC<BindMFAEmailProps> = ({
         onFinishFailed={() => submitButtonRef.current.onError()}
       >
         <CustomFormItem.Email
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           name="email"
           form={form}
           // checkRepeat={true}
           required={true}
         >
           <Input
-            className="authing-g2-input"
+            className="genauth-g2-input"
             autoComplete="off"
             size="large"
             placeholder={t('login.inputEmail') as string}
@@ -191,8 +191,8 @@ export const VerifyMFAEmail: React.FC<VerifyMFAEmailProps> = ({
 
   return (
     <>
-      <p className="authing-g2-mfa-title">{t('common.mfaCertification')}</p>
-      <p className="authing-g2-mfa-tips">
+      <p className="genauth-g2-mfa-title">{t('common.mfaCertification')}</p>
+      <p className="genauth-g2-mfa-tips">
         {sent
           ? `${t('login.verifyCodeSended')} ${mailDesensitization(email)}`
           : t('common.emailMfaCheck')}

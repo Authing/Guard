@@ -78,7 +78,7 @@ module.exports = function webpackConfigFn({ reactVersion = '16' }) {
                   modifyVars: {
                     '@primary-color': '#215AE5',
                     '@link-color': '#215AE5',
-                    '@ant-prefix': 'authing-ant'
+                    '@ant-prefix': 'genauth-ant'
                   }
                 }
               }

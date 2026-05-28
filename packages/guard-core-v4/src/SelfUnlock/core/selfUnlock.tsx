@@ -155,7 +155,7 @@ export const SelfUnlock = ({
             <SendCodeByPhone
               {...props}
               isInternationSms={isInternationSms}
-              className="authing-g2-input g2-send-code-input"
+              className="genauth-g2-input g2-send-code-input"
               autoComplete="off"
               size="large"
               placeholder={t('common.inputFourVerifyCode', {
@@ -178,7 +178,7 @@ export const SelfUnlock = ({
           {codeMethod === 'email' && (
             <SendCodeByEmail
               {...props}
-              className="authing-g2-input g2-send-code-input"
+              className="genauth-g2-input g2-send-code-input"
               autoComplete="off"
               size="large"
               placeholder={t('common.inputFourVerifyCode', {
@@ -206,7 +206,7 @@ export const SelfUnlock = ({
   )
 
   return (
-    <div className="authing-g2-login-phone-code">
+    <div className="genauth-g2-login-phone-code">
       <Form
         name="resetPassword"
         form={form}
@@ -218,13 +218,13 @@ export const SelfUnlock = ({
       >
         <FormItemIdentify
           name="identify"
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           methods={['email-code', 'phone-code']}
           currentMethod={InputMethodMap[codeMethod]}
         >
           <InputIdentify
             methods={['email-code', 'phone-code']}
-            className="authing-g2-input"
+            className="genauth-g2-input"
             autoComplete="off"
             autoFocus={autoFocus}
             size="large"
@@ -249,7 +249,7 @@ export const SelfUnlock = ({
 
         <Form.Item
           validateTrigger={['onBlur', 'onChange']}
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           name="code"
           rules={[...fieldRequiredRule(t('common.captchaCode'))]}
         >
@@ -258,12 +258,12 @@ export const SelfUnlock = ({
         {selfUnlockStrategy === 'password-captcha' && (
           <Form.Item
             validateTrigger={['onBlur', 'onChange']}
-            className="authing-g2-input-form"
+            className="genauth-g2-input-form"
             name="password"
             rules={[...fieldRequiredRule(t('common.password'))]}
           >
             <InputPassword
-              className="authing-g2-input"
+              className="genauth-g2-input"
               size="large"
               placeholder={t('user.inputOldPwd')}
               prefix={
@@ -275,7 +275,7 @@ export const SelfUnlock = ({
             />
           </Form.Item>
         )}
-        <Form.Item className="authing-g2-sumbit-form submit-form">
+        <Form.Item className="genauth-g2-sumbit-form submit-form">
           <SubmitButton
             className="forget-password"
             text={t('common.unlock') as string}

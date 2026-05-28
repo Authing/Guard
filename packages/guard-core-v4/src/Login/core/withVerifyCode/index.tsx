@@ -167,7 +167,7 @@ const LoginWithVerifyCode = (props: any) => {
             {...props}
             form={form}
             fieldName="identify"
-            className="authing-g2-input g2-send-code-input"
+            className="genauth-g2-input g2-send-code-input"
             autoComplete="off"
             size="large"
             placeholder={t('common.inputFourVerifyCode', {
@@ -203,7 +203,7 @@ const LoginWithVerifyCode = (props: any) => {
             <SendCodeByPhone
               {...props}
               isInternationSms={isInternationSms}
-              className="authing-g2-input g2-send-code-input"
+              className="genauth-g2-input g2-send-code-input"
               autoComplete="off"
               size="large"
               placeholder={t('common.inputFourVerifyCode', {
@@ -237,7 +237,7 @@ const LoginWithVerifyCode = (props: any) => {
           {currentMethod === InputMethod.EmailCode && (
             <SendCodeByEmail
               {...props}
-              className="authing-g2-input g2-send-code-input"
+              className="genauth-g2-input g2-send-code-input"
               autoComplete="off"
               size="large"
               placeholder={t('common.inputFourVerifyCode', {
@@ -487,7 +487,7 @@ const LoginWithVerifyCode = (props: any) => {
       return (
         <InputInternationPhone
           {...props}
-          className="authing-g2-input"
+          className="genauth-g2-input"
           size="large"
           areaCode={areaCode}
           onAreaCodeChange={(value: string) => {
@@ -518,7 +518,7 @@ const LoginWithVerifyCode = (props: any) => {
   const phone = getPhoneInLoginPageContext()
 
   return (
-    <div className="authing-g2-login-phone-code">
+    <div className="genauth-g2-login-phone-code">
       <Form
         name="phoneCode"
         form={form}
@@ -538,8 +538,8 @@ const LoginWithVerifyCode = (props: any) => {
           name="identify"
           className={
             isOnlyInternationSms
-              ? 'authing-g2-input-form remove-padding'
-              : 'authing-g2-input-form'
+              ? 'genauth-g2-input-form remove-padding'
+              : 'genauth-g2-input-form'
           }
           methods={methods}
           checkExist={!autoRegister}
@@ -550,7 +550,7 @@ const LoginWithVerifyCode = (props: any) => {
             <AreaCodePhoneAccount autoFocus={autoFocus} />
           ) : (
             <InputIdentify
-              className="authing-g2-input"
+              className="genauth-g2-input"
               size="large"
               autoFocus={autoFocus}
               value={identify}
@@ -577,13 +577,13 @@ const LoginWithVerifyCode = (props: any) => {
         {((smsCaptchaCheck && currentMethod === InputMethod.PhoneCode) ||
           (emailCaptchaCheck && currentMethod === InputMethod.EmailCode)) && (
           <Form.Item
-            className="authing-g2-input-form"
+            className="genauth-g2-input-form"
             validateTrigger={['onBlur', 'onChange']}
             name="captchaCode"
             rules={fieldRequiredRule(t('common.captchaCode'))}
           >
             <GraphicVerifyCode
-              className="authing-g2-input"
+              className="genauth-g2-input"
               size="large"
               placeholder={t('login.inputCaptchaCode') as string}
               verifyCodeUrl={verifyCodeUrl}
@@ -593,7 +593,7 @@ const LoginWithVerifyCode = (props: any) => {
         )}
         <Form.Item
           validateTrigger={['onBlur', 'onChange']}
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           name="code"
           rules={[...fieldRequiredRule(t('common.captchaCode'))]}
         >
@@ -609,7 +609,7 @@ const LoginWithVerifyCode = (props: any) => {
             showError={validated}
           />
         )}
-        <Form.Item className="authing-g2-sumbit-form">
+        <Form.Item className="genauth-g2-sumbit-form">
           <SubmitButton
             text={submitText}
             className="password"

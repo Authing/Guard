@@ -295,7 +295,7 @@ export const MoreIdpButton = (props: {
                 prefix={<IconFont type="authing-search-line" />}
                 addonAfter={false}
                 addonBefore={false}
-                className="g2-guard-search-input authing-g2-input"
+                className="g2-guard-search-input genauth-g2-input"
                 placeholder="搜索"
                 onChange={e => handleSearch(e.target.value)}
               />

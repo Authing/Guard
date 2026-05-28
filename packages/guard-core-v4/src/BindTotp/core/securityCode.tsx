@@ -99,9 +99,9 @@ export const SecurityCode: React.FC<SecurityCodeProps> = ({
 
   return (
     <>
-      <p className="authing-g2-mfa-title">{t('user.mfaBind')}</p>
+      <p className="genauth-g2-mfa-title">{t('user.mfaBind')}</p>
       <p
-        className="authing-g2-mfa-tips"
+        className="genauth-g2-mfa-tips"
         style={{
           textAlign: 'left'
         }}

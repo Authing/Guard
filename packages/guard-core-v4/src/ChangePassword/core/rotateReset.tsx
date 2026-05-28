@@ -111,7 +111,7 @@ export const RotateReset = (props: RotateResetProps) => {
   }
 
   return (
-    <div className="authing-g2-login-phone-code">
+    <div className="genauth-g2-login-phone-code">
       <Form
         name="resetPassword"
         form={form}
@@ -123,13 +123,13 @@ export const RotateReset = (props: RotateResetProps) => {
       >
         <Form.Item
           validateTrigger={['onBlur', 'onChange']}
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           name="oldPassword"
           rules={[...fieldRequiredRule(t('common.password'))]}
         >
           <InputPassword
             autoFocus={autoFocus}
-            className="authing-g2-input"
+            className="genauth-g2-input"
             size="large"
             placeholder={t('user.inputCurrPwd')}
             prefix={
@@ -141,11 +141,11 @@ export const RotateReset = (props: RotateResetProps) => {
           />
         </Form.Item>
         <CustomFormItem.Password
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           name="password"
         >
           <InputPassword
-            className="authing-g2-input"
+            className="genauth-g2-input"
             size="large"
             placeholder={t('login.inputNewPwd')}
             prefix={
@@ -157,7 +157,7 @@ export const RotateReset = (props: RotateResetProps) => {
           />
         </CustomFormItem.Password>
         <CustomFormItem.Password
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           name="password2"
           rules={[
             {
@@ -175,7 +175,7 @@ export const RotateReset = (props: RotateResetProps) => {
           ]}
         >
           <InputPassword
-            className="authing-g2-input"
+            className="genauth-g2-input"
             size="large"
             placeholder={t('login.inputPwdAgain')}
             prefix={
@@ -187,7 +187,7 @@ export const RotateReset = (props: RotateResetProps) => {
           />
         </CustomFormItem.Password>
         {getPassWordUnsafeText()}
-        <Form.Item className="authing-g2-sumbit-form submit-form">
+        <Form.Item className="genauth-g2-sumbit-form submit-form">
           <SubmitButton
             className="forget-password"
             text={t('common.confirm') as string}

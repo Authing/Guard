@@ -112,7 +112,7 @@ export const GuardIdentityBindingAskView: React.FC = () => {
             {t('common.identityBindingCreate')}
           </GuardButton>
           <GuardButton
-            className=" g2-view-identity-binding-ask-content-button g2-view-identity-binding-ask-content-button-binding authing-g2-submit-button"
+            className=" g2-view-identity-binding-ask-content-button g2-view-identity-binding-ask-content-button-binding genauth-g2-submit-button"
             onClick={bindingAccount}
             type="primary"
           >

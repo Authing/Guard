@@ -55,8 +55,8 @@ export const BindSuccess: React.FC<BindSuccessProps> = ({ secret, onBind }) => {
 
   return (
     <>
-      <p className="authing-g2-mfa-title">{t('common.totpText1')}</p>
-      <p className="authing-g2-mfa-tips">{t('common.totpText2')}</p>
+      <p className="genauth-g2-mfa-title">{t('common.totpText1')}</p>
+      <p className="genauth-g2-mfa-tips">{t('common.totpText2')}</p>
 
       <div className="g2-mfa-bindTotp-copySecret">
         <Paragraph copyable>{secret}</Paragraph>
@@ -69,7 +69,7 @@ export const BindSuccess: React.FC<BindSuccessProps> = ({ secret, onBind }) => {
         onFinishFailed={() => submitButtonRef.current?.onError()}
       >
         <Form.Item
-          className="authing-g2-input-form g2-mfa-totp-verify-input"
+          className="genauth-g2-input-form g2-mfa-totp-verify-input"
           name="remember"
           rules={[
             {

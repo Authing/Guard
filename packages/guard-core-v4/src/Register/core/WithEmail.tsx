@@ -299,7 +299,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
         return (
           <InputInternationPhone
             {...props}
-            className="authing-g2-input"
+            className="genauth-g2-input"
             size="large"
             areaCode={areaCode}
             onAreaCodeChange={(value: string) => {
@@ -313,7 +313,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
         return (
           <InputNumber
             {...props}
-            className="authing-g2-input"
+            className="genauth-g2-input"
             size="large"
             placeholder={t('login.inputPhone')}
             prefix={
@@ -339,7 +339,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
             isInternationSms={isInternationSms}
             form={form}
             fieldName="account"
-            className="authing-g2-input g2-send-code-input"
+            className="genauth-g2-input g2-send-code-input"
             autoComplete="off"
             size="large"
             placeholder={t('common.inputFourVerifyCode', {
@@ -373,7 +373,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
             {...props}
             form={form}
             fieldName="account"
-            className="authing-g2-input g2-send-code-input"
+            className="genauth-g2-input g2-send-code-input"
             autoComplete="off"
             size="large"
             placeholder={t('common.inputFourVerifyCode', {
@@ -430,8 +430,8 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
             name="account"
             className={
               publicConfig?.internationalSmsConfig?.enabled
-                ? 'authing-g2-input-form remove-padding'
-                : 'authing-g2-input-form'
+                ? 'genauth-g2-input-form remove-padding'
+                : 'genauth-g2-input-form'
             }
             // validateFirst={true} // 会多次触发 find 接口
             form={form}
@@ -446,13 +446,13 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
               {/* 图形验证码 短信安全 */}
               {smsCaptchaCheck && (
                 <Form.Item
-                  className="authing-g2-input-form"
+                  className="genauth-g2-input-form"
                   validateTrigger={['onBlur', 'onChange']}
                   name="captchaCode"
                   rules={fieldRequiredRule(t('common.captchaCode'))}
                 >
                   <GraphicVerifyCode
-                    className="authing-g2-input"
+                    className="genauth-g2-input"
                     size="large"
                     placeholder={t('login.inputCaptchaCode') as string}
                     verifyCodeUrl={verifyCodeUrl}
@@ -467,7 +467,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
                 name="code"
                 validateTrigger={['onBlur', 'onChange']}
                 rules={fieldRequiredRule(t('common.captchaCode'))}
-                className="authing-g2-input-form"
+                className="genauth-g2-input-form"
               >
                 <SendCode />
               </Form.Item>
@@ -482,7 +482,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
           method={method?.split('-')[0]}
           key={method}
           name="account"
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           validateFirst={true}
           form={form}
           checkRepeat={true}
@@ -491,7 +491,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
           <Input
             maxLength={50}
             autoFocus={autoFocus}
-            className="authing-g2-input"
+            className="genauth-g2-input"
             autoComplete="off"
             size="large"
             placeholder={
@@ -512,13 +512,13 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
             {/* 图形验证码 邮件安全 */}
             {emailCaptchaCheck && (
               <Form.Item
-                className="authing-g2-input-form"
+                className="genauth-g2-input-form"
                 validateTrigger={['onBlur', 'onChange']}
                 name="captchaCode"
                 rules={fieldRequiredRule(t('common.captchaCode'))}
               >
                 <GraphicVerifyCode
-                  className="authing-g2-input"
+                  className="genauth-g2-input"
                   size="large"
                   placeholder={t('login.inputCaptchaCode') as string}
                   verifyCodeUrl={verifyCodeUrl}
@@ -533,10 +533,10 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
               name="code"
               validateTrigger={['onBlur', 'onChange']}
               rules={fieldRequiredRule(t('common.captchaCode'))}
-              className="authing-g2-input-form"
+              className="genauth-g2-input-form"
             >
               <SendCodeByEmail
-                className="authing-g2-input g2-send-code-input"
+                className="genauth-g2-input g2-send-code-input"
                 autoComplete="off"
                 size="large"
                 placeholder={
@@ -592,7 +592,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
   }
 
   return (
-    <div className="authing-g2-register-email">
+    <div className="genauth-g2-register-email">
       <Form
         form={form}
         name="emailRegister"
@@ -613,7 +613,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
           <CustomFormItem.Email
             key="email"
             name="email"
-            className="authing-g2-input-form"
+            className="genauth-g2-input-form"
             validateFirst={true}
             form={form}
             checkRepeat={true}
@@ -621,7 +621,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
           >
             <Input
               autoFocus={autoFocus}
-              className="authing-g2-input"
+              className="genauth-g2-input"
               autoComplete="off"
               size="large"
               placeholder={t('login.inputEmail') as string}
@@ -639,11 +639,11 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
         <CustomFormItem.Password
           key="password"
           name="password"
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           validateFirst={true}
         >
           <InputPassword
-            className="authing-g2-input"
+            className="genauth-g2-input"
             size="large"
             placeholder={t('login.inputPwd')}
             prefix={
@@ -670,11 +670,11 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
               }
             }
           ]}
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           validateFirst={true}
         >
           <InputPassword
-            className="authing-g2-input"
+            className="genauth-g2-input"
             size="large"
             placeholder={t('common.passwordAgain')}
             // prefix={<LockOutlined style={{ color: '#6B7280' }} />}
@@ -694,7 +694,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
           />
         )}
         {getPassWordUnsafeText()}
-        <Form.Item className="authing-g2-sumbit-form">
+        <Form.Item className="genauth-g2-sumbit-form">
           <SubmitButton
             // disabled={
             //   !!agreements.find((item) => item.required && !acceptedAgreements)

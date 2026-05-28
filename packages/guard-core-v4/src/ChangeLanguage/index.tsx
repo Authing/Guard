@@ -108,7 +108,7 @@ export const ChangeLanguage = (props: {
         menu={menuProps}
         trigger={['click']}
         placement="bottom"
-        overlayClassName="authing-g2-change-language-menu"
+        overlayClassName="genauth-g2-change-language-menu"
       >
         <span className={languageTextClassName}>
           {currentLngText}

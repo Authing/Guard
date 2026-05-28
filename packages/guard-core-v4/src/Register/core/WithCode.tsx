@@ -576,7 +576,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             {...props}
             form={form}
             fieldName="identify"
-            className="authing-g2-input g2-send-code-input"
+            className="genauth-g2-input g2-send-code-input"
             autoComplete="off"
             size="large"
             placeholder={t('common.inputFourVerifyCode', {
@@ -612,7 +612,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             <SendCodeByPhone
               {...props}
               isInternationSms={isInternationSms}
-              className="authing-g2-input g2-send-code-input"
+              className="genauth-g2-input g2-send-code-input"
               autoComplete="off"
               size="large"
               placeholder={t('common.inputFourVerifyCode', {
@@ -644,7 +644,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
           {currentMethod === InputMethod.EmailCode && (
             <SendCodeByEmail
               {...props}
-              className="authing-g2-input g2-send-code-input"
+              className="genauth-g2-input g2-send-code-input"
               autoComplete="off"
               size="large"
               placeholder={t('common.inputFourVerifyCode', {
@@ -694,7 +694,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
       return (
         <InputInternationPhone
           {...props}
-          className="authing-g2-input"
+          className="genauth-g2-input"
           size="large"
           areaCode={areaCode}
           onAreaCodeChange={(value: string) => {
@@ -717,7 +717,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
   }
 
   return (
-    <div className="authing-g2-register-email">
+    <div className="genauth-g2-register-email">
       <Form
         form={form}
         name="emailRegister"
@@ -730,8 +730,8 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
           name="identify"
           className={
             isOnlyInternationSms
-              ? 'authing-g2-input-form remove-padding'
-              : 'authing-g2-input-form'
+              ? 'genauth-g2-input-form remove-padding'
+              : 'genauth-g2-input-form'
           }
           methods={methods}
           currentMethod={currentMethod}
@@ -743,7 +743,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             <AreaCodePhoneAccount autoFocus={autoFocus} />
           ) : (
             <InputIdentify
-              className="authing-g2-input"
+              className="genauth-g2-input"
               size="large"
               autoFocus={autoFocus}
               value={identify}
@@ -772,13 +772,13 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
         {((smsCaptchaCheck && currentMethod === InputMethod.PhoneCode) ||
           (emailCaptchaCheck && currentMethod === InputMethod.EmailCode)) && (
           <Form.Item
-            className="authing-g2-input-form"
+            className="genauth-g2-input-form"
             validateTrigger={['onBlur', 'onChange']}
             name="captchaCode"
             rules={fieldRequiredRule(t('common.captchaCode'))}
           >
             <GraphicVerifyCode
-              className="authing-g2-input"
+              className="genauth-g2-input"
               size="large"
               placeholder={t('login.inputCaptchaCode') as string}
               verifyCodeUrl={verifyCodeUrl}
@@ -795,7 +795,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
           name="code"
           validateTrigger={['onBlur', 'onChange']}
           rules={fieldRequiredRule(t('common.captchaCode'))}
-          className="authing-g2-input-form"
+          className="genauth-g2-input-form"
           validateFirst={true}
         >
           <SendCode />
@@ -807,7 +807,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
             showError={validated}
           />
         )}
-        <Form.Item className="authing-g2-sumbit-form">
+        <Form.Item className="genauth-g2-sumbit-form">
           <SubmitButton
             // disabled={
             //   !!agreements.find((item) => item.required && !acceptedAgreements)

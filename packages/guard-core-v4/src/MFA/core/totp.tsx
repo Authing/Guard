@@ -40,8 +40,8 @@ export const BindMFATotp: React.FC<BindMFATotpProps> = ({
   const next = () => changeModule(GuardModuleType.BIND_TOTP, initData)
   return (
     <>
-      <p className="authing-g2-mfa-title">{t('common.mfaCertification')}</p>
-      <p className="authing-g2-mfa-tips">{t('common.otpText1')}</p>
+      <p className="genauth-g2-mfa-title">{t('common.mfaCertification')}</p>
+      <p className="genauth-g2-mfa-tips">{t('common.otpText1')}</p>
 
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <IconFont type="authing-otp" style={{ width: 247, height: 131 }} />
@@ -103,8 +103,8 @@ export const VerifyMFATotp: React.FC<VerifyMFATotpProps> = ({
 
   return (
     <>
-      <p className="authing-g2-mfa-title">{t('common.mfaCertification')}</p>
-      <p className="authing-g2-mfa-tips">{t('login.inputSixCode')}</p>
+      <p className="genauth-g2-mfa-title">{t('common.mfaCertification')}</p>
+      <p className="genauth-g2-mfa-tips">{t('login.inputSixCode')}</p>
       <Form
         form={form}
         onSubmitCapture={() => {}}
@@ -121,7 +121,7 @@ export const VerifyMFATotp: React.FC<VerifyMFATotpProps> = ({
         </VerifyCodeFormItem>
 
         <SubmitButton text={t('common.sure') as string} ref={submitButtonRef} />
-        <p className="authing-g2-mfa-totp-recoveryCode">
+        <p className="genauth-g2-mfa-totp-recoveryCode">
           {t('common.hasLooseSaftyCode')}
           <GuardButton
             type="link"
