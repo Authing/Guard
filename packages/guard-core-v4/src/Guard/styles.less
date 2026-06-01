@@ -25,11 +25,14 @@
   --guard-border: #D1D1D6;
   --guard-border-strong: #D1D1D6;
   --guard-radius-tag: 2px;
-  --guard-radius-control: 2px;
+  --guard-radius-button: 10px;
+  --guard-radius-input: 10px;
+  --guard-radius-dropdown: 6px;
+  --guard-radius-control: var(--guard-radius-input);
   --guard-radius-surface: 6px;
   --guard-radius-selectable: 8px;
   --guard-radius-sm: var(--guard-radius-tag);
-  --guard-radius-md: var(--guard-radius-control);
+  --guard-radius-md: var(--guard-radius-dropdown);
   --guard-radius-lg: var(--guard-radius-surface);
   --guard-radius-xl: 4px;
   --guard-focus-ring: rgba(47, 84, 235, 0.16);
@@ -249,7 +252,7 @@
     }
     box-shadow: none;
     width: calc(100% - 4px);
-    border-radius: var(--guard-radius-control);
+    border-radius: var(--guard-radius-button);
     height: 42px;
     margin: 0 2px;
     &.shaking {
@@ -282,7 +285,7 @@
 
 .genauth-g2-button-group {
   background: #EBEBED;
-  border-radius: var(--guard-radius-control);
+  border-radius: var(--guard-radius-button);
   padding: 4px 2px;
   margin-bottom: 16px;
   width: fit-content;
@@ -330,7 +333,7 @@
   // }
 }
 .genauth-g2-dropdown {
-  border-radius: var(--guard-radius-control);
+  border-radius: var(--guard-radius-dropdown);
   padding: 6px;
   border: 1px solid #D1D1D6;
 
@@ -355,7 +358,7 @@
       background: #EBEBED;
     }
     border: 1px solid #F5F5F7;
-    border-radius: var(--guard-radius-control);
+    border-radius: var(--guard-radius-input);
     .genauth-ant-select-selector {
       outline: 0;
       border-color: #F5F5F7;
@@ -380,7 +383,7 @@
   .genauth-ant-form-item-control-input-content {
     .genauth-g2-textarea {
       background: #F5F5F7;
-      border-radius: var(--guard-radius-control);
+      border-radius: var(--guard-radius-input);
       border: 1px solid #F5F5F7;
       transition:
         all 0.3s linear,
@@ -479,7 +482,7 @@
 .genauth-g2-input {
   border: 1px solid #F5F5F7;
   // height: 46px;
-  border-radius: var(--guard-radius-control);
+  border-radius: var(--guard-radius-input);
   background: #F5F5F7;
 
   &:hover {
@@ -537,7 +540,7 @@
     .genauth-ant-input-group {
       .genauth-ant-input,
       .genauth-ant-input-group-addon {
-        border-radius: var(--guard-radius-control);
+        border-radius: var(--guard-radius-input);
         height: 46px;
       }
     }
@@ -572,7 +575,7 @@
 
   .g2-captcha-code-image {
     min-width: 100px;
-    border-radius: var(--guard-radius-control);
+    border-radius: var(--guard-radius-input);
     border: 1px solid #D1D1D6;
   }
 }
@@ -755,7 +758,7 @@
   }
   .genauth-ant-modal-close {
     left: 0;
-    border-radius: var(--guard-radius-control);
+    border-radius: var(--guard-radius-button);
     transform: scale(0.5);
     color: #D1D1D6;
     transition: 0.2s all;
@@ -986,10 +989,10 @@ input {
       font-size: 14px;
       height: 48px;
     }
-    border-radius: var(--guard-radius-control);
+    border-radius: var(--guard-radius-input);
     &:focus {
       border: 1px solid #2F54EB !important;
-      border-radius: var(--guard-radius-control);
+      border-radius: var(--guard-radius-input);
       border-color: #2F54EB;
       background: #fff;
     }
@@ -1011,7 +1014,7 @@ input {
     line-height: 18px;
     color: #1C1C1E;
     border: 1px solid #D1D1D6;
-    border-radius: var(--guard-radius-control);
+    border-radius: var(--guard-radius-button);
     height: 46px;
     @media only screen and (max-width: 450px) {
       height: 48px;
@@ -1225,7 +1228,7 @@ input {
       height: 48px;
     }
     background: #2F54EB;
-    border-radius: var(--guard-radius-control);
+    border-radius: var(--guard-radius-button);
     margin-bottom: 16px;
   }
   .success-page-timer-tip {
@@ -1299,7 +1302,7 @@ input {
   height: 42px;
   background: var(--guard-primary);
   border-color: var(--guard-primary);
-  border-radius: var(--guard-radius-control);
+  border-radius: var(--guard-radius-button);
   box-shadow: none;
   color: var(--guard-text-inverse);
   cursor: pointer;
@@ -1351,7 +1354,7 @@ input {
   font-family: var(--guard-font-family);
   font-size: 14px;
   color: var(--guard-text-primary);
-  border-radius: var(--guard-radius-control);
+  border-radius: var(--guard-radius-input);
 }
 
 .g2-view-container .genauth-g2-input,
