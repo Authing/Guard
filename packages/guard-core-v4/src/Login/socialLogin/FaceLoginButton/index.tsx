@@ -248,10 +248,7 @@ export const FaceLoginButton = (props: FaceLoginButtonProps) => {
           livenessTicket: resultData.livenessToken || livenessTicket
         })
         setBindModalVisible(true)
-        setFeedback({
-          status: 'error',
-          message: t('login.faceLoginNeedBind')
-        })
+        setFeedback(undefined)
         return false
       }
 
