@@ -79,6 +79,7 @@ const { useCallback, useEffect, useRef, useState } = React
 const FACE_LOGIN_TYPE = '1'
 const FACE_LOGIN_NEED_BIND_STATUS_CODE = 301
 const FACE_LOGIN_NEED_BIND_API_CODE = 1646
+const FACE_BIND_SMS_SCENE = 'SCENE_TYPE_IDENTITY_VERIFICATION' as SceneType
 
 const isFaceLoginEnabled = (publicConfig: FaceLoginPublicConfig) =>
   Boolean(publicConfig?.enableFaceLogin || publicConfig?.enable_face_login)
@@ -370,7 +371,7 @@ export const FaceLoginButton = (props: FaceLoginButtonProps) => {
       const sendRes = await post('/api/v2/sms/send', {
         phone,
         phoneCountryCode: '+86',
-        scene: SceneType.SCENE_TYPE_IDENTITY_VERIFICATION
+        scene: FACE_BIND_SMS_SCENE
       })
 
       if (!isSuccessResponse(sendRes)) {
