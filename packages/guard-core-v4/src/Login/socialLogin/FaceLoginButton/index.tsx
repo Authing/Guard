@@ -1,5 +1,7 @@
+import { Button, Form, Input, Modal, message } from 'shim-antd'
 import { React } from 'shim-react'
 import { useTranslation } from 'react-i18next'
+import { SceneType } from 'authing-js-sdk'
 import { useGuardAuthClient } from '../../../Guard/authClient'
 import { useDeviceId } from '../../../Guard/core/hooks/useDeviceId'
 import { getGuardWindow } from '../../../Guard/core/useAppendConfig'
@@ -22,6 +24,7 @@ interface FaceLoginButtonProps {
 interface FaceLoginPublicConfig {
   enableFaceLogin?: boolean
   enable_face_login?: boolean
+  userPoolId?: string
 }
 
 interface FaceLivenessInitData {
@@ -43,6 +46,7 @@ interface FaceLivenessResultData {
   success?: boolean
   passed?: boolean
   livenessToken?: string
+  livenessTicket?: string
   faceImageBase64?: string
   msg?: string
   message?: string
@@ -59,6 +63,12 @@ interface FaceSignInData {
   msg?: string
 }
 
+interface FaceBindSmsData {
+  bindTicket?: string
+  expiresIn?: number
+  userId?: string
+}
+
 interface FaceLoginFeedback {
   status: 'success' | 'error'
   message: string
@@ -67,6 +77,8 @@ interface FaceLoginFeedback {
 const { useCallback, useEffect, useRef, useState } = React
 
 const FACE_LOGIN_TYPE = '1'
+const FACE_LOGIN_NEED_BIND_STATUS_CODE = 301
+const FACE_LOGIN_NEED_BIND_API_CODE = 1646
 
 const isFaceLoginEnabled = (publicConfig: FaceLoginPublicConfig) =>
   Boolean(publicConfig?.enableFaceLogin || publicConfig?.enable_face_login)
@@ -97,6 +109,8 @@ const getResponseMessage = (...sources: any[]) => {
     }
   }
 }
+
+const getI18nText = (text: unknown) => (typeof text === 'string' ? text : '')
 
 const isSuccessResponse = (res: any) => {
   const code = getResponseCode(res)
@@ -181,14 +195,19 @@ export const FaceLoginButton = (props: FaceLoginButtonProps) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [pageLoading, setPageLoading] = useState<boolean>(false)
   const [feedback, setFeedback] = useState<FaceLoginFeedback>()
+  const [bindModalVisible, setBindModalVisible] = useState<boolean>(false)
+  const [bindLoading, setBindLoading] = useState<boolean>(false)
+  const [sendCodeLoading, setSendCodeLoading] = useState<boolean>(false)
+  const [bindContext, setBindContext] = useState<FaceLivenessResultData>()
   const faceLoginCallbackHandledRef = useRef<boolean>(false)
   const { t } = useTranslation()
   const publicConfig = useGuardPublicConfig() as FaceLoginPublicConfig
-  const { post } = useGuardHttpClient()
+  const { get, post } = useGuardHttpClient()
   const appId = useGuardAppId()
   const events = useGuardEvents()
   const authClient = useGuardAuthClient()
   const deviceId = useDeviceId()
+  const [bindForm] = Form.useForm()
 
   const isShowFaceLogin = useCallback(() => {
     if (!navigator.mediaDevices) {
@@ -197,6 +216,60 @@ export const FaceLoginButton = (props: FaceLoginButtonProps) => {
 
     return isFaceLoginEnabled(publicConfig)
   }, [publicConfig])
+
+  const signInWithFace = useCallback(
+    async (
+      resultData: FaceLivenessResultData,
+      livenessTicket: string
+    ): Promise<boolean> => {
+      const signInRes = await post<FaceSignInData>(
+        '/api/v3/custom/face-login/sign-in',
+        {
+          appId,
+          faceImageBase64: resultData.faceImageBase64,
+          livenessTicket: resultData.livenessToken || livenessTicket,
+          ...(deviceId && { deviceInfo: { deviceId } })
+        }
+      )
+      const signInData = getResponseData<FaceSignInData>(signInRes)
+
+      if (isSuccessResponse(signInRes) && signInData?.status === 'SUCCESS') {
+        onLoginSuccess(signInData)
+        return true
+      }
+
+      const needBind =
+        getResponseCode(signInRes) === FACE_LOGIN_NEED_BIND_STATUS_CODE &&
+        signInRes?.apiCode === FACE_LOGIN_NEED_BIND_API_CODE
+
+      if (needBind) {
+        setBindContext({
+          ...resultData,
+          livenessTicket: resultData.livenessToken || livenessTicket
+        })
+        setBindModalVisible(true)
+        setFeedback({
+          status: 'error',
+          message: t('login.faceLoginNeedBind')
+        })
+        return false
+      }
+
+      const errorMessage =
+        getResponseMessage(signInRes, signInData) ||
+        (signInData?.status === 'NEED_BIND'
+          ? t('login.faceLoginNeedBind')
+          : t('login.faceLoginFailed'))
+
+      setFeedback({
+        status: 'error',
+        message: errorMessage
+      })
+      onLoginFailed(getResponseCode(signInRes) || 500, signInData, errorMessage)
+      return false
+    },
+    [appId, deviceId, onLoginFailed, onLoginSuccess, post, t]
+  )
 
   const handleLivenessResult = useCallback(
     async (livenessTicket: string, withPageLoading = false) => {
@@ -254,37 +327,10 @@ export const FaceLoginButton = (props: FaceLoginButtonProps) => {
           }
         }
 
-        const signInRes = await post<FaceSignInData>(
-          '/api/v3/custom/face-login/sign-in',
-          {
-            appId,
-            faceImageBase64: resultData.faceImageBase64,
-            livenessTicket: resultData.livenessToken || livenessTicket,
-            ...(deviceId && { deviceInfo: { deviceId } })
-          }
+        await signInWithFace(
+          resultData,
+          resultData.livenessToken || livenessTicket
         )
-        const signInData = getResponseData<FaceSignInData>(signInRes)
-
-        if (!isSuccessResponse(signInRes) || signInData?.status !== 'SUCCESS') {
-          const errorMessage =
-            getResponseMessage(signInRes, signInData) ||
-            (signInData?.status === 'NEED_BIND'
-              ? t('login.faceLoginNeedBind')
-              : t('login.faceLoginFailed'))
-
-          setFeedback({
-            status: 'error',
-            message: errorMessage
-          })
-          onLoginFailed(
-            getResponseCode(signInRes) || 500,
-            signInData,
-            errorMessage
-          )
-          return
-        }
-
-        onLoginSuccess(signInData)
       } catch (error: any) {
         const errorMessage = error.message || t('login.faceLoginFailed')
 
@@ -299,17 +345,105 @@ export const FaceLoginButton = (props: FaceLoginButtonProps) => {
         }
       }
     },
-    [
-      appId,
-      authClient,
-      deviceId,
-      events,
-      onLoginFailed,
-      onLoginSuccess,
-      post,
-      t
-    ]
+    [appId, authClient, events, onLoginFailed, post, signInWithFace, t]
   )
+
+  const handleSendBindSms = async () => {
+    const phone = bindForm.getFieldValue('phone')
+
+    if (!phone) {
+      message.error(t('login.faceLoginInputPhone'))
+      return
+    }
+
+    setSendCodeLoading(true)
+    try {
+      const findRes = await get<boolean>('/api/v2/users/is-user-exists', {
+        phone
+      })
+
+      if (!isSuccessResponse(findRes) || findRes?.data !== true) {
+        message.error(t('login.faceLoginUnregistered'))
+        return
+      }
+
+      const sendRes = await post('/api/v2/sms/send', {
+        phone,
+        phoneCountryCode: '+86',
+        scene: SceneType.SCENE_TYPE_IDENTITY_VERIFICATION
+      })
+
+      if (!isSuccessResponse(sendRes)) {
+        message.error(
+          getResponseMessage(sendRes) || t('login.faceLoginSendSmsFailed')
+        )
+        return
+      }
+
+      message.success(t('login.faceLoginSmsSent'))
+    } finally {
+      setSendCodeLoading(false)
+    }
+  }
+
+  const handleBindFace = async () => {
+    if (!bindContext) return
+
+    const values = await bindForm.validateFields()
+    const livenessTicket =
+      bindContext.livenessToken || bindContext.livenessTicket
+
+    setBindLoading(true)
+    try {
+      const verifyRes = await post<FaceBindSmsData>(
+        '/api/v3/custom/face-login/verify-bind-sms',
+        {
+          phone: values.phone,
+          code: values.code,
+          appId
+        }
+      )
+      const verifyData = getResponseData<FaceBindSmsData>(verifyRes)
+
+      if (
+        !isSuccessResponse(verifyRes) ||
+        !verifyData?.bindTicket ||
+        !verifyData?.userId
+      ) {
+        message.error(
+          getResponseMessage(verifyRes, verifyData) ||
+            t('login.faceLoginVerifySmsFailed')
+        )
+        return
+      }
+
+      const bindRes = await post<FaceSignInData>(
+        '/api/v3/custom/face-login/bind',
+        {
+          appId,
+          userId: verifyData.userId,
+          bindTicket: verifyData.bindTicket,
+          faceImageBase64: bindContext.faceImageBase64,
+          livenessTicket
+        }
+      )
+      const bindData = getResponseData<FaceSignInData>(bindRes)
+
+      if (!isSuccessResponse(bindRes) || bindData?.status !== 'SUCCESS') {
+        message.error(
+          getResponseMessage(bindRes, bindData) ||
+            t('login.faceLoginBindFailed')
+        )
+        return
+      }
+
+      setBindModalVisible(false)
+      bindForm.resetFields()
+      await signInWithFace(bindContext, livenessTicket || '')
+    } finally {
+      setBindLoading(false)
+    }
+  }
 
   useEffect(() => {
     const { faceType, token } = getFaceLoginCallbackParams()
@@ -422,6 +556,67 @@ export const FaceLoginButton = (props: FaceLoginButtonProps) => {
           {faceLoginButtonText}
         </GuardButton>
       )}
+      <Modal
+        className="g2-face-login-bind-modal"
+        title={t('login.faceLoginBindTitle')}
+        width={420}
+        visible={bindModalVisible}
+        maskClosable={false}
+        confirmLoading={bindLoading}
+        okText={t('login.faceLoginBindConfirm')}
+        cancelText={t('login.faceLoginBindCancel')}
+        onOk={handleBindFace}
+        onCancel={() => {
+          setBindModalVisible(false)
+          bindForm.resetFields()
+        }}
+      >
+        <Form form={bindForm} layout="vertical">
+          <Form.Item
+            className="authing-g2-input-form"
+            label={getI18nText(t('common.phone'))}
+            name="phone"
+            rules={[
+              {
+                required: true,
+                message: getI18nText(t('login.faceLoginInputPhone'))
+              }
+            ]}
+          >
+            <Input
+              className="authing-g2-input"
+              size="large"
+              placeholder={getI18nText(t('login.faceLoginInputPhone'))}
+            />
+          </Form.Item>
+          <Form.Item
+            className="authing-g2-input-form"
+            label={getI18nText(t('login.faceLoginSmsCode'))}
+            name="code"
+            rules={[
+              {
+                required: true,
+                message: getI18nText(t('login.faceLoginInputSmsCode'))
+              }
+            ]}
+          >
+            <Input
+              className="authing-g2-input"
+              size="large"
+              placeholder={getI18nText(t('login.faceLoginInputSmsCode'))}
+              suffix={
+                <Button
+                  type="link"
+                  loading={sendCodeLoading}
+                  onClick={handleSendBindSms}
+                >
+                  {t('login.faceLoginSendSms')}
+                </Button>
+              }
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
     </>
   )
 }

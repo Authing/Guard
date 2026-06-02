@@ -17,13 +17,7 @@ module.exports = merge(
     entry: resolve('example.tsx'),
     output: {
       filename: 'guard.min.js',
-      path: resolve(`dist/esm-react${reactVersion}`),
-      library: {
-        type: 'module'
-      }
-    },
-    experiments: {
-      outputModule: true
+      path: resolve(`dist/esm-react${reactVersion}`)
     },
     resolve: {
       fallback: {
