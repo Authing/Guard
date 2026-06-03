@@ -436,7 +436,7 @@ export const FaceLoginButton = (props: FaceLoginButtonProps) => {
 
       setBindModalVisible(false)
       bindForm.resetFields()
-      await signInWithFace(bindContext, livenessTicket || '')
+      message.success(t('login.faceLoginBindSuccessRelogin'))
     } finally {
       setBindLoading(false)
     }

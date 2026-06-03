@@ -124,7 +124,7 @@
   "faceLoginRetry": "重試",
   "faceLoginClickRetry": "點擊重試",
   "faceLoginBindTitle": "綁定現有帳號",
-  "faceLoginBindConfirm": "綁定並登入",
+  "faceLoginBindConfirm": "綁定",
   "faceLoginBindCancel": "取消",
   "faceLoginInputPhone": "請輸入手機號",
   "faceLoginSmsCode": "簡訊驗證碼",
@@ -134,6 +134,7 @@
   "faceLoginSendSmsFailed": "發送驗證碼失敗",
   "faceLoginVerifySmsFailed": "簡訊驗證碼校驗失敗",
   "faceLoginBindFailed": "人臉綁定失敗",
+  "faceLoginBindSuccessRelogin": "綁定成功，請重新登入",
   "faceLoginUnregistered": "目前人臉圖片未註冊，請聯絡管理員",
   "resetPassword": {
     "pleaseInputPassword": "請輸入密碼",

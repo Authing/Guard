@@ -124,7 +124,7 @@
   "faceLoginRetry": "重试",
   "faceLoginClickRetry": "点击重试",
   "faceLoginBindTitle": "绑定现有账号",
-  "faceLoginBindConfirm": "绑定并登录",
+  "faceLoginBindConfirm": "绑定",
   "faceLoginBindCancel": "取消",
   "faceLoginInputPhone": "请输入手机号",
   "faceLoginSmsCode": "短信验证码",
@@ -134,6 +134,7 @@
   "faceLoginSendSmsFailed": "发送验证码失败",
   "faceLoginVerifySmsFailed": "短信验证码校验失败",
   "faceLoginBindFailed": "人脸绑定失败",
+  "faceLoginBindSuccessRelogin": "绑定成功，请重新登录",
   "faceLoginUnregistered": "当前人脸图片未注册，请联系管理员",
   "resetPassword": {
     "pleaseInputPassword": "请输入密码",

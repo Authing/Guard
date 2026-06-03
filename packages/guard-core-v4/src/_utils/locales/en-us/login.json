@@ -124,7 +124,7 @@
   "faceLoginRetry": "Retry",
   "faceLoginClickRetry": "Click to retry",
   "faceLoginBindTitle": "Bind existing account",
-  "faceLoginBindConfirm": "Bind and sign in",
+  "faceLoginBindConfirm": "Bind",
   "faceLoginBindCancel": "Cancel",
   "faceLoginInputPhone": "Enter phone number",
   "faceLoginSmsCode": "SMS code",
@@ -134,6 +134,7 @@
   "faceLoginSendSmsFailed": "Failed to send verification code",
   "faceLoginVerifySmsFailed": "SMS verification failed",
   "faceLoginBindFailed": "Face binding failed",
+  "faceLoginBindSuccessRelogin": "Binding succeeded. Please sign in again.",
   "faceLoginUnregistered": "This face image is not registered. Please contact your administrator.",
   "resetPassword": {
     "pleaseInputPassword": "Please input a password",

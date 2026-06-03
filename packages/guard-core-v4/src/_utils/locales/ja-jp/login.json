@@ -124,7 +124,7 @@
   "faceLoginRetry": "再試行",
   "faceLoginClickRetry": "クリックして再試行",
   "faceLoginBindTitle": "既存アカウントをバインド",
-  "faceLoginBindConfirm": "バインドしてログイン",
+  "faceLoginBindConfirm": "バインド",
   "faceLoginBindCancel": "キャンセル",
   "faceLoginInputPhone": "電話番号を入力してください",
   "faceLoginSmsCode": "SMS認証コード",
@@ -134,6 +134,7 @@
   "faceLoginSendSmsFailed": "認証コードの送信に失敗しました",
   "faceLoginVerifySmsFailed": "SMS認証に失敗しました",
   "faceLoginBindFailed": "顔のバインドに失敗しました",
+  "faceLoginBindSuccessRelogin": "バインドに成功しました。再度ログインしてください。",
   "faceLoginUnregistered": "現在の顔画像は登録されていません。管理者にお問い合わせください。",
   "resetPassword": {
     "pleaseInputPassword": "パスワードを入力してください",
