@@ -44,6 +44,7 @@
   --guard-radius-lg: var(--guard-radius-surface);
   --guard-radius-xl: 4px;
   --guard-focus-ring: rgba(47, 84, 235, 0.16);
+  --guard-control-focus-border: var(--guard-primary);
   --guard-danger-ring: rgba(220, 38, 38, 0.16);
 
   font-family: var(--guard-font-family);
@@ -75,6 +76,80 @@
   .genauth-ant-mentions,
   textarea {
     border-radius: var(--guard-radius-input);
+  }
+
+  .genauth-ant-input:focus,
+  .genauth-ant-input-focused,
+  .genauth-ant-input-affix-wrapper:focus,
+  .genauth-ant-input-affix-wrapper-focused,
+  .genauth-ant-input-number-focused,
+  .genauth-ant-picker-focused,
+  .genauth-ant-select-focused:not(.genauth-ant-select-customize-input)
+    .genauth-ant-select-selector,
+  .genauth-ant-mentions-focused,
+  textarea:focus {
+    border-color: var(--guard-control-focus-border) !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+
+  .genauth-ant-form-item-has-error {
+    .genauth-ant-input,
+    .genauth-ant-input:focus,
+    .genauth-ant-input-affix-wrapper,
+    .genauth-ant-input-affix-wrapper-focused,
+    .genauth-ant-input-number,
+    .genauth-ant-input-number-focused,
+    .genauth-ant-picker,
+    .genauth-ant-picker-focused,
+    .genauth-ant-select:not(.genauth-ant-select-customize-input)
+      .genauth-ant-select-selector,
+    textarea,
+    textarea:focus {
+      border-color: var(--guard-danger) !important;
+      box-shadow: none !important;
+    }
+  }
+
+  .genauth-ant-checkbox-wrapper:hover .genauth-ant-checkbox-inner,
+  .genauth-ant-checkbox:hover .genauth-ant-checkbox-inner,
+  .genauth-ant-checkbox-input:focus + .genauth-ant-checkbox-inner,
+  .genauth-ant-radio-wrapper:hover .genauth-ant-radio-inner,
+  .genauth-ant-radio:hover .genauth-ant-radio-inner,
+  .genauth-ant-radio-input:focus + .genauth-ant-radio-inner,
+  .genauth-ant-radio-button-wrapper:hover,
+  .genauth-ant-radio-button-wrapper:focus-within {
+    border-color: var(--guard-primary) !important;
+  }
+
+  .genauth-ant-checkbox-checked .genauth-ant-checkbox-inner,
+  .genauth-ant-checkbox-indeterminate .genauth-ant-checkbox-inner,
+  .genauth-ant-radio-button-wrapper-checked:not(
+      .genauth-ant-radio-button-wrapper-disabled
+    ),
+  .genauth-ant-switch-checked {
+    background-color: var(--guard-primary) !important;
+    border-color: var(--guard-primary) !important;
+  }
+
+  .genauth-ant-radio-checked .genauth-ant-radio-inner,
+  .genauth-ant-radio-button-wrapper-checked:not(
+      .genauth-ant-radio-button-wrapper-disabled
+    ) {
+    border-color: var(--guard-primary) !important;
+  }
+
+  .genauth-ant-radio-checked .genauth-ant-radio-inner::after {
+    background-color: var(--guard-primary) !important;
+  }
+
+  .genauth-ant-radio-button-wrapper-checked:not(
+      .genauth-ant-radio-button-wrapper-disabled
+    ),
+  .genauth-ant-select-item-option-selected:not(
+      .genauth-ant-select-item-option-disabled
+    ) {
+    color: var(--guard-primary) !important;
   }
 
   .genauth-ant-menu,
@@ -405,11 +480,13 @@
       .genauth-ant-select-item-option-disabled
     ) {
     background: #F5F5F7;
+    color: var(--guard-primary);
   }
   .genauth-ant-select-item-option-active:not(
       .genauth-ant-select-item-option-disabled
     ) {
     background: #F5F5F7;
+    color: var(--guard-primary);
   }
 }
 .genauth-g2-input-form {
@@ -432,11 +509,12 @@
     }
     // focus
     &.genauth-ant-select-focused {
-      // border-color: #2F54EB;
+      border-color: var(--guard-control-focus-border);
       border-right-width: 1px;
       outline: 0;
-      box-shadow: 0 0 0 2px rgba(47, 84, 235, 0.16);
+      box-shadow: none;
       .genauth-ant-select-selector {
+        border-color: var(--guard-control-focus-border) !important;
         background: #fff;
       }
     }
@@ -480,8 +558,9 @@
         // border-color: #DC2626;
         border-right-width: 1px;
         outline: 0;
-        box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.16);
+        box-shadow: none;
         .genauth-ant-select-selector {
+          border-color: #DC2626 !important;
           background: #fff;
         }
       }
@@ -1450,8 +1529,9 @@ input {
 .g2-view-container .genauth-ant-input-affix-wrapper-focused,
 .g2-view-container .genauth-ant-picker-focused {
   background: var(--guard-bg);
-  border-color: var(--guard-primary) !important;
-  box-shadow: 0 0 0 3px var(--guard-focus-ring);
+  border-color: var(--guard-control-focus-border) !important;
+  box-shadow: none;
+  outline: none;
 }
 
 .g2-view-container .genauth-ant-form-item-has-error .genauth-g2-input,
@@ -1459,7 +1539,7 @@ input {
 .g2-view-container .genauth-ant-form-item-has-error .genauth-g2-select,
 .g2-view-container .genauth-ant-form-item-has-error textarea {
   border-color: var(--guard-danger) !important;
-  box-shadow: 0 0 0 3px var(--guard-danger-ring);
+  box-shadow: none;
 }
 
 .g2-view-container input::placeholder,
@@ -1492,7 +1572,7 @@ input {
 .genauth-ant-select-item-option-active:not(.genauth-ant-select-item-option-disabled),
 .genauth-ant-select-item-option-selected:not(.genauth-ant-select-item-option-disabled) {
   background: var(--guard-bg-subtle);
-  color: var(--guard-text-heading);
+  color: var(--guard-primary);
 }
 
 .g2-view-container .link-like,
