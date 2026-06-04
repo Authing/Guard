@@ -284,7 +284,7 @@ export const DescribeQuestions = (props: describeQuestionsProps) => {
                       <div
                         style={{
                           padding: 6,
-                          borderRadius: 2,
+                          borderRadius: 4,
                           border: '1px solid #D1D1D6'
                         }}
                       >

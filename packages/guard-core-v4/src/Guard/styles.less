@@ -24,13 +24,21 @@
   --guard-bg-strong: #EBEBED;
   --guard-border: #D1D1D6;
   --guard-border-strong: #D1D1D6;
-  --guard-radius-tag: 2px;
-  --guard-radius-button: 10px;
-  --guard-radius-input: 10px;
-  --guard-radius-dropdown: 6px;
+  --guard-radius-tag: 4px;
+  --guard-radius-button: 4px;
+  --guard-radius-input: 4px;
+  --guard-radius-dropdown: 4px;
   --guard-radius-control: var(--guard-radius-input);
-  --guard-radius-surface: 6px;
-  --guard-radius-selectable: 8px;
+  --guard-radius-surface: 4px;
+  --guard-radius-selectable: 4px;
+  --guard-radius-menu: 4px;
+  --guard-radius-menu-compact: 4px;
+  --guard-radius-card: 4px;
+  --guard-radius-table: 4px;
+  --guard-radius-dialog: 4px;
+  --guard-radius-popover: 4px;
+  --guard-radius-bubble: 4px;
+  --guard-radius-chat: 4px;
   --guard-radius-sm: var(--guard-radius-tag);
   --guard-radius-md: var(--guard-radius-dropdown);
   --guard-radius-lg: var(--guard-radius-surface);
@@ -44,6 +52,59 @@
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+.genauth-guard-layout,
+.genauth-g2-render-module,
+.genauth-g2-render-module-modal,
+.g2-view-container,
+.g2-password-reset-pageWrap,
+.g2-view-container-submit-success {
+  .genauth-ant-btn:not(.genauth-ant-btn-circle),
+  .guard-button-link-like {
+    border-radius: var(--guard-radius-button);
+  }
+
+  .genauth-ant-input,
+  .genauth-ant-input-affix-wrapper,
+  .genauth-ant-input-number,
+  .genauth-ant-input-number-input,
+  .genauth-ant-select:not(.genauth-ant-select-customize-input)
+    .genauth-ant-select-selector,
+  .genauth-ant-picker,
+  .genauth-ant-mentions,
+  textarea {
+    border-radius: var(--guard-radius-input);
+  }
+
+  .genauth-ant-menu,
+  .genauth-ant-menu-item,
+  .genauth-ant-dropdown-menu-item,
+  .genauth-ant-select-item,
+  .genauth-guard-select-list-item {
+    border-radius: var(--guard-radius-menu);
+  }
+
+  .genauth-ant-dropdown-menu,
+  .genauth-ant-select-dropdown,
+  .genauth-ant-popover-inner,
+  .genauth-g2-dropdown,
+  .genauth-g2-change-language-menu {
+    border-radius: var(--guard-radius-popover);
+  }
+
+  .genauth-ant-card,
+  .genauth-ant-card-head,
+  .genauth-ant-card-body,
+  .genauth-ant-table-wrapper,
+  .genauth-ant-table,
+  .genauth-ant-table-container,
+  .genauth-ant-modal-content,
+  .genauth-ant-message-notice-content,
+  .g2-message-content,
+  .g2-error-content {
+    border-radius: var(--guard-radius-card);
+  }
 }
 
 .genauth-guard-layout ::selection,
@@ -73,7 +134,7 @@
 .genauth-g2-render-module ::-webkit-scrollbar-thumb,
 .genauth-g2-render-module-modal ::-webkit-scrollbar-thumb {
   background: var(--guard-border-strong);
-  border-radius: 2px;
+  border-radius: var(--guard-radius-surface);
 }
 
 .genauth-g2-render-module-normal {
@@ -191,7 +252,7 @@
     .icon {
       width: 48px;
       height: 48px;
-      border-radius: 8px;
+      border-radius: var(--guard-radius-surface);
       margin-bottom: 4px;
     }
     .title {
@@ -328,7 +389,7 @@
   //   top: -15px;
   //   z-index: 100;
   //   padding: 4px 8px;
-  //   border-radius: 8px;
+  //   border-radius: var(--guard-radius-surface);
   //   box-shadow: #D1D1D6;
   // }
 }
@@ -669,7 +730,7 @@
   }
   // genauth-ant-upload genauth-ant-upload-select
   .genauth-ant-upload-select-picture-card {
-    border-radius: 8px;
+    border-radius: var(--guard-radius-surface);
     height: 56px;
     width: 56px;
     border: none;
@@ -1081,7 +1142,7 @@ input {
 //   }
 //   height: 512px;
 //   background: #FFFFFF;
-//   border-radius: 10px;
+//   border-radius: var(--guard-radius-surface);
 
 //   .g2-tips-line {
 //     padding: 0;
@@ -1146,7 +1207,7 @@ input {
 //     line-height: 18px;
 //     color: #3A3A3C;
 //     border: 1px solid #D1D1D6;
-//     border-radius: 8px;
+//     border-radius: var(--guard-radius-surface);
 //     height: 46px;
 //     @media only screen and (max-width: 450px) {
 //       height: 48px;
@@ -1165,10 +1226,10 @@ input {
 //     @media only screen and (max-width: 450px) {
 //       height: 48px;
 //     }
-//     border-radius: 8px;
+//     border-radius: var(--guard-radius-surface);
 //     &:focus  {
 //       border: 1px solid #2F54EB !important;
-//       border-radius: 8px;
+//       border-radius: var(--guard-radius-surface);
 //       border-color: #2F54EB;
 //       background: #fff;
 //     }

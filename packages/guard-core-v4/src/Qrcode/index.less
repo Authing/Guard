@@ -25,7 +25,7 @@
       &--@{value}  when not (@value = ready) {
           .@{namespace}__image-wrapper {
             &:after {
-                border-radius: 10px;
+                border-radius: var(--guard-radius-surface);
                 content: '';
                 position: absolute;
                 top: 0;
