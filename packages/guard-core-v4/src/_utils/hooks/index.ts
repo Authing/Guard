@@ -575,7 +575,14 @@ export const useMethod: (params: {
 
   if (!config?.isHost && (isSpecialBrowser || !guardWindow.postMessage)) {
     // 嵌入模式下特殊浏览器不显示所有身份源登录
-    socialConnectionObjs = []
+    // 但微信公众号网页授权 (wechat:webpage-authorization) 在微信浏览器中可以正常使用，需要保留
+    if (isWeChatBrowser()) {
+      socialConnectionObjs = socialConnectionObjs.filter(
+        item => item.provider === SocialConnectionProvider.WECHATMP
+      )
+    } else {
+      socialConnectionObjs = []
+    }
     enterpriseConnectionObjs = []
   }
   /** 过滤掉企业身份源中开启内嵌模式的身份源连接 如：企业微信自建 钉钉 */

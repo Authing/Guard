@@ -18,6 +18,8 @@ import './style.less'
 
 import { useMediaSize, SocialConnectionEvent } from '../../_utils/hooks'
 
+import { isWeChatBrowser } from '../../_utils/compute'
+
 import {
   useGuardPublicConfig,
   useGuardTenantId,
@@ -119,6 +121,11 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
           ]
         }
       }
+    }
+
+    // 嵌入模式下微信浏览器也用当前页面跳转
+    if (!config?.isHost && isWeChatBrowser()) {
+      query.redirected = '1'
     }
 
     const onLogin = () => {

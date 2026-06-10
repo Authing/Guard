@@ -5,11 +5,11 @@ import { React, render } from 'shim-react'
 import * as facePlugin from 'face-api.js'
 
 const App = () => {
-  const appId = ''
+  const appId = '66543fe74bfd26fdd9c40019'
   // const deviceId = '6486be0f60e50cb92678a468' //如要使用必须使用开启元数据对的 用户池 测试
 
   const config: Partial<GuardLocalConfig> = {
-    host: 'https://www.id.zjedu.gov.cn'
+    host: 'https://iam.id.zjedu.gov.cn'
   }
 
   const onLogin = (userInfo: User) => {
