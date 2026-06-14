@@ -36,7 +36,7 @@ let defaultConfig: GuardLocalConfig = {
   _closeLoopCheckQrcode: false,
   loadingComponent: (
     <div className="g2-init-setting-loading">
-      <ShieldSpin size={100} />
+      <ShieldSpin />
     </div>
   )
 }

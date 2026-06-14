@@ -2,101 +2,76 @@ import { React } from 'shim-react'
 
 import { useGuardPublicConfig } from '../_utils/context'
 
+export const EAK_LOADING_SPINNER_SIZE = 20
+const CUSTOM_LOADING_IMAGE_SIZE = 100
+
+export const EAK_LOADING_SVG_STRING = `<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-label="Loading" role="img" focusable="false" style="display:block;width:var(--eak-loading-size,20px);height:var(--eak-loading-size,20px);overflow:visible;">
+  <style>
+    @keyframes eak-loading-spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .eak-loading-spinner__arc {
+      transform-origin: 10px 10px;
+      animation: eak-loading-spin 900ms linear infinite;
+    }
+  </style>
+  <circle cx="10" cy="10" r="7.2" fill="none" stroke="rgba(28, 28, 30, 0.12)" stroke-width="1.6"/>
+  <circle class="eak-loading-spinner__arc" cx="10" cy="10" r="7.2" fill="none" stroke="rgba(28, 28, 30, 0.38)" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="18 46"/>
+</svg>`
+
+const toLoadingSize = (size: number | string) =>
+  typeof size === 'number' ? `${size}px` : size
+
 export const ShieldSpinLoading = (
   props: JSX.IntrinsicAttributes &
-    React.ClassAttributes<HTMLEmbedElement> &
-    React.EmbedHTMLAttributes<HTMLEmbedElement>
+    React.HTMLAttributes<HTMLDivElement> & {
+      size?: number | string
+    }
 ) => {
-  const svgString = `<svg width="100%" height="100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="overflow: visible;">
-          <defs>
-            <style>
-              #ring-outer { fill: none; stroke: rgba(47,84,235,0.12); stroke-width: 2; }
-              .orbit-dot {
-                fill: #2F54EB;
-                transform-origin: 50px 50px;
-                animation: orbitSpin 1.6s linear infinite;
-              }
-              .orbit-dot2 {
-                fill: rgba(47,84,235,0.45);
-                transform-origin: 50px 50px;
-                animation: orbitSpin 1.6s linear infinite;
-                animation-delay: -0.8s;
-              }
-              .orbit-dot3 {
-                fill: rgba(47,84,235,0.20);
-                transform-origin: 50px 50px;
-                animation: orbitSpin 1.6s linear infinite;
-                animation-delay: -0.4s;
-              }
-              .arc-sweep {
-                fill: none;
-                stroke: #2F54EB;
-                stroke-width: 2;
-                stroke-dasharray: 50 158;
-                stroke-linecap: round;
-                transform-origin: 50px 50px;
-                animation: arcSpin 1.6s linear infinite;
-              }
-              .arc-sweep2 {
-                fill: none;
-                stroke: rgba(47,84,235,0.25);
-                stroke-width: 1.5;
-                stroke-dasharray: 90 118;
-                stroke-linecap: round;
-                transform-origin: 50px 50px;
-                animation: arcSpin 2.4s linear infinite reverse;
-              }
-              #core-pulse {
-                fill: #2F54EB;
-                animation: corePulse 1.6s ease-in-out infinite;
-              }
-              @keyframes orbitSpin {
-                to { transform: rotate(360deg); }
-              }
-              @keyframes arcSpin {
-                to { transform: rotate(360deg); }
-              }
-              @keyframes corePulse {
-                0%, 100% { opacity: 0.4; r: 3; }
-                50% { opacity: 1; r: 4.5; }
-              }
-            </style>
-          </defs>
+  const { size = EAK_LOADING_SPINNER_SIZE, style, ...restProps } = props
 
-          <circle id="ring-outer" cx="50" cy="50" r="38"/>
-          <circle cx="50" cy="50" r="26" fill="none" stroke="rgba(47,84,235,0.07)" stroke-width="1.5"/>
-          <circle class="arc-sweep2" cx="50" cy="50" r="26"/>
-          <circle class="arc-sweep" cx="50" cy="50" r="38"/>
-          <circle id="core-pulse" cx="50" cy="50" r="4"/>
-          <g class="orbit-dot"><circle cx="50" cy="12" r="4"/></g>
-          <g class="orbit-dot2"><circle cx="50" cy="24" r="3"/></g>
-          <g class="orbit-dot3"><circle cx="50" cy="38" r="2.5"/></g>
-        </svg>`
-
-  return <div dangerouslySetInnerHTML={{ __html: svgString }} {...props} />
+  return (
+    <div
+      {...restProps}
+      role="status"
+      aria-label="Loading"
+      style={{
+        width: size,
+        height: size,
+        ['--eak-loading-size' as string]: toLoadingSize(size),
+        ...style
+      }}
+      dangerouslySetInnerHTML={{ __html: EAK_LOADING_SVG_STRING }}
+    />
+  )
 }
 
 interface IG2SpinProps {
-  size?: number
+  size?: number | string
   className?: string
 }
 
 export const ShieldSpin = (props: IG2SpinProps) => {
   const publicConfig = useGuardPublicConfig()
-  let size = props.size ? props.size : 50
+  const customLoading = publicConfig?.customLoading
+  const size = props.size ? props.size : EAK_LOADING_SPINNER_SIZE
+  const imageSize = props.size ? props.size : CUSTOM_LOADING_IMAGE_SIZE
 
   return (
     <div
       style={{
-        width: size,
-        height: size
+        width: customLoading ? imageSize : size,
+        height: customLoading ? imageSize : size
       }}
       className={props.className}
     >
-      {publicConfig?.customLoading ? (
-        <img src={publicConfig.customLoading} alt="" width={size} />
+      {customLoading ? (
+        <img src={customLoading} alt="" width={imageSize} />
       ) : (
-        <ShieldSpinLoading width={size} height={size} />
+        <ShieldSpinLoading size={size} />
       )}
     </div>
   )
@@ -104,6 +79,6 @@ export const ShieldSpin = (props: IG2SpinProps) => {
 
 export const Spin = () => (
   <div className="g2-init-setting-loading">
-    <ShieldSpin size={100} />
+    <ShieldSpin />
   </div>
 )
