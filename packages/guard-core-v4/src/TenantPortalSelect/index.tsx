@@ -98,7 +98,7 @@ export const GuardTenantPortalSelectView = () => {
           size: 40,
           src: it.tenantLogo!,
           style: {
-            borderRadius: 4
+            borderRadius: 'var(--guard-radius-surface)'
           }
         },
         extra: (

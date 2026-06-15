@@ -78,7 +78,7 @@ export const GuardCompleteInfo: React.FC<{
           <ImagePro
             src={config?.logo as string}
             size={48}
-            borderRadius={4}
+            borderRadius="var(--guard-radius-surface)"
             alt=""
             className="icon"
           />

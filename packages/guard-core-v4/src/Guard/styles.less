@@ -24,25 +24,27 @@
   --guard-bg-strong: #EBEBED;
   --guard-border: #D1D1D6;
   --guard-border-strong: #D1D1D6;
-  --guard-radius-tag: 2px;
-  --guard-radius-button: 2px;
-  --guard-radius-input: 4px;
-  --guard-radius-dropdown: 2px;
+  --guard-radius-tag: 4px;
+  --guard-radius-button: 12px;
+  --guard-radius-input: 10px;
+  --guard-radius-dropdown: 14px;
   --guard-radius-control: var(--guard-radius-input);
-  --guard-radius-surface: 2px;
-  --guard-radius-selectable: 2px;
-  --guard-radius-menu: 2px;
-  --guard-radius-menu-compact: 2px;
-  --guard-radius-card: 2px;
-  --guard-radius-table: 2px;
-  --guard-radius-dialog: 2px;
-  --guard-radius-popover: 2px;
-  --guard-radius-bubble: 2px;
-  --guard-radius-chat: 2px;
+  --guard-radius-surface: 14px;
+  --guard-radius-selectable: 14px;
+  --guard-radius-menu: 14px;
+  --guard-radius-menu-compact: 14px;
+  --guard-radius-card: 14px;
+  --guard-radius-table: 14px;
+  --guard-radius-dialog: 14px;
+  --guard-radius-popover: 14px;
+  --guard-radius-bubble: 18px;
+  --guard-radius-chat: 18px;
+  --guard-radius-chat-card: var(--guard-radius-chat);
+  --guard-radius-chat-composer: var(--guard-radius-chat);
   --guard-radius-sm: var(--guard-radius-tag);
   --guard-radius-md: var(--guard-radius-dropdown);
   --guard-radius-lg: var(--guard-radius-surface);
-  --guard-radius-xl: 2px;
+  --guard-radius-xl: var(--guard-radius-card);
   --guard-focus-ring: rgba(47, 84, 235, 0.16);
   --guard-control-focus-border: var(--guard-primary);
   --guard-danger-ring: rgba(220, 38, 38, 0.16);
@@ -171,14 +173,35 @@
   .genauth-ant-card,
   .genauth-ant-card-head,
   .genauth-ant-card-body,
+  .genauth-ant-alert,
+  .genauth-ant-collapse,
+  .genauth-ant-collapse-item,
   .genauth-ant-table-wrapper,
   .genauth-ant-table,
   .genauth-ant-table-container,
+  .genauth-ant-notification-notice,
+  .genauth-ant-popconfirm-inner,
   .genauth-ant-modal-content,
+  .genauth-ant-modal-confirm-body-wrapper,
   .genauth-ant-message-notice-content,
   .g2-message-content,
   .g2-error-content {
     border-radius: var(--guard-radius-card);
+  }
+
+  .genauth-ant-tag,
+  .genauth-header-tag,
+  .last-login-tag,
+  .genauth-tag {
+    border-radius: var(--guard-radius-tag);
+  }
+
+  .genauth-chat-frame,
+  .genauth-chat-composer,
+  .genauth-chat-card,
+  .genauth-message-bubble,
+  .genauth-message-card {
+    border-radius: var(--guard-radius-chat-card);
   }
 }
 
@@ -428,7 +451,7 @@
 
   .genauth-ant-radio-button-wrapper {
     margin: 0 2px;
-    border-radius: var(--guard-radius-tag);
+    border-radius: var(--guard-radius-button);
     color: #3A3A3C;
     cursor: pointer;
     border: none;
@@ -474,7 +497,7 @@
   border: 1px solid #D1D1D6;
 
   .genauth-ant-select-item {
-    border-radius: var(--guard-radius-tag);
+    border-radius: var(--guard-radius-menu);
   }
   .genauth-ant-select-item-option-selected:not(
       .genauth-ant-select-item-option-disabled
@@ -1562,7 +1585,7 @@ input {
 
 .genauth-ant-dropdown-menu-item,
 .genauth-ant-select-item {
-  border-radius: var(--guard-radius-sm);
+  border-radius: var(--guard-radius-menu);
   cursor: pointer;
   font-size: 14px;
   padding: 6px 8px;
@@ -1675,7 +1698,7 @@ input {
 
   .genauth-ant-tabs-tab-btn {
     width: 100%;
-    border-radius: var(--guard-radius-sm);
+    border-radius: var(--guard-radius-button);
     outline: none !important;
     box-shadow: none;
     text-align: center;

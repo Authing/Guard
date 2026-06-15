@@ -126,7 +126,7 @@ export const GuardResetPassword = () => {
         <ImagePro
           src={logo!}
           size={48}
-          borderRadius={4}
+          borderRadius="var(--guard-radius-surface)"
           alt=""
           className="icon"
         />

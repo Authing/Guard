@@ -35,7 +35,7 @@ export function PendingLogin(props: PendingLoginProps) {
               width: '348px',
               height: '44px',
               background: '#F5F5F7',
-              borderRadius: '4px',
+              borderRadius: 'var(--guard-radius-button)',
               border: 'none'
             }}
             onClick={onCancelLogin}
