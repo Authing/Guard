@@ -2,10 +2,10 @@ import { React } from 'shim-react'
 
 import { useGuardPublicConfig } from '../_utils/context'
 
-export const EAK_LOADING_SPINNER_SIZE = 20
+export const EAK_LOADING_SPINNER_SIZE = 24
 const CUSTOM_LOADING_IMAGE_SIZE = 100
 
-export const EAK_LOADING_SVG_STRING = `<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-label="Loading" role="img" focusable="false" style="display:block;width:var(--eak-loading-size,20px);height:var(--eak-loading-size,20px);overflow:visible;">
+export const EAK_LOADING_SVG_STRING = `<svg id="loadingSvg" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Loading" role="img" focusable="false" style="display:block;width:var(--eak-loading-size,24px);height:var(--eak-loading-size,24px);overflow:visible;">
   <style>
     @keyframes eak-loading-spin {
       to {
@@ -14,12 +14,11 @@ export const EAK_LOADING_SVG_STRING = `<svg width="20" height="20" viewBox="0 0 
     }
 
     .eak-loading-spinner__arc {
-      transform-origin: 10px 10px;
+      transform-origin: 12px 12px;
       animation: eak-loading-spin 900ms linear infinite;
     }
   </style>
-  <circle cx="10" cy="10" r="7.2" fill="none" stroke="rgba(28, 28, 30, 0.12)" stroke-width="1.6"/>
-  <circle class="eak-loading-spinner__arc" cx="10" cy="10" r="7.2" fill="none" stroke="rgba(28, 28, 30, 0.38)" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="18 46"/>
+  <path class="eak-loading-spinner__arc" d="M21 12a9 9 0 1 1-6.219-8.56" fill="none" stroke="rgba(28, 28, 30, 0.38)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`
 
 const toLoadingSize = (size: number | string) =>
@@ -71,7 +70,7 @@ export const ShieldSpin = (props: IG2SpinProps) => {
       {customLoading ? (
         <img src={customLoading} alt="" width={imageSize} />
       ) : (
-        <ShieldSpinLoading size={size} />
+        <ShieldSpinLoading size={28} />
       )}
     </div>
   )
