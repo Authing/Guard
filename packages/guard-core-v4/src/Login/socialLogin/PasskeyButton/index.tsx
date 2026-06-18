@@ -142,7 +142,7 @@ export const PasskeyButton = (props: LoginWithPasskeyProps) => {
         icon={
           <IconFont
             type="authing-slideshow-3-line"
-            style={{ fontSize: 16, marginRight: 8, color: '#2F54EB' }}
+            style={{ fontSize: 16, marginRight: 8, color: '#305EE8' }}
           />
         }
       >

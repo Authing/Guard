@@ -130,7 +130,7 @@ export const IdpButton = (props: any) => {
           {!status && (
             <IconFont
               type="authing-error-warning-line1"
-              style={{ color: '#2F54EB', fontSize: 16, marginLeft: 8 }}
+              style={{ color: '#305EE8', fontSize: 16, marginLeft: 8 }}
             />
           )}
           {isLastLogin && (
@@ -182,7 +182,7 @@ export const IdpButton = (props: any) => {
           {!status && (
             <IconFont
               type="authing-error-warning-line1"
-              style={{ color: '#2F54EB', fontSize: 16, marginLeft: 8 }}
+              style={{ color: '#305EE8', fontSize: 16, marginLeft: 8 }}
             />
           )}
           {isLastLogin && (
