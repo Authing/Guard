@@ -18,7 +18,7 @@ export const EAK_LOADING_SVG_STRING = ` <svg width="26" height="26" viewBox="0 0
               animation: eak-loading-spin 900ms linear infinite;
             }
           </style>
-          <path class="eak-loading-spinner__arc" d="M21 12a9 9 0 1 1-6.219-8.56" fill="none" stroke="rgba(28, 28, 30, 0.38)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path class="eak-loading-spinner__arc" d="M21 12a9 9 0 1 1-6.219-8.56" fill="none" stroke="#305EE8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>`
 
 const toLoadingSize = (size: number | string) =>
