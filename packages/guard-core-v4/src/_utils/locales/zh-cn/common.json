@@ -188,7 +188,14 @@
     "businessRegistrationName": "工商登记名称",
     "unifiedSocialCredit": "统一社会信用代码",
     "legalRepresentativeName": "法人姓名",
-    "nationalIdentificationNumber": "法人身份证号"
+    "nationalIdentificationNumber": "法人身份证号",
+    "businessLicense": "营业执照",
+    "uploadBusinessLicense": "上传营业执照",
+    "businessLicenseTip": "请提供证件的原件照片或彩色扫描件，文字/盖章清晰可辨认。图片格式要求 jpg、jpeg、png，大小不超过5M",
+    "businessLicenseFormatError": "请上传 jpg、jpeg、png 格式的营业执照图片",
+    "businessLicenseSizeError": "营业执照图片大小不能超过 5M",
+    "businessLicenseOcrError": "营业执照识别失败，请重新上传",
+    "businessLicenseOcrChecking": "营业执照识别中，请稍后"
   },
   "mfaCertification": "多因素认证",
   "emailMfaCheck": "请输入电子邮箱验证码",

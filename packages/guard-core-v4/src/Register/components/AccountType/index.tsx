@@ -12,9 +12,9 @@ import { ImagePro } from '../../../ImagePro'
 
 import {
   useGuardFinallyConfig,
+  useGuardHttpClient,
   useGuardInitData,
-  useGuardModule,
-  useGuardPublicConfig
+  useGuardModule
 } from '../../../_utils/context'
 
 import { useGuardView } from '../../../Guard/core/hooks/useGuardView'
@@ -28,8 +28,17 @@ import { IconFont } from '../../../IconFont'
 import { BackCustom } from '../../../Back'
 import { RegisterCompletePasswordInitData } from '../../../CompleteInfo/interface'
 import { registerSkipMethod } from '../../../CompleteInfo/businessRequest'
+import { UploadImage } from '../../../UploadImage'
 
 const { useRef, useState, useCallback } = React
+
+interface TenantBusinessLicenseOcrData {
+  businessRegistrationName?: string
+  unifiedSocialCredit?: string
+  legalRepresentativeName?: string
+}
+
+type BusinessLicenseOcrStatus = 'idle' | 'checking' | 'passed' | 'failed'
 
 export const GuardRegisterAccountTypeView: React.FC = () => {
   const { t } = useTranslation()
@@ -46,6 +55,8 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
 
   const config = useGuardFinallyConfig()
 
+  const { post } = useGuardHttpClient()
+
   const [form] = Form.useForm()
 
   const step1ButtonRef = useRef<any>(null)
@@ -53,6 +64,102 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
   const step2ButtonRef = useRef<any>(null)
 
   const [formType, setFormType] = useState<0 | 1>(0)
+
+  const [businessLicenseOcrStatus, setBusinessLicenseOcrStatus] =
+    useState<BusinessLicenseOcrStatus>('idle')
+
+  const beforeUploadBusinessLicense = useCallback(
+    (file: File) => {
+      const isValidFileType =
+        ['image/png', 'image/jpeg', 'image/jpg'].includes(file.type) ||
+        /\.(jpe?g|png)$/i.test(file.name)
+
+      if (!isValidFileType) {
+        message.error(
+          t('common.registerAccountType.businessLicenseFormatError') as string
+        )
+        return false
+      }
+
+      const isLt5M = file.size / 1024 / 1024 < 5
+      if (!isLt5M) {
+        message.error(
+          t('common.registerAccountType.businessLicenseSizeError') as string
+        )
+        return false
+      }
+
+      setBusinessLicenseOcrStatus('checking')
+      form.setFields([{ name: 'businessLicense', errors: [] }])
+
+      return true
+    },
+    [form, t]
+  )
+
+  const handleBusinessLicenseUploaded = useCallback(
+    async (businessLicense: string) => {
+      setBusinessLicenseOcrStatus('checking')
+      form.setFields([{ name: 'businessLicense', errors: [] }])
+
+      const markBusinessLicenseOcrFailed = (errorMessage?: string) => {
+        const businessLicenseOcrErrorMessage =
+          errorMessage ||
+          (t('common.registerAccountType.businessLicenseOcrError') as string)
+
+        setBusinessLicenseOcrStatus('failed')
+        form.setFields([
+          {
+            name: 'businessLicense',
+            errors: [businessLicenseOcrErrorMessage]
+          }
+        ])
+        message.error(businessLicenseOcrErrorMessage)
+      }
+
+      const {
+        statusCode,
+        code,
+        data,
+        message: errMessage,
+        messages
+      } = await post<TenantBusinessLicenseOcrData>(
+        '/api/v3/tenant-enterprise-certification-ocr',
+        {
+          businessLicense
+        }
+      )
+
+      if (statusCode !== 200 && code !== 200) {
+        markBusinessLicenseOcrFailed(errMessage || messages)
+        return
+      }
+
+      if (!data) {
+        markBusinessLicenseOcrFailed()
+        return
+      }
+
+      const ocrValues: TenantBusinessLicenseOcrData = {}
+      if (data.businessRegistrationName) {
+        ocrValues.businessRegistrationName = data.businessRegistrationName
+      }
+      if (data.unifiedSocialCredit) {
+        ocrValues.unifiedSocialCredit = data.unifiedSocialCredit
+      }
+      if (data.legalRepresentativeName) {
+        ocrValues.legalRepresentativeName = data.legalRepresentativeName
+      }
+
+      if (Object.keys(ocrValues).length > 0) {
+        form.setFieldsValue(ocrValues)
+      }
+
+      setBusinessLicenseOcrStatus('passed')
+      form.setFields([{ name: 'businessLicense', errors: [] }])
+    },
+    [form, post, t]
+  )
 
   const flowHandle = useCallback(async (_content: any, btn: any) => {
     if (isChangeComplete) {
@@ -312,10 +419,74 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
                 autoComplete="off"
               />
             </Form.Item>
+            <Form.Item
+              className="authing-g2-input-form authing-g2-business-license-form"
+              name="businessLicense"
+              label={t('common.registerAccountType.businessLicense') as string}
+              extra={
+                t('common.registerAccountType.businessLicenseTip') as string
+              }
+              rules={[
+                {
+                  required: true,
+                  validateTrigger: 'onChange',
+                  message: t('login.noEmpty', {
+                    label: t(
+                      'common.registerAccountType.businessLicense'
+                    ) as string
+                  }) as string
+                },
+                {
+                  validateTrigger: 'onChange',
+                  validator: (_: any, value: string) => {
+                    if (!value) return Promise.resolve()
+
+                    if (businessLicenseOcrStatus === 'checking') {
+                      return Promise.reject(
+                        new Error(
+                          t(
+                            'common.registerAccountType.businessLicenseOcrChecking'
+                          ) as string
+                        )
+                      )
+                    }
+
+                    if (businessLicenseOcrStatus !== 'passed') {
+                      return Promise.reject(
+                        new Error(
+                          t(
+                            'common.registerAccountType.businessLicenseOcrError'
+                          ) as string
+                        )
+                      )
+                    }
+
+                    return Promise.resolve()
+                  }
+                }
+              ]}
+            >
+              <UploadImage
+                uploadText={
+                  t(
+                    'common.registerAccountType.uploadBusinessLicense'
+                  ) as string
+                }
+                accept="image/png, image/jpeg, image/jpg,.jpg,.jpeg,.png"
+                folder="tenant-enterprise-certification"
+                beforeUpload={beforeUploadBusinessLicense}
+                onUploaded={handleBusinessLicenseUploaded}
+                onUploadFailed={() => setBusinessLicenseOcrStatus('failed')}
+              />
+            </Form.Item>
 
             <SubmitButton
               text={t('user.nextStep') as string}
               ref={step2ButtonRef}
+              disabled={
+                businessLicenseOcrStatus === 'checking' ||
+                businessLicenseOcrStatus === 'failed'
+              }
             />
           </Form>
         )}

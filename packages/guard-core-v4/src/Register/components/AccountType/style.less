@@ -1,5 +1,14 @@
 .g2-register-account-type {
   min-height: 340px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  @media only screen and (max-height: 600px) {
+    min-height: auto;
+    max-height: calc(100vh - 24px);
+  }
+
   .g2-view-tabs {
     margin-bottom: 24px;
   }
@@ -25,6 +34,33 @@
 
     & svg {
       color: #878a95;
+    }
+  }
+
+  .authing-g2-business-license-form {
+    .authing-ant-upload-select-picture-card {
+      width: 100%;
+      height: 104px;
+      margin: 0;
+      border-radius: 4px;
+    }
+
+    .authing-ant-upload {
+      width: 100%;
+      color: #4e5969;
+      background: #f7f8fa;
+    }
+
+    img {
+      display: block;
+      max-height: 96px;
+      object-fit: contain;
+    }
+
+    .authing-ant-form-item-extra {
+      color: #86909c;
+      font-size: 13px;
+      line-height: 20px;
     }
   }
 }

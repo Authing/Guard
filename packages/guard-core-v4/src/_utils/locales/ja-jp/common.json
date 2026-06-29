@@ -188,7 +188,14 @@
     "businessRegistrationName": "商業登記名",
     "unifiedSocialCredit": "統一社会信用コード",
     "legalRepresentativeName": "法定代表者名",
-    "nationalIdentificationNumber": "法定代表者の身分証番号"
+    "nationalIdentificationNumber": "法定代表者の身分証番号",
+    "businessLicense": "営業許可証",
+    "uploadBusinessLicense": "営業許可証をアップロード",
+    "businessLicenseTip": "証明書の原本写真またはカラーのスキャン画像を提出してください。文字と印章が鮮明に判別できる必要があります。画像形式は jpg、jpeg、png、サイズは5M以下です",
+    "businessLicenseFormatError": "jpg、jpeg、png 形式の営業許可証画像をアップロードしてください",
+    "businessLicenseSizeError": "営業許可証画像は 5M 以下にしてください",
+    "businessLicenseOcrError": "営業許可証の認識に失敗しました。再アップロードしてください",
+    "businessLicenseOcrChecking": "営業許可証を認識中です。しばらくお待ちください"
   },
   "mfaCertification": "多要素認証",
   "emailMfaCheck": "メール認証コードを入力してください",

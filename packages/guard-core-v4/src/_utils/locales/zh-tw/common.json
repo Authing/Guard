@@ -186,7 +186,14 @@
     "businessRegistrationName": "工商登記名稱",
     "unifiedSocialCredit": "統一社會信用代碼",
     "legalRepresentativeName": "法人姓名",
-    "nationalIdentificationNumber": "法人身份證號"
+    "nationalIdentificationNumber": "法人身份證號",
+    "businessLicense": "營業執照",
+    "uploadBusinessLicense": "上傳營業執照",
+    "businessLicenseTip": "請提供證件的原件照片或彩色掃描件，文字/蓋章清晰可辨認。圖片格式要求 jpg、jpeg、png，大小不超過5M",
+    "businessLicenseFormatError": "請上傳 jpg、jpeg、png 格式的營業執照圖片",
+    "businessLicenseSizeError": "營業執照圖片大小不能超過 5M",
+    "businessLicenseOcrError": "營業執照識別失敗，請重新上傳",
+    "businessLicenseOcrChecking": "營業執照識別中，請稍候"
   },
   "mfaCertification": "多因素認證",
   "emailMfaCheck": "請輸入電子郵箱驗證碼",

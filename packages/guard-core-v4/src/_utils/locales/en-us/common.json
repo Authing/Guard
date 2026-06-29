@@ -188,7 +188,14 @@
     "businessRegistrationName": "Registered business name",
     "unifiedSocialCredit": "Unified Social Credit Code",
     "legalRepresentativeName": "Legal representative name",
-    "nationalIdentificationNumber": "Legal representative ID number"
+    "nationalIdentificationNumber": "Legal representative ID number",
+    "businessLicense": "Business license",
+    "uploadBusinessLicense": "Upload business license",
+    "businessLicenseTip": "Please provide an original photo or color scan of the document. Text and seal must be clear and readable. Supported formats: jpg, jpeg, png. Max size: 5M",
+    "businessLicenseFormatError": "Please upload a jpg, jpeg, or png business license image",
+    "businessLicenseSizeError": "Business license image must be smaller than 5M",
+    "businessLicenseOcrError": "Business license recognition failed. Please upload it again",
+    "businessLicenseOcrChecking": "Business license recognition is in progress. Please wait"
   },
   "mfaCertification": "Multi-factor authentication",
   "emailMfaCheck": "Please enter email verification code",

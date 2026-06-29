@@ -13,50 +13,87 @@ const { useState } = React
 export const UploadImage: React.FC<{
   value?: string
   onChange?: (value: string) => void
-}> = ({ value, onChange }) => {
+  uploadText?: string
+  accept?: string
+  folder?: string
+  beforeUpload?: (file: File) => boolean | Promise<boolean>
+  onUploaded?: (value: string) => void | Promise<void>
+  onUploadFailed?: () => void
+}> = ({
+  value,
+  onChange,
+  uploadText,
+  accept = 'image/*',
+  folder = 'photos',
+  beforeUpload,
+  onUploaded,
+  onUploadFailed
+}) => {
   const [uploading, setUploading] = useState(false)
   const { t } = useTranslation()
   const { host } = useGuardFinallyConfig()
 
-  const onStatusChange = (info: UploadChangeParam) => {
+  const onStatusChange = async (info: UploadChangeParam) => {
     const { status } = info.file
 
     if (status === 'uploading') {
       setUploading(true)
-    } else {
-      setUploading(false)
+      return
     }
 
     if (status === 'done') {
       const { code, message: errMsg, data } = info.file.response
       if (code !== 200) {
+        setUploading(false)
+        onUploadFailed?.()
         return message.error(errMsg)
       }
       const { url } = data
       onChange?.(url)
+      try {
+        await onUploaded?.(url)
+      } catch (error) {
+        message.error(
+          (error as Error)?.message ||
+            t('common.uploadFail', {
+              name: info.file.name
+            })
+        )
+      } finally {
+        setUploading(false)
+      }
     } else if (status === 'error') {
+      setUploading(false)
+      onUploadFailed?.()
       message.error(
         t('common.uploadFail', {
           name: info.file.name
         })
       )
+    } else {
+      setUploading(false)
     }
   }
 
   const uploadButton = (
     <div>
       <PlusOutlined />
-      <div style={{ marginTop: 8 }}>Upload</div>
+      <div style={{ marginTop: 8 }}>{uploadText ?? 'Upload'}</div>
     </div>
   )
 
   return (
     <Upload
       name="file"
-      accept="image/*"
+      accept={accept}
       listType="picture-card"
       showUploadList={false}
-      action={`${host}/api/v2/upload?folder=photos`}
+      action={`${host}/api/v2/upload?folder=${encodeURIComponent(folder)}`}
+      beforeUpload={async file => {
+        const valid = await beforeUpload?.(file)
+        if (valid === false) return false
+        return valid ?? true
+      }}
       onChange={onStatusChange}
     >
       <Spin size="small" spinning={uploading}>
