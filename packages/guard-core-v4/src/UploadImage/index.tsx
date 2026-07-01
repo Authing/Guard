@@ -17,6 +17,7 @@ export const UploadImage: React.FC<{
   accept?: string
   folder?: string
   beforeUpload?: (file: File) => boolean | Promise<boolean>
+  customUpload?: (file: File) => Promise<string>
   onUploaded?: (value: string) => void | Promise<void>
   onUploadFailed?: () => void
 }> = ({
@@ -26,6 +27,7 @@ export const UploadImage: React.FC<{
   accept = 'image/*',
   folder = 'photos',
   beforeUpload,
+  customUpload,
   onUploaded,
   onUploadFailed
 }) => {
@@ -88,7 +90,23 @@ export const UploadImage: React.FC<{
       accept={accept}
       listType="picture-card"
       showUploadList={false}
-      action={`${host}/api/v2/upload?folder=${encodeURIComponent(folder)}`}
+      action={
+        customUpload
+          ? undefined
+          : `${host}/api/v2/upload?folder=${encodeURIComponent(folder)}`
+      }
+      customRequest={
+        customUpload
+          ? async ({ file, onError, onSuccess }) => {
+              try {
+                const url = await customUpload(file as File)
+                onSuccess?.({ code: 200, data: { url } }, file as any)
+              } catch (error) {
+                onError?.(error as Error)
+              }
+            }
+          : undefined
+      }
       beforeUpload={async file => {
         const valid = await beforeUpload?.(file)
         if (valid === false) return false

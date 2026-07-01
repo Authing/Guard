@@ -36,6 +36,19 @@ interface TenantBusinessLicenseOcrData {
   businessRegistrationName?: string
   unifiedSocialCredit?: string
   legalRepresentativeName?: string
+  businessLicense?: string
+  businessLicenseUrl?: string
+  url?: string
+  fileUrl?: string
+  imageUrl?: string
+  file?: {
+    url?: string
+    fileUrl?: string
+  }
+  upload?: {
+    url?: string
+    fileUrl?: string
+  }
 }
 
 type BusinessLicenseOcrStatus = 'idle' | 'checking' | 'passed' | 'failed'
@@ -55,7 +68,7 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
 
   const config = useGuardFinallyConfig()
 
-  const { post } = useGuardHttpClient()
+  const { postForm } = useGuardHttpClient()
 
   const [form] = Form.useForm()
 
@@ -90,6 +103,7 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
       }
 
       setBusinessLicenseOcrStatus('checking')
+      form.setFieldsValue({ businessLicense: undefined })
       form.setFields([{ name: 'businessLicense', errors: [] }])
 
       return true
@@ -98,11 +112,11 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
   )
 
   const handleBusinessLicenseUploaded = useCallback(
-    async (businessLicense: string) => {
+    async (file: File): Promise<string> => {
       setBusinessLicenseOcrStatus('checking')
       form.setFields([{ name: 'businessLicense', errors: [] }])
 
-      const markBusinessLicenseOcrFailed = (errorMessage?: string) => {
+      const markBusinessLicenseOcrFailed = (errorMessage?: string): never => {
         const businessLicenseOcrErrorMessage =
           errorMessage ||
           (t('common.registerAccountType.businessLicenseOcrError') as string)
@@ -115,7 +129,11 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
           }
         ])
         message.error(businessLicenseOcrErrorMessage)
+        throw new Error(businessLicenseOcrErrorMessage)
       }
+
+      const formData = new FormData()
+      formData.append('file', file)
 
       const {
         statusCode,
@@ -123,32 +141,41 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
         data,
         message: errMessage,
         messages
-      } = await post<TenantBusinessLicenseOcrData>(
-        '/api/v3/tenant-enterprise-certification-ocr',
-        {
-          businessLicense
-        }
+      } = await postForm<TenantBusinessLicenseOcrData>(
+        '/api/v3/tenant-enterprise-certification-upload',
+        formData
       )
 
       if (statusCode !== 200 && code !== 200) {
         markBusinessLicenseOcrFailed(errMessage || messages)
-        return
       }
 
-      if (!data) {
-        markBusinessLicenseOcrFailed()
-        return
-      }
+      const ocrData = data || markBusinessLicenseOcrFailed()
+
+      const businessLicense =
+        ocrData.businessLicense ||
+        ocrData.businessLicenseUrl ||
+        ocrData.url ||
+        ocrData.fileUrl ||
+        ocrData.imageUrl ||
+        ocrData.file?.url ||
+        ocrData.file?.fileUrl ||
+        ocrData.upload?.url ||
+        ocrData.upload?.fileUrl
+
+      const businessLicenseUrl =
+        businessLicense || markBusinessLicenseOcrFailed()
 
       const ocrValues: TenantBusinessLicenseOcrData = {}
-      if (data.businessRegistrationName) {
-        ocrValues.businessRegistrationName = data.businessRegistrationName
+      ocrValues.businessLicense = businessLicenseUrl
+      if (ocrData.businessRegistrationName) {
+        ocrValues.businessRegistrationName = ocrData.businessRegistrationName
       }
-      if (data.unifiedSocialCredit) {
-        ocrValues.unifiedSocialCredit = data.unifiedSocialCredit
+      if (ocrData.unifiedSocialCredit) {
+        ocrValues.unifiedSocialCredit = ocrData.unifiedSocialCredit
       }
-      if (data.legalRepresentativeName) {
-        ocrValues.legalRepresentativeName = data.legalRepresentativeName
+      if (ocrData.legalRepresentativeName) {
+        ocrValues.legalRepresentativeName = ocrData.legalRepresentativeName
       }
 
       if (Object.keys(ocrValues).length > 0) {
@@ -157,8 +184,9 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
 
       setBusinessLicenseOcrStatus('passed')
       form.setFields([{ name: 'businessLicense', errors: [] }])
+      return businessLicenseUrl
     },
-    [form, post, t]
+    [form, postForm, t]
   )
 
   const flowHandle = useCallback(async (_content: any, btn: any) => {
@@ -475,7 +503,7 @@ export const GuardRegisterAccountTypeView: React.FC = () => {
                 accept="image/png, image/jpeg, image/jpg,.jpg,.jpeg,.png"
                 folder="tenant-enterprise-certification"
                 beforeUpload={beforeUploadBusinessLicense}
-                onUploaded={handleBusinessLicenseUploaded}
+                customUpload={handleBusinessLicenseUploaded}
                 onUploadFailed={() => setBusinessLicenseOcrStatus('failed')}
               />
             </Form.Item>
