@@ -63,6 +63,31 @@ function useLoginAccountBackFill(options: {
   >(() => {
     // oidc login_hint 优先级更高
     if (loginHint) {
+      const isEmailLoginHint = validate('email', loginHint)
+
+      // 账号可以填邮箱
+      if (
+        matchWay(
+          ['ad', 'ldap', 'ldap-email', 'email', 'email-code', 'password'],
+          way
+        ) &&
+        isEmailLoginHint
+      ) {
+        return {
+          account: loginHint,
+          areaCode: undefined,
+          matched: true
+        }
+      }
+
+      if (isEmailLoginHint) {
+        return {
+          account: '',
+          areaCode: undefined,
+          matched: false
+        }
+      }
+
       const phoneRes = phone(loginHint)
 
       // 账号可以填手机号
@@ -76,21 +101,6 @@ function useLoginAccountBackFill(options: {
         return {
           account: phoneRes.isValid ? phoneRes.phoneNumber : loginHint,
           areaCode: phoneRes.isValid ? phoneRes.countryCode : undefined,
-          matched: true
-        }
-      }
-
-      // 账号可以填邮箱
-      if (
-        matchWay(
-          ['ad', 'ldap', 'ldap-email', 'email', 'email-code', 'password'],
-          way
-        ) &&
-        validate('email', loginHint)
-      ) {
-        return {
-          account: loginHint,
-          areaCode: undefined,
           matched: true
         }
       }
