@@ -24,6 +24,8 @@ import { useCheckRepeat } from '../../../ValidatorRules/useCheckRepeat'
 
 import { parsePhone } from '../../../_utils/hooks'
 
+import { HttpStatusCode } from '../../../_utils/http'
+
 import { VerifyLoginMethods } from '../../../Type/application'
 
 import { ValidateStatus } from '../../../Login/interface'
@@ -73,6 +75,7 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
         checkExistErrorMessage: t('common.noFindEmail'),
         formatErrorMessage: t('login.inputCorrectPhone'),
         delayFindErrorMessage: t('common.emailorcodeError'),
+        requestErrorMessage: t('common.fetchError'),
         pattern: VALIDATE_PATTERN.email
       }
     else
@@ -82,6 +85,7 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
         checkExistErrorMessage: t('common.noFindPhone'),
         formatErrorMessage: t('login.inputCorrectPhone'),
         delayFindErrorMessage: t('common.phoneorcodeError'),
+        requestErrorMessage: t('common.fetchError'),
         pattern: phoneRegex || VALIDATE_PATTERN.phone
       }
   }, [currentMethod, phoneRegex, t])
@@ -100,12 +104,25 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
       )
       checkValue = phoneNumber
     }
-    get<boolean>('/api/v2/users/find', {
-      userPoolId: publicConfig?.userPoolId,
-      key: checkValue,
-      type: FindMethodConversion[currentMethod]
-    })
-      .then(({ data }) => {
+    get<boolean>(
+      '/api/v2/users/find',
+      {
+        userPoolId: publicConfig?.userPoolId,
+        key: checkValue,
+        type: FindMethodConversion[currentMethod]
+      },
+      {
+        validateStatus: () => true
+      }
+    )
+      .then(({ code, statusCode, message: errorMessage, data }) => {
+        const responseCode = statusCode ?? code
+
+        if (responseCode !== undefined && responseCode !== HttpStatusCode.OK) {
+          reject(errorMessage || methodContent.requestErrorMessage)
+          return
+        }
+
         if (checkExist) {
           if (Boolean(data)) {
             resolve(true)

@@ -18,6 +18,7 @@ import { phone } from 'phone'
 
 import { useCheckRepeat } from './useCheckRepeat'
 import { ValidateStatus } from '../Login/interface'
+import { HttpStatusCode } from '../_utils/http'
 
 const { useMemo, useState } = React
 
@@ -55,6 +56,7 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
         formatErrorMessage: t('common.emailFormatError'),
         checkExistErrorMessage: t('common.noFindEmail'),
         delayFindErrorMessage: t('common.emailorcodeError'),
+        requestErrorMessage: t('common.fetchError'),
         pattern: VALIDATE_PATTERN.email
       }
     else if (method === 'username') {
@@ -64,6 +66,7 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
         checkExistErrorMessage: t('common.noFindUsername'),
         formatErrorMessage: t('common.usernameFormatError'),
         delayFindErrorMessage: t('common.usernameError'),
+        requestErrorMessage: t('common.fetchError'),
         pattern: VALIDATE_PATTERN.username
       }
     } else if (method === 'phone') {
@@ -73,6 +76,7 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
         checkExistErrorMessage: t('common.noFindPhone'),
         formatErrorMessage: t('common.phoneFormateError'),
         delayFindErrorMessage: t('common.phoneorcodeError'),
+        requestErrorMessage: t('common.fetchError'),
         pattern:
           !isCheckPattern && publicConfig.internationalSmsConfig?.enabled
             ? /^[0-9]*$/
@@ -86,6 +90,7 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
       checkRepeatErrorMessage: t('common.checkCustomName'),
       checkExistErrorMessage: t('common.noFindUsername'),
       formatErrorMessage: t('common.customNameFormatError'),
+      requestErrorMessage: t('common.fetchError'),
       pattern: VALIDATE_PATTERN.username
     }
   }, [
@@ -101,12 +106,25 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
     resolve: (value: unknown) => void,
     reject: (reason?: any) => void
   ) => {
-    get<boolean>('/api/v2/users/find', {
-      userPoolId: publicConfig?.userPoolId,
-      key: value,
-      type: method
-    })
-      .then(({ data }) => {
+    get<boolean>(
+      '/api/v2/users/find',
+      {
+        userPoolId: publicConfig?.userPoolId,
+        key: value,
+        type: method
+      },
+      {
+        validateStatus: () => true
+      }
+    )
+      .then(({ code, statusCode, message: errorMessage, data }) => {
+        const responseCode = statusCode ?? code
+
+        if (responseCode !== undefined && responseCode !== HttpStatusCode.OK) {
+          reject(errorMessage || methodContent.requestErrorMessage)
+          return
+        }
+
         if (checkExist) {
           if (Boolean(data)) {
             resolve(true)
