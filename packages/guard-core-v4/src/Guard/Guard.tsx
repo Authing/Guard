@@ -69,7 +69,7 @@ export const GuardComponent = memo((props: GuardProps) => {
     // 如果 config.host 最后以斜杠结尾 则不拼接斜杠
 
     const AUTOTRACK_SCRIPT_URL =
-      'https://files.id.zjedu.gov.cn/authing-user-portal/sw.webjs.sdk/autotrack.js'
+      'https://files.id.zjedu.gov.cn/authing-fe-user-portal/sw.webjs.sdk/autotrack.js'
     const guardDocument = getDocumentNode(ref.current)
     const hasLoadedScript =
       guardDocument.querySelector(`script[src="${AUTOTRACK_SCRIPT_URL}"]`) ||
