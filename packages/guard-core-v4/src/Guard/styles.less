@@ -5,7 +5,28 @@
 .g2-view-container,
 .g2-password-reset-pageWrap,
 .g2-view-container-submit-success {
-  --guard-font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  // Font files and font-face declarations are owned by GenAuth Portal.
+  --guard-font-family: var(
+    --eak-font-ui-sans,
+    "ABC Ginto Normal",
+    ui-sans-serif,
+    system-ui,
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji"
+  );
+  --guard-heading-font-family: var(
+    --eak-font-display-serif,
+    "EB Garamond Variable",
+    ui-serif,
+    Georgia,
+    Cambria,
+    "Times New Roman",
+    Times,
+    serif
+  );
   --guard-primary: #305EE8;
   --guard-primary-hover: #284BD6;
   --guard-primary-active: #1F3FBB;
@@ -275,7 +296,7 @@
 
 // 侵入 core 的样式代码，guard view 皮肤
 .g2-view-container {
-  font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-family: var(--guard-font-family);
   box-shadow: 0px 0px 60px rgba(28, 28, 30, 0.06);
   background: #ffffff;
   display: flex;
@@ -1128,7 +1149,7 @@ input {
     align-self: flex-end;
   }
   .title {
-    font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font-family: var(--guard-heading-font-family) !important;
     font-style: normal;
     font-weight: 500;
     font-size: 18px;
@@ -1137,7 +1158,7 @@ input {
     margin-bottom: 4px;
   }
   .title-explain {
-    font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font-family: var(--guard-font-family);
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -1170,7 +1191,7 @@ input {
   }
   .genauth-g2-send-code-btn {
     width: 100%;
-    font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font-family: var(--guard-font-family);
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -1184,7 +1205,7 @@ input {
     }
   }
   .genauth-g2-send-code-btn span {
-    font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font-family: var(--guard-font-family);
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -1284,7 +1305,7 @@ input {
 //     padding: 0;
 //     margin-bottom: 32px;
 //     .title {
-//       font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+//       font-family: var(--guard-heading-font-family);
 //       font-style: normal;
 //       font-weight: 500;
 //       font-size: 24px;
@@ -1292,7 +1313,7 @@ input {
 //       color: #1C1C1E;
 //     }
 //     .title-explain {
-//       font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+//       font-family: var(--guard-font-family);
 //       font-style: normal;
 //       font-weight: 400;
 //       font-size: 14px;
@@ -1302,7 +1323,7 @@ input {
 //     }
 //   }
 //   .genauth-g2-send-code-btn {
-//     font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+//     font-family: var(--guard-font-family);
 //     font-style: normal;
 //     font-weight: 400;
 //     font-size: 14px;
@@ -1365,7 +1386,7 @@ input {
     margin-bottom: 16px;
   }
   .success-page-title {
-    font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font-family: var(--guard-heading-font-family) !important;
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
@@ -1374,7 +1395,7 @@ input {
     color: #1C1C1E;
   }
   .success-page-message {
-    font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font-family: var(--guard-font-family);
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -1395,7 +1416,7 @@ input {
     margin-bottom: 16px;
   }
   .success-page-timer-tip {
-    font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font-family: var(--guard-font-family);
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -1409,9 +1430,13 @@ input {
 .g2-view-container .genauth-g2-mfa-title,
 .g2-view-container .genauth-g2-join-title,
 .g2-view-container-submit-success .success-page-title,
-.g2-questions-send-success-page .title {
+.g2-questions-send-success-page .title,
+.g2-view-container .g2-view-reset-username__title,
+.g2-view-container .g2-view-identity-binding-content-title,
+.g2-view-container .g2-view-identity-binding-ask-content-title,
+.g2-view-container .g2-view-invite-header .title {
   color: var(--guard-text-heading);
-  font-family: var(--guard-font-family);
+  font-family: var(--guard-heading-font-family) !important;
   font-size: 18px;
   font-weight: 500;
   line-height: 24px;

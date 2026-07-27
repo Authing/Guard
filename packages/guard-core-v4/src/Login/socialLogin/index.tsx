@@ -299,10 +299,6 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
         ></GuardButton>
       ) : (
         <Tooltip
-          overlayStyle={{
-            fontFamily:
-              '"Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif'
-          }}
           key={item.id}
           title={
             item.displayName ||
