@@ -417,7 +417,7 @@ const FacePhotoMfa: React.FC<any & { autoStart?: boolean }> = (props: any) => {
   }, [autoStart, faceState, mfaBackContext, autoShoot, t])
 
   return (
-    <div>
+    <div className="g2-mfa-face-liveness">
       <h3 className="authing-g2-mfa-title">{t('common.mfaCertification')}</h3>
       {faceState === 'ready' || mfaBackContext?.mfaBackState === 'login' ? (
         <>
@@ -735,7 +735,7 @@ export const MFAFace = (props: any) => {
   }
 
   return (
-    <div>
+    <div className="g2-mfa-face-liveness">
       <h3 className="authing-g2-mfa-title">{t('common.mfaCertification')}</h3>
 
       {livenessResult && renderResult()}
@@ -751,7 +751,6 @@ export const MFAFace = (props: any) => {
             alt=""
           />
 
-          <p className="authing-g2-mfa-tips">{t('common.faceCheck')}</p>
           <SubmitButton
             onClick={() => {
               startLivenessCheck()

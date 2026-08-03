@@ -15,6 +15,27 @@
   min-height: 23px;
 }
 
+.g2-mfa-face-liveness {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  width: 100%;
+  min-width: 0;
+
+  > .authing-g2-mfa-title,
+  > .authing-g2-mfa-tips,
+  > .g2-mfa-face-result {
+    flex: none;
+    width: 100%;
+    min-width: 0;
+  }
+
+  > .authing-aws-face-liveness {
+    flex: none;
+    align-self: center;
+  }
+}
+
 .g2-mfa-content {
   margin: 0 38px;
 

@@ -21,13 +21,30 @@ import '@aws-amplify/ui-react/styles.css'
 // Override AWS liveness detector styles and remove the top whitespace.
 const overrideStyles = `
   .authing-aws-face-liveness {
-    --authing-liveness-face-size: min(68vw, 300px);
+    --authing-liveness-face-size: min(100%, 300px);
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  .authing-aws-face-liveness *,
+  .authing-aws-face-liveness *::before,
+  .authing-aws-face-liveness *::after {
+    box-sizing: border-box;
+  }
+
+  .authing-aws-face-liveness .liveness-detector,
+  .authing-aws-face-liveness .liveness-detector-check {
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   /* Remove the liveness-detector-check gap. */
   .authing-aws-face-liveness .liveness-detector-check.amplify-flex {
     gap: 0 !important;
     align-items: center !important;
+    justify-content: center !important;
   }
   /* Hide the start screen warning without occupying space. */
   .authing-aws-face-liveness .amplify-liveness-start-screen-warning {
@@ -47,7 +64,30 @@ const overrideStyles = `
     border: 0 !important;
     border-radius: 50% !important;
     background: transparent !important;
-    overflow: visible !important;
+    overflow: hidden !important;
+    flex: 0 0 var(--authing-liveness-face-size) !important;
+    margin: 0 auto !important;
+  }
+
+  /* AWS switches to a viewport-fixed camera on mobile user agents. Guard must
+     keep that camera inside its own card instead of pinning it to the page. */
+  .authing-aws-face-liveness .amplify-liveness-camera-module--mobile {
+    position: relative !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    z-index: auto !important;
+  }
+
+  .authing-aws-face-liveness .amplify-liveness-oval-canvas--mobile {
+    position: absolute !important;
+    inset: 0 !important;
+  }
+
+  .authing-aws-face-liveness .amplify-liveness-hint--mobile {
+    margin-top: 0 !important;
   }
   .authing-aws-face-liveness .amplify-liveness-video-anchor {
     width: 100% !important;
@@ -85,6 +125,102 @@ const overrideStyles = `
     height: 100% !important;
     min-height: auto !important;
     margin: 0 !important;
+    padding: 16px !important;
+    overflow: hidden !important;
+    display: block !important;
+  }
+
+  .authing-aws-face-liveness .amplify-liveness-hint {
+    position: absolute !important;
+    top: 16px !important;
+    left: 50% !important;
+    width: calc(100% - 96px) !important;
+    max-width: calc(100% - 96px) !important;
+    min-width: 0 !important;
+    justify-content: center !important;
+    transform: translateX(-50%) !important;
+    z-index: 3 !important;
+  }
+
+  .authing-aws-face-liveness .amplify-liveness-hint__text,
+  .authing-aws-face-liveness .amplify-liveness-toast,
+  .authing-aws-face-liveness .amplify-liveness-toast__message {
+    width: auto !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    text-align: center !important;
+  }
+
+  .authing-aws-face-liveness .amplify-liveness-toast {
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+    line-height: 20px !important;
+  }
+
+  .authing-aws-face-liveness .amplify-liveness-start-screen-camera-select,
+  .authing-aws-face-liveness .amplify-liveness-start-screen-camera-select__container {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    justify-content: center !important;
+  }
+
+  .authing-aws-face-liveness .amplify-liveness-start-screen-camera-select__label {
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+  }
+
+  .authing-aws-face-liveness #amplify-liveness-camera-select {
+    width: auto !important;
+    max-width: 190px !important;
+    min-width: 0 !important;
+  }
+
+  .authing-aws-face-liveness .amplify-liveness-cancel-container {
+    top: 12px !important;
+    right: 12px !important;
+  }
+
+  .authing-aws-face-liveness .amplify-liveness-cancel-button {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    padding: 8px !important;
+    color: #ffffff !important;
+    background: rgba(0, 0, 0, 0.32) !important;
+    border-radius: 50% !important;
+  }
+
+  .authing-aws-face-liveness .amplify-liveness-recording-icon-container {
+    top: auto !important;
+    bottom: 16px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+
+  .authing-aws-face-liveness .amplify-liveness-match-indicator {
+    position: absolute !important;
+    top: 64px !important;
+    left: 50% !important;
+    width: calc(100% - 64px) !important;
+    max-width: 220px !important;
+    transform: translateX(-50%) !important;
+  }
+
+  /* Keep screen-reader-only status copy from entering the visual flex layout. */
+  .authing-aws-face-liveness .amplify-visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    clip-path: inset(50%) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
   }
   /* Remove extra spacing from the camera module container. */
   .authing-aws-face-liveness .amplify-liveness-camera-module {
@@ -95,7 +231,7 @@ const overrideStyles = `
 
   @media (max-width: 420px) {
     .authing-aws-face-liveness {
-      --authing-liveness-face-size: min(76vw, 300px);
+      --authing-liveness-face-size: min(100%, 280px);
     }
   }
 `
@@ -251,7 +387,7 @@ export const AwsFaceLivenessDetector: React.FC<
     })
 
     return () => observer.disconnect()
-  }, [t])
+  }, [isLoaded, t])
 
   // Credential provider.
   const credentialProvider: AwsCredentialProvider = async () => {
@@ -322,7 +458,7 @@ export const AwsFaceLivenessDetector: React.FC<
       <div
         ref={detectorContainerRef}
         className="authing-aws-face-liveness"
-        style={{ width: '100%', maxWidth: 480, margin: '0 auto' }}
+        style={{ width: '100%', maxWidth: '100%', margin: '0 auto' }}
       >
         <FaceLivenessDetectorCore
           sessionId={sessionId}
