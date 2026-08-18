@@ -10,7 +10,7 @@ const App = () => {
 
   const config: Partial<GuardLocalConfig> = {
     host:'https://katl4b6bith2-demo.genauth.localhost',
-    defaultScenes: GuardModuleType.REGISTER
+    langRange: ['zh-CN', 'en-US']
   }
 
   const onLogin = (userInfo: User) => {

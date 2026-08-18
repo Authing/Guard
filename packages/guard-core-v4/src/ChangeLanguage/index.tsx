@@ -97,9 +97,10 @@ export const ChangeLanguage = (props: {
     }
   }
 
-  const menuProps = {
+  const menuProps: MenuProps = {
     items,
-    onClick: handleMenuClick
+    onClick: handleMenuClick,
+    selectedKeys: [currentLng]
   }
 
   return (

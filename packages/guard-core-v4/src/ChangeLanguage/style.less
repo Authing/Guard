@@ -7,10 +7,11 @@
 .genauth-g2-change-language-menu {
   background-color: #fff;
   width: 115px;
+  box-sizing: border-box;
   border-radius: var(--guard-radius-dropdown);
   padding: 6px;
-  border: 1px solid #D1D1D6;
-  box-shadow: 0px 10px 20px -10px rgba(28, 28, 30, 0.08);
+  border: 0;
+  box-shadow: 0px 0px 30px rgba(28, 28, 30, 0.12);
   overflow: hidden;
   user-select: none;
 }
@@ -31,21 +32,31 @@
   }
 }
 
-.genauth-g2-change-language-menu ul {
-  box-shadow: unset;
-  padding: 0px;
+.genauth-g2-change-language-menu .genauth-ant-dropdown-menu {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0;
 
-  li {
-    padding: 9px 10px;
+  .genauth-ant-dropdown-menu-item {
+    min-height: 36px;
+    padding: 7px 10px;
     margin: 0;
     font-size: 14px;
-    width: 100px;
+    line-height: 22px;
+    width: 100%;
+    box-sizing: border-box;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    color: var(--guard-text-primary);
 
-    &:hover {
-      background-color: #F5F5F7;
+    &:hover,
+    &.genauth-ant-dropdown-menu-item-active {
+      background-color: var(--guard-bg-muted);
       border-radius: var(--guard-radius-menu);
     }
 
@@ -55,11 +66,13 @@
     }
   }
 
-  li.select {
-    color: #305EE8;
+  .genauth-ant-dropdown-menu-item-selected {
+    background-color: var(--guard-bg-muted);
+    border-radius: var(--guard-radius-menu);
+    color: var(--guard-primary);
 
     svg {
-      color: #305EE8;
+      color: var(--guard-primary);
     }
   }
 }
