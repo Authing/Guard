@@ -25,7 +25,11 @@ import { MFABackStateContext } from '../context'
 
 import { getFacePlugin } from '../../_utils/facePlugin'
 
-import { useGuardButtonState, useGuardPublicConfig } from '../../_utils/context'
+import {
+  useGuardButtonState,
+  useGuardPublicConfig,
+  useGuardAppId
+} from '../../_utils/context'
 
 import { MfaBusinessAction, useMfaBusinessRequest } from '../businessRequest'
 
@@ -70,6 +74,18 @@ const shouldRetryFaceRequest = (result?: any) => {
     result.code === -1 ||
     result.code === -2
   )
+}
+
+// Serialize the whole error object for reporting.
+// Error's message/name are non-enumerable, plain JSON.stringify would output "{}".
+const stringifyError = (error: any): string => {
+  if (!error) return ''
+  if (typeof error === 'string') return error
+  try {
+    return JSON.stringify(error, Object.getOwnPropertyNames(error))
+  } catch {
+    return String(error)
+  }
 }
 
 /**
@@ -526,6 +542,8 @@ export const MFAFace = (props: any) => {
   const mfaBusinessRequest = useMfaBusinessRequest()
 
   const { spinChange } = useGuardButtonState()
+  const { post } = useGuardHttp()
+  const appId = useGuardAppId()
 
   const [isFacePhotoPhase, setIsFacePhotoPhase] = useState(false)
 
@@ -661,7 +679,32 @@ export const MFAFace = (props: any) => {
     await fetchLivenessResult()
   }
 
+  // Report bg liveness detection errors to /trackevent.
+  // Fire-and-forget: reporting failures must not affect the main flow.
+  const reportLivenessErrorEvent = (error: any) => {
+    const userPoolId = publicConfig?.userPoolId
+    if (!userPoolId) return
+
+    post('/trackevent', {
+      event: 'bg_face_liveness_error',
+      userPoolId,
+      ua: navigator.userAgent,
+      profile: {
+        // bg 活体检测标识
+        source: 'bg',
+        module: 'faceLiveness',
+        appId,
+        errorName: error?.name,
+        errorMessage: error?.message,
+        errorCode: error?.code,
+        error: stringifyError(error),
+        sessionId: livenessSessionId ?? undefined
+      }
+    }).catch(() => undefined)
+  }
+
   const handleLivenessError = async (error: any) => {
+    reportLivenessErrorEvent(error)
     message.error(error.message || t('common.faceLiveness.analysisError'))
     setLivenessSessionId(null)
     setIsFacePhotoPhase(false)
