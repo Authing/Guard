@@ -63,3 +63,5 @@ export interface GuardLoginInitData {
 export const getDefaultLoginConfig = (): LoginConfig => ({
   ...getDefaultG2Config()
 })
+
+export type ValidateStatus = undefined | 'validating'

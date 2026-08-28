@@ -229,5 +229,8 @@
   "reVerify": "reverify",
   "inviteExpired": "The current invitation link has expired. Please contact the relevant administrator to resend the invitation for you.",
   "pageExpired": "The current page has expired. Please click the invitation link again to enter",
-  "inviteSuccess": "Successfully joined, please check your email. Please complete the login based on the information in the email."
+  "inviteSuccess": "Successfully joined, please check your email. Please complete the login based on the information in the email.",
+  "emailorcodeError": "Email address or verification code is incorrect",
+  "phoneorcodeError": "Phone number or verification code is incorrect",
+  "usernameError": "Username is incorrect"
 }

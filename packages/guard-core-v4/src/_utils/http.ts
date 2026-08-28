@@ -28,6 +28,11 @@ export interface AuthingGuardResponse<T = any> extends AuthingResponse<T> {
   isFlowEnd?: boolean
 }
 
+export enum HttpStatusCode {
+  OK = 200,
+  TOO_MANY_REQUESTS = 429
+}
+
 const timeoutAction = (cancel: CancelTokenSource['cancel']) => {
   const timer = 10
   return new Promise(resolve => {

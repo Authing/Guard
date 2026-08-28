@@ -1,12 +1,14 @@
 import { FormItemProps, Rule } from 'shim-antd/lib/form'
 
-import { Form } from 'shim-antd'
+import { Form, message } from 'shim-antd'
 
 import { React } from 'shim-react'
 
 import { useTranslation } from 'react-i18next'
 
 import CustomFormItem from '../../../ValidatorRules'
+
+// Add ValidateStatus type definition
 
 import { fieldRequiredRule, VALIDATE_PATTERN } from '../../../_utils'
 
@@ -22,9 +24,13 @@ import { useCheckRepeat } from '../../../ValidatorRules/useCheckRepeat'
 
 import { parsePhone } from '../../../_utils/hooks'
 
+import { HttpStatusCode } from '../../../_utils/http'
+
 import { VerifyLoginMethods } from '../../../Type/application'
 
-const { useMemo } = React
+import { ValidateStatus } from '../../../Login/interface'
+
+const { useMemo, useState } = React
 
 export interface FormItemIdentifyProps extends FormItemProps {
   checkRepeat?: boolean // 重复性校验
@@ -51,6 +57,8 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
   const publicConfig = useGuardPublicConfig()
   const { t } = useTranslation()
 
+  const [validateStatus, setValidateStatus] = useState<ValidateStatus>()
+
   const { get } = useGuardHttpClient()
 
   const phoneRegex = useGuardPhoneRegex()
@@ -66,6 +74,8 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
         checkRepeatErrorMessage: t('common.checkEmail'),
         checkExistErrorMessage: t('common.noFindEmail'),
         formatErrorMessage: t('login.inputCorrectPhone'),
+        delayFindErrorMessage: t('common.emailorcodeError'),
+        requestErrorMessage: t('common.fetchError'),
         pattern: VALIDATE_PATTERN.email
       }
     else
@@ -74,6 +84,8 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
         checkRepeatErrorMessage: t('common.checkPhone'),
         checkExistErrorMessage: t('common.noFindPhone'),
         formatErrorMessage: t('login.inputCorrectPhone'),
+        delayFindErrorMessage: t('common.phoneorcodeError'),
+        requestErrorMessage: t('common.fetchError'),
         pattern: phoneRegex || VALIDATE_PATTERN.phone
       }
   }, [currentMethod, phoneRegex, t])
@@ -92,22 +104,54 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
       )
       checkValue = phoneNumber
     }
-    get<boolean>('/api/v2/users/find', {
-      userPoolId: publicConfig?.userPoolId,
-      key: checkValue,
-      type: FindMethodConversion[currentMethod]
-    }).then(({ data }) => {
-      if (checkExist) {
-        Boolean(data)
-          ? resolve(true)
-          : reject(methodContent.checkExistErrorMessage)
+    get<boolean>(
+      '/api/v2/users/find',
+      {
+        userPoolId: publicConfig?.userPoolId,
+        key: checkValue,
+        type: FindMethodConversion[currentMethod]
+      },
+      {
+        validateStatus: () => true
       }
-      if (checkRepeat) {
-        Boolean(data)
-          ? reject(methodContent.checkRepeatErrorMessage)
-          : resolve(true)
-      }
-    })
+    )
+      .then(({ code, statusCode, message: errorMessage, data }) => {
+        const responseCode = statusCode ?? code
+
+        if (responseCode !== undefined && responseCode !== HttpStatusCode.OK) {
+          reject(errorMessage || methodContent.requestErrorMessage)
+          return
+        }
+
+        if (checkExist) {
+          if (Boolean(data)) {
+            resolve(true)
+          } else {
+            // 对该场景 主要是阻止表单 onfinish 执行 但不要触发 form error
+            if (publicConfig?.closeCheckSendUser) {
+              setValidateStatus('validating')
+              message.error(methodContent.delayFindErrorMessage)
+            } else {
+              reject(methodContent.checkExistErrorMessage)
+            }
+          }
+        }
+        if (checkRepeat) {
+          if (Boolean(data)) {
+            if (publicConfig?.closeCheckSendUser) {
+              setValidateStatus('validating')
+              message.error(methodContent.delayFindErrorMessage)
+            } else {
+              reject(methodContent.checkRepeatErrorMessage)
+            }
+          } else {
+            resolve(true)
+          }
+        }
+      })
+      .finally(() => {
+        setValidateStatus(undefined)
+      })
   }
 
   const checkRepeatFn = useCheckRepeat(checkRepeatRet)
@@ -168,6 +212,7 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
           validateTrigger={['onBlur', 'onChange']}
           validateFirst={true}
           rules={rules}
+          validateStatus={validateStatus}
           {...formItemProps}
         />
       )
@@ -177,6 +222,7 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
         return (
           <CustomFormItem.Phone
             {...formItemProps}
+            validateStatus={validateStatus}
             areaCode={areaCode}
             checkRepeat={checkRepeat}
             checkExist={checkExist}
@@ -186,6 +232,7 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
         return (
           <CustomFormItem.Email
             {...formItemProps}
+            validateStatus={validateStatus}
             checkRepeat={checkRepeat}
             checkExist={checkExist}
           />

@@ -313,7 +313,12 @@ export const RegisterWithEmailCode: React.FC<RegisterWithEmailCodeProps> = ({
             fieldName={'email'}
             form={form}
             onSendCodeBefore={async () => {
-              await form.validateFields(['email'])
+              // closeCheckSendUser 开启时，由 onFinish 统一校验
+              if (!publicConfig?.closeCheckSendUser) {
+                await form.validateFields(['email'])
+              } else {
+                Promise.resolve(true)
+              }
             }}
           />
         </Form.Item>
