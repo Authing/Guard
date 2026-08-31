@@ -5,7 +5,7 @@ import { React, render } from 'shim-react'
 import * as facePlugin from 'face-api.js'
 
 const App = () => {
-  const appId = '6a3b8fdbe9aa5c842c7cf328'
+  const appId = '6a7d896b7c4b6307791ab555'
   // const deviceId = 'DEVICE_ID' //如要使用必须使用开启元数据对的 用户池 测试
 
 //   const config: Partial<GuardLocalConfig> = {
@@ -103,8 +103,7 @@ const App = () => {
 
 
     const config: Partial<GuardLocalConfig> = {
-        host:'https://a.authing.demo',
-        defaultScenes: GuardModuleType.REGISTER,
+        host:'https://zlmo8lf6huhi.authing.demo',
     
     }
   const onLogin = (userInfo: User) => {

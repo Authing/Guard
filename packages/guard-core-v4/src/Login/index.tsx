@@ -89,6 +89,7 @@ import { getGuardWindow } from '../Guard/core/useAppendConfig'
 
 import { LoginWithDingTalkQrcode } from './core/withDingTalkQrcode'
 import { LoginWithZjQrcode } from './core/withZjQrcode'
+import { LoginWithIShenzhenQrcode } from './core/withIShenzhenQrcode'
 import { supported } from '@github/webauthn-json'
 import { PasskeyButton } from './socialLogin/PasskeyButton'
 import { LAST_USED_IDP } from '../Guard/core/hooks/useMultipleAccounts'
@@ -113,7 +114,9 @@ const qrcodeWays = [
   LoginMethods.WECHATWORKAGENCYQRCONNECT,
   LoginMethods.WECHATWORKQRCONNECTOFAUTHINGAGENCY,
   LoginMethods.DingTalkQrcode,
-  LoginMethods.ZJZWFWQrcode
+  LoginMethods.ZJZWFWQrcode,
+  LoginMethods.IShenzhenPersonalQrcode,
+  LoginMethods.IShenzhenCorporateQrcode
 ]
 /**
  * 作为内嵌登录方式的身份源链接
@@ -125,7 +128,9 @@ const renderQrcodeByIdentify = [
   LoginMethods.WechatworkCorpQrconnect,
   LoginMethods.WECHATWORKAGENCYQRCONNECT,
   LoginMethods.WECHATWORKQRCONNECTOFAUTHINGAGENCY,
-  LoginMethods.ZJZWFWQrcode
+  LoginMethods.ZJZWFWQrcode,
+  LoginMethods.IShenzhenPersonalQrcode,
+  LoginMethods.IShenzhenCorporateQrcode
 ] as const
 
 type QrCodeUnionType = (typeof renderQrcodeByIdentify)[number]
@@ -313,11 +318,9 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       return defaultQrWay
     }
     if (renderQrcodeByIdentify.includes(defaultMethod)) {
-      const id = qrcodeTabsSettings?.[defaultMethod as LoginMethods]?.find(
-        (i: { id: string; title: string; isDefault?: boolean | undefined }) =>
-          i.isDefault
-      )?.id
-      return defaultMethod + id
+      const items = qrcodeTabsSettings?.[defaultMethod as LoginMethods]
+      const item = items?.find(i => i.isDefault) || items?.[0]
+      return item ? defaultMethod + item.id : defaultMethod
     } else {
       return defaultMethod
     }
@@ -792,6 +795,38 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     [canLoop, multipleInstance, onLoginSuccess, t]
   )
 
+  const IShenzhenQrTab = useCallback(
+    (item: QrCodeItem) => {
+      const loginMethod = item.type as
+        | LoginMethods.IShenzhenPersonalQrcode
+        | LoginMethods.IShenzhenCorporateQrcode
+
+      return (
+        <Tabs.TabPane
+          key={loginMethod + item.id}
+          tab={
+            item.title ??
+            t(
+              loginMethod === LoginMethods.IShenzhenCorporateQrcode
+                ? 'login.iShenzhenCorporateLogin'
+                : 'login.iShenzhenPersonalLogin'
+            )
+          }
+        >
+          <LoginWithIShenzhenQrcode
+            canLoop={canLoop}
+            connectionId={item.id}
+            loginMethod={loginMethod}
+            multipleInstance={multipleInstance}
+            onLoginSuccess={onLoginSuccess}
+            qrConfig={item.QRConfig}
+          />
+        </Tabs.TabPane>
+      )
+    },
+    [canLoop, multipleInstance, onLoginSuccess, t]
+  )
+
   const WechatMpQrTab = useCallback(
     (item: QrCodeItem) => {
       return (
@@ -953,25 +988,30 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
           type: LoginMethods.WECHATWORKAGENCYQRCONNECT
         }),
       [LoginMethods.DingTalkQrcode]: DTQrTab,
-      [LoginMethods.ZJZWFWQrcode]: ZjQrTab
+      [LoginMethods.ZJZWFWQrcode]: ZjQrTab,
+      [LoginMethods.IShenzhenPersonalQrcode]: (item: QrCodeItem) =>
+        IShenzhenQrTab({
+          ...item,
+          type: LoginMethods.IShenzhenPersonalQrcode
+        }),
+      [LoginMethods.IShenzhenCorporateQrcode]: (item: QrCodeItem) =>
+        IShenzhenQrTab({
+          ...item,
+          type: LoginMethods.IShenzhenCorporateQrcode
+        })
     }
-  }, [AppQrTab, WechatMpQrTab, WxMiniQrTab])
+  }, [
+    AppQrTab,
+    DTQrTab,
+    IShenzhenQrTab,
+    WechatMpQrTab,
+    WeComQrTab,
+    WxMiniQrTab,
+    ZjQrTab
+  ])
 
   const CodeLoginComponent = useMemo(() => {
-    const qrCodeMap: {
-      [name: string]: {
-        type: QrCodeUnionType
-        title: string
-        id: string
-        QRConfig?: {
-          corpId: string
-          agentId: string
-          redirectUrl: string
-          identifier: string
-          clientId?: string
-        }
-      }
-    } = {}
+    const qrCodeMap: Record<string, QrCodeItem & { type: QrCodeUnionType }> = {}
 
     Object.keys(qrcodeTabsSettings).forEach(key => {
       qrcodeTabsSettings[key as LoginMethods].forEach(item => {
@@ -984,8 +1024,25 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       })
     })
 
-    const loginMethodsSort =
-      publicConfig.qrCodeSortConfig?.loginMethodsSort || []
+    const loginMethodsSort = [
+      ...(publicConfig.qrCodeSortConfig?.loginMethodsSort || [])
+    ]
+
+    const fallbackSort = (ms || []).flatMap(method => {
+      if (!qrcodeWays.includes(method)) {
+        return []
+      }
+      if (method === LoginMethods.AppQr) {
+        return [LoginMethods.AppQr]
+      }
+      return (qrcodeTabsSettings?.[method] || []).map(item => item.id)
+    })
+
+    fallbackSort.forEach(key => {
+      if (!loginMethodsSort.includes(key)) {
+        loginMethodsSort.push(key)
+      }
+    })
 
     const sortWithType = (loginMethodsSort || []).map(key => {
       return {
@@ -1002,16 +1059,21 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       const item = loginMethodsSort.splice(position, 1)
       loginMethodsSort.unshift(item[0])
     }
-    return (loginMethodsSort || []).map(key => {
-      return qrCodeMap[key]
-        ? QrCodeTabMap[qrCodeMap[key].type]?.(qrCodeMap[key])
-        : QrCodeTabMap[LoginMethods.AppQr]()
-    })
+    return (loginMethodsSort || [])
+      .map(key => {
+        return qrCodeMap[key]
+          ? QrCodeTabMap[qrCodeMap[key].type]?.(qrCodeMap[key])
+          : key === LoginMethods.AppQr
+          ? QrCodeTabMap[LoginMethods.AppQr]()
+          : null
+      })
+      .filter(Boolean)
   }, [
     QrCodeTabMap,
     qrcodeTabsSettings,
     publicConfig.qrCodeSortConfig?.loginMethodsSort,
-    defaultMethod
+    defaultMethod,
+    ms
   ])
 
   useEffect(() => {
@@ -1295,7 +1357,18 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
                         defaultActiveKey={defaultQrCodeWay}
                         onChange={(k: any) => {
                           message.destroy()
-                          events?.onLoginTabChange?.(k)
+                          const method = qrcodeWays.find(qrcodeMethod => {
+                            if (qrcodeMethod === LoginMethods.AppQr) {
+                              return k === qrcodeMethod
+                            }
+                            return qrcodeTabsSettings?.[qrcodeMethod]?.some(
+                              item => qrcodeMethod + item.id === k
+                            )
+                          })
+                          if (method) {
+                            setLoginWay(method)
+                            events?.onLoginTabChange?.(method)
+                          }
                         }}
                       >
                         {CodeLoginComponent}

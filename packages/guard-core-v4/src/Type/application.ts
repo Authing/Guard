@@ -20,7 +20,9 @@ export enum LoginMethods {
   WECHATWORKAGENCYQRCONNECT = 'wechatwork-agency-qrcode', // 代开发形式的内部应用
   DingTalkQrcode = 'dingtalk-qrcode', //钉钉扫码
   Passkey = 'passkey', // passkey
-  ZJZWFWQrcode = 'zjzwfw-qrcode' // 浙江政务钉
+  ZJZWFWQrcode = 'zjzwfw-qrcode', // 浙江政务钉
+  IShenzhenPersonalQrcode = 'i-shenzhen-personal-qrcode', // i 深圳个人扫码登录
+  IShenzhenCorporateQrcode = 'i-shenzhen-corporate-qrcode' // i 深圳法人扫码登录
 }
 
 export enum OIDCConnectionMode {
@@ -155,12 +157,14 @@ export interface QrCodeItem {
   isDefault?: boolean
   type?: LoginMethods
   QRConfig?: {
-    corpId: string
-    agentId: string
-    redirectUrl: string
-    identifier: string
+    corpId?: string
+    agentId?: string
+    redirectUrl?: string
+    identifier?: string
     clientId?: string
     authorizationUrl?: string
+    subjectType?: 'personal' | 'corporate'
+    generateUrl?: string
   }
 }
 

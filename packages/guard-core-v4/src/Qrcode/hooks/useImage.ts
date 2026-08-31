@@ -34,7 +34,13 @@ const useImage = (
   // 每次 render 都会请求 不应该
   useEffect(() => {
     if (src) {
-      preFetchImage()
+      // i 深圳等二维码接口直接返回 Data URL，无需再发起 XHR。
+      if (src.startsWith('data:image/')) {
+        setBaseUrl(src)
+        onLoad?.()
+      } else {
+        preFetchImage()
+      }
     }
   }, [src])
 

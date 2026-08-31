@@ -43,7 +43,9 @@ const MULTIPLE_ACCOUNT_LISTS: LoginWay[] = [
 export const QR_CODE_WAY: LoginWay[] = [
   'wechat-miniprogram-qrcode',
   'wechatmp-qrcode',
-  'app-qrcode'
+  'app-qrcode',
+  'i-shenzhen-personal-qrcode',
+  'i-shenzhen-corporate-qrcode'
 ]
 
 // 展示多账号时 默认排除的登录方式
@@ -64,6 +66,8 @@ export type LoginWay =
   | 'wechatmp-qrcode' // 公众号扫码登录方式
   | 'app-qrcode' // App 扫码登录方式
   | 'zjzwfw-qrcode' // 浙里办 扫码登录方式
+  | 'i-shenzhen-personal-qrcode' // i 深圳个人扫码登录
+  | 'i-shenzhen-corporate-qrcode' // i 深圳法人扫码登录
   | 'ad' // AD 登录方式
   | 'ldap' // LDAP 登录方式
   | 'ldap-password'
@@ -374,6 +378,8 @@ class MultipleAccount {
       'wechatmp-qrcode': 'wechatmp-qrcode',
       'zjzwfw-qrcode': 'zjzwfw-qrcode',
       'app-qrcode': 'app-qrcode',
+      'i-shenzhen-personal-qrcode': 'i-shenzhen-personal-qrcode',
+      'i-shenzhen-corporate-qrcode': 'i-shenzhen-corporate-qrcode',
       'authing-otp-push': 'authing-otp-push'
     }
     if (front !== 'social') {
