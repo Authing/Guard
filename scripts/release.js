@@ -103,6 +103,10 @@ async function callShell(args) {
         `npm ci && npm install --save-exact @authing/native-js-ui-components@${version} && npm run build:lib`,
     },
   ]
+  const versionPackageDirs = [
+    'guard-core-v4',
+    ...packages.map(({ dir }) => dir),
+  ]
 
   if (!version) {
     console.error('missing required argument: version')
@@ -120,11 +124,16 @@ async function callShell(args) {
   }
 
   try {
-    packages.forEach(({ dir }) => {
-      runInPackage(
-        dir,
-        `npm version ${version} --no-git-tag-version --allow-same-version`
+    versionPackageDirs.forEach(dir => {
+      const packageVersion = normalizeVersion(
+        require(`${process.cwd()}/packages/${dir}/package.json`).version
       )
+
+      if (packageVersion !== version) {
+        throw new Error(
+          `package version mismatch: packages/${dir}/package.json is ${packageVersion}, expected ${version}. Run lerna version before release`
+        )
+      }
     })
 
     for (const packageInfo of packages) {

@@ -12,6 +12,9 @@ on:
       version:
         description: 'Please enter your release version'
         required: true
+
+permissions:
+  contents: write
         
 jobs:
 
@@ -26,7 +29,9 @@ jobs:
 
     steps:
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v2
         with:
           node-version: 16.13.1
@@ -55,12 +60,23 @@ jobs:
 
       - name: update version
         run: |
-          lerna version $VERSION --yes
+          NORMALIZED_VERSION="${VERSION#v}"
+          CURRENT_VERSION="$(node -p "require('./lerna.json').version")"
+          if [ "$CURRENT_VERSION" != "$NORMALIZED_VERSION" ]; then
+            lerna version "$NORMALIZED_VERSION" --yes --no-push
+          else
+            echo "Version $NORMALIZED_VERSION is already committed"
+          fi
+          test "$(node -p "require('./packages/guard-core-v4/package.json').version")" = "$NORMALIZED_VERSION"
 
       - name: build core
         run: |
           npm run build:core
           npm run transfer-packages
+
+      - name: persist release version
+        run: |
+          git push origin "HEAD:${GITHUB_REF_NAME}" --follow-tags
 
       - name: release official
         if: ${{ github.ref_name == 'v4' }}
@@ -75,6 +91,10 @@ jobs:
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
           npm run release type=alpha version=$VERSION
           echo "release:alpha successfully 🚀"
+
+      - name: push release metadata
+        run: |
+          git push origin "HEAD:${GITHUB_REF_NAME}" --follow-tags
 
       - name: upload oss
         run: |
