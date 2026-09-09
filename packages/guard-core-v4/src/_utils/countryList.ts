@@ -3,6 +3,8 @@ export interface IsoType {
   regions: string
   regions_en: string
   phoneCountryCode: string
+  /** National area codes, used for search within shared calling code +1. */
+  areaCodes?: string[]
 }
 
 export const isoInfo: IsoType[] = [
@@ -255,7 +257,7 @@ export const isoInfo: IsoType[] = [
   {
     iso: 'TR',
     regions: '土耳其',
-    regions_en: 'Turkey',
+    regions_en: 'Türkiye',
     phoneCountryCode: '+90'
   },
   {
@@ -350,8 +352,8 @@ export const isoInfo: IsoType[] = [
   },
   {
     iso: 'CI',
-    regions: '象牙海岸',
-    regions_en: 'Ivory Coast',
+    regions: '科特迪瓦',
+    regions_en: 'Côte d’Ivoire',
     phoneCountryCode: '+225'
   },
   {
@@ -428,8 +430,8 @@ export const isoInfo: IsoType[] = [
   },
   {
     iso: 'CV',
-    regions: '开普',
-    regions_en: 'Cape Verde',
+    regions: '佛得角',
+    regions_en: 'Cabo Verde',
     phoneCountryCode: '+238'
   },
   {
@@ -453,13 +455,13 @@ export const isoInfo: IsoType[] = [
   {
     iso: 'CG',
     regions: '刚果共和国',
-    regions_en: 'Republic Of The Congo',
+    regions_en: 'Republic of the Congo',
     phoneCountryCode: '+242'
   },
   {
     iso: 'CD',
     regions: '刚果民主共和国',
-    regions_en: 'Democratic Republic of theCongo',
+    regions_en: 'Democratic Republic of the Congo',
     phoneCountryCode: '+243'
   },
   {
@@ -591,7 +593,7 @@ export const isoInfo: IsoType[] = [
   {
     iso: 'SZ',
     regions: '斯威士兰',
-    regions_en: 'Swaziland',
+    regions_en: 'Eswatini',
     phoneCountryCode: '+268'
   },
   {
@@ -604,7 +606,7 @@ export const isoInfo: IsoType[] = [
     iso: 'YT',
     regions: '马约特',
     regions_en: 'Mayotte',
-    phoneCountryCode: '+269'
+    phoneCountryCode: '+262'
   },
   {
     iso: 'ER',
@@ -777,19 +779,19 @@ export const isoInfo: IsoType[] = [
   {
     iso: 'BA',
     regions: '波斯尼亚和黑塞哥维那',
-    regions_en: 'Bosniaand Herzegovina',
+    regions_en: 'Bosnia and Herzegovina',
     phoneCountryCode: '+387'
   },
   {
     iso: 'MK',
-    regions: '马其顿',
-    regions_en: 'Macedonia',
+    regions: '北马其顿',
+    regions_en: 'North Macedonia',
     phoneCountryCode: '+389'
   },
   {
     iso: 'CZ',
     regions: '捷克',
-    regions_en: 'Czech',
+    regions_en: 'Czechia',
     phoneCountryCode: '+420'
   },
   {
@@ -819,7 +821,7 @@ export const isoInfo: IsoType[] = [
   {
     iso: 'SV',
     regions: '萨尔瓦多',
-    regions_en: 'ElSalvador',
+    regions_en: 'El Salvador',
     phoneCountryCode: '+503'
   },
   {
@@ -837,7 +839,7 @@ export const isoInfo: IsoType[] = [
   {
     iso: 'CR',
     regions: '哥斯达黎加',
-    regions_en: 'CostaRica',
+    regions_en: 'Costa Rica',
     phoneCountryCode: '+506'
   },
   {
@@ -849,7 +851,7 @@ export const isoInfo: IsoType[] = [
   {
     iso: 'PM',
     regions: '圣彼埃尔和密克隆岛',
-    regions_en: 'Saint Pierreand Miquelon',
+    regions_en: 'Saint Pierre and Miquelon',
     phoneCountryCode: '+508'
   },
   {
@@ -909,7 +911,7 @@ export const isoInfo: IsoType[] = [
   {
     iso: 'BQ',
     regions: '荷兰加勒比',
-    regions_en: 'Caribisch Nederland',
+    regions_en: 'Caribbean Netherlands',
     phoneCountryCode: '+599'
   },
   {
@@ -921,7 +923,7 @@ export const isoInfo: IsoType[] = [
   {
     iso: 'TL',
     regions: '东帝汶',
-    regions_en: 'East Timor',
+    regions_en: 'Timor-Leste',
     phoneCountryCode: '+670'
   },
   {
@@ -932,7 +934,7 @@ export const isoInfo: IsoType[] = [
   },
   {
     iso: 'NR',
-    regions: '拿鲁岛',
+    regions: '瑙鲁',
     regions_en: 'Nauru',
     phoneCountryCode: '+674'
   },
@@ -1192,120 +1194,239 @@ export const isoInfo: IsoType[] = [
     iso: 'BS',
     regions: '巴哈马',
     regions_en: 'Bahamas',
-    phoneCountryCode: '+1242'
+    phoneCountryCode: '+1',
+    areaCodes: ['242']
   },
   {
     iso: 'BB',
     regions: '巴巴多斯',
     regions_en: 'Barbados',
-    phoneCountryCode: '+1246'
+    phoneCountryCode: '+1',
+    areaCodes: ['246']
   },
   {
     iso: 'AI',
     regions: '安圭拉',
     regions_en: 'Anguilla',
-    phoneCountryCode: '+1264'
+    phoneCountryCode: '+1',
+    areaCodes: ['264']
   },
   {
     iso: 'AG',
     regions: '安提瓜和巴布达',
     regions_en: 'Antigua and Barbuda',
-    phoneCountryCode: '+1268'
+    phoneCountryCode: '+1',
+    areaCodes: ['268']
   },
   {
     iso: 'VG',
-    regions: '英属处女群岛',
-    regions_en: 'VirginIslands,British',
-    phoneCountryCode: '+1284'
+    regions: '英属维尔京群岛',
+    regions_en: 'British Virgin Islands',
+    phoneCountryCode: '+1',
+    areaCodes: ['284']
   },
   {
     iso: 'KY',
     regions: '开曼群岛',
     regions_en: 'Cayman Islands',
-    phoneCountryCode: '+1345'
+    phoneCountryCode: '+1',
+    areaCodes: ['345']
   },
   {
     iso: 'BM',
     regions: '百慕大群岛',
     regions_en: 'Bermuda',
-    phoneCountryCode: '+1441'
+    phoneCountryCode: '+1',
+    areaCodes: ['441']
   },
   {
     iso: 'GD',
     regions: '格林纳达',
     regions_en: 'Grenada',
-    phoneCountryCode: '+1473'
+    phoneCountryCode: '+1',
+    areaCodes: ['473']
   },
   {
     iso: 'TC',
     regions: '特克斯和凯科斯群岛',
-    regions_en: 'Turksand Caicos Islands',
-    phoneCountryCode: '+1649'
+    regions_en: 'Turks and Caicos Islands',
+    phoneCountryCode: '+1',
+    areaCodes: ['649']
   },
   {
     iso: 'MS',
     regions: '蒙特塞拉特岛',
     regions_en: 'Montserrat',
-    phoneCountryCode: '+1664'
+    phoneCountryCode: '+1',
+    areaCodes: ['664']
   },
   {
     iso: 'GU',
     regions: '关岛',
     regions_en: 'Guam',
-    phoneCountryCode: '+1671'
+    phoneCountryCode: '+1',
+    areaCodes: ['671']
   },
   {
     iso: 'AS',
     regions: '美属萨摩亚',
     regions_en: 'American Samoa',
-    phoneCountryCode: '+1684'
+    phoneCountryCode: '+1',
+    areaCodes: ['684']
   },
   {
     iso: 'LC',
-    regions: '圣露西亚',
+    regions: '圣卢西亚',
     regions_en: 'Saint Lucia',
-    phoneCountryCode: '+1758'
+    phoneCountryCode: '+1',
+    areaCodes: ['758']
   },
   {
     iso: 'DM',
-    regions: '多米尼加',
+    regions: '多米尼克',
     regions_en: 'Dominica',
-    phoneCountryCode: '+1767'
+    phoneCountryCode: '+1',
+    areaCodes: ['767']
   },
   {
     iso: 'VC',
     regions: '圣文森特和格林纳丁斯',
     regions_en: 'Saint Vincent and The Grenadines',
-    phoneCountryCode: '+1784'
+    phoneCountryCode: '+1',
+    areaCodes: ['784']
   },
   {
     iso: 'PR',
     regions: '波多黎各',
     regions_en: 'Puerto Rico',
-    phoneCountryCode: '+1787'
+    phoneCountryCode: '+1',
+    areaCodes: ['787', '939']
   },
   {
     iso: 'DO',
     regions: '多米尼加共和国',
-    regions_en: 'dominican republic',
-    phoneCountryCode: '+1809'
+    regions_en: 'Dominican Republic',
+    phoneCountryCode: '+1',
+    areaCodes: ['809', '829', '849']
   },
   {
     iso: 'TT',
     regions: '特立尼达和多巴哥',
-    regions_en: 'Trinidadand Tobago',
-    phoneCountryCode: '+1868'
+    regions_en: 'Trinidad and Tobago',
+    phoneCountryCode: '+1',
+    areaCodes: ['868']
   },
   {
     iso: 'KN',
     regions: '圣基茨和尼维斯',
     regions_en: 'Saint Kitts and Nevis',
-    phoneCountryCode: '+1869'
+    phoneCountryCode: '+1',
+    areaCodes: ['869']
   },
   {
     iso: 'JM',
     regions: '牙买加',
     regions_en: 'Jamaica',
-    phoneCountryCode: '+1876'
+    phoneCountryCode: '+1',
+    areaCodes: ['876', '658']
+  },
+  {
+    iso: 'AX',
+    regions: '奥兰群岛',
+    regions_en: 'Åland Islands',
+    phoneCountryCode: '+358'
+  },
+  {
+    iso: 'FK',
+    regions: '福克兰群岛（马尔维纳斯群岛）',
+    regions_en: 'Falkland Islands (Malvinas)',
+    phoneCountryCode: '+500'
+  },
+  {
+    iso: 'XK',
+    regions: '科索沃',
+    regions_en: 'Kosovo',
+    phoneCountryCode: '+383'
+  },
+  {
+    iso: 'MP',
+    regions: '北马里亚纳群岛',
+    regions_en: 'Northern Mariana Islands',
+    phoneCountryCode: '+1',
+    areaCodes: ['670']
+  },
+  {
+    iso: 'MQ',
+    regions: '马提尼克',
+    regions_en: 'Martinique',
+    phoneCountryCode: '+596'
+  },
+  {
+    iso: 'NF',
+    regions: '诺福克岛',
+    regions_en: 'Norfolk Island',
+    phoneCountryCode: '+672'
+  },
+  {
+    iso: 'NU',
+    regions: '纽埃',
+    regions_en: 'Niue',
+    phoneCountryCode: '+683'
+  },
+  {
+    iso: 'PS',
+    regions: '巴勒斯坦',
+    regions_en: 'Palestine',
+    phoneCountryCode: '+970'
+  },
+  {
+    iso: 'SS',
+    regions: '南苏丹',
+    regions_en: 'South Sudan',
+    phoneCountryCode: '+211'
+  },
+  {
+    iso: 'SH',
+    regions: '圣赫勒拿',
+    regions_en: 'Saint Helena',
+    phoneCountryCode: '+290'
+  },
+  {
+    iso: 'SJ',
+    regions: '斯瓦尔巴和扬马延',
+    regions_en: 'Svalbard and Jan Mayen',
+    phoneCountryCode: '+47'
+  },
+  {
+    iso: 'SX',
+    regions: '荷属圣马丁',
+    regions_en: 'Sint Maarten',
+    phoneCountryCode: '+1',
+    areaCodes: ['721']
+  },
+  {
+    iso: 'TK',
+    regions: '托克劳',
+    regions_en: 'Tokelau',
+    phoneCountryCode: '+690'
+  },
+  {
+    iso: 'TV',
+    regions: '图瓦卢',
+    regions_en: 'Tuvalu',
+    phoneCountryCode: '+688'
+  },
+  {
+    iso: 'VI',
+    regions: '美属维尔京群岛',
+    regions_en: 'U.S. Virgin Islands',
+    phoneCountryCode: '+1',
+    areaCodes: ['340']
+  },
+  {
+    iso: 'WF',
+    regions: '瓦利斯和富图纳',
+    regions_en: 'Wallis and Futuna',
+    phoneCountryCode: '+681'
   }
 ]

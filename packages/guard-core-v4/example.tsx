@@ -5,11 +5,13 @@ import { React, render } from 'shim-react'
 import * as facePlugin from 'face-api.js'
 
 const App = () => {
-  const appId = '69e9815348a63edc9bc8af25'
+  const appId = '69d4a071b6d3e7e28dfae9a2'
   // const deviceId = '6486be0f60e50cb92678a468' //如要使用必须使用开启元数据对的 用户池 测试
 
   const config: Partial<GuardLocalConfig> = {
-    host:'https://hep-manuscripts.u2.hep.com.cn'
+    host:'https://gkrk13yfmskx-demo.authing.cn',
+    // Preview the standalone component without the hosted login page's CSS.
+    contentCss: ''
   }
 
   const onLogin = (userInfo: User) => {

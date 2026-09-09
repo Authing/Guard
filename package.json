@@ -36,6 +36,7 @@
     "less-loader": "^11.1.0",
     "mini-css-extract-plugin": "^2.7.3",
     "minimist": "^1.2.8",
+    "prettier": "3.0.1",
     "rimraf": "^2.6.2",
     "shelljs": "^0.8.5",
     "terser-webpack-plugin": "^5.3.7",

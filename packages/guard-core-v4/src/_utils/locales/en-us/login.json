@@ -11,6 +11,7 @@
   "inputLdapUsername": "LDAP Username",
   "inputLoginPwd": "Enter Password",
   "inputPhone": "Phone number",
+  "inputPhoneWithAreaCode": "10-digit phone number including area code",
   "inputPhoneOrEmail": "Enter Phone number or Email",
   "inputPwdAgain": "Enter password again",
   "inputRecoverCode": "Enter recovery code",

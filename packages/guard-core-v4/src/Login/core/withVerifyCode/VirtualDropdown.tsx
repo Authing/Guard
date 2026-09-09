@@ -2,7 +2,8 @@ import { React } from 'shim-react'
 
 import { Select, Tooltip } from 'shim-antd'
 
-import { isoInfo, IsoType } from '../../../_utils/countryList'
+import { IsoType } from '../../../_utils/countryList'
+import { internationalPhoneCountries } from '../../../_utils/internationalPhone'
 
 import './styles.less'
 
@@ -27,27 +28,35 @@ export const VirtualDropdown: React.FC<VirtualDropdownProps> = props => {
   // 只能单次遍历了
 
   // const [open, setOpen] = useState(false)
-  const options = isoInfo.map((info: IsoType) => {
+  const options = internationalPhoneCountries.map((info: IsoType) => {
+    const countryName = resolvedLanguage.startsWith('zh')
+      ? info.regions
+      : info.regions_en
+    const prefixes = info.areaCodes
+      ?.map(code => `${info.phoneCountryCode} ${code}`)
+      .join(', ')
+    const displayPrefix = info.areaCodes?.length
+      ? `${info.phoneCountryCode}${info.areaCodes[0]}`
+      : info.phoneCountryCode
     return {
       value: info.iso,
       key: info.iso,
       children: info.phoneCountryCode,
       label: (
         <div className="select-option-item">
-          <span>{info.phoneCountryCode}</span>
+          <span>{displayPrefix}</span>
           <div className="country">
             <Tooltip
-              title={
-                resolvedLanguage === 'zh-CN' ? info.regions : info.regions_en
-              }
+              title={prefixes ? `${countryName} (${prefixes})` : countryName}
             >
-              {resolvedLanguage === 'zh-CN' ? info.regions : info.regions_en}
+              {countryName}
             </Tooltip>
           </div>
         </div>
       ),
       region: info.regions,
-      region_en: info.regions_en
+      region_en: info.regions_en,
+      dialPrefixes: info.areaCodes?.map(code => info.phoneCountryCode + code)
     }
   })
 
@@ -69,6 +78,11 @@ export const VirtualDropdown: React.FC<VirtualDropdownProps> = props => {
       optionLabelProp="children"
       dropdownMatchSelectWidth={138}
       filterOption={(input, option: any) => {
+        const query = input.replace(/\s/g, '').toLowerCase()
+        if (option.value.toLowerCase().includes(query)) return true
+        if (option.dialPrefixes?.some((code: string) => code.includes(query))) {
+          return true
+        }
         if (option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0) {
           return true
         }

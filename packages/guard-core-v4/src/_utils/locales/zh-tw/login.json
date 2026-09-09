@@ -62,6 +62,7 @@
   "inputLoginPwd": "請輸入密碼",
   "inputNewPwd": "請輸入新密碼",
   "inputPhone": "請輸入手機號碼",
+  "inputPhoneWithAreaCode": "請輸入含地區碼的10位手機號碼",
   "inputPhoneCode": "請輸入手機驗證碼",
   "inputPhoneOrEmail": "請輸入手機號碼或電子郵件",
   "inputPwd": "請輸入密碼",
