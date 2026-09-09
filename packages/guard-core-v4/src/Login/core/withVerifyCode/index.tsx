@@ -455,8 +455,8 @@ const LoginWithVerifyCode = (props: any) => {
     config.registerMethods,
     publicConfig.registerDisabled
   ])
-  // 为了 refresh input
-  const AreaCodePhoneAccount = useCallback(
+  // Render a stable input type so changing countries preserves the selected prefix.
+  const renderPhoneAccount = useCallback(
     (props: any) => {
       return (
         <InputInternationPhone
@@ -521,7 +521,7 @@ const LoginWithVerifyCode = (props: any) => {
           areaCode={areaCode}
         >
           {isOnlyInternationSms ? (
-            <AreaCodePhoneAccount autoFocus={!isPhoneMedia} />
+            renderPhoneAccount({ autoFocus: !isPhoneMedia })
           ) : (
             <InputIdentify
               className="authing-g2-input"

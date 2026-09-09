@@ -2,8 +2,7 @@ import { React } from 'shim-react'
 
 import { Select, Tooltip } from 'shim-antd'
 
-import { IsoType } from '../../../_utils/countryList'
-import { internationalPhoneCountries } from '../../../_utils/internationalPhone'
+import { internationalPhoneOptions } from '../../../_utils/internationalPhone'
 
 import './styles.less'
 
@@ -28,27 +27,19 @@ export const VirtualDropdown: React.FC<VirtualDropdownProps> = props => {
   // 只能单次遍历了
 
   // const [open, setOpen] = useState(false)
-  const options = internationalPhoneCountries.map((info: IsoType) => {
+  const options = internationalPhoneOptions.map(info => {
     const countryName = resolvedLanguage.startsWith('zh')
       ? info.regions
       : info.regions_en
-    const prefixes = info.areaCodes
-      ?.map(code => `${info.phoneCountryCode} ${code}`)
-      .join(', ')
-    const displayPrefix = info.areaCodes?.length
-      ? `${info.phoneCountryCode}${info.areaCodes[0]}`
-      : info.phoneCountryCode
     return {
-      value: info.iso,
-      key: info.iso,
-      children: info.phoneCountryCode,
+      value: info.selection,
+      key: info.selection,
+      children: info.dialPrefix,
       label: (
         <div className="select-option-item">
-          <span>{displayPrefix}</span>
+          <span>{info.dialPrefix}</span>
           <div className="country">
-            <Tooltip
-              title={prefixes ? `${countryName} (${prefixes})` : countryName}
-            >
+            <Tooltip title={`${countryName} (${info.dialPrefix})`}>
               {countryName}
             </Tooltip>
           </div>
@@ -56,7 +47,7 @@ export const VirtualDropdown: React.FC<VirtualDropdownProps> = props => {
       ),
       region: info.regions,
       region_en: info.regions_en,
-      dialPrefixes: info.areaCodes?.map(code => info.phoneCountryCode + code)
+      dialPrefixes: [info.dialPrefix]
     }
   })
 
@@ -76,7 +67,7 @@ export const VirtualDropdown: React.FC<VirtualDropdownProps> = props => {
         e.stopPropagation()
       }}
       optionLabelProp="children"
-      dropdownMatchSelectWidth={138}
+      dropdownMatchSelectWidth={190}
       filterOption={(input, option: any) => {
         const query = input.replace(/\s/g, '').toLowerCase()
         if (option.value.toLowerCase().includes(query)) return true

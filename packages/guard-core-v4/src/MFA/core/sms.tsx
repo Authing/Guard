@@ -71,7 +71,7 @@ export const BindMFASms: React.FC<BindMFASmsProps> = ({
     }
   }
 
-  const PhoneAccount = useCallback(
+  const renderPhoneAccount = useCallback(
     (props: any) => {
       if (isInternationSms) {
         return (
@@ -135,7 +135,7 @@ export const BindMFASms: React.FC<BindMFASmsProps> = ({
             required={true}
             areaCode={areaCode}
           >
-            <PhoneAccount />
+            {renderPhoneAccount({})}
           </CustomFormItem.Phone>
           <SubmitButton
             text={t('common.sure') as string}

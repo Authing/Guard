@@ -10,6 +10,7 @@
   "inputSixCode": "バインドされた 6 桁のセキュリティ コードを入力してください",
   "inputLoginPwd": "パスワードをご入力ください",
   "inputPhone": "携帯番号を入力してください",
+  "inputSubscriberPhone": "残り7桁の電話番号を入力",
   "inputPhoneWithAreaCode": "市外局番を含む10桁の電話番号",
   "inputEmail": "メールアドレスをご入力ください",
   "inputPwdAgain": "もう一度パスワードを入力する",

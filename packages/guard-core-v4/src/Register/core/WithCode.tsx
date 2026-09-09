@@ -648,8 +648,8 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
     ]
   )
 
-  // 为了 refresh input
-  const AreaCodePhoneAccount = useCallback(
+  // Render a stable input type so changing countries preserves the selected prefix.
+  const renderPhoneAccount = useCallback(
     (props: any) => {
       return (
         <InputInternationPhone
@@ -700,7 +700,7 @@ export const RegisterWithCode: React.FC<RegisterWithCodeProps> = ({
           required={true}
         >
           {isOnlyInternationSms ? (
-            <AreaCodePhoneAccount autoFocus={!isPhoneMedia} />
+            renderPhoneAccount({ autoFocus: !isPhoneMedia })
           ) : (
             <InputIdentify
               className="authing-g2-input"

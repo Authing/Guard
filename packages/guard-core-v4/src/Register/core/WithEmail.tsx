@@ -251,7 +251,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
     { loading: false }
   )
 
-  const PhoneAccount = useCallback(
+  const renderPhoneAccount = useCallback(
     props => {
       if (publicConfig && publicConfig.internationalSmsConfig?.enabled) {
         return (
@@ -385,7 +385,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
             required={true}
             areaCode={areaCode}
           >
-            <PhoneAccount autoFocus={!isPhoneMedia} />
+            {renderPhoneAccount({ autoFocus: !isPhoneMedia })}
           </CustomFormItem.Phone>
           {enabledPPRegisterValid && (
             <>
@@ -454,7 +454,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
       </CustomFormItem.CustomName>
     )
   }, [
-    PhoneAccount,
+    renderPhoneAccount,
     method,
     isPhoneMedia,
     areaCode,

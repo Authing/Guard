@@ -10,6 +10,7 @@
   "inputSixCode": "请输入绑定的 6 位数字安全码",
   "inputLoginPwd": "请输入登录密码",
   "inputPhone": "请输入手机号",
+  "inputSubscriberPhone": "请输入剩余7位手机号",
   "inputPhoneWithAreaCode": "请输入含地区码的10位手机号",
   "inputEmail": "请输入邮箱",
   "inputPwdAgain": "再输入一次密码",

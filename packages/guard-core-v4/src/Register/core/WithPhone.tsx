@@ -230,7 +230,7 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
     ]
   )
 
-  const PhoenAccount = useCallback(
+  const renderPhoneAccount = useCallback(
     (props: any) => {
       if (publicConfig && publicConfig.internationalSmsConfig?.enabled) {
         return (
@@ -358,7 +358,7 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
           required={true}
           areaCode={areaCode}
         >
-          <PhoenAccount autoFocus={!isPhoneMedia} />
+          {renderPhoneAccount({ autoFocus: !isPhoneMedia })}
         </CustomFormItem.Phone>
         <Form.Item
           key="code"

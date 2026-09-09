@@ -114,7 +114,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
     loadInitCountryList()
   }, [loadInitCountryList, metaData])
 
-  const PhoneAccount = useCallback(
+  const renderPhoneAccount = useCallback(
     (props: any) => {
       if (isInternationSms) {
         return (
@@ -304,7 +304,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
             checkRepeat={props.checkUnique === true}
             areaCode={areaCode}
           >
-            <PhoneAccount />
+            {renderPhoneAccount({})}
           </CustomFormItem.Phone>
           <Form.Item
             validateTrigger={['onBlur', 'onChange']}
@@ -386,7 +386,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
         </>
       )
     }),
-    [PhoneAccount, areaCode, form, isInternationSms, t, verifyCodeLength]
+    [renderPhoneAccount, areaCode, form, isInternationSms, t, verifyCodeLength]
   )
 
   const getMetaDateLabel = useCallback(

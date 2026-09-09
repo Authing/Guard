@@ -5,12 +5,10 @@
   font-style: normal;
   font-weight: normal;
   display: flex;
+  column-gap: 8px;
   > span:first-child {
-    width: 40%;
+    flex: 0 0 48px;
   }
-  // > span:last-child {
-  //   width: 60%;
-  // }
 }
 .authing-g2-input-form.remove-padding {
   .authing-ant-input-affix-wrapper {
@@ -28,7 +26,7 @@
     display: flex;
     align-items: center;
     height: 28px;
-    width: 87px;
+    width: 100px;
     border: none;
     padding-left: 18px;
     cursor: pointer;
@@ -57,8 +55,9 @@
     transform: rotate(180deg);
   }
 }
-.country {
+.select-option-item .country {
+  flex: 1;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 60%;
 }
