@@ -14,7 +14,7 @@ import { InputProps } from 'shim-antd'
 
 import { SendCode } from './index'
 
-import { parsePhone } from '../_utils/hooks'
+import { parsePhoneForRequest } from '../_utils/hooks'
 
 import { useGuardEvents } from '../_utils/context'
 
@@ -125,7 +125,7 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
               let fieldValue = form
                 ? form.getFieldValue(fieldName || 'phone')
                 : data
-              const { phoneNumber, countryCode } = parsePhone(
+              const { phoneNumber, countryCode } = parsePhoneForRequest(
                 isInternationSms,
                 fieldValue,
                 areaCode

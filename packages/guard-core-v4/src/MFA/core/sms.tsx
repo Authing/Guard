@@ -32,7 +32,7 @@ import { useMfaBusinessRequest, MfaBusinessAction } from '../businessRequest'
 
 import { InputInternationPhone } from '../../Login/core/withVerifyCode/InputInternationPhone'
 
-import { parsePhone } from '../../_utils/hooks'
+import { parsePhoneForRequest } from '../../_utils/hooks'
 import { useEffectOnce } from 'react-use'
 
 const { useCallback, useMemo, useRef, useState } = React
@@ -184,7 +184,7 @@ export const VerifyMFASms: React.FC<VerifyMFASmsProps> = ({
 
   const [sent, setSent] = useState<boolean>(false)
 
-  const { phoneNumber, countryCode } = parsePhone(
+  const { phoneNumber, countryCode } = parsePhoneForRequest(
     isInternationSms,
     phone,
     areaCode
@@ -200,7 +200,7 @@ export const VerifyMFASms: React.FC<VerifyMFASmsProps> = ({
 
     const requestData: any = {
       mfaToken,
-      phone: phone!,
+      phone: phoneCountryCode ? phone! : phoneNumber,
       code: mfaCode,
       phoneCountryCode: phoneCountryCode ? phoneCountryCode : countryCode
     }

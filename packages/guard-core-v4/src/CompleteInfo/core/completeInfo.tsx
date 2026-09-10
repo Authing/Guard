@@ -33,7 +33,7 @@ import { SendCodeByPhone } from '../../SendCode/SendCodeByPhone'
 
 import { useGuardPublicConfig } from '../../_utils/context'
 
-import { parsePhone } from '../../_utils/hooks'
+import { parsePhoneForRequest } from '../../_utils/hooks'
 
 import { InputInternationPhone } from '../../Login/core/withVerifyCode/InputInternationPhone'
 
@@ -560,13 +560,14 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
           // TODO 默认这里手机号与邮箱 都是有验证码的
           if (key === 'phone') {
             if (isInternationSms) {
-              const { countryCode } = parsePhone(
+              const { countryCode, phoneNumber } = parsePhoneForRequest(
                 isInternationSms,
                 values[key],
                 areaCode
               )
               return {
                 ...baseData,
+                value: phoneNumber,
                 code: values.phoneCode,
                 phoneCountryCode: countryCode
               }
@@ -601,12 +602,13 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
             phoneCode: values.phoneCode
           }
           if (isInternationSms) {
-            const { countryCode } = parsePhone(
+            const { countryCode, phoneNumber } = parsePhoneForRequest(
               isInternationSms,
               values.phone,
               areaCode
             )
             options.phoneCountryCode = countryCode
+            options.phone = phoneNumber
           }
           const {
             statusCode: checkCode,

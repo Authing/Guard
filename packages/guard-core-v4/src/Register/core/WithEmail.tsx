@@ -40,7 +40,7 @@ import {
 
 import { GuardModuleType } from '../../Guard'
 
-import { parsePhone, useMediaSize } from '../../_utils/hooks'
+import { parsePhoneForRequest, useMediaSize } from '../../_utils/hooks'
 
 import { ApiCode } from '../../_utils/responseManagement/interface'
 
@@ -166,7 +166,7 @@ export const RegisterWithEmail: React.FC<RegisterWithEmailProps> = ({
       let profile
 
       if (method === 'phone-password') {
-        const { phoneNumber, countryCode } = parsePhone(
+        const { phoneNumber, countryCode } = parsePhoneForRequest(
           isInternationSms,
           account,
           areaCode

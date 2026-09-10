@@ -39,7 +39,7 @@ import './styles.less'
 
 import { InputInternationPhone } from './InputInternationPhone'
 
-import { parsePhone, useMediaSize } from '../../../_utils/hooks'
+import { parsePhoneForRequest, useMediaSize } from '../../../_utils/hooks'
 
 import { EmailScene, InputMethod } from '../../../Type'
 
@@ -373,7 +373,7 @@ const LoginWithVerifyCode = (props: any) => {
       return
     }
     // 解析手机号码 ==> 输出 phoenNumber 和 phoneCountryCode
-    const { phoneNumber, countryCode: phoneCountryCode } = parsePhone(
+    const { phoneNumber, countryCode: phoneCountryCode } = parsePhoneForRequest(
       isInternationSms,
       values.identify,
       areaCode

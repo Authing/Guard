@@ -20,7 +20,7 @@ import { FormItemIdentify } from '../../Login/core/withVerifyCode/FormItemIdenti
 
 import { InputIdentify } from './inputIdentify'
 
-import { parsePhone, useMediaSize } from '../../_utils/hooks'
+import { parsePhoneForRequest, useMediaSize } from '../../_utils/hooks'
 
 import { EmailScene } from '../../Type'
 
@@ -92,10 +92,8 @@ export const ResetPassword = (props: ResetPasswordProps) => {
       // context = client.resetPasswordByEmailCode(identify, code, newPassword)
     }
     if (codeMethod === 'phone') {
-      const { phoneNumber: phone, countryCode: phoneCountryCode } = parsePhone(
-        isInternationSms,
-        identify
-      )
+      const { phoneNumber: phone, countryCode: phoneCountryCode } =
+        parsePhoneForRequest(isInternationSms, identify)
       context = post('/api/v2/users/password/forget/check-code', {
         phone,
         code,

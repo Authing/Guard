@@ -22,7 +22,7 @@ import { SendCodeByPhone } from '../../SendCode/SendCodeByPhone'
 
 import { InputInternationPhone } from '../../Login/core/withVerifyCode/InputInternationPhone'
 
-import { parsePhone, useMediaSize } from '../../_utils/hooks'
+import { parsePhoneForRequest, useMediaSize } from '../../_utils/hooks'
 
 import { useIsChangeComplete } from '../utils'
 
@@ -109,11 +109,8 @@ export const RegisterWithPhone: React.FC<RegisterWithPhoneProps> = ({
 
         const context = registeContext ?? {}
 
-        const { phoneNumber, countryCode: phoneCountryCode } = parsePhone(
-          isInternationSms,
-          phone,
-          areaCode
-        )
+        const { phoneNumber, countryCode: phoneCountryCode } =
+          parsePhoneForRequest(isInternationSms, phone, areaCode)
 
         // 注册
         const options: any = {

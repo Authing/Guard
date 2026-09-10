@@ -4,6 +4,8 @@ import { useMediaQuery } from 'react-responsive'
 
 import phone from 'phone'
 
+import { internationalPhoneOptions } from '../internationalPhone'
+
 import {
   isDingtalkBrowser,
   isLarkBrowser,
@@ -188,6 +190,35 @@ export const parsePhone = (
   }
 
   return { countryCode, phoneNumber }
+}
+
+// The SMS API expects a territory dial prefix and the remaining subscriber number.
+// Keep parsePhone unchanged for validation and lookups that use national numbers.
+export const parsePhoneForRequest = (
+  isInternationSms: boolean,
+  fieldValue: string,
+  areaCode = 'CN'
+) => {
+  const parsed = parsePhone(isInternationSms, fieldValue, areaCode)
+  if (parsed.countryCode !== '+1') return parsed
+
+  const normalized = phone(fieldValue, { country: areaCode })
+  const result = normalized.isValid ? normalized : phone(fieldValue)
+  if (!result.isValid) return parsed
+
+  const nationalNumber = result.phoneNumber.slice(2)
+  const option = internationalPhoneOptions.find(
+    item =>
+      item.iso === result.countryIso2 &&
+      item.areaCode &&
+      nationalNumber.startsWith(item.areaCode)
+  )
+  if (!option) return parsed
+
+  return {
+    countryCode: option.dialPrefix,
+    phoneNumber: nationalNumber.slice(option.areaCode.length)
+  }
 }
 
 export enum SocialConnectionEvent {
