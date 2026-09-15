@@ -22,7 +22,7 @@ const NPM_PUBLISH_CHECK_INTERVAL_MS = numberFromEnv(
 )
 const NPM_PUBLISH_CHECK_RETRIES = numberFromEnv(
   'NPM_PUBLISH_CHECK_RETRIES',
-  18
+  60
 )
 const NPMMIRROR_INITIAL_WAIT_MS = numberFromEnv(
   'NPMMIRROR_INITIAL_WAIT_MS',
@@ -238,7 +238,7 @@ function exec(command, options = {}) {
 
 function packageExists(packageName, version, registry) {
   const result = shelljs.exec(
-    `npm view ${packageName}@${version} version --prefer-online --registry=${registry}`,
+    `npm view ${packageName}@${version} version --json --prefer-online --fetch-retries=0 --fetch-timeout=30000 --registry=${registry}`,
     {
       env: {
         ...process.env,
@@ -249,7 +249,31 @@ function packageExists(packageName, version, registry) {
     }
   )
 
-  return result.code === 0 && normalizeVersion(result.stdout.trim()) === version
+  return checkPackageResult(result, version, packageName)
+}
+
+function checkPackageResult(result, version, packageName) {
+  let data
+  try {
+    data = JSON.parse(result.stdout.trim() || 'null')
+  } catch (_) {
+    console.warn(`${packageName}@${version}: npm returned invalid JSON`)
+    return false
+  }
+
+  if (result.code !== 0) {
+    // Only report the error code, never registry credentials or raw npm logs.
+    const match = String(result.stderr || '').match(/npm ERR! code ([A-Z0-9_]+)/)
+    const code = data?.error?.code || match?.[1] || `exit ${result.code}`
+    if (code === 'E401' || code === 'E403' || code === 'ENEEDAUTH') {
+      throw new Error(`npm access check failed for ${packageName}: ${code}`)
+    }
+    console.warn(`${packageName}@${version}: npm lookup failed (${code})`)
+    return false
+  }
+
+  // npm 8 can return exit 0 with no output for a version absent from metadata.
+  return typeof data === 'string' && normalizeVersion(data) === version
 }
 
 async function waitForNpmPackage(packageName, version, options) {
