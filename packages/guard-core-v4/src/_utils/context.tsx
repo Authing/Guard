@@ -295,12 +295,13 @@ export const useRobotVerify = () => {
   return customSecurityEnabled ? appRobotVerify : userpoolRobotVerify
 }
 
-/** 当前应用短信是否开启人机验证策略 */
+/** 短信的内联图形验证码；开启存在性验证码时由发送组件按请求展开验证区。 */
 export const useSmsCaptchaCheck = (
   sence: 'login' | 'register' | 'forget-password'
 ) => {
   const { loginSmsConfig, registerSmsConfig, forgetPasswordSmsConfig } =
     useGuardPublicConfig()
+  const { enableUserExistenceCheckCaptcha } = useGuardPublicConfig()
   let openCaptchaCheck = false
   switch (sence) {
     case 'login':
@@ -313,15 +314,16 @@ export const useSmsCaptchaCheck = (
       openCaptchaCheck = forgetPasswordSmsConfig?.robot?.switch === 'ON'
       break
   }
-  return openCaptchaCheck
+  return openCaptchaCheck && !enableUserExistenceCheckCaptcha
 }
 
-/** 当前应用邮件是否开启人机验证策略 */
+/** 邮件的内联图形验证码；开启存在性验证码时由发送组件按请求展开验证区。 */
 export const useEmailCaptchaCheck = (
   sence: 'login' | 'register' | 'forget-password'
 ) => {
   const { loginEmailConfig, registerEmailConfig, forgetPasswordEmailConfig } =
     useGuardPublicConfig()
+  const { enableUserExistenceCheckCaptcha } = useGuardPublicConfig()
   let openCaptchaCheck = false
   switch (sence) {
     case 'login':
@@ -334,5 +336,5 @@ export const useEmailCaptchaCheck = (
       openCaptchaCheck = forgetPasswordEmailConfig?.robot?.switch === 'ON'
       break
   }
-  return openCaptchaCheck
+  return openCaptchaCheck && !enableUserExistenceCheckCaptcha
 }

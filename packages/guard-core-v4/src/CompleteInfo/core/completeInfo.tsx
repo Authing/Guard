@@ -1,3 +1,4 @@
+import { useSentAccountCheck } from '../../ValidatorRules/useSentAccountCheck'
 import { React } from 'shim-react'
 
 import { Form, Input, Select, DatePicker, message } from 'shim-antd'
@@ -83,6 +84,11 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
   const [areaCode, setAreaCode] = useState(
     config?.internationalSmsConfig?.defaultISOType || 'CN'
   )
+
+  const phoneCheck = useSentAccountCheck(
+    JSON.stringify(['phone', areaCode, isInternationSms])
+  )
+  const emailCheck = useSentAccountCheck('email')
 
   const { get, post } = useGuardHttp()
 
@@ -296,6 +302,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
                 : 'authing-g2-input-form'
             }
             name="phone"
+            isUserCheckVerified={phoneCheck.matches}
             key="internal-phone:phone"
             label={props.label ?? i18n.t('common.phoneLabel')}
             required={props.required}
@@ -330,7 +337,9 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
               maxLength={verifyCodeLength}
               fieldName="phone"
               form={form}
+              onSendCodeSuccess={phoneCheck.mark}
               onSendCodeBefore={async () => {
+                phoneCheck.clear()
                 // closeCheckSendUser 开启时，由 onFinish 统一校验
                 if (!config?.closeCheckSendUser) {
                   await form.validateFields(['phone'])
@@ -347,6 +356,7 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
           <CustomFormItem.Email
             className="authing-g2-input-form"
             name="email"
+            isUserCheckVerified={emailCheck.matches}
             checkRepeat={true}
             label={props.label ?? i18n.t('common.email')}
             required={props.required}
@@ -385,7 +395,9 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
               scene={EmailScene.INFORMATION_COMPLETION_VERIFY_CODE}
               fieldName="email"
               form={form}
+              onSendCodeSuccess={emailCheck.mark}
               onSendCodeBefore={async () => {
+                emailCheck.clear()
                 // closeCheckSendUser 开启时，由 onFinish 统一校验
                 if (!config?.closeCheckSendUser) {
                   await form.validateFields(['email'])
@@ -398,7 +410,17 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
         </>
       )
     }),
-    [PhoneAccount, areaCode, form, isInternationSms, t, verifyCodeLength]
+    [
+      PhoneAccount,
+      areaCode,
+      form,
+      isInternationSms,
+      t,
+      verifyCodeLength,
+      phoneCheck,
+      emailCheck,
+      config
+    ]
   )
 
   const getMetaDateLabel = useCallback(
@@ -641,6 +663,12 @@ export const CompleteInfo: React.FC<CompleteInfoProps> = props => {
   return (
     <Form
       layout="vertical"
+      onValuesChange={values => {
+        if (Object.prototype.hasOwnProperty.call(values, 'phone'))
+          phoneCheck.clear()
+        if (Object.prototype.hasOwnProperty.call(values, 'email'))
+          emailCheck.clear()
+      }}
       form={form}
       onFinish={onFinish}
       onFinishFailed={() => submitButtonRef.current.onError()}

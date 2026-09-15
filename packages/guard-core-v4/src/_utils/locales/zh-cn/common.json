@@ -1,4 +1,13 @@
 {
+  "captchaInputOutdated": "图片已更新，已保留你的输入，请按新图片修改验证码。",
+  "inlineCaptchaReadyHint": "请填写图形验证码，点击图片可换一张。",
+  "inlineCaptchaHint": "验证后继续刚才的操作，点击图片可换一张。",
+  "verifyAndContinue": "验证并继续",
+  "captchaLoading": "加载中…",
+  "cancel": "取消",
+  "captchaCancelled": "已取消图形验证码校验，请重试",
+  "refreshCaptcha": "刷新图形验证码",
+  "captchaImageError": "验证码图片加载失败，请点击图片重试",
   "guidance": {},
   "uploadFail": "{{name}} 上传失败",
   "confirm": "确认",

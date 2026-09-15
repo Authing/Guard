@@ -1,3 +1,5 @@
+import { useCaptchaRequest } from '../_utils/useCaptchaRequest'
+import { needsSendCodeCaptcha } from './captchaPolicy'
 import { message } from 'shim-antd'
 
 import { React } from 'shim-react'
@@ -16,7 +18,11 @@ import { getGuardHttp } from '../_utils/guardHttp'
 
 import { EmailScene } from '../Type'
 
-import { useGuardEvents } from '../_utils/context'
+import {
+  useGuardEvents,
+  useGuardPublicConfig,
+  useGuardFinallyConfig
+} from '../_utils/context'
 
 import { useGuardAuthClient } from '../Guard/authClient'
 
@@ -28,6 +34,7 @@ export interface SendCodeByEmailProps extends InputProps {
   autoSubmit?: boolean //验证码输入完毕是否自动提交
   scene: EmailScene
   captchaCode?: string
+  onSendCodeSuccess?: (account: string) => void
   onSendCodeError?: any
   codeFieldName?: string
 }
@@ -41,10 +48,22 @@ export const SendCodeByEmail: React.FC<SendCodeByEmailProps> = props => {
     fieldName,
     captchaCode,
     onSendCodeError,
+    onSendCodeSuccess,
     codeFieldName,
     ...remainProps
   } = props
   const { t } = useTranslation()
+  const publicConfig = useGuardPublicConfig()
+  const config = useGuardFinallyConfig()
+  const captchaRequired = needsSendCodeCaptcha(publicConfig, 'email', scene)
+  const { runWithCaptcha, captchaField } = useCaptchaRequest(
+    Boolean(
+      captchaRequired &&
+        config.autoRegister &&
+        scene === EmailScene.LOGIN_VERIFY_CODE
+    )
+  )
+
   const events = useGuardEvents()
   const authClient = useGuardAuthClient()
   const { post } = getGuardHttp()
@@ -71,15 +90,19 @@ export const SendCodeByEmail: React.FC<SendCodeByEmailProps> = props => {
       }
     }
     try {
+      const request = (code?: string) =>
+        post('/api/v2/email/send', {
+          email,
+          scene,
+          captchaCode: code
+        })
       const {
         code,
         message: tips,
         apiCode
-      } = await post('/api/v2/email/send', {
-        email,
-        scene,
-        captchaCode
-      })
+      } = await (captchaRequired
+        ? runWithCaptcha(request)
+        : request(captchaCode))
       if (apiCode === 2080) {
         // 一分钟只能发一次邮箱验证码的提示信息，特殊处理
         message.error(tips)
@@ -109,7 +132,7 @@ export const SendCodeByEmail: React.FC<SendCodeByEmailProps> = props => {
       return {
         status: false,
         error: {
-          message: JSON.stringify(error),
+          message: error instanceof Error ? error.message : String(error),
           code: 401
         }
       }
@@ -117,33 +140,37 @@ export const SendCodeByEmail: React.FC<SendCodeByEmailProps> = props => {
   }
 
   return (
-    <SendCode
-      beforeSend={() => {
-        return onSendCodeBefore()
-          .then(async (b: any) => {
-            let email = form ? form.getFieldValue(fieldName || 'email') : data
+    <>
+      {captchaField}
+      <SendCode
+        beforeSend={() => {
+          return onSendCodeBefore()
+            .then(async (b: any) => {
+              let email = form ? form.getFieldValue(fieldName || 'email') : data
 
-            const code = form
-              ? form?.getFieldValue(codeFieldName || 'captchaCode')
-              : captchaCode
+              const code = form
+                ? form?.getFieldValue(codeFieldName || 'captchaCode')
+                : captchaCode
 
-            const { status, error } = await sendEmail(email, code)
-            if (status) {
-              events?.onEmailSend?.(authClient, scene)
-            } else {
-              onSendCodeError?.(error)
-              events?.onEmailSendError?.(error, authClient, scene)
-            }
-            return status
-          })
-          .catch((e: any) => {
-            onSendCodeError?.(e)
-            events?.onEmailSendError?.(e, authClient, scene)
-            return false
-          })
-      }}
-      form={form}
-      {...remainProps}
-    />
+              const { status, error } = await sendEmail(email, code)
+              if (status) {
+                onSendCodeSuccess?.(email)
+                events?.onEmailSend?.(authClient, scene)
+              } else {
+                onSendCodeError?.(error)
+                events?.onEmailSendError?.(error, authClient, scene)
+              }
+              return status
+            })
+            .catch((e: any) => {
+              onSendCodeError?.(e)
+              events?.onEmailSendError?.(e, authClient, scene)
+              return false
+            })
+        }}
+        form={form}
+        {...remainProps}
+      />
+    </>
   )
 }

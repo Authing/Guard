@@ -1,3 +1,5 @@
+import { useCaptchaRequest } from '../_utils/useCaptchaRequest'
+import { needsSendCodeCaptcha } from './captchaPolicy'
 import { message } from 'shim-antd'
 
 import { React } from 'shim-react'
@@ -16,7 +18,11 @@ import { SendCode } from './index'
 
 import { parsePhone } from '../_utils/hooks'
 
-import { useGuardEvents } from '../_utils/context'
+import {
+  useGuardEvents,
+  useGuardPublicConfig,
+  useGuardFinallyConfig
+} from '../_utils/context'
 
 import { useGuardHttp } from '../_utils/guardHttp'
 
@@ -25,6 +31,7 @@ export interface SendCodeByPhoneProps extends InputProps {
   form?: any
   onSendCodeBefore?: any // 点击的时候先做这个
   onSendCodeAfter?: any
+  onSendCodeSuccess?: (account: string) => void
   onSendCodeError?: any
   fieldName?: string
   autoSubmit?: boolean //验证码输入完毕是否自动提交
@@ -48,9 +55,20 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
     codeFieldName,
     captchaCode,
     onSendCodeError,
+    onSendCodeSuccess,
     ...remainProps
   } = props
   const { t } = useTranslation()
+  const publicConfig = useGuardPublicConfig()
+  const config = useGuardFinallyConfig()
+  const captchaRequired = needsSendCodeCaptcha(publicConfig, 'phone', scene)
+  const { runWithCaptcha, captchaField } = useCaptchaRequest(
+    Boolean(
+      captchaRequired &&
+        config.autoRegister &&
+        scene === SceneType.SCENE_TYPE_LOGIN
+    )
+  )
 
   const authClient = useGuardAuthClient()
 
@@ -70,12 +88,16 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
        * post 方法：packages/react-components/components/_utils/http.ts
        * 响应拦截：packages/react-components/components/_utils/responseManagement/index.ts
        */
-      const data = await post('/api/v2/sms/send', {
-        phone,
-        phoneCountryCode: countryCode,
-        scene,
-        captchaCode
-      })
+      const request = (code?: string) =>
+        post('/api/v2/sms/send', {
+          phone,
+          phoneCountryCode: countryCode,
+          scene,
+          captchaCode: code
+        })
+      const data = await (captchaRequired
+        ? runWithCaptcha(request)
+        : request(captchaCode))
       const { code, statusCode, message: msg } = data
       // 200 表示请求成功，不报错
       if (statusCode === 200 || code === 200) {
@@ -122,6 +144,7 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
 
   return (
     <>
+      {captchaField}
       <SendCode
         beforeSend={() => {
           return onSendCodeBefore()
@@ -146,6 +169,7 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
               )
               onSendCodeAfter?.()
               if (status) {
+                onSendCodeSuccess?.(fieldValue)
                 events?.onPhoneSend?.(authClient, scene)
               } else {
                 onSendCodeError?.(error)

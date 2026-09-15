@@ -1,3 +1,4 @@
+import { useSentAccountCheck } from '../../ValidatorRules/useSentAccountCheck'
 import { React } from 'shim-react'
 
 import { useTranslation } from 'react-i18next'
@@ -97,6 +98,8 @@ export const ResetPassword = (props: ResetPasswordProps) => {
   let [codeMethod, setCodeMethod] = useState<'phone' | 'email'>(
     defaultCodeMethod
   )
+
+  const sentAccount = useSentAccountCheck(codeMethod)
 
   // let authClient = useGuardAuthClient()
   // const events = useGuardEvents()
@@ -217,7 +220,9 @@ export const ResetPassword = (props: ResetPasswordProps) => {
               scene={SceneType.SCENE_TYPE_RESET}
               maxLength={verifyCodeLength}
               data={identify}
+              onSendCodeSuccess={sentAccount.mark}
               onSendCodeBefore={async () => {
+                sentAccount.clear()
                 // closeCheckSendUser 开启时，由 onFinish 统一校验
                 if (!publicConfig?.closeCheckSendUser) {
                   await form.validateFields(['identify'])
@@ -248,7 +253,9 @@ export const ResetPassword = (props: ResetPasswordProps) => {
               captchaCode={captchaCode}
               maxLength={verifyCodeLength}
               data={identify}
+              onSendCodeSuccess={sentAccount.mark}
               onSendCodeBefore={async () => {
+                sentAccount.clear()
                 // closeCheckSendUser 开启时，由 onFinish 统一校验
                 if (!publicConfig?.closeCheckSendUser) {
                   await form.validateFields(['identify'])
@@ -270,7 +277,9 @@ export const ResetPassword = (props: ResetPasswordProps) => {
       isInternationSms,
       t,
       verifyCodeLength,
-      captchaCode
+      captchaCode,
+      sentAccount,
+      publicConfig
     ]
   )
 
@@ -295,6 +304,10 @@ export const ResetPassword = (props: ResetPasswordProps) => {
     <div className="authing-g2-login-phone-code">
       <Form
         name="rePassword"
+        onValuesChange={values => {
+          if (Object.prototype.hasOwnProperty.call(values, 'identify'))
+            sentAccount.clear()
+        }}
         form={form}
         onFinish={onFinish}
         onFinishFailed={() => {
@@ -308,6 +321,7 @@ export const ResetPassword = (props: ResetPasswordProps) => {
           methods={identifyMethods}
           currentMethod={InputMethodMap[codeMethod]}
           checkExist={true}
+          isExistenceVerified={sentAccount.matches}
         >
           <InputIdentify
             methods={identifyMethods}

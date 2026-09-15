@@ -1,4 +1,13 @@
 {
+  "captchaInputOutdated": "The image has changed. Your input is preserved; update it to match the new image.",
+  "inlineCaptchaReadyHint": "Enter the code shown. Click the image for a new code.",
+  "inlineCaptchaHint": "Verify to continue. Click the image for a new code.",
+  "verifyAndContinue": "Verify and continue",
+  "captchaLoading": "Loading…",
+  "cancel": "Cancel",
+  "captchaCancelled": "CAPTCHA verification cancelled. Please try again.",
+  "refreshCaptcha": "Refresh CAPTCHA",
+  "captchaImageError": "Could not load the CAPTCHA. Click the image to retry.",
   "alreadyHasAcc": "already have an account,",
   "bind": "Bind",
   "yes": "Yes",

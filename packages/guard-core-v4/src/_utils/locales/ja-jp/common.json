@@ -1,4 +1,13 @@
 {
+  "captchaInputOutdated": "画像が更新されました。入力内容は保持されています。新しい画像に合わせて修正してください。",
+  "inlineCaptchaReadyHint": "画像の認証コードを入力してください。画像をクリックすると更新できます。",
+  "inlineCaptchaHint": "認証後に操作を続行します。画像をクリックすると更新できます。",
+  "verifyAndContinue": "認証して続行",
+  "captchaLoading": "読み込み中…",
+  "cancel": "キャンセル",
+  "captchaCancelled": "画像認証がキャンセルされました。もう一度お試しください。",
+  "refreshCaptcha": "認証画像を更新",
+  "captchaImageError": "認証画像を読み込めませんでした。画像をクリックして再試行してください。",
   "guidance": {},
   "uploadFail": "{{name}} アップロード失敗",
   "confirm": "確認",

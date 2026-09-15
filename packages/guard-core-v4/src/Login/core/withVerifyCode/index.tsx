@@ -103,6 +103,8 @@ const LoginWithVerifyCode = (props: any) => {
 
   const [validated, setValidated] = useState(false)
 
+  const sentAccount = useRef<{ key: string; expiresAt: number }>()
+
   const [identify, setIdentify] = useState('')
 
   const [currentMethod, setCurrentMethod] = useState<InputMethod>(
@@ -159,6 +161,22 @@ const LoginWithVerifyCode = (props: any) => {
   let submitButtonRef = useRef<any>(null)
   const { t } = useTranslation()
 
+  const accountKey = (value: string) =>
+    JSON.stringify([publicConfig.userPoolId, currentMethod, areaCode, value])
+  const isExistenceVerified = (value: string) =>
+    Boolean(
+      publicConfig.enableUserExistenceCheckCaptcha &&
+        !publicConfig.closeCheckSendUser &&
+        sentAccount.current?.key === accountKey(value) &&
+        sentAccount.current.expiresAt > Date.now()
+    )
+  const onSendCodeSuccess = (value: string) => {
+    sentAccount.current = {
+      key: accountKey(value),
+      expiresAt: Date.now() + 5 * 60 * 1000
+    }
+  }
+
   const SendCode = useCallback(
     (props: any) => {
       if (isOnlyInternationSms) {
@@ -183,7 +201,9 @@ const LoginWithVerifyCode = (props: any) => {
             isInternationSms={isInternationSms}
             scene={SceneType.SCENE_TYPE_LOGIN}
             maxLength={verifyCodeLength}
+            onSendCodeSuccess={onSendCodeSuccess}
             onSendCodeBefore={async () => {
+              sentAccount.current = undefined
               // closeCheckSendUser 开启时，由 onFinish 统一校验
               if (!publicConfig?.closeCheckSendUser) {
                 await form.validateFields(['identify'])
@@ -222,7 +242,9 @@ const LoginWithVerifyCode = (props: any) => {
               fieldName={'identify'}
               data={identify}
               codeFieldName={'captchaCode'}
+              onSendCodeSuccess={onSendCodeSuccess}
               onSendCodeBefore={async () => {
+                sentAccount.current = undefined
                 // closeCheckSendUser 开启时，由 onFinish 统一校验
                 if (!publicConfig?.closeCheckSendUser) {
                   await form.validateFields(['identify'])
@@ -255,7 +277,9 @@ const LoginWithVerifyCode = (props: any) => {
               maxLength={verifyCodeLength}
               data={identify}
               codeFieldName={'captchaCode'}
+              onSendCodeSuccess={onSendCodeSuccess}
               onSendCodeBefore={async () => {
+                sentAccount.current = undefined
                 // closeCheckSendUser 开启时，由 onFinish 统一校验
                 if (!publicConfig?.closeCheckSendUser) {
                   await form.validateFields(['identify'])
@@ -277,6 +301,7 @@ const LoginWithVerifyCode = (props: any) => {
       identify,
       isInternationSms,
       isOnlyInternationSms,
+      publicConfig,
       t,
       verifyCodeLength
     ]
@@ -502,6 +527,9 @@ const LoginWithVerifyCode = (props: any) => {
   )
 
   const formValuesChange = (changedValues: Record<string, any>) => {
+    if (Object.prototype.hasOwnProperty.call(changedValues, 'identify')) {
+      sentAccount.current = undefined
+    }
     if (changedValues?.identify && saveIdentify) {
       saveIdentify(LoginMethods.PhoneCode, changedValues?.identify)
     }
@@ -543,6 +571,7 @@ const LoginWithVerifyCode = (props: any) => {
           }
           methods={methods}
           checkExist={!autoRegister}
+          isExistenceVerified={isExistenceVerified}
           currentMethod={currentMethod}
           areaCode={areaCode}
         >

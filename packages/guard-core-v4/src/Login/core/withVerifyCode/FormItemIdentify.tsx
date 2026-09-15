@@ -1,3 +1,4 @@
+import { useFindUser } from '../../../ValidatorRules/useFindUser'
 import { FormItemProps, Rule } from 'shim-antd/lib/form'
 
 import { Form, message } from 'shim-antd'
@@ -15,7 +16,6 @@ import { fieldRequiredRule, VALIDATE_PATTERN } from '../../../_utils'
 import { phone } from 'phone'
 
 import {
-  useGuardHttpClient,
   useGuardPhoneRegex,
   useGuardPublicConfig
 } from '../../../_utils/context'
@@ -35,6 +35,7 @@ const { useMemo, useState } = React
 export interface FormItemIdentifyProps extends FormItemProps {
   checkRepeat?: boolean // 重复性校验
   checkExist?: boolean //存在性校验
+  isExistenceVerified?: (value: string) => boolean
   methods: VerifyLoginMethods[]
   currentMethod: 'phone-code' | 'email-code' //当前 input 输入
   areaCode?: string //国际化手机号区号
@@ -52,6 +53,7 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
     currentMethod,
     checkRepeat,
     checkExist,
+    isExistenceVerified,
     ...formItemProps
   } = props
   const publicConfig = useGuardPublicConfig()
@@ -59,7 +61,10 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
 
   const [validateStatus, setValidateStatus] = useState<ValidateStatus>()
 
-  const { get } = useGuardHttpClient()
+  const { findUser, captchaField } = useFindUser(
+    methods.length !== 1 && Boolean(checkExist || checkRepeat),
+    FindMethodConversion[currentMethod]
+  )
 
   const phoneRegex = useGuardPhoneRegex()
 
@@ -95,6 +100,10 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
     resolve: (value: unknown) => void,
     reject: (reason?: any) => void
   ) => {
+    if (checkExist && !checkRepeat && isExistenceVerified?.(value)) {
+      resolve(true)
+      return
+    }
     let checkValue = value
     if (currentMethod === 'phone-code' && checkInternationalSms) {
       const { phoneNumber } = parsePhone(
@@ -104,21 +113,11 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
       )
       checkValue = phoneNumber
     }
-    get<boolean>(
-      '/api/v2/users/find',
-      {
-        userPoolId: publicConfig?.userPoolId,
-        key: checkValue,
-        type: FindMethodConversion[currentMethod]
-      },
-      {
-        validateStatus: () => true
-      }
-    )
+    findUser(checkValue, FindMethodConversion[currentMethod])
       .then(({ code, statusCode, message: errorMessage, data }) => {
         const responseCode = statusCode ?? code
 
-        if (responseCode !== undefined && responseCode !== HttpStatusCode.OK) {
+        if (responseCode !== HttpStatusCode.OK || typeof data !== 'boolean') {
           reject(errorMessage || methodContent.requestErrorMessage)
           return
         }
@@ -131,6 +130,7 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
             if (publicConfig?.closeCheckSendUser) {
               setValidateStatus('validating')
               message.error(methodContent.delayFindErrorMessage)
+              reject()
             } else {
               reject(methodContent.checkExistErrorMessage)
             }
@@ -141,6 +141,7 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
             if (publicConfig?.closeCheckSendUser) {
               setValidateStatus('validating')
               message.error(methodContent.delayFindErrorMessage)
+              reject()
             } else {
               reject(methodContent.checkRepeatErrorMessage)
             }
@@ -149,12 +150,24 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
           }
         }
       })
+      .catch(error =>
+        reject(error?.message || methodContent.requestErrorMessage)
+      )
       .finally(() => {
         setValidateStatus(undefined)
       })
   }
 
-  const checkRepeatFn = useCheckRepeat(checkRepeatRet)
+  const checkRepeatFn = useCheckRepeat(
+    checkRepeatRet,
+    JSON.stringify([
+      publicConfig.userPoolId,
+      currentMethod,
+      areaCode,
+      checkExist,
+      checkRepeat
+    ])
+  )
 
   const formatRules = useMemo<Rule>(() => {
     if (checkInternationalSms) {
@@ -226,6 +239,7 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
             areaCode={areaCode}
             checkRepeat={checkRepeat}
             checkExist={checkExist}
+            isExistenceVerified={isExistenceVerified}
           />
         )
       case 'email-code':
@@ -235,6 +249,7 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
             validateStatus={validateStatus}
             checkRepeat={checkRepeat}
             checkExist={checkExist}
+            isExistenceVerified={isExistenceVerified}
           />
         )
     }
@@ -244,9 +259,15 @@ export const FormItemIdentify: React.FC<FormItemIdentifyProps> = props => {
     checkRepeat,
     currentMethod,
     formItemProps,
+    isExistenceVerified,
     methods.length,
     rules
   ])
 
-  return <>{renderTemplate}</>
+  return (
+    <>
+      {renderTemplate}
+      {captchaField}
+    </>
+  )
 }

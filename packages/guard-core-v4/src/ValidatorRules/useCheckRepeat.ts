@@ -1,32 +1,34 @@
 import { React } from 'shim-react'
 
-const { useCallback, useState } = React
+const { useCallback, useRef } = React
 
 export const useCheckRepeat = (
   checkFn: (
     value: any,
     resolve: (value: unknown) => void,
     reject: (reason?: any) => void
-  ) => void
+  ) => void,
+  scope = ''
 ) => {
-  const [timer, setTimer] = useState<NodeJS.Timeout>()
+  const latestCheck = useRef(checkFn)
+  latestCheck.current = checkFn
+  const pending = useRef(new Map<any, Promise<unknown>>())
 
-  const checkRepeat = useCallback(
-    async (_: any, value: any) => {
-      if (timer) {
-        clearTimeout(timer)
-      }
-
-      return new Promise((resolve, reject) => {
-        const timeout = setTimeout(() => {
-          checkFn(value, resolve, reject)
-        }, 500)
-
-        setTimer(timeout)
+  // Submit and send-code validation can overlap. Share an in-flight check for
+  // the same value; never cache results or reuse a consumed captcha.
+  return useCallback(
+    (_: any, value: any) => {
+      const key = JSON.stringify([scope, value])
+      const existing = pending.current.get(key)
+      if (existing) return existing
+      const result = new Promise((resolve, reject) => {
+        latestCheck.current(value, resolve, reject)
       })
+      pending.current.set(key, result)
+      const clear = () => pending.current.delete(key)
+      result.then(clear, clear)
+      return result
     },
-    [checkFn, timer]
+    [scope]
   )
-
-  return checkRepeat
 }

@@ -1,10 +1,9 @@
+import { useFindUser } from './useFindUser'
 import { Form, message } from 'shim-antd'
 
 import { React } from 'shim-react'
 
 import { fieldRequiredRule, VALIDATE_PATTERN } from '../_utils'
-
-import { useGuardHttp } from '../_utils/guardHttp'
 
 import { useTranslation } from 'react-i18next'
 
@@ -26,6 +25,8 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
   const {
     checkRepeat = false,
     checkExist = false,
+    isExistenceVerified,
+    isUserCheckVerified,
     method,
     name,
     required,
@@ -34,7 +35,10 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
     ...formItemProps
   } = props
   const publicConfig = useGuardPublicConfig()
-  const { get } = useGuardHttp()
+  const { findUser, captchaField } = useFindUser(
+    required !== false && (checkExist || checkRepeat),
+    method
+  )
   const { t } = useTranslation()
   const [validateStatus, setValidateStatus] = useState<ValidateStatus>()
 
@@ -106,21 +110,18 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
     resolve: (value: unknown) => void,
     reject: (reason?: any) => void
   ) => {
-    get<boolean>(
-      '/api/v2/users/find',
-      {
-        userPoolId: publicConfig?.userPoolId,
-        key: value,
-        type: method
-      },
-      {
-        validateStatus: () => true
-      }
-    )
+    if (
+      isUserCheckVerified?.(value) ||
+      (checkExist && !checkRepeat && isExistenceVerified?.(value))
+    ) {
+      resolve(true)
+      return
+    }
+    findUser(value, method)
       .then(({ code, statusCode, message: errorMessage, data }) => {
         const responseCode = statusCode ?? code
 
-        if (responseCode !== undefined && responseCode !== HttpStatusCode.OK) {
+        if (responseCode !== HttpStatusCode.OK || typeof data !== 'boolean') {
           reject(errorMessage || methodContent.requestErrorMessage)
           return
         }
@@ -133,6 +134,7 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
             if (publicConfig?.closeCheckSendUser) {
               setValidateStatus('validating')
               message.error(methodContent.delayFindErrorMessage)
+              reject()
             } else {
               reject(methodContent.checkExistErrorMessage)
             }
@@ -143,6 +145,7 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
             if (publicConfig?.closeCheckSendUser) {
               setValidateStatus('validating')
               message.error(methodContent.delayFindErrorMessage)
+              reject()
             } else {
               reject(methodContent.checkRepeatErrorMessage)
             }
@@ -151,12 +154,24 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
           }
         }
       })
+      .catch(error =>
+        reject(error?.message || methodContent.requestErrorMessage)
+      )
       .finally(() => {
         setValidateStatus(undefined)
       })
   }
 
-  const checkRepeatFn = useCheckRepeat(checkRepeatRet)
+  const checkRepeatFn = useCheckRepeat(
+    checkRepeatRet,
+    JSON.stringify([
+      publicConfig.userPoolId,
+      method,
+      areaCode,
+      checkExist,
+      checkRepeat
+    ])
+  )
 
   const formatRules = useMemo<Rule>(() => {
     if (checkInternationalSms) {
@@ -211,14 +226,17 @@ const ValidatorFormItem: React.FC<ValidatorFormItemMetaProps> = props => {
     checkRepeatFn
   ])
   return (
-    <Form.Item
-      validateFirst={true}
-      validateTrigger={['onBlur', 'onChange']}
-      rules={[...rules, ...(formItemProps?.rules ?? [])]}
-      name={name ?? method}
-      validateStatus={validateStatus}
-      {...formItemProps}
-    />
+    <>
+      <Form.Item
+        validateFirst={true}
+        validateTrigger={['onBlur', 'onChange']}
+        rules={[...rules, ...(formItemProps?.rules ?? [])]}
+        name={name ?? method}
+        validateStatus={validateStatus}
+        {...formItemProps}
+      />
+      {captchaField}
+    </>
   )
 }
 export const EmailFormItem: React.FC<ValidatorFormItemProps> = props => (

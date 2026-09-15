@@ -116,7 +116,10 @@ export const ImagePro2 = (props: ImageProProps) => {
         className="g2-base-imagepro"
         draggable={false}
         alt={alt || 'image'}
-        onLoad={() => setLoaded(true)}
+        onLoad={event => {
+          setLoaded(true)
+          props.onLoad?.(event)
+        }}
       />
       {loaded && (
         <div className="g2-base-imagepro-mask" ref={maskRef}>

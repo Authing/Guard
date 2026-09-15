@@ -501,9 +501,10 @@ export interface ApplicationConfig {
   }
   noticePwdCustomLogo?: string
 
-  /**
-   * 开启延迟校验用户是否存在功能
-   */
+  /** 手机号和邮箱存在性查询是否需要图形验证码 */
+  enableUserExistenceCheckCaptcha?: boolean
+
+  /** 开启延迟校验用户是否存在功能 */
   closeCheckSendUser?: boolean
 
   resetPwdLinkCustomLogo?: string

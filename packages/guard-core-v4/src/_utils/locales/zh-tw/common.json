@@ -1,4 +1,13 @@
 {
+  "captchaInputOutdated": "圖片已更新，已保留你的輸入，請依新圖片修改驗證碼。",
+  "inlineCaptchaReadyHint": "請填寫圖形驗證碼，點選圖片可換一張。",
+  "inlineCaptchaHint": "驗證後繼續剛才的操作，點選圖片可換一張。",
+  "verifyAndContinue": "驗證並繼續",
+  "captchaLoading": "載入中…",
+  "cancel": "取消",
+  "captchaCancelled": "已取消圖形驗證碼校驗，請重試",
+  "refreshCaptcha": "重新整理圖形驗證碼",
+  "captchaImageError": "驗證碼圖片載入失敗，請點選圖片重試",
   "EmailVerification": "電子郵件驗證",
   "LoginSuccess": "登入成功",
   "OTPVerification": "OTP 口令驗證",

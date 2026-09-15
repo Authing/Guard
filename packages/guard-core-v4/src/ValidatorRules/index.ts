@@ -21,6 +21,8 @@ export interface ValidatorFormItemProps extends FormItemProps {
   form?: FormInstance
   checkRepeat?: boolean
   checkExist?: boolean
+  isUserCheckVerified?: (value: string) => boolean
+  isExistenceVerified?: (value: string) => boolean
   areaCode?: string //国际化区号
   /**
    * 控制内部FormItem组件关于pattern的校验规则

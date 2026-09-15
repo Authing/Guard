@@ -1,0 +1,40 @@
+.g2-inline-captcha {
+  margin: -8px 0 24px;
+
+  .g2-inline-captcha-label {
+    margin-bottom: 8px;
+    color: #333;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .g2-graphic-verify-code {
+    display: flex;
+    gap: 12px;
+
+    > input {
+      flex: 1;
+      min-width: 0;
+      width: auto;
+      height: 42px;
+    }
+  }
+
+  .g2-inline-captcha-hint {
+    margin-top: 8px;
+    color: #8c8c8c;
+    font-size: 12px;
+    line-height: 20px;
+
+    &[role='alert'] {
+      color: #ff4d4f;
+    }
+  }
+
+  .g2-inline-captcha-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 12px;
+  }
+}
