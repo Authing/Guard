@@ -10,9 +10,17 @@ on:
         description: 'Please enter your github email'
         required: true
       version:
-        description: 'Please enter your release version'
-        required: true
-        
+        description: 'Release version (auto increments custom/shjw; explicit version required for other branches)'
+        required: false
+        default: 'auto'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
 
   readyGo:
@@ -26,23 +34,29 @@ jobs:
 
     steps:
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v2
         with:
           node-version: 16.13.1
           registry-url: https://registry.npmjs.org/
           
+      - name: resolve release version
+        run: node scripts/resolve-release-version.js
+
       - name: before scripts
         run: |
-          echo "Current branch: ${{ github.ref_name }}"
-          echo "Current publish version: ${{ github.event.inputs.version }}"
-          echo "Current user.name: ${{ github.event.inputs.name }}"
-          echo "Current user.email: ${{ github.event.inputs.email }}"
+          echo "Current branch: $GITHUB_REF_NAME"
+          echo "Current publish version: $VERSION"
       
       - name: set git config
+        env:
+          RELEASE_EMAIL: ${{ github.event.inputs.email }}
+          RELEASE_NAME: ${{ github.event.inputs.name }}
         run: |
-          git config --global user.email ${{ github.event.inputs.email }}
-          git config --global user.name ${{ github.event.inputs.name }}
+          git config --global user.email "$RELEASE_EMAIL"
+          git config --global user.name "$RELEASE_NAME"
           
       - name: install global packages
         run: |
@@ -55,26 +69,35 @@ jobs:
 
       - name: update version
         run: |
-          lerna version $VERSION --yes
+          if [ "$(node -p "require('./lerna.json').version")" != "$VERSION" ]; then
+            lerna version "$VERSION" --yes --no-push
+          fi
+          test "$(node -p "require('./packages/guard-core-v4/package.json').version")" = "$VERSION"
 
       - name: build core
         run: |
           npm run build:core
           npm run transfer-packages
 
+      - name: persist release version
+        run: bash scripts/push-release.sh
+
       - name: release official
         if: ${{ github.ref_name == 'v4' }}
         run: |
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
-          npm run release type=official version=$VERSION
+          npm run release type=official "version=$VERSION"
           echo "release:official successfully 🚀"
           
       - name: release alpha
         if: ${{ github.ref_name != 'v4' }}
         run: |
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
-          npm run release type=alpha version=$VERSION
+          npm run release type=alpha "version=$VERSION"
           echo "release:alpha successfully 🚀"
+
+      - name: push release metadata
+        run: bash scripts/push-release.sh
 
       - name: upload oss
         run: |
