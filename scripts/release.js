@@ -22,6 +22,18 @@ function parseArgs() {
   }, {})
 }
 
+function installPackageWithRetry(packageName, version) {
+  return [
+    'install_status=1;',
+    'for attempt in $(seq 1 60); do',
+    `if npm install --save-exact ${packageName}@${version}; then install_status=0; break; fi`,
+    `echo "waiting for ${packageName}@${version} to become available..."`,
+    'sleep 5',
+    'done;',
+    '[ "$install_status" = "0" ]'
+  ].join(' ')
+}
+
 function callShell(args) {
   const { type, version } = args
   const releaseType = type === 'alpha' ? RELEASE_ALPHA : RELEASE_OFFICIAL
@@ -52,12 +64,11 @@ function callShell(args) {
     ),
     `cd packages/guard-shim-react && ${releaseType}`,
     `cd packages/guard-shim-react18 && ${releaseType}`,
-    `sleep 15`, // 等待 npm registry 同步
-    `cd packages/native-js-ui-components && npm ci && npm install --save-exact @authing/guard-shim-react@${version} && npm run build:lib && ${releaseType}`,
-    `cd packages/react-ui-components && npm ci && npm install --save-exact @authing/guard-shim-react@${version} && npm run build:lib && ${releaseType}`,
-    `cd packages/react18-ui-components && npm ci && npm install --save-exact @authing/guard-shim-react18@${version} && npm run build:lib && ${releaseType}`,
-    `cd packages/ng-ui-components && npm ci && npm install --save-exact @authing/native-js-ui-components@${version} && npm run build:lib && ${releaseType}`,
-    `cd packages/vue-ui-components && npm ci && npm install --save-exact @authing/native-js-ui-components@${version} && npm run build:lib && ${releaseType}`,
+    `cd packages/native-js-ui-components && npm ci && ${installPackageWithRetry('@authing/guard-shim-react', version)} && npm run build:lib && ${releaseType}`,
+    `cd packages/react-ui-components && npm ci && ${installPackageWithRetry('@authing/guard-shim-react', version)} && npm run build:lib && ${releaseType}`,
+    `cd packages/react18-ui-components && npm ci && ${installPackageWithRetry('@authing/guard-shim-react18', version)} && npm run build:lib && ${releaseType}`,
+    `cd packages/ng-ui-components && npm ci && ${installPackageWithRetry('@authing/native-js-ui-components', version)} && npm run build:lib && ${releaseType}`,
+    `cd packages/vue-ui-components && npm ci && ${installPackageWithRetry('@authing/native-js-ui-components', version)} && npm run build:lib && ${releaseType}`,
   ]
 
   shelljs.set('-e')
