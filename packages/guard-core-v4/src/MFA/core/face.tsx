@@ -82,9 +82,27 @@ const stringifyError = (error: any): string => {
   if (!error) return ''
   if (typeof error === 'string') return error
   try {
-    return JSON.stringify(error, Object.getOwnPropertyNames(error))
+    return JSON.stringify(error, (_key, value) => {
+      if (value instanceof Error) {
+        return {
+          name: value.name,
+          message: value.message,
+          code: (value as any).code
+        }
+      }
+
+      return value
+    })
   } catch {
     return String(error)
+  }
+}
+
+const isInIframe = () => {
+  try {
+    return window.self !== window.top
+  } catch {
+    return true
   }
 }
 
@@ -685,6 +703,8 @@ export const MFAFace = (props: any) => {
     const userPoolId = publicConfig?.userPoolId
     if (!userPoolId) return
 
+    const sdkError = error?.error
+
     post('/trackevent', {
       event: 'bg_face_liveness_error',
       userPoolId,
@@ -694,9 +714,17 @@ export const MFAFace = (props: any) => {
         source: 'bg',
         module: 'faceLiveness',
         appId,
-        errorName: error?.name,
-        errorMessage: error?.message,
-        errorCode: error?.code,
+        livenessState: error?.state,
+        errorName: sdkError?.name,
+        errorMessage: sdkError?.message,
+        errorCode: sdkError?.code,
+        isSecureContext: window.isSecureContext,
+        hasMediaDevices: !!navigator.mediaDevices,
+        hasGetUserMedia: !!navigator.mediaDevices?.getUserMedia,
+        hasMediaRecorder: typeof MediaRecorder !== 'undefined',
+        inIframe: isInIframe(),
+        cachedCameraId:
+          localStorage.getItem('AmplifyLivenessCameraId') ?? null,
         error: stringifyError(error),
         sessionId: livenessSessionId ?? undefined
       }
