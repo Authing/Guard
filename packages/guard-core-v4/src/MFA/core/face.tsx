@@ -723,8 +723,7 @@ export const MFAFace = (props: any) => {
         hasGetUserMedia: !!navigator.mediaDevices?.getUserMedia,
         hasMediaRecorder: typeof MediaRecorder !== 'undefined',
         inIframe: isInIframe(),
-        cachedCameraId:
-          localStorage.getItem('AmplifyLivenessCameraId') ?? null,
+        cachedCameraId: localStorage.getItem('AmplifyLivenessCameraId') ?? null,
         error: stringifyError(error),
         sessionId: livenessSessionId ?? undefined
       }
