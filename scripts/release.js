@@ -26,9 +26,9 @@ function installPackageWithRetry(packageName, version) {
   return [
     'install_status=1;',
     'for attempt in $(seq 1 60); do',
-    `if npm install --save-exact ${packageName}@${version}; then install_status=0; break; fi`,
-    `echo "waiting for ${packageName}@${version} to become available..."`,
-    'sleep 5',
+    `if npm install --save-exact ${packageName}@${version}; then install_status=0; break; fi;`,
+    `echo "waiting for ${packageName}@${version} to become available...";`,
+    'sleep 5;',
     'done;',
     '[ "$install_status" = "0" ]'
   ].join(' ')
