@@ -1,9 +1,18 @@
 import classNames from 'classnames'
 import { OTPInput, SlotProps } from 'input-otp'
+import ResizeObserverPolyfill from 'resize-observer-polyfill'
 import { Divider } from 'shim-antd'
 import { React } from 'shim-react'
 
 import './style.less'
+
+// input-otp reads the global constructor in its mount effect.
+if (
+  typeof window !== 'undefined' &&
+  typeof window.ResizeObserver !== 'function'
+) {
+  window.ResizeObserver = ResizeObserverPolyfill
+}
 
 interface VerifyCodeInputProps extends React.HTMLAttributes<HTMLDivElement> {
   length?: number
