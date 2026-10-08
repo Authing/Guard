@@ -1,4 +1,5 @@
 const https = require('https')
+const { urlToHttpOptions } = require('url')
 const shelljs = require('shelljs')
 const minimist = require('minimist')
 
@@ -22,7 +23,7 @@ const NPM_PUBLISH_CHECK_INTERVAL_MS = numberFromEnv(
 )
 const NPM_PUBLISH_CHECK_RETRIES = numberFromEnv(
   'NPM_PUBLISH_CHECK_RETRIES',
-  18
+  60
 )
 const NPMMIRROR_INITIAL_WAIT_MS = numberFromEnv(
   'NPMMIRROR_INITIAL_WAIT_MS',
@@ -35,10 +36,12 @@ const NPMMIRROR_CHECK_INTERVAL_MS = numberFromEnv(
 const NPMMIRROR_CHECK_RETRIES = numberFromEnv('NPMMIRROR_CHECK_RETRIES', 18)
 const NPMMIRROR_SYNC_STRICT = process.env.NPMMIRROR_SYNC_STRICT === 'true'
 
-readyGo().catch(error => {
-  console.error('release failed', error)
-  process.exit(1)
-})
+if (require.main === module) {
+  readyGo().catch(error => {
+    console.error('release failed', error)
+    process.exit(1)
+  })
+}
 
 async function readyGo() {
   const args = parseArgs()
@@ -163,7 +166,7 @@ async function releasePackage(packageInfo, options) {
     runInPackage(dir, prepare(version))
   }
 
-  if (packageExists(name, version, NPM_REGISTRY)) {
+  if (await packageExists(name, version, NPM_REGISTRY)) {
     console.log(`${name}@${version} already exists on npm, skipping publish`)
   } else {
     const publishResult = execInPackage(
@@ -172,7 +175,7 @@ async function releasePackage(packageInfo, options) {
     )
 
     if (publishResult.code !== 0) {
-      if (packageExists(name, version, NPM_REGISTRY)) {
+      if (await packageExists(name, version, NPM_REGISTRY)) {
         console.warn(
           `${name}@${version} is visible on npm after publish failure, continuing`
         )
@@ -236,20 +239,35 @@ function exec(command, options = {}) {
   })
 }
 
-function packageExists(packageName, version, registry) {
-  const result = shelljs.exec(
-    `npm view ${packageName}@${version} version --prefer-online --registry=${registry}`,
-    {
-      env: {
-        ...process.env,
-        NPM_CONFIG_REGISTRY: registry,
-        npm_config_registry: registry,
-      },
-      silent: true,
-    }
+async function packageExists(packageName, version, registry) {
+  // These packages are public. Read the exact version without inheriting npm
+  // credentials, CLI output settings, or a cached pre-publish packument.
+  const url = new URL(
+    `${encodeURIComponent(packageName)}/${encodeURIComponent(version)}`,
+    registry
   )
+  url.searchParams.set('release-check', Date.now().toString())
 
-  return result.code === 0 && normalizeVersion(result.stdout.trim()) === version
+  try {
+    const data = await requestJson({
+      ...urlToHttpOptions(url),
+      headers: {
+        Accept: 'application/json',
+        'Cache-Control': 'no-cache',
+      },
+    })
+
+    if (data.name !== packageName || data.version !== version) {
+      throw new Error(`unexpected package metadata for ${packageName}@${version}`)
+    }
+
+    return true
+  } catch (error) {
+    if (error.statusCode === 404) {
+      return false
+    }
+    throw error
+  }
 }
 
 async function waitForNpmPackage(packageName, version, options) {
@@ -270,10 +288,17 @@ async function waitForNpmPackage(packageName, version, options) {
     await sleep(initialWaitMs)
   }
 
+  let lastError = 'HTTP 404: version not found'
   for (let attempt = 1; attempt <= retries; attempt++) {
-    if (packageExists(packageName, version, registry)) {
-      console.log(`${packageName}@${version} is available on ${registryName}`)
-      return true
+    try {
+      if (await packageExists(packageName, version, registry)) {
+        console.log(`${packageName}@${version} is available on ${registryName}`)
+        return true
+      }
+      lastError = 'HTTP 404: version not found'
+    } catch (error) {
+      lastError = error.message
+      console.warn(`${registryName} check failed: ${lastError}`)
     }
 
     if (attempt < retries) {
@@ -284,7 +309,7 @@ async function waitForNpmPackage(packageName, version, options) {
     }
   }
 
-  const message = `${packageName}@${version} was not available on ${registryName} after ${retries} checks`
+  const message = `${packageName}@${version} was not available on ${registryName} after ${retries} checks (${lastError})`
 
   if (strict) {
     throw new Error(message)
@@ -327,18 +352,20 @@ function requestJson(options) {
       let output = ''
 
       res.setEncoding('utf8')
+      res.on('error', reject)
       res.on('data', chunk => {
         output += chunk
       })
       res.on('end', () => {
+        if (res.statusCode < 200 || res.statusCode >= 300) {
+          const error = new Error(`HTTP ${res.statusCode} ${res.statusMessage || ''}`.trim())
+          error.statusCode = res.statusCode
+          reject(error)
+          return
+        }
+
         try {
           const data = JSON.parse(output.trim())
-
-          if (res.statusCode >= 400) {
-            reject(new Error(JSON.stringify(data)))
-            return
-          }
-
           resolve(data)
         } catch (error) {
           reject(error)
@@ -370,3 +397,5 @@ function numberFromEnv(name, fallback) {
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
+
+module.exports = { packageExists, waitForNpmPackage }
