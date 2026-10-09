@@ -1,7 +1,11 @@
 const assert = require('assert').strict
 const { EventEmitter } = require('events')
 const https = require('https')
+const fs = require('fs')
+const os = require('os')
+const path = require('path')
 const { packageExists, waitForNpmPackage } = require('./release')
+const { checkReleaseVersion } = require('./check-release-version')
 
 const packageName = '@authing/guard-shim-react'
 const version = '4.5.54-otp.2'
@@ -35,6 +39,28 @@ function mockRegistry(queue) {
 }
 
 async function main() {
+  const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'guard-release-version-'))
+  const writeVersion = (file, value) => {
+    const target = path.join(fixture, file)
+    fs.mkdirSync(path.dirname(target), { recursive: true })
+    fs.writeFileSync(target, JSON.stringify({ version: value }))
+  }
+  try {
+    writeVersion('lerna.json', '4.5.54-otp.2')
+    writeVersion('packages/guard-core-v4/package.json', '4.5.54-otp.2')
+    writeVersion('packages/guard-shim-react/package.json', '4.5.55')
+    assert.throws(() => checkReleaseVersion('4.5.55', fixture), /guard-core-v4\/package.json: 4\.5\.54-otp\.2/)
+    writeVersion('packages/guard-core-v4/package.json', '4.5.55')
+    assert.throws(() => checkReleaseVersion('4.5.55', fixture), /lerna.json: 4\.5\.54-otp\.2/)
+    writeVersion('lerna.json', '4.5.55')
+    assert.doesNotThrow(() => checkReleaseVersion('4.5.55', fixture))
+    writeVersion('packages/guard-shim-react/package.json', '4.5.54-otp.2')
+    assert.throws(() => checkReleaseVersion('4.5.55', fixture), /guard-shim-react\/package.json/)
+    assert.throws(() => checkReleaseVersion('', fixture), /missing required release version/)
+  } finally {
+    fs.rmSync(fixture, { recursive: true, force: true })
+  }
+
   mockRegistry([{ status: 200, body: manifest }])
   assert.equal(await packageExists(packageName, version, registry), true)
   assert.equal(requests[0].hostname, 'registry.npmjs.org')

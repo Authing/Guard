@@ -2,6 +2,7 @@ const https = require('https')
 const { urlToHttpOptions } = require('url')
 const shelljs = require('shelljs')
 const minimist = require('minimist')
+const { checkReleaseVersion } = require('./check-release-version')
 
 const RELEASE_ALPHA = 'release:alpha'
 const RELEASE_OFFICIAL = 'release:official'
@@ -123,12 +124,7 @@ async function callShell(args) {
   }
 
   try {
-    packages.forEach(({ dir }) => {
-      runInPackage(
-        dir,
-        `npm version ${version} --no-git-tag-version --allow-same-version`
-      )
-    })
+    checkReleaseVersion(version)
 
     for (const packageInfo of packages) {
       await releasePackage(packageInfo, {
@@ -138,16 +134,10 @@ async function callShell(args) {
       })
     }
 
-    const commitResult = shelljs.exec(
-      `git commit -a -m "release: ${version} :rocket:"`,
-      {
-        silent: true,
-      }
-    )
-
-    if (commitResult.code !== 0) {
+    if (run('git status --porcelain --untracked-files=no', { silent: true }).stdout.trim() === '') {
       console.log('release note: no changes to commit')
     } else {
+      run(`git commit -a -m "release: ${version} :rocket:"`)
       console.log('release note: commit created')
     }
 
@@ -220,8 +210,8 @@ function execInPackage(dir, command) {
   return exec(`cd packages/${dir} && ${command}`)
 }
 
-function run(command) {
-  const result = exec(command)
+function run(command, options) {
+  const result = exec(command, options)
   if (result.code !== 0) {
     throw new Error(`command failed: ${command}`)
   }

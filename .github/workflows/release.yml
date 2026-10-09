@@ -56,7 +56,8 @@ jobs:
 
       - name: update version
         run: |
-          lerna version $VERSION --yes
+          lerna version "$VERSION" --force-publish --yes
+          node scripts/check-release-version.js "$VERSION"
 
       - name: build core
         run: |
@@ -76,6 +77,9 @@ jobs:
           npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
           npm run release type=alpha version=$VERSION
           echo "release:alpha successfully 🚀"
+
+      - name: push release metadata
+        run: git push origin "HEAD:$GITHUB_REF_NAME"
 
       - name: upload oss
         run: |
