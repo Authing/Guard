@@ -33,6 +33,20 @@
 .authing-g2-code-input {
   display: flex;
   align-items: center;
+
+  // input-otp uses inset for its transparent input layer; EdgeHTML ignores it.
+  [data-input-otp-container] > div:last-child,
+  input[data-input-otp] {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  input[data-input-otp] {
+    // Override the inline SVG-oriented value with standard HTML hit testing.
+    pointer-events: auto !important;
+  }
 }
 
 .authing-ant-form-item-has-error {
@@ -53,7 +67,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   animation: blink 1.2s step-end infinite;
   &::after {
     content: '|';
