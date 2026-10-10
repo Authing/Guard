@@ -64,6 +64,31 @@
     opacity: 0;
   }
 }
+
+// Keep modern browsers on input-otp's original styles. EdgeHTML needs explicit
+// offsets for both the transparent input and its containing layer.
+@supports not (inset: 0) {
+  .authing-g2-code-input {
+    [data-input-otp-container] > div:last-child,
+    input[data-input-otp] {
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    input[data-input-otp] {
+      pointer-events: auto !important;
+    }
+
+    .authing-g2-otp-input-cursor {
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+  }
+}
 // .g2-mfa-bindTotp .g2-mfa-bindTotp-securityCode-form .g2-mfa-totp-verify-input {
 //   margin-bottom: 24px;
 // }
