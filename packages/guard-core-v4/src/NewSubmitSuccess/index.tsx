@@ -42,11 +42,14 @@ export const GuardNewSubmitSuccessView: React.FC = () => {
     countDesc = t('login.resetPassword.backLogin'),
     // changeModule = GuardModuleType.LOGIN,
     needBack = true,
+    autoBack = true,
     goBack = () => __changeModule?.(GuardModuleType.LOGIN)
   } = initData ?? {}
   const cdnBase = publicConfig?.cdnBase
 
   useEffect(() => {
+    if (!needBack || !autoBack) return
+
     timerRef.current = setInterval(() => {
       setCountDown(prev => {
         return prev - 1
@@ -54,14 +57,14 @@ export const GuardNewSubmitSuccessView: React.FC = () => {
     }, 1000)
 
     return () => clearInterval(timerRef.current)
-  }, [])
+  }, [needBack, autoBack])
 
   useEffect(() => {
-    if (countDown <= 0) {
+    if (autoBack && countDown <= 0) {
       clearInterval(timerRef.current)
       needBack && goBack?.()
     }
-  }, [countDown, needBack, goBack])
+  }, [countDown, needBack, autoBack, goBack])
 
   return (
     <div className="g2-view-container g2-submit-success g2-view-container-submit-success">
@@ -84,9 +87,11 @@ export const GuardNewSubmitSuccessView: React.FC = () => {
               }}
               text={text as string}
             />
-            <div className="success-page-timer-tip">
-              {countDown} {countDesc}
-            </div>
+            {autoBack && (
+              <div className="success-page-timer-tip">
+                {countDown} {countDesc}
+              </div>
+            )}
           </>
         )}
       </div>

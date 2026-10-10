@@ -76,7 +76,7 @@ export const GuardResetPassword = () => {
     res
       .then((r: any) => {
         submitBtnRef.current?.onSpin(false)
-        const { code } = r
+        const { code, passwordResetSuccessAction } = r
         if (code === ApiCode.UNSAFE_PASSWORD_TIP) {
           setPasswordErrorTextShow(true)
         }
@@ -86,6 +86,16 @@ export const GuardResetPassword = () => {
           return
         }
         // events?.onPwdReset?.(authClient)
+
+        if (passwordResetSuccessAction === 'CLOSE_PAGE') {
+          changeModule?.(GuardModuleType.New_SUBMIT_SUCCESS, {
+            title: t('login.resetPassword.successTip'),
+            message: t('login.resetPassword.successClosePageTip'),
+            text: t('login.resetPassword.loginAgain'),
+            autoBack: false
+          })
+          return
+        }
 
         changeModule?.(GuardModuleType.LOGIN)
         // props.onSend(codeMethod)

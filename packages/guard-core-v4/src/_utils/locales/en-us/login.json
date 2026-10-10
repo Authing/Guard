@@ -129,7 +129,9 @@
     "confirmNewPwd": "Please confirm the new password",
     "successTipMsg": "You can continue to log in with your new password",
     "successTip": "Password reset succeeded",
-    "backLogin": "Seconds will automatically jump to the login page"
+    "backLogin": "Seconds will automatically jump to the login page",
+    "successClosePageTip": "If you wish to close this tab, please close it manually.",
+    "loginAgain": "Log in again"
   },
   "wecomScanLogin": "Enterprise WeChat scan code to log in",
   "passwordRuleTips": "Password requirements:",

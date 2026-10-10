@@ -13,6 +13,7 @@ export interface SubmitSuccessInitData {
   countDesc?: string
   changeModule?: GuardModuleType
   needBack?: boolean
+  autoBack?: boolean
   goBack?: () => void
 }
 
