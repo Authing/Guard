@@ -1,44 +1,120 @@
+const https = require('https')
+const { urlToHttpOptions } = require('url')
 const shelljs = require('shelljs')
 const minimist = require('minimist')
-const { execFileSync } = require('child_process')
-const path = require('path')
+const { checkReleaseVersion } = require('./check-release-version')
 
-const RELEASE_ALPHA = 'npm run release:alpha'
-const RELEASE_OFFICIAL = 'npm run release:official'
+const RELEASE_ALPHA = 'release:alpha'
+const RELEASE_OFFICIAL = 'release:official'
+const NPM_REGISTRY = normalizeRegistryUrl(
+  process.env.NPM_REGISTRY || 'https://registry.npmjs.org/'
+)
+const NPMMIRROR_REGISTRY = normalizeRegistryUrl(
+  process.env.NPMMIRROR_REGISTRY || 'https://registry.npmmirror.com/'
+)
+const NPMMIRROR_SYNC_HOST =
+  process.env.NPMMIRROR_SYNC_HOST || 'registry-direct.npmmirror.com'
+const NPM_PUBLISH_INITIAL_WAIT_MS = numberFromEnv(
+  'NPM_PUBLISH_INITIAL_WAIT_MS',
+  5_000
+)
+const NPM_PUBLISH_CHECK_INTERVAL_MS = numberFromEnv(
+  'NPM_PUBLISH_CHECK_INTERVAL_MS',
+  10_000
+)
+const NPM_PUBLISH_CHECK_RETRIES = numberFromEnv(
+  'NPM_PUBLISH_CHECK_RETRIES',
+  60
+)
+const NPMMIRROR_INITIAL_WAIT_MS = numberFromEnv(
+  'NPMMIRROR_INITIAL_WAIT_MS',
+  5_000
+)
+const NPMMIRROR_CHECK_INTERVAL_MS = numberFromEnv(
+  'NPMMIRROR_CHECK_INTERVAL_MS',
+  10_000
+)
+const NPMMIRROR_CHECK_RETRIES = numberFromEnv('NPMMIRROR_CHECK_RETRIES', 18)
+const NPMMIRROR_SYNC_STRICT = process.env.NPMMIRROR_SYNC_STRICT === 'true'
 
-readyGo()
+if (require.main === module) {
+  readyGo().catch(error => {
+    console.error('release failed', error)
+    process.exit(1)
+  })
+}
 
-function readyGo() {
+async function readyGo() {
   const args = parseArgs()
-  callShell(args)
+  await callShell(args)
 }
 
 function parseArgs() {
   const args = process.argv.slice(2)
   const parsedArgs = minimist(args)
+  const mappedArgs = { ...parsedArgs }
+  delete mappedArgs._
 
   return parsedArgs._.reduce((map, item) => {
     const [key, value] = item.split('=')
     map[key] = value
     return map
-  }, {})
+  }, mappedArgs)
 }
 
-function callShell(args) {
-  const { type, version } = args
-  const releaseType = type === 'alpha' ? RELEASE_ALPHA : RELEASE_OFFICIAL
-  const packageNames = [
-    'guard-shim-react',
-    'guard-shim-react18',
-    'native-js-ui-components',
-    'react-ui-components',
-    'react18-ui-components',
-    'ng-ui-components',
-    'vue-ui-components',
+async function callShell(args) {
+  const { type } = args
+  const version = normalizeVersion(args.version)
+  const releaseScript = type === 'alpha' ? RELEASE_ALPHA : RELEASE_OFFICIAL
+  const distTag = type === 'alpha' ? 'alpha' : 'latest'
+  const packages = [
+    {
+      dir: 'guard-shim-react',
+      name: '@authing/guard-shim-react',
+    },
+    {
+      dir: 'guard-shim-react18',
+      name: '@authing/guard-shim-react18',
+    },
+    {
+      dir: 'native-js-ui-components',
+      name: '@authing/native-js-ui-components',
+      prepare: version =>
+        `npm ci && npm install --save-exact @authing/guard-shim-react@${version} && npm run build:lib`,
+    },
+    {
+      dir: 'react-ui-components',
+      name: '@authing/react-ui-components',
+      prepare: version =>
+        `npm ci && npm install --save-exact @authing/guard-shim-react@${version} && npm run build:lib`,
+    },
+    {
+      dir: 'react18-ui-components',
+      name: '@authing/react18-ui-components',
+      prepare: version =>
+        `npm ci && npm install --save-exact @authing/guard-shim-react18@${version} && npm run build:lib`,
+    },
+    {
+      dir: 'ng-ui-components',
+      name: '@authing/ng-ui-components',
+      prepare: version =>
+        `npm ci && npm install --save-exact @authing/native-js-ui-components@${version} && npm run build:lib`,
+    },
+    {
+      dir: 'vue-ui-components',
+      name: '@authing/vue-ui-components',
+      prepare: version =>
+        `npm ci && npm install --save-exact @authing/native-js-ui-components@${version} && npm run build:lib`,
+    },
   ]
 
   if (!version) {
     console.error('missing required argument: version')
+    process.exit(1)
+  }
+
+  if (!/^[0-9A-Za-z.+-]+$/.test(version)) {
+    console.error(`invalid version: ${version}`)
     process.exit(1)
   }
 
@@ -47,49 +123,21 @@ function callShell(args) {
     process.exit(1)
   }
 
-  const commands = [
-    ...packageNames.map(
-      packageName =>
-        `cd packages/${packageName} && npm version ${version} --no-git-tag-version --allow-same-version`
-    ),
-    `cd packages/guard-shim-react && ${releaseType}`,
-    `cd packages/guard-shim-react18 && ${releaseType}`,
-    `sleep 15`, // 等待 npm registry 同步
-    `cd packages/native-js-ui-components && npm ci`,
-    () => installPublishedDependency('native-js-ui-components', '@authing/guard-shim-react', version),
-    `cd packages/native-js-ui-components && npm run build:lib && ${releaseType}`,
-    `cd packages/react-ui-components && npm ci`,
-    () => installPublishedDependency('react-ui-components', '@authing/guard-shim-react', version),
-    `cd packages/react-ui-components && npm run build:lib && ${releaseType}`,
-    `cd packages/react18-ui-components && npm ci`,
-    () => installPublishedDependency('react18-ui-components', '@authing/guard-shim-react18', version),
-    `cd packages/react18-ui-components && npm run build:lib && ${releaseType}`,
-    `cd packages/ng-ui-components && npm ci`,
-    () => installPublishedDependency('ng-ui-components', '@authing/native-js-ui-components', version),
-    `cd packages/ng-ui-components && npm run build:lib && ${releaseType}`,
-    `cd packages/vue-ui-components && npm ci`,
-    () => installPublishedDependency('vue-ui-components', '@authing/native-js-ui-components', version),
-    `cd packages/vue-ui-components && npm run build:lib && ${releaseType}`,
-  ]
-
-  shelljs.set('-e')
-
   try {
-    commands.forEach(command => {
-      if (typeof command === 'function') {
-        command()
-      } else {
-        shelljs.exec(command)
-      }
-    })
+    checkReleaseVersion(version)
 
-    const commitResult = shelljs.exec(`git commit -a -m "release: ${version} :rocket:"`, {
-      silent: true,
-    })
+    for (const packageInfo of packages) {
+      await releasePackage(packageInfo, {
+        distTag,
+        releaseScript,
+        version,
+      })
+    }
 
-    if (commitResult.code !== 0) {
+    if (run('git status --porcelain --untracked-files=no', { silent: true }).stdout.trim() === '') {
       console.log('release note: no changes to commit')
     } else {
+      run(`git commit -a -m "release: ${version} :rocket:"`)
       console.log('release note: commit created')
     }
 
@@ -100,24 +148,244 @@ function callShell(args) {
   }
 }
 
-function installPublishedDependency(packageName, dependency, version) {
-  const spec = `${dependency}@${version}`
-  for (let attempt = 1; attempt <= 12; attempt++) {
-    try {
-      const output = execFileSync(
-        'npm',
-        ['install', '--save-exact', '--prefer-online', spec],
-        { cwd: path.join(__dirname, '../packages', packageName), encoding: 'utf8' }
-      )
-      process.stdout.write(output)
-      return
-    } catch (error) {
-      const output = `${error.stdout || ''}\n${error.stderr || ''}`
-      if (attempt === 12 || !/\b(?:ETARGET|E404)\b/.test(output)) {
-        throw error
+async function releasePackage(packageInfo, options) {
+  const { dir, name, prepare } = packageInfo
+  const { distTag, releaseScript, version } = options
+
+  if (prepare) {
+    runInPackage(dir, prepare(version))
+  }
+
+  if (await packageExists(name, version, NPM_REGISTRY)) {
+    console.log(`${name}@${version} already exists on npm, skipping publish`)
+  } else {
+    const publishResult = execInPackage(
+      dir,
+      `npm run ${releaseScript} -- --registry=${NPM_REGISTRY}`
+    )
+
+    if (publishResult.code !== 0) {
+      if (await packageExists(name, version, NPM_REGISTRY)) {
+        console.warn(
+          `${name}@${version} is visible on npm after publish failure, continuing`
+        )
+      } else {
+        throw new Error(`command failed: npm run ${releaseScript} in ${dir}`)
       }
-      console.log(`Waiting for npm registry to expose ${spec} (${attempt}/12)`)
-      execFileSync('sleep', ['5'])
     }
   }
+
+  await waitForNpmPackage(name, version, {
+    initialWaitMs: NPM_PUBLISH_INITIAL_WAIT_MS,
+    intervalMs: NPM_PUBLISH_CHECK_INTERVAL_MS,
+    registry: NPM_REGISTRY,
+    registryName: 'npm',
+    retries: NPM_PUBLISH_CHECK_RETRIES,
+    strict: true,
+  })
+
+  ensureDistTag(name, version, distTag)
+  await syncNpmmirrorPackage(name)
+  await waitForNpmPackage(name, version, {
+    initialWaitMs: NPMMIRROR_INITIAL_WAIT_MS,
+    intervalMs: NPMMIRROR_CHECK_INTERVAL_MS,
+    registry: NPMMIRROR_REGISTRY,
+    registryName: 'npmmirror',
+    retries: NPMMIRROR_CHECK_RETRIES,
+    strict: NPMMIRROR_SYNC_STRICT,
+  })
 }
+
+function ensureDistTag(packageName, version, distTag) {
+  run(
+    `npm dist-tag add ${packageName}@${version} ${distTag} --registry=${NPM_REGISTRY}`
+  )
+}
+
+function runInPackage(dir, command) {
+  return run(`cd packages/${dir} && ${command}`)
+}
+
+function execInPackage(dir, command) {
+  return exec(`cd packages/${dir} && ${command}`)
+}
+
+function run(command, options) {
+  const result = exec(command, options)
+  if (result.code !== 0) {
+    throw new Error(`command failed: ${command}`)
+  }
+  return result
+}
+
+function exec(command, options = {}) {
+  return shelljs.exec(command, {
+    ...options,
+    env: {
+      ...process.env,
+      NPM_CONFIG_REGISTRY: NPM_REGISTRY,
+      npm_config_registry: NPM_REGISTRY,
+    },
+  })
+}
+
+async function packageExists(packageName, version, registry) {
+  // These packages are public. Read the exact version without inheriting npm
+  // credentials, CLI output settings, or a cached pre-publish packument.
+  const url = new URL(
+    `${encodeURIComponent(packageName)}/${encodeURIComponent(version)}`,
+    registry
+  )
+  url.searchParams.set('release-check', Date.now().toString())
+
+  try {
+    const data = await requestJson({
+      ...urlToHttpOptions(url),
+      headers: {
+        Accept: 'application/json',
+        'Cache-Control': 'no-cache',
+      },
+    })
+
+    if (data.name !== packageName || data.version !== version) {
+      throw new Error(`unexpected package metadata for ${packageName}@${version}`)
+    }
+
+    return true
+  } catch (error) {
+    if (error.statusCode === 404) {
+      return false
+    }
+    throw error
+  }
+}
+
+async function waitForNpmPackage(packageName, version, options) {
+  const {
+    initialWaitMs,
+    intervalMs,
+    registry,
+    registryName,
+    retries,
+    strict,
+  } = options
+
+  console.log(
+    `waiting for ${packageName}@${version} to be available on ${registryName}...`
+  )
+
+  if (initialWaitMs > 0) {
+    await sleep(initialWaitMs)
+  }
+
+  let lastError = 'HTTP 404: version not found'
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      if (await packageExists(packageName, version, registry)) {
+        console.log(`${packageName}@${version} is available on ${registryName}`)
+        return true
+      }
+      lastError = 'HTTP 404: version not found'
+    } catch (error) {
+      lastError = error.message
+      console.warn(`${registryName} check failed: ${lastError}`)
+    }
+
+    if (attempt < retries) {
+      console.log(
+        `${packageName}@${version} is not visible on ${registryName} yet, retrying (${attempt}/${retries})...`
+      )
+      await sleep(intervalMs)
+    }
+  }
+
+  const message = `${packageName}@${version} was not available on ${registryName} after ${retries} checks (${lastError})`
+
+  if (strict) {
+    throw new Error(message)
+  }
+
+  console.warn(`${message}, continuing`)
+  return false
+}
+
+async function syncNpmmirrorPackage(packageName) {
+  console.log(`triggering npmmirror sync for ${packageName}...`)
+
+  try {
+    const data = await requestJson({
+      hostname: NPMMIRROR_SYNC_HOST,
+      method: 'PUT',
+      path: `/-/package/${packageName}/syncs`,
+    })
+
+    if (data.ok !== true) {
+      console.warn(
+        `npmmirror sync request for ${packageName} returned: ${JSON.stringify(
+          data
+        )}`
+      )
+      return
+    }
+
+    console.log(
+      `npmmirror sync queued for ${packageName}: ${data.id || 'unknown id'}`
+    )
+  } catch (error) {
+    console.warn(`npmmirror sync request for ${packageName} failed`, error)
+  }
+}
+
+function requestJson(options) {
+  return new Promise((resolve, reject) => {
+    const req = https.request(options, res => {
+      let output = ''
+
+      res.setEncoding('utf8')
+      res.on('error', reject)
+      res.on('data', chunk => {
+        output += chunk
+      })
+      res.on('end', () => {
+        if (res.statusCode < 200 || res.statusCode >= 300) {
+          const error = new Error(`HTTP ${res.statusCode} ${res.statusMessage || ''}`.trim())
+          error.statusCode = res.statusCode
+          reject(error)
+          return
+        }
+
+        try {
+          const data = JSON.parse(output.trim())
+          resolve(data)
+        } catch (error) {
+          reject(error)
+        }
+      })
+    })
+
+    req.setTimeout(30_000, () => {
+      req.destroy(new Error('request timed out'))
+    })
+    req.on('error', reject)
+    req.end()
+  })
+}
+
+function normalizeVersion(version) {
+  return String(version || '').replace(/^v/i, '')
+}
+
+function normalizeRegistryUrl(registry) {
+  return registry.endsWith('/') ? registry : `${registry}/`
+}
+
+function numberFromEnv(name, fallback) {
+  const value = Number(process.env[name])
+  return Number.isFinite(value) ? value : fallback
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+module.exports = { packageExists, waitForNpmPackage }
