@@ -65,29 +65,36 @@
   }
 }
 
-// Keep modern browsers on input-otp's original styles. EdgeHTML needs explicit
-// offsets for both the transparent input and its containing layer.
+.otp-legacy-positioning() {
+  [data-input-otp-container] > div:last-child,
+  input[data-input-otp] {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  input[data-input-otp] {
+    pointer-events: auto !important;
+  }
+
+  .authing-g2-otp-input-cursor {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+}
+
+// EdgeHTML supports feature queries, but not inset. Modern browsers keep their
+// original styles. IE11 ignores @supports, so it uses a document-mode class.
 @supports not (inset: 0) {
   .authing-g2-code-input {
-    [data-input-otp-container] > div:last-child,
-    input[data-input-otp] {
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-    }
-
-    input[data-input-otp] {
-      pointer-events: auto !important;
-    }
-
-    .authing-g2-otp-input-cursor {
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-    }
+    .otp-legacy-positioning();
   }
+}
+.authing-g2-code-input.authing-g2-code-input-mshtml {
+  .otp-legacy-positioning();
 }
 // .g2-mfa-bindTotp .g2-mfa-bindTotp-securityCode-form .g2-mfa-totp-verify-input {
 //   margin-bottom: 24px;

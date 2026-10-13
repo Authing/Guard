@@ -4,6 +4,7 @@ import ResizeObserverPolyfill from 'resize-observer-polyfill'
 import { Divider } from 'shim-antd'
 import { React } from 'shim-react'
 
+import { isLegacyMshtml } from './legacyMshtml'
 import './style.less'
 
 // input-otp reads the global constructor in its mount effect.
@@ -55,7 +56,12 @@ export const VerifyCodeInput: React.FC<VerifyCodeInputProps> = ({
   ...rest
 }) => {
   return (
-    <div className="authing-g2-code-input" {...rest}>
+    <div
+      className={classNames('authing-g2-code-input', {
+        'authing-g2-code-input-mshtml': isLegacyMshtml
+      })}
+      {...rest}
+    >
       <OTPInput
         value={value}
         onChange={onChange}
