@@ -600,7 +600,22 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         )
       }
 
-      return tabs
+      // 国际短信下拆分的验证码 Tab 按后端有效登录方式的顺序展示。
+      // 缺少有效方式列表时兼容已启用方式的顺序，未列出的 Tab 放在最后。
+      const methodOrder =
+        publicConfig.verifyCodeTabConfig?.validLoginMethods ??
+        publicConfig.verifyCodeTabConfig?.enabledLoginMethods ??
+        []
+      const getMethodIndex = (key: React.Key | null) => {
+        const method = usedPhoneCode ? key : LoginMethods.EmailCode
+        const index = methodOrder.indexOf(method as VerifyLoginMethods)
+        return index === -1 ? methodOrder.length : index
+      }
+
+      return tabs.sort(
+        (first, second) =>
+          getMethodIndex(first.key) - getMethodIndex(second.key)
+      )
     } else {
       return (
         <Tabs.TabPane
@@ -632,6 +647,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     ms,
     publicConfig?.internationalSmsConfig?.enabled,
     publicConfig.verifyCodeTabConfig?.enabledLoginMethods,
+    publicConfig.verifyCodeTabConfig?.validLoginMethods,
     publicConfig?.verifyCodeLength,
     t,
     config?.autoRegister,

@@ -58,6 +58,7 @@ export const GuardRegisterView: React.FC = () => {
   const authClient = useGuardAuthClient()
 
   const publicConfig = useGuardPublicConfig()
+  const isInternationSms = !!publicConfig?.internationalSmsConfig?.enabled
 
   const defaultLanguageConfig = useGuardDefaultLanguage()
 
@@ -172,17 +173,17 @@ export const GuardRegisterView: React.FC = () => {
   const [activeKey, setActiveKey] = useState<string>('')
 
   const defaultMethod = useMemo(() => {
+    if (
+      isInternationSms &&
+      config.defaultRegisterMethod === RegisterMethods.EmailCode
+    ) {
+      return RegisterSortMethods.EmailCode
+    }
     return (
       config.defaultRegisterMethod &&
       transformMethod(config.defaultRegisterMethod)
     )
-  }, [config.defaultRegisterMethod])
-
-  useEffect(() => {
-    if (defaultMethod) {
-      setActiveKey(defaultMethod)
-    }
-  }, [defaultMethod])
+  }, [config.defaultRegisterMethod, isInternationSms])
 
   useGuardView({
     currentTab: activeKey,
@@ -201,7 +202,36 @@ export const GuardRegisterView: React.FC = () => {
       )
     ]
 
-    return getSortTabs(filterRegisterMethods, defaultMethod).map(method => {
+    return getSortTabs(filterRegisterMethods, defaultMethod).flatMap(method => {
+      if (isInternationSms && method === RegisterSortMethods.Phone) {
+        const methodOrder =
+          publicConfig.verifyCodeTabConfig?.validRegisterMethods ??
+          verifyRegisterMethods
+        const methods = [...verifyRegisterMethods].sort((first, second) => {
+          const firstIndex = methodOrder.indexOf(first)
+          const secondIndex = methodOrder.indexOf(second)
+          return (
+            (firstIndex === -1 ? methodOrder.length : firstIndex) -
+            (secondIndex === -1 ? methodOrder.length : secondIndex)
+          )
+        })
+
+        return methods.map(codeMethod => (
+          <Tabs.TabPane
+            tab={t(
+              codeMethod === RegisterSortMethods.Phone
+                ? 'common.phoneCodeTab'
+                : 'common.emailCodeTab'
+            )}
+            key={codeMethod}
+          >
+            <RegisterWithCode
+              {...registerContextProps}
+              methods={[codeMethod]}
+            />
+          </Tabs.TabPane>
+        ))
+      }
       const tab = tabMapping[method]
       const name = getI18nLabel(method, i18nFields, defaultLanguageConfig)
       return (
@@ -227,8 +257,20 @@ export const GuardRegisterView: React.FC = () => {
     i18nFields,
     registerContextProps,
     defaultLanguageConfig,
+    isInternationSms,
+    verifyRegisterMethods,
     t
   ])
+
+  const tabKeys = JSON.stringify(renderTab.map(tab => String(tab.key)))
+  useEffect(() => {
+    const keys: string[] = JSON.parse(tabKeys)
+    setActiveKey(
+      defaultMethod && keys.includes(defaultMethod)
+        ? defaultMethod
+        : keys[0] ?? ''
+    )
+  }, [defaultMethod, tabKeys])
 
   return (
     <div className="g2-view-container g2-view-register">
