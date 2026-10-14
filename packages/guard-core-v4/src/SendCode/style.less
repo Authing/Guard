@@ -202,7 +202,13 @@
 .g2-turnstile-page-verification:empty {
   display: none;
 }
+.g2-turnstile-page-verification[hidden] {
+  display: none;
+}
 .g2-turnstile-page-verification {
+  // Form remounts can place its card after this persistent portal host.
+  // Keep the native widget above the card regardless of DOM sibling order.
+  z-index: 1;
   width: 100%;
   margin: 0;
 

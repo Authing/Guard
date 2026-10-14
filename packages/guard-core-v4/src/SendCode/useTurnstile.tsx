@@ -553,32 +553,43 @@ export const TurnstileProvider: React.FC<{ protectSubmission?: boolean }> = ({
   children,
   protectSubmission = true
 }) => {
-  const started = React.useRef(protectSubmission)
-  if (protectSubmission) started.current = true
+  const [hasFormSlot, setHasFormSlot] = React.useState(false)
+  const protectedView = React.useRef(protectSubmission)
+  protectedView.current = protectSubmission
+  const started = React.useRef(false)
+  if (protectSubmission && hasFormSlot) started.current = true
   const [host] = React.useState(() => {
     if (typeof document === 'undefined') return null
     const element = document.createElement('div')
     element.className = 'g2-turnstile-page-verification'
+    element.hidden = true
     return element
   })
   const root = React.useRef<HTMLDivElement>(null)
   const slots = React.useRef<HTMLElement[]>([])
   const position = React.useCallback(() => {
     if (!host || !root.current) return
-    const slot =
-      slots.current.find(
-        item => item.isConnected && item.getBoundingClientRect().width > 0
-      ) || slots.current.find(item => item.isConnected)
+    const slot = slots.current.find(
+      item =>
+        item.isConnected &&
+        item.getBoundingClientRect().width > 0 &&
+        !item.closest('[hidden], [aria-hidden="true"]') &&
+        item.ownerDocument.defaultView?.getComputedStyle(item).visibility !==
+          'hidden'
+    )
     // Keep the iframe in one DOM parent. Reparenting an iframe would reload it
     // even when React keeps the widget mounted across login/register/MFA forms.
     if (host.parentElement !== root.current) root.current.appendChild(host)
-    if (!slot) {
-      host.style.position = 'relative'
-      host.style.left = ''
-      host.style.top = ''
-      host.style.width = '100%'
-      return
+    const visible = protectedView.current && !!slot
+    if (host.hidden !== !visible) host.hidden = !visible
+    setHasFormSlot(visible)
+    for (const item of slots.current) {
+      if ((!visible || item !== slot) && item.style.height)
+        item.style.height = ''
     }
+    // Account selection, QR login and other screens have no submit anchor.
+    // Hide the retained widget instead of adding it below the whole card.
+    if (!visible || !slot) return
     const box = slot.getBoundingClientRect()
     const parent = root.current.getBoundingClientRect()
     host.style.position = 'absolute'
@@ -618,7 +629,9 @@ export const TurnstileProvider: React.FC<{ protectSubmission?: boolean }> = ({
       changes?.observe(root.current, {
         childList: true,
         subtree: true,
-        characterData: true
+        characterData: true,
+        attributes: true,
+        attributeFilter: ['class', 'hidden', 'aria-hidden']
       })
     window.addEventListener('resize', position)
     return () => {
@@ -633,7 +646,6 @@ export const TurnstileProvider: React.FC<{ protectSubmission?: boolean }> = ({
     active: started.current
   })
   React.useLayoutEffect(() => {
-    if (host) host.hidden = !protectSubmission
     position()
   }, [host, protectSubmission, position])
   const http = useGuardHttpClient()
