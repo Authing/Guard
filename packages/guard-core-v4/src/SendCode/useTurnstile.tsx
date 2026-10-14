@@ -13,7 +13,11 @@ import {
   TurnstileLoadError
 } from './turnstile'
 import './style.less'
-import { needsTurnstileProof } from '../_utils/turnstileRequest'
+import {
+  hasTurnstileToken,
+  needsTurnstileProof,
+  turnstileSubmissionFailed
+} from '../_utils/turnstileRequest'
 
 const { useCallback, useEffect, useRef, useState } = React
 
@@ -63,9 +67,10 @@ const TurnstileStatus: React.FC<{
 const TurnstileWidget: React.FC<{
   config: TurnstileConfig
   onToken: (token: string) => void
+  onStart: () => void
   onInvalidate: () => void
   compact?: boolean
-}> = ({ config, onToken, onInvalidate, compact = false }) => {
+}> = ({ config, onToken, onStart, onInvalidate, compact = false }) => {
   const { t, i18n } = useTranslation()
   const container = useRef<HTMLDivElement>(null)
   const [error, setError] = useState('')
@@ -88,7 +93,7 @@ const TurnstileWidget: React.FC<{
     if (!element) return
     let active = true
     let removeWidget: (() => void) | undefined
-    onInvalidate()
+    onStart()
     setError('')
     setLoading(true)
     setErrorCode('')
@@ -175,7 +180,7 @@ const TurnstileWidget: React.FC<{
       active = false
       removeWidget?.()
     }
-  }, [attempt, compact, config, language, onToken, onInvalidate, t])
+  }, [attempt, compact, config, language, onToken, onStart, onInvalidate, t])
 
   const retry = () => {
     onInvalidate()
@@ -228,7 +233,8 @@ const useStandaloneTurnstile = ({
   const tokenRef = useRef('')
   const expiresAt = useRef(0)
   const generation = useRef(0)
-  const issuing = useRef(false)
+  const claimed = useRef(false)
+  const submittedToken = useRef('')
   const configRef = useRef<TurnstileConfig>()
   const pending = useRef<{
     resolve: (token: string) => void
@@ -240,7 +246,8 @@ const useStandaloneTurnstile = ({
   const feedbackTimer = useRef<ReturnType<typeof setTimeout>>()
   const [loading, setLoading] = useState(mode === 'inline')
   const [configError, setConfigError] = useState(false)
-  const [sessionError, setSessionError] = useState('')
+  const [verificationError, setVerificationError] = useState('')
+  const [challengeAttempt, setChallengeAttempt] = useState(0)
   const [modalOpen, setModalOpen] = useState(false)
   const loadInFlight = useRef<Promise<TurnstileConfig>>()
 
@@ -248,7 +255,6 @@ const useStandaloneTurnstile = ({
     clearTimeout(feedbackTimer.current)
     feedbackTimer.current = undefined
     generation.current++
-    issuing.current = false
     expiresAt.current = 0
     tokenRef.current = ''
     if (mounted.current) {
@@ -256,6 +262,28 @@ const useStandaloneTurnstile = ({
       setFeedback('checking')
     }
   }, [])
+
+  const startChallenge = useCallback(() => {
+    invalidate()
+    claimed.current = false
+    submittedToken.current = ''
+  }, [invalidate])
+
+  const retryAfterFailure = useCallback(
+    (token: string) => {
+      if (
+        !mounted.current ||
+        !claimed.current ||
+        submittedToken.current !== token
+      )
+        return
+      submittedToken.current = ''
+      invalidate()
+      setVerificationError('')
+      setChallengeAttempt(value => value + 1)
+    },
+    [invalidate]
+  )
 
   const refreshConfig = useCallback(() => {
     if (loadInFlight.current) return loadInFlight.current
@@ -321,68 +349,40 @@ const useStandaloneTurnstile = ({
 
   const onToken = useCallback(
     async (nextToken: string) => {
-      if (!mounted.current) return
+      if (
+        !mounted.current ||
+        claimed.current ||
+        typeof nextToken !== 'string' ||
+        !nextToken.trim() ||
+        nextToken.length > 2048
+      )
+        return
       if (mode === 'modal') {
+        claimed.current = true
+        submittedToken.current = nextToken
         pending.current?.resolve(nextToken)
         pending.current = undefined
         setModalOpen(false)
       } else {
-        if (issuing.current || tokenRef.current) return
-        issuing.current = true
-        const currentGeneration = generation.current
+        if (tokenRef.current) return
         clearTimeout(feedbackTimer.current)
-        try {
-          const response = await http.post<{
-            token: string
-            expiresIn: number
-          }>('/api/v2/security/turnstile/session', {
-            turnstileToken: nextToken
-          })
-          if (!mounted.current || currentGeneration !== generation.current)
-            return
-          const proof = response.data
-          if (
-            response.code !== 200 ||
-            !proof ||
-            !/^genauth\.turnstile\.[a-f0-9]{64}$/.test(proof?.token || '') ||
-            !Number.isInteger(proof?.expiresIn) ||
-            proof.expiresIn <= 0 ||
-            proof.expiresIn > 300
-          )
-            throw new TurnstileChallengeError(
-              t(
-                response.code === 503
-                  ? 'login.turnstileServiceError'
-                  : 'login.turnstileError'
-              ) as string
-            )
-          tokenRef.current = proof.token
-          expiresAt.current = Date.now() + proof.expiresIn * 1000
-          setToken(proof.token)
-          if (placement === 'send-code') {
-            setFeedback('checking')
-            // Keep the same native widget visible; no new render on Send.
-            feedbackTimer.current = setTimeout(() => {
-              if (mounted.current && tokenRef.current === proof.token)
-                setFeedback('ready')
-              feedbackTimer.current = undefined
-            }, SUCCESS_FEEDBACK_MS)
-          }
-        } catch (error) {
-          if (mounted.current && currentGeneration === generation.current) {
-            invalidate()
-            setSessionError(
-              error instanceof TurnstileChallengeError
-                ? error.message
-                : (t('login.turnstileError') as string)
-            )
-          }
-        } finally {
-          if (currentGeneration === generation.current) issuing.current = false
+        // Keep the original callback value. Only login/register submission
+        // sends it to the server for Siteverify; Send never consumes it.
+        tokenRef.current = nextToken
+        expiresAt.current = Date.now() + 300000
+        setToken(nextToken)
+        setVerificationError('')
+        if (placement === 'send-code') {
+          setFeedback('checking')
+          feedbackTimer.current = setTimeout(() => {
+            if (mounted.current && tokenRef.current === nextToken)
+              setFeedback('ready')
+            feedbackTimer.current = undefined
+          }, SUCCESS_FEEDBACK_MS)
         }
       }
     },
-    [mode, placement, http, invalidate, t]
+    [mode, placement]
   )
 
   useEffect(() => {
@@ -390,7 +390,7 @@ const useStandaloneTurnstile = ({
     const timer = setTimeout(
       () => {
         invalidate()
-        setSessionError(t('login.turnstileExpired') as string)
+        setVerificationError(t('login.turnstileExpired') as string)
       },
       Math.max(0, expiresAt.current - Date.now())
     )
@@ -424,6 +424,14 @@ const useStandaloneTurnstile = ({
           message.error(t('login.turnstileDescription'))
           throw new TurnstileChallengeError('Verification required')
         }
+        // A raw token can be validated once. Reserve it synchronously so
+        // double clicks/concurrent transports cannot submit the same value.
+        claimed.current = true
+        submittedToken.current = proof
+        tokenRef.current = ''
+        expiresAt.current = 0
+        clearTimeout(feedbackTimer.current)
+        setToken('')
         return { turnstileToken: proof }
       }
       const proof = await new Promise<string>((resolve, reject) => {
@@ -446,13 +454,14 @@ const useStandaloneTurnstile = ({
     mode === 'inline' &&
     (loading ||
       configError ||
-      !!sessionError ||
+      !!verificationError ||
       !config ||
       (config.enabled &&
         (!token || (placement === 'send-code' && feedback !== 'ready'))))
   const retryConfig = () => {
     invalidate()
-    setSessionError('')
+    setVerificationError('')
+    setChallengeAttempt(value => value + 1)
     setLoading(true)
     void refreshConfig().catch(() => {})
   }
@@ -466,14 +475,14 @@ const useStandaloneTurnstile = ({
           {placement === 'send-code' ? (
             <TurnstileStatus
               error={
-                sessionError || (t('login.turnstileConfigError') as string)
+                verificationError || (t('login.turnstileConfigError') as string)
               }
               code="CONFIG_LOAD_FAILED"
               onRetry={retryConfig}
             />
           ) : (
             <div role="alert">
-              <p>{sessionError || t('login.turnstileConfigError')}</p>
+              <p>{verificationError || t('login.turnstileConfigError')}</p>
               <Button type="link" onClick={retryConfig}>
                 {t('login.turnstileRetry')}
               </Button>
@@ -498,14 +507,16 @@ const useStandaloneTurnstile = ({
           }
         >
           <TurnstileWidget
+            key={challengeAttempt}
             config={config}
             onToken={onToken}
+            onStart={startChallenge}
             onInvalidate={invalidate}
             compact={placement === 'send-code'}
           />
-          {sessionError && (
+          {verificationError && (
             <div role="alert" className="g2-turnstile-error">
-              <p>{sessionError}</p>
+              <p>{verificationError}</p>
               <Button type="link" onClick={retryConfig}>
                 {t('login.turnstileRetry')}
               </Button>
@@ -528,15 +539,21 @@ const useStandaloneTurnstile = ({
         <TurnstileWidget
           config={config}
           onToken={onToken}
+          onStart={startChallenge}
           onInvalidate={invalidate}
         />
       </Modal>
     ) : null
 
-  return { getTurnstileParams, turnstileView, sendDisabled }
+  return {
+    getTurnstileParams,
+    turnstileView,
+    sendDisabled,
+    retryAfterFailure
+  }
 }
 
-/** Authentication forms reuse the page credential without owning a widget. */
+/** Authentication forms share one widget until its raw token is submitted. */
 export const useTurnstile = (options?: {
   mode?: 'inline' | 'modal'
   placement?: 'inline' | 'send-code' | 'page'
@@ -651,34 +668,16 @@ export const TurnstileProvider: React.FC<{ protectSubmission?: boolean }> = ({
   const http = useGuardHttpClient()
   const client = useGuardAuthenticationClient()
   const reader = React.useRef(state.getTurnstileParams)
-  const blocked = React.useRef(state.sendDisabled)
-  const waiting = React.useRef<
-    Array<{
-      resolve: (proof: Record<string, string>) => void
-      reject: (error: Error) => void
-    }>
-  >([])
+  const failureHandler = React.useRef(state.retryAfterFailure)
   reader.current = state.getTurnstileParams
-  blocked.current = state.sendDisabled
+  failureHandler.current = state.retryAfterFailure
   React.useEffect(() => {
-    if (state.sendDisabled || !waiting.current.length) return
-    const current = waiting.current.splice(0)
-    void reader.current().then(
-      proof => current.forEach(item => item.resolve({ ...proof })),
-      error => current.forEach(item => item.reject(error))
-    )
-  }, [state.sendDisabled])
-  React.useEffect(() => {
-    // Keep a protected login/register request waiting for the first page proof.
-    // Requests and form edits never start another challenge.
-    const read = () =>
-      blocked.current
-        ? new Promise<Record<string, string>>((resolve, reject) => {
-            waiting.current.push({ resolve, reject })
-          })
-        : reader.current()
-    const detach = http.setTurnstileProofReader(read)
-    const ids: Array<{ axios: any; id: number }> = []
+    // Never fan out one raw token to multiple independent requests. The form
+    // remains disabled until ready; API calls made early reject immediately.
+    const read = () => reader.current()
+    const onFailure = (token: string) => failureHandler.current(token)
+    const detach = http.setTurnstileProofReader(read, onFailure)
+    const ids: Array<{ axios: any; request: number; response?: number }> = []
     // SDK methods such as registerByPhoneCode use their own GraphQL transport.
     // Intercept only this client's API origin, and keep its identity headers.
     const apiOrigin = client
@@ -687,6 +686,7 @@ export const TurnstileProvider: React.FC<{ protectSubmission?: boolean }> = ({
     for (const transport of [client?.httpClient, client?.graphqlClient]) {
       const axios = transport?.axios
       if (!axios?.interceptors?.request) continue
+      const submissions = new WeakMap<object, string>()
       const id = axios.interceptors.request.use(async (config: any) => {
         const url = new URL(config.url || '', apiOrigin)
         const method = (config.method || 'get').toLowerCase()
@@ -696,16 +696,36 @@ export const TurnstileProvider: React.FC<{ protectSubmission?: boolean }> = ({
             ? JSON.parse(config.data)
             : config.data
         if (!needsTurnstileProof(url.pathname, body)) return config
-        const proof = await read()
-        return { ...config, data: { ...body, ...proof } }
+        const next = hasTurnstileToken(url.pathname, body)
+          ? config
+          : { ...config, data: { ...body, ...(await read()) } }
+        const data =
+          typeof next.data === 'string' ? JSON.parse(next.data) : next.data
+        const token = data?.turnstileToken || data?.extensions?.turnstileToken
+        if (typeof token === 'string') submissions.set(next, token)
+        return next
       })
-      ids.push({ axios, id })
+      const responseId = axios.interceptors.response?.use(
+        (response: any) => {
+          const token = response.config && submissions.get(response.config)
+          if (token && turnstileSubmissionFailed(response.data))
+            onFailure(token)
+          return response
+        },
+        (error: any) => {
+          const token = error.config && submissions.get(error.config)
+          if (token) onFailure(token)
+          return Promise.reject(error)
+        }
+      )
+      ids.push({ axios, request: id, response: responseId })
     }
     return () => {
       detach()
-      for (const { axios, id } of ids) axios.interceptors.request.eject(id)
-      const cancelled = new TurnstileChallengeError('Cancelled')
-      waiting.current.splice(0).forEach(item => item.reject(cancelled))
+      for (const { axios, request, response } of ids) {
+        axios.interceptors.request.eject(request)
+        if (response !== undefined) axios.interceptors.response.eject(response)
+      }
     }
   }, [client, http])
   return (

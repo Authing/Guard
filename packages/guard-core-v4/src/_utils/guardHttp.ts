@@ -7,7 +7,11 @@ import { AuthingGuardResponse, AuthingResponse, requestClient } from './http'
 import { errorCodeInterceptor } from './responseManagement'
 
 import { CodeAction } from './responseManagement/interface'
-import { needsTurnstileProof } from './turnstileRequest'
+import {
+  hasTurnstileToken,
+  needsTurnstileProof,
+  turnstileSubmissionFailed
+} from './turnstileRequest'
 
 let httpClient: GuardHttp
 
@@ -21,14 +25,19 @@ type ResponseInterceptor = (res: AuthingResponse) => AuthingResponse
 
 export class GuardHttp {
   private turnstileProofReader?: () => Promise<Record<string, string>>
+  private turnstileFailureHandler?: (token: string) => void
 
   public setTurnstileProofReader = (
-    reader: () => Promise<Record<string, string>>
+    reader: () => Promise<Record<string, string>>,
+    onFailure?: (token: string) => void
   ) => {
     this.turnstileProofReader = reader
+    this.turnstileFailureHandler = onFailure
     return () => {
-      if (this.turnstileProofReader === reader)
+      if (this.turnstileProofReader === reader) {
         this.turnstileProofReader = undefined
+        this.turnstileFailureHandler = undefined
+      }
     }
   }
   private requestClient: any
@@ -101,15 +110,30 @@ export class GuardHttp {
       headers: any
     }
   ): Promise<AuthingGuardResponse<T>> => {
-    if (this.turnstileProofReader && needsTurnstileProof(path, data))
+    if (
+      this.turnstileProofReader &&
+      needsTurnstileProof(path, data) &&
+      !hasTurnstileToken(path, data)
+    )
       data = { ...data, ...(await this.turnstileProofReader()) }
-    const res = await requestClient.post<T>(path, data, {
-      headers: {
-        ...this.headers,
-        ...config?.headers
-      }
-    })
-    return this.responseIntercept(res)
+    const token = needsTurnstileProof(path, data)
+      ? data?.turnstileToken || data?.extensions?.turnstileToken
+      : undefined
+    const onFailure = this.turnstileFailureHandler
+    try {
+      const res = await requestClient.post<T>(path, data, {
+        headers: {
+          ...this.headers,
+          ...config?.headers
+        }
+      })
+      if (typeof token === 'string' && turnstileSubmissionFailed(res))
+        onFailure?.(token)
+      return this.responseIntercept(res)
+    } catch (error) {
+      if (typeof token === 'string') onFailure?.(token)
+      throw error
+    }
   }
 
   public postForm = async <T = any>(
