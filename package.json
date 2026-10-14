@@ -10,7 +10,8 @@
     "lint:fix": "eslint --fix --ext .tsx,.ts packages/**/src",
     "transfer-packages": "node scripts/transfer-packages.js",
     "release": "node scripts/release.js",
-    "oss": "node scripts/oss.js"
+    "oss": "node scripts/oss.js",
+    "test:release": "node scripts/release.test.js"
   },
   "workspaces": [
     "packages/*"

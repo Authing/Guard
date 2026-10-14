@@ -133,5 +133,17 @@
   },
   "wecomScanLogin": "Enterprise WeChat scan code to log in",
   "passwordRuleTips": "Password requirements:",
-  "characterTypes": "Include at least {{x}} character types"
+  "characterTypes": "Include at least {{x}} character types",
+  "turnstileChecking": "Verifying",
+  "turnstileRetryShort": "Retry verification",
+  "turnstileNetworkError": "Cannot connect to the verification service. Check your connection and retry.",
+  "turnstileLoadTimeout": "The verification service took too long to respond. Please retry.",
+  "turnstileTitle": "Security verification",
+  "turnstileDescription": "Complete the security verification to continue.",
+  "turnstileDomainError": "Verification is unavailable on this site. Please contact the administrator.",
+  "turnstileServiceError": "Verification is temporarily unavailable. Please retry shortly.",
+  "turnstileError": "Verification could not complete. Please retry.",
+  "turnstileExpired": "Verification expired. Please verify again.",
+  "turnstileRetry": "Verify again",
+  "turnstileConfigError": "Unable to load verification settings. Please try again."
 }

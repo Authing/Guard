@@ -7,6 +7,7 @@ import { AuthingGuardResponse, AuthingResponse, requestClient } from './http'
 import { errorCodeInterceptor } from './responseManagement'
 
 import { CodeAction } from './responseManagement/interface'
+import { needsTurnstileProof } from './turnstileRequest'
 
 let httpClient: GuardHttp
 
@@ -19,6 +20,17 @@ enum InterceptorName {
 type ResponseInterceptor = (res: AuthingResponse) => AuthingResponse
 
 export class GuardHttp {
+  private turnstileProofReader?: () => Promise<Record<string, string>>
+
+  public setTurnstileProofReader = (
+    reader: () => Promise<Record<string, string>>
+  ) => {
+    this.turnstileProofReader = reader
+    return () => {
+      if (this.turnstileProofReader === reader)
+        this.turnstileProofReader = undefined
+    }
+  }
   private requestClient: any
   private headers: Record<string, string> = {
     'x-authing-userpool-id': '',
@@ -89,6 +101,8 @@ export class GuardHttp {
       headers: any
     }
   ): Promise<AuthingGuardResponse<T>> => {
+    if (this.turnstileProofReader && needsTurnstileProof(path, data))
+      data = { ...data, ...(await this.turnstileProofReader()) }
     const res = await requestClient.post<T>(path, data, {
       headers: {
         ...this.headers,

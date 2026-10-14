@@ -16,6 +16,7 @@ import { ModuleState } from '../Guard/GuardModule/stateMachine'
 import { ApplicationConfig } from '../Type/application'
 
 import { GuardHttp } from './guardHttp'
+import { AuthenticationClient } from 'authing-js-sdk'
 
 import { MultipleTenant } from './tenant'
 
@@ -29,6 +30,7 @@ export interface IGuardContext {
   publicConfig: ApplicationConfig
 
   httpClient: GuardHttp
+  authClient?: AuthenticationClient
 
   appId: string
 
@@ -227,6 +229,8 @@ export const useGuardButtonState = () => useContext(GuardButtonContext)
 export const useGuardPublicConfig = () => useContext(GuardXContext).publicConfig
 
 export const useGuardHttpClient = () => useContext(GuardXContext).httpClient
+export const useGuardAuthenticationClient = () =>
+  useContext(GuardXContext).authClient
 
 export const useIsSpecialBrowser = () =>
   useContext(GuardXContext).isSpecialBrowser

@@ -1,14 +1,15 @@
 .genauth-g2-send-code-btn,
+*[class*='genauth-'].genauth-ant-btn.genauth-g2-turnstile-state-btn,
 *[class*='genauth-'].genauth-ant-btn.genauth-g2-send-code-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   height: 43px;
   width: 100%;
-  border: 1px solid #305EE8;
+  border: 1px solid #305ee8;
   border-radius: var(--guard-radius-button);
-  background: #FFFFFF;
-  color: #305EE8;
+  background: #ffffff;
+  color: #305ee8;
   cursor: pointer;
   font-family: var(--guard-font-family);
   font-size: 14px;
@@ -34,10 +35,10 @@
 .genauth-g2-send-code-btn:focus,
 *[class*='genauth-'].genauth-ant-btn.genauth-g2-send-code-btn:hover,
 *[class*='genauth-'].genauth-ant-btn.genauth-g2-send-code-btn:focus {
-  background: #E7EEFF;
-  border-color: #305EE8;
-  color: #305EE8;
-  box-shadow: none
+  background: #e7eeff;
+  border-color: #305ee8;
+  color: #305ee8;
+  box-shadow: none;
 }
 
 .genauth-g2-send-code-btn:focus,
@@ -47,9 +48,9 @@
 
 .genauth-g2-send-code-btn:active,
 *[class*='genauth-'].genauth-ant-btn.genauth-g2-send-code-btn:active {
-  background: #E7EEFF;
-  border-color: #1F3FBB;
-  color: #1F3FBB;
+  background: #e7eeff;
+  border-color: #1f3fbb;
+  color: #1f3fbb;
 }
 
 .genauth-g2-send-code-btn[disabled],
@@ -58,9 +59,9 @@
 *[class*='genauth-'].genauth-ant-btn.genauth-g2-send-code-btn[disabled],
 *[class*='genauth-'].genauth-ant-btn.genauth-g2-send-code-btn[disabled]:hover,
 *[class*='genauth-'].genauth-ant-btn.genauth-g2-send-code-btn[disabled]:focus {
-  background: #F5F5F7;
-  border-color: #D1D1D6;
-  color: #9CA3AF;
+  background: #f5f5f7;
+  border-color: #d1d1d6;
+  color: #9ca3af;
   cursor: not-allowed;
   filter: none;
   opacity: 1;
@@ -76,5 +77,136 @@
 .g2-loading-btn-center {
   .genauth-ant-btn-loading-icon .anticon {
     padding-right: 0;
+  }
+}
+
+.g2-turnstile-modal .genauth-ant-modal-content {
+  border-radius: 14px;
+}
+
+.g2-turnstile-challenge {
+  position: relative;
+  font-size: 14px;
+  line-height: 1.5;
+
+  .g2-turnstile-widget {
+    min-height: 65px;
+    width: 100%;
+    // Cloudflare's horizontal widget requires at least 300px.
+    min-width: 300px;
+  }
+
+  .g2-turnstile-error {
+    color: #dc2626;
+    margin-top: 12px;
+  }
+
+  .genauth-ant-btn-link {
+    color: #305ee8;
+    height: 32px;
+    border-radius: 12px;
+    padding-inline: 0;
+  }
+}
+
+.g2-turnstile-loading {
+  position: absolute;
+  inset: 0 0 auto;
+  line-height: 43px;
+  color: #6b7280;
+  pointer-events: none;
+}
+
+.g2-turnstile-inline {
+  width: 100%;
+  margin: 0 0 16px;
+  font-size: 13px;
+  color: #6b7280;
+
+  .g2-turnstile-challenge > p {
+    margin: 0 0 8px;
+  }
+}
+
+.g2-turnstile-inline[hidden] {
+  display: none;
+}
+
+.g2-send-code-verification-row {
+  flex-wrap: nowrap;
+  column-gap: 12px;
+
+  .g2-send-code-input-col {
+    min-width: 0;
+  }
+}
+
+.g2-turnstile-send-slot {
+  margin: 0;
+  font-size: 12px;
+
+  .g2-turnstile-widget {
+    width: 150px;
+    min-width: 150px;
+    min-height: 0;
+  }
+
+  .g2-turnstile-native-ready .g2-turnstile-widget {
+    min-height: 140px;
+  }
+
+  .genauth-ant-btn.genauth-g2-turnstile-state-btn {
+    font-size: 13px;
+    gap: 6px;
+    white-space: nowrap;
+
+    &[disabled] {
+      background: #f5f5f7;
+      border-color: #e5e7eb;
+      color: #6b7280;
+      cursor: default;
+    }
+
+    &.g2-turnstile-state-error {
+      border-color: #fecaca;
+      background: #fff;
+      color: #dc2626;
+    }
+  }
+}
+
+.g2-turnstile-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media only screen and (max-width: 400px) {
+  .g2-turnstile-challenge .g2-turnstile-widget {
+    min-width: 0;
+  }
+}
+// The native iframe stays in one parent while its anchor follows the form.
+.g2-turnstile-page-root {
+  position: relative;
+}
+.g2-turnstile-form-slot {
+  width: 100%;
+}
+.g2-turnstile-page-verification:empty {
+  display: none;
+}
+.g2-turnstile-page-verification {
+  width: 100%;
+  margin: 0;
+
+  .g2-turnstile-inline {
+    margin: 0;
   }
 }

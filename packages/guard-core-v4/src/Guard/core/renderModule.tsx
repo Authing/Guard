@@ -41,6 +41,7 @@ import { GuardSubmitSuccessView } from '../../SubmitSuccess'
 
 import {
   useGuardButtonContext,
+  useGuardAppId,
   useGuardContextLoaded,
   useGuardCurrentModule,
   useGuardDefaultMergedConfig,
@@ -67,6 +68,7 @@ import { GuardIdentityBindingAskView } from '../../IdentityBindingAsk'
 import '../styles.less'
 
 import { updateFlowHandle } from '../../_utils/flowHandleStorage'
+import { TurnstileProvider } from '../../SendCode/useTurnstile'
 
 import { GuardUnlockView } from '../../SelfUnlock'
 
@@ -120,6 +122,7 @@ export const RenderModule: React.FC<{
   const { moduleName } = useGuardCurrentModule()
 
   const httpClient = useGuardHttpClient()
+  const appId = useGuardAppId()
 
   const { changeModule } = useGuardModule()
 
@@ -326,8 +329,24 @@ export const RenderModule: React.FC<{
   }, [guardProps.visible])
 
   const renderGuardContent = useMemo(() => {
-    return <GuardButtonProvider>{renderModule}</GuardButtonProvider>
-  }, [GuardButtonProvider, renderModule])
+    const content = <GuardButtonProvider>{renderModule}</GuardButtonProvider>
+    // GuardButtonProvider is recreated by its hook on parent renders. Keep
+    // page verification outside it so changing modules never remounts the widget.
+    return contextLoaded ? (
+      <TurnstileProvider
+        key={appId}
+        protectSubmission={[
+          GuardModuleType.LOGIN,
+          GuardModuleType.REGISTER,
+          GuardModuleType.INVITE_AUTH
+        ].includes(moduleName as GuardModuleType)}
+      >
+        {content}
+      </TurnstileProvider>
+    ) : (
+      content
+    )
+  }, [GuardButtonProvider, appId, contextLoaded, renderModule, moduleName])
 
   return (
     <ConfigProvider

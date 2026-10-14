@@ -1,4 +1,8 @@
 import { React } from 'shim-react'
+import {
+  TurnstileField,
+  useTurnstileSubmitDisabled
+} from '../SendCode/useTurnstile'
 
 import { useShaking } from '../_utils/hooks'
 
@@ -17,6 +21,7 @@ interface SubmitButtonProps extends ButtonProps {
   disabled?: boolean
 }
 const SubmitButton = (props: SubmitButtonProps, ref: any) => {
+  const verificationPending = useTurnstileSubmitDisabled()
   const { spinChange, spin: buttonSpin } = useGuardButtonState()
   let [spin, setSpin] = useState(false) // spin 状态需要手动设置关闭
   let [shaking, setShaking] = useState(false) // 抖动状态会自动关闭
@@ -57,18 +62,23 @@ const SubmitButton = (props: SubmitButtonProps, ref: any) => {
   // let shakingCls = shaking ? 'shaking' : ''
   let shakingCls = ''
   return (
-    <GuardButton
-      {...props}
-      size={props?.size ?? 'large'}
-      type={props?.type ?? 'primary'}
-      htmlType={props?.htmlType ?? 'submit'}
-      loading={spin}
-      disabled={buttonSpin ? true : props?.disabled ?? spin}
-      onClick={props.onClick ? props.onClick : () => {}}
-      className={`genauth-g2-submit-button ${propsCls} ${shakingCls}`}
-    >
-      {props.text}
-    </GuardButton>
+    <>
+      <TurnstileField />
+      <GuardButton
+        {...props}
+        size={props?.size ?? 'large'}
+        type={props?.type ?? 'primary'}
+        htmlType={props?.htmlType ?? 'submit'}
+        loading={spin}
+        disabled={
+          verificationPending || (buttonSpin ? true : props?.disabled ?? spin)
+        }
+        onClick={props.onClick ? props.onClick : () => {}}
+        className={`genauth-g2-submit-button ${propsCls} ${shakingCls}`}
+      >
+        {props.text}
+      </GuardButton>
+    </>
   )
 }
 export default forwardRef(SubmitButton)

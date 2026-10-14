@@ -1,6 +1,6 @@
 import React, { ReactElement, CSSProperties, ReactNode, ForwardRefRenderFunction } from 'react'
 
-import ReactDOM from 'react-dom'
+import ReactDOM, { createPortal } from 'react-dom'
 
 export interface IRenderer {
   container: Element,
@@ -37,6 +37,7 @@ function unmount (container: Element) {
 
 export {
   React,
+  createPortal,
   CSSProperties,
   ReactNode,
   render,

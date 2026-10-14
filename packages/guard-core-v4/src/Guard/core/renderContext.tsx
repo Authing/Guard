@@ -409,6 +409,7 @@ export const RenderContext: React.FC<{
             finallyConfig,
             publicConfig,
             httpClient,
+            authClient: authClint,
             appId,
             tenantId,
             events,

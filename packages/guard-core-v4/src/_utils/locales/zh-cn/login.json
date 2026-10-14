@@ -133,5 +133,17 @@
   },
   "wecomScanLogin": "企业微信扫码登录",
   "passwordRuleTips": "你的密码需要满足如下要求:",
-  "characterTypes": "需要包含以下至少 {{x}} 种字符类型"
+  "characterTypes": "需要包含以下至少 {{x}} 种字符类型",
+  "turnstileChecking": "验证中",
+  "turnstileRetryShort": "重试验证",
+  "turnstileNetworkError": "无法连接验证服务，请检查网络后重试。",
+  "turnstileLoadTimeout": "验证服务响应超时，请稍后重试。",
+  "turnstileTitle": "安全验证",
+  "turnstileDescription": "请先完成安全验证。",
+  "turnstileDomainError": "此网站暂时无法进行安全验证，请联系管理员。",
+  "turnstileServiceError": "验证服务暂时不可用，请稍后重试。",
+  "turnstileError": "未能完成安全验证，请重新验证。",
+  "turnstileExpired": "安全验证已过期，请重新验证。",
+  "turnstileRetry": "重新验证",
+  "turnstileConfigError": "无法获取安全验证配置，请稍后重试。"
 }

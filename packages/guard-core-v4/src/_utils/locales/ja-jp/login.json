@@ -133,5 +133,17 @@
   },
   "wecomScanLogin": "エンタープライズ WeChat ログイン",
   "passwordRuleTips": "パスワードには、以下を含める必要があります：",
-  "characterTypes": "Include at least {{x}} character types"
+  "characterTypes": "Include at least {{x}} character types",
+  "turnstileChecking": "認証中",
+  "turnstileRetryShort": "認証を再試行",
+  "turnstileNetworkError": "認証サービスに接続できません。接続を確認して再試行してください。",
+  "turnstileLoadTimeout": "認証サービスの応答がタイムアウトしました。もう一度お試しください。",
+  "turnstileTitle": "セキュリティ認証",
+  "turnstileDescription": "続行するには、セキュリティ認証を完了してください。",
+  "turnstileDomainError": "このサイトでは現在セキュリティ確認を利用できません。管理者にお問い合わせください。",
+  "turnstileServiceError": "認証サービスを一時的に利用できません。しばらくしてから再試行してください。",
+  "turnstileError": "認証を完了できませんでした。もう一度お試しください。",
+  "turnstileExpired": "認証の有効期限が切れました。もう一度認証してください。",
+  "turnstileRetry": "もう一度認証する",
+  "turnstileConfigError": "認証設定を取得できませんでした。もう一度お試しください。"
 }
