@@ -123,6 +123,9 @@ const TurnstileWidget: React.FC<{
           'refresh-timeout': 'manual',
           size,
           'response-field': false,
+          'before-interactive-callback': () => {
+            if (active) setLoading(false)
+          },
           callback: token => {
             if (active && token) {
               setError('')
@@ -158,7 +161,6 @@ const TurnstileWidget: React.FC<{
           }
         })
         if (!widgetId) throw new Error('Turnstile did not render a widget')
-        if (active) setLoading(false)
         removeWidget = () => api.remove(widgetId)
         if (!active) removeWidget()
       })
@@ -197,17 +199,16 @@ const TurnstileWidget: React.FC<{
     <div
       className={`g2-turnstile-challenge${
         !loading && !error ? ' g2-turnstile-native-ready' : ''
-      }`}
+      }${loading && !error ? ' g2-turnstile-pending' : ''}`}
     >
       {compact && (error || loading) && (
         <TurnstileStatus error={error} code={errorCode} onRetry={retry} />
       )}
-      {!compact && loading && !error && (
-        <span role="status" className="g2-turnstile-loading">
-          {t('login.turnstileTitle')}…
-        </span>
-      )}
-      <div ref={container} className="g2-turnstile-widget" />
+      <div
+        ref={container}
+        className="g2-turnstile-widget"
+        aria-hidden={loading || !!error}
+      />
       {!compact && error && (
         <p role="alert" className="g2-turnstile-error">
           {error}
@@ -472,6 +473,7 @@ const useStandaloneTurnstile = ({
         (!token || (placement === 'send-code' && feedback !== 'ready'))))
   const retryConfig = () => {
     invalidate()
+    setConfigError('')
     setVerificationError('')
     setChallengeAttempt(value => value + 1)
     setLoading(true)
@@ -483,7 +485,7 @@ const useStandaloneTurnstile = ({
   const turnstileView =
     mode === 'inline' ? (
       configError ? (
-        <div className={inlineClassName}>
+        <div className={`${inlineClassName} g2-turnstile-config-error`}>
           {placement === 'send-code' ? (
             <TurnstileStatus
               error={verificationError || configError}
@@ -500,13 +502,11 @@ const useStandaloneTurnstile = ({
           )}
         </div>
       ) : loading ? (
-        <div className={inlineClassName}>
-          {placement === 'send-code' ? (
+        placement === 'send-code' ? (
+          <div className={inlineClassName}>
             <TurnstileStatus />
-          ) : (
-            <span role="status">{t('login.turnstileTitle')}…</span>
-          )}
-        </div>
+          </div>
+        ) : null
       ) : config?.enabled ? (
         <div
           className={inlineClassName}
@@ -641,10 +641,19 @@ export const TurnstileProvider: React.FC<{ protectSubmission?: boolean }> = ({
   )
   React.useLayoutEffect(() => {
     position()
+    let resizeFrame: number | undefined
     const observer =
       typeof ResizeObserver === 'undefined'
         ? null
-        : new ResizeObserver(position)
+        : new ResizeObserver(() => {
+            if (resizeFrame !== undefined) return
+            // Slot height changes resize this root; position on the next frame
+            // instead of writing layout during the observer's delivery loop.
+            resizeFrame = window.requestAnimationFrame(() => {
+              resizeFrame = undefined
+              position()
+            })
+          })
     if (root.current) observer?.observe(root.current)
     if (host) observer?.observe(host)
     // Validation messages can move the submit field without resizing its width.
@@ -663,6 +672,7 @@ export const TurnstileProvider: React.FC<{ protectSubmission?: boolean }> = ({
     window.addEventListener('resize', position)
     return () => {
       observer?.disconnect()
+      if (resizeFrame !== undefined) window.cancelAnimationFrame(resizeFrame)
       changes?.disconnect()
       window.removeEventListener('resize', position)
       host?.remove()

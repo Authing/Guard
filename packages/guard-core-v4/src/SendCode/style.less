@@ -111,6 +111,12 @@
     outline-offset: -1px;
   }
 
+  &:not(.g2-turnstile-native-ready) > .g2-turnstile-widget {
+    // Keep its width measurable while the native challenge initializes.
+    height: 0;
+    min-height: 0;
+  }
+
   .g2-turnstile-error {
     color: #dc2626;
     margin-top: 12px;
@@ -124,19 +130,16 @@
   }
 }
 
-.g2-turnstile-loading {
-  position: absolute;
-  inset: 0 0 auto;
-  line-height: 43px;
-  color: #6b7280;
-  pointer-events: none;
-}
-
 .g2-turnstile-inline {
   width: 100%;
-  margin: 0 0 16px;
+  margin: 0;
   font-size: 13px;
   color: #6b7280;
+
+  &.g2-turnstile-config-error,
+  > .g2-turnstile-challenge:not(.g2-turnstile-pending) {
+    margin-bottom: 16px;
+  }
 
   .g2-turnstile-challenge > p {
     margin: 0 0 8px;
@@ -156,9 +159,13 @@
   }
 }
 
-.g2-turnstile-send-slot {
+.g2-turnstile-inline.g2-turnstile-send-slot {
   margin: 0;
   font-size: 12px;
+
+  > .g2-turnstile-challenge {
+    margin-bottom: 0;
+  }
 
   .g2-turnstile-widget {
     width: 150px;
@@ -229,5 +236,9 @@
 
   .g2-turnstile-inline {
     margin: 0;
+
+    > .g2-turnstile-challenge {
+      margin-bottom: 0;
+    }
   }
 }

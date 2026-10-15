@@ -25,6 +25,7 @@ export interface TurnstileApi {
       'refresh-timeout': 'manual'
       'response-field': false
       callback: (token: string) => void
+      'before-interactive-callback'?: () => void
       'error-callback': (code?: string) => void
       'expired-callback': () => void
       'timeout-callback': () => void
