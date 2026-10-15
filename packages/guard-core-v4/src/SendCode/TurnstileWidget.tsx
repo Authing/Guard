@@ -63,9 +63,7 @@ export const TurnstileWidget: React.FC<TurnstileWidgetProps> = ({
   const [error, setError] = useState('')
   const [attempt, setAttempt] = useState(0)
   const [loading, setLoading] = useState(true)
-  const [size, setSize] = useState<'flexible' | 'compact'>(
-    compact ? 'compact' : 'flexible'
-  )
+  const size = compact ? 'compact' : 'flexible'
   const [errorCode, setErrorCode] = useState('')
   const locale = i18n?.resolvedLanguage || i18n?.language || 'auto'
   const language = /^en/i.test(locale)
@@ -91,20 +89,7 @@ export const TurnstileWidget: React.FC<TurnstileWidgetProps> = ({
     loadTurnstile(element.ownerDocument)
       .then(api => {
         if (!active) return
-        const frame = element.closest('.g2-turnstile-challenge')
-        const availableWidth = frame?.getBoundingClientRect().width || 0
-        const scale =
-          Number.parseFloat(
-            element.ownerDocument.defaultView
-              ?.getComputedStyle(element)
-              .getPropertyValue('--g2-turnstile-scale') || ''
-          ) || 1
-        const size =
-          compact || (availableWidth > 0 && availableWidth - 14 < 300 * scale)
-            ? 'compact'
-            : 'flexible'
         element.dataset.size = size
-        setSize(size)
         const widgetId = api.render(element, {
           sitekey: config.siteKey,
           action: config.action,
@@ -181,7 +166,7 @@ export const TurnstileWidget: React.FC<TurnstileWidgetProps> = ({
       active = false
       removeWidget?.()
     }
-  }, [attempt, compact, config, language, onToken, onStart, onInvalidate, t])
+  }, [attempt, size, config, language, onToken, onStart, onInvalidate, t])
 
   const retry = () => {
     onInvalidate()

@@ -1,12 +1,16 @@
 .g2-turnstile-challenge {
-  --g2-turnstile-scale: 1;
   position: relative;
   font-size: 14px;
   line-height: 1.5;
 
   .g2-turnstile-surface {
     box-sizing: border-box;
+    position: relative;
+    left: 50%;
     width: 100%;
+    // Preserve the native 300px layout, excluding its two border pixels.
+    min-width: 298px;
+    transform: translateX(-50%);
     overflow: hidden;
     border-radius: var(--guard-radius-input, 10px);
     line-height: 0;
@@ -30,10 +34,9 @@
   &.g2-turnstile-native-ready > .g2-turnstile-surface {
     display: flex;
     align-items: center;
-    min-height: 43px;
-    // The native inset scales to ~5px; together these match the inputs' 12px.
-    padding: 1px 6px;
-    border: 1px solid var(--guard-border, #d1d1d6);
+    min-height: 65px;
+    outline: 1px solid var(--guard-border, #d1d1d6);
+    outline-offset: -1px;
     background: #fafafa;
   }
 
@@ -44,9 +47,10 @@
   }
 
   .g2-turnstile-surface[data-size='compact'] {
+    left: 0;
     width: 150px;
-    padding: 0;
-    border: 0;
+    min-width: 150px;
+    transform: none;
 
     .g2-turnstile-widget {
       width: 150px;
@@ -58,8 +62,6 @@
 
   &.g2-turnstile-native-ready > .g2-turnstile-surface[data-size='compact'] {
     min-height: 140px;
-    outline: 1px solid var(--guard-border, #d1d1d6);
-    outline-offset: -1px;
   }
 
   .g2-turnstile-error {
@@ -72,17 +74,6 @@
     height: 32px;
     border-radius: 12px;
     padding-inline: 0;
-  }
-}
-
-@supports (zoom: 0.6) {
-  .g2-turnstile-challenge {
-    --g2-turnstile-scale: 0.6;
-  }
-
-  .g2-turnstile-surface[data-size='flexible'] .g2-turnstile-widget {
-    // Scale the complete native widget, including its real click targets.
-    zoom: var(--g2-turnstile-scale);
   }
 }
 
