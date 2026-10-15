@@ -150,6 +150,13 @@
   display: none;
 }
 
+@supports (zoom: 0.9) {
+  .g2-turnstile-challenge .g2-turnstile-widget[data-size='flexible'] {
+    // Resize the native controls together while retaining the form's width.
+    zoom: 0.9;
+  }
+}
+
 .g2-send-code-verification-row {
   flex-wrap: nowrap;
   column-gap: 12px;
