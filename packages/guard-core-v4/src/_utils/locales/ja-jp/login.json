@@ -104,6 +104,8 @@
   "socialConnectionMessage": "{{provider}}を使用したログインはサポートされていません。他の方法でログインするか、他のブラウザで再試行してください。",
   "inputNewPwd": "新しいパスワードをご入力ください",
   "selectLoginAccount": "ログインアカウントを選択する",
+  "selectLoginAccountDescription": "保存済みのアカウントを選択して続行します。",
+  "removeSavedAccount": "保存したアカウントを削除",
   "useOtherAccount": "別のアカウントを使う",
   "tenant": {
     "consoleManage": "管理コンソール",

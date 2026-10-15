@@ -102,6 +102,16 @@ const TurnstileWidget: React.FC<{
     loadTurnstile(element.ownerDocument)
       .then(api => {
         if (!active) return
+        // Re-measure available width when a previous compact widget is retried.
+        delete element.dataset.size
+        const size =
+          compact ||
+          ((element.ownerDocument.defaultView?.innerWidth || 1024) <= 400 &&
+            element.clientWidth < 300)
+            ? 'compact'
+            : 'flexible'
+        // Keep the rounded shell aligned with the native widget's footprint.
+        element.dataset.size = size
         const widgetId = api.render(element, {
           sitekey: config.siteKey,
           action: config.action,
@@ -111,12 +121,7 @@ const TurnstileWidget: React.FC<{
           retry: 'never',
           'refresh-expired': 'manual',
           'refresh-timeout': 'manual',
-          size:
-            compact ||
-            ((element.ownerDocument.defaultView?.innerWidth || 1024) <= 400 &&
-              element.clientWidth < 300)
-              ? 'compact'
-              : 'flexible',
+          size,
           'response-field': false,
           callback: token => {
             if (active && token) {

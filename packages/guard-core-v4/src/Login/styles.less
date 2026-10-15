@@ -54,6 +54,45 @@ div.g2-multiple-wrapper {
   min-height: 360px;
 }
 
+.g2-view-container.g2-view-login-multiple {
+  min-height: 0;
+  padding: 32px;
+
+  .g2-view-header {
+    padding: 0;
+    margin-bottom: 24px;
+
+    .icon {
+      display: block;
+      width: 36px;
+      height: 36px;
+      margin-bottom: 16px;
+      object-fit: contain;
+    }
+
+    .title {
+      color: var(--guard-text-heading);
+      font-family: var(--guard-font-family) !important;
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 28px;
+      white-space: normal;
+    }
+
+    .title-description {
+      margin-top: 6px;
+      color: var(--guard-text-secondary);
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 20px;
+    }
+  }
+
+  @media only screen and (max-width: 450px) {
+    padding: 24px;
+  }
+}
+
 .genauth-g2-login-app-qrcode {
   min-height: 288px;
   // height: 300px;

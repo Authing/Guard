@@ -99,6 +99,8 @@
   "verifyCodeSended": "驗證碼已發送至",
   "wechatmpQrcode": "公眾號關注登入",
   "selectLoginAccount": "選擇登入賬號",
+  "selectLoginAccountDescription": "選擇一個已儲存的帳號繼續登入。",
+  "removeSavedAccount": "移除此帳號記錄",
   "useOtherAccount": "使用其他賬號",
   "wechatScanLogin": "使用微信掃碼登錄",
   "qrcodeRefer": "刷新",

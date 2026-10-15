@@ -1,17 +1,3 @@
-.select-option-item {
-  height: 26px;
-  line-height: 26px;
-  font-family: var(--guard-font-family);
-  font-style: normal;
-  font-weight: normal;
-  display: flex;
-  > span:first-child {
-    width: 40%;
-  }
-  // > span:last-child {
-  //   width: 60%;
-  // }
-}
 .genauth-g2-input-form.remove-padding {
   .genauth-ant-input-affix-wrapper {
     padding-left: 0px;
@@ -35,18 +21,67 @@
   }
 }
 
-.areacode-virtual-dropdown {
-  &.genauth-ant-select-dropdown {
-    border-radius: var(--guard-radius-dropdown);
+.areacode-virtual-dropdown.genauth-ant-select-dropdown {
+  max-width: calc(100vw - 32px);
+  padding: 8px;
+  border: 0;
+  border-radius: var(--guard-radius-dropdown);
+  background: var(--guard-bg);
+  box-shadow: 0 16px 40px rgba(28, 28, 30, 0.12);
+
+  .genauth-ant-select-item {
+    box-sizing: border-box;
+    height: 36px;
+    min-height: 36px;
+    padding: 0 0 4px;
+    color: var(--guard-text-body);
+    background: transparent;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
   }
 
-  .genauth-ant-select-item-option-active {
-    color: #305EE8;
-    background-color: #EBEBED;
+  .select-option-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-sizing: border-box;
+    height: 32px;
+    padding: 6px 12px;
+    border-radius: var(--guard-radius-input);
+    line-height: 20px;
+    font-family: var(--guard-font-family);
+    font-weight: 400;
+
+    > span:first-child {
+      flex: 0 0 52px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .country {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .genauth-ant-select-item-option-active:not(.genauth-ant-select-item-option-disabled) {
+    color: var(--guard-text-primary);
+    background: transparent;
+
+    .select-option-item {
+      background: var(--guard-bg-strong);
+    }
   }
   .genauth-ant-select-item-option-selected:not(.genauth-ant-select-item-option-disabled) {
-    color: #305EE8;
-    background-color: #EBEBED;
+    color: var(--guard-primary);
+    background: transparent;
+
+    .select-option-item {
+      background: var(--guard-bg-muted);
+    }
   }
 }
 // .areacode-virtual-dropdown-icon {
@@ -56,9 +91,4 @@
   .areacode-virtual-dropdown-icon {
     transform: rotate(180deg);
   }
-}
-.country {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 60%;
 }

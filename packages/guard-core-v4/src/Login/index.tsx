@@ -1083,7 +1083,11 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
   console.log(loginWay, 'loginWay')
 
   return (
-    <div className="g2-view-container g2-view-login">
+    <div
+      className={`g2-view-container g2-view-login${
+        isMultipleAccount ? ' g2-view-login-multiple' : ''
+      }`}
+    >
       <div className="g2-view-container-inner">
         {isNoMethod ? (
           <>
@@ -1160,10 +1164,17 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
                   ? t('login.selectLoginAccount')
                   : config?.title}
               </div>
-              {!!publicConfig?.welcomeMessage && (
+              {isMultipleAccount ? (
                 <div className="title-description">
-                  {publicConfig?.welcomeMessage[resolvedLanguage]}
+                  {publicConfig?.welcomeMessage?.[resolvedLanguage] ||
+                    t('login.selectLoginAccountDescription')}
                 </div>
+              ) : (
+                !!publicConfig?.welcomeMessage && (
+                  <div className="title-description">
+                    {publicConfig?.welcomeMessage[resolvedLanguage]}
+                  </div>
+                )
               )}
               {/* 提供头部打标签的功能 */}
               {tags?.map?.((it, i) => (

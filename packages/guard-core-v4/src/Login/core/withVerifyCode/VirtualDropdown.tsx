@@ -1,6 +1,6 @@
 import { React } from 'shim-react'
 
-import { Select, Tooltip } from 'shim-antd'
+import { Select } from 'shim-antd'
 
 import { isoInfo, IsoType } from '../../../_utils/countryList'
 
@@ -35,14 +35,17 @@ export const VirtualDropdown: React.FC<VirtualDropdownProps> = props => {
       label: (
         <div className="select-option-item">
           <span>{info.phoneCountryCode}</span>
-          <div className="country">
-            <Tooltip
-              title={
-                resolvedLanguage === 'zh-CN' ? info.regions : info.regions_en
-              }
-            >
-              {resolvedLanguage === 'zh-CN' ? info.regions : info.regions_en}
-            </Tooltip>
+          <div
+            className="country"
+            onMouseEnter={event => {
+              const element = event.currentTarget
+              element.title =
+                element.scrollWidth > element.clientWidth
+                  ? element.textContent || ''
+                  : ''
+            }}
+          >
+            {resolvedLanguage === 'zh-CN' ? info.regions : info.regions_en}
           </div>
         </div>
       ),
@@ -58,7 +61,9 @@ export const VirtualDropdown: React.FC<VirtualDropdownProps> = props => {
       showSearch
       popupClassName="areacode-virtual-dropdown"
       bordered={false}
-      listHeight={258}
+      listHeight={288}
+      listItemHeight={36}
+      dropdownAlign={{ offset: [0, 16] }}
       options={options}
       value={value}
       onChange={onChange}
@@ -67,7 +72,7 @@ export const VirtualDropdown: React.FC<VirtualDropdownProps> = props => {
         e.stopPropagation()
       }}
       optionLabelProp="children"
-      dropdownMatchSelectWidth={138}
+      dropdownMatchSelectWidth={280}
       filterOption={(input, option: any) => {
         if (option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0) {
           return true

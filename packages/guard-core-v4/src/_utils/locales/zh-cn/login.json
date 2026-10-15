@@ -104,6 +104,8 @@
   "socialConnectionMessage": "不支持使用{{provider}}登录,请选择其他方式登录，或在其它浏览器中重试",
   "inputNewPwd": "请输入新密码",
   "selectLoginAccount": "选择登录账号",
+  "selectLoginAccountDescription": "选择一个已保存的账号继续登录。",
+  "removeSavedAccount": "移除此账号记录",
   "useOtherAccount": "使用其他账号",
   "tenant": {
     "consoleManage": "管理员控制台",

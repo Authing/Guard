@@ -92,8 +92,23 @@
   .g2-turnstile-widget {
     min-height: 65px;
     width: 100%;
+    line-height: 0;
+    overflow: hidden;
+    border-radius: var(--guard-radius-input, 10px);
+    clip-path: inset(0 round var(--guard-radius-input, 10px));
     // Cloudflare's horizontal widget requires at least 300px.
     min-width: 300px;
+
+    &[data-size='compact'] {
+      width: 150px;
+      min-width: 150px;
+    }
+  }
+
+  &.g2-turnstile-native-ready > .g2-turnstile-widget {
+    // Cropping an iframe does not round its own rectangular border.
+    outline: 1px solid var(--guard-border, #d1d1d6);
+    outline-offset: -1px;
   }
 
   .g2-turnstile-error {

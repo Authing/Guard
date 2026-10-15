@@ -1,16 +1,19 @@
-import { Popover } from 'shim-antd'
+import {
+  Avatar,
+  DeleteOutlined,
+  MoreOutlined,
+  PlusOutlined,
+  Popover,
+  RightOutlined
+} from 'shim-antd'
 
 import { React } from 'shim-react'
 
 import { useTranslation } from 'react-i18next'
 
-import { IconFont } from '../../IconFont'
-
-import { useMediaSize } from '../../_utils/hooks'
-
 import './style.less'
 
-const { useMemo, useCallback } = React
+const { useState } = React
 
 interface SelectPanelProps {
   lists: SelectOptions[]
@@ -61,102 +64,136 @@ const SelectPanel: React.FC<SelectPanelProps> = props => {
   const { lists, handleDel, onClick } = props
   const { t } = useTranslation()
 
-  const { isPhoneMedia } = useMediaSize()
+  const [activeMenu, setActiveMenu] = useState<string>()
 
-  const triggerWay = useMemo(() => {
-    return isPhoneMedia ? 'click' : 'hover'
-  }, [isPhoneMedia])
+  const renderLists = lists.map((option, index) => {
+    const {
+      photo,
+      title,
+      description,
+      id,
+      operation = true,
+      element
+    } = option as SelectOptions
+    const accountLabel = title?.trim() || description?.trim() || id
+    const initials = accountLabel
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map(word => word[0])
+      .join('')
+      .toUpperCase()
+    const subtitle =
+      title && description && title !== description
+        ? description
+        : index === 0 && option._updateTime > 0
+        ? t('common.lastUsed')
+        : undefined
 
-  const finallyLists = useMemo(() => {
-    return [
-      ...lists,
-      {
-        operation: false,
-        id: 'other',
-        title: t('login.useOtherAccount'),
-        element: (
-          <div className="g2-multiple__icon--add-line">
-            <IconFont
-              style={{ fontSize: 24, color: '#3A3A3C' }}
-              type="authing-add-line"
-            ></IconFont>
-          </div>
-        )
-      }
-    ]
-  }, [lists, t])
-
-  const onDel = useCallback(
-    (e: React.MouseEvent, id: string) => {
-      handleDel(id)
-      e.stopPropagation()
-    },
-    [handleDel]
-  )
-
-  const renderLits = useMemo(() => {
-    return finallyLists.map(option => {
-      const {
-        photo,
-        title,
-        description,
-        id,
-        operation = true,
-        element
-      } = option as SelectOptions
-      return (
-        <li className="g2-multiple__li" key={id} onClick={() => onClick(id)}>
+    return (
+      <li className="g2-multiple__li" key={id}>
+        <button
+          type="button"
+          className={`g2-multiple__account${
+            operation ? ' g2-multiple__account--with-operation' : ''
+          }`}
+          onClick={() => onClick(id)}
+        >
           {element ? (
-            element
+            <span className="g2-multiple__avatar">{element}</span>
           ) : (
-            <img className="g2-multiple__avatar" alt="" src={photo} />
-          )}
-
-          <section className="g2-multiple__body">
-            {title && <span className="g2-multiple__title">{title}</span>}
-            <span
-              className={title ? 'g2-multiple__desc' : 'g2-multiple__title'}
+            <Avatar
+              className="g2-multiple__avatar"
+              size={32}
+              src={photo || undefined}
             >
-              {description}
+              {initials}
+            </Avatar>
+          )}
+          <span className="g2-multiple__body">
+            <span className="g2-multiple__title" title={accountLabel}>
+              {accountLabel}
             </span>
-          </section>
-          {operation && (
-            <span
+            {subtitle && (
+              <span className="g2-multiple__desc" title={subtitle}>
+                {subtitle}
+              </span>
+            )}
+          </span>
+          <RightOutlined
+            className="g2-multiple__account-arrow"
+            aria-hidden="true"
+          />
+        </button>
+        {operation && (
+          <Popover
+            trigger="click"
+            placement="bottomRight"
+            showArrow={false}
+            open={activeMenu === id}
+            onOpenChange={open => setActiveMenu(open ? id : undefined)}
+            overlayClassName="g2-multiple__op-wrapper"
+            getPopupContainer={triggerNode =>
+              triggerNode.parentElement || triggerNode
+            }
+            content={
+              <div role="menu">
+                <button
+                  type="button"
+                  role="menuitem"
+                  className="g2-multiple__del"
+                  onClick={() => {
+                    setActiveMenu(undefined)
+                    handleDel(id)
+                  }}
+                >
+                  <DeleteOutlined aria-hidden="true" />
+                  {t('login.removeSavedAccount')}
+                </button>
+              </div>
+            }
+          >
+            <button
+              type="button"
               className="g2-multiple__op"
-              onClick={e => e.stopPropagation()}
+              aria-label={`${t('common.more')}: ${accountLabel}`}
+              aria-haspopup="menu"
+              aria-expanded={activeMenu === id}
             >
-              <Popover
-                trigger={triggerWay}
-                overlayClassName="g2-multiple__op-wrapper"
-                getPopupContainer={(triggerNode: any) => triggerNode}
-                content={
-                  <div
-                    className="g2-multiple__del"
-                    onClick={(e: React.MouseEvent) => onDel(e, id)}
-                  >
-                    <IconFont
-                      style={{
-                        fontSize: 20,
-                        marginRight: 8
-                      }}
-                      type="authing-indeterminate-circle-line"
-                    />
-                    {t('common.del')}
-                  </div>
-                }
-              >
-                <div className="g2-multiple__icon">
-                  <IconFont type="authing-more-fill"></IconFont>
-                </div>
-              </Popover>
-            </span>
-          )}
-        </li>
-      )
-    })
-  }, [finallyLists, onClick, onDel, t, triggerWay])
+              <MoreOutlined aria-hidden="true" />
+            </button>
+          </Popover>
+        )}
+      </li>
+    )
+  })
 
-  return <ul className="g2-multiple">{renderLits}</ul>
+  return (
+    <div
+      className="g2-multiple"
+      onKeyDown={event => {
+        if (event.key === 'Escape') {
+          const trigger = event.currentTarget.querySelector<HTMLButtonElement>(
+            '[aria-expanded="true"]'
+          )
+          setActiveMenu(undefined)
+          trigger?.focus()
+        }
+      }}
+    >
+      <ul className="g2-multiple__list">{renderLists}</ul>
+      <div className="g2-multiple__footer">
+        <button
+          type="button"
+          className="g2-multiple__other"
+          onClick={() => onClick('other')}
+        >
+          <PlusOutlined aria-hidden="true" />
+          <span>{t('login.useOtherAccount')}</span>
+        </button>
+      </div>
+    </div>
+  )
 }
 
 export { SelectPanel }

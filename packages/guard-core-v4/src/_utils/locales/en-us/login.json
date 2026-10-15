@@ -99,6 +99,8 @@
   "inputNewPwd": "Please enter a new password",
   "socialConnectionMessage": "Login with {{provider}} is not supported, please choose another way to log in, or try again in another browser",
   "selectLoginAccount": "Select login account",
+  "selectLoginAccountDescription": "Choose a saved account to continue.",
+  "removeSavedAccount": "Remove saved account",
   "useOtherAccount": "Use another account",
   "wechatScanLogin": "WeChat QR Code",
   "qrcodeRefer": "Refresh",
