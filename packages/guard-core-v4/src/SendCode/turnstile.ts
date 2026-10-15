@@ -6,6 +6,8 @@ export interface TurnstileConfig {
   siteKey: string
   action: 'send_code'
   scriptUrl: string
+  /** User-pool policy; optional while rolling out the new server version. */
+  allowedHostnames?: string[]
 }
 
 export interface TurnstileApi {
@@ -119,10 +121,13 @@ export const loadTurnstile = (document: Document): Promise<TurnstileApi> => {
 }
 
 /** Never interpret a failed or malformed configuration request as disabled. */
-export const readTurnstileConfig = (response: {
-  code?: number
-  data?: TurnstileConfig
-}): TurnstileConfig => {
+export const readTurnstileConfig = (
+  response: {
+    code?: number
+    data?: TurnstileConfig
+  },
+  hostname?: string
+): TurnstileConfig => {
   const config = response.data
   if (response.code !== 200 || typeof config?.enabled !== 'boolean') {
     throw new Error('Unable to load human verification configuration')
@@ -135,7 +140,24 @@ export const readTurnstileConfig = (response: {
   ) {
     throw new Error('Invalid human verification configuration')
   }
+  if (config.enabled && config.allowedHostnames !== undefined) {
+    if (
+      !Array.isArray(config.allowedHostnames) ||
+      !config.allowedHostnames.length ||
+      !config.allowedHostnames.every(host => typeof host === 'string' && !!host)
+    )
+      throw new Error('Invalid human verification hostname configuration')
+    if (hostname && !config.allowedHostnames.includes(hostname.toLowerCase()))
+      throw new TurnstileHostnameError()
+  }
   return config
+}
+
+export class TurnstileHostnameError extends Error {
+  constructor() {
+    super('Human verification is unavailable on this hostname')
+    Object.setPrototypeOf(this, TurnstileHostnameError.prototype)
+  }
 }
 
 export class TurnstileChallengeError extends Error {

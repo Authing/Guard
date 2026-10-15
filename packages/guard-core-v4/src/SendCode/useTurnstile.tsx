@@ -10,6 +10,7 @@ import {
   readTurnstileConfig,
   TurnstileChallengeError,
   TurnstileConfig,
+  TurnstileHostnameError,
   TurnstileLoadError
 } from './turnstile'
 import './style.less'
@@ -245,7 +246,7 @@ const useStandaloneTurnstile = ({
   const [feedback, setFeedback] = useState<'checking' | 'ready'>('checking')
   const feedbackTimer = useRef<ReturnType<typeof setTimeout>>()
   const [loading, setLoading] = useState(mode === 'inline')
-  const [configError, setConfigError] = useState(false)
+  const [configError, setConfigError] = useState('')
   const [verificationError, setVerificationError] = useState('')
   const [challengeAttempt, setChallengeAttempt] = useState(0)
   const [modalOpen, setModalOpen] = useState(false)
@@ -293,19 +294,25 @@ const useStandaloneTurnstile = ({
           '/api/v2/security/turnstile/config'
         )
         if (!mounted.current) throw new TurnstileChallengeError('Cancelled')
-        const next = readTurnstileConfig(response)
+        const next = readTurnstileConfig(response, window.location.hostname)
         const previous = configRef.current
         if (!previous || JSON.stringify(previous) !== JSON.stringify(next)) {
           invalidate()
           configRef.current = next
           setConfig(next)
         }
-        setConfigError(false)
+        setConfigError('')
         return next
       } catch (error) {
         if (mounted.current) {
           invalidate()
-          setConfigError(true)
+          setConfigError(
+            t(
+              error instanceof TurnstileHostnameError
+                ? 'login.turnstileDomainError'
+                : 'login.turnstileConfigError'
+            ) as string
+          )
         }
         throw error
       } finally {
@@ -322,7 +329,7 @@ const useStandaloneTurnstile = ({
       }
     )
     return request
-  }, [http, invalidate])
+  }, [http, invalidate, t])
 
   useEffect(() => {
     if (!active) {
@@ -453,7 +460,7 @@ const useStandaloneTurnstile = ({
   const sendDisabled =
     mode === 'inline' &&
     (loading ||
-      configError ||
+      !!configError ||
       !!verificationError ||
       !config ||
       (config.enabled &&
@@ -474,15 +481,13 @@ const useStandaloneTurnstile = ({
         <div className={inlineClassName}>
           {placement === 'send-code' ? (
             <TurnstileStatus
-              error={
-                verificationError || (t('login.turnstileConfigError') as string)
-              }
+              error={verificationError || configError}
               code="CONFIG_LOAD_FAILED"
               onRetry={retryConfig}
             />
           ) : (
             <div role="alert">
-              <p>{verificationError || t('login.turnstileConfigError')}</p>
+              <p>{verificationError || configError}</p>
               <Button type="link" onClick={retryConfig}>
                 {t('login.turnstileRetry')}
               </Button>
