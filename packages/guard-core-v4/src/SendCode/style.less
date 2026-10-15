@@ -84,52 +84,6 @@
   border-radius: 14px;
 }
 
-.g2-turnstile-challenge {
-  position: relative;
-  font-size: 14px;
-  line-height: 1.5;
-
-  .g2-turnstile-widget {
-    min-height: 65px;
-    width: 100%;
-    line-height: 0;
-    overflow: hidden;
-    border-radius: var(--guard-radius-input, 10px);
-    clip-path: inset(0 round var(--guard-radius-input, 10px));
-    // Cloudflare's horizontal widget requires at least 300px.
-    min-width: 300px;
-
-    &[data-size='compact'] {
-      width: 150px;
-      min-width: 150px;
-    }
-  }
-
-  &.g2-turnstile-native-ready > .g2-turnstile-widget {
-    // Cropping an iframe does not round its own rectangular border.
-    outline: 1px solid var(--guard-border, #d1d1d6);
-    outline-offset: -1px;
-  }
-
-  &:not(.g2-turnstile-native-ready) > .g2-turnstile-widget {
-    // Keep its width measurable while the native challenge initializes.
-    height: 0;
-    min-height: 0;
-  }
-
-  .g2-turnstile-error {
-    color: #dc2626;
-    margin-top: 12px;
-  }
-
-  .genauth-ant-btn-link {
-    color: #305ee8;
-    height: 32px;
-    border-radius: 12px;
-    padding-inline: 0;
-  }
-}
-
 .g2-turnstile-inline {
   width: 100%;
   margin: 0;
@@ -150,13 +104,6 @@
   display: none;
 }
 
-@supports (zoom: 0.9) {
-  .g2-turnstile-challenge .g2-turnstile-widget[data-size='flexible'] {
-    // Resize the native controls together while retaining the form's width.
-    zoom: 0.9;
-  }
-}
-
 .g2-send-code-verification-row {
   flex-wrap: nowrap;
   column-gap: 12px;
@@ -172,16 +119,6 @@
 
   > .g2-turnstile-challenge {
     margin-bottom: 0;
-  }
-
-  .g2-turnstile-widget {
-    width: 150px;
-    min-width: 150px;
-    min-height: 0;
-  }
-
-  .g2-turnstile-native-ready .g2-turnstile-widget {
-    min-height: 140px;
   }
 
   .genauth-ant-btn.genauth-g2-turnstile-state-btn {
@@ -216,17 +153,14 @@
   border: 0;
 }
 
-@media only screen and (max-width: 400px) {
-  .g2-turnstile-challenge .g2-turnstile-widget {
-    min-width: 0;
-  }
-}
 // The native iframe stays in one parent while its anchor follows the form.
 .g2-turnstile-page-root {
   position: relative;
 }
 .g2-turnstile-form-slot {
-  width: 100%;
+  // Match the input Form.Item's existing 2px horizontal inset.
+  width: calc(100% - 4px);
+  margin-inline: 2px;
 }
 .g2-turnstile-page-verification:empty {
   display: none;

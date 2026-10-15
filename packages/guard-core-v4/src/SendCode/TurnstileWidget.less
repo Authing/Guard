@@ -1,0 +1,93 @@
+.g2-turnstile-challenge {
+  --g2-turnstile-scale: 1;
+  position: relative;
+  font-size: 14px;
+  line-height: 1.5;
+
+  .g2-turnstile-surface {
+    box-sizing: border-box;
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--guard-radius-input, 10px);
+    line-height: 0;
+  }
+
+  .g2-turnstile-viewport {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .g2-turnstile-widget {
+    // Clip only the native one-pixel border; the surface owns the frame.
+    width: calc(100% + 2px);
+    min-width: 300px;
+    min-height: 65px;
+    margin: -1px;
+    line-height: 0;
+  }
+
+  &.g2-turnstile-native-ready > .g2-turnstile-surface {
+    display: flex;
+    align-items: center;
+    min-height: 43px;
+    // The native inset scales to ~5px; together these match the inputs' 12px.
+    padding: 1px 6px;
+    border: 1px solid var(--guard-border, #d1d1d6);
+    background: #fafafa;
+  }
+
+  &:not(.g2-turnstile-native-ready) > .g2-turnstile-surface {
+    // Leave width measurable without showing a frame or reserving space.
+    height: 0;
+    visibility: hidden;
+  }
+
+  .g2-turnstile-surface[data-size='compact'] {
+    width: 150px;
+    padding: 0;
+    border: 0;
+
+    .g2-turnstile-widget {
+      width: 150px;
+      min-width: 150px;
+      min-height: 140px;
+      margin: 0;
+    }
+  }
+
+  &.g2-turnstile-native-ready > .g2-turnstile-surface[data-size='compact'] {
+    min-height: 140px;
+    outline: 1px solid var(--guard-border, #d1d1d6);
+    outline-offset: -1px;
+  }
+
+  .g2-turnstile-error {
+    color: #dc2626;
+    margin-top: 12px;
+  }
+
+  .genauth-ant-btn-link {
+    color: #305ee8;
+    height: 32px;
+    border-radius: 12px;
+    padding-inline: 0;
+  }
+}
+
+@supports (zoom: 0.6) {
+  .g2-turnstile-challenge {
+    --g2-turnstile-scale: 0.6;
+  }
+
+  .g2-turnstile-surface[data-size='flexible'] .g2-turnstile-widget {
+    // Scale the complete native widget, including its real click targets.
+    zoom: var(--g2-turnstile-scale);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .g2-turnstile-challenge.g2-turnstile-native-ready > .g2-turnstile-surface {
+    background: #232323;
+  }
+}
