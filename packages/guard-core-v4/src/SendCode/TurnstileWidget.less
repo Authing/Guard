@@ -8,8 +8,10 @@
     position: relative;
     left: 50%;
     width: 100%;
-    // Preserve the native 300px layout, excluding its two border pixels.
-    min-width: 298px;
+    // Native content is 298px after its border is clipped. Add 4px per side
+    // so its own 8px inset matches the inputs' 12px content inset.
+    min-width: 306px;
+    padding-inline: 4px;
     transform: translateX(-50%);
     overflow: hidden;
     border-radius: var(--guard-radius-input, 10px);
@@ -50,6 +52,7 @@
     left: 0;
     width: 150px;
     min-width: 150px;
+    padding: 0;
     transform: none;
 
     .g2-turnstile-widget {
