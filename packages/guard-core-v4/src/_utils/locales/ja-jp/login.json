@@ -27,6 +27,8 @@
   "bindPwdLogin": "アカウントログイン",
   "appScanLogin": "モバイルアプリでコード登録",
   "zjzwScanLogin": "浙江事務所",
+  "nationalNetIdScanLogin": "国家ネットワーク身元認証 QR コード",
+  "nationalNetIdScanTip": "「国家ネットワーク身元認証」アプリで QR コードを読み取ってログインしてください",
   "scanLogin": "コード登録",
   "scanAgain": "コードを掃き直す",
   "wechatScanLogin": "wechatのコードを使ってログインする",

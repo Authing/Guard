@@ -22,7 +22,7 @@ export interface QrCodeResponse {
   /**
    * 返回的随机值
    */
-  random: number
+  random: string
   /**
    * 返回的用户信息
    */
@@ -190,19 +190,23 @@ export const useQrCode = (options: QrCodeOptions, request: QrCodeRequest) => {
    */
   const emitEvents = async (status: CodeStatus, data: QrCodeResponse) => {
     if (data.ticket && exchangeUserInfo) {
-      const { data: user } = await exchangeUserInfo(data.ticket)
-      onStatusChange && onStatusChange(status, { ...user, ticket: data.ticket })
+      const { code, data: user } = await exchangeUserInfo(data.ticket)
+      if (destroy) {
+        return
+      }
+      if (code !== 200 || !user) {
+        throw new Error('Failed to exchange QR code login ticket')
+      }
+      await onStatusChange?.(status, { ...user, ticket: data.ticket })
     } else {
-      onStatusChange && onStatusChange(status, data)
+      await onStatusChange?.(status, data)
     }
   }
 
   /**
    * Server 接口返回才会进入：根据不同返回码进行流转
    */
-  const processFlowByResponse: (res: QrCodeResponse) => void = (
-    res: QrCodeResponse
-  ) => {
+  const processFlowByResponse = async (res: QrCodeResponse) => {
     if (destroy) {
       return
     }
@@ -212,10 +216,11 @@ export const useQrCode = (options: QrCodeOptions, request: QrCodeRequest) => {
     const statusWillChange = prev !== next
     // 状态已经改变 交给状态的 Handler 来改变
     if (statusWillChange) {
-      // 改变状态
-      changeStatus(next)
-      // 触发改变状态的用户事件
-      emitEvents(next, res)
+      // 先完成 ticket 换取，避免切换状态清理当前 effect 后丢弃登录结果
+      await emitEvents(next, res)
+      if (!destroy) {
+        changeStatus(next)
+      }
       return
     }
     // 状态未改变 交给 ResponseFlow 处理
@@ -226,10 +231,16 @@ export const useQrCode = (options: QrCodeOptions, request: QrCodeRequest) => {
    * Loading 状态的处理函数
    */
   const processLoading = async () => {
-    // 重新切换为 Loading 时，重新调用生成二维码的方式
-    if (genCodeRequest) {
-      const { data } = await genCodeRequest()
-      if (data) {
+    try {
+      // 重新切换为 Loading 时，重新调用生成二维码的方式
+      if (genCodeRequest) {
+        const { code, data } = await genCodeRequest()
+        if (destroy) {
+          return
+        }
+        if (code !== 200 || !data?.url || !data?.random) {
+          throw new Error('Failed to generate QR code')
+        }
         const { url, random } = data
 
         dispatch({
@@ -240,13 +251,16 @@ export const useQrCode = (options: QrCodeOptions, request: QrCodeRequest) => {
           }
         })
       }
-    }
-    if (getAuthUrlRequest) {
-      const { data: res, code } = await getAuthUrlRequest()
-      if (res && res.code === 200) {
+      if (getAuthUrlRequest) {
+        const { data: res } = await getAuthUrlRequest()
+        if (destroy) {
+          return
+        }
+        if (res?.code !== 200 || !res.data?.authCode || !res.data?.authUrl) {
+          throw new Error('Failed to generate QR authorization URL')
+        }
         const data = res.data
         const { authCode, authUrl } = data
-        console.log(data, authCode, authUrl, 'getAuthUrlRequest')
         dispatch({
           type: 'change',
           payload: {
@@ -254,6 +268,10 @@ export const useQrCode = (options: QrCodeOptions, request: QrCodeRequest) => {
             authUrl
           }
         })
+      }
+    } catch (error) {
+      if (!destroy) {
+        changeStatus('error')
       }
     }
   }
@@ -330,16 +348,21 @@ export const useQrCode = (options: QrCodeOptions, request: QrCodeRequest) => {
   const uniteRequestHandler = async (
     request: () => Promise<AuthingGuardResponse<QrCodeResponse>>
   ) => {
+    if (destroy) {
+      return
+    }
     try {
       // 状态切换时 请求还在请求中，所以状态切换完毕后
-      const { data } = await request()
-      if (data) {
+      const { code, data } = await request()
+      if (code === 200 && data) {
         await processFlowByResponse(data)
       } else {
         throw new Error('返回数据不匹配')
       }
     } catch (e: any) {
-      changeStatus('error')
+      if (!destroy) {
+        changeStatus('error')
+      }
     }
   }
 

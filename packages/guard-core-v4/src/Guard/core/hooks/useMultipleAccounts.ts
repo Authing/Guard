@@ -41,6 +41,7 @@ const MULTIPLE_ACCOUNT_LISTS: LoginWay[] = [
 export const QR_CODE_WAY: LoginWay[] = [
   'wechat-miniprogram-qrcode',
   'wechatmp-qrcode',
+  'national-net-id-qrcode',
   'app-qrcode'
 ]
 
@@ -60,6 +61,7 @@ export type LoginWay =
   | 'social' // 社会化登录
   | 'wechat-miniprogram-qrcode' // 小程序扫码登录
   | 'wechatmp-qrcode' // 公众号扫码登录方式
+  | 'national-net-id-qrcode' // 国家网络身份认证扫码
   | 'app-qrcode' // App 扫码登录方式
   | 'zjzwfw-qrcode' // 浙里办 扫码登录方式
   | 'ad' // AD 登录方式
@@ -364,6 +366,7 @@ class MultipleAccount {
       'phone-code': 'phone-code',
       'wechat-miniprogram-qrcode': 'wechat-miniprogram-qrcode',
       'wechatmp-qrcode': 'wechatmp-qrcode',
+      'national-net-id-qrcode': 'national-net-id-qrcode',
       'zjzwfw-qrcode': 'zjzwfw-qrcode',
       'app-qrcode': 'app-qrcode',
       'authing-otp-push': 'authing-otp-push'

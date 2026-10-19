@@ -38,7 +38,12 @@ interface WorkQrCodeProps extends Omit<UiQrProps, 'description' | 'status'> {
   /**
    * 二维码场景
    */
-  scene: 'WXAPP_AUTH' | 'APP_AUTH' | 'WECHATMP_AUTH' | 'ZJ_AUTH'
+  scene:
+    | 'WXAPP_AUTH'
+    | 'APP_AUTH'
+    | 'WECHATMP_AUTH'
+    | 'ZJ_AUTH'
+    | 'NATIONAL_NET_ID_AUTH'
   /**
    * 不同状态请求文字
    */
@@ -232,6 +237,9 @@ const WorkQrCodeComponent: ForwardRefRenderFunction<any, WorkQrCodeProps> = (
       status={state.status}
       loadingComponent={<ShieldSpin />}
       onLoad={onLoadQrcCode}
+      onError={() =>
+        dispatch({ type: 'changeStatus', payload: { status: 'error' } })
+      }
       onMaskContent={handlerMaskClick}
       {...rest}
     ></UiQrCode>

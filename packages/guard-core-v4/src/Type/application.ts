@@ -21,7 +21,8 @@ export enum LoginMethods {
   DingTalkQrcode = 'dingtalk-qrcode', //钉钉扫码
   Passkey = 'passkey', // passkey
   ZJZWFWQrcode = 'zjzwfw-qrcode', // 浙江政务钉
-  ZZDingQrcode = 'zzding-qrcode' //浙政钉
+  ZZDingQrcode = 'zzding-qrcode', //浙政钉
+  NationalNetIdQrcode = 'national-net-id-qrcode' // 国家网络身份认证扫码
 }
 
 export enum OIDCConnectionMode {

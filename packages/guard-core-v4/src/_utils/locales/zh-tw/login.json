@@ -43,6 +43,8 @@
   "enterAccount": "請輸入帳號",
   "appScanLogin": "移動端 APP 掃碼登入",
   "zjzwScanLogin": "浙裡辦掃碼登入",
+  "nationalNetIdScanLogin": "國家網路身分認證掃碼",
+  "nationalNetIdScanTip": "請使用「國家網路身分認證」APP 掃碼登入",
   "bindPhoneInfo": "請輸入手機號碼進行綁定",
   "bindWarning": "請聯系管理員為你綁定手機號",
   "captchaCode": "圖形驗證碼",

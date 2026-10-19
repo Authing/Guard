@@ -63,6 +63,8 @@ export interface UiQrProps {
    * 二维码图片准备好的回调
    */
   onLoad?: () => void
+  /** 图片加载失败时显示可重试状态 */
+  onError?: () => void
   /**
    * 点击遮罩中的内容区
    * status 当前组件所处状态
@@ -84,6 +86,7 @@ const QrCode: React.FC<UiQrProps> = props => {
     containerStyle,
     imageStyle,
     onLoad,
+    onError,
     onClickMaskEl,
     onMaskContent
   } = props
@@ -91,7 +94,8 @@ const QrCode: React.FC<UiQrProps> = props => {
   const [statusCls, statusComponent] = useStatus(status)
 
   const [baseUrl] = useImage(src, {
-    onLoad
+    onLoad,
+    onError
   })
   const classPrefix: any = `${prefix}-qrcode`
   const classes = className(classPrefix, statusCls)

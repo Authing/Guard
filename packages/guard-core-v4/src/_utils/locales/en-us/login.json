@@ -27,6 +27,8 @@
   "bindPwdLogin": "Password",
   "appScanLogin": "Mobile APP QR Code",
   "zjzwScanLogin": "Zhejiang Office QR Code",
+  "nationalNetIdScanLogin": "National Network Identity QR Code",
+  "nationalNetIdScanTip": "Scan with the National Network Identity Authentication app to sign in",
   "scanLogin": "QR Code",
   "ldapLogin": "LDAP",
   "adLogin": "AD",

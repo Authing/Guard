@@ -36,6 +36,7 @@ export interface PhoneValidResult {
 export const HIDE_SOCIALS = [
   'wechat:miniprogram:app-launch',
   'wechat:miniprogram:qrconnect',
+  'national-net-id-qrcode',
   // 'wechat:webpage-authorization',
   'wechat:miniprogram:default',
   'wechatwork:addressbook',

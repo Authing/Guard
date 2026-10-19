@@ -91,6 +91,7 @@ import { getGuardWindow } from '../Guard/core/useAppendConfig'
 import { LoginWithDingTalkQrcode } from './core/withDingTalkQrcode'
 import { LoginWithZjQrcode } from './core/withZjQrcode'
 import { LoginWithZZDingQrcode } from './core/withZZDingQrcode'
+import { NationalNetIdQrCode } from './core/withNationalNetIdQrcode'
 
 const { useEffect, useLayoutEffect, useState, useRef, useMemo, useCallback } =
   React
@@ -112,7 +113,8 @@ const qrcodeWays = [
   LoginMethods.WECHATWORKQRCONNECTOFAUTHINGAGENCY,
   LoginMethods.DingTalkQrcode,
   LoginMethods.ZJZWFWQrcode,
-  LoginMethods.ZZDingQrcode
+  LoginMethods.ZZDingQrcode,
+  LoginMethods.NationalNetIdQrcode
 ]
 /**
  * 作为内嵌登录方式的身份源链接
@@ -125,7 +127,8 @@ const renderQrcodeByIdentify = [
   LoginMethods.WECHATWORKAGENCYQRCONNECT,
   LoginMethods.WECHATWORKQRCONNECTOFAUTHINGAGENCY,
   LoginMethods.ZJZWFWQrcode,
-  LoginMethods.ZZDingQrcode
+  LoginMethods.ZZDingQrcode,
+  LoginMethods.NationalNetIdQrcode
 ] as const
 
 type QrCodeUnionType = (typeof renderQrcodeByIdentify)[number]
@@ -271,10 +274,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
   let publicKey = config?.publicKey as string
 
   // let autoRegister = props.config?.autoRegister
-  let ms = config?.loginMethods && [
-    ...config?.loginMethods,
-    LoginMethods.ZZDingQrcode
-  ]
+  let ms = config?.loginMethods
 
   const firstInputWay = inputWays.filter(way => ms?.includes(way))[0]
 
@@ -315,11 +315,9 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       return defaultQrWay
     }
     if (renderQrcodeByIdentify.includes(defaultMethod)) {
-      const id = qrcodeTabsSettings?.[defaultMethod as LoginMethods]?.find(
-        (i: { id: string; title: string; isDefault?: boolean | undefined }) =>
-          i.isDefault
-      )?.id
-      return defaultMethod + id
+      const items = qrcodeTabsSettings?.[defaultMethod as LoginMethods]
+      const id = (items?.find(item => item.isDefault) || items?.[0])?.id
+      return id ? defaultMethod + id : defaultMethod
     } else {
       return defaultMethod
     }
@@ -815,6 +813,23 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     },
     [canLoop, multipleInstance, onLoginSuccess, t]
   )
+  const NationalNetIdQrTab = useCallback(
+    (item: QrCodeItem) => (
+      <Tabs.TabPane
+        key={LoginMethods.NationalNetIdQrcode + item.id}
+        tab={item.title || t('login.nationalNetIdScanLogin')}
+      >
+        <NationalNetIdQrCode
+          id={item.id}
+          qrCodeScanOptions={{ extIdpConnId: item.id }}
+          multipleInstance={multipleInstance}
+          onLoginSuccess={onLoginSuccess}
+          canLoop={canLoop}
+        />
+      </Tabs.TabPane>
+    ),
+    [canLoop, multipleInstance, onLoginSuccess, t]
+  )
   const WechatMpQrTab = useCallback(
     (item: QrCodeItem) => {
       return (
@@ -961,9 +976,19 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         }),
       [LoginMethods.DingTalkQrcode]: DTQrTab,
       [LoginMethods.ZJZWFWQrcode]: ZjQrTab,
-      [LoginMethods.ZZDingQrcode]: ZZDingQrTab
+      [LoginMethods.ZZDingQrcode]: ZZDingQrTab,
+      [LoginMethods.NationalNetIdQrcode]: NationalNetIdQrTab
     }
-  }, [AppQrTab, WechatMpQrTab, WxMiniQrTab])
+  }, [
+    AppQrTab,
+    WechatMpQrTab,
+    WxMiniQrTab,
+    WeComQrTab,
+    DTQrTab,
+    ZjQrTab,
+    ZZDingQrTab,
+    NationalNetIdQrTab
+  ])
 
   const CodeLoginComponent = useMemo(() => {
     const qrCodeMap: {
@@ -980,7 +1005,7 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
         }
       }
     } = {}
-    Object.keys(qrcodeTabsSettings).forEach(key => {
+    Object.keys(qrcodeTabsSettings || {}).forEach(key => {
       qrcodeTabsSettings[key as LoginMethods].forEach(item => {
         qrCodeMap[item.id] = {
           type: key as QrCodeUnionType,
@@ -992,8 +1017,9 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
     })
     console.log(qrcodeTabsSettings, qrCodeMap, 'qrcodeTabsSettings')
 
-    const loginMethodsSort =
-      publicConfig.qrCodeSortConfig?.loginMethodsSort || []
+    const loginMethodsSort = [
+      ...(publicConfig.qrCodeSortConfig?.loginMethodsSort || [])
+    ]
 
     const sortWithType = (loginMethodsSort || []).map(key => {
       return {
