@@ -27,11 +27,13 @@ import { SessionData, trackSession } from '../sso'
 
 import {
   getPublicConfig,
+  getPageConfig,
   useMergeDefaultConfig,
   useFetchConsoleConfig
 } from '../../_utils/config'
 
 import { GuardHttp, initGuardHttp } from '../../_utils/guardHttp'
+import { requestClient } from '../../_utils/http'
 
 import { initGuardI18n } from '../../_utils/locales'
 
@@ -149,6 +151,11 @@ export const RenderContext: React.FC<{
   // HttpClient
   useEffect(() => {
     if (!appId || !defaultMergedConfig) return
+    requestClient.initialLanguage = i18nInit
+      ? ''
+      : defaultMergedConfig.lang ||
+        getPageConfig(appId)?.global?.defaultLanguage ||
+        'browser'
     const httpClient = initGuardHttp(defaultMergedConfig.host)
     httpClient.setAppId(appId)
     tenantId && httpClient.setTenantId(tenantId)
@@ -162,7 +169,15 @@ export const RenderContext: React.FC<{
     }
 
     setHttpClient(httpClient)
-  }, [appId, defaultMergedConfig, tenantId, deviceId, publicConfig, authClint])
+  }, [
+    appId,
+    defaultMergedConfig,
+    tenantId,
+    deviceId,
+    publicConfig,
+    authClint,
+    i18nInit
+  ])
 
   /**
    *
@@ -277,7 +292,10 @@ export const RenderContext: React.FC<{
           defaultLanguage:
             (defaultMergedConfig?.lang as Lang) ?? defaultLanguage
         },
-        setI18nInit
+        initialized => {
+          requestClient.initialLanguage = ''
+          setI18nInit(initialized)
+        }
       )
       setDefaultLanguageConfig((i18n.resolvedLanguage || i18n.language) as Lang)
     }

@@ -5,10 +5,12 @@ import { useTranslation } from 'react-i18next'
 import { Form, message } from 'shim-antd'
 
 import { ImagePro } from '../../ImagePro'
+import { ChangeLanguage } from '../../ChangeLanguage'
 
 import { useGuardAuthClient } from '../../Guard/authClient'
 
 import {
+  useGuardEvents,
   useGuardFinallyConfig,
   useGuardInitData,
   useGuardModule,
@@ -34,6 +36,8 @@ export const GuardResetPassword = () => {
   const authClient = useGuardAuthClient()
 
   const config = useGuardFinallyConfig()
+
+  const events = useGuardEvents()
 
   const { changeModule } = useGuardModule()
 
@@ -221,6 +225,10 @@ export const GuardResetPassword = () => {
           </div>
         </div>
       )}
+      <ChangeLanguage
+        langRange={config.langRange}
+        onLangChange={events?.onLangChange}
+      />
     </div>
   )
 }

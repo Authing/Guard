@@ -1,12 +1,24 @@
 import qs from 'qs'
 
-import { i18n } from './locales'
-
 import { CodeAction } from './responseManagement/interface'
 
 import Axios, { AxiosRequestConfig, CancelTokenSource } from 'axios'
 
 import { getCurrentLng } from '.'
+import { fallbackLng } from './locales'
+import { getGuardDocument } from './guardDocument'
+
+const getLanguageHeaders = (): Record<string, string> => {
+  const browserLanguage =
+    getGuardDocument()?.defaultView?.navigator.language || 'en-US'
+  const initialLanguage = requestClient.initialLanguage
+  const language = initialLanguage
+    ? initialLanguage === 'browser'
+      ? browserLanguage
+      : initialLanguage
+    : getCurrentLng() || browserLanguage
+  return { [requestClient.langHeader]: fallbackLng(language)[0] }
+}
 
 export const requestClient = async (...rest: Parameters<typeof fetch>) => {
   const res = await fetch(...rest)
@@ -55,7 +67,7 @@ requestClient.get = async <T>(
   const headers: Record<string, any> = {
     ...init?.headers,
     'Content-Type': 'application/json',
-    [requestClient.langHeader]: getCurrentLng()
+    ...getLanguageHeaders()
   }
 
   if (requestClient.tenantId !== '')
@@ -100,7 +112,7 @@ requestClient.post = async <T>(
   const headers: Record<string, any> = {
     ...config?.headers,
     'Content-Type': 'application/json',
-    [requestClient.langHeader]: i18n.resolvedLanguage ?? i18n.language
+    ...getLanguageHeaders()
   }
 
   if (requestClient.tenantId !== '')
@@ -120,7 +132,7 @@ requestClient.post = async <T>(
         headers: {
           'Content-Type': 'application/json',
           ...config?.headers,
-          [requestClient.langHeader]: getCurrentLng()
+          ...getLanguageHeaders()
         }
       })
     ])
@@ -165,7 +177,7 @@ requestClient.postForm = async <T>(
         cancelToken: source.token,
         headers: {
           ...config?.headers,
-          [requestClient.langHeader]: getCurrentLng()
+          ...getLanguageHeaders()
         }
       })
     ])
@@ -179,6 +191,7 @@ requestClient.postForm = async <T>(
 }
 
 requestClient.baseUrl = ''
+requestClient.initialLanguage = ''
 requestClient.setBaseUrl = (base: string) => {
   requestClient.baseUrl = base.replace(/\/$/, '')
 }
