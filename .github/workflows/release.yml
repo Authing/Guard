@@ -55,7 +55,11 @@ jobs:
 
       - name: update version
         run: |
-          lerna version $VERSION --yes
+          if [ "$(node -p "require('./lerna.json').version")" = "$VERSION" ]; then
+            echo "Version $VERSION is already configured; resume publishing missing packages."
+          else
+            lerna version "$VERSION" --yes
+          fi
 
       - name: build core
         run: |

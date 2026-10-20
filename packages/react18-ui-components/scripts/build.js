@@ -6,18 +6,18 @@ const webpack = require('webpack')
 
 const webpackConfig = require('./webpack.config')
 
-try {
-  rm.sync(path.resolve(__dirname, '../', 'lib'))
-} catch (e) {
-  console.error('\n\n build Authing Guard, failed to delete lib directory, please operate manually \n\n')
-}
+rm.sync(path.resolve(__dirname, '../', 'lib'))
 
 readyGo()
 
-function readyGo () {
-  webpack(webpackConfig, (error) => {
-    if (error) {
-      console.error('build Authing Guard React 18 esm bundler error: ', error)
+function readyGo() {
+  webpack(webpackConfig, (error, stats) => {
+    if (error || !stats || stats.hasErrors()) {
+      console.error(
+        'build Authing Guard React 18 esm bundler error: ',
+        error || stats?.toString({ all: false, errors: true })
+      )
+      process.exitCode = 1
     }
   })
 }
