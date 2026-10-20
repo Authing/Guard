@@ -58,8 +58,9 @@ jobs:
           if [ "$(node -p "require('./lerna.json').version")" = "$VERSION" ]; then
             echo "Version $VERSION is already configured; resume publishing missing packages."
           else
-            lerna version "$VERSION" --yes
+            lerna version "$VERSION" --force-publish --yes
           fi
+          node scripts/release.js --check-version "$VERSION"
 
       - name: build core
         run: |
