@@ -4,7 +4,9 @@ import i18n, { InitOptions, Resource } from 'i18next'
 
 import { initReactI18next } from 'react-i18next'
 
-import LanguageDetector from 'i18next-browser-languagedetector'
+import LanguageDetector, {
+  DetectorOptions
+} from 'i18next-browser-languagedetector'
 
 import * as enUsTrans from './en-us'
 
@@ -68,46 +70,48 @@ export const fallbackLng = (code = '') => {
   return ['en-US']
 }
 
+const getLanguageDetectionOptions = (enabled: boolean): DetectorOptions => ({
+  order: enabled
+    ? [
+        'querystring',
+        'cookie',
+        'localStorage',
+        'navigator',
+        'htmlTag',
+        'path',
+        'subdomain'
+      ]
+    : [],
+  lookupCookie: '_authing_app_lang',
+  caches: ['localStorage', 'cookie'],
+  cookieDomain: `.${getGuardDocument()?.domain}`,
+  cookieOptions: { path: '/' },
+  lookupLocalStorage: '_guard_i18nextLng'
+})
+
+export const detectGuardLanguage = () => {
+  const detector = new LanguageDetector(
+    { languageUtils: {} },
+    getLanguageDetectionOptions(true)
+  )
+  const detected = detector.detect()
+  return fallbackLng(Array.isArray(detected) ? detected[0] : detected || '')[0]
+}
+
 export const initGuardI18n = async (
   options: InitGuardI18nOptions,
   callback: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const { defaultLanguage } = options
 
-  const detectionOrder: string[] = []
-
-  let lng: Lang | undefined = undefined
-
-  // 如果需要跟随浏览器语言, 则添加到监测顺序
-  if (defaultLanguage === 'browser') {
-    detectionOrder.push(
-      ...[
-        'querystring',
-        'cookie',
-        'navigator',
-        'localStorage', //不保存用户所选语言 刷新重新走浏览器语言检测
-        'htmlTag',
-        'path',
-        'subdomain'
-      ]
-    )
-  } else {
-    // 此处 defaultLanguage 可能为 Lng 也可能是 undefined
-    lng = defaultLanguage
-  }
+  const lng =
+    defaultLanguage === 'browser' ? detectGuardLanguage() : defaultLanguage
 
   // 统一拼装一下 i18n 的 options
   const i18nOptions: InitOptions = {
     // 默认语言
     lng,
-    detection: {
-      order: detectionOrder,
-      lookupCookie: '_authing_app_lang',
-      caches: ['localStorage', 'cookie'],
-      cookieDomain: `.${getGuardDocument()?.domain}`,
-      cookieOptions: { path: '/' },
-      lookupLocalStorage: '_guard_i18nextLng' //与console主要业务i18n相关的key脱离
-    },
+    detection: getLanguageDetectionOptions(defaultLanguage === 'browser'),
     resources: LanguageResources,
     // 兜底语言
     fallbackLng,

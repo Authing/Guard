@@ -5,18 +5,15 @@ import { CodeAction } from './responseManagement/interface'
 import Axios, { AxiosRequestConfig, CancelTokenSource } from 'axios'
 
 import { getCurrentLng } from '.'
-import { fallbackLng } from './locales'
-import { getGuardDocument } from './guardDocument'
+import { detectGuardLanguage, fallbackLng } from './locales'
 
 const getLanguageHeaders = (): Record<string, string> => {
-  const browserLanguage =
-    getGuardDocument()?.defaultView?.navigator.language || 'en-US'
   const initialLanguage = requestClient.initialLanguage
   const language = initialLanguage
     ? initialLanguage === 'browser'
-      ? browserLanguage
+      ? detectGuardLanguage()
       : initialLanguage
-    : getCurrentLng() || browserLanguage
+    : getCurrentLng() || detectGuardLanguage()
   return { [requestClient.langHeader]: fallbackLng(language)[0] }
 }
 
