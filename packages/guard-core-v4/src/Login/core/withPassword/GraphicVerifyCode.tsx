@@ -9,10 +9,11 @@ import { ImagePro2 } from '../../../ImagePro'
 export interface GraphicVerifyCodeProps extends InputProps {
   verifyCodeUrl: string
   changeCode: () => void
+  loading?: boolean
 }
 
 export const GraphicVerifyCode: React.FC<GraphicVerifyCodeProps> = props => {
-  const { verifyCodeUrl, changeCode, ...inputProps } = props
+  const { verifyCodeUrl, changeCode, loading, ...inputProps } = props
 
   const { t } = useTranslation()
 
@@ -23,6 +24,7 @@ export const GraphicVerifyCode: React.FC<GraphicVerifyCodeProps> = props => {
       <ImagePro2
         className="g2-captcha-code-image"
         src={verifyCodeUrl}
+        imageLoading={loading}
         alt={t('login.captchaCode') as string}
         height="46px"
         width="134px" //  为了第一次加载图片，和后面刷新（或者显示时）宽度一致，免得宽度会变化，从100到134

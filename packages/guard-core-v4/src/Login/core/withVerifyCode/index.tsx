@@ -53,7 +53,7 @@ import { useLoginAccountBackFill } from '../../hooks/useLoginMultiple'
 
 import { GraphicVerifyCode } from '../withPassword/GraphicVerifyCode'
 
-import { getCaptchaUrl } from '../../../_utils/getCaptchaUrl'
+import { useSmsCaptcha } from '../../../_utils/useSmsCaptcha'
 
 export enum SpecifyCodeMethods {
   Phone = 'phone',
@@ -117,9 +117,16 @@ const LoginWithVerifyCode = (props: any) => {
   )
 
   const captchaCheck = useCaptchaCheck('login')
-  const [verifyCodeUrl, setVerifyCodeUrl] = useState('')
 
   let [form] = Form.useForm()
+  const captchaEnabled = captchaCheck && currentMethod === InputMethod.PhoneCode
+  const {
+    verifyCodeUrl,
+    loading: captchaLoading,
+    refreshCaptcha,
+    getCaptchaToken,
+    onSendCodeComplete
+  } = useSmsCaptcha(captchaEnabled, form)
 
   const changeMethod = useCallback(
     (v: string) => {
@@ -181,6 +188,8 @@ const LoginWithVerifyCode = (props: any) => {
             isInternationSms={isInternationSms}
             scene={SceneType.SCENE_TYPE_LOGIN}
             maxLength={verifyCodeLength}
+            getCaptchaToken={captchaEnabled ? getCaptchaToken : undefined}
+            onSendCodeComplete={captchaEnabled ? onSendCodeComplete : undefined}
             onSendCodeBefore={async () => {
               await form.validateFields(['identify'])
               await form.validateFields(['captchaCode'])
@@ -214,6 +223,10 @@ const LoginWithVerifyCode = (props: any) => {
               fieldName={'identify'}
               data={identify}
               codeFieldName={'captchaCode'}
+              getCaptchaToken={captchaEnabled ? getCaptchaToken : undefined}
+              onSendCodeComplete={
+                captchaEnabled ? onSendCodeComplete : undefined
+              }
               onSendCodeBefore={async () => {
                 await form.validateFields(['identify'])
                 await form.validateFields(['captchaCode'])
@@ -256,7 +269,10 @@ const LoginWithVerifyCode = (props: any) => {
       isInternationSms,
       isOnlyInternationSms,
       t,
-      verifyCodeLength
+      verifyCodeLength,
+      captchaEnabled,
+      getCaptchaToken,
+      onSendCodeComplete
     ]
   )
 
@@ -277,20 +293,6 @@ const LoginWithVerifyCode = (props: any) => {
       setCurrentMethod(InputMethod.EmailCode)
     }
   }, [publicConfig, methods, specifyCodeMethod])
-
-  useEffect(() => {
-    /** 如果是国外用户池，那么有图形验证码，需要请求图片 */
-    if (captchaCheck) {
-      setVerifyCodeUrl(getCaptchaUrl(config.host!))
-    }
-  }, [captchaCheck, config?.host])
-
-  useEffect(() => {
-    // 方法发生变化时，图像验证码数据应该清空
-    if (captchaCheck) {
-      form?.setFieldsValue({ captchaCode: undefined })
-    }
-  }, [form, currentMethod, captchaCheck])
 
   const loginByPhoneCode = async (values: any) => {
     let keyValueArray = getUserRegisterParams() || []
@@ -560,7 +562,9 @@ const LoginWithVerifyCode = (props: any) => {
               size="large"
               placeholder={t('login.inputCaptchaCode') as string}
               verifyCodeUrl={verifyCodeUrl}
-              changeCode={() => setVerifyCodeUrl(getCaptchaUrl(config.host!))}
+              loading={captchaLoading}
+              disabled={captchaLoading || !verifyCodeUrl}
+              changeCode={refreshCaptcha}
             />
           </Form.Item>
         )}

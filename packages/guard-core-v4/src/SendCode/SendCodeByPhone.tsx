@@ -31,6 +31,8 @@ export interface SendCodeByPhoneProps extends InputProps {
   isInternationSms?: boolean //是否是国际短信
   codeFieldName?: string
   captchaCode?: string
+  getCaptchaToken?: () => string
+  onSendCodeComplete?: (captchaToken?: string) => void
 }
 
 export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
@@ -44,6 +46,8 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
     isInternationSms = false,
     codeFieldName,
     captchaCode,
+    getCaptchaToken,
+    onSendCodeComplete,
     ...remainProps
   } = props
   const { t } = useTranslation()
@@ -52,11 +56,13 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
 
   const events = useGuardEvents()
   const { post } = useGuardHttp()
+  const sending = React.useRef(false)
 
   const sendPhone = async (
     phone: string,
     countryCode?: string,
-    captchaCode?: string
+    captchaCode?: string,
+    captchaToken?: string
   ) => {
     try {
       // await authClient.sendSmsCode(phone, countryCode, scene)
@@ -70,7 +76,8 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
         phone,
         phoneCountryCode: countryCode,
         scene,
-        captchaCode
+        captchaCode,
+        ...(captchaToken !== undefined ? { captchaToken } : {})
       })
       const { code, statusCode, message: msg } = data
       // 200 表示请求成功，不报错
@@ -119,38 +126,53 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
   return (
     <>
       <SendCode
-        beforeSend={() => {
-          return onSendCodeBefore()
-            .then(async (b: any) => {
-              let fieldValue = form
-                ? form.getFieldValue(fieldName || 'phone')
-                : data
-              const { phoneNumber, countryCode } = parsePhoneForRequest(
-                isInternationSms,
-                fieldValue,
-                areaCode
-              )
+        beforeSend={async () => {
+          if (sending.current) return false
+          sending.current = true
+          try {
+            await onSendCodeBefore()
+            let fieldValue = form
+              ? form.getFieldValue(fieldName || 'phone')
+              : data
+            const { phoneNumber, countryCode } = parsePhoneForRequest(
+              isInternationSms,
+              fieldValue,
+              areaCode
+            )
 
-              const code = form
-                ? form?.getFieldValue(codeFieldName || 'captchaCode')
-                : captchaCode
+            const code = form
+              ? form?.getFieldValue(codeFieldName || 'captchaCode')
+              : captchaCode
 
-              const { status, error } = await sendPhone(
-                phoneNumber,
-                countryCode,
-                code
-              )
-              if (status) {
-                events?.onPhoneSend?.(authClient, scene)
-              } else {
-                events?.onPhoneSendError?.(error, authClient, scene)
-              }
-              return status
-            })
-            .catch((e: any) => {
-              events?.onPhoneSendError?.(e, authClient, scene)
+            if (getCaptchaToken && !code) {
+              message.error(t('login.inputCaptchaCode'))
               return false
-            })
+            }
+            const token = getCaptchaToken?.()
+            if (getCaptchaToken && !token?.trim()) {
+              message.error(t('login.captchaLoadFailed'))
+              return false
+            }
+
+            const { status, error } = await sendPhone(
+              phoneNumber,
+              countryCode,
+              code,
+              token
+            )
+            onSendCodeComplete?.(token)
+            if (status) {
+              events?.onPhoneSend?.(authClient, scene)
+            } else {
+              events?.onPhoneSendError?.(error, authClient, scene)
+            }
+            return status
+          } catch (e: any) {
+            events?.onPhoneSendError?.(e, authClient, scene)
+            return false
+          } finally {
+            sending.current = false
+          }
         }}
         form={form}
         {...remainProps}

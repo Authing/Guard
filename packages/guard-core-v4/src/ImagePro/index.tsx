@@ -65,9 +65,13 @@ export const ImagePro = (props: ImageProProps) => {
   )
 }
 
-export const ImagePro2 = (props: ImageProProps) => {
-  let { borderRadius, noSpin, alt, style, ...imgProps } = props
+export const ImagePro2 = (
+  props: ImageProProps & { imageLoading?: boolean }
+) => {
+  let { borderRadius, noSpin, alt, style, imageLoading, onClick, ...imgProps } =
+    props
   let [loaded, setLoaded] = useState(noSpin === true ? true : false)
+  const imageLoaded = imageLoading === undefined ? loaded : !imageLoading
   const maskRef = useRef<any>(null)
   let w: number | string = 0
   let h: number | string = 0
@@ -88,12 +92,13 @@ export const ImagePro2 = (props: ImageProProps) => {
         'g2-base-imagepro-container',
         'g2-base-imagepro-container2',
         'g2-base-image-background-animation',
-        loaded ? 'loaded' : 'unload',
+        imageLoaded ? 'loaded' : 'unload',
         props?.className
       ])}
       onClick={(e: any) => {
+        if (imageLoading) return
         setLoaded(false)
-        props?.onClick && props?.onClick(e)
+        onClick?.(e)
         if (maskRef.current) {
           maskRef.current.classList.remove('g2-base-imagepro-mask-show')
         }
@@ -107,6 +112,7 @@ export const ImagePro2 = (props: ImageProProps) => {
     >
       <img
         {...imgProps}
+        src={props.src || undefined}
         style={{
           width: w,
           height: '100%',
@@ -118,7 +124,7 @@ export const ImagePro2 = (props: ImageProProps) => {
         alt={alt || 'image'}
         onLoad={() => setLoaded(true)}
       />
-      {loaded && (
+      {imageLoaded && (
         <div className="g2-base-imagepro-mask" ref={maskRef}>
           <span style={{ marginRight: 4 }}>
             {i18n.t('login.verifyCodeTip')}
@@ -144,7 +150,7 @@ export const ImagePro2 = (props: ImageProProps) => {
           </svg>
         </div>
       )}
-      {!loaded && (
+      {!imageLoaded && (
         <GuardButton
           className="g2-base-imagepro-mask g2-base-imagepro-loading"
           loading
