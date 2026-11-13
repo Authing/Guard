@@ -13,6 +13,16 @@ import { useGuardHttp } from './guardHttp'
 const { useCallback, useEffect, useRef, useState } = React
 const CAPTCHA_LIFETIME = 5 * 60 * 1000
 
+// The SMS API uses the generic 400 code for captcha failures too. Match its
+// localized messages so unrelated SMS errors do not clear a valid captcha.
+// An expired server-side captcha returns the same error as an incorrect one.
+const CAPTCHA_ERROR_MESSAGES = new Set([
+  '图形验证码错误',
+  '圖形驗證碼錯誤',
+  'Graphic verification code error',
+  'グラフィック検証コード エラー'
+])
+
 interface CaptchaData {
   captchaCodeSvg: string
   captchaToken: string
@@ -127,9 +137,15 @@ export const useSmsCaptcha = (enabled: boolean, form: CaptchaForm) => {
   }, [refreshCaptcha, t])
 
   const onSendCodeComplete = useCallback(
-    (token?: string) => {
-      // A completed request must not replace a newer, manually refreshed image.
-      if (token && token === challenge.current?.token) {
+    (token?: string, error?: { message?: string }) => {
+      // Keep the image and input after success or unrelated errors. A failed
+      // request must not replace a newer, manually refreshed image either.
+      if (
+        token &&
+        token === challenge.current?.token &&
+        typeof error?.message === 'string' &&
+        CAPTCHA_ERROR_MESSAGES.has(error.message.trim())
+      ) {
         void refreshCaptcha()
       }
     },

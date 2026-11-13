@@ -32,7 +32,10 @@ export interface SendCodeByPhoneProps extends InputProps {
   codeFieldName?: string
   captchaCode?: string
   getCaptchaToken?: () => string
-  onSendCodeComplete?: (captchaToken?: string) => void
+  onSendCodeComplete?: (
+    captchaToken?: string,
+    error?: { message?: string }
+  ) => void
 }
 
 export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
@@ -160,7 +163,7 @@ export const SendCodeByPhone: React.FC<SendCodeByPhoneProps> = props => {
               code,
               token
             )
-            onSendCodeComplete?.(token)
+            onSendCodeComplete?.(token, error)
             if (status) {
               events?.onPhoneSend?.(authClient, scene)
             } else {
