@@ -70,7 +70,7 @@ async function callShell(args) {
         }
         run(`cd packages/${packageName} && ${releaseType} -- --registry=${NPM_REGISTRY}`)
       }
-      // 下游包只能在依赖版本可查询后构建，不能依赖固定等待时间。
+      // 依赖的元数据和安装包都可用后，才能构建下游包。
       await waitForNpmPackage(name, version)
     }
 
@@ -140,16 +140,20 @@ function packageExists(packageName, version) {
 async function waitForNpmPackage(packageName, version, { retries = 60, intervalMs = 10_000 } = {}) {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      if (await packageExists(packageName, version)) return
+      if (await packageExists(packageName, version)) {
+        // 元数据可见时 tarball 仍可能 404；让 npm 完成真实下载并缓存，供下游安装复用。
+        run(`npm cache add ${packageName}@${version} --registry=${NPM_REGISTRY} --fetch-retries=0 --fetch-timeout=30000`, { silent: true })
+        return
+      }
     } catch (error) {
       console.warn(error.message)
     }
     if (attempt < retries) {
-      console.log(`waiting for ${packageName}@${version} on npm (${attempt}/${retries})...`)
+      console.log(`waiting for ${packageName}@${version} to be downloadable on npm (${attempt}/${retries})...`)
       await new Promise(resolve => setTimeout(resolve, intervalMs))
     }
   }
-  throw new Error(`${packageName}@${version} is not available on npm after ${retries} checks`)
+  throw new Error(`${packageName}@${version} is not downloadable on npm after ${retries} checks`)
 }
 
 module.exports = { packageExists, waitForNpmPackage }
