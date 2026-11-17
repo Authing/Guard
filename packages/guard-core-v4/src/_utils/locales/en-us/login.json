@@ -28,6 +28,8 @@
   "appScanLogin": "Mobile APP QR Code",
   "zjzwScanLogin": "Zhejiang Office QR Code",
   "scanLogin": "QR Code",
+  "scanAgreementRequired": "Accept the user agreement to display the QR code",
+  "scanAgreementConsent": "By scanning to sign in, you agree to the user agreement",
   "ldapLogin": "LDAP",
   "adLogin": "AD",
   "authingOtpPushLogin": "Login by push",

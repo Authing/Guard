@@ -122,6 +122,7 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
   const appId = useGuardAppId()
   const [form] = Form.useForm()
   const tenantId = useGuardTenantId()
+  const publicConfig = useGuardPublicConfig()
 
   const version = getVersion()
 
@@ -144,13 +145,13 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
 
   const { autoFocus } = useAutoFocus()
 
-  const [validated, setValidated] = useState(true)
+  // 2C 仅在提交后提示协议错误，其他场景保留原有行为。
+  const [validated, setValidated] = useState(publicConfig?.sceneCode !== 'B2C')
 
   let { t, i18n } = useTranslation()
   let { post } = useGuardHttp()
   let client = useGuardAuthClient()
 
-  const publicConfig = useGuardPublicConfig()
   const config = useGuardFinallyConfig()
   const defaultLanguageConfig = useGuardDefaultLanguage()
   const robotVerify = useRobotVerify()
@@ -481,7 +482,10 @@ export const LoginWithPassword = (props: LoginWithPasswordProps) => {
       <Form
         name="passworLogin"
         onFinish={onFinish}
-        onFinishFailed={() => submitButtonRef.current.onError()}
+        onFinishFailed={() => {
+          setValidated(true)
+          submitButtonRef.current.onError()
+        }}
         autoComplete="off"
         form={form}
         onValuesChange={formValuesChange}

@@ -266,6 +266,8 @@ interface I18nLang {
 
 export interface ApplicationConfig {
   id: string
+  /** 用户池业务场景，由应用 public-config 接口透出 */
+  sceneCode?: string
   allowedOrigins: string[]
   corsWhitelist: string[]
   cdnBase: string

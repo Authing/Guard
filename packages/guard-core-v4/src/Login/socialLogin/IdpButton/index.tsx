@@ -1,4 +1,4 @@
-import { Avatar, message, Input } from 'shim-antd'
+import { Avatar, message, Input, Tooltip } from 'shim-antd'
 
 import qs from 'qs'
 
@@ -42,7 +42,16 @@ const allSymbol = Symbol('all')
 
 export const IdpButton = (props: any) => {
   // TODO: 能不能加个类型
-  const { i, appId, appHost, isHost, isLastLogin, status = true } = props
+  const {
+    i,
+    appId,
+    appHost,
+    isHost,
+    isLastLogin,
+    beforeLogin,
+    status = true,
+    iconOnly = false
+  } = props
 
   const deviceId = useDeviceId()
 
@@ -55,6 +64,61 @@ export const IdpButton = (props: any) => {
   const isSpecialBrowser = useIsSpecialBrowser()
 
   const renderBtn = useCallback(() => {
+    const loginLabel = t('login.loginBy', { name: i.displayName })
+    const renderButton = (icon: React.ReactNode, onLogin: () => void) => {
+      const button = (
+        <GuardButton
+          key={i.identifier}
+          className={
+            iconOnly ? 'g2-social-login-item' : 'g2-guard-third-login-btn'
+          }
+          block={!iconOnly}
+          size="large"
+          style={iconOnly ? { padding: 0 } : undefined}
+          aria-label={loginLabel}
+          icon={icon}
+          onClick={() => {
+            if (beforeLogin && !beforeLogin()) return
+            onLogin()
+          }}
+        >
+          {!iconOnly && loginLabel}
+          {!status && (
+            <IconFont
+              type="authing-error-warning-line1"
+              style={
+                iconOnly
+                  ? {
+                      color: '#FB9926',
+                      fontSize: 12,
+                      position: 'absolute',
+                      top: 2,
+                      right: 2
+                    }
+                  : { color: '#FB9926', fontSize: 16, marginLeft: 8 }
+              }
+            />
+          )}
+          {!iconOnly && isLastLogin && (
+            <div className="last-login-tag">{t('common.lastUsed')}</div>
+          )}
+        </GuardButton>
+      )
+
+      return iconOnly ? (
+        <Tooltip
+          title={
+            isLastLogin ? `${loginLabel} (${t('common.lastUsed')})` : loginLabel
+          }
+          trigger={['hover', 'focus']}
+        >
+          {button}
+        </Tooltip>
+      ) : (
+        button
+      )
+    }
+
     const query: Record<string, any> = {
       from_guard: '1',
       app_id: appId,
@@ -106,33 +170,15 @@ export const IdpButton = (props: any) => {
         }
       }
 
-      return (
-        <GuardButton
-          key={i.identifier}
-          className="g2-guard-third-login-btn"
-          block
-          size="large"
-          icon={
-            <IconFont
-              type={`${iconType}-fill`}
-              style={{ fontSize: 20, marginRight: 8 }}
-            />
-          }
-          onClick={onLogin}
-        >
-          {t('login.loginBy', {
-            name: i.displayName
-          })}
-          {!status && (
-            <IconFont
-              type="authing-error-warning-line1"
-              style={{ color: '#FB9926', fontSize: 16, marginLeft: 8 }}
-            />
-          )}
-          {isLastLogin && (
-            <div className="last-login-tag">{t('common.lastUsed')}</div>
-          )}
-        </GuardButton>
+      return renderButton(
+        <IconFont
+          type={`${iconType}-fill`}
+          style={{
+            fontSize: iconOnly ? 24 : 20,
+            marginRight: iconOnly ? 0 : 8
+          }}
+        />,
+        onLogin
       )
     } else {
       let initUrl: string
@@ -157,44 +203,44 @@ export const IdpButton = (props: any) => {
         initUrl = i.config[field]
       }
 
-      return (
-        <GuardButton
-          key={i.identifier}
-          className="g2-guard-third-login-btn"
-          block
-          size="large"
-          icon={<Avatar size={20} src={i.logo} style={{ marginRight: 8 }} />}
-          onClick={() => {
-            if (query.redirected) {
-              window.location.replace(initUrl)
-            } else {
-              popupCenter(initUrl)
-            }
-          }}
-        >
-          {t('login.loginBy', {
-            name: i.displayName
-          })}
-          {!status && (
-            <IconFont
-              type="authing-error-warning-line1"
-              style={{ color: '#FB9926', fontSize: 16, marginLeft: 8 }}
-            />
-          )}
-          {isLastLogin && (
-            <div className="last-login-tag">{t('common.lastUsed')}</div>
-          )}
-        </GuardButton>
+      return renderButton(
+        <Avatar
+          size={iconOnly ? 32 : 20}
+          src={i.logo}
+          style={{ marginRight: iconOnly ? 0 : 8 }}
+        />,
+        () => {
+          if (query.redirected) {
+            window.location.replace(initUrl)
+          } else {
+            popupCenter(initUrl)
+          }
+        }
       )
     }
-  }, [appId, i, t, isHost, appHost, tenantId, deviceId])
+  }, [
+    appId,
+    i,
+    t,
+    isHost,
+    appHost,
+    tenantId,
+    deviceId,
+    iconOnly,
+    isLastLogin,
+    beforeLogin,
+    status,
+    version,
+    isSpecialBrowser
+  ])
   return renderBtn()
 }
 
 export const MoreIdpButton = (props: {
   idps: ApplicationConfig['identityProviders']
+  beforeLogin?: () => boolean
 }) => {
-  const { idps } = props
+  const { idps, beforeLogin } = props
 
   const { t } = useTranslation()
 
@@ -332,6 +378,7 @@ export const MoreIdpButton = (props: {
                   appHost={config?.host}
                   userPoolId={userPoolId}
                   isHost={config?.isHost}
+                  beforeLogin={beforeLogin}
                 />
               )
             })}

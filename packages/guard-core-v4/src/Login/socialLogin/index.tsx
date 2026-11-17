@@ -35,7 +35,16 @@ import { getGuardWindow } from '../../Guard/core/useAppendConfig'
 
 import { GuardButton } from '../../GuardButton'
 
-import { ApplicationConfig, SocialConnectionItem } from '../../Type/application'
+import {
+  Agreement,
+  ApplicationConfig,
+  SocialConnectionItem
+} from '../../Type/application'
+
+import {
+  Agreements,
+  useAgreementSelection
+} from '../../Register/components/Agreements'
 
 import {
   LAST_USED_IDP,
@@ -46,10 +55,16 @@ import { PasskeyButton } from './PasskeyButton'
 import { useDeviceId } from '../../Guard/core/hooks/useDeviceId'
 import { cloneDeep } from 'lodash'
 
-const { useMemo } = React
+const { useCallback, useMemo } = React
+
+// MetaX 私有化：仅此身份源保留在企业登录分组。
+const METAX_LOGIN_CONNECTION_ID = '6825671cf3a92b304fb535fd'
+
 export interface SocialLoginProps {
   appId: string
   config: GuardLocalConfig
+  agreements: Agreement[]
+  showAgreements?: boolean
   // onLogin: any
   onLoginFailed: any
   onLoginSuccess: any
@@ -64,6 +79,8 @@ export interface SocialLoginProps {
 export const SocialLogin: React.FC<SocialLoginProps> = ({
   appId,
   config,
+  agreements,
+  showAgreements = false,
   enterpriseConnectionObjs,
   socialConnectionObjs
 }) => {
@@ -72,6 +89,8 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
   const deviceId = useDeviceId()
 
   const publicConfig = useGuardPublicConfig()
+
+  const isB2C = publicConfig?.sceneCode === 'B2C'
 
   const userPoolId = publicConfig?.userPoolId
 
@@ -89,7 +108,24 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
 
   const isSpecialBrowser = useIsSpecialBrowser()
 
-  const renderIdpButtons = useMemo(() => {
+  const selection = useAgreementSelection()
+
+  const beforeLogin = useCallback(() => {
+    if (!isB2C) return true
+
+    const accepted = agreements
+      .filter(agreement => agreement.required)
+      .every(agreement => selection?.acceptList.includes(agreement.id))
+
+    if (!accepted) {
+      selection?.reportValidationError()
+      return false
+    }
+
+    return true
+  }, [agreements, selection, isB2C])
+
+  const sortedEnterpriseConnections = useMemo(() => {
     // 是否有「置顶上次登录身份源」需求
     const lastLoginSocial = JSON.parse(
       localStorage.getItem(LAST_USED_IDP) ?? '{}'
@@ -113,15 +149,26 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
           : 0
       })
 
-      if (sortedEnterprise[0].id === lastConnectionId) {
+      if (sortedEnterprise[0]?.id === lastConnectionId) {
         // 排序后的第一个身份源是否被记录过
         sortedEnterprise[0]._isLastLogin = true
       }
     }
 
-    if (sortedEnterprise.length <= maxConns) {
+    return sortedEnterprise
+  }, [enterpriseConnectionObjs, topLastUsed])
+
+  const enterpriseConnections = sortedEnterpriseConnections.filter(
+    item => item.id === METAX_LOGIN_CONNECTION_ID
+  )
+  const thirdPartyEnterpriseConnections = sortedEnterpriseConnections.filter(
+    item => item.id !== METAX_LOGIN_CONNECTION_ID
+  )
+
+  const renderIdpButtons = (() => {
+    if (enterpriseConnections.length <= maxConns) {
       // 全部展示
-      return sortedEnterprise.map(i => {
+      return enterpriseConnections.map(i => {
         return (
           <IdpButton
             key={i.identifier}
@@ -132,12 +179,13 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
             userPoolId={userPoolId}
             isHost={config?.isHost}
             isLastLogin={i._isLastLogin}
+            beforeLogin={beforeLogin}
           />
         )
       })
     } else {
       // 只展示前两个，后面加个更多
-      const idps = sortedEnterprise.slice(0, maxConns)
+      const idps = enterpriseConnections.slice(0, maxConns)
       const renderIdps = idps.map((i: any) => {
         return (
           <IdpButton
@@ -149,13 +197,20 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
             userPoolId={userPoolId}
             isHost={config?.isHost}
             isLastLogin={i._isLastLogin}
+            beforeLogin={beforeLogin}
           />
         )
       })
-      renderIdps.push(<MoreIdpButton idps={sortedEnterprise} />)
+      renderIdps.push(
+        <MoreIdpButton
+          key="more-idps"
+          idps={enterpriseConnections}
+          beforeLogin={beforeLogin}
+        />
+      )
       return renderIdps
     }
-  }, [])
+  })()
 
   // const idpButtons = enterpriseConnectionObjs.map((i: any) => {
   //   return (
@@ -203,6 +258,8 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
     }
 
     const onLogin = () => {
+      if (!beforeLogin()) return
+
       if (item.action === SocialConnectionEvent.Message) {
         message.error(
           t('login.socialConnectionMessage', {
@@ -315,7 +372,33 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
       )
     }
   })
-  const idp = enterpriseConnectionObjs.length ? (
+  // 只调整展示分组，企业入口仍遵循原来的启用开关和授权逻辑。
+  const thirdPartyLoginButtons = [
+    ...(publicConfig?.ssoPageComponentDisplay.idpBtns
+      ? thirdPartyEnterpriseConnections.map(i => (
+          <IdpButton
+            key={`enterprise-${i.id}`}
+            status={i.tagsStatus}
+            i={i}
+            appId={appId}
+            appHost={config?.host}
+            userPoolId={userPoolId}
+            isHost={config?.isHost}
+            isLastLogin={i._isLastLogin}
+            beforeLogin={beforeLogin}
+            iconOnly={
+              config.socialConnectionsBtnShape === 'icon' ||
+              (config.socialConnectionsBtnShape !== 'button' && !noLoginMethods)
+            }
+          />
+        ))
+      : []),
+    ...(publicConfig?.ssoPageComponentDisplay.socialLoginBtns
+      ? socialLoginButtons
+      : [])
+  ]
+
+  const idp = enterpriseConnections.length ? (
     <>
       {!noLoginMethods && (
         <div className="g2-social-login-title">
@@ -329,22 +412,22 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
   ) : null
 
   const socialLogin =
-    socialLoginButtons.length > 0 && noLoginMethods ? (
+    thirdPartyLoginButtons.length > 0 && noLoginMethods ? (
       <Space
         size={noLoginMethods ? 0 : 12}
         className="g2-guard-full-width-space no-login-methods"
         direction="vertical"
       >
-        {socialLoginButtons}
+        {thirdPartyLoginButtons}
       </Space>
     ) : (
-      socialLoginButtons.length > 0 && (
+      thirdPartyLoginButtons.length > 0 && (
         <>
           <div className="g2-social-login-title">
             {t('login.thridAccLogin')}
           </div>
           <div className="g2-social-login-list g2-social-connection-space">
-            {socialLoginButtons}
+            {thirdPartyLoginButtons}
           </div>
         </>
       )
@@ -366,6 +449,11 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
 
   return (
     <>
+      {isB2C && showAgreements && agreements.length > 0 && (
+        <div className="g2-social-login-list">
+          <Agreements agreements={agreements} />
+        </div>
+      )}
       {!noLoginMethods && (
         <div
           style={{
@@ -381,7 +469,7 @@ export const SocialLogin: React.FC<SocialLoginProps> = ({
       >
         {!publicConfig?.ssoPageComponentDisplay.idpBtns || idp}
         {/* {otherLogin} */}
-        {!publicConfig?.ssoPageComponentDisplay.socialLoginBtns || socialLogin}
+        {socialLogin}
       </Space>
     </>
   )

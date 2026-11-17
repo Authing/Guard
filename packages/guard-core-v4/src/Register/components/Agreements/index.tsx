@@ -2,6 +2,8 @@ import { React } from 'shim-react'
 
 import { Space, Checkbox } from 'shim-antd'
 
+import { useTranslation } from 'react-i18next'
+
 import './style.less'
 
 import { getClassnames } from '../../../_utils'
@@ -10,7 +12,45 @@ import { Agreement } from '../../../Type/application'
 
 import { useAgreements } from '../../../Guard/core/hooks/useAgreements'
 
-const { useState, useMemo, useEffect } = React
+import { useGuardPublicConfig } from '../../../_utils/context'
+
+const { useState, useMemo, useEffect, useCallback, useRef } = React
+
+const AgreementSelectionContext = React.createContext<{
+  acceptList: (string | number)[]
+  setAcceptList: React.Dispatch<React.SetStateAction<(string | number)[]>>
+  validationAttempt: number
+  reportValidationError: () => void
+} | null>(null)
+
+export const useAgreementSelection = () =>
+  React.useContext(AgreementSelectionContext)
+
+export const AgreementSelectionProvider: React.FC<{
+  children: React.ReactNode
+}> = ({ children }) => {
+  const isB2C = useGuardPublicConfig()?.sceneCode === 'B2C'
+  const [acceptList, setAcceptList] = useState<(string | number)[]>([])
+  const [validationAttempt, setValidationAttempt] = useState(0)
+  const reportValidationError = useCallback(() => {
+    setValidationAttempt(attempt => attempt + 1)
+  }, [])
+  const value = useMemo(
+    () => ({
+      acceptList,
+      setAcceptList,
+      validationAttempt,
+      reportValidationError
+    }),
+    [acceptList, validationAttempt, reportValidationError]
+  )
+
+  return (
+    <AgreementSelectionContext.Provider value={isB2C ? value : null}>
+      {children}
+    </AgreementSelectionContext.Provider>
+  )
+}
 
 export interface AgreementsProps {
   value?: boolean
@@ -26,7 +66,17 @@ export const Agreements: React.FC<AgreementsProps> = ({
   style,
   agreements
 }) => {
-  const [acceptList, setAcceptList] = useState<(string | number)[]>([])
+  const { t } = useTranslation()
+  const isB2C = useGuardPublicConfig()?.sceneCode === 'B2C'
+  const rootRef = useRef<HTMLDivElement>(null)
+  const selection = useAgreementSelection()
+  const [localAcceptList, setLocalAcceptList] = useState<(string | number)[]>(
+    []
+  )
+  const { acceptList, setAcceptList } = selection ?? {
+    acceptList: localAcceptList,
+    setAcceptList: setLocalAcceptList
+  }
 
   const toggleItemCheck = (id: string | number) => {
     setAcceptList(prev => {
@@ -59,15 +109,52 @@ export const Agreements: React.FC<AgreementsProps> = ({
       .every(item => acceptList.includes(item.id))
   }, [acceptList, agreements])
 
+  const validationAttempt = selection?.validationAttempt ?? 0
+  const lastValidationAttempt = useRef(validationAttempt)
+  const hasError = !isAccept && validationAttempt > 0
+
+  useEffect(() => {
+    // 切换 Tab 重新挂载时，不重播共享状态中已有的校验失败。
+    const isNewAttempt = validationAttempt > lastValidationAttempt.current
+    lastValidationAttempt.current = validationAttempt
+    if (!isNewAttempt || isAccept) return
+
+    const invalidItems = Array.from(
+      rootRef.current?.querySelectorAll<HTMLElement>(
+        '.authing-agreements-item-invalid'
+      ) ?? []
+    )
+
+    invalidItems.forEach(item => {
+      item.classList.remove('shaking')
+      // 重置动画，连续点击未通过校验的入口时也能再次抖动。
+      void item.offsetWidth
+      item.classList.add('shaking')
+    })
+
+    const clearShaking = () => {
+      invalidItems.forEach(item => item.classList.remove('shaking'))
+    }
+    const timeout = setTimeout(clearShaking, 820)
+
+    return () => {
+      clearTimeout(timeout)
+      clearShaking()
+    }
+  }, [validationAttempt, isAccept])
+
   useEffect(() => {
     onChange(isAccept, acceptList)
   }, [isAccept, onChange, acceptList])
 
   return (
     <div
+      ref={rootRef}
       className={getClassnames([
         'authing-agreements',
-        showError && 'authing-agreements-error'
+        isB2C && 'authing-agreements-b2c',
+        (showError || hasError) && 'authing-agreements-error',
+        hasError && 'authing-agreements-validation-error'
       ])}
     >
       {agreements.map(item => {
@@ -103,6 +190,11 @@ export const Agreements: React.FC<AgreementsProps> = ({
           </div>
         )
       })}
+      {hasError && (
+        <div className="authing-agreements-error-message" role="alert">
+          {t('common.loginProtocolTips')}
+        </div>
+      )}
     </div>
   )
 }

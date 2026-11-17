@@ -4,7 +4,7 @@
   margin-bottom: 16px;
   display: inline-flex;
   flex-direction: column;
-  &.authing-agreements-error {
+  &.authing-agreements-error:not(.authing-agreements-b2c) {
     .authing-agreements-item-invalid {
       color: #ff4d4f;
       a {
@@ -15,6 +15,21 @@
       }
     }
   }
+  &.authing-agreements-error.authing-agreements-b2c {
+    .authing-agreements-item-invalid {
+      .authing-ant-checkbox-inner,
+      .ant-checkbox-inner {
+        border-color: #ff4d4f;
+      }
+    }
+  }
+}
+
+.authing-agreements-error-message {
+  margin-top: 4px;
+  color: #ff4d4f;
+  font-size: 14px;
+  line-height: 22px;
 }
 
 .authing-agreements-item {

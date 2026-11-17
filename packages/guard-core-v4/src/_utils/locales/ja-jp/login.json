@@ -28,6 +28,8 @@
   "appScanLogin": "モバイルアプリでコード登録",
   "zjzwScanLogin": "浙江事務所",
   "scanLogin": "コード登録",
+  "scanAgreementRequired": "利用規約に同意するとQRコードが表示されます",
+  "scanAgreementConsent": "QRコードを読み取ってログインすると、利用規約に同意したものとみなされます",
   "scanAgain": "コードを掃き直す",
   "wechatScanLogin": "wechatのコードを使ってログインする",
   "scanSuccess": "コード掃きに成功する",

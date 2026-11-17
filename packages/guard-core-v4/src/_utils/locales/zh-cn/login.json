@@ -28,6 +28,8 @@
   "appScanLogin": "移动端 APP 扫码登录",
   "zjzwScanLogin": "浙里办扫码登录",
   "scanLogin": "扫码登录",
+  "scanAgreementRequired": "请先勾选用户协议以显示二维码",
+  "scanAgreementConsent": "扫码登录即表示同意用户协议",
   "scanAgain": "重新扫码",
   "wechatScanLogin": "使用微信扫码登录",
   "scanSuccess": "扫码成功",

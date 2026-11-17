@@ -92,6 +92,10 @@ import { LoginWithZjQrcode } from './core/withZjQrcode'
 import { supported } from '@github/webauthn-json'
 import { PasskeyButton } from './socialLogin/PasskeyButton'
 import { LAST_USED_IDP } from '../Guard/core/hooks/useMultipleAccounts'
+import {
+  AgreementSelectionProvider,
+  useAgreementSelection
+} from '../Register/components/Agreements'
 
 const { useEffect, useLayoutEffect, useState, useRef, useMemo, useCallback } =
   React
@@ -190,6 +194,14 @@ const computedTabName = (str: string) => {
 
 export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
   isResetPage = false
+}) => (
+  <AgreementSelectionProvider>
+    <GuardLoginViewContent isResetPage={isResetPage} />
+  </AgreementSelectionProvider>
+)
+
+const GuardLoginViewContent: React.FC<{ isResetPage?: boolean }> = ({
+  isResetPage = false
 }) => {
   const { specifyDefaultLoginMethod } = useGuardInitData<GuardLoginInitData>()
 
@@ -205,9 +217,13 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
 
   const publicConfig = useGuardPublicConfig()
 
+  const isB2C = publicConfig?.sceneCode === 'B2C'
+
   let [defaultMethod, renderInputWay, renderQrcodeWay] = useMethods(config)
 
   const agreementEnabled = config?.agreementEnabled
+
+  const agreementSelection = useAgreementSelection()
 
   const { t } = useTranslation()
 
@@ -409,6 +425,12 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
       resolvedLanguage
     ]
   )
+
+  const canDisplayQrCode =
+    !isB2C ||
+    agreements
+      .filter(agreement => agreement.required)
+      .every(agreement => agreementSelection?.acceptList.includes(agreement.id))
 
   const verifyLoginMethods = useMemo<VerifyLoginMethods[]>(
     () =>
@@ -1298,8 +1320,33 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
                           events?.onLoginTabChange?.(k)
                         }}
                       >
-                        {CodeLoginComponent}
+                        {canDisplayQrCode
+                          ? CodeLoginComponent
+                          : CodeLoginComponent.map(tab =>
+                              tab
+                                ? React.cloneElement(
+                                    tab,
+                                    undefined,
+                                    <div
+                                      className="g2-qrcode-agreement-placeholder"
+                                      role="status"
+                                    >
+                                      <div className="g2-qrcode-agreement-locked">
+                                        <IconFont type="authing-a-lock-line1" />
+                                      </div>
+                                      <div>
+                                        {t('login.scanAgreementRequired')}
+                                      </div>
+                                    </div>
+                                  )
+                                : tab
+                            )}
                       </Tabs>
+                      {isB2C && agreements.length > 0 && (
+                        <div className="g2-qrcode-agreement-notice">
+                          {t('login.scanAgreementConsent')}
+                        </div>
+                      )}
                     </div>
                   )}
               </>
@@ -1308,6 +1355,21 @@ export const GuardLoginView: React.FC<{ isResetPage?: boolean }> = ({
               <SocialLogin
                 appId={appId}
                 config={config!}
+                agreements={agreements}
+                showAgreements={
+                  !renderInputWay ||
+                  !['input', 'collapsed'].includes(activeMode) ||
+                  isMultipleAccount ||
+                  isResetPage ||
+                  ![
+                    LoginMethods.Password,
+                    LoginMethods.PhoneCode,
+                    LoginMethods.EmailCode,
+                    LoginMethods.AD,
+                    LoginMethods.LDAP,
+                    LoginMethods.AuthingOtpPush
+                  ].includes(loginWay)
+                }
                 multipleInstance={multipleInstance}
                 // onLogin={onLogin}
                 onLoginSuccess={onLoginSuccess}
